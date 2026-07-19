@@ -103,7 +103,7 @@ Lifecycle phase modules: $ROOT/phases/
 Evidence cutoff: current UTC time; distinguish what was knowable at each launch event from later outcomes.
 
 Requirements:
-- Read the cached record first and follow its direct explainer/spec/intent/review/docs/sample/bug links through the Z.AI Web Reader MCP.
+- Read the cached record first. For a server-rendered ChromeStatus view, read https://chromestatuslite.com/feature/$id through the Z.AI Web Reader MCP; use the browser against chromestatus.com when browser-only evidence is needed. Then follow direct explainer/spec/intent/review/docs/sample/bug links.
 - Treat the run manifest, cached evidence, schema, method, and phase modules as immutable read-only inputs. Never rewrite, reformat, regenerate, or modify them. Return the report only through stdout.
 - For all general search, use ONLY the Z.AI MCP proxy: connect to server "zai-web-search" and call "webSearchPrime"; use server "zai-web-reader" and tool "webReader" when full page content is needed. Do NOT call pi-web-access/web_search.
 - Keep Z.AI searches bounded and varied. If a search/read call fails, continue with direct URLs and mark missing evidence; never abort or invent.

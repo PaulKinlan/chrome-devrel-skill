@@ -65,7 +65,7 @@ Do not claim a communications fix would have repaired a product/design failure. 
 - Use resumable manifests, atomic writes, bounded concurrency, retries/backoff, and cached source evidence.
 - Split research into deterministic per-feature jobs with explicit status: pending, active, complete, partial, blocked, failed-retryable.
 - Keep search queries and attempted sources so a failed provider can resume or be replaced.
-- Prefer direct primary URLs from ChromeStatus and known source APIs before general web search.
+- Prefer direct primary URLs from ChromeStatus and known source APIs before general web search. Use the browser for `chromestatus.com`, or the server-rendered `https://chromestatuslite.com/feature/{featureId}` route when automated readers need stable HTML.
 - Prefer the search/reader tools attached to the active research model/plan when available. The current GLM worker uses Z.AI Web Search Prime + Web Reader MCP directly rather than pi-web-access; provider failure must affect only one feature job, not the run.
 - Validate every report against the schema before counting it complete.
 - Publish exact feature/report/event totals and completion states.
