@@ -7,7 +7,23 @@ RUN_ROOT="$ROOT/retrospectives/runs/$RUN_ID"
 MODEL="${MODEL:-zai/glm-5.2}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-1500}"
+MCP_CONFIG="${MCP_CONFIG:-/home/paulkinlan/.config/paul-site-services/zai-retrospective-mcp.json}"
+MCP_ADAPTER="${MCP_ADAPTER:-/home/paulkinlan/.pi/agent/npm/node_modules/pi-mcp-adapter/index.ts}"
 mkdir -p "$RUN_ROOT/reports" "$RUN_ROOT/worker/logs" "$RUN_ROOT/worker/status" "$RUN_ROOT/worker/tmp"
+
+# Reuse Pi's configured Z.AI credential without putting it in arguments, logs, prompts, or the repo.
+if [ -z "${ZAI_API_KEY:-}" ]; then
+  export ZAI_API_KEY="$(python - <<'PY'
+import json
+print(json.load(open('/home/paulkinlan/.pi/agent/auth.json'))['zai']['key'])
+PY
+)"
+fi
+if [ -z "$ZAI_API_KEY" ] || [ ! -s "$MCP_CONFIG" ] || [ ! -s "$MCP_ADAPTER" ]; then
+  echo "Z.AI MCP search is not configured" >&2
+  exit 3
+fi
+trap 'unset ZAI_API_KEY' EXIT
 
 if [ "$#" -eq 0 ]; then
   echo "usage: $0 FEATURE_ID..." >&2
@@ -57,9 +73,10 @@ Lifecycle phase modules: $ROOT/phases/
 Evidence cutoff: current UTC time; distinguish what was knowable at each launch event from later outcomes.
 
 Requirements:
-- Read the cached record first and follow its direct explainer/spec/intent/review/docs/sample/bug links.
-- Prefer direct primary sources. Then research independent ecosystem evidence: usage/adoption, frameworks/tools, case studies, support/friction, positive and critical press/community evidence, user impact and interoperability.
-- Use web search only in bounded varied batches. If a search provider fails, continue with direct URLs and mark missing evidence; never abort or invent.
+- Read the cached record first and follow its direct explainer/spec/intent/review/docs/sample/bug links. Use the bash tool for direct public URL retrieval when useful.
+- For all general search, use ONLY the Z.AI MCP proxy: connect to server "zai-web-search" and call "webSearchPrime"; use server "zai-web-reader" and tool "webReader" when full page content is needed. Do NOT call pi-web-access/web_search.
+- Keep Z.AI searches bounded and varied. If a search/read call fails, continue with direct URLs and mark missing evidence; never abort or invent.
+- Research independent ecosystem evidence: usage/adoption, frameworks/tools, case studies, support/friction, positive and critical press/community evidence, user impact and interoperability.
 - Keep all launch events for this feature.
 - Replay every lifecycle phase. Use not-relevant only with rationale, never to mean untested.
 - Score outcomes by dimension as success/mixed/failure/unscored; do not infer success from shipment, usage alone, press sentiment, or absent criticism.
@@ -70,8 +87,8 @@ Requirements:
 EOF
     echo "[$id] attempt $attempt"
     if timeout "$TIMEOUT_SECONDS" pi -p --no-session --no-context-files --no-extensions \
-      --extension /home/paulkinlan/.pi/agent/npm/node_modules/pi-web-access/index.ts \
-      --model "$MODEL" --thinking high --tools read,web_search,fetch_content,get_search_content \
+      --extension "$MCP_ADAPTER" --mcp-config "$MCP_CONFIG" \
+      --model "$MODEL" --thinking high --tools read,bash,mcp \
       --skill "$ROOT" "$(cat "$prompt")" > "$raw" 2> "$log"; then
       if python - "$id" "$raw" "$normalized" <<'PY'
 import json,sys

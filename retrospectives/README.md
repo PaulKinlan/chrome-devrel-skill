@@ -23,6 +23,8 @@ node scripts/build-retrospective-inventory.mjs \
 
 The collector caches every response, retries with backoff, writes atomically, uses bounded concurrency, and resumes from cached evidence. `--refresh` deliberately refetches source records.
 
+Feature research runs on GLM 5.2 with Z.AI's Coding Plan **Web Search Prime** and **Web Reader** MCP servers—the search/retrieval tools attached to the GLM plan. It does not use pi-web-access `web_search`. The worker reuses Pi's configured Z.AI credential through a private environment variable; keys never enter prompts, arguments, logs, reports, or the repository. Each feature remains an isolated resumable job, so MCP/provider failure produces a retryable or blocked feature rather than halting the run.
+
 ## Required outputs
 
 - `run.json` — fixed denominator, counts and manifest checksums
