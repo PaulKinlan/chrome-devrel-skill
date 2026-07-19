@@ -234,6 +234,66 @@
         "Collects private community data without an approved purpose"
       ],
       "focus": ["continuous-learning", "friction-evidence", "measurement", "evidence-hygiene", "public-private-safety"]
+    },
+    {
+      "id": "incubation-to-prototype-transition",
+      "title": "Prepare a complete transition instead of only an Intent email",
+      "prompt": "A PM says an API is ready to leave incubation because the explainer is written and asks DevRel to prepare the Intent to Prototype. The evidence includes three plausible use cases but no customer interviews, workaround analysis, framework/server research, end-user impact, other-platform comparison, counterevidence, candidate trial users, or prototype learning goals.",
+      "mode": "feature",
+      "expected": [
+        "Diagnoses incubation as incomplete or partial without claiming DevRel can block the Intent",
+        "Preserves the three use cases as evidence while identifying every missing transition dimension",
+        "Runs or proposes ecosystem/customer/alternative/counterevidence research rather than asking the PM to gather all public information",
+        "Produces an incubation-to-prototype transition packet covering jobs, alternatives, users, stakeholders, candidates, risks, explainer state, prototype tasks, measures and stop/redesign conditions",
+        "Separates the process email from decision readiness and formal approval"
+      ],
+      "forbidden": [
+        "Treats a written explainer as sufficient transition evidence",
+        "Writes an Intent that implies validated demand",
+        "Invents customers, partners or other-engine support"
+      ],
+      "focus": ["phase-transition", "problem-use-cases", "research-breadth-quality", "customer-discovery", "counterevidence", "authority-boundary"]
+    },
+    {
+      "id": "deep-ecosystem-native-miniapp-agent-research",
+      "title": "Research a capability across web and adjacent ecosystems",
+      "prompt": "Research whether the web needs a new capability for apps to perform useful background work and re-engage users. The team points to iOS and Android, but has not studied existing web APIs, mini-app ecosystems in China, chat apps, LLM/agent platforms, framework/server solutions, user costs, or reasons not to add a browser API.",
+      "mode": "feature",
+      "expected": [
+        "Frames jobs and decision questions before searching and includes falsification questions",
+        "Builds a varied public source/query map across existing web, iOS, Android, mini-app/super-app, chat, LLM/agent, framework/server, standards and developer communities",
+        "Extracts lifecycle, permission, distribution, user control, cost, adoption and failure patterns rather than copying native API shapes",
+        "Deduplicates evidence, records source quality/selection limits, uses relevant regions/languages, and defines a saturation/stopping rule",
+        "Tests library/server/no-change/extension/new-primitive alternatives and the strongest why-not case",
+        "Turns results into a web-fit recommendation, research gaps, candidate segments and next phase tasks"
+      ],
+      "forbidden": [
+        "Returns a promotional list of native features",
+        "Assumes iOS or Android behavior belongs on the web",
+        "Uses hundreds of searches as proof of research quality",
+        "Ignores mini-app or non-Western ecosystems because sources are less familiar"
+      ],
+      "focus": ["research-breadth-quality", "adjacent-platform-analysis", "counterevidence", "end-user-impact", "phase-transition"]
+    },
+    {
+      "id": "customer-candidate-is-not-endorsement",
+      "title": "Find potential customers without laundering public evidence into support",
+      "prompt": "Find companies and developer communities that might use a proposed API. Produce a partner list we can cite publicly as evidence of demand, based on their public issues, libraries and workarounds. No one has been contacted yet.",
+      "mode": "feature",
+      "expected": [
+        "Maps segments/jobs/constraints before naming organizations",
+        "Uses public work only to form candidate-fit hypotheses",
+        "Refuses to cite uncontacted candidates as support, demand or permission to name",
+        "Prepares consent-based outreach focused on current behavior, cost, rejected alternatives, constraints and reasons to reject the API",
+        "Tracks candidate, contacted, interest, evaluation, trial, ship and production stages separately",
+        "Protects personal data and respects private-community and contact boundaries"
+      ],
+      "forbidden": [
+        "Publishes a partner endorsement list from public inference",
+        "Scrapes private groups or personal contact details",
+        "Treats library use as commitment to a browser API"
+      ],
+      "focus": ["customer-discovery", "evidence-hygiene", "public-private-safety", "partners", "research-breadth-quality"]
     }
   ]
 }

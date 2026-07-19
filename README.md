@@ -65,6 +65,14 @@ You do not need to know the Chrome launch process or DevRel terminology. A rough
 
 > Assess this feature from a Chrome DevRel perspective: [ChromeStatus, explainer, spec, intent, or rough description]. Work out its lifecycle stage, developer problem, evidence quality, affected users, interoperability path, integration risks, likely stakeholder critiques, missing work, and the next five highest-leverage actions. Research public evidence rather than making me collect it all.
 
+### Prepare a phase transition
+
+> This feature is currently in [incubation / prototype / developer trial / wide review / origin trial / prepare-to-ship]. Diagnose whether that is accurate, load the detailed phase guidance, and build the full transition packet for the next phase: evidence, research, users, partners, risks, integrations, review state, artifacts, learning goals, unknowns, contradictions and human decisions. Do not reduce the transition to an Intent email.
+
+### Run ecosystem and customer research
+
+> Run deep ecosystem/customer research for [problem or proposed capability]. Search multiple independent public source families and relevant languages/regions; find developer jobs, workarounds, failures, communities, candidate customers/partners, frameworks, existing web solutions, iOS/Android/desktop equivalents, mini-app/super-app patterns, chat/LLM/agent approaches, and evidence against the proposal. Deduplicate the evidence, assess source quality and bias, state saturation and gaps, and turn it into product/design, outreach and phase-transition recommendations—not a link dump.
+
 ### Start with an artifact
 
 > I need a launch presentation for [feature]. Treat the deck as the entry point: determine what evidence and decisions it needs, research what is public, ask me only for information you cannot obtain, flag unsupported claims, and then create a coherent outline, slide content, speaker notes, demo plan, sources, and review checklist.
@@ -115,8 +123,10 @@ You do not need to know the Chrome launch process or DevRel terminology. A rough
 
 ## Current work
 
+- [Detailed lifecycle phase modules and transition packets](phases/README.md)
 - [Lifecycle and DevRel intervention map](research/blink-lifecycle-map.md)
 - [Stakeholder critique module](modules/stakeholder-critique.md)
+- [Ecosystem, customer, adjacent-platform, and counterevidence research](modules/ecosystem-and-customer-research.md)
 - [User-impact and formal-review rehearsal](modules/user-impact-and-review-rehearsal.md)
 - [Evidence-based friction logs](modules/friction-log.md)
 - [Launch resilience and team safety](modules/launch-resilience.md)
