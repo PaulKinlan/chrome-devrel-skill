@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5123349239955456,
+    "name": "PWA origin migration",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5123349239955456",
+    "category": "Capabilities (Fugu)",
+    "blinkComponent": "UI>Browser>WebAppInstalls",
+    "flagName": "chrome://flags/#web-app-migration-api",
+    "finchName": "WebAppMigrationApi",
+    "owners": [
+      "mek@chromium.org",
+      "dibyapal@chromium.org",
+      "dmurph@chromium.org",
+      "pwa-team@google.com"
+    ],
+    "creator": "mek@chromium.org",
+    "specLink": "https://github.com/WICG/manifest-incubations/pull/136",
+    "explainer": "https://github.com/WICG/manifest-incubations/blob/gh-pages/pwa-migration-explainer.md",
+    "desktopFirstShip": 150,
+    "platforms": "Desktop only (Windows/macOS/Linux/ChromeOS); no Android, no iOS, no WebView"
+  },
+  "launchEvents": [
+    {
+      "eventId": "147:In developer trial (Behind a flag):5123349239955456",
+      "milestone": 147,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "150:Enabled by default:5123349239955456",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "ChromeStatus entry created 2025-09-17 with a clear, real problem statement: an installed PWA's identity/security context is bound to its origin, so rebrand/domain-restructure/architecture changes force users to manually uninstall and reinstall, causing user loss. Owners, Blink component, tracking bug (396504527) and Intent to Prototype were all present early. However, the intake framing promised more than the shipped scope: the summary and Intent to Prototype both claim the feature preserves 'user trust and permissions' and keeps 'notification settings intact', a capability that was later explicitly removed from the initial version.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S16"
+      ],
+      "limitations": "No public partner/segment map or developer-demand evidence was attached to intake; the explainer's later 'Major App Developers: Positive' claim is unattributed."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Strong public incubation in WICG/manifest-incubations: explainer merged via PR #121 on 2025-09-16, iterated twice for security-team feedback (PR #131) and TAG feedback (PR #135), with a full Security/Privacy Self-Review Questionnaire, extensive alternatives analysis (redirects, force-only, cooling-off, one-way vs two-way handshake, id requirements), and named co-designers (mkruisselbrink, dmurph). The two-way .well-known handshake was added specifically because security review flagged that a one-way reference makes an origin only as strong as its weakest same-site neighbor.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S7"
+      ],
+      "limitations": "Stakeholder 'positive' signals are not attributable to named partners, so partner willingness cannot be independently verified or staged on the evidence ladder."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation proceeded behind chrome://flags/#web-app-migration-api (Finch WebAppMigrationApi) in Blink component UI>Browser>WebAppInstalls, requires_embedder_support=true, with a DevTrial sample. Scope was deliberately desktop-only: the record states Android's installation/update mechanisms differ and would require lower-level changes. Debuggability relies on existing DevTools manifest error display.",
+      "evidenceIds": [
+        "S1",
+        "S13"
+      ],
+      "limitations": "No public task-based friction log, framework/server integration spike, or compatibility matrix from the prototype stage was found; desktop-only evidence by design."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial shipped in M147 with a documented sample (googlechrome.github.io/samples/pwa-migration) stating 'run at least Chrome 147 with chrome://flags/#web-app-migration-api enabled'. However, the record reports 'Web developers: No signals', and no public cohort, recruitment, methodology, participation counts, task-completion, or findings were published. The only attributable external feedback that surfaced was the TAG review correspondence, which was critical.",
+      "evidenceIds": [
+        "S1",
+        "S13",
+        "S7"
+      ],
+      "limitations": "Self-selected/unknown cohort; no reusable learning artifacts; 'No signals' from web developers was treated as neutral rather than a gap to close before ship."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Broad review did not support the chosen architecture. The W3C TAG design review (#1164) was requested 2025-10-30, raised substantive concerns on 2026-01-19, and was closed as UNSATISFIED on 2026-05-15 with 'Missing: Multi-stakeholder support'. TAG's objections: the .well-known approach is an unconventional fit (it preferred HTTP redirects or the Link header); requiring a destination manifest id 'seems to reflect a single-engine's perspective' and conflicts with cross-vendor consensus that any site is installable without a manifest; force/suggest UX behavior 'steps into User Agent territory'; and the design is coupled to other non-standardized proposals (Scope Extensions file name, Predictable App Updating). Mozilla (issue #1313) and WebKit (issue #568) both returned 'No signal' with zero position comments. The only approvals were three internal blink-dev LGTMs.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S9",
+        "S6"
+      ],
+      "limitations": "The TAG review was a CG early review, not a formal spec-stage review; nevertheless its 'unsatisfied' resolution and explicit lack of multi-stakeholder support are direct, dated evidence."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted. The record shows origintrial=false and rollout_plan 'Will ship enabled for all users'; the feature went DevTrial (M147) directly to default-on ship (M150). This assessment is marked not-relevant because the experiment phase (resolving field-only uncertainties via a real-origin trial) was not used — not because it was untested. An Origin Trial could plausibly have resolved handshake/.well-known hosting friction and split-app consolidation before default-on, but none was declared, so there is no experiment evidence to assess.",
+      "evidenceIds": [
+        "S1",
+        "S6"
+      ],
+      "limitations": "Absence of a trial is a process choice; the decision rationale for skipping an OT is not documented publicly."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was filed 2026-03-16 targeting desktop ship in M148 and DevTrial M147, and received three blink-dev LGTMs (Alex Russell, Mike Taylor, Chris Harrelson) on 2026-03-18. During the thread, Vladimir Levin asked whether same-origin cookies/storage are lost; the response confirmed the migration does NOT affect any storage (cookies, IndexedDB) — developers must transfer state themselves. However, at ship-intent time the TAG review was still open and later closed unsatisfied (2026-05-15); actual shipment slipped from M148 to M150; ChromeStatus security_review_status and privacy_review_status remained 'Pending' despite substantive security analysis in the explainer; and the summary's 'preserving... permissions' overclaim was carried into the ship packet unchanged.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S1"
+      ],
+      "limitations": "The reason for the M148-to-M150 slip is not stated publicly; causation versus correlation with the open/unsatisfied TAG review cannot be established from available evidence."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "The feature shipped in Chrome 150 desktop stable on 2026-06-30 and is listed in the official Chrome 150 release notes under 'Web Apps'. Coordinated DevRel assets existed and were largely accurate: a launch blog ('Seamless PWA origin migration: Change domains without losing users', 2026-06-03) that correctly omits any permissions claim, an official sample, and an independent Microsoft Edge demo corroborating behavior across Chromium. Enterprise handling is explicit (WebAppInstallForceList blocks migration with an explanatory banner).",
+      "evidenceIds": [
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S1"
+      ],
+      "limitations": "The authoritative release-notes and ChromeStatus summary still state the feature preserves 'permissions', which is inaccurate for the shipped scope (see evidenceAndCommunication outcome). No MDN reference page existed at launch (only browser-compat-data)."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public adoption evidence is available. webdx_usecounter_enum is null (no exposed use counter), adoption_expectation/adoption_plan are unset, and the measurement plan only commits to measuring manifest-field presence and user activations internally. The feature shipped desktop-only roughly three weeks before this evidence cutoff. The explainer explicitly notes long-term usage by any single site is unlikely by design (it is a transient migration tool), so stable usage counters will be near-zero regardless of success. caniuse/web-features list support as Chrome/Edge only. No production case studies were found.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S14"
+      ],
+      "limitations": "Too recent and too narrow to assess adoption; absence of a public use counter makes durable adoption unmeasurable from outside Google."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Insufficient evidence. The feature shipped only weeks before the cutoff; no public support-issue taxonomy, known-issues/troubleshooting doc, or community Q&A volume is visible. MDN reference documentation is absent (the developer.mozilla.org migrate_from page returns 404), though browser-compat-data entries were added. The dev trial produced no public support learnings.",
+      "evidenceIds": [
+        "S1",
+        "S15"
+      ],
+      "limitations": "Support burden cannot yet be characterized; revisit after one or two milestones of stable usage."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new capability, not a deprecation, restriction, or removal. The deprecation/removal phase has no target artifact to assess. Marked not-relevant for this reason, not to indicate something was left unexamined.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "There is no removal/migration/rollback dimension to review for a newly shipped feature."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real and browser intervention is plausibly the right layer: nothing else lets a developer move an installed PWA's origin/identity or fix accidental 'split apps' without forcing reinstall. The explainer is thorough and the launch guidance is practical. But value is materially reduced by shipped scope: permissions and all storage (cookies, IndexedDB, Cache) are NOT migrated, so it solves only the identity/URL move; it is desktop-only; and the flagship redirect-plus-in-scope pattern depends on other non-standardized proposals (Scope Extensions, Predictable App Updating) with no cross-vendor path. Net: a useful but partial solution to the stated problem.",
+      "evidenceIds": [
+        "S2",
+        "S6",
+        "S10",
+        "S12"
+      ],
+      "limitations": "The explainer's claim of strong demand from 'major app developers' is unattributed; no attributable partner deployments verified."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Positive in principle: users get an informed update/consent dialog instead of a broken redirect or manual uninstall/reinstall, and the design separates a forced URL change from branding changes to preserve user control over app identity. Negative/limited in practice: only desktop users benefit; a 'force' migration can block the user on next launch; same-site (same eTLD+1) restriction excludes many real rebrands that cross sites; and because permissions are reset, users must re-grant notifications/location on the new origin — a real regression versus the pre-migration install.",
+      "evidenceIds": [
+        "S2",
+        "S10",
+        "S1"
+      ],
+      "limitations": "No real-world user-impact telemetry or usability study evidence; the 'force' dialog UX is described but not independently tested in the wild."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Cannot be scored. The feature is desktop-only, ~3 weeks past stable at the cutoff, exposes no public use counter, and is designed for transient use. No production deployments, case studies, or framework/tool integration (e.g., PWABuilder) for migrate_from were found. Per the method, missing adoption evidence remains unknown — shipment is not adoption.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S14"
+      ],
+      "limitations": "Adoption is genuinely unmeasurable from public sources at this time; revisit at M152–M154."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "A clear interop failure at launch. The W3C TAG review closed 'unsatisfied' citing 'Missing: Multi-stakeholder support' and architectural objections; Mozilla and WebKit returned 'No signal' with no position taken; no WPT/conformance tests exist (wpt=false) and the record argues there is little web-exposed behavior to test; support is confined to Chromium desktop (Chrome + Edge), with no Firefox/Safari/Chrome-Android/iOS support and no Baseline eligibility for an incubation-stage proposal. Chrome shipment alone is not broad success.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S9",
+        "S1",
+        "S14"
+      ],
+      "limitations": "Other engines' silence is not opposition, but it is also not support; the TAG's explicit 'unsatisfied' resolution is the strongest dated signal."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "The implementation shipped and demonstrably works: an independent Microsoft Edge demo reproduces the migrate_from/migrate_to handshake and 'Review app update' flow, and the enterprise force-install guard is specified. Weaknesses: desktop-only by design; no automated conformance/interop tests; the M148 target slipped to M150 with no public rationale; and verification relies on chrome://web-app-internals rather than standardized tests. No regression or post-ship bug evidence could be retrieved from the implementation bug (crbug 380486617 is JS-rendered and unreadable via fetch).",
+      "evidenceIds": [
+        "S12",
+        "S1",
+        "S16"
+      ],
+      "limitations": "Could not independently read the implementation bug or confirm the 'positive developer feedback' it reportedly contains (cited by the TAG review request); implementation-depth evidence is therefore thin."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The explainer is high quality (security/privacy self-review, alternatives, iterative revision for security and TAG feedback) and the launch blog is accurate (it is silent on permissions). But there is a material, shipped communication defect: both the ChromeStatus summary and the official Chrome 150 release notes still claim the feature preserves 'user trust and permissions', and the Intent to Ship retained 'with your notification settings intact' — even though permission migration was removed in February 2026 per TAG and partner feedback. The team possessed this knowledge before stable but did not refresh the canonical summary/release-notes boilerplate. Separately, the formal ChromeStatus security/privacy review gates remained 'Pending' despite substantive security analysis.",
+      "evidenceIds": [
+        "S1",
+        "S11",
+        "S6",
+        "S2",
+        "S7"
+      ],
+      "limitations": "The overclaim is confined to summary/release-notes boilerplate; the detailed blog and explainer are accurate, so developer-facing practical guidance is mostly correct."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too early and too little public infrastructure to score. No MDN reference page at launch (only browser-compat-data), no published known-issues/troubleshooting, and no visible community support volume. The DevRel launch included a sample and blog but not a support/triage pack.",
+      "evidenceIds": [
+        "S15",
+        "S1",
+        "S10"
+      ],
+      "limitations": "Support health cannot be assessed within weeks of a desktop-only launch."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A genuinely valuable, well-explained capability addressing a real PWA lifecycle gap, shipped with a coordinated (and largely accurate) DevRel kit and validated by an independent Edge demo. But it launched default-on as a Chrome-desktop-only incubation against an explicitly unsatisfied TAG review and zero Mozilla/WebKit engagement (interop failure), with a permissions overclaim still present in official release materials, no Origin Trial or WPT, no public adoption signal, and missing MDN reference docs. Dimensions split: strong on problem/incubation, failed on interoperability, unknown on adoption/support, and defective-but-mostly-accurate on communication.",
+      "evidenceIds": [
+        "S2",
+        "S7",
+        "S10",
+        "S11",
+        "S1",
+        "S12"
+      ],
+      "limitations": "Overall is deliberately not 'success': mixed dimensions and two unscored dimensions (adoption, support) prevent a positive conclusion; interop failure alone bars a success rating per the method."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5123349239955456",
+      "publisher": "ChromeStatus (cached record, accurate_as_of 2026-05-26)",
+      "publishedOrObservedAt": "2026-05-26",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, flag/finch, stages, launch events M147 dev trial and M150 default-on, desktop-only, no OT, no WPT, webdx_usecounter_enum null, summary claiming 'preserving user trust and permissions', TAG/Mozilla/WebKit status, security/privacy review 'Pending'",
+        "Intent to Ship targeted M148 desktop, M147 devtrial"
+      ],
+      "limitations": "Cached accurate_as_of predates Chrome 150 stable (2026-06-30); is_released=false and tag_review_status='Pending' in the cache are stale relative to the shipped state and the TAG's later 'unsatisfied' resolution."
+    },
+    {
+      "id": "S2",
+      "url": "https://github.com/WICG/manifest-incubations/blob/gh-pages/pwa-migration-explainer.md",
+      "publisher": "WICG/manifest-incubations (mkruisselbrink et al., Google)",
+      "publishedOrObservedAt": "2025-09-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer goals/non-goals; permissions NOT migrated in initial version; two-way .well-known handshake; same-site restriction; depends on Predictable App Updating and reuses Scope Extensions file; security/privacy self-review; long-term usage by any site unlikely by design"
+      ],
+      "limitations": "Living document, revised via PR #131 (security) and #135 (TAG feedback); dates reflect initial merge, not every revision."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/WICG/manifest-incubations/pull/121",
+      "publisher": "WICG/manifest-incubations",
+      "publishedOrObservedAt": "2025-09-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Initial public proposal and explainer draft merged 2025-09-16; reviewed by dmurph and tomayac; linked to TAG review request"
+      ],
+      "limitations": "PR metadata only; no external stakeholder discussion on the PR itself."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/WICG/manifest-incubations/pull/136",
+      "publisher": "WICG/manifest-incubations",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec language adds migrate_from/migrate_to members, validate-origin-migration algorithm, elevates web-app-origin-association, privacy/security considerations"
+      ],
+      "limitations": "Incubation-stage spec in a CG repo, not a stable specification; maturity 'Specification being incubated in a Community Group'."
+    },
+    {
+      "id": "S5",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6903a614.050a0220.56be2.0983.GAE%40google.com",
+      "publisher": "blink-dev (Intent to Prototype)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: problem framing, Blink component UI>Browser>WebAppInstalls, initial proposal PR #121, tracking bug 396504527; motivation text includes 'with your notification settings intact'"
+      ],
+      "limitations": "Exact post date not pinned from the fetched excerpt; mirrored at mail-archive msg15046."
+    },
+    {
+      "id": "S6",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/69b898a8.050a0220.87ff1.1201.GAE%40google.com",
+      "publisher": "blink-dev (Intent to Ship)",
+      "publishedOrObservedAt": "2026-03-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship 2026-03-16 targeting desktop ship M148 / devtrial M147; Mozilla/WebKit 'No signal'; web developers 'No signals'; three LGTMs 2026-03-18 (Russell, Taylor, Harrelson); confirmation that storage/cookies are NOT migrated; motivation retains 'notification settings intact'"
+      ],
+      "limitations": "Internal Chromium approval only; does not evidence external/developer value; mirrored at mail-archive msg16106."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1164",
+      "publisher": "W3C TAG (assignees: ylafon, hadleybeeman, christianliebel)",
+      "publishedOrObservedAt": "2025-10-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review requested 2025-10-30; substantive concerns 2026-01-19; closed UNSATISFIED 2026-05-15; 'Missing: Multi-stakeholder support'; objections to .well-known approach, manifest-id requirement as single-engine perspective, force/suggest as UA territory, coupling to non-standardized proposals; preference for redirects/Link header"
+      ],
+      "limitations": "A CG early review, not a formal spec-stage review; 'unsatisfied' reflects design-direction disagreement, acknowledging the use case is valid."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/mozilla/standards-positions/issues/1313",
+      "publisher": "Mozilla standards positions",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position 'No signal'; zero comments on the issue (API returned [])"
+      ],
+      "limitations": "'No signal' is absence of a position, not opposition or support; may change."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/WebKit/standards-positions/issues/568",
+      "publisher": "WebKit standards positions",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position 'No signal'; marcoscaceres tagged; zero comments on the issue (API returned [])"
+      ],
+      "limitations": "'No signal' is absence of a position, not opposition or support; may change."
+    },
+    {
+      "id": "S10",
+      "url": "https://developer.chrome.com/blog/seamless-pwa-origin-migration",
+      "publisher": "Chrome for Developers (Dibyajyoti Pal, Dan Murphy, Marijn Kruisselbrink)",
+      "publishedOrObservedAt": "2026-06-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Launch blog published 2026-06-03 (Chrome 150 beta day); accurate how-to for migrate_from/.well-known/migrate_to/install_url; correctly silent on permissions; documents suggest vs force behavior and destination-id requirement"
+      ],
+      "limitations": "First-party launch communication; not independent coverage."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Chrome 150 release notes)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable date 2026-06-30; PWA origin migration listed under 'Web Apps' as shipped; release-notes text retains inaccurate 'preserving user trust and permissions'"
+      ],
+      "limitations": "Authoritative for ship status and the exact shipped summary wording; does not establish adoption."
+    },
+    {
+      "id": "S12",
+      "url": "https://microsoftedge.github.io/Demos/pwa-origin-migration/",
+      "publisher": "Microsoft Edge Demos",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Independent (Microsoft) demo and README confirming the feature is enabled by default and works in Edge via edge://flags/#web-app-migration-api; reproduces migrate_from/migrate_to handshake and 'Review app update' flow; notes destination id required and same-site restriction; demo limited to same-origin path move due to single GitHub Pages origin"
+      ],
+      "limitations": "Edge is Chromium-based, so this is cross-product but not cross-engine validation; does not evidence Firefox/Safari support."
+    },
+    {
+      "id": "S13",
+      "url": "https://googlechrome.github.io/samples/pwa-migration",
+      "publisher": "Google Chrome samples",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Official DevTrial sample requiring Chrome 147+ with chrome://flags/#web-app-migration-api; documents migrate_from/migrate_from_forced/migrate_to demo routes"
+      ],
+      "limitations": "First-party demo; no adoption signal."
+    },
+    {
+      "id": "S14",
+      "url": "https://caniuse.com/wf-app-migration",
+      "publisher": "caniuse / web-platform-dx web-features-explorer (feature 'app-migration')",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Compatibility/Baseline data: supported in Chrome/Edge desktop only; not supported in Firefox, Safari, Chrome Android, Firefox Android, Safari iOS; no MDN doc; web-features developer-signals issue #563 tracks it"
+      ],
+      "limitations": "caniuse/web-features labels the Chrome version as 149 (Jun 2, 2026) whereas the authoritative release notes place stable availability in Chrome 150 (2026-06-30); minor source data discrepancy, not a coverage discrepancy."
+    },
+    {
+      "id": "S15",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/migrate_from",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN reference page for migrate_from returns 404 ('Page not found') at cutoff; browser-compat-data entries for migrate_from/migrate_to were added (mdn/browser-compat-data commit 593be88) but no prose reference doc exists"
+      ],
+      "limitations": "Only checks the canonical reference URL; a doc may exist under a different path, though none was found."
+    },
+    {
+      "id": "S16",
+      "url": "https://issues.chromium.org/396504527",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking/launch bug titled 'PWA App Migration Shipped on Desktop' (partial title retrieved)"
+      ],
+      "limitations": "Page is JS-rendered; only the title fragment was retrievable, not comments, status, or linked sub-bugs. Implementation bug crbug 380486617 (referenced by the explainer and TAG request) was not retrievable at all; its reported 'positive developer feedback at comment 4' is not independently verified."
+    },
+    {
+      "id": "S17",
+      "url": "https://developer.chrome.com/docs/capabilities/scope-extensions",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Context for the dependency: Scope Extensions is itself Chrome-only (no Mozilla/WebKit position), reuses the same .well-known/web-app-origin-association file, and has known community friction (w3c/manifest#1209); PWABuilder has scope_extensions support but no migrate_from support was found"
+      ],
+      "limitations": "Context for a dependency, not direct evidence about PWA origin migration's own adoption."
+    }
+  ],
+  "successes": [
+    "Identified and clearly framed a real, previously-unsolved PWA lifecycle problem (moving an installed app's origin/identity, including accidental 'split apps') that genuinely benefits from browser intervention.",
+    "High-quality, iterative incubation: thorough explainer with a Security/Privacy Self-Review Questionnaire and alternatives analysis, revised twice (PRs #131, #135) in response to security-team and TAG feedback; the two-way handshake was added specifically from security review.",
+    "Coordinated and mostly accurate DevRel launch on the Chrome 150 beta day (2026-06-03), with an official sample and a separate Microsoft Edge demo that independently corroborates the shipped behavior.",
+    "Explicit, honest user-control design: informed 'Review app update' consent dialog, separation of a forced URL change from branding changes, and an enterprise-safe default (WebAppInstallForceList blocks migration with an explanatory banner).",
+    "Responsive to review: removed permission migration per TAG and partner feedback rather than shipping a contested behavior."
+  ],
+  "failures": [
+    "Shipped default-on as a Chrome-desktop-only incubation against an explicitly UNSATISFIED TAG review (closed 2026-05-15, 'Missing: Multi-stakeholder support') and zero Mozilla/WebKit engagement — an interoperability failure at launch, not offset by Chrome/Edge shipment.",
+    "Material shipped communication defect: the ChromeStatus summary and the official Chrome 150 release notes still claim the feature preserves 'permissions', and the Intent to Ship retained 'notification settings intact', after permission migration was removed in February 2026. The team had this knowledge before stable.",
+    "No Origin Trial and no WPT/conformance tests (wpt=false); the feature went DevTrial to default-on with limited public pre-ship validation of the handshake, .well-known hosting burden, and split-app consolidation in real conditions.",
+    "Flagship redirect-plus-in-scope usage pattern depends on other non-standardized proposals (Scope Extensions, Predictable App Updating) with no cross-vendor path, which the TAG flagged as coupling.",
+    "Documentation gap at launch: no MDN reference page (only browser-compat-data entries), and formal ChromeStatus security/privacy review gates left 'Pending' despite substantive security analysis.",
+    "Ship slipped from the Intent-to-Ship target (M148) to M150 with no public rationale, while the TAG review was still open and later closed unsatisfied."
+  ],
+  "counterfactuals": [
+    "If an 'unsatisfied'/closed TAG review were a hard pre-ship gate, default-on shipment would likely have been held for cross-vendor engagement or a redirect/Link-header redesign, trading launch timing for a real interop path.",
+    "If the ChromeStatus/intent/release-notes boilerplate had been re-derived from the final explainer's non-goals when permission migration was removed (Feb 2026), the 'preserving permissions' overclaim would not have shipped to release notes.",
+    "If an Origin Trial had been run between DevTrial (M147) and ship, the team would have real-origin evidence on handshake friction, the .well-known hosting requirement, and split-app consolidation before default-on — directly addressing the TAG's 'works backwards' concern.",
+    "If desktop+Android parity had been in scope, user reach would be far larger, but at substantially higher implementation cost (acknowledged and intentionally deferred).",
+    "If the TAG's redirect-first suggestion had been adopted, the same-origin 'split app' consolidation case (where the URL does not change) would still require a separate mechanism; the chosen manifest approach covers more identity cases but at the cost of standardization support.",
+    "If a public use counter for 'migration activations' had been exposed, post-launch adoption could be assessed instead of remaining unknown."
+  ],
+  "skillImprovements": [
+    "Phase-06 review-gate freshness rule: when TAG/standards status changes (e.g., Pending to Unsatisfied) between Intent to Ship and stable, force an explicit re-review/hold decision and record the current resolution in the ship brief; never carry a stale 'Pending' into the launch packet.",
+    "Phase-04 other-engine rule: capture position-issue comment counts and last-updated dates; treat 'No signal' as a risk flag (not neutral) and require an interop path or an explicit accepted-risk statement before wide-review exit.",
+    "Scope-drift to comms-sync eval: whenever a capability is added to Non-goals or removed during incubation/wide-review, diff the ChromeStatus summary, intent boilerplate, and release-notes text against the final explainer; fail if a capability claim (e.g., 'permissions') survives removal.",
+    "Phase-07 doc-completeness gate: require an MDN reference page (not only browser-compat-data) to mark documentation complete; otherwise track as a missing-evidence item.",
+    "Outcome-scoring rule: a feature shipping with an unsatisfied TAG review and no other-engine signal must score interoperability as failure or mixed regardless of Chrome shipment, usage volume, or positive press; overall may not be 'success' while interoperability is failed.",
+    "Phase-05/06 measurement rule: for transient by-design features (low long-term usage), require a published measurement plan with denominators for 'migration activations' and manifest-field presence, since stable usage counters will be near-zero by design and cannot evidence success.",
+    "Phase-07 prepare-to-ship checklist item: when shipped scope is narrower than intake (e.g., data/permissions not migrated), require an explicit 'what is NOT migrated' statement in the launch brief, FAQ, and summary to prevent the on-thread confusion seen here (the storage/cookie question)."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Public adoption / migration-activation telemetry: no use counter exposed (webdx_usecounter_enum null); too recent and desktop-only to measure adoption externally.",
+      "Attributable production case studies or named partner deployments: explainer's 'major app developers positive' claim is unattributed; no deployments verified.",
+      "Post-launch support-issue volume and known-issues documentation: feature shipped ~3 weeks before cutoff; none visible.",
+      "MDN reference documentation: migrate_from page returns 404 at cutoff (only browser-compat-data present).",
+      "Direct contents of implementation bug crbug 380486617 (JS-rendered, unreadable via fetch): the 'positive developer feedback at comment 4' cited in the TAG request is not independently verified.",
+      "Formal ChromeStatus security/privacy review resolution: record shows 'Pending' despite substantive security analysis in the explainer; gate state ambiguous."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

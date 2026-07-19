@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4547107962486784,
+    "name": "flex-wrap:balance",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4547107962486784",
+    "category": "CSS",
+    "blinkComponent": "Blink>Layout>Flexbox",
+    "owner": "ikilpatrick@chromium.org",
+    "spec": "https://drafts.csswg.org/css-flexbox-2",
+    "shippingMilestone": 150,
+    "devTrialMilestone": 149,
+    "platforms": [
+      "desktop",
+      "android",
+      "webview"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):4547107962486784",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "150:Enabled by default:4547107962486784",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Feature is clearly classified as a CSS addition to Blink>Layout>Flexbox, owned by Ian Kilpatrick (implementor) with Tab Atkins as spec editor, with a ChromeStatus entry, explainer, and an initial public proposal linked to CSSWG. The motivation is concrete: wrapping flexboxes frequently leave an 'orphan' item on the last line, and developers currently avoid wrapping or allow overflow. The summary is accurate and scoped. Note the record's accurate_as_of (2026-06-15) still shows status 'Proposed' even though the manifest records M150 as enabled by default; Chrome 150 stable shipped 2026-06-30.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "No standalone intake artifact; classification inferred from ChromeStatus/explainer."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Strong, durable, independently-evidenced developer demand. The originating CSSWG issue was opened 2018-08-30 (Tab Atkins: '7.5 years ago'), accumulated ~132 thumbs-up reactions, and multiple independent developer wishlist posts asked for it before prototyping began (Odland 'Web Wish 22', Dec 2024; Argyle 'CSS Wishlist 2025', Dec 2024). The explainer and TAG review document real, recurring workarounds (converting flexbox to inline-block + text-wrap:balance, JS bisection of container size, media/container-query margin hacks, multi-col). The narrowest useful intervention (a balance keyword mirroring text-wrap:balance) is well justified; alternatives (separate flex-line-style property, direct line-break control) were considered and rejected with reasoning.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S4",
+        "S16",
+        "S17"
+      ],
+      "limitations": "Some demand signal (Argyle, Una Kravets) originates from Google/Chrome DevRel staff, not fully independent; the genuinely independent signal is the CSSWG issue reactions plus Odland's post."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implementation began May 2025 behind the experimental-web-platform-features flag, shortly after a CSSWG resolution to add a flexbox level 2 balance feature. The core is a Knuth-Plass-style line-breaker variant that minimizes the sum of squared free-space per line, designed for O(N log N)-ish performance with lazy scoring and monotonicity-based early-out. Intent to Prototype was filed 2025-03-31 (no spec yet, TAG pending). A Canary teaser (Una Kravets, 2025-05-16) generated early interest. Min-line-count, negative-margin clamping, and ComputeMinMaxSizes handling were implemented across the prototype period.",
+      "evidenceIds": [
+        "S7",
+        "S9",
+        "S15"
+      ],
+      "limitations": "Prototype-period developer feedback beyond the internal teaser is not evidenced; no structured cohort friction log found."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial shipped in M149 (behind the experimental-web-platform-features flag; finch name FlexWrapBalance). However, devtrial_instructions is null in the record, doc_links and sample_links are empty, and the only cited 'Web developers: Positive' signal is a single Bluesky post by a Chrome DevRel engineer (Una Kravets, 2025-05-16) made before the trial. No structured trial cohort, task-completion, or representative feedback was found. The trial appears to have been a flag-availability period rather than an instrumented developer trial.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S15"
+      ],
+      "limitations": "No attributable non-vendor developer trial feedback; the cited positive signal is from an internal source and predates the M149 trial."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Within the standards venue the review was favorable: CSSWG resolved (2026-01-29) 'Add balance keyword to flex-wrap' and a clamping resolution, with the algorithm pinned down (minimize squared free-space, start bias for ties) which aids future interop; the TAG review (#1227) was filed and closed with the TAG declining a detailed review because the feature is architecturally similar to text-wrap:balance/flex-wrap with no new concerns. Security and Privacy reviews were 'Not applicable'. The material gap is the other engines: Mozilla (standards-positions #1405) and WebKit (standards-positions #660) are both 'No signal' with no formal position and no implementation at launch. Silence was not converted to support and is the dominant interop risk explicitly acknowledged in the intent ('Other browsers do not implement').",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S8",
+        "S23"
+      ],
+      "limitations": "Exact TAG close date and Mozilla/WebKit position-issue comment detail were not fully retrieved; absence of an other-engine position is a real risk, not neutral support."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run; the feature moved from M149 dev trial directly to M150 enabled-by-default (origintrial=false, no OT stage). This is defensible for this feature class: a declarative CSS layout addition that gracefully degrades (unsupported engines ignore the value) with no privacy, security, server, permission, or networking dependencies, so there is no field uncertainty requiring real-origin conditions. The activation_risks field explicitly relies on graceful degradation (citing text-wrap:balance precedent).",
+      "evidenceIds": [
+        "S1",
+        "S8"
+      ],
+      "limitations": "Not-relevant is used because a field experiment would not resolve a material unknown for this feature; it does not mean rollout behavior was verified at scale."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship was filed 2026-05-27 and received three LGTMs (Mike Taylor, Vladimir Levin, Yoav Weiss) with substantive review from Alison Maher (layout engineer) on fragmentation WPT coverage and the Web Feature ID. By ship time the css-flexbox-2 Working Draft existed, internal tests were migrated to external WPT (2026-05-08), a broad WPT suite was added (algorithm start bias, min-line-count corner cases, non-trivial balancing, negative margins, crash, dynamic, integration), the WebDXFeature::kFlexWrapBalance usage counter was added (2026-05-15), and the tracking bug was marked Fixed / enabled-by-default (2026-05-28). Minor process gaps at review: the Web Feature ID was initially missing (flagged by reviewer) and the ChromeStatus adoption box was empty until requested.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S10",
+        "S22"
+      ],
+      "limitations": "The companion flex-line-count property (needed for the documented column-flexbox use case) was not part of the shipped stable surface; live cross-browser WPT pass rates were not retrieved."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Shipped in Chrome 150 stable on 2026-06-30 for desktop, Android, and WebView, and is documented in the official Chrome 150 release notes with tracking bug, ChromeStatus, and spec links. Communication was light: the flagship 'New in Chrome 150' blog highlighted only text-fit, focusgroup, and background-clip:border-area, and did NOT mention flex-wrap:balance, despite independent press (CSS-Tricks 'Quick Hit #157') leading with it ('Chrome 150 becomes the first to ship ... flex-wrap: balance'). No dedicated DevRel article, MDN deep-dive, or interactive sample is linked in the record (doc_links/sample_links empty).",
+      "evidenceIds": [
+        "S1",
+        "S11",
+        "S12",
+        "S13",
+        "S14"
+      ],
+      "limitations": "No evidence of a coordinated launch plan, demo, or speaker-notes pack; MDN has a formal-syntax entry but no feature-page treatment was confirmed."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No adoption or usage evidence exists at cutoff. Chrome 150 shipped only 12 days before the evidence cutoff, and the WebDXFeature::kFlexWrapBalance use counter (added 2026-05-15) has no published measurement yet. adoption_expectation and adoption_plan are null in the record. Adoption cannot be inferred from shipment.",
+      "evidenceIds": [
+        "S1",
+        "S9"
+      ],
+      "limitations": "Too recent for any defensible usage/adoption number; no HTTP Archive / BigQuery / WebDX dashboard data available."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support issues, regressions, bug reports, or friction reports were found at cutoff (consistent with a 12-day-old, opt-in, gracefully-degrading CSS value). The implementation bug is Fixed with no open regression references. This is absence of evidence, not evidence of a healthy support posture.",
+      "evidenceIds": [
+        "S9"
+      ],
+      "limitations": "No support telemetry, console-error data, or community Q&A available yet; too early to score."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new additive CSS feature, not a deprecation or removal, and breaking_change is false with enterprise_impact none.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not-relevant by feature type; no migration/removal surface exists."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Addresses a genuine, long-standing, well-evidenced developer problem (orphan last-line items in wrapping flexboxes) with a sound, gracefully-degrading, one-line solution that real developers have requested for ~8 years. However, the value is partial: the explainer and TAG review explicitly document a column-flexbox use case (e.g., Wikipedia references sections) that requires line-count control, and the companion property (flex-line-count) / integer syntax was deferred by CSSWG and is not part of the shipped stable surface (caniuse shows flex-line-count unsupported; MDN formal syntax omits the integer). So the row case is solved at launch; a documented column case is not yet author-available.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S4",
+        "S16",
+        "S19",
+        "S21"
+      ],
+      "limitations": "Realized value depends on adoption, which is unmeasured; the column-scope gap is a known scope decision, not a defect."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Mechanism is sound and low-risk: more visually balanced layouts reduce jarring whitespace and awkward lone-item stretching, improving perceived polish, with no privacy/security/resource exposure and a safe fallback (unbalanced wrap). But impact is indirect (opt-in by developers) and entirely unmeasured at cutoff; no accessibility, performance-regression, or low-end-device evidence (positive or negative) was found.",
+      "evidenceIds": [
+        "S2",
+        "S14"
+      ],
+      "limitations": "No measured end-user outcome; end-user benefit is gated on developer adoption, which is unknown."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Unscored: no usage, telemetry, framework/tool integration, or production case-study evidence exists at cutoff because the feature shipped 12 days ago. The measurement instrumentation exists (WebDXFeature::kFlexWrapBalance) but has produced no published data.",
+      "evidenceIds": [
+        "S1",
+        "S9"
+      ],
+      "limitations": "Cannot be scored from shipment; revisit at +1/+3/+6 milestones."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards-side interop groundwork is good: CSSWG consensus, a precise algorithm spec (minimize squared free-space, start-bias tie-break) that constrains implementation divergence, and a substantial cross-browser WPT suite. But at launch the feature is Chrome-only: Mozilla (#1405) and WebKit (#660) remain 'No signal' with no implementation, so it is not interoperable and sits at Baseline 'Limited availability'. Graceful degradation lowers site-breakage risk but does not deliver cross-browser availability; the official release notes note Chrome is the first to ship it.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S8",
+        "S11",
+        "S13",
+        "S18"
+      ],
+      "limitations": "Other-engine positions may move; this reflects status as of cutoff, not a permanent state."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "High-quality engineering of the shipped surface: a performance-conscious Knuth-Plass variant with monotonicity early-out and negative-margin clamping, min-line-count handling, and a broad WPT suite covering crash, negative-margin, dynamic, integration, start-bias, and computed-value cases; the tracking bug is Fixed. Implementation matured over ~13 months before ship. The quality assessment applies to the row-balancing keyword that actually shipped.",
+      "evidenceIds": [
+        "S2",
+        "S9",
+        "S22"
+      ],
+      "limitations": "Live cross-browser WPT pass rates were not retrievable (JS-rendered dashboard); post-launch regression/performance telemetry unavailable; column/line-count surface incomplete vs explainer scope."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Core technical evidence is strong and honest: the explainer, intent threads, and CSSWG record are consistent, and the intent explicitly states the interop risk ('Other browsers do not implement'). Weaknesses: the cited 'Web developers: Positive' signal is a single internal (Chrome DevRel) Bluesky post; doc_links and sample_links are empty; the adoption box was blank at review; and the flagship milestone blog omitted the feature while independent press led with it. Net: accurate but thin DevRel enablement at launch.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S12",
+        "S15"
+      ],
+      "limitations": "No evidence of a launch brief, demo, or article; the independent demand that exists (CSSWG reactions, Odland) was not the cited signal."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Unscored: no support issues, friction, or recurrence data at cutoff (feature is 12 days old and progressively enhancing).",
+      "evidenceIds": [
+        "S9"
+      ],
+      "limitations": "Too early; absence of reports is not evidence of low support burden."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-justified, standards-track, cleanly-shipped, well-tested solution to a genuine long-standing developer problem, executed by an experienced owner with CSSWG consensus and no TAG objection. It is held to 'mixed' rather than success because: (1) it is Chrome-only at launch with no Mozilla/WebKit signal (Baseline limited); (2) a documented use case (column balancing) is unfulfilled (flex-line-count deferred); (3) adoption, end-user impact, and support are unmeasured (too early); and (4) DevRel communication was light (flagship blog omitted it, no article/demo, internal-only cited demand signal). Not a failure (strong problem/solution/standards/tests); not a success (interop incomplete, scope partial, outcomes unproven, comms thin).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S8",
+        "S9",
+        "S12",
+        "S21"
+      ],
+      "limitations": "Overall will remain mixed until interop and adoption evidence mature."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/4547107962486784",
+      "publisher": "Chrome Platform Status (cached record)",
+      "publishedOrObservedAt": "2026-06-15",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, M149 dev trial and M150 ship, interop signals (Gecko/WebKit No signal, webdev Positive), reviews status, measurement WebDXFeature::kFlexWrapBalance, doc/sample links empty, adoption fields null"
+      ],
+      "limitations": "accurate_as_of 2026-06-15 predates the 2026-06-30 stable ship; record still showed status Proposed."
+    },
+    {
+      "id": "S2",
+      "url": "https://github.com/bfgeek/flex-wrap-balance",
+      "publisher": "GitHub (Ian Kilpatrick explainer)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Problem statement (orphan flex lines), proposed flex-wrap:balance solution, Knuth-Plass algorithm and O(NlogN) performance, alternatives, column-flexbox extension requiring min-line-count, documented developer workarounds"
+      ],
+      "limitations": "Explainer; authored by the feature owner."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/w3c/csswg-drafts/issues/3070",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2026-01-29",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "2018 origin (~8-year request), ~132 thumbs-up demand, 2026-01-29 resolutions 'Add balance keyword to flex-wrap' and main-size clamping, algorithm minimizes squared free-space, integer/line-count debate"
+      ],
+      "limitations": "Long thread; some resolution detail summarized."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1227",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review filed by owner, documented workarounds, Mozilla/WebKit/Chrome signals, bugzilla/webkit trackers, TAG closed (declined detailed review; no new concerns vs text-wrap:balance/flex-wrap)"
+      ],
+      "limitations": "Exact TAG close date not retrieved."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/mozilla/standards-positions/issues/1405",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla 'No signal', no formal position, bugzilla 2013454, reviewers dholbert/emilio"
+      ],
+      "limitations": "Position may change; reflects cutoff status."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/WebKit/standards-positions/issues/660",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2026-05-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit 'No signal', no formal position, WebKit bug 314423"
+      ],
+      "limitations": "Position may change; reflects cutoff status."
+    },
+    {
+      "id": "S7",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/TlMICG2Sw3Q/m/vEQsmx71BwAJ",
+      "publisher": "blink-dev (Intent to Prototype)",
+      "publishedOrObservedAt": "2025-03-31",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype filed 2025-03-31, no spec at time, TAG pending, webdev 'No signals' at that point"
+      ],
+      "limitations": "Early-stage intent; signals evolved later."
+    },
+    {
+      "id": "S8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/Z8Rb8Q4W2jM/m/1swkEDvLBgAJ",
+      "publisher": "blink-dev (Intent to Ship)",
+      "publishedOrObservedAt": "2026-05-27",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship 2026-05-27 by Ian Kilpatrick, 3 LGTMs (Taylor, Levin, Weiss), Alison Maher review (Web Feature ID gap, fragmentation WPT), explicit interop risk 'Other browsers do not implement', graceful-degradation rationale, adoption box initially empty"
+      ],
+      "limitations": "Internal Blink review thread."
+    },
+    {
+      "id": "S9",
+      "url": "https://issues.chromium.org/issues/416755656",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": "2026-05-28",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Implementation timeline (May 2025 start), Knuth-Plass variant, monotonicity early-out, negative-margin clamping, min-line-count, WPT migration 2026-05-08, broad tests 2026-05-13/15, WebDX counter 2026-05-15, enable-by-default 2026-05-28, status Fixed, no open regressions"
+      ],
+      "limitations": "Some CL metadata summarized; Severity S2/P2."
+    },
+    {
+      "id": "S10",
+      "url": "https://drafts.csswg.org/css-flexbox-2/",
+      "publisher": "W3C CSS Working Group (Editor's Draft / WD)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "css-flexbox-2 Working Draft defines flex-wrap: balance and balancing algorithm"
+      ],
+      "limitations": "Living draft; maturity Working Draft."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (release notes)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 150 stable 2026-06-30; flex-wrap:balance documented with tracking bug, ChromeStatus, spec link"
+      ],
+      "limitations": "One-line entry; no deep guidance."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-150",
+      "publisher": "Chrome for Developers (New in Chrome blog, Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Flagship blog highlights only text-fit, focusgroup, background-clip:border-area; flex-wrap:balance NOT mentioned"
+      ],
+      "limitations": "Highlights are a subset, not the full feature list."
+    },
+    {
+      "id": "S13",
+      "url": "https://css-tricks.com/quick-hit-157/",
+      "publisher": "CSS-Tricks (Quick Hit #157)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press: 'Chrome 150 becomes the first to ship ... flex-wrap: balance'"
+      ],
+      "limitations": "Short item; date approximate (post-2026-06-30)."
+    },
+    {
+      "id": "S14",
+      "url": "https://www.stork.ai/blog/chromes-new-css-kills-bad-layouts",
+      "publisher": "Stork.AI blog",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent coverage of problem/solution and graceful degradation; notes Firefox/Safari have not signaled support"
+      ],
+      "limitations": "Possibly SEO/AI-assisted content; treat as secondary."
+    },
+    {
+      "id": "S15",
+      "url": "https://bsky.app/profile/una.im/post/3lpcjcjn4w22r",
+      "publisher": "Bluesky (Una Kravets)",
+      "publishedOrObservedAt": "2025-05-16",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "The ChromeStatus 'Web developers: Positive' signal; 'Introducing flex-wrap: balance ... Not a real feature yet ... try it in Chrome Canary'"
+      ],
+      "limitations": "Author is a Chrome DevRel engineer (internal source), and post predates the M149 trial."
+    },
+    {
+      "id": "S16",
+      "url": "https://odland.dev/2024/12/22/web-wish-22-flex-wrap-balance.html",
+      "publisher": "Johannes Odland (independent developer blog)",
+      "publishedOrObservedAt": "2024-12-22",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent, well-articulated developer demand; describes orphan-line problem and a wish for balancing plus distribution control"
+      ],
+      "limitations": "Single independent post; wishlist not commitment."
+    },
+    {
+      "id": "S17",
+      "url": "https://nerdy.dev/css-wishlist-2025",
+      "publisher": "Adam Argyle (nerdy.dev)",
+      "publishedOrObservedAt": "2024-12-17",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer wishlist includes flex-wrap balance as a wish"
+      ],
+      "limitations": "Author is Google/Chrome DevRel (partially internal)."
+    },
+    {
+      "id": "S18",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flex-wrap",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Formal syntax includes balance keyword; integer not present in syntax; 'Baseline Widely available' label applies to the base flex-wrap property, not the new balance value"
+      ],
+      "limitations": "Living doc; no dedicated balance feature page confirmed."
+    },
+    {
+      "id": "S19",
+      "url": "https://caniuse.com/mdn-css_properties_flex-line-count",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "flex-line-count is not a supported/standard property; column-count companion not shipped at cutoff"
+      ],
+      "limitations": "Third-party data; may lag."
+    },
+    {
+      "id": "S20",
+      "url": "https://caniuse.com/mdn-css_properties_flex-wrap",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "flex-wrap supported in Chrome 150"
+      ],
+      "limitations": "Tracks base property support, not per-value Baseline."
+    },
+    {
+      "id": "S21",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13414",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Line-count/integer deferred to a separate flex-line-count property ('flex-line-count: <integer>, will work on rest later'); column-flexbox use case unresolved at launch"
+      ],
+      "limitations": "Ongoing standards discussion."
+    },
+    {
+      "id": "S22",
+      "url": "https://github.com/web-platform-tests/wpt/tree/master/css/css-flexbox/balance",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Dedicated WPT directory exists with balance-002, balance-min-line-count-001, balance-negative-margin-001, balance-line-break-crash, flex-wrap-computed, integration and dynamic tests"
+      ],
+      "limitations": "Live cross-browser pass rates on wpt.fyi not retrieved (JS-rendered dashboard)."
+    },
+    {
+      "id": "S23",
+      "url": "https://lists.w3.org/Archives/Public/public-css-archive/2026Jan/0968.html",
+      "publisher": "CSS Meeting Bot (public-css-archive)",
+      "publishedOrObservedAt": "2026-01-29",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Official CSSWG resolution log for the balance keyword and clamping"
+      ],
+      "limitations": "IRC log summary."
+    }
+  ],
+  "successes": [
+    "Genuine, durable, independently-evidenced developer problem (8-year CSSWG thread, ~132 reactions, independent wishlist posts) solved with a small, gracefully-degrading, one-line CSS addition.",
+    "Clean standards path: CSSWG consensus, precise interop-friendly algorithm spec, substantial cross-browser WPT suite, TAG no-objection, security/privacy N/A.",
+    "Strong engineering execution by an experienced owner: performance-conscious Knuth-Plass variant with early-out, negative-margin clamping, crash/dynamic/integration tests, bug Fixed over a ~13-month maturation; WebDX usage counter added before ship.",
+    "Smooth intent-to-ship review with substantive peer feedback (fragmentation, Web Feature ID) and 3 LGTMs; interop risk disclosed honestly."
+  ],
+  "failures": [
+    "Shipped Chrome-only: Mozilla and WebKit remain 'No signal' (no position, no implementation) at launch, so the feature is not interoperable and sits at Baseline 'Limited availability' despite graceful degradation.",
+    "Documented column-flexbox use case (e.g., Wikipedia references) is not author-solvable at launch because the companion flex-line-count / integer syntax was deferred.",
+    "DevRel communication was thin at launch: flagship 'New in Chrome 150' blog omitted the feature; no dedicated article, MDN feature page, or interactive sample (doc_links/sample_links empty).",
+    "The cited 'Web developers: Positive' demand signal was a single internal Chrome DevRel post rather than attributable non-vendor trial feedback."
+  ],
+  "counterfactuals": [
+    "If flex-line-count had shipped alongside the balance keyword, the explainer's documented column-balancing use case would have been fully solvable at launch instead of partially deferred.",
+    "If the flagship 'New in Chrome 150' blog had featured flex-wrap:balance (given CSS-Tricks led with it and demand is strong), launch awareness would have been materially higher.",
+    "If a dedicated MDN feature page, DevRel article, or interactive Glitch demo had shipped with the stable (populating the empty doc/sample links), correct-usage guidance and adoption would be stronger than relying on the explainer and third-party posts.",
+    "If Mozilla/WebKit had been engaged to a formal position before ship, Baseline could advance sooner; the Chrome-only window is the primary production-adoption friction.",
+    "If the demand signal had been sourced from non-vendor developers (the genuinely independent CSSWG reactions and Odland/Argyle wishlists), the evidence would be less circular than citing an internal DevRel post.",
+    "If the WebDXFeature use counter had a scheduled +1/+3/+6-milestone readout, adoption could be judged rather than left unknown at ship."
+  ],
+  "skillImprovements": [
+    "Add a release-phase check that flags when a shipped feature with strong independent demand is omitted from the milestone's flagship 'New in Chrome' highlight blog, requiring an explicit decision/rationale.",
+    "Add a ship-readiness gate that a shipped CSS feature has at least one of: dedicated MDN feature page, DevRel article, or interactive demo, populated in ChromeStatus doc_links/sample_links before stable.",
+    "Add a dimension rule: when an explainer documents a use case dependent on a companion property, the retrospective must explicitly test whether that use case is solvable at the shipped milestone (here flex-line-count vs column balancing).",
+    "Add an evidence-quality rule: the 'Web developers' ChromeStatus signal must not count an internal vendor/DevRel post as the primary independent signal; require at least one attributable non-vendor developer source and cross-check against issue-reaction counts.",
+    "Add an interop/Baseline tracking step in the adoption phase that records other-engine standards-position status and implementation-bug status with dates at every milestone refresh (Mozilla #1405, WebKit #660).",
+    "Add a post-launch monitoring hook for progressive-enhancement CSS features: schedule a WebDXFeature use-counter check at +1, +3, and +6 milestones so adoption is not unscoreable indefinitely."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Adoption/usage data: WebDXFeature::kFlexWrapBalance counter exists but no published measurement at cutoff (feature shipped 12 days ago).",
+      "End-user impact: no measured outcome (accessibility, performance, low-end-device) at cutoff.",
+      "Support/friction: no issues, regressions, or recurrence data at cutoff (too early).",
+      "Live cross-browser WPT pass rates: wpt.fyi dashboard is JS-rendered and pass rates were not retrieved.",
+      "Post-launch community/press reaction beyond two items: too early for saturation.",
+      "Other-engine implementation progress beyond 'No signal': Mozilla bug 2013454 / WebKit bug 314423 status not deeply retrieved."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

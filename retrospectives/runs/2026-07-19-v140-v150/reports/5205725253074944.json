@@ -1,0 +1,499 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5205725253074944,
+    "name": "Email Verification Protocol",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5205725253074944",
+    "summary": "Helps users create, access and recover accounts by providing cryptographic proof of email ownership seamlessly rather than email OTPs/magic links.",
+    "blinkComponent": "Blink>Identity",
+    "owners": [
+      "goto@google.com",
+      "yigu@google.com",
+      "cbiesinger@google.com",
+      "npm@google.com"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Origin trial:5205725253074944",
+      "milestone": 150,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Well-formed intake. ChromeStatus entry created 2025-09-05 (goto@google.com) with motivation, explainer, initial public proposal (WICG/proposals#239), bug/new-crbug links, and a clear, recurring problem: email verification today is insecure (phishing-prone magic links) and inefficient (delivery latency, spam folders, app-switching), spanning account creation, recovery, sign-in and 2FA. Target constituencies are explicit and multi-party (browsers, email providers, websites, users). Browser/platform intervention is plausibly the right layer. Component Blink>Identity; enterprise impact Low.",
+      "evidenceIds": [
+        "CS-1",
+        "EXP-1",
+        "WICG-PROP-1",
+        "INTENT-1"
+      ],
+      "limitations": "No documented end-user research behind the intake; problem quantification (95% of top-50 sites use email auth; 73% block account creation on verification) is author-collected, not independently sourced."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubated in WICG with a detailed public explainer including goals, non-goals, extensive alternatives (imperative vs declarative API; OTP/IMAP vs EVT; relationships to WebAuthn/FedCM/Digital Credentials API) and security/privacy considerations. However Mozilla filed a deferral (#1316) stating the explainer lacked sufficient detail on the problem statement and trade-offs vs OID/Passkeys, and TAG returned an ambivalent early review with a substantive Mozilla (Martin Thomson) critique on venue and design complexity. The explainer was later expanded.",
+      "evidenceIds": [
+        "EXP-1",
+        "MOZ-1",
+        "TAG-1",
+        "TAG-CRIT-1",
+        "INTENT-1"
+      ],
+      "limitations": "No published developer-research ledger, surveys, or representative interviews; demand evidence is anecdotal."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation behind flag #email-verification-protocol (finch EmailVerificationProtocol), requires_embedder_support true, with a demo page and real Chromium implementation; Intent to Prototype filed 2025-09-06. But: not tested by web-platform-tests; debuggability marked still being developed; demo is a single self-authored page requiring Chrome Canary + flag + logged-in email domain; desktop-only initially.",
+      "evidenceIds": [
+        "INTENT-1",
+        "DEMO-1",
+        "IMPL-1",
+        "CS-1"
+      ],
+      "limitations": "No published friction logs, integration matrix, or task-based (non-unit) sample testing results from the prototype."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial was run with a few partners who are expected to join the Origin Trial (basis for ChromeStatus Web developers: Positive), with DevTrial instructions in HOWTO.md. But no cohort roster, recruitment, methodology, task-completion, friction findings, or limitations were published; partners are unnamed, so the Positive signal is not independently auditable.",
+      "evidenceIds": [
+        "INTENT-2",
+        "CS-1",
+        "DEMO-1"
+      ],
+      "limitations": "Partner-evidence/vanity risk: the Positive signal rests on unpublished, unnamed-partner devtrial data."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Wide review was requested early and was substantive: TAG design review #1169 (ambivalent, with a detailed Mozilla critique on IETF-vs-W3C venue and on three-party-model/key-binding complexity); Mozilla position Defer (#1316); WebKit No signal (#578), informally preferring to augment WebOTP/OTPs and IMAP clients. The team acted on venue feedback by splitting the spec into an IETF Internet-Draft (protocol) and a W3C/WICG browser API, and starting an IETF dispatch. Two of three other engines are non-supportive at OT start.",
+      "evidenceIds": [
+        "TAG-1",
+        "TAG-CRIT-1",
+        "MOZ-1",
+        "WK-1",
+        "INTENT-2",
+        "IETF-1"
+      ],
+      "limitations": "No formal WebKit position (issue still open); Mozilla plans to re-open its review; TAG not yet re-reviewed after the spec split."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "Origin Trial is the active phase. Intent to Experiment (2026-05-20) was approved (LGTM M150-M153 by API owner Yoav Weiss, conditional on merging explainers + a debuggability review); OT began ~2026-06-30 in M150 desktop (record shows desktop_first 150 / desktop_last 156). Strong experiment design: five explicit hypotheses, use counter 5916, UMA Blink.Evp.* metrics, third-party support. Genuinely seeded with issuers (Gmail at OT maturity; Hello exploratory) and a second Chromium-based browser OT (Edge). As of cutoff (~3 weeks in) no interim readout or results exist.",
+      "evidenceIds": [
+        "INTENT-2",
+        "CS-1",
+        "DEVREL-1",
+        "SPEC-1",
+        "METRIC-1"
+      ],
+      "limitations": "No OT results/adoption/task-completion yet; desktop-only; OT registration does not equal production use."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "Not reached. Chrome status is Proposed, is_released=false, there is no Intent to Ship and no stable milestone; the only launch event is the Origin trial. The feature remains in field experiment.",
+      "evidenceIds": [
+        "CS-1",
+        "INTENT-2"
+      ],
+      "limitations": "Cannot assess ship-readiness; no ship-decision evidence exists."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "No stable release. However a coordinated public-trial-milestone communication exists: the Chrome for Developers OT blog (2026-07-08) with issuer/verifier demos, requirements, limitations and sign-up; Gmail participation; corroborated by independent press. Messaging accurately frames it as experimental/limited (websites must opt in; other providers must join).",
+      "evidenceIds": [
+        "DEVREL-1",
+        "PRESS-1",
+        "DEMO-1"
+      ],
+      "limitations": "No independent measurement of OT-comms reach or task outcomes; vendor-driven narrative."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early to assess. The OT started ~3 weeks before cutoff; no verifier (website) production adoption, framework/library/tool integration, or case-study evidence was found. Use counter 5916 returned no usable data.",
+      "evidenceIds": [
+        "METRIC-1",
+        "DEVREL-1",
+        "CS-1"
+      ],
+      "limitations": "No adoption data exists yet; cannot score."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too early to assess. No public support issue taxonomy, known-issues material, or recurrence data exists yet; debuggability is still being developed.",
+      "evidenceIds": [
+        "CS-1"
+      ],
+      "limitations": "No support history yet."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New feature in Origin Trial; nothing is deprecated or removed.",
+      "evidenceIds": [
+        "CS-1"
+      ],
+      "limitations": "Not applicable."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer problem is real, recurring and plausibly valuable (email-verification friction raises customer-acquisition cost; phishing-prone magic links; spam-folder latency), and the website-side change is a one-line progressive enhancement (hidden input with autocomplete=email-verification-token). But demand is unvalidated in production, value is contingent on email-provider participation (chicken-and-egg), and Mozilla questioned the problem-statement detail and trade-offs vs OID/Passkeys. ChromeStatus Web developers: Positive rests on unpublished devtrial data.",
+      "evidenceIds": [
+        "EXP-1",
+        "CS-1",
+        "INTENT-2",
+        "MOZ-1",
+        "DEVREL-1"
+      ],
+      "limitations": "No published partner outcomes or measured conversion-cost reduction."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Hypothesized benefits (no app-switch, no spam-folder wait, cryptographic proof, optional private per-site email addresses) are plausible but unmeasured. No user study, prompt-acceptance, or conversion data. Coverage gap: requires a logged-in webmail session, excluding native-mail-client users (e.g. Thunderbird) flagged internally; the permission-prompt UX is still being designed.",
+      "evidenceIds": [
+        "EXP-1",
+        "INTENT-1",
+        "INTENT-2",
+        "DEVREL-1"
+      ],
+      "limitations": "No measured end-user impact; too early."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "OT just started. Issuer-side seeding is real (Gmail at OT maturity; Hello exploratory) and there is a second Chromium browser OT (Edge), but no measurable verifier production adoption, use-counter data, or framework/library integration exists. is_official_web_feature=false / web_feature=Missing feature (not yet in web-features/Baseline tracking).",
+      "evidenceIds": [
+        "METRIC-1",
+        "DEVREL-1",
+        "SPEC-1",
+        "CS-1"
+      ],
+      "limitations": "No adoption data yet; Edge is Chromium-based, not an independent engine."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Process is correct (W3C/WICG browser API + IETF protocol I-D with dispatch started; multiple issuers; Chrome + Edge OTs) but the cross-engine outcome is weak and negative-leaning: Mozilla Defer (substantive explainer critiques), WebKit No signal and informally preferring a WebOTP/OTPs+IMAP alternative, TAG ambivalent, no independent-engine implementation, no web-platform-tests, no Baseline path. The I-D itself flags a live divergence: the W3C browser API uses a now-deprecated request format vs the I-D's HTTP Message Signatures.",
+      "evidenceIds": [
+        "MOZ-1",
+        "WK-1",
+        "TAG-1",
+        "TAG-CRIT-1",
+        "SPEC-1",
+        "INTENT-2",
+        "IETF-1",
+        "IMPL-1"
+      ],
+      "limitations": "OT-stage; interop is not yet expected, but signals are non-supportive, not neutral."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "A real Chromium implementation exists and is shipping in OT with real issuers (Gmail), autofill-based, with origin binding. Known gaps: desktop-only (Android/WebView/iOS not yet); fenced frames and cross-origin documents temporarily disabled (CL 7868831); debuggability still in development; no WPT; a live spec divergence on request format; the ChromeStatus record is still evolving.",
+      "evidenceIds": [
+        "IMPL-1",
+        "INTENT-2",
+        "SPEC-1",
+        "CS-1"
+      ],
+      "limitations": "No regression/bug detail retrieved from crbug; no conformance evidence."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Primary documentation is strong and accurate (detailed explainer, IETF I-D, W3C browser API, devtrial HOWTO, OT blog with demos and stated limitations), corroborated by independent press. But the ChromeStatus Positive webdev signal rests on an unnamed-partner devtrial; the two explainers diverged at Intent time (flagged by the API owner, later merged); the use-counter page is non-functional/ambiguous; and no public OT readout/dashboard exists at cutoff.",
+      "evidenceIds": [
+        "EXP-1",
+        "SPEC-1",
+        "DEVREL-1",
+        "PRESS-1",
+        "INTENT-2",
+        "METRIC-1"
+      ],
+      "limitations": "Vendor-authored primary docs; limited independent validation of claims."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support history yet (OT started ~3 weeks before cutoff). Cannot score.",
+      "evidenceIds": [
+        "CS-1"
+      ],
+      "limitations": "Too early."
+    },
+    "overall": {
+      "status": "unscored",
+      "finding": "Overall outcome is not yet scorable. This is a well-motivated, thoughtfully-designed early Origin Trial (real problem, multi-party activation economics, progressive enhancement, active standards engagement, genuine issuer/browser seeding) that is pre-shipment (~3 weeks into a desktop-only OT) with no measured adoption, end-user-impact, or support data, no independent-engine support, and non-supportive Mozilla/TAG/WebKit signals with a pending Mozilla re-review. Per the scoring rules, success cannot be inferred from the OT launch, vendor comms, or absent criticism; and most outcome dimensions are unscored.",
+      "evidenceIds": [
+        "CS-1",
+        "INTENT-2",
+        "DEVREL-1",
+        "METRIC-1",
+        "MOZ-1",
+        "WK-1",
+        "TAG-1",
+        "SPEC-1"
+      ],
+      "limitations": "Definitive overall scoring requires a post-OT readout, adoption data, and resolved peer-engine positions."
+    }
+  },
+  "sources": [
+    {
+      "id": "CS-1",
+      "url": "https://chromestatus.com/feature/5205725253074944",
+      "publisher": "Chrome Platform Status (ChromeStatus)",
+      "publishedOrObservedAt": "2026-06-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Lifecycle stages (110/120/130/140/150/160); Origin Trial desktop_first 150 desktop_last 156; OT id 10696049115004929; use counter 5916",
+        "Browser positions: Mozilla Defer, WebKit No signal, Web developers Positive",
+        "Not released; Chrome status Proposed; flag #email-verification-protocol; Blink>Identity; enterprise impact Low",
+        "Explainer/spec/intent/devtrial/sample/measurement links"
+      ],
+      "limitations": "Cached snapshot; some stage fields null; the webdev Positive position is self-reported."
+    },
+    {
+      "id": "EXP-1",
+      "url": "https://github.com/WICG/email-verification-protocol",
+      "publisher": "WICG / samuelgoto (Google), dickhardt (Hello)",
+      "publishedOrObservedAt": "2026-05-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Problem statement and quantification",
+        "Four-party activation model and incentive economics",
+        "API shape (hidden input autocomplete=email-verification-token + nonce) and alternatives",
+        "Security/privacy considerations; relationship to WebAuthn/FedCM/Digital Credentials/WebOTP+IMAP",
+        "Open questions"
+      ],
+      "limitations": "Author-authored; non-normative."
+    },
+    {
+      "id": "SPEC-1",
+      "url": "https://dickhardt.github.io/email-verification/draft-hardt-email-verification.html",
+      "publisher": "Hardt & Goto (IETF individual Internet-Draft draft-hardt-email-verification-01)",
+      "publishedOrObservedAt": "2026-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Protocol definition: issuer discovery / EVT / KB-JWT / verification; privacy & security considerations",
+        "Implementation Status: Gmail issuer (OT), Chrome OT, Edge OT, Hello issuer (exploratory)",
+        "IETF venue; expires 2027-01-06; flags W3C browser API uses a now-deprecated request format"
+      ],
+      "limitations": "Individual I-D, Workgroup TBD, not yet RFC; draft still changing."
+    },
+    {
+      "id": "SPEC-2",
+      "url": "https://wicg.github.io/email-verification/",
+      "publisher": "WICG (Goto/Hardt)",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Companion W3C/WICG browser API definition; three-party model; verifier/issuer/UA roles"
+      ],
+      "limitations": "Unofficial Proposal Draft; early."
+    },
+    {
+      "id": "INTENT-1",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/pWfWupaOtJw",
+      "publisher": "blink-dev (Sam Goto, Google)",
+      "publishedOrObservedAt": "2025-09-06",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype; early engine signals (Gecko/WebKit No signal, Webdev No signals); not WPT-tested",
+        "Discussion: two-code-path concern, requires webmail login, self-hosted email / Thunderbird coverage gap, cookie-auth alternatives"
+      ],
+      "limitations": "Informational; no explicit prototype approval captured; thread partial."
+    },
+    {
+      "id": "INTENT-2",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/Vp1w1u6rYjE",
+      "publisher": "blink-dev (Sam Goto, Google; LGTM Yoav Weiss/Shopify)",
+      "publishedOrObservedAt": "2026-05-20",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment; spec split per TAG; TAG ambivalent; Gecko Defer; WebKit No signal; Webdev Positive (devtrial partners)",
+        "API-owner LGTM M150-M153 desktop; not all six platforms (desktop first); Anton Bershanskyi PII/farming concerns; IETF dispatch started 2026-06"
+      ],
+      "limitations": "Intent stated OT M150-153; record later shows extension to 156; webdev Positive partners unnamed."
+    },
+    {
+      "id": "TAG-1",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1169",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": "2025-11-12",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Early directional TAG review request; multi-stakeholder feedback links; ambivalent assessment per ChromeStatus/intent"
+      ],
+      "limitations": "Early review; not re-reviewed after spec split."
+    },
+    {
+      "id": "TAG-CRIT-1",
+      "url": "https://lists.w3.org/Archives/Public/public-webapps-github/2025Dec/0223.html",
+      "publisher": "Martin Thomson (Mozilla), via w3ctag/design-reviews#1169",
+      "publishedOrObservedAt": "2025-12-11",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Substantive critique: bulk belongs at IETF not W3C; HTML parts to WHATWG; three-party model/key-binding/attestation complexity unjustified; no revocation/transparency; selective-disclosure concerns"
+      ],
+      "limitations": "Mozilla individual position, pre-spec-split; partial text retrieved."
+    },
+    {
+      "id": "MOZ-1",
+      "url": "https://github.com/mozilla/standards-positions/issues/1316",
+      "publisher": "Mozilla (standards-positions; closed by zcorpan)",
+      "publishedOrObservedAt": "2026-01-12",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Position: Defer; explainer insufficient on problem statement and trade-offs vs OID/Passkeys; filed issue #27; author responded; topic HTML, venue W3C CG"
+      ],
+      "limitations": "Filed early for directional guidance; Mozilla plans to re-open after explainer updates."
+    },
+    {
+      "id": "WK-1",
+      "url": "https://github.com/WebKit/standards-positions/issues/578",
+      "publisher": "WebKit (standards-positions; rmondello/marcoscaceres/johnwilander tagged)",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "State open; no formal position (No signal); Chrome OT notice M150 from 2026-06-30; TPAC preference to augment WebOTP/OTPs + IMAP"
+      ],
+      "limitations": "No formal WebKit position issued."
+    },
+    {
+      "id": "WICG-PROP-1",
+      "url": "https://github.com/WICG/proposals/issues/239",
+      "publisher": "WICG/proposals (Dick Hardt)",
+      "publishedOrObservedAt": "2025",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Initial public proposal; incubation venue; problem framing vs magic-links and social login"
+      ],
+      "limitations": "Proposal intake; limited discussion captured."
+    },
+    {
+      "id": "DEMO-1",
+      "url": "https://code.sgo.to/2024/10/25/verified-email-autocomplete.html",
+      "publisher": "Sam Goto (sgo.to)",
+      "publishedOrObservedAt": "2024-10-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Sample/demo and doc; requires Chrome Canary + flag #email-verification-protocol + logged-in email domain; one-line progressive enhancement"
+      ],
+      "limitations": "Author blog; single-page demo, not a task-based integration test."
+    },
+    {
+      "id": "DEVREL-1",
+      "url": "https://developer.chrome.com/blog/email-verification-protocol-origin-trial",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-07-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Official OT launch announcement; Gmail participating as provider; issuer/verifier demos; requirements and limitations; M150"
+      ],
+      "limitations": "Vendor/DevRel-authored; no measured reach/outcomes."
+    },
+    {
+      "id": "PRESS-1",
+      "url": "https://piunikaweb.com/2026/07/10/gmail-chrome-email-verification-experiment/",
+      "publisher": "PiunikaWeb",
+      "publishedOrObservedAt": "2026-07-10",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent confirmation of OT in Chrome 150 and Gmail day-one provider; balanced note that other providers must join and it will not replace codes everywhere"
+      ],
+      "limitations": "Secondary press largely summarizing the announcement."
+    },
+    {
+      "id": "METRIC-1",
+      "url": "https://chromestatus.com/metrics/feature/timeline/popularity/5916",
+      "publisher": "Chrome Platform Status (use counter 5916)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "No usable usage/adoption data observable as of cutoff (OT just started; page returned errors/ambiguous feature-name mapping)"
+      ],
+      "limitations": "Page failed to render data; no adoption data exists yet for this pre-shipment feature."
+    },
+    {
+      "id": "IMPL-1",
+      "url": "https://chromium.googlesource.com/chromium/src/+/ffe4e01b5c5c58dfb8c811d141480ac496b4fcba",
+      "publisher": "Chromium project (chromium/src)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Real Chromium implementation exists; autofill-based field population/form submission; opaque-origin handling"
+      ],
+      "limitations": "Only summary-level commit evidence via search; individual commits/regressions not deep-read; CL 7868831 (fenced-frame/cross-origin disable) referenced in the intent thread."
+    },
+    {
+      "id": "IETF-1",
+      "url": "https://datatracker.ietf.org/doc/draft-hardt-email-verification/",
+      "publisher": "IETF Datatracker (draft-hardt-email-verification)",
+      "publishedOrObservedAt": "2026-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Internet-Draft at IETF (draft-00 2026-06, draft-01 2026-07); Workgroup TBD; IETF dispatch started per the intent thread"
+      ],
+      "limitations": "Individual draft, not yet adopted by a WG; status will change."
+    }
+  ],
+  "successes": [
+    "Clear, quantified, recurring problem framing (95% of top-50 sites use email auth; 73% block account creation on verification) tied to measurable business impact (customer-acquisition cost).",
+    "Genuine multi-stakeholder design with explicit activation/incentive economics (browsers -> email providers -> websites -> users) and a progressive-enhancement / graceful-degradation model with no user behavioral change when unsupported.",
+    "Acted on TAG venue feedback: split the spec into an IETF protocol Internet-Draft (with dispatch started) and a W3C/WICG browser API, aligning to standards venues.",
+    "Seeded the Origin Trial with real issuer participation from day one (Gmail at OT maturity, Hello exploratory) and a second browser OT (Edge), strengthening the activation hypothesis.",
+    "Honest alternatives-considered section and candid security/privacy considerations, including acknowledged trade-offs (email-as-global-identifier/spam perpetuation; farmability/PII-friction).",
+    "Coordinated, accurate OT communication with working issuer/verifier demos and clearly stated limitations."
+  ],
+  "failures": [
+    "ChromeStatus Web developers: Positive rests on an unpublished devtrial with unnamed partners - no cohort, methodology, task-completion, or friction evidence; partner-evidence/vanity risk.",
+    "Two of three other engines non-supportive at OT start (Mozilla Defer with substantive explainer critiques; WebKit No signal, informally preferring a WebOTP/OTPs+IMAP alternative) - no cross-engine/Baseline path established.",
+    "Substantive TAG (Mozilla/Martin Thomson) critique that the three-party model, key binding and attestations are unjustified complexity, not yet publicly refuted.",
+    "Implementation shipped into the OT with open gaps: desktop-only; fenced frames and cross-origin documents temporarily disabled; debuggability still in development; no web-platform-tests; live spec divergence where the browser API uses a request format the I-D marks deprecated.",
+    "Coverage gap not yet addressed in-trial: requires a logged-in webmail cookie session, excluding native-mail-client users (e.g. Thunderbird), flagged by Chrome engineers during Intent to Prototype.",
+    "No public interim OT readout or measurement dashboard as of the cutoff, leaving adoption/end-user/support outcomes unscored."
+  ],
+  "counterfactuals": [
+    "If the team had published the devtrial cohort, methodology, denominators and task-completion before the Intent to Experiment, the Web developers: Positive signal would be auditable and Mozilla's insufficient-detail deferral might have been faster to resolve.",
+    "If the W3C browser-API and IETF protocol had aligned on the request format before the OT, the deprecated-format divergence flagged in draft-01 would not be shipping in the trial.",
+    "If Android and native-mail-client (no-webmail-cookie) coverage had been in OT scope, the coverage gap raised internally (Reilly Grant/Daniel Bratell) would now have real-world test data.",
+    "If a public interim OT readout and measurement dashboard existed at cutoff, adoption/end-user/support outcomes would be scorable instead of unscored.",
+    "If Mozilla/WebKit had been co-designing (not only giving directional guidance) before the OT, the ambivalent/Defer/No-signal interop picture might differ; the team is now re-opening Mozilla."
+  ],
+  "skillImprovements": [
+    "Phase 03 (developer trials): add a rule that a Web developers: Positive ChromeStatus signal may not be cited as sufficient evidence in an Intent to Experiment without published cohort, methodology, denominators and task-completion; treat unnamed-partner claims as partial.",
+    "Phase 04 (wide review): add a non-supportive-peer-engine rule - if Mozilla or WebKit is not positive at OT start, interoperability must start at mixed-or-below and the report must surface the specific objections (venue, design complexity) rather than treating No signal as neutral.",
+    "Add a split-spec alignment gate: an Origin Trial must not ship a request format the normative spec already marks deprecated; add an automated explainer<->spec divergence check.",
+    "Phase 05 (experiment): add an artifact template requiring a public interim readout + measurement dashboard + extension rationale; mark reports partial/blocked if an OT has run >2 weeks with no readout.",
+    "Add a coverage/activation check that scores users reachable (e.g. native-mail-client users without webmail cookies) so coverage gaps are visible rather than hidden by desktop first.",
+    "Add a regression eval including an early-OT case (mostly unscored outcomes) to train the model not to infer success from vendor blog claims or press sentiment."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "No Origin Trial readout (adoption counts, task completion, partner outcomes, prompt-acceptance) - OT began ~2026-06-30, only ~3 weeks before cutoff; no interim/final readout published.",
+      "No measurable end-user impact (no user study, conversion data, prompt-UX acceptance data).",
+      "No use-counter/usage data for metric 5916 (page non-functional; no stable rollout yet).",
+      "No support/issue taxonomy or known-issues history (too early).",
+      "No framework/library/tool integration or production verifier case studies (too early).",
+      "No independent-engine implementation or Baseline/web-features progress; Mozilla and WebKit positions unresolved.",
+      "Did not retrieve full IETF dispatch discussion or individual Chromium commits/crbug regressions."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}
