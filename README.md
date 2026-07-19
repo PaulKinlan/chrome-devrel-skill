@@ -54,11 +54,75 @@ It does not impose a fictional DevRel veto. It records readiness by dimension, e
 - Preserve a public/private evidence boundary.
 - Never imply that DevRel endorsement replaces API Owner, standards, privacy, security, accessibility, legal, or engineering review.
 
+The skill should nevertheless **rehearse every relevant review perspective** and seek the real user impact before formal review. The boundary means “do not claim sign-off,” not “ignore these concerns until another team finds them.”
+
+## Example prompts
+
+You do not need to know the Chrome launch process or DevRel terminology. A rough idea or one public link is enough to start; the skill should classify the work, research public evidence, and ask the next useful questions.
+
+### Assess a feature
+
+> Assess this feature from a Chrome DevRel perspective: [ChromeStatus, explainer, spec, intent, or rough description]. Work out its lifecycle stage, developer problem, evidence quality, affected users, interoperability path, integration risks, likely stakeholder critiques, missing work, and the next five highest-leverage actions. Research public evidence rather than making me collect it all.
+
+### Start with an artifact
+
+> I need a launch presentation for [feature]. Treat the deck as the entry point: determine what evidence and decisions it needs, research what is public, ask me only for information you cannot obtain, flag unsupported claims, and then create a coherent outline, slide content, speaker notes, demo plan, sources, and review checklist.
+
+### Build a connected narrative
+
+> Help me build a narrative for [theme, for example web monetisation or user experience]. Connect “why the web” and “why Chrome” to concrete developer jobs, APIs, integrations, evidence, limitations, partner/adoption paths, and measurable outcomes. Identify missing pieces instead of pretending the existing features tell a complete story.
+
+### Prepare a talk or workshop
+
+> I am new to DevRel and need a [20-minute talk / workshop] for [audience] about [topic]. Help me define the audience outcome and narrative first, then create the presentation, speaker notes, demos/exercises, timings, accessibility requirements, fallback plan, source list, expected questions, and rehearsal checklist.
+
+### Plan social and promotion
+
+> Create a developer-facing promotion plan for [feature/initiative]. First check the claims, audience, support state, partner evidence, risks and likely criticism. Then propose channel-specific posts, timing, calls to action, replies/FAQ, owners, measurements, and a correction/hold plan. Do not turn uncertain evidence into launch hype.
+
+### Run a friction log
+
+> Run a friction log for [API/demo/docs URL] as a developer trying to accomplish [real task]. Test discovery, setup, first success, realistic framework/server integration, mobile and desktop, controls, edge/failure/recovery paths, console/network behavior, accessibility, performance, visual output, docs/explainer/implementation mismatches, and cleanup. Preserve evidence and produce exact tested/fixed/remaining/blocked counts.
+
+### Rehearse reviews and user impact
+
+> Before formal review, rehearse the accessibility, privacy, security, standards/interoperability, legal/regulatory, competition, engineering/performance, enterprise, and real end-user perspectives for [feature]. Include downloads, storage, memory, battery, bandwidth, consent, low-end devices, refusal/revocation, hostile use, fallback and rollback. Mark everything as pre-review analysis, not approval.
+
+### Red-team a contentious proposal
+
+> Build a source-grounded stakeholder critique for [proposal]. Discover everyone materially affected; retrieve their current published principles and positions; separate recorded positions from inference; steelman the strongest cases for and against; analyze power and incentives; and map each concern to evidence, design changes, mitigation, outreach, narrower scope, delay, rollback, abandonment, or accepted risk.
+
+### Plan an origin trial or developer trial
+
+> Design a developer/origin trial for [feature]. Define the uncertainties the trial must resolve, representative participants and partners, recruitment, realistic tasks, samples, support, survey/interview instruments, telemetry and privacy, success/failure criteria, feedback publication, and the decision paths after the trial.
+
+### Create “DevRel in a box”
+
+> Create a reusable enablement pack for [feature/initiative] for Chrome staff, GDEs, partners and meetups. Include rationale, audience variants, canonical deck and notes, tested demos, workshop, reference links, FAQs/troubleshooting, social copy, accessibility/localization, versioning, ownership, feedback channels, and reuse/adoption measures.
+
+### Improve support
+
+> Developers repeatedly struggle with [problem]. Separate product bugs, implementation differences, framework/server integration, docs, samples and messaging. Build reproductions, issue routing, troubleshooting/FAQ improvements, regression tests, product feedback, owners and measures for recurrence and resolution time.
+
+### Run continuously
+
+> Put [feature, initiative, or portfolio] into the continuous DevRel loop. Build an explicit inventory and denominator; gather current evidence; run friction, stakeholder and user-impact reviews; create questions and goals; improve the right product/docs/demo/tooling/enablement layers; validate fixes; update the public source of truth; and define event-driven, weekly, milestone and post-launch monitoring.
+
+### Prepare for a difficult launch
+
+> Create a launch-resilience plan for [feature]. Preserve legitimate criticism while preparing for press scrutiny, issue-volume spikes, moderation, harassment, doxxing and threats. Define roles, escalation, source of truth, structured feedback, moderation, staff privacy, spokesperson coverage, hold/correction/rollback language, team support and post-incident learning. Do not make individual engineers absorb abuse.
+
 ## Current work
 
 - [Lifecycle and DevRel intervention map](research/blink-lifecycle-map.md)
 - [Stakeholder critique module](modules/stakeholder-critique.md)
+- [User-impact and formal-review rehearsal](modules/user-impact-and-review-rehearsal.md)
+- [Evidence-based friction logs](modules/friction-log.md)
+- [Launch resilience and team safety](modules/launch-resilience.md)
+- [Continuous DevRel improvement loop](modules/continuous-loop.md)
 - [Public case notes: HTML-in-Canvas, Baseline, Prompt API, and WEI](research/public-case-notes.md)
 - [Discovery questions](research/discovery-questions.md)
 - [Early skill scaffold](SKILL.md)
 - [Evaluation design and fixtures](evals/README.md)
+
+Rigorous criticism is welcome. See the [community conduct policy](CODE_OF_CONDUCT.md), which explicitly protects substantive disagreement while prohibiting harassment, threats, and doxxing.

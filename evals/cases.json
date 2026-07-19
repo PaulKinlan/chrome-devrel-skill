@@ -149,6 +149,91 @@
         "Uses unresolved risk as a generic reason to stop all experimentation"
       ],
       "focus": ["problem-use-cases", "partners", "stakeholder-discovery", "source-grounded-steelman", "critique-to-action", "tactic-fit"]
+    },
+    {
+      "id": "user-cost-large-model-download",
+      "title": "Developer convenience creates a large end-user resource cost",
+      "prompt": "A proposed browser AI API is easy for developers because the browser manages its model. The implementation may download several gigabytes and use substantial storage, memory and compute. The team wants to describe this as private and zero-cost because inference is local. Rehearse user and formal-review perspectives before launch.",
+      "mode": "feature",
+      "expected": [
+        "Rejects local and zero-price as proof of zero user cost or privacy",
+        "Separates developer convenience, implementer cost, and end-user benefit/cost",
+        "Investigates trigger, disclosure, consent, refusal, deletion, re-download, update, metered network, storage, memory, battery, low-end device, background use and abuse controls",
+        "Rehearses accessibility, privacy, security, interoperability, legal/regulatory, competition, performance and enterprise perspectives without claiming approval",
+        "Requires a device/configuration matrix and measured denominators before broad claims",
+        "Proposes product, rollout and communication changes rather than wording alone"
+      ],
+      "forbidden": [
+        "Calls local inference free for users",
+        "Claims private without analyzing data flow and model/provider behavior",
+        "Treats a flagship desktop test as representative",
+        "Claims any formal review has passed"
+      ],
+      "focus": ["end-user-impact", "evidence-hygiene", "power-and-incentives", "authority-boundary", "critique-to-action"]
+    },
+    {
+      "id": "friction-log-docs-implementation-mismatch",
+      "title": "API quickstart works only with hidden setup and diverges from the explainer",
+      "prompt": "Run a friction log for an experimental API. The quickstart works on one desktop only after an undocumented flag and server header; mobile fails; the console reports errors; the visual result differs from the explainer; a framework integration leaks resources after repeated use. The team says the demo basically works.",
+      "mode": "feature",
+      "expected": [
+        "Defines exact environment, expected sources, steps and evidence before judging",
+        "Keeps desktop success, mobile failure, hidden setup, console errors, visual mismatch and resource leak as separate findings",
+        "Classifies likely owners across explainer/spec, docs, implementation, server/deployment, framework and demo without blame",
+        "Tests failure/recovery/cleanup and adjacent configurations rather than only the happy path",
+        "Creates stable IDs, reproduction, severity, evidence, workaround cost, status and regression/conformance work",
+        "Reports exact tested/pass/fail/blocked and fixed/remaining denominators"
+      ],
+      "forbidden": [
+        "Calls the run a pass because one desktop demo renders",
+        "Rewrites expected behavior to match the current implementation",
+        "Hides console errors or mobile failure as out of scope without evidence"
+      ],
+      "focus": ["friction-evidence", "ecosystem-integration", "end-user-impact", "evidence-hygiene", "continuous-learning"]
+    },
+    {
+      "id": "contentious-launch-team-safety",
+      "title": "Legitimate criticism escalates into harassment and doxxing",
+      "prompt": "A browser proposal has serious legitimate criticism. Its public issue tracker is being flooded; individual engineers are receiving hate mail, personal information is being posted, and one message may be a credible threat. Prepare the product-feedback, communications, moderation and team response.",
+      "mode": "support",
+      "expected": [
+        "Separates substantive criticism, disruption, harassment, doxxing and credible threats",
+        "Prioritizes immediate private check-in and physical/digital safety while including the targeted person in decisions affecting them",
+        "Reassigns monitoring and response so no individual must engage or absorb abuse",
+        "Preserves sensitive evidence privately and uses platform, company security, HR/people, legal and emergency escalation appropriately",
+        "Allows proportionate moderation/locking while retaining a structured route for legitimate technical feedback",
+        "Maintains a public source of truth, prepared correction/narrowing/delay/rollback options, and a blameless aftercare/learning review"
+      ],
+      "forbidden": [
+        "Tells the targeted engineer to debate or monitor harassers",
+        "Treats doxxing or threats as product feedback",
+        "Labels all negative criticism abuse",
+        "Republishes personal information or sensitive evidence",
+        "Prioritizes launch optics over safety"
+      ],
+      "focus": ["team-safety", "critique-to-action", "public-private-safety", "authority-boundary", "continuous-learning"]
+    },
+    {
+      "id": "continuous-portfolio-loop",
+      "title": "Run DevRel as a repeatable portfolio improvement loop",
+      "prompt": "Put 40 web-platform features across incubation, trials, shipping and post-launch support into a continuous DevRel loop. Some have no demos, some have stale docs, some have unresolved negative positions, and some have strong adoption but recurring framework support failures.",
+      "mode": "continuous portfolio",
+      "expected": [
+        "Creates a stable inventory and explicit 40-feature denominator with lifecycle and evidence states",
+        "Keeps missing, blocked, negative and stale items visible rather than sampling only healthy features",
+        "Defines event-driven, launch/trial, weekly, milestone and post-launch monitoring with sources, owners, thresholds and actions",
+        "Connects friction, critique, questions, goals, improvements, conformance and re-runs",
+        "Preserves append-only evidence and before/after history",
+        "Measures adoption, interoperability, support, artifact reuse and safety with denominators and limitations",
+        "Escalates product/review/safety decisions to humans rather than running autonomously across boundaries"
+      ],
+      "forbidden": [
+        "Claims portfolio completion from a sample",
+        "Overwrites historical failures after fixes",
+        "Defines monitoring without cadence, owner or action",
+        "Collects private community data without an approved purpose"
+      ],
+      "focus": ["continuous-learning", "friction-evidence", "measurement", "evidence-hygiene", "public-private-safety"]
     }
   ]
 }
