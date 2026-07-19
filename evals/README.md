@@ -37,7 +37,7 @@ The evals test whether the skill improves decisions and evidence quality—not w
 
 ## Current fixtures
 
-The first fixtures are synthetic and public-safe. Public historical fixtures will be added with dated source bundles so they can be replayed without future knowledge leakage.
+The first fixtures are synthetic and public-safe. Public historical fixtures will be added with dated source bundles so they can be replayed without future knowledge leakage. The suite deliberately includes both promising and problematic proposals so a system that reflexively approves or rejects everything cannot score well.
 
 Run structural validation:
 
@@ -49,4 +49,6 @@ A model runner and judge calibration set are still to be implemented.
 
 ## Baselines
 
-- [`survey-selection-and-pushback` at `0cae33b`](results/2026-07-19-survey-selection-and-pushback.md): 17/20 across its five focus dimensions, no critical failures. The result produced concrete improvements to survey design, partner-evidence staging, Baseline/compatibility analysis, and criticism-theme handling.
+- [`survey-selection-and-pushback` at `0cae33b`](results/2026-07-19-survey-selection-and-pushback.md): 17/20 across five focus dimensions, no critical failures. The result produced concrete improvements to survey design, partner-evidence staging, Baseline/compatibility analysis, and criticism-theme handling.
+- [`stakeholder-critique-attestation`](results/2026-07-19-stakeholder-critique-attestation.md): 19/20 across five focus dimensions, no critical failures. It found the power shift and affected constituencies without inventing positions; live source retrieval remains to test.
+- [`strong-capability-retains-risk`](results/2026-07-19-strong-capability-retains-risk.md): 22/24 across six focus dimensions, no critical failures. It continued promising experimentation while preserving unresolved security, privacy, performance, accessibility, and interoperability work.

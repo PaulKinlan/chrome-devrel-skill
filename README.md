@@ -57,6 +57,8 @@ It does not impose a fictional DevRel veto. It records readiness by dimension, e
 ## Current work
 
 - [Lifecycle and DevRel intervention map](research/blink-lifecycle-map.md)
+- [Stakeholder critique module](modules/stakeholder-critique.md)
+- [Public case notes: HTML-in-Canvas, Baseline, Prompt API, and WEI](research/public-case-notes.md)
 - [Discovery questions](research/discovery-questions.md)
 - [Early skill scaffold](SKILL.md)
 - [Evaluation design and fixtures](evals/README.md)

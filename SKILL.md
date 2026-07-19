@@ -73,6 +73,7 @@ Do not claim that DevRel can block shipment. Explain the likely consequences of 
 Select only the relevant lenses:
 
 - Problem and use-case validity
+- Stakeholder critique and externalities (use `modules/stakeholder-critique.md` for contentious, high-power, or widely consequential proposals)
 - API ergonomics and alternatives
 - Developer and framework evidence
 - Interoperability and compatibility
@@ -135,6 +136,8 @@ Avoid one universal score. Report the relevant measures, their denominators, dat
 ## Research basis
 
 Consult `research/blink-lifecycle-map.md` for the initial public-source lifecycle map. Recheck canonical sources because the Chromium launch process evolves.
+
+Use `modules/stakeholder-critique.md` to discover affected constituencies, retrieve current primary-source positions, steelman concerns, and map them to design/evidence work. Do not role-play remembered stereotypes of browser vendors, civil-society groups, regulators, or affected users.
 
 ## Incomplete areas
 
