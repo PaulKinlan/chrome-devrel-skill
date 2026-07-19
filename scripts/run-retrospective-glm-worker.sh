@@ -7,20 +7,50 @@ RUN_ROOT="$ROOT/retrospectives/runs/$RUN_ID"
 MODEL="${MODEL:-zai/glm-5.2}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
 TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-1500}"
-MCP_CONFIG="${MCP_CONFIG:-/home/paulkinlan/.config/paul-site-services/zai-retrospective-mcp.json}"
-MCP_ADAPTER="${MCP_ADAPTER:-/home/paulkinlan/.pi/agent/npm/node_modules/pi-mcp-adapter/index.ts}"
+PI_AGENT_DIR="${PI_CODING_AGENT_DIR:-${PI_AGENT_DIR:-$HOME/.pi/agent}}"
+MCP_ADAPTER="${MCP_ADAPTER:-$PI_AGENT_DIR/npm/node_modules/pi-mcp-adapter/index.ts}"
 mkdir -p "$RUN_ROOT/reports" "$RUN_ROOT/worker/logs" "$RUN_ROOT/worker/status" "$RUN_ROOT/worker/tmp"
 
-# Reuse Pi's configured Z.AI credential without putting it in arguments, logs, prompts, or the repo.
-if [ -z "${ZAI_API_KEY:-}" ]; then
-  export ZAI_API_KEY="$(python - <<'PY'
-import json
-print(json.load(open('/home/paulkinlan/.pi/agent/auth.json'))['zai']['key'])
+# The default MCP config is generated per run and contains endpoints plus an env-var
+# reference only—never credentials. Set MCP_CONFIG to use a team-managed config instead.
+if [ -z "${MCP_CONFIG:-}" ]; then
+  MCP_CONFIG="$RUN_ROOT/worker/tmp/zai-retrospective-mcp.json"
+  cat > "$MCP_CONFIG" <<'JSON'
+{
+  "mcpServers": {
+    "zai-web-search": {
+      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "auth": "bearer",
+      "bearerTokenEnv": "ZAI_API_KEY",
+      "lifecycle": "lazy",
+      "requestTimeoutMs": 90000,
+      "directTools": false
+    },
+    "zai-web-reader": {
+      "url": "https://api.z.ai/api/mcp/web_reader/mcp",
+      "auth": "bearer",
+      "bearerTokenEnv": "ZAI_API_KEY",
+      "lifecycle": "lazy",
+      "requestTimeoutMs": 90000,
+      "directTools": false
+    }
+  }
+}
+JSON
+  chmod 600 "$MCP_CONFIG"
+fi
+
+# Prefer an explicitly supplied key; otherwise reuse this user's Pi Z.AI credential.
+# The value never enters arguments, prompts, logs, reports, or the repository.
+if [ -z "${ZAI_API_KEY:-}" ] && [ -s "$PI_AGENT_DIR/auth.json" ]; then
+  export ZAI_API_KEY="$(python - "$PI_AGENT_DIR/auth.json" <<'PY'
+import json,sys
+print(json.load(open(sys.argv[1]))['zai']['key'])
 PY
 )"
 fi
-if [ -z "$ZAI_API_KEY" ] || [ ! -s "$MCP_CONFIG" ] || [ ! -s "$MCP_ADAPTER" ]; then
-  echo "Z.AI MCP search is not configured" >&2
+if [ -z "${ZAI_API_KEY:-}" ] || [ ! -s "$MCP_CONFIG" ] || [ ! -s "$MCP_ADAPTER" ]; then
+  echo "Z.AI MCP search is not configured; set ZAI_API_KEY and install pi-mcp-adapter (or set MCP_ADAPTER/MCP_CONFIG)" >&2
   exit 3
 fi
 trap 'unset ZAI_API_KEY' EXIT

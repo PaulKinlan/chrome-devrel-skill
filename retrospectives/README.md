@@ -23,7 +23,7 @@ node scripts/build-retrospective-inventory.mjs \
 
 The collector caches every response, retries with backoff, writes atomically, uses bounded concurrency, and resumes from cached evidence. `--refresh` deliberately refetches source records.
 
-Feature research runs on GLM 5.2 with Z.AI's Coding Plan **Web Search Prime** and **Web Reader** MCP servers—the search/retrieval tools attached to the GLM plan. It does not use pi-web-access `web_search`. The worker reuses Pi's configured Z.AI credential through a private environment variable; keys never enter prompts, arguments, logs, reports, or the repository. Each feature remains an isolated resumable job, so MCP/provider failure produces a retryable or blocked feature rather than halting the run.
+Feature research runs on GLM 5.2 with Z.AI's Coding Plan **Web Search Prime** and **Web Reader** MCP servers—the search/retrieval tools attached to the GLM plan. It does not use pi-web-access `web_search`. The worker prefers an explicit `ZAI_API_KEY`, then falls back to the current user's Pi agent directory (`$PI_CODING_AGENT_DIR` or `$HOME/.pi/agent`). It generates an endpoint-only MCP config inside the ignored run workspace. Teams can override discovery with `PI_AGENT_DIR`, `MCP_ADAPTER`, or `MCP_CONFIG`; no developer-specific absolute path is encoded. Keys never enter prompts, arguments, logs, reports, or the repository. Each feature remains an isolated resumable job, so MCP/provider failure produces a retryable or blocked feature rather than halting the run.
 
 ## Required outputs
 
