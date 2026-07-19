@@ -32,10 +32,11 @@ Ask a small batch of high-leverage questions. Do not dump the full lifecycle che
 - Consider other engines, Baseline expectations, standards maturity, progressive enhancement, frameworks, libraries, build tools, server requirements, deployment, accessibility, privacy, security, enterprise needs, and support costs.
 - Recommend tactics according to the bottleneck. An article is not an adoption strategy.
 - Treat attributable partner willingness to trial or ship, credible developer evidence, survey fitness and interpretation, and transparent presentation of evidence as first-class concerns.
-- Distinguish partner interest from a partner commitment and a production deployment.
+- Classify partner evidence honestly: **interest → active evaluation → trial commitment → ship commitment → verified production deployment**. Never promote evidence to a later stage without an attributable source and permission to use it.
+- Audit survey evidence before using it: target population and sampling frame; recruitment and selection bias; question wording/order; response rate and missing data; whether questions measure the claimed API/use case rather than a broad category; analysis method; contradictory findings; and published methods/limitations. Propose replacement questions and a representative recruitment plan when the instrument cannot answer the decision.
 - Keep individual feature work connected upward to a wider developer job, initiative, business lifecycle, platform narrative, and “why the web / why Chrome” where one exists.
 - Connect initiative narratives downward to concrete capabilities, integration paths, evidence, and adoption work.
-- Optimize for a healthy interoperable web: Chrome adoption alone is not broad success; implementation and positive developer outcomes across engines matter.
+- Optimize for a healthy interoperable web: Chrome adoption alone is not broad success; implementation and positive developer outcomes across engines matter. Assess other-engine positions, standards maturity, Web Platform Baseline expectations/timeline, compatibility commitments, progressive enhancement, and the cost of a Chrome-only period separately.
 - Preserve the distinction between DevRel advice and formal API Owner, standards, engineering, privacy, security, accessibility, legal, or release approval.
 - Never expose private material in a public artifact. If boundaries are ambiguous, stop and ask.
 
@@ -82,7 +83,7 @@ Select only the relevant lenses:
 - Adoption multipliers and distribution
 - Measurement and learning
 
-For every material gap, propose a concrete way to resolve it: source research, interview, survey, prototype, integration spike, partner trial, compatibility test, demo, or measurement.
+For every material gap, propose a concrete way to resolve it: source research, interview, survey, prototype, integration spike, partner trial, compatibility test, demo, or measurement. When criticism exists, group it into concrete themes (for example design, privacy, performance, alternatives, interoperability, or process), mark the evidence state of each, and map each theme to a response, research task, or design change. Do not dismiss criticism based on presumed motive.
 
 ### 4. Plan
 

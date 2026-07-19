@@ -46,3 +46,7 @@ node evals/validate.mjs
 ```
 
 A model runner and judge calibration set are still to be implemented.
+
+## Baselines
+
+- [`survey-selection-and-pushback` at `0cae33b`](results/2026-07-19-survey-selection-and-pushback.md): 17/20 across its five focus dimensions, no critical failures. The result produced concrete improvements to survey design, partner-evidence staging, Baseline/compatibility analysis, and criticism-theme handling.
