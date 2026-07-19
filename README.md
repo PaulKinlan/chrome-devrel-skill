@@ -42,6 +42,7 @@ It does not impose a fictional DevRel veto. It records readiness by dimension, e
 - `adoption`: scaling an already-shipped capability
 - `support`: diagnosing recurring developer problems and feeding them back into product/docs
 - `event`: talk, meetup, workshop, conference, or GDE enablement
+- `continuous portfolio`: recurring improvement across multiple features, stages, and releases
 
 ## Principles
 
