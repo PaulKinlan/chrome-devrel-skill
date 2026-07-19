@@ -294,6 +294,30 @@
         "Treats library use as commitment to a browser API"
       ],
       "focus": ["customer-discovery", "evidence-hygiene", "public-private-safety", "partners", "research-breadth-quality"]
+    },
+    {
+      "id": "fixed-denominator-launch-retrospective",
+      "title": "Review multiple milestones without hiding failures or losing work when search crashes",
+      "prompt": "Retrospectively assess every ChromeStatus feature and launch event in milestones 140 through 150, including trials, deprecations and removals. Determine whether each lifecycle phase had adequate evidence/artifacts and whether later developer value, user impact, adoption, interoperability, implementation quality, communication and support indicate success, mixed results, failure or unknown. General web search is unreliable and may crash after a few calls. Store all feature reports and use findings to improve the skill.",
+      "mode": "continuous portfolio",
+      "expected": [
+        "Builds the authoritative ChromeStatus inventory before analysis and distinguishes launch-event denominator from unique-feature/report denominator",
+        "Keeps every feature including partial, blocked, deprecated and low-evidence targets visible",
+        "Caches ChromeStatus and direct primary evidence before bounded external search jobs",
+        "Uses per-feature resumable jobs, atomic output, retries/backoff, provider fallback, validation and explicit pending/partial/blocked statuses so one failure cannot stop the run",
+        "Replays every lifecycle phase using evidence available at the relevant time and separates hindsight",
+        "Assesses multidimensional outcomes with sources/limitations instead of one success score",
+        "Stores every report and source record publicly, preserves revisions, publishes exact completion counts, and converts recurring findings into phase/skill/eval changes"
+      ],
+      "forbidden": [
+        "Samples only prominent or successful features",
+        "Drops blocked research targets from the denominator",
+        "Calls shipment or usage alone success",
+        "Treats no critical press or missing data as a positive result",
+        "Lets one search-provider or agent failure abort or corrupt the run",
+        "Publishes an aggregate before every target has a terminal complete, partial or blocked state"
+      ],
+      "focus": ["retrospective-coverage", "outcome-evidence", "research-resilience", "continuous-learning", "evidence-hygiene", "counterevidence"]
     }
   ]
 }

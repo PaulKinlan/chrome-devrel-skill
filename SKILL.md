@@ -43,6 +43,7 @@ After diagnosing the lifecycle stage, load the matching detailed module from `ph
 - Preserve the distinction between DevRel advice and formal API Owner, standards, engineering, privacy, security, accessibility, legal, or release approval. Rehearse every relevant perspective and user impact before formal review, but label it pre-review analysis rather than approval.
 - Separate end-user, developer/site, and implementer benefits and costs. Investigate downloads, storage, compute, battery, bandwidth, consent/control, low-end devices, accessibility, hostile use, fallback, reversibility, and who pays.
 - Protect team members during contentious launches. Preserve legitimate criticism while separating and escalating harassment, doxxing, hate, and threats. Never make an individual absorb abuse for the organization.
+- Run evidence-based launch retrospectives from a fixed inventory. Keep every feature/report and raw evidence visible, including partial/blocked cases; never infer success from shipment, usage alone, press sentiment, or missing criticism.
 - Never expose private material in a public artifact. If boundaries are ambiguous, stop and ask.
 
 ## Initial workflow
@@ -157,7 +158,7 @@ Use `modules/stakeholder-critique.md` to discover affected constituencies, retri
 
 Use the stage router in `phases/README.md` and produce the matching transition packet when changing phases. Use `modules/ecosystem-and-customer-research.md` to research jobs, communities, customers, partners, alternatives and counterevidence across web/native/mini-app/chat/LLM-agent ecosystems.
 
-Use `modules/user-impact-and-review-rehearsal.md` before formal review and when rollout/resource behavior changes. Use `modules/friction-log.md` for reproducible browser/integration evidence. Use `modules/launch-resilience.md` to prepare channels and protect people without suppressing criticism. Use `modules/continuous-loop.md` for recurring and portfolio work.
+Use `modules/user-impact-and-review-rehearsal.md` before formal review and when rollout/resource behavior changes. Use `modules/friction-log.md` for reproducible browser/integration evidence. Use `modules/launch-resilience.md` to prepare channels and protect people without suppressing criticism. Use `modules/launch-retrospective.md` for inventory-driven historical review and skill improvement. Use `modules/continuous-loop.md` for recurring and portfolio work.
 
 ## Incomplete areas
 

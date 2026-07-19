@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PaulKinlan/chrome-devrel-skill/retrospectives/report.schema.json",
+  "title": "Chrome feature launch retrospective",
+  "type": "object",
+  "required": ["schemaVersion", "feature", "launchEvents", "evidenceCutoff", "phaseReview", "outcomes", "sources", "completion"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "feature": {
+      "type": "object",
+      "required": ["id", "name", "chromeStatusUrl"],
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string", "minLength": 1 },
+        "chromeStatusUrl": { "type": "string", "format": "uri" }
+      },
+      "additionalProperties": true
+    },
+    "launchEvents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["eventId", "milestone", "category"],
+        "properties": {
+          "eventId": { "type": "string" },
+          "milestone": { "type": "integer" },
+          "category": { "type": "string" }
+        }
+      }
+    },
+    "evidenceCutoff": { "type": "string", "format": "date-time" },
+    "phaseReview": {
+      "type": "object",
+      "required": ["intake", "incubation", "prototype", "developerTrials", "wideReview", "experiment", "prepareToShip", "release", "adoption", "support", "deprecation"],
+      "additionalProperties": { "$ref": "#/$defs/assessment" }
+    },
+    "outcomes": {
+      "type": "object",
+      "required": ["developerValue", "endUserImpact", "adoption", "interoperability", "implementationQuality", "evidenceAndCommunication", "support", "overall"],
+      "additionalProperties": { "$ref": "#/$defs/assessment" }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "url", "publisher", "publishedOrObservedAt", "retrievedAt", "sourceType", "supports"],
+        "properties": {
+          "id": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "publisher": { "type": "string" },
+          "publishedOrObservedAt": { "type": ["string", "null"] },
+          "retrievedAt": { "type": "string", "format": "date-time" },
+          "sourceType": { "enum": ["chromestatus", "spec", "intent", "standards-position", "implementation", "usage", "case-study", "support", "press", "community", "research", "other"] },
+          "supports": { "type": "array", "items": { "type": "string" } },
+          "limitations": { "type": "string" }
+        }
+      }
+    },
+    "successes": { "type": "array", "items": { "type": "string" } },
+    "failures": { "type": "array", "items": { "type": "string" } },
+    "counterfactuals": { "type": "array", "items": { "type": "string" } },
+    "skillImprovements": { "type": "array", "items": { "type": "string" } },
+    "completion": {
+      "type": "object",
+      "required": ["status", "missingEvidence", "reviewedAt"],
+      "properties": {
+        "status": { "enum": ["complete", "partial", "blocked"] },
+        "missingEvidence": { "type": "array", "items": { "type": "string" } },
+        "reviewedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "$defs": {
+    "assessment": {
+      "type": "object",
+      "required": ["status", "finding", "evidenceIds", "limitations"],
+      "properties": {
+        "status": { "enum": ["supported", "partial", "unknown", "contradicted", "not-relevant", "success", "mixed", "failure", "unscored"] },
+        "finding": { "type": "string" },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } },
+        "limitations": { "type": "string" }
+      }
+    }
+  }
+}

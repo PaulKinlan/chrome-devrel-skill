@@ -1,0 +1,2967 @@
+{
+  "features_by_type": {
+    "Enabled by default": [
+      {
+        "id": 6278918763708416,
+        "name": "Allow more characters in javascript DOM APIs",
+        "summary": "The HTML parser has always (or for a long time) allowed elements and attributes to have a wide variety of valid characters and names, but the javascript DOM APIs to create the same elements and attributes are more strict and don't match the parser.\r\n\r\nThis change relaxes the validation of the javascript DOM APIs to match the HTML parser.\r\n\r\nMore context here: https://github.com/whatwg/dom/issues/849\r\n\r\nI don't anticipate any compat issues from this change because all of the previously allowed element/attribute names are still allowed with the new behavior.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>DOM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "jarhar@chromium.org",
+        "editors": [],
+        "owners": [
+          "jarhar@chromium.org"
+        ],
+        "created": {
+          "by": "jarhar@chromium.org",
+          "when": "2025-06-09 18:46:30.663684"
+        },
+        "updated": {
+          "by": "jarhar@chromium.org",
+          "when": "2025-11-25 03:31:43.142443"
+        },
+        "accurate_as_of": "2025-11-25 03:31:43.142443",
+        "standards": {
+          "spec": "https://dom.spec.whatwg.org/#namespaces",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40228234",
+            "blink_components": [
+              "Blink>DOM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "jarhar@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1974274",
+              "notes": "",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/whatwg/dom/issues/849#issuecomment-2876716958",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5080764554936320
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5177580990496768,
+        "name": "CSS Anchored Fallback Container Queries",
+        "summary": "Introduce @container anchored(fallback) to style descendants of anchor positioned elements based on which of position-try-fallbacks is applied.\n\nSuch queries can be used to e.g. style an anchored element's tether, its animations, etc. based on how the anchor and the anchored element are positioned relative to each other.\n\nExample:\n\n#anchored {\n  position-try-options: flip-block;\n  container-type: anchored;\n}\n@container anchored(fallback: flip-block) {\n  #anchored > .arrow {\n    --arrow-rotation: 180deg;\n  }\n}\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [
+            "https://codepen.io/una/pen/ZYbzrLg"
+          ],
+          "docs": []
+        },
+        "creator": "futhark@chromium.org",
+        "editors": [],
+        "owners": [
+          "futhark@chromium.org"
+        ],
+        "created": {
+          "by": "futhark@chromium.org",
+          "when": "2025-05-28 11:55:13.927700"
+        },
+        "updated": {
+          "by": "futhark@chromium.org",
+          "when": "2025-12-19 15:21:26.851730"
+        },
+        "accurate_as_of": "2025-12-19 15:21:26.851730",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-anchor-position-2/#anchored-container-queries",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/417621241",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "futhark@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1236",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/501",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "https://bsky.app/profile/jpzwarte.bsky.social/post/3luslfusjps2o\nhttps://bsky.app/profile/ishadeed.com/post/3lw43wolylc2w\n\nResponses to this post:\n\nhttps://bsky.app/profile/una.im/post/3lu3qkwadps22\n"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5078289030578176
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6715253274181632,
+        "name": "DataTransfer property for insertFromPaste, insertFromDrop and insertReplacementText input events",
+        "summary": "Populate the dataTransfer property on input events with inputType of insertFromPaste, insertFromDrop, and insertReplacementText to provide access to clipboard and drag-drop data during editing operations in contenteditable elements.\n\nThe dataTransfer object contains the same data that was available during the beforeinput event.\n\nThis feature only applies to contenteditable elements. For form controls (textarea, input), the behavior remains unchanged - the data property contains the inserted text and dataTransfer remains null.\nBoth Safari and Firefox already support this functionality. Chromium adopting this feature will enhance interoperability across browsers, providing a more consistent experience for web authors.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Editing>InputEvent"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "pranavmodi@microsoft.com",
+        "editors": [
+          "pranavmodi@microsoft.com",
+          "ragoulik@microsoft.com"
+        ],
+        "owners": [
+          "pranavmodi@microsoft.com"
+        ],
+        "created": {
+          "by": "pranavmodi@microsoft.com",
+          "when": "2025-07-30 09:35:56.557084"
+        },
+        "updated": {
+          "by": "pranavmodi@microsoft.com",
+          "when": "2025-11-26 07:20:16.331728"
+        },
+        "accurate_as_of": "2025-11-26 07:20:16.331728",
+        "standards": {
+          "spec": "https://w3c.github.io/input-events/#dom-inputevent-datatransfer",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/401593412",
+            "blink_components": [
+              "Blink>Editing>InputEvent"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "pranavmodi@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/dataTransfer",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://webkit.org/blog/7358/enhanced-editing-with-input-events",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5121699175202816
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6229300214890496,
+        "name": "EditContext: TextFormat underlineStyle and underlineThickness",
+        "summary": "Chromium shipped https://developer.mozilla.org/en-US/docs/Web/API/EditContext with a bug where the https://developer.mozilla.org/en-US/docs/Web/API/TextFormat object supplied by the https://developer.mozilla.org/en-US/docs/Web/API/EditContext/textformatupdate_event provides incorrect values for the underlineStyle and underlineThickness properties. In Chromium the possible values are {“None”, “Solid”, “Dotted”, “Dashed”, “Squiggle”} and {“None”, “Thin”, “Thick”}, when per https://w3c.github.io/edit-context/#dom-underlinestyle they should be {“none”, “solid”, “dotted”, “dashed”, “wavy”} and {“none”, “thin”, “thick”}. This Intent covers switching TextFormat.underlineStyle and TextFormat.underlineThickness to use the spec values.\n\nThis change is valuable because it aligns these attributes with existing CSS https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style and the https://www.w3.org/TR/design-principles/#casing-rules. Since the purpose of the TextFormat properties is to be used in applying these text styles to text being composed on behalf of an IME, it will be more convenient for developers if the underlineStyle value can be applied directly from the event to CSS without need for a remapping. For both underlineStyle and underlineThickness, matching the platform lower-case convention will reduce the likelihood of developer confusion.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 141,
+        "blink_components": [
+          "Blink>Editing>EditContext"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "ashishkum@microsoft.com",
+        "editors": [],
+        "owners": [
+          "ashishkum@microsoft.com"
+        ],
+        "created": {
+          "by": "ashishkum@microsoft.com",
+          "when": "2025-09-08 06:40:51.725759"
+        },
+        "updated": {
+          "by": "ashishkum@microsoft.com",
+          "when": "2025-11-10 09:04:10.413410"
+        },
+        "accurate_as_of": "2025-11-10 09:04:10.413410",
+        "standards": {
+          "spec": "https://w3c.github.io/edit-context/#textformatupdateevent",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/354497121",
+            "blink_components": [
+              "Blink>Editing>EditContext"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "ashishkum@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/199",
+              "notes": "Positive with concerns for EditContext overall.",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/243",
+              "notes": "Neutral for EditContext overall.",
+              "text": "Neutral",
+              "val": 8
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5105314387066880
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 4614417052467200,
+        "name": "FedCM Privacy Enforcement for Client Metadata",
+        "summary": "To address cross-site identity correlation risks in the FedCM API, Identity Providers (IdPs) that utilize client_metadata within their FedCM configuration are required to implement the direct endpoints format in the .well-known/web-identity file. This mandate ensures that both accounts_endpoint and login_url are explicitly defined whenever a client_metadata_endpoint is present. This approach strengthens privacy protections by preventing relying parties from exploiting metadata to correlate user identities across multiple sites. For further details and discussion, refer to https://github.com/w3c-fedid/FedCM/issues/700.\n\nIn Chrome 143 (Warning Phase): If client_metadata_endpoint exists but accounts_endpoint or login_url is missing, the browser will display console warnings. This gives IdPs time to update configurations.\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Identity>FedCM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "sureshpotti@microsoft.com",
+        "editors": [
+          "yigu@chromium.org",
+          "npm@chromium.org",
+          "goto@chromium.org",
+          "cbiesinger@chromium.org"
+        ],
+        "owners": [
+          "sureshpotti@microsoft.com"
+        ],
+        "created": {
+          "by": "sureshpotti@microsoft.com",
+          "when": "2025-10-10 06:39:04.369511"
+        },
+        "updated": {
+          "by": "sureshpotti@microsoft.com",
+          "when": "2025-11-24 15:29:01.798314"
+        },
+        "accurate_as_of": "2025-11-24 15:29:01.798314",
+        "standards": {
+          "spec": "https://github.com/w3c-fedid/FedCM/pull/760",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": null,
+            "blink_components": [
+              "Blink>Identity>FedCM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "sureshpotti@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5524645176541184
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5124072820310016,
+        "name": "FedCM-Migration of nonce to params field & Renaming of IdentityCredentialError code attribute to error",
+        "summary": "Migration of nonce to params Field:\nThe nonce parameter in navigator.credentials.get() is moving from a top-level field to the params object for better API design, extensibility, and maintainability. This structured approach simplifies parsing for Identity Providers, supports future-proofing without versioning, and aligns with modern API patterns. For Relying Parties, the impact is minimal—they provide the same nonce value in a new location.\nIn Chrome 143 (Warning Phase): nonce accepted both at top level and inside params. Top-level usage triggers a console warning.\n\nRename code to error in IdentityCredentialError:\nThe code attribute in IdentityCredentialError is renamed to error for clearer semantics, better developer experience, and alignment with web standards. This change reduces ambiguity and avoids conflicts with DOMException.code. Additionally, error.code becomes error.error, retaining its DOMString type.\nIn Chrome 143 (Warning Phase): Both error and code attributes are supported. Using code triggers a console warning, guiding developers to migrate.\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Identity>FedCM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "sureshpotti@microsoft.com",
+        "editors": [
+          "yigu@chromium.org",
+          "npm@chromium.org",
+          "goto@chromium.org",
+          "cbiesinger@chromium.org"
+        ],
+        "owners": [
+          "sureshpotti@microsoft.com"
+        ],
+        "created": {
+          "by": "sureshpotti@microsoft.com",
+          "when": "2025-09-30 09:11:51.232015"
+        },
+        "updated": {
+          "by": "npm@chromium.org",
+          "when": "2025-11-06 19:24:46.309484"
+        },
+        "accurate_as_of": "2025-11-03 20:00:38.751240",
+        "standards": {
+          "spec": "https://github.com/w3c-fedid/FedCM/pull/768",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://bugs.chromium.org/427474985",
+            "blink_components": [
+              "Blink>Identity>FedCM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "sureshpotti@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "comments from Ben Vandersloot in https://github.com/w3c-fedid/meetings/blob/main/2025/2025-07-08-FedCM-notes.md"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6248433585356800
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5153509557272576,
+        "name": "FedCM—Support Structured JSON Responses from IdPs",
+        "summary": "Allows Identity Providers (IdPs) to return structured JSON objects instead of plain strings to Relying Parties (RPs) via the id_assertion_endpoint.\r\n\r\nThis change simplifies integration for developers by eliminating the need to manually serialize and parse JSON strings. It enables more dynamic and flexible authentication flows, allowing RPs to interpret complex responses directly and support varied protocols like OAuth2, OIDC, or IndieAuth without out-of-band agreements.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Identity>FedCM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "sureshpotti@microsoft.com",
+        "editors": [
+          "yigu@chromium.org",
+          "npm@chromium.org",
+          "goto@chromium.org",
+          "cbiesinger@chromium.org"
+        ],
+        "owners": [
+          "sureshpotti@microsoft.com"
+        ],
+        "created": {
+          "by": "sureshpotti@microsoft.com",
+          "when": "2025-09-04 10:02:24.272118"
+        },
+        "updated": {
+          "by": "sureshpotti@microsoft.com",
+          "when": "2025-11-10 13:21:27.353369"
+        },
+        "accurate_as_of": "2025-11-10 13:21:27.353369",
+        "standards": {
+          "spec": "https://github.com/w3c-fedid/FedCM/pull/771",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/346567168",
+            "blink_components": [
+              "Blink>Identity>FedCM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "sureshpotti@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "comments from Ben Vandersloot in https://github.com/w3c-fedid/meetings/blob/main/2025/2025-07-29-FedCM-notes.md#status-of-cr-blockers, No strong opinions",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": "This was requested by Identity providers."
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5099589094998016
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5109540852989952,
+        "name": "Gamepad ongamepadconnected and ongamepaddisconnected event handler attributes",
+        "summary": "Add ongamepadconnected and ongamepaddisconnected event handlers to the WindowEventHandlers interface mixin.\r\n\r\nThis would enable support for window.ongamepad[dis]connected or document.body.ongamepad[dis]connected event handler attributes.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>GamepadAPI"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "orko@igalia.com",
+        "editors": [
+          "mattreynolds@google.com"
+        ],
+        "owners": [
+          "orko@igalia.com"
+        ],
+        "created": {
+          "by": "orko@igalia.com",
+          "when": "2025-09-26 02:11:15.752286"
+        },
+        "updated": {
+          "by": "orko@igalia.com",
+          "when": "2025-11-04 08:59:55.688560"
+        },
+        "accurate_as_of": "2025-10-29 21:21:38.226262",
+        "standards": {
+          "spec": "https://w3c.github.io/gamepad/#extensions-to-the-windoweventhandlers-interface-mixin",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40175074",
+            "blink_components": [
+              "Blink>GamepadAPI"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "orko@igalia.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1697093",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://bugs.webkit.org/show_bug.cgi?id=223860",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5097975659495424
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5143313833000960,
+        "name": "ICU version 77 (supporting Unicode 16)",
+        "summary": "The Unicode support library, International Components for Unicode (ICU), is upgraded from version 74.2 to version 77.1, adding support for Unicode 16 and updating locale data. \nTwo changes could pose some risk for web applications that assume a specific format from the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Internationalization) JS APIs:\n1. The default Italian number formatting changed to omit the thousand separator for 4-digit numbers. For example, `new Intl.NumberFormat(\"it\").format(1234)` will return `1234` instead of `1.234`. The old behavior can be achieved with the `useGrouping` parameter for the `Intl.NumberFormat` constructor. \n2. In some English locales (en-AU, en-GB, and en-IN), a comma was added after full-length weekdays, for example, changing Saturday 30 April 2011 to Saturday, 30 April 2011. Web applications should avoid relying on the precise formatting of dates and they may change again in future.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 3,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 139,
+        "blink_components": [
+          "Blink>JavaScript>Internationalization"
+        ],
+        "resources": {
+          "samples": [
+            "https://mathiasbynens.github.io/caniunicode"
+          ],
+          "docs": [
+            "https://unicode-org.github.io/icu/download/77.html",
+            "https://cldr.unicode.org/downloads/cldr-47",
+            "https://www.unicode.org/versions/Unicode16.0.0"
+          ]
+        },
+        "creator": "foolip@chromium.org",
+        "editors": [],
+        "owners": [
+          "foolip@chromium.org",
+          "kojii@chromium.org"
+        ],
+        "created": {
+          "by": "foolip@chromium.org",
+          "when": "2025-07-17 10:08:44.127074"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-03-19 11:01:45.966315"
+        },
+        "accurate_as_of": "2025-11-14 14:19:08.148517",
+        "standards": {
+          "spec": "https://tc39.es/ecma402",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/421834885",
+            "blink_components": [
+              "Blink>JavaScript>Internationalization"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "foolip@chromium.org",
+              "kojii@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1954425",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "For Safari, ICU is part of the OS. It looks like iOS 18.5 upgraded to ICU 76, which includes most of the changes.",
+              "text": "N/A",
+              "val": 9
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5205279624658944
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5149766073843712,
+        "name": "Implement CSS property font-language-override",
+        "summary": "This feature introduces support for the font-language-override CSS property in Chromium. The property allows developers to override the system language used for OpenType glyph substitution by specifying a four-character language tag directly in CSS.\n\nThis enables fine-grained typographic control, particularly useful for multilingual content or fonts with language-specific glyph variants.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Fonts"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "sejalanand@microsoft.com",
+        "editors": [],
+        "owners": [
+          "sejalanand@microsoft.com"
+        ],
+        "created": {
+          "by": "sejalanand@microsoft.com",
+          "when": "2025-09-16 14:45:03.967888"
+        },
+        "updated": {
+          "by": "sejalanand@microsoft.com",
+          "when": "2025-10-29 05:10:16.087878"
+        },
+        "accurate_as_of": "2025-10-29 05:10:16.087878",
+        "standards": {
+          "spec": "https://www.w3.org/TR/css-fonts-4/#font-language-override-prop",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/41170551",
+            "blink_components": [
+              "Blink>Fonts"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "sejalanand@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1347821",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/556",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "13 users have indicated that they are affected by this issue and its related duplicates, as noted in https://issues.chromium.org/issues/40891154 and \nhttps://issues.chromium.org/issues/41170551"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5839071347867648
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5080415048171520,
+        "name": "Restricting spelling and grammar highlights",
+        "summary": "This experiment would change when spelling and grammar hints are applied to text fields to reduce the of websites ability to extract information about the user’s dictionary, specifically:\r\n* Hints would not be applied to a text field that has not had user interaction (an autofocus is insufficient, there must be a click or key press of some kind relative to that field).\r\n* Hints would only be applied once per user interaction (the text cannot be changed programmatically and have hints applied without a click or key press of some kind relative to that field).\r\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Editing>Spellcheck"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "arichiv@chromium.org",
+        "editors": [
+          "aaj@google.com",
+          "miketaylr@chromium.org",
+          "ladan@chromium.org"
+        ],
+        "owners": [
+          "arichiv@chromium.org"
+        ],
+        "created": {
+          "by": "arichiv@chromium.org",
+          "when": "2025-10-09 15:36:57.428824"
+        },
+        "updated": {
+          "by": "arichiv@chromium.org",
+          "when": "2026-02-08 19:25:21.408669"
+        },
+        "accurate_as_of": "2025-10-09 15:36:57.428503",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/415712674",
+            "blink_components": [
+              "Blink>Editing>Spellcheck"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "arichiv@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1294",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/546",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5871006321344512
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5086053979521024,
+        "name": "Speculation rules: mobile \"eager\" eagerness improvements",
+        "summary": "On mobile, \"eager\" eagerness speculation rules prefetches and prerenders now trigger when HTML anchor elements are in the viewport for a short time.\n\nThe previous behavior, of starting prefetch/prerenders as soon as possible, was the same as \"immediate\" eagerness. This new behavior is more useful as it better reflects the author's intent to be more eager than the \"moderate\" and less eager than \"immediate\".\n\nMore detail on this and other upcoming improvements to speculation rules eagerness are available at https://docs.google.com/document/d/1YPbtUPfZIDElzBZNx8IQMzRFvy8oauLG_i1XIr6jgTs/edit?usp=sharing.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Internals>Preload"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "tnak@chromium.org",
+        "editors": [],
+        "owners": [
+          "tnak@chromium.org",
+          "nhiroki@chromium.org"
+        ],
+        "created": {
+          "by": "tnak@chromium.org",
+          "when": "2025-10-21 08:32:08.897963"
+        },
+        "updated": {
+          "by": "tnak@chromium.org",
+          "when": "2025-11-24 23:30:24.303556"
+        },
+        "accurate_as_of": "2025-11-24 23:30:24.303556",
+        "standards": {
+          "spec": "https://html.spec.whatwg.org/multipage/speculative-loading.html#speculative-loading",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/436705485",
+            "blink_components": [
+              "Internals>Preload"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "tnak@chromium.org",
+              "nhiroki@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/620#issuecomment-2546739520",
+              "notes": "We have not asked Firefox for their thoughts on this specific change. They are positive on and implementing prefetching, and will likely make their own choices for how to implement each eagerness level.",
+              "text": "Neutral",
+              "val": 8
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/54",
+              "notes": "We've not asked Safari for their thoughts on this specific change. They have recently indicated a tentative positive position towards conservative-eagerness prefetching.",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "We've seen several developers re-create this viewport-based technique using JavaScript to manually insert and remove speculation rules, e.g. in the Quicklink library."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5075500909330432
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6411735804674048,
+        "name": "Web Smart Card API",
+        "summary": "Enables smart card (PC/SC) applications to move to the Web platform. It gives them access to the PC/SC implementation (and card reader drivers) available in the host OS.\n\nAdministrators can control the availability of this API either:\n- Globally—using the DefaultSmartCardConnectSetting policy.\n- Per-application—using the SmartCardConnectAllowedForUrls and SmartCardConnectBlockedForUrls policies.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>SmartCard"
+        ],
+        "resources": {
+          "samples": [
+            "https://github.com/GoogleChromeLabs/web-smartcard-demo"
+          ],
+          "docs": []
+        },
+        "creator": "dandrader@google.com",
+        "editors": [
+          "reillyg@chromium.org"
+        ],
+        "owners": [
+          "zgroza@chromium.org",
+          "dandrader@google.com"
+        ],
+        "created": {
+          "by": "dandrader@google.com",
+          "when": "2022-08-02 15:37:05.242635"
+        },
+        "updated": {
+          "by": "zgroza@chromium.org",
+          "when": "2026-01-13 12:32:13.862483"
+        },
+        "accurate_as_of": "2026-01-13 12:32:13.862483",
+        "standards": {
+          "spec": "https://wicg.github.io/web-smart-card",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://bugs.chromium.org/p/chromium/issues/detail?id=1386175",
+            "blink_components": [
+              "Blink>SmartCard"
+            ],
+            "devrel": [],
+            "owners": [
+              "zgroza@chromium.org",
+              "dandrader@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "In development",
+              "val": 3
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/WICG/web-smart-card/issues/43",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6180420085874688
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5110223547269120,
+        "name": "WebGPU: Texture component swizzle",
+        "summary": "Functionality added to the WebGPU spec after its first shipment in a browser.\n\nAllows GPUTextureViews to rearrange or replace the color components from texture's red/green/blue/alpha channels when accessed by a shader.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "fbeaufort@google.com",
+        "editors": [
+          "cwallez@google.com",
+          "dneto@google.com"
+        ],
+        "owners": [
+          "fbeaufort@google.com"
+        ],
+        "created": {
+          "by": "fbeaufort@google.com",
+          "when": "2025-10-13 12:39:32.439874"
+        },
+        "updated": {
+          "by": "fbeaufort@google.com",
+          "when": "2025-11-17 09:38:16.312745"
+        },
+        "accurate_as_of": "2025-11-17 09:38:16.312745",
+        "standards": {
+          "spec": "https://gpuweb.github.io/gpuweb/#dom-gpufeaturename-texture-component-swizzle",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/414312052",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "fbeaufort@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1205#issuecomment-3312534193",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/294#issuecomment-1877411933",
+              "notes": null,
+              "text": "Closed Without a Position",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6256761879265280
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5135528638939136,
+        "name": "WebRTC RTP header extension behavior change",
+        "summary": "Users of https://chromestatus.com/feature/5680189201711104 found that the API as specified was not ergonomic for subsequent offer/answer.\r\nThe WG has adopted a revised behavior, merged to spec in https://github.com/w3c/webrtc-extensions/pull/238, that ensures that subsequent offer/answer does not permute the header extensions negotiated unless the user wants that to happen.\r\n\r\n",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebRTC>PeerConnection"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "hta@chromium.org",
+        "editors": [],
+        "owners": [
+          "hta@chromium.org",
+          "guidou@chromium.org"
+        ],
+        "created": {
+          "by": "hta@chromium.org",
+          "when": "2025-09-25 10:57:59.690685"
+        },
+        "updated": {
+          "by": "hta@chromium.org",
+          "when": "2025-10-27 04:19:45.995928"
+        },
+        "accurate_as_of": "2025-10-27 04:19:45.995928",
+        "standards": {
+          "spec": "https://w3c.github.io/webrtc-extensions/#rtp-header-extension-control-modifications",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.webrtc.org/439514253",
+            "blink_components": [
+              "Blink>WebRTC>PeerConnection"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "hta@chromium.org",
+              "guidou@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6208634392543232
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6521719678042112,
+        "name": "WebTransport Application Protocol Negotiation",
+        "summary": "WebTransport Application Protocol Negotiation allows negotiation of the protocol used by the web application within the WebTransport handshake.\r\n\r\nA web application can specify a list of application protocols offered when constructing a WebTransport object, which are then conveyed to the server via HTTP headers; if the server picks one of those protocols, it can indicate that within response headers, and that reply is available within the WebTransport object.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Network>WebTransport"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "vasilvv@google.com",
+        "editors": [
+          "bashi@chromium.org",
+          "nidhijaju@chromium.org",
+          "ricea@chromium.org"
+        ],
+        "owners": [
+          "vasilvv@chromium.org"
+        ],
+        "created": {
+          "by": "vasilvv@google.com",
+          "when": "2025-05-07 11:07:32.282515"
+        },
+        "updated": {
+          "by": "vasilvv@chromium.org",
+          "when": "2025-11-24 19:01:54.245591"
+        },
+        "accurate_as_of": "2025-11-24 19:01:54.245591",
+        "standards": {
+          "spec": "https://w3c.github.io/webtransport/#dom-webtransportoptions-protocols",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/u/1/issues/416080492",
+            "blink_components": [
+              "Blink>Network>WebTransport"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "vasilvv@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/167",
+              "notes": "Firefox has been positive on WebTransport, and Mozilla representatives have been involved in the discussion regarding this flag (and have told me in the past that I don't need to file new standards position for every spec feature).",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/18",
+              "notes": "Safari has expressed support for WebTransport in general; we've not reached out regarding this individual feature, given that Safari has not shipped WebTransport itself.",
+              "text": "Support",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/moq-wg/moq-transport/pull/499",
+              "notes": "IETF MOQ relies on this feature for version negotiation; I've been repeatedly pinged by multiple people there asking when Chrome is going to ship this."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5968302379368448
+        ],
+        "finch_urls": []
+      }
+    ],
+    "Deprecated": [
+      {
+        "id": 5148228059398144,
+        "name": "Deprecate getters of Intl Locale Info",
+        "summary": "Intl Locale Info API is a Stage 3 ECMAScript TC39 proposal to enhance the Intl.Locale object by exposing Locale information, such as week data (first day in a week, weekend start day, weekend end day, minimun day in the first week), and text direction hour cycle used in the locale.\r\nhttps://github.com/tc39/proposal-intl-locale-info\r\n\r\nWe ship our implementation in m99 (https://chromestatus.com/feature/5566859262820352 ) . But later on the propose made some change in Stage 3 and move several getters to functions. We need to remove the deprecated getters and relaunch the renamed functions\r\n",
+        "feature_type_int": 3,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 125,
+        "blink_components": [
+          "Blink>JavaScript>Internationalization"
+        ],
+        "resources": {
+          "samples": [
+            "https://github.com/tc39/proposal-intl-locale-info"
+          ],
+          "docs": [
+            "https://docs.google.com/document/d/1BSpa-LKE69LL1g5CHZ3G06XEfffauwS24atfSUQiIDY/edit"
+          ]
+        },
+        "creator": "ftang@google.com",
+        "editors": [
+          "ftang@google.com",
+          "syg@google.com",
+          "sffc@google.com"
+        ],
+        "owners": [
+          "ftang@google.com"
+        ],
+        "created": {
+          "by": "ftang@google.com",
+          "when": "2024-05-03 18:25:01.729529"
+        },
+        "updated": {
+          "by": "ftang@google.com",
+          "when": "2026-03-02 18:41:24.099130"
+        },
+        "accurate_as_of": "2026-03-02 18:41:24.099130",
+        "standards": {
+          "spec": "https://tc39.es/proposal-intl-locale-info",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/42203770",
+            "blink_components": [
+              "Blink>JavaScript>Internationalization"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "ftang@google.com"
+            ],
+            "origintrial": true,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Origin trial",
+              "val": 8
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1693576",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://developer.apple.com/documentation/safari-release-notes/safari-17-release-notes",
+              "notes": "\"Updated Intl.Locale to replace info getters with individual get… methods. (105570888)\"",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale",
+              "notes": "MDN document already remove these getters and put up the new functions"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5115929905332224
+        ],
+        "finch_urls": []
+      }
+    ],
+    "Removed": [],
+    "Stepped rollout": [
+      {
+        "id": 4709671889534976,
+        "name": "Deprecate and remove XSLT",
+        "summary": "[XSLT v1.0](https://www.w3.org/TR/xslt-10/), which all browsers adhere to, was standardized in 1999. In the meantime, XSLT has evolved to v2.0 and v3.0, adding features, and growing apart from the old version frozen into browsers. This lack of advancement, coupled with the rise of JavaScript libraries and frameworks that offer more flexible and powerful DOM manipulation, has led to a significant decline in the use of client-side XSLT. Its role within the web browser has been largely superseded by JavaScript-based technologies, such as JSON and React.\n\nChromium uses the **libxslt** library to process these transformations, and [libxslt was unmaintained](https://discourse.gnome.org/t/stepping-down-as-libxslt-maintainer/27615) for ~6 months of 2025. Libxslt is a complex, aging C codebase of the type notoriously susceptible to memory safety vulnerabilities like buffer overflows, which can lead to arbitrary code execution. Because client-side XSLT is now a niche, rarely-used feature, these libraries receive far less maintenance and security scrutiny than core JavaScript engines, yet they represent a direct, potent attack surface for processing untrusted web content. Indeed, XSLT is the source of several recent high-profile security exploits that continue to put browser users at risk. \n\nFor these reasons, Chromium (along with both other browser engines, Gecko and WebKit) plans to deprecate and remove XSLT from the web platform. The modern web is powered by three major browser engines: [Blink](https://www.chromium.org/blink/) (Chromium), [Gecko](https://firefox-source-docs.mozilla.org/overview/gecko.html) (Firefox), and [WebKit](https://webkit.org/) (Safari). They interpret code to render pages. \n\nFor more details, see this [Chrome for Developers article](https://developer.chrome.com/docs/web-platform/deprecating-xslt). ",
+        "feature_type_int": 3,
+        "unlisted": false,
+        "enterprise_impact": 4,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 140,
+        "blink_components": [
+          "Blink>XML"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://github.com/whatwg/html/issues/11523"
+          ]
+        },
+        "creator": "masonfreed@google.com",
+        "editors": [
+          "masonfreed@google.com"
+        ],
+        "owners": [
+          "masonf@chromium.org"
+        ],
+        "created": {
+          "by": "masonfreed@google.com",
+          "when": "2025-08-01 19:18:08.633405"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-07-15 10:40:22.323201"
+        },
+        "accurate_as_of": "2026-07-13 17:48:14.528731",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/435623334",
+            "blink_components": [
+              "Blink>XML"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "masonf@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/whatwg/html/issues/11523#issuecomment-3149788558",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/whatwg/html/issues/11523#issuecomment-3149280766",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Negative",
+              "val": 5,
+              "url": "https://github.com/whatwg/html/issues/11523#issuecomment-3150969971",
+              "notes": "Existing users of XSLT are understandably negative on this removal, and have been very vocal about it on the standards issue and elsewhere. There are also mixed/positive reactions from some folks in the public discussions, who seem to agree with the removal of XSLT from browsers. But the average/overall developer opinion (as measured by comments on public threads) is negative.\n\nVarious public discussions:\n- https://news.ycombinator.com/item?id=44952185\n- https://www.reddit.com/r/programming/comments/1mxdm22/xslt_removal_will_break_multiple_government_and/\n- https://news.ycombinator.com/item?id=44987346\n- https://news.ycombinator.com/item?id=44987552\n- https://news.ycombinator.com/item?id=44987239\n- https://news.ycombinator.com/item?id=44909599"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null
+      }
+    ],
+    "Origin trial": [
+      {
+        "id": 5099333963874304,
+        "name": "Digital Credentials API (issuance support)",
+        "summary": "This Web Platform feature enables issuing websites (e.g., a university, government agency, or bank) to securely initiate the provisioning (issuance) process of digital credentials directly into a user's mobile wallet application. On Android, this capability leverages the Android IdentityCredential CredMan system (Credential Manager). On Desktop, it leverages cross-device approaches using the CTAP protocol similar to Digital Credentials presentation.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Identity>DigitalCredentials"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "mamir@chromium.org",
+        "editors": [],
+        "owners": [
+          "rbyers@chromium.org",
+          "mamir@chromium.org",
+          "ashimaarora@google.com"
+        ],
+        "created": {
+          "by": "mamir@chromium.org",
+          "when": "2025-09-17 10:03:31.380352"
+        },
+        "updated": {
+          "by": "mamir@chromium.org",
+          "when": "2026-07-08 15:17:19.074386"
+        },
+        "accurate_as_of": "2025-10-21 01:13:25.348531",
+        "standards": {
+          "spec": "https://w3c-fedid.github.io/digital-credentials",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/378330032",
+            "blink_components": [
+              "Blink>Identity>DigitalCredentials"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "rbyers@chromium.org",
+              "mamir@chromium.org",
+              "ashimaarora@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1003",
+              "notes": null,
+              "text": "Negative",
+              "val": 7
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/332",
+              "notes": "Presentation support is shipped, but timeline for adding issuance support yet.",
+              "text": "Support",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5054653385539584
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6496757559197696,
+        "name": "TCP Socket Pool Limit Randomization",
+        "summary": "By exploiting limits in the connection pool size on Chrome, knowledge can be gained about cross-site state which would otherwise be inaccessible. Specifically, it’s possible (with some statistical certainty) to evaluate the login state, visited history, or even something more specific like whether gmail has pending messages in the inbox.\n\n\nTo mitigate this we are adding randomization to the way that TCP socket pools are limited so that an observing site cannot infer this information with high certainty.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Network"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "arichiv@chromium.org",
+        "editors": [
+          "dschinazi@chromium.org",
+          "awillia@chromium.org",
+          "aaj@google.com",
+          "mmenke@chromium.org",
+          "miketaylr@chromium.org",
+          "ladan@chromium.org"
+        ],
+        "owners": [
+          "arichiv@chromium.org"
+        ],
+        "created": {
+          "by": "arichiv@chromium.org",
+          "when": "2025-09-09 09:21:52.368173"
+        },
+        "updated": {
+          "by": "arichiv@chromium.org",
+          "when": "2026-03-06 10:20:59.291369"
+        },
+        "accurate_as_of": "2025-10-15 13:48:55.943245",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/415691664",
+            "blink_components": [
+              "Blink>Network"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "arichiv@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1299",
+              "notes": "Current global cap of 128-900 (as allowed by OS)",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/550",
+              "notes": "Current global cap of 256",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6267095994204160
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5183481574850560,
+        "name": "Web Install API",
+        "summary": "Allows a website to install a web app. The API provides 3 signatures, with 0, 1, and 2 parameters, respectively. When invoked, the website installs either itself, or another site from a different origin, as a web app (depending on the provided parameters). All 3 signatures will be experimented with in parallel.\n\n*Terminology - A site installing itself is a \"current document install\". A site installing another site is a \"background document install\".",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>AppManifest"
+        ],
+        "resources": {
+          "samples": [
+            "https://kbhlee2121.github.io/pwa/web-install/index.html",
+            "https://microsoftedge.github.io/Demos/pwa-pwastore"
+          ],
+          "docs": [
+            "https://docs.google.com/document/d/12nSXJLm8mW0gWZ_yjlXfrV8r9gwJliVt4WVa-209-KA/edit?tab=t.0"
+          ]
+        },
+        "creator": "luigonza@microsoft.com",
+        "editors": [],
+        "owners": [
+          "liahiscock@microsoft.com",
+          "kristinlee@microsoft.com"
+        ],
+        "created": {
+          "by": "luigonza@microsoft.com",
+          "when": "2023-08-29 15:10:30.752766"
+        },
+        "updated": {
+          "by": "liahiscock@microsoft.com",
+          "when": "2026-04-15 17:18:24.485782"
+        },
+        "accurate_as_of": "2025-07-07 18:06:24.841461",
+        "standards": {
+          "spec": "https://github.com/w3c/manifest/pull/1175",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/333795265",
+            "blink_components": [
+              "Blink>AppManifest"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "liahiscock@microsoft.com",
+              "kristinlee@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": false,
+            "status": {
+              "text": "In development",
+              "val": 3
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1179",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/463",
+              "notes": null,
+              "text": "Oppose",
+              "val": 7
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/w3ctag/ethical-web-principles/issues/120#issuecomment-2285348765",
+              "notes": "https://github.com/w3ctag/ethical-web-principles/issues/120#issuecomment-2285431557"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": "pwastore.io - https://www.reddit.com/r/PWA/comments/1o1excp/comment/niit2jh/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5188225097793536
+        ],
+        "finch_urls": []
+      }
+    ],
+    "In developer trial (Behind a flag)": [
+      {
+        "id": 4709671889534976,
+        "name": "Deprecate and remove XSLT",
+        "summary": "[XSLT v1.0](https://www.w3.org/TR/xslt-10/), which all browsers adhere to, was standardized in 1999. In the meantime, XSLT has evolved to v2.0 and v3.0, adding features, and growing apart from the old version frozen into browsers. This lack of advancement, coupled with the rise of JavaScript libraries and frameworks that offer more flexible and powerful DOM manipulation, has led to a significant decline in the use of client-side XSLT. Its role within the web browser has been largely superseded by JavaScript-based technologies, such as JSON and React.\n\nChromium uses the **libxslt** library to process these transformations, and [libxslt was unmaintained](https://discourse.gnome.org/t/stepping-down-as-libxslt-maintainer/27615) for ~6 months of 2025. Libxslt is a complex, aging C codebase of the type notoriously susceptible to memory safety vulnerabilities like buffer overflows, which can lead to arbitrary code execution. Because client-side XSLT is now a niche, rarely-used feature, these libraries receive far less maintenance and security scrutiny than core JavaScript engines, yet they represent a direct, potent attack surface for processing untrusted web content. Indeed, XSLT is the source of several recent high-profile security exploits that continue to put browser users at risk. \n\nFor these reasons, Chromium (along with both other browser engines, Gecko and WebKit) plans to deprecate and remove XSLT from the web platform. The modern web is powered by three major browser engines: [Blink](https://www.chromium.org/blink/) (Chromium), [Gecko](https://firefox-source-docs.mozilla.org/overview/gecko.html) (Firefox), and [WebKit](https://webkit.org/) (Safari). They interpret code to render pages. \n\nFor more details, see this [Chrome for Developers article](https://developer.chrome.com/docs/web-platform/deprecating-xslt). ",
+        "feature_type_int": 3,
+        "unlisted": false,
+        "enterprise_impact": 4,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 140,
+        "blink_components": [
+          "Blink>XML"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://github.com/whatwg/html/issues/11523"
+          ]
+        },
+        "creator": "masonfreed@google.com",
+        "editors": [
+          "masonfreed@google.com"
+        ],
+        "owners": [
+          "masonf@chromium.org"
+        ],
+        "created": {
+          "by": "masonfreed@google.com",
+          "when": "2025-08-01 19:18:08.633405"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-07-15 10:40:22.323201"
+        },
+        "accurate_as_of": "2026-07-13 17:48:14.528731",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/435623334",
+            "blink_components": [
+              "Blink>XML"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "masonf@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/whatwg/html/issues/11523#issuecomment-3149788558",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/whatwg/html/issues/11523#issuecomment-3149280766",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Negative",
+              "val": 5,
+              "url": "https://github.com/whatwg/html/issues/11523#issuecomment-3150969971",
+              "notes": "Existing users of XSLT are understandably negative on this removal, and have been very vocal about it on the standards issue and elsewhere. There are also mixed/positive reactions from some folks in the public discussions, who seem to agree with the removal of XSLT from browsers. But the average/overall developer opinion (as measured by comments on public threads) is negative.\n\nVarious public discussions:\n- https://news.ycombinator.com/item?id=44952185\n- https://www.reddit.com/r/programming/comments/1mxdm22/xslt_removal_will_break_multiple_government_and/\n- https://news.ycombinator.com/item?id=44987346\n- https://news.ycombinator.com/item?id=44987552\n- https://news.ycombinator.com/item?id=44987239\n- https://news.ycombinator.com/item?id=44909599"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5074052015980544
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 4830298126417920,
+        "name": "FileAPI: Blob.bytes()",
+        "summary": "The bytes() method of the Blob interface returns a Promise that resolves with a Uint8Array containing the contents of the blob as an array of bytes.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 139,
+        "blink_components": [
+          "Blink>Storage>FileAPI"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://w3c.github.io/FileAPI/#dom-blob-bytes"
+          ]
+        },
+        "creator": "zino@chromium.org",
+        "editors": [],
+        "owners": [
+          "zeesuyeon@gmail.com",
+          "zino@chromium.org"
+        ],
+        "created": {
+          "by": "zino@chromium.org",
+          "when": "2025-07-29 05:46:31.692232"
+        },
+        "updated": {
+          "by": "elmirakalali@google.com",
+          "when": "2025-11-17 20:14:40.048894"
+        },
+        "accurate_as_of": "2025-07-29 05:46:31.691889",
+        "standards": {
+          "spec": "https://www.w3.org/TR/FileAPI",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": null,
+            "blink_components": [
+              "Blink>Storage>FileAPI"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "zeesuyeon@gmail.com",
+              "zino@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://www.firefox.com/en-US/firefox/128.0/releasenotes",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://webkit.org/blog/15865/webkit-features-in-safari-18-0",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6180061795057664
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5206029088063488,
+        "name": "Menu elements",
+        "summary": "A menu is a way to group menu items together and provide users the ability to execute commands. The existing <menu> element represents a “toolbar” listing of commands, and despite its name, it is not programmatically exposed as a \"menu\" or \"menubar\" to accessibility tools, or the web platform. Furthermore, there is no native support to make listed commands look and behave cohesively.\r\n\r\nNew menu elements make it easier for developers to follow ARIA practices on menu and menubar, while taking advantage of new web platform features that underpin menu systems. These elements include `<menubar>`, `<menulist>`, and `<menuitem>` elements.\r\n\r\nThese elements expand on the baseline behaviors popover and anchor positioning provide, and come with expected keyboard navigation behavior out of the box, ensuring consistent experiences for users of all kinds, on the platform they are engaging with.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>HTML>Menu Elements"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "dom@chromium.org",
+        "editors": [
+          "jarhar@chromium.org",
+          "masonf@chromium.org",
+          "dom@chromium.org",
+          "dbaron@chromium.org",
+          "dgrogan@chromium.org"
+        ],
+        "owners": [
+          "dbaron@chromium.org"
+        ],
+        "created": {
+          "by": "dom@chromium.org",
+          "when": "2025-06-10 15:22:30.460731"
+        },
+        "updated": {
+          "by": "dbaron@chromium.org",
+          "when": "2026-07-01 19:25:50.273078"
+        },
+        "accurate_as_of": "2025-06-10 15:22:30.460438",
+        "standards": {
+          "spec": "https://github.com/whatwg/html/pull/12011",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/406566432",
+            "blink_components": [
+              "Blink>HTML>Menu Elements"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dbaron@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1317",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/580",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5079581828317184
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5080415048171520,
+        "name": "Restricting spelling and grammar highlights",
+        "summary": "This experiment would change when spelling and grammar hints are applied to text fields to reduce the of websites ability to extract information about the user’s dictionary, specifically:\r\n* Hints would not be applied to a text field that has not had user interaction (an autofocus is insufficient, there must be a click or key press of some kind relative to that field).\r\n* Hints would only be applied once per user interaction (the text cannot be changed programmatically and have hints applied without a click or key press of some kind relative to that field).\r\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Editing>Spellcheck"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "arichiv@chromium.org",
+        "editors": [
+          "aaj@google.com",
+          "miketaylr@chromium.org",
+          "ladan@chromium.org"
+        ],
+        "owners": [
+          "arichiv@chromium.org"
+        ],
+        "created": {
+          "by": "arichiv@chromium.org",
+          "when": "2025-10-09 15:36:57.428824"
+        },
+        "updated": {
+          "by": "arichiv@chromium.org",
+          "when": "2026-02-08 19:25:21.408669"
+        },
+        "accurate_as_of": "2025-10-09 15:36:57.428503",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/415712674",
+            "blink_components": [
+              "Blink>Editing>Spellcheck"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "arichiv@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1294",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/546",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5054141659480064
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5201653661827072,
+        "name": "Upsert",
+        "summary": "ECMAScript proposal for Map.prototype.getOrInsert, Map.prototype.getOrInsertComputed, WeakMap.prototype.getOrInsert, and WeakMap.prototype.getOrInsertComputed.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>JavaScript>Language"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "olivf@google.com",
+        "editors": [
+          "rezvan@google.com"
+        ],
+        "owners": [
+          "olivf@google.com"
+        ],
+        "created": {
+          "by": "olivf@google.com",
+          "when": "2025-11-06 10:41:34.064807"
+        },
+        "updated": {
+          "by": "olivf@google.com",
+          "when": "2025-12-22 09:24:39.361842"
+        },
+        "accurate_as_of": "2025-12-22 09:24:39.361842",
+        "standards": {
+          "spec": "https://github.com/tc39/proposal-upsert",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/u/1/issues/434977728",
+            "blink_components": [
+              "Blink>JavaScript>Language"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "olivf@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://www.firefox.com/en-US/firefox/144.0/releasenotes",
+              "notes": "Firefox now supports the upsert proposal. This adds getOrInsert and getOrInsertComputed methods to Map and WeakMap. These methods either return the value associated with a key, or insert a default value, and then return that value, simplifying handling of cases where it's not known if a key is already present in the Map or WeakMap.",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://developer.apple.com/documentation/safari-release-notes/safari-18_4-release-notes",
+              "notes": "Added support for Map.prototype.getOrInsert and WeakMap.prototype.getOrInsert. (138955824)",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5118625686093824
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5148463647686656,
+        "name": "Web App Manifest: specify update eligibility, icon urls are Cache-Control: immutable",
+        "summary": "Specify an update eligibility algorithm in the manifest spec. This makes the update process more deterministic and predictable, giving the dev more control over whether (and when) updates should apply to existing installations, and allowing removal of the 'update check throttle' that user agents currently need to implement to avoid wasting network resources.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 136,
+        "blink_components": [
+          "Blink>AppManifest"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "dibyapal@google.com",
+        "editors": [
+          "dmurph@google.com",
+          "dibyapal@google.com",
+          "pwa-scrum@google.com"
+        ],
+        "owners": [
+          "dibyapal@google.com",
+          "dmurph@google.com",
+          "finnur@google.com"
+        ],
+        "created": {
+          "by": "dibyapal@google.com",
+          "when": "2025-03-31 21:49:10.652675"
+        },
+        "updated": {
+          "by": "dibyapal@google.com",
+          "when": "2026-01-23 22:01:49.994539"
+        },
+        "accurate_as_of": "2026-01-23 22:01:49.994539",
+        "standards": {
+          "spec": "https://www.w3.org/TR/appmanifest/#updating",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/403253129",
+            "blink_components": [
+              "Blink>AppManifest"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dibyapal@google.com",
+              "dmurph@google.com",
+              "finnur@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1330",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/593",
+              "notes": "Agreement on update approach with WebKit part of the discussion in [1].\n\n[1] https://docs.google.com/document/d/1QDqllh8inOcIkTrblERm4HRKYh8Ce9Lu5S7WhOygs_0/edit?tab=t.0#bookmark=id.b76fa6xoh2i9.",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://www.w3.org/2022/09/13-webapps-minutes.html#t02",
+              "notes": "Discussions at TPAC 2022 and 2023 involved active discussion with developers, with a positive consensus."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5163113311371264
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6680245553987584,
+        "name": "WebGPU: Uniform buffer standard layout",
+        "summary": "Functionality added to the WebGPU spec after its first shipment in a browser.\n\nUniform buffers declared in WGSL shaders are no longer required to have 16-byte alignment on array elements, or to pad nested structure offsets to a multiple of 16 bytes.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "jrprice@google.com",
+        "editors": [
+          "cwallez@google.com",
+          "dneto@google.com",
+          "fbeaufort@google.com"
+        ],
+        "owners": [
+          "jrprice@google.com"
+        ],
+        "created": {
+          "by": "jrprice@google.com",
+          "when": "2025-10-22 19:33:43.811374"
+        },
+        "updated": {
+          "by": "jrprice@google.com",
+          "when": "2026-01-05 15:11:35.037995"
+        },
+        "accurate_as_of": "2026-01-05 15:11:35.037995",
+        "standards": {
+          "spec": "https://www.w3.org/TR/WGSL/#language_extension-uniform_buffer_standard_layout",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/452662924",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "jrprice@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1205#issuecomment-3312534193",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/294#issuecomment-1877411933",
+              "notes": null,
+              "text": "Closed Without a Position",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6238030620917760
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5110744177836032,
+        "name": "at-rule: CSS Feature Detection",
+        "summary": "This feature adds an `at-rule()` function to CSS `@supports` which enables authors to feature-detect support for CSS at-rules.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "luigonza@microsoft.com",
+        "editors": [
+          "mhochk@microsoft.com"
+        ],
+        "owners": [
+          "kbabbitt@microsoft.com"
+        ],
+        "created": {
+          "by": "luigonza@microsoft.com",
+          "when": "2025-10-14 13:05:54.458456"
+        },
+        "updated": {
+          "by": "kbabbitt@microsoft.com",
+          "when": "2026-07-08 19:40:48.525981"
+        },
+        "accurate_as_of": "2026-07-08 19:40:48.525981",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-conditional-5/#support-definition-at-rules",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40211832",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "kbabbitt@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1310",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/565",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "There have been several requests for this feature; some examples:\nhttps://github.com/w3c/csswg-drafts/issues/9743\nhttps://ruhr.social/@nilsbinder/112721678680237204\nhttps://mastodon.social/@xro/113106213499516093\nhttps://bsky.app/profile/badrihippo.fosstodon.org.ap.brid.gy/post/3m6vupwqhbkk2\n"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5118748151382016
+        ],
+        "finch_urls": []
+      }
+    ]
+  },
+  "total_count": 29
+}

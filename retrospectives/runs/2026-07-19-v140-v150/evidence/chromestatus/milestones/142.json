@@ -1,0 +1,2332 @@
+{
+  "features_by_type": {
+    "Enabled by default": [
+      {
+        "id": 6155213736116224,
+        "name": "::view-transition position absolute",
+        "summary": "View Transition feature uses a pseudo sub-tree of the element, with ::view-transition being the root of that transition. Previously ::view-transition element was specified to have a position: fixed. CSSWG made a decision to make this instead position: absolute.\r\n\r\nIn effect, this should not be noticeable since this element's containing block remains the snapshot containing block in either absolute or fixed case.\r\n\r\nThe only noticeable change is a change in getComputedStyle.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>ViewTransitions"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "vmpstr@google.com",
+        "editors": [],
+        "owners": [
+          "vmpstr@google.com"
+        ],
+        "created": {
+          "by": "vmpstr@google.com",
+          "when": "2025-09-25 18:17:32.971961"
+        },
+        "updated": {
+          "by": "vmpstr@google.com",
+          "when": "2025-09-25 18:51:47.923563"
+        },
+        "accurate_as_of": "2025-09-25 18:17:32.971685",
+        "standards": {
+          "spec": "https://github.com/w3c/csswg-drafts/issues/12116",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/439800102",
+            "blink_components": [
+              "Blink>ViewTransitions"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "vmpstr@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://wpt.fyi/results/css/css-view-transitions/pseudo-get-computed-style.html",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5178355100024832
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5120827674722304,
+        "name": ":target-before and :target-after pseudo-classes",
+        "summary": "These pseudo-classes match scroll markers that are, respectively, before or after the active marker (the one matching :target-current) within the same scroll marker group, as determined by flat tree order:\r\n\r\n* :target-before matches all scroll markers that precede the active marker in the flat tree order within the group.\r\n\r\n* :target-after matches all scroll markers that follow the active marker in the flat tree order within the group.\r\n\r\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [
+            "https://drafts.csswg.org/css-overflow-5/#example-cf830461"
+          ],
+          "docs": []
+        },
+        "creator": "sakhapov@chromium.org",
+        "editors": [],
+        "owners": [
+          "sakhapov@chromium.org"
+        ],
+        "created": {
+          "by": "sakhapov@chromium.org",
+          "when": "2025-09-03 15:47:29.905831"
+        },
+        "updated": {
+          "by": "danielrsmith@google.com",
+          "when": "2025-11-13 23:15:30.665110"
+        },
+        "accurate_as_of": "2025-10-06 10:25:45.757002",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-overflow-5/#active-before-after-scroll-markers",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/440475008",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "sakhapov@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1291",
+              "notes": "Overall Carousel proposal:\nhttps://github.com/mozilla/standards-positions/issues/1161",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/544",
+              "notes": "Overall Carousel proposal:\nhttps://github.com/WebKit/standards-positions/issues/447",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": null,
+              "notes": "The feature has been requested by the early adopters of the CSS Carousel and other authors in various discussions."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": ""
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5202086342033408
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5176474637959168,
+        "name": "FedCM—Support showing third-party iframe origins in the UI",
+        "summary": "Currently, FedCM always shows the toplevel site in its UI.\r\n\r\nThis works well when the iframe is conceptually first-party (e.g. foo.com may have an iframe foostatic.com, which is not meaningful to the user).\r\n\r\nBut if the iframe is actually third-party, it would be better to make it possible to show the iframe origin in the UI so that the user better understands who they are sharing their credentials with. For example, a photo editor may be embedded in a book publishing web app and may want to let users access files they have previously stored with the photo editor.\r\n\r\nThis proposal allows doing so.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Identity>FedCM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "cbiesinger@chromium.org",
+        "editors": [
+          "yigu@chromium.org",
+          "npm@chromium.org",
+          "goto@chromium.org"
+        ],
+        "owners": [
+          "cbiesinger@chromium.org"
+        ],
+        "created": {
+          "by": "cbiesinger@chromium.org",
+          "when": "2025-08-01 18:25:05.583994"
+        },
+        "updated": {
+          "by": "cbiesinger@chromium.org",
+          "when": "2025-10-20 15:05:12.295294"
+        },
+        "accurate_as_of": "2025-10-20 15:05:12.295294",
+        "standards": {
+          "spec": "https://github.com/w3c-fedid/FedCM/pull/774",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/390581529",
+            "blink_components": [
+              "Blink>Identity>FedCM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "cbiesinger@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "For incremental improvements to FedCM, Firefox has asked us not to file standards position, and they will instead provide feedback in the GitHub PR.. Firefox engineer \"not willing to block this\", https://github.com/w3c-fedid/FedCM/issues/725#issuecomment-3189376203",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "Safari is not implementing FedCM in general. They have closed other position requests for specific FedCM additions as duplicates of the general FedCM position request, e.g. https://github.com/WebKit/standards-positions/issues/120#issuecomment-1914040695",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "This was requested by web developer partners.\n\nOur partners have tried out the Chrome implementation behind a flag and found it to match their expectations."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5130541640843264
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 4530756656562176,
+        "name": "Interest Invokers (the `interestfor` attribute)",
+        "summary": "This feature adds an `interestfor` attribute to <button> and <a> elements. This attribute adds \"interest\" behaviors to the element, such that when the user \"shows interest\" in the element, actions are triggered on the target element, such as showing a popover. The user agent will handle detecting when the user \"shows interest\" in the element, via methods such as hovering the element with a mouse, hitting special hotkeys on the keyboard, or long-pressing the element on touchscreens. When interest is shown or lost, an `InterestEvent` will be fired on the target, which have default actions in the case of popovers - showing and hiding the popover.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>DOM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "lwarlow@igalia.com",
+        "editors": [
+          "masonfreed@google.com",
+          "lwarlow@igalia.com",
+          "keithamus@gmail.com",
+          "keithamus@github.com"
+        ],
+        "owners": [
+          "masonf@chromium.org",
+          "chromium@keithcirkel.co.uk"
+        ],
+        "created": {
+          "by": "lwarlow@igalia.com",
+          "when": "2024-02-25 18:21:38.741321"
+        },
+        "updated": {
+          "by": "masonfreed@google.com",
+          "when": "2025-09-29 14:02:13.150774"
+        },
+        "accurate_as_of": "2025-09-18 20:33:18.985427",
+        "standards": {
+          "spec": "https://github.com/whatwg/html/pull/11006",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/326681249",
+            "blink_components": [
+              "Blink>DOM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "masonf@chromium.org",
+              "chromium@keithcirkel.co.uk"
+            ],
+            "origintrial": true,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Origin trial",
+              "val": 8
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1181",
+              "notes": "The comments are generally supportive, but without going so far as to mark the issue with \"Support\". The general tone is supportive of \"option 3\", which is the one being pursued, to add an item to the context menu on mobile interfaces.",
+              "text": "Neutral",
+              "val": 8
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/464",
+              "notes": "This position is not explicitly marked as negative, but the comments (including in the linked HTML issue) are negative: \"We therefore remain opposed to this feature\"",
+              "text": "Negative",
+              "val": 7
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": "https://github.com/mozilla/standards-positions/issues/1181#issuecomment-3097924236",
+              "notes": "See the linked comment, for a summary of developer opinions from multiple venues. Developers are highly positive on this feature, recognizing the fact that 94+% (https://docs.google.com/spreadsheets/d/11Bt_FCAqu1hd5llGRGpzgwlgHaqLmOC4SJEMRtNQY-g/edit?gid=0) of top-50 production sites use some form of hover-triggered UI."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5467102711644160
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5151468306956288,
+        "name": "Interoperable pointerrawupdate events exposed only in secure contexts",
+        "summary": "The PointerEvents spec restricted pointerrawupdate to secure contexts in 2020, hiding both the event firing and the global event listeners from insecure contexts.  Through this feature, Chrome will match the updated spec and become interoperable with other major browsers.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 141,
+        "blink_components": [
+          "Blink>Input"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "mustaq@google.com",
+        "editors": [],
+        "owners": [
+          "mustaq@chromium.org"
+        ],
+        "created": {
+          "by": "mustaq@google.com",
+          "when": "2025-09-09 15:42:23.272721"
+        },
+        "updated": {
+          "by": "mustaq@google.com",
+          "when": "2026-01-06 14:53:19.961243"
+        },
+        "accurate_as_of": "2026-01-06 14:53:19.961243",
+        "standards": {
+          "spec": "https://w3c.github.io/pointerevents/#the-pointerrawupdate-event",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/404479704",
+            "blink_components": [
+              "Blink>Input"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "mustaq@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://bugzil.la/1550462",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          4974025491218432
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5152728072060928,
+        "name": "Local network access restrictions",
+        "summary": "Chrome 142 restricted the ability to make requests to the user's local network, gated behind a permission prompt. A local network request is any request from a public website to a local IP address or loopback, or from a local website (for example, intranet) to loopback. \n\nGating the ability for websites to perform these requests behind a permission mitigates the risk of cross-site request forgery attacks against local network devices such as routers, and reduces the ability of sites to use these requests to fingerprint the user's local network.\n\nThis permission is restricted to secure contexts. If granted, the permissions additionally relax mixed content blocking for local network requests (since many local devices are not able to obtain publicly trusted TLS certificates for various reasons).\n\nThis work supersedes a prior effort called [Private Network Access](https://chromestatus.com/feature/5737414355058688), which used preflight requests to have local devices opt in. For more information on this feature, see [Adapting your website for new Local Network Access restrictions in Chrome](https://docs.google.com/document/d/1QQkqehw8umtAgz5z0um7THx-aoU251p705FbIQjDuGs/edit?usp=sharing).\n\nChrome 145 introduced more granular permissions for websites requesting access to a user's local network. The previous single `local-network-access permission` is being split into two distinct permissions:\n\n* `local-network`: Grants access to IP addresses in the local network space (for example, intranets, internal devices).\n* `loopback-network`: Grants access to loopback IP addresses (for example, `localhost`, `127.0.0.1`).\n\nThe old `local-network` permission will remain as an alias, ensuring existing configurations and permissions policies continue to function as expected. \n\nThis change provides both users and Admins with more precise control over how websites interact with internal network resources. Current enterprise policies managing local network access will not be affected by this change.\n\nChrome 146 introduces two new enterprise policies for managing local network access restrictions:  [LocalNetworkAccessIpAddressSpaceOverrides](https://chromeenterprise.google/policies/#LocalNetworkAccessIpAddressSpaceOverrides) and  [LocalNetworkAccessPermissionsPolicyDefaultEnabled](https://chromeenterprise.google/policies/#LocalNetworkAccessPermissionsPolicyDefaultEnabled). These policies can be set using [custom configurations](https://support.google.com/chrome/a/answer/14749672).\n\nChrome 147 expands Local Network Access restrictions to include WebSocket and WebTransport connections.\n\nIn Chrome 156, the [LocalNetworkAccessRestrictionsTemporaryOptOut](https://chromeenterprise.google/policies/#LocalNetworkAccessRestrictionsTemporaryOptOut) policy will be removed.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 135,
+        "blink_components": [
+          "Blink>SecurityFeature>LocalNetworkAccess"
+        ],
+        "resources": {
+          "samples": [
+            "https://local-network-access-testing.glitch.me"
+          ],
+          "docs": [
+            "https://github.com/explainers-by-googlers/local-network-access",
+            "https://docs.google.com/document/d/1n0kKxt9pS9qDlu_9i5W8IXA594r4pUOKmN9H35cZ8j0/edit?usp=sharing"
+          ]
+        },
+        "creator": "cthomp@chromium.org",
+        "editors": [
+          "hchao@chromium.org",
+          "jdeblasio@chromium.org",
+          "clamy@chromium.org",
+          "dadrian@google.com"
+        ],
+        "owners": [
+          "cthomp@chromium.org"
+        ],
+        "created": {
+          "by": "cthomp@chromium.org",
+          "when": "2025-03-06 22:16:50.390905"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-07-15 12:31:13.053381"
+        },
+        "accurate_as_of": "2026-06-15 23:41:53.943000",
+        "standards": {
+          "spec": "https://wicg.github.io/local-network-access",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/394009026",
+            "blink_components": [
+              "Blink>SecurityFeature>LocalNetworkAccess"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "cthomp@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "In development",
+              "val": 3
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://support.mozilla.org/en-US/kb/control-personal-device-local-network-permissions-firefox",
+              "notes": "Firefox is shipping.\n\nRequest for signals: \n\nhttps://github.com/mozilla/standards-positions/issues/1260",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "Request for signals:\n\nhttps://github.com/WebKit/standards-positions/issues/520",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Mixed signals",
+              "val": 3,
+              "url": "https://github.com/explainers-by-googlers/local-network-access/issues",
+              "notes": "Feedback from developers has been mixed, both due the new burden of a permission prompt (compared to PNA) and from some of the difficulty of navigating mixed content (the same as PNA). Many developers understand the reasoning behind adding the new permission though, and are productively engaging on how they can avoid issues."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": "Brave ships a \"localhost access\" permission (see https://brave.com/privacy-updates/27-localhost-permission/)"
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5079334127403008
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6415506970116096,
+        "name": "Media session: add reason to enterpictureinpicture action details",
+        "summary": "Adds `enterPictureInPictureReason` to the `MediaSessionActionDetails` sent to the `enterpictureinpicture` action in the Media Session API. This allows developers to distinguish between `enterpictureinpicture` actions triggered explicitly by the user (e.g. from a button in the user agent) and `enterpictureinpicture` actions triggered automatically by the user agent due to the content becoming occluded.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Media>Session"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "steimel@chromium.org",
+        "editors": [],
+        "owners": [
+          "steimel@chromium.org"
+        ],
+        "created": {
+          "by": "steimel@chromium.org",
+          "when": "2025-08-14 17:19:23.909237"
+        },
+        "updated": {
+          "by": "steimel@chromium.org",
+          "when": "2025-10-01 07:49:54.215391"
+        },
+        "accurate_as_of": "2025-09-23 00:06:49.949636",
+        "standards": {
+          "spec": "https://github.com/w3c/mediasession/pull/362",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/u/1/issues/446738067",
+            "blink_components": [
+              "Blink>Media>Session"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "steimel@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/w3c/mediasession/pull/362",
+              "notes": "Approved specification change",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": null,
+              "notes": "We've received requests from multiple sites for this information"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          4701574769278976
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5412736871825408,
+        "name": "Mobile and desktop parity for select element rendering modes",
+        "summary": "By using the size and multiple attributes, the select element can be rendered as an in-page listbox or a button with a popup. However, these modes are not consistently available across mobile and desktop chrome. Currently, in-page listbox rendering is not available on mobile, and button with popup is not available on desktop when the multiple attribute is present.\n\nThis feature adds the listbox to mobile and adds a multi-select popup to desktop, and makes the opt-ins with the size and multiple attributes result in the same rendering mode across mobile and desktop. Here is a summary of the changes:\n- When the size attribute has a value greater than 1, in-page rendering will always be used. Previously, this was ignored on mobile.\n- When the multiple attribute is set with no size attribute, in-page rendering will be used. Previously, this was a popup instead of an in-page listbox on mobile.\n- When the multiple attribute is set with size=1, a popup will be used. Previously, this was an in-page listbox on desktop.\n\nBy making this change, we are providing a foundation to bring customizable select to in-page rendering and multi-select. Customizable select currently only works for single-selects with a popup.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 141,
+        "blink_components": [
+          "Blink>Forms>Select"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "jarhar@chromium.org",
+        "editors": [],
+        "owners": [
+          "jarhar@chromium.org"
+        ],
+        "created": {
+          "by": "jarhar@chromium.org",
+          "when": "2025-09-04 15:22:37.430694"
+        },
+        "updated": {
+          "by": "elmirakalali@google.com",
+          "when": "2025-10-17 19:58:38.135253"
+        },
+        "accurate_as_of": "2025-10-10 17:19:56.458064",
+        "standards": {
+          "spec": "https://github.com/whatwg/html/pull/11460",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/439964654",
+            "blink_components": [
+              "Blink>Forms>Select"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "jarhar@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1274",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/532",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6257202469928960
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5184992749289472,
+        "name": "Range syntax for style container queries and if()",
+        "summary": "This feature enhances CSS style queries and the if() function by adding support for range syntax.\r\n\r\nThis extends style queries beyond exact value matching (e.g., style(--theme: dark)). Developers can now use comparison operators (>, <, etc.) to compare custom properties, literal values (like 10px or 25%), and values from substitution functions like attr() and env(). For a comparison to be valid, both sides must resolve to the same data type. This is limited to the following numeric types: <length>, <number>, <percentage>, <angle>, <time>, <frequency>, and <resolution>.\r\n\r\nThis allows for creating more dynamic components that adapt based on a range of inputs, not just predefined states.\r\n\r\nExamples:\r\n\r\n/* Compare a custom property against a literal length */\r\n@container style(--inner-padding > 1em) {\r\n  .card { border: 2px solid; }\r\n}\r\n\r\n/* Compare two literal values */\r\n@container style(1em < 20px) {\r\n  ...\r\n}\r\n\r\n/* Using style ranges in if() */\r\n.item-grid {\r\n  background-color: if(style(attr(data-columns, type<number>) > 2): lightblue; else: white);\r\n}",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "moonira@google.com",
+        "editors": [],
+        "owners": [
+          "moonira@google.com"
+        ],
+        "created": {
+          "by": "moonira@google.com",
+          "when": "2025-07-10 15:25:28.189642"
+        },
+        "updated": {
+          "by": "danielrsmith@google.com",
+          "when": "2025-11-13 23:17:55.584964"
+        },
+        "accurate_as_of": "2025-10-27 10:11:22.181615",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-conditional-5/#typedef-style-range",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/408011559",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "moonira@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1270",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/527",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/w3c/csswg-drafts/issues/8376",
+              "notes": "Positive feedback from developers in the original github issue."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6330966125314048
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5078337520926720,
+        "name": "Sticky user activation across same-origin renderer-initiated navigations",
+        "summary": "This feature preserves the sticky user activation state after a page navigates to another same-origin page. The lack of user activation in the post-navigation page prevents some use cases like showing virtual keyboards on auto-focus, and this has been a blocker for the developers who want to build Multi-page Applications (MPAs) over Single-page Applications (SPAs).\n\nNote that browser-initiated navigation requests (reload, history navigation, typed URL in address bar etc) are not covered by this feature.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 140,
+        "blink_components": [
+          "Blink>Input"
+        ],
+        "resources": {
+          "samples": [
+            "https://vmpstr.github.io/htmldemos/activation/a.html"
+          ],
+          "docs": []
+        },
+        "creator": "mustaq@google.com",
+        "editors": [
+          "vmpstr@chromium.org"
+        ],
+        "owners": [
+          "mustaq@chromium.org"
+        ],
+        "created": {
+          "by": "mustaq@google.com",
+          "when": "2025-07-31 20:45:08.311393"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-03-19 13:06:11.279271"
+        },
+        "accurate_as_of": "2025-12-11 21:30:42.773979",
+        "standards": {
+          "spec": "https://github.com/whatwg/html/pull/11454",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/433729626",
+            "blink_components": [
+              "Blink>Input"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "mustaq@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/WICG/view-transitions/issues/239#issuecomment-2851155373",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/whatwg/html/issues/11328#:~:text=anne%3A%20sounds%20good.%20i%20dont%20think%20we%20will%20regret%20this%2C%20but%20we%20will%20have%20to%20test%20it%20carefully",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/WICG/view-transitions/issues/239",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5168877444792320
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5182756304846848,
+        "name": "Stricter *+json MIME token validation for JSON modules",
+        "summary": "Reject JSON module script responses whose MIME type’s type or subtype contains non‑HTTP token code points (e.g. spaces) when matched via *+json; aligns with MIME Sniffing spec and other engines. This change is part of the Interop2025 modules focus area.\n\nRelated Issues: https://bugs.webkit.org/show_bug.cgi?id=297161\nRelated PR: https://github.com/web-platform-tests/wpt/pull/54219\n\nDraft CL: https://chromium-review.googlesource.com/c/chromium/src/+/6931461",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Network"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "issackjohn@microsoft.com",
+        "editors": [],
+        "owners": [
+          "issackjohn@microsoft.com",
+          "daniec@microsoft.com"
+        ],
+        "created": {
+          "by": "issackjohn@microsoft.com",
+          "when": "2025-09-05 21:12:49.946564"
+        },
+        "updated": {
+          "by": "issackjohn@microsoft.com",
+          "when": "2025-10-07 16:43:48.375368"
+        },
+        "accurate_as_of": "2025-10-07 16:43:48.375368",
+        "standards": {
+          "spec": "https://mimesniff.spec.whatwg.org/#parse-a-mime-type",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/440128360",
+            "blink_components": [
+              "Blink>Network"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "issackjohn@microsoft.com",
+              "daniec@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5202421114601472
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6265596395913216,
+        "name": "Support `download` attribute in SVG <a> element ",
+        "summary": "This feature introduces support for the download attribute on the SVGAElement interface in Chromium, aligning with the SVG 2 specification. The download attribute enables authors to specify that the target of an SVG hyperlink should be downloaded rather than navigated to, mirroring the behavior already supported in HTMLAnchorElement. This enhancement promotes interoperability across major browsers and ensures consistent behavior between HTML and SVG link elements, thereby improving developer experience and user expectations.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>SVG"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "ragsharma@microsoft.com",
+        "editors": [],
+        "owners": [
+          "ragsharma@microsoft.com"
+        ],
+        "created": {
+          "by": "ragsharma@microsoft.com",
+          "when": "2025-07-02 11:43:02.117235"
+        },
+        "updated": {
+          "by": "ragsharma@microsoft.com",
+          "when": "2025-10-06 09:37:21.939037"
+        },
+        "accurate_as_of": "2025-10-06 09:37:21.939037",
+        "standards": {
+          "spec": "https://svgwg.org/svg2-draft/linking.html#InterfaceSVGAElement",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40589293",
+            "blink_components": [
+              "Blink>SVG"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "ragsharma@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/a#browser_compatibility",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/543",
+              "notes": null,
+              "text": "Support",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5084729363398656
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5225615177023488,
+        "name": "Web Speech API contextual biasing",
+        "summary": "This feature enables websites to support contextual biasing for speech recognition by adding a recognition phrase list to the Web Speech API.\n\nDevelopers can provide a list of phrases as well as updating them to apply a bias to the speech recognition models in favor of those phrases. This helps improve accuracy and relevance for domain-specific and personalized speech recognition. ",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Speech"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://docs.google.com/document/d/1CBH4r6rxSryY28hOhBQC-DZgjwWbO-FRYg_bbJIfBFo/edit?usp=sharing"
+          ]
+        },
+        "creator": "yrw@google.com",
+        "editors": [
+          "evliu@google.com"
+        ],
+        "owners": [
+          "yrw@google.com",
+          "evliu@google.com"
+        ],
+        "created": {
+          "by": "yrw@google.com",
+          "when": "2025-02-27 22:41:46.166651"
+        },
+        "updated": {
+          "by": "evliu@google.com",
+          "when": "2025-09-29 16:52:00.702377"
+        },
+        "accurate_as_of": "2025-09-29 16:52:00.702377",
+        "standards": {
+          "spec": "https://webaudio.github.io/web-speech-api/#speechreco-phraselist",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": null,
+            "blink_components": [
+              "Blink>Speech"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "yrw@google.com",
+              "evliu@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1255",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/517",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5267105802616832
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6467722716250112,
+        "name": "WebGPU: 'primitive_index' feature",
+        "summary": "This feature adds a new optional capability to WebGPU that exposes a new WGSL shader builtin, 'primitive_index'. This builtin provides a per-primitive index to fragment shaders on supported hardware, similar to the existing vertex_index and instance_index builtins. The primitive index is useful for advanced graphical techniques, such as virtualized geometry.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "bajones@chromium.org",
+        "editors": [
+          "bajones@chromium.org",
+          "dsinclair@google.com"
+        ],
+        "owners": [
+          "bajones@chromium.org"
+        ],
+        "created": {
+          "by": "bajones@chromium.org",
+          "when": "2025-08-22 19:28:19.443445"
+        },
+        "updated": {
+          "by": "bajones@chromium.org",
+          "when": "2025-09-22 16:52:25.030194"
+        },
+        "accurate_as_of": "2025-09-22 16:52:25.030194",
+        "standards": {
+          "spec": "https://gpuweb.github.io/gpuweb/#dom-gpufeaturename-primitive-index",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/342172182",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "bajones@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6300325157928960
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5116926821007360,
+        "name": "WebGPU: Texture formats tier1 and tier2",
+        "summary": "Extend GPU texture format support with capabilities like render attachment, blending, multisampling, resolve and storage_binding.\n\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "shanxing.mei@intel.com",
+        "editors": [
+          "cwallez@google.com",
+          "dneto@google.com",
+          "fbeaufort@google.com"
+        ],
+        "owners": [
+          "shanxing.mei@intel.com"
+        ],
+        "created": {
+          "by": "shanxing.mei@intel.com",
+          "when": "2025-09-18 02:26:59.142479"
+        },
+        "updated": {
+          "by": "elmirakalali@google.com",
+          "when": "2025-10-17 20:02:38.501402"
+        },
+        "accurate_as_of": "2025-09-18 02:26:59.142214",
+        "standards": {
+          "spec": "https://www.w3.org/TR/webgpu/#texture-formats-tier1",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/445725447",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "shanxing.mei@intel.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1205",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/294#issuecomment-1877411933",
+              "notes": null,
+              "text": "Closed Without a Position",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/gpuweb/gpuweb/issues/3837",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6277257568059392
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5067126381215744,
+        "name": "activeViewTransition property on document",
+        "summary": "View Transitions API allows developers to start visual transitions between different states. The primary SPA entry point to this is `startViewTransition()` which returns a transition object. This object contains several promises and functionality to track the transition progress, as well as allow manipulations such as skipping the transition or modifying its types.\r\n\r\nThe proposal here is ergonomic in nature: instead of requiring that users store this object in some sort of way for easy access, provide a `document.activeViewTransition` property that represents this object, or null if there is no transition ongoing.\r\n\r\nNote this similarly applies to MPA transitions, where the object is only available via `pageswap` and `pagereveal` events. In this proposal `document.activeViewTransition` would be set to this object for the duration of the transition.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>ViewTransitions>SPA"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "vmpstr@google.com",
+        "editors": [],
+        "owners": [
+          "vmpstr@google.com"
+        ],
+        "created": {
+          "by": "vmpstr@google.com",
+          "when": "2025-07-29 17:19:06.408052"
+        },
+        "updated": {
+          "by": "vmpstr@google.com",
+          "when": "2025-09-22 14:24:57.145059"
+        },
+        "accurate_as_of": "2025-09-22 14:24:57.145059",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-view-transitions-2",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/434949972",
+            "blink_components": [
+              "Blink>ViewTransitions>SPA"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "vmpstr@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1278",
+              "notes": "Discussed at https://github.com/w3c/csswg-drafts/issues/12407",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/536",
+              "notes": "Discussed at https://github.com/w3c/csswg-drafts/issues/12407",
+              "text": "Support",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5151435649712128
+        ],
+        "finch_urls": []
+      }
+    ],
+    "Deprecated": [],
+    "Removed": [],
+    "Stepped rollout": [
+      {
+        "id": 5182464632946688,
+        "name": "Origin-keyed process isolation",
+        "summary": "Chrome 142 introduces a shift in the process isolation policy from locking processes to a site like `https://example.com` to locking them to a specific origin, such as, `https://foo.example.com`.\nTo further enhance security, Chrome is moving to a more granular process isolation model called **Origin Isolation**. \nPreviously, Chrome used **Site Isolation**, which grouped different origins from the same site (for example, `https://a.example.com` and `https://b.example.com`) into a single renderer process.\nWith **Origin Isolation**, each individual origin (for example, `https://foo.example.com`) will be isolated in its own renderer process. This change strengthens Chrome's security architecture by better aligning process boundaries with the web's fundamental origin-based security model, offering greater protection against potential vulnerabilities within sites.\n\n**Potential performance considerations**: While each individual process will be smaller, this increase in process granularity may lead to higher overall memory and CPU usage. To balance security and performance, Origin Isolation will be enabled by default only on devices with at least 4GB of RAM.\n**Enterprise Control**: Admins can control this feature using the [OriginKeyedProcessesEnabled](https://chromeenterprise.google/policies/#OriginKeyedProcessesEnabled) policy.\n",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 141,
+        "blink_components": [
+          "Blink"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "lbrady@google.com",
+        "editors": [
+          "creis@chromium.org"
+        ],
+        "owners": [
+          "lbrady@google.com"
+        ],
+        "created": {
+          "by": "lbrady@google.com",
+          "when": "2025-09-17 23:32:11.293415"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-03-19 12:16:07.949665"
+        },
+        "accurate_as_of": "2025-10-20 19:06:50.667006",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": null,
+            "blink_components": [
+              "Blink"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "lbrady@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null
+      }
+    ],
+    "Origin trial": [
+      {
+        "id": 5140168270413824,
+        "name": "Device Bound Session Credentials",
+        "summary": "To enhance user security and combat session cookie theft, Chrome is introducing [Device Bound Session Credentials (DBSC)](https://developer.chrome.com/docs/web-platform/device-bound-session-credentials). This feature allows websites to bind a user's session to their specific device, which makes it significantly more difficult for stolen session cookies to be used on other machines.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 145,
+        "blink_components": [
+          "Blink"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "kristianm@chromium.org",
+        "editors": [
+          "santosls@google.com"
+        ],
+        "owners": [
+          "drubery@chromium.org",
+          "thefrog@chromium.org",
+          "arnarb@chromium.org"
+        ],
+        "created": {
+          "by": "kristianm@chromium.org",
+          "when": "2023-05-25 06:50:05.989916"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-03-25 09:42:04.467433"
+        },
+        "accurate_as_of": "2026-03-23 16:35:11.870473",
+        "standards": {
+          "spec": "https://w3c.github.io/webappsec-dbsc",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/355059881",
+            "blink_components": [
+              "Blink"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "drubery@chromium.org",
+              "thefrog@chromium.org",
+              "arnarb@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": false,
+            "status": {
+              "text": "In development",
+              "val": 3
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/912",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/281",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/mozilla/standards-positions/issues/912#issuecomment-2204012985",
+              "notes": ""
+            }
+          },
+          "other": {
+            "view": {
+              "notes": ""
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5197656309760000
+        ],
+        "finch_urls": []
+      }
+    ],
+    "In developer trial (Behind a flag)": [
+      {
+        "id": 6408307086589952,
+        "name": "Compression Dictionary TTL",
+        "summary": "Adds support for an explicit time-to-live for dictionaries used in Compression Dictionary Transport. This is a backward-compatible extension to the \"Use-As-Dictionary\" HTTP response header that adds a \"ttl\" parameter.\r\n\r\nThe ttl is the number of seconds after the dictionary was last fetched that it is usable as a compression dictionary and overrides the default expiration (which is to expire when the underlying resource expires from the HTTP cache).\r\n\r\nFor example:\r\n\r\nUse-AsDictionary: match=\"/*\", ttl=600\r\n\r\nWould make the response available as a compression dictionary for 10 minutes independent of the HTTP caching headers.\r\n\r\nThis capability was part of the original feature but dropped during the standards process because of a lack of compelling use cases at the time. New use cases have emerged as the feature gains adoption that make it useful to add as an extension.\r\n\r\nDoc: https://docs.google.com/document/d/1uAutnUWpC6V-ka_MA-4m74YV12LAA6qP1sYjy97S2-0/edit?usp=sharing",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Network"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://docs.google.com/document/d/1uAutnUWpC6V-ka_MA-4m74YV12LAA6qP1sYjy97S2-0/edit?usp=sharing"
+          ]
+        },
+        "creator": "pmeenan@chromium.org",
+        "editors": [],
+        "owners": [
+          "pmeenan@chromium.org"
+        ],
+        "created": {
+          "by": "pmeenan@chromium.org",
+          "when": "2025-09-18 14:43:12.852044"
+        },
+        "updated": {
+          "by": "pmeenan@chromium.org",
+          "when": "2025-09-18 14:57:16.978697"
+        },
+        "accurate_as_of": "2025-09-18 14:43:12.851776",
+        "standards": {
+          "spec": "https://github.com/httpwg/http-extensions/issues/2649",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": null,
+            "blink_components": [
+              "Blink>Network"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "pmeenan@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5700996135256064
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5197681148428288,
+        "name": "Local network access restrictions for WebSockets",
+        "summary": "Local Network Access(LNA) restrictions are being expanded to include WebSockets. WebSockets connections to local address will now start triggering permission prompts.\n\nAll of the current LNA enterprise policies will still apply to the LNA WebSockets restrictions (LocalNetworkAccessAllowedForUrls,\nLocalNetworkAccessBlockedForUrls, and LocalNetworkAccessRestrictionsTemporaryOptOut).\n\nMore information about LNA can be found at https://developer.chrome.com/blog/local-network-access\n\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 141,
+        "blink_components": [
+          "Blink>SecurityFeature>LocalNetworkAccess"
+        ],
+        "resources": {
+          "samples": [
+            "https://lna-testing.notyetsecure.com"
+          ],
+          "docs": []
+        },
+        "creator": "hchao@chromium.org",
+        "editors": [
+          "cthomp@chromium.org",
+          "dadrian@google.com",
+          "jdeblasio@chromium.org",
+          "clamy@chromium.org"
+        ],
+        "owners": [
+          "hchao@chromium.org"
+        ],
+        "created": {
+          "by": "hchao@chromium.org",
+          "when": "2025-09-03 17:34:43.070639"
+        },
+        "updated": {
+          "by": "hchao@chromium.org",
+          "when": "2026-03-24 19:33:21.107840"
+        },
+        "accurate_as_of": "2026-03-24 19:33:21.107840",
+        "standards": {
+          "spec": "https://wicg.github.io/local-network-access/#integration-with-websockets",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/421156866",
+            "blink_components": [
+              "Blink>SecurityFeature>LocalNetworkAccess"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "hchao@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5103439533178880
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5073740211814400,
+        "name": "Multicast support for Direct Sockets API",
+        "summary": "This feature allows [Isolated Web Apps](https://chromeos.dev/en/web/isolated-web-apps) (IWAs) to subscribe to multicast groups and receive User Datagram Protocol (UDP) packets from there. IWAs can now also specify additional parameters when sending UDP packets to multicast addresses.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 142,
+        "blink_components": [
+          "Blink>Network->Direct Sockets"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://github.com/WICG/direct-sockets/blob/main/docs/multicast-explainer.md",
+            "https://docs.google.com/document/d/1Wna0lkTrhYoTxOO1GjOrut2nWHO19HEyo9YCk39tXqY/edit?usp=sharing"
+          ]
+        },
+        "creator": "vkrot@google.com",
+        "editors": [
+          "greengrape@google.com"
+        ],
+        "owners": [
+          "vkrot@google.com"
+        ],
+        "created": {
+          "by": "vkrot@google.com",
+          "when": "2025-08-26 16:22:23.105929"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-01-09 16:49:39.048854"
+        },
+        "accurate_as_of": "2026-01-05 11:17:29.969762",
+        "standards": {
+          "spec": "https://github.com/WICG/direct-sockets/pull/79",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": null,
+            "blink_components": [
+              "Blink>Network->Direct Sockets"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "vkrot@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5148758929178624
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5194034339512320,
+        "name": "Non-Tree-Scoped container-name Matching",
+        "summary": "Ignore tree-scope when matching container-name for @container queries.\n\nPreviously, container-name matching for container queries used tree-scoped names/references for matching, which meant the same name would not match if the @container rule and the container-type property\nwere originating from different trees such that that container-type declaration came from an inner shadow tree.\n\nWith this change container names match regardless of @container rule or container-type declaration origins.\n",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "futhark@chromium.org",
+        "editors": [],
+        "owners": [
+          "futhark@chromium.org"
+        ],
+        "created": {
+          "by": "futhark@chromium.org",
+          "when": "2025-11-19 13:44:08.838732"
+        },
+        "updated": {
+          "by": "futhark@chromium.org",
+          "when": "2026-01-02 09:06:57.868896"
+        },
+        "accurate_as_of": "2026-01-02 09:06:57.868896",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-conditional-5/#container-name",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/440049800",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "futhark@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "Firefox shipped this behavior in their initial release of container queries.",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "In Safari TP",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5068822426025984
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5110223547269120,
+        "name": "WebGPU: Texture component swizzle",
+        "summary": "Functionality added to the WebGPU spec after its first shipment in a browser.\n\nAllows GPUTextureViews to rearrange or replace the color components from texture's red/green/blue/alpha channels when accessed by a shader.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "fbeaufort@google.com",
+        "editors": [
+          "cwallez@google.com",
+          "dneto@google.com"
+        ],
+        "owners": [
+          "fbeaufort@google.com"
+        ],
+        "created": {
+          "by": "fbeaufort@google.com",
+          "when": "2025-10-13 12:39:32.439874"
+        },
+        "updated": {
+          "by": "fbeaufort@google.com",
+          "when": "2025-11-17 09:38:16.312745"
+        },
+        "accurate_as_of": "2025-11-17 09:38:16.312745",
+        "standards": {
+          "spec": "https://gpuweb.github.io/gpuweb/#dom-gpufeaturename-texture-component-swizzle",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/414312052",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "fbeaufort@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1205#issuecomment-3312534193",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/294#issuecomment-1877411933",
+              "notes": null,
+              "text": "Closed Without a Position",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          4834643413172224
+        ],
+        "finch_urls": []
+      }
+    ]
+  },
+  "total_count": 23
+}

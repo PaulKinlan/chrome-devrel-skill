@@ -1,0 +1,2960 @@
+{
+  "features_by_type": {
+    "Enabled by default": [
+      {
+        "id": 5202380930678784,
+        "name": "Cache sharing for extremely-pervasive resources",
+        "summary": "For a small number (hundreds) of hand-curated static third-party script, stylesheet and compression-dictionary resources that are used on a large portion of the web, Chrome will use a single-keyed HTTP cache to store those resources. \n\nThis helps users and site owners with faster performance for those resources that are very widely used while maintaining the privacy protections of the partitioned disk cache.\n\nThis feature targets the resources that most users are likely to see multiple times across multiple sites in any given browsing session. They are usually not in the critical path of the page loading and may not impact the common performance metrics but they are still important for the healthy operation of the web.\n\nThe list of candidate scripts is curated from the HTTP Archive dataset.\n\nThis includes site-independent things like common analytics scripts, social media embeds, video player embeds, captcha providers and ads libraries. It allows for code that uses versioned URLs as long as the versioning is not a manual process by embedders and that the same version is sent to everybody at a given point in time with the same contents.\n\nThis does not include things like common Javascript libraries where they are commonly self-hosted or where the URL references a specific version of the library and it is up to site owners to manually select a version.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Network"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://docs.google.com/document/d/1xaoF9iSOojrlPrHZaKIJMK4iRZKA3AD6pQvbSy4ueUQ/edit?usp=sharing"
+          ]
+        },
+        "creator": "pmeenan@chromium.org",
+        "editors": [],
+        "owners": [
+          "pmeenan@chromium.org"
+        ],
+        "created": {
+          "by": "pmeenan@chromium.org",
+          "when": "2025-03-17 15:29:52.328298"
+        },
+        "updated": {
+          "by": "pmeenan@chromium.org",
+          "when": "2026-03-25 15:05:30.914101"
+        },
+        "accurate_as_of": "2026-03-25 15:05:30.914101",
+        "standards": {
+          "spec": null,
+          "maturity": {
+            "text": "Unknown standards status - check spec link for status",
+            "short_text": "Unknown status",
+            "val": 1
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/u/1/issues/404196743",
+            "blink_components": [
+              "Blink>Network"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "pmeenan@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1231",
+              "notes": null,
+              "text": "Negative",
+              "val": 7
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "N/A",
+              "val": 9
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5095679715966976
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 4874471565557760,
+        "name": "Data URL MIME Type Parameter Preservation",
+        "summary": "Preserve MIME type parameters (e.g., charset, boundary) in data URL Content-Type headers per the  Fetch Standard.\n\nCL: https://chromium-review.googlesource.com/c/chromium/src/+/7135039",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Network>FetchAPI"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "hjanuschka@gmail.com",
+        "editors": [],
+        "owners": [
+          "hjanuschka@gmail.com"
+        ],
+        "created": {
+          "by": "hjanuschka@gmail.com",
+          "when": "2025-12-04 21:11:01.144094"
+        },
+        "updated": {
+          "by": "hjanuschka@gmail.com",
+          "when": "2026-03-02 22:15:28.643159"
+        },
+        "accurate_as_of": "2026-03-02 22:15:28.643159",
+        "standards": {
+          "spec": "https://fetch.spec.whatwg.org/#data-url-processor",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40487194",
+            "blink_components": [
+              "Blink>Network>FetchAPI"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "hjanuschka@gmail.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5171271857995776
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5193275975794688,
+        "name": "Iterator Sequencing",
+        "summary": "A TC39 proposal to create iterators by sequencing existing iterators. Introduces Iterator.concat ( ...items ).",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>JavaScript>Language"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "olivf@google.com",
+        "editors": [
+          "nikolaos@chromium.org"
+        ],
+        "owners": [
+          "olivf@google.com"
+        ],
+        "created": {
+          "by": "olivf@google.com",
+          "when": "2025-11-06 10:49:13.708312"
+        },
+        "updated": {
+          "by": "nikolaos@chromium.org",
+          "when": "2026-06-02 11:08:06.664608"
+        },
+        "accurate_as_of": "2026-06-02 11:08:06.664608",
+        "standards": {
+          "spec": "https://github.com/tc39/proposal-iterator-sequencing",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/u/1/issues/434977727",
+            "blink_components": [
+              "Blink>JavaScript>Language"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "olivf@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://groups.google.com/a/mozilla.org/g/dev-platform/c/mTL4C0f_oT0/m/p8TMe9SEBgAJ",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://developer.apple.com/documentation/safari-release-notes/safari-18_4-release-notes#JavaScript",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5144366029078528
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5167930847395840,
+        "name": "LCP: Match specced behavior for emitting candidates",
+        "summary": "Changes the LCP algorithm to emit candidates based on the largest painted image instead of the largest pending-but-not-yet-painted image. This might cause more intermediate candidates to be emitted to the performance timeline.\n\nIn each animation frame, after it has been presented, the LCP algorithm will emit a new candidate (at most one) to the performance timeline if there is a new largest text or image that was painted in that frame. But the algorithm also tracks the \"largest pending image\", which is the largest still-loading image, and uses that image's size to determine whether the new candidate is largest. This means a slow loading large image can prevent emission of intermediate LCP candidates, and such candidates are often useful information for developers to understand the loading progression.\n\nThis behavior came up during Interop 2025 as a difference with other engines, and we all agreed to align on emitting at most one candidate per frame based on the set of painted image/text elements for that frame.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>PerformanceAPIs"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "shaseley@chromium.org",
+        "editors": [],
+        "owners": [
+          "shaseley@chromium.org"
+        ],
+        "created": {
+          "by": "shaseley@chromium.org",
+          "when": "2026-02-07 01:15:57.281245"
+        },
+        "updated": {
+          "by": "shaseley@chromium.org",
+          "when": "2026-02-27 22:01:11.958003"
+        },
+        "accurate_as_of": "2026-02-27 21:58:17.491436",
+        "standards": {
+          "spec": "https://github.com/w3c/largest-contentful-paint/pull/154",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/482261053",
+            "blink_components": [
+              "Blink>PerformanceAPIs"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "shaseley@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5146171469332480
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5176907844943872,
+        "name": "Navigation API: add post-commit handler from precommit",
+        "summary": "Currently when intercepting navigations with the `navigate` event, precommitHandlers and post-commit ordinary handlers are passed separately.\n\nThis works well when there is only one or the other, but can be a bit clunky when the flow includes a precommitHandler that leads to a post-commit handler.\n\nThis addition is a small ergonomic improvement that enables registering a post-commit handler while invoking a precommit handler.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>DOM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "nrosenthal@chromium.org",
+        "editors": [],
+        "owners": [
+          "nrosenthal@chromium.org"
+        ],
+        "created": {
+          "by": "nrosenthal@chromium.org",
+          "when": "2025-12-11 14:36:01.390304"
+        },
+        "updated": {
+          "by": "nrosenthal@chromium.org",
+          "when": "2026-02-23 12:28:11.850677"
+        },
+        "accurate_as_of": "2026-02-23 12:28:11.850677",
+        "standards": {
+          "spec": "https://html.spec.whatwg.org/#dom-navigationprecommitcontroller-addhandler",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/465487215",
+            "blink_components": [
+              "Blink>DOM"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "nrosenthal@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "Already implemented in Gecko, as part of their initial implementation of precommitHandler.",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/612",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "This was initially raised by Jake Archibald when at Shopify."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5074051498377216
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5172818344148992,
+        "name": "Playback Statistics API for WebAudio",
+        "summary": "This feature adds an AudioContext.playbackStats attribute which returns an AudioPlaybackStats object. This object provides audio playback statistics such as average latency, minimum/maximum latency, underrun duration, and underrun count. This API allows web applications to monitor audio playback quality and detect glitches.\n\nNote: This feature was previously tracked as AudioContext.playoutStats. It has been renamed to AudioContext.playbackStats to align with the final Web Audio API specification. The old name is supported as a deprecated alias for backward compatibility.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebAudio"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "fhernqvist@google.com",
+        "editors": [],
+        "owners": [
+          "hongchan@google.com",
+          "fhernqvist@google.com",
+          "olka@google.com"
+        ],
+        "created": {
+          "by": "fhernqvist@google.com",
+          "when": "2024-02-12 12:08:15.218009"
+        },
+        "updated": {
+          "by": "hongchan@google.com",
+          "when": "2026-02-11 16:52:56.583045"
+        },
+        "accurate_as_of": "2026-02-11 16:52:56.583045",
+        "standards": {
+          "spec": "https://webaudio.github.io/web-audio-api/#AudioPlaybackStats",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://g-issues.chromium.org/issues/475838360",
+            "blink_components": [
+              "Blink>WebAudio"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "hongchan@google.com",
+              "fhernqvist@google.com",
+              "olka@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": true,
+            "status": {
+              "text": "In developer trial (Behind a flag)",
+              "val": 4
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/WebAudio/web-audio-api/pull/2645",
+              "notes": "The spec PR was reviewed and approved by a Mozilla engineer.",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/WICG/proposals/issues/142#issuecomment-1981012486",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5087807251152896
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5119095123083264,
+        "name": "Populate targetURL during file handling",
+        "summary": "Update the Launch Handler implementation to ensure LaunchParams.targetURL is populated when a PWA is launched via File Handling. Previously, this property was null when a file launch was directed to an existing window. This change ensures that the URL from the developer's manifest \"action\" field (the same url the document is required to be currently loading) is available to the launchQueue consumer.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "UI>Browser>WebAppInstalls>FileHandling"
+        ],
+        "resources": {
+          "samples": [
+            "https://googlechrome.github.io/samples/pwa-testing/principled-ring-yarrow"
+          ],
+          "docs": []
+        },
+        "creator": "dmurph@google.com",
+        "editors": [],
+        "owners": [
+          "dmurph@google.com"
+        ],
+        "created": {
+          "by": "dmurph@google.com",
+          "when": "2026-02-07 00:14:17.178833"
+        },
+        "updated": {
+          "by": "dmurph@google.com",
+          "when": "2026-02-07 00:51:38.913625"
+        },
+        "accurate_as_of": "2026-02-07 00:14:17.178530",
+        "standards": {
+          "spec": "https://wicg.github.io/manifest-incubations/index.html#execute-a-file-handler-launch",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/464314997",
+            "blink_components": [
+              "UI>Browser>WebAppInstalls>FileHandling"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dmurph@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "N/A",
+              "val": 9
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "N/A",
+              "val": 9
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/WICG/web-app-launch/issues/97",
+              "notes": ""
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5099456452231168
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5140028068069376,
+        "name": "Preserving dropEffect Values from dragover to drop Events",
+        "summary": "The HTML5 Drag and Drop API allows web applications to handle drag-and-drop operations through a series of events: `dragstart`, `dragenter`, `dragover`, `dragleave`, `drop`, and `dragend`. During these events, the [`dataTransfer.dropEffect`](https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html#dom-datatransfer-dropeffect) property indicates which operation (copy, move, link, or none) should be performed. \n\nAccording to the [HTML5 specification](https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html#dndevents), the `dropEffect` value set by web applications during the last `dragover` event should be preserved and available in the subsequent `drop` event.\n\nHowever, Chromium-based browsers were overwriting the web application's `dropEffect` value with the browser's own negotiated operation before the `drop` event fired, breaking specification compliance and limiting developer control over drag-and-drop behavior.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>DataTransfer"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "roraja@microsoft.com",
+        "editors": [],
+        "owners": [
+          "roraja@microsoft.com"
+        ],
+        "created": {
+          "by": "roraja@microsoft.com",
+          "when": "2025-12-15 06:02:41.987667"
+        },
+        "updated": {
+          "by": "roraja@microsoft.com",
+          "when": "2026-02-16 09:52:05.728390"
+        },
+        "accurate_as_of": "2026-02-16 09:52:05.728390",
+        "standards": {
+          "spec": "https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html#dom-datatransfer-dropeffect",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40068941",
+            "blink_components": [
+              "Blink>DataTransfer"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "roraja@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/596",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": "https://issues.chromium.org/issues/40068941",
+              "notes": "42 upvotes on the associated Chromium issue"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5141371855962112
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5814067399491584,
+        "name": "Sanitizer API",
+        "summary": "The Sanitizer API offers an easy to use and safe by default HTML Sanitizer API, which developers can use to remove content that may execute script from arbitrary, user-supplied HTML content. The goal is to make it easier to build XSS-free web applications.\n\nThis follows previous attempts at establishing a Sanitizer API (https://chromestatus.com/feature/5786893650231296), which we unshipped again (https://chromestatus.com/feature/5115076981293056). The specification has meanwhile progressed and now has widespread support.\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>SecurityFeature>SanitizerAPI"
+        ],
+        "resources": {
+          "samples": [
+            "https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API",
+            "https://sanitizer-api.dev"
+          ],
+          "docs": []
+        },
+        "creator": "vogelheim@chromium.org",
+        "editors": [],
+        "owners": [
+          "vogelheim@google.com"
+        ],
+        "created": {
+          "by": "vogelheim@chromium.org",
+          "when": "2024-07-17 14:15:28.271761"
+        },
+        "updated": {
+          "by": "vogelheim@google.com",
+          "when": "2026-02-16 12:39:29.256920"
+        },
+        "accurate_as_of": "2026-02-16 12:39:29.256920",
+        "standards": {
+          "spec": "https://wicg.github.io/sanitizer-api",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40138584",
+            "blink_components": [
+              "Blink>SecurityFeature>SanitizerAPI"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "vogelheim@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Enabled by default",
+              "val": 5
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/106",
+              "notes": "Sanitizer API is enabled in Firefox nightly: https://www.firefox.com/en-US/firefox/148.0a1/releasenotes/",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/86",
+              "notes": null,
+              "text": "Support",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": "HTML: stage 2. (https://github.com/whatwg/html/issues/7197)\n\nTAG, early design review: https://github.com/w3ctag/design-reviews/issues/619"
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6119127853563904
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5090435261792256,
+        "name": "Scoped Custom Element Registry",
+        "summary": "This feature allows for multiple custom element definitions for a single tag name to exist within a page to prevent custom element name conflicts when a web app uses libraries from multiple sources. This is achieved by allowing user code to create multiple custom element registries and associate them with tree scopes and elements that function as scoping object for custom element creation/definition/upgrade.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>HTML>CustomElements"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "xiaochengh@chromium.org",
+        "editors": [],
+        "owners": [
+          "masonfreed@google.com",
+          "jaysonchen@microsoft.com",
+          "leolee@microsoft.com"
+        ],
+        "created": {
+          "by": "xiaochengh@chromium.org",
+          "when": "2022-08-24 21:56:22.248692"
+        },
+        "updated": {
+          "by": "danielrsmith@google.com",
+          "when": "2026-03-06 17:34:52.909188"
+        },
+        "accurate_as_of": "2026-03-05 19:48:36.523579",
+        "standards": {
+          "spec": "https://html.spec.whatwg.org/multipage/custom-elements.html#customelementregistry",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/40826514",
+            "blink_components": [
+              "Blink>HTML>CustomElements"
+            ],
+            "devrel": [],
+            "owners": [
+              "masonfreed@google.com",
+              "jaysonchen@microsoft.com",
+              "leolee@microsoft.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/424",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://developer.apple.com/documentation/safari-release-notes/safari-26-release-notes",
+              "notes": null,
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "Scoped custom element registry has been a long-awaited feature from the Web Components Community Group, and the current polyfill that didn't solve the entire problem has 24k+ downloads per week."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": ""
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5528727390257152
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5181996801982464,
+        "name": "Scroll Triggered Animations",
+        "summary": "This feature adds scroll-position-based control of animations, e.g. playing, pausing, and resetting an animation.\n\nA common pattern on pages across the web is to kick off an animation when a scroll position is reached. Developers often do this by using JavaScript to manually detect that an element is within its scroll container's viewport and to kick off a corresponding animation (e.g. perhaps sliding that element into view). Many of such use cases are based on information that can be provided declaratively. This feature gives authors the ability to create such interactions declaratively via CSS, allowing the user agent to offload the handling of this interaction to a worker thread. The API also includes JavaScript interfaces that allow the feature to be extended to web animations in addition to CSS animations.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [
+            "https://davmila.github.io/sta-demos/explore"
+          ],
+          "docs": [
+            "https://github.com/explainers-by-googlers/scroll-triggered-animations/blob/main/README.md"
+          ]
+        },
+        "creator": "awogbemila@google.com",
+        "editors": [],
+        "owners": [
+          "awogbemila@google.com"
+        ],
+        "created": {
+          "by": "awogbemila@google.com",
+          "when": "2025-02-06 14:46:04.903071"
+        },
+        "updated": {
+          "by": "awogbemila@google.com",
+          "when": "2026-02-12 14:24:51.050135"
+        },
+        "accurate_as_of": "2026-02-07 12:55:01.113940",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-animations-2/#timeline-triggers",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/390314945",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "awogbemila@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1315",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/576",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5143613132242944
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5138246835240960,
+        "name": "Selective Permissions Intervention",
+        "summary": "When a user grants a website permission to access a powerful API (specifically Bluetooth, Camera, Clipboard, DisplayCapture, Geolocation, Microphone,  Serial, and USB), their consent is intended for the site, not necessarily to every third-party script running on the page. In particular, embedded ad scripts running in the main frame or same-origin iframes can currently leverage the page's permission to opportunistically access this sensitive data. The user may not be aware that an advertisement is accessing their information.\n\nThis intervention aims to better align a granted permission with user intent by preventing ad script in a context with API permission from using it, reinforcing user trust and control over their data.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "UI>Browser>AdFilter"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "jkarlin@google.com",
+        "editors": [
+          "skmanickam@google.com"
+        ],
+        "owners": [
+          "jkarlin@google.com"
+        ],
+        "created": {
+          "by": "jkarlin@google.com",
+          "when": "2026-02-10 19:15:25.914820"
+        },
+        "updated": {
+          "by": "jkarlin@google.com",
+          "when": "2026-03-03 21:10:33.485005"
+        },
+        "accurate_as_of": "2026-02-10 19:15:25.914606",
+        "standards": {
+          "spec": "https://github.com/w3c/webappsec-permissions-policy/pull/572",
+          "maturity": {
+            "text": "Proposal in a personal repository, no adoption from community",
+            "short_text": "Pre-incubation",
+            "val": 2
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://g-issues.chromium.org/issues/435214052",
+            "blink_components": [
+              "UI>Browser>AdFilter"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "jkarlin@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1357",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/616",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          4921341809655808
+        ],
+        "finch_urls": [
+          "https://source.corp.google.com/piper///depot/google3/googledata/googleclient/chrome/finch/gcl_studies/SelectivePermissionsIntervention.gcl?q=%22RolloutPlan%20plan%22"
+        ]
+      },
+      {
+        "id": 5986946868445184,
+        "name": "Stop re-queueing LaunchParams on reload",
+        "summary": "Prevent the launchQueue from re-sending the last LaunchParams (including file handles) when a user reloads the page. Currently, a page refresh triggers the launch consumer again with the data from the original launch. This change ensures that a reload is treated as a standard navigation rather than a \"re-launch,\" and the launchQueue will not be populated with duplicate files unless a new file launch event occurs. The re-queueing was never spec'd, and was an unfortunate never-removed stop-gap that was implemented before file handles could be saved to IndexedDB.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "UI>Browser>WebAppInstalls>FileHandling"
+        ],
+        "resources": {
+          "samples": [
+            "https://googlechrome.github.io/samples/pwa-testing/principled-ring-yarrow"
+          ],
+          "docs": []
+        },
+        "creator": "dmurph@google.com",
+        "editors": [],
+        "owners": [
+          "dmurph@google.com"
+        ],
+        "created": {
+          "by": "dmurph@google.com",
+          "when": "2026-02-07 00:56:38.340126"
+        },
+        "updated": {
+          "by": "dmurph@google.com",
+          "when": "2026-02-07 01:11:34.372208"
+        },
+        "accurate_as_of": "2026-02-07 00:56:38.340005",
+        "standards": {
+          "spec": "https://wicg.github.io/manifest-incubations/index.html#execute-a-file-handler-launch",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/40204185",
+            "blink_components": [
+              "UI>Browser>WebAppInstalls>FileHandling"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dmurph@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": "https://github.com/WICG/web-app-launch/issues/92",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5273648313270272
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5084062739988480,
+        "name": "Support the `hanging` and `each-line` for the `text-indent` property",
+        "summary": "The two optional keywords for the `text-indent` property extends the capability and the usability of the property.\n\nThe `hanging` keyword changes indentation to \"hanging\", that is, all lines except the first line will be indented.\n\nThe `each-line` keyword makes indentation to affect not only the first line but also each line after a forced line break.",
+        "feature_type_int": 1,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Layout>Inline"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "kojii@chromium.org",
+        "editors": [],
+        "owners": [
+          "kojii@chromium.org"
+        ],
+        "created": {
+          "by": "kojii@chromium.org",
+          "when": "2026-01-07 09:51:36.665876"
+        },
+        "updated": {
+          "by": "kojii@chromium.org",
+          "when": "2026-04-14 17:11:30.377573"
+        },
+        "accurate_as_of": "2026-04-14 17:11:30.377573",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-text/#text-indent-property",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "http://crbug.com/434361099",
+            "blink_components": [
+              "Blink>Layout>Inline"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "kojii@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://caniuse.com/wf-text-indent-hanging",
+              "notes": "https://caniuse.com/wf-text-indent-each-line",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://caniuse.com/wf-text-indent-hanging",
+              "notes": "https://caniuse.com/wf-text-indent-each-line",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "http://crbug.com/434361099",
+              "notes": "https://github.com/web-platform-tests/interop/issues/538\nhttps://brucelawson.co.uk/2005/what-i-want-from-css-3/"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5132560655056896
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 6436406437871616,
+        "name": "WebGPU Compatibility mode",
+        "summary": "Adds an opt-in, lightly restricted subset of the WebGPU API capable of running older graphics APIs such as OpenGL and Direct3D11. By opting into this mode and obeying its constraints, developers can extend the reach of their WebGPU applications to many older devices that do not have the modern, explicit graphics APIs that core WebGPU requires. For simple applications, the only required change is to specify the \"compatibility\" featureLevel when calling requestAdapter. For more advanced applications, some modifications may be necessary to accommodate the mode's restrictions. Since Compatibility mode is a subset, the resulting applications are also valid WebGPU Core applications and will run even on user agents that do not support Compatibility mode.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [
+            "https://webgpu.github.io/webgpu-samples/?sample=helloTriangle",
+            "https://webgpu.github.io/webgpu-samples/?sample=computeBoids",
+            "https://webgpu.github.io/webgpu-samples/?sample=deferredRendering"
+          ],
+          "docs": []
+        },
+        "creator": "senorblanco@google.com",
+        "editors": [
+          "cwallez@google.com",
+          "fbeaufort@google.com",
+          "dneto@google.com"
+        ],
+        "owners": [
+          "senorblanco@google.com",
+          "kainino@google.com"
+        ],
+        "created": {
+          "by": "senorblanco@google.com",
+          "when": "2025-03-20 19:28:54.533248"
+        },
+        "updated": {
+          "by": "senorblanco@google.com",
+          "when": "2026-03-18 19:31:09.254878"
+        },
+        "accurate_as_of": "2026-03-18 19:31:09.254878",
+        "standards": {
+          "spec": "https://github.com/gpuweb/gpuweb/blob/main/proposals/compatibility-mode.md",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/442618060",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "senorblanco@google.com",
+              "kainino@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "Although there is not currently an entry for Compatibility Mode in the standards positions repos, WebGPU Compatibility Mode was discussed and approved by Google, Apple and Mozilla in the GPU for the Web Working Group, and has the same support as WebGPU Core. Each of the commits to the compatibility-mode propsal above was approved by a working group member from each of those three organizations, and any disagreements were resolved prior to landing in Working Group meetings.",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "Although there is not currently an entry for Compatibility Mode in the standards positions repos, WebGPU Compatibility Mode was discussed and approved by Google, Apple and Mozilla in the GPU for the Web Working Group, and has the same support as WebGPU Core. Each of the commits to the compatibility-mode propsal above was approved by a working group member from each of those three organizations, and any disagreements were resolved prior to landing in Working Group meetings.",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "From Unity:\n\nWebGPU is a critical component of Unity's web strategy moving forward. WebGPU provides a lot of technological advantages over WebGL, and has proven to enable more capabilities for our users, and in many cases increase performance. One important piece of the WebGPU adoption strategy is device reach. WebGPU does not have the device reach that WebGL has, requiring users to include both WebGPU and WebGL drivers in their applications. WebGPU Compatibility Mode will be a vital solution to this issue. Having the ability to significantly increase the device reach of WebGPU by utilizing Compatibility Mode will allow many developers to drop WebGL, simplify their development process and reduce their build sizes. The limitations imposed by Compatibility Mode will be something Unity developers can work with, as they are already accustomed to feature checking capabilities of devices running their applications. We expect enough of Unity will run in Compatibility Mode to minimize development difficulties, and that Compatibility Mode will be an automatic fallback for when Core mode is not available for Unity applications. "
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5931559296958464
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5102334940151808,
+        "name": "WebGPU: Texture and Sampler Lets",
+        "summary": "Add a language feature to WGSL, `texture_and_sampler_let` that adds the ability to store texture and sampler objects into a let declaration in WGSL. ",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "dsinclair@google.com",
+        "editors": [
+          "cwallez@google.com",
+          "dneto@google.com",
+          "fbeaufort@google.com",
+          "jrprice@google.com"
+        ],
+        "owners": [
+          "dsinclair@google.com"
+        ],
+        "created": {
+          "by": "dsinclair@google.com",
+          "when": "2026-01-12 19:09:00.547941"
+        },
+        "updated": {
+          "by": "dsinclair@google.com",
+          "when": "2026-03-02 14:13:07.388287"
+        },
+        "accurate_as_of": "2026-03-02 14:13:07.388287",
+        "standards": {
+          "spec": "https://github.com/gpuweb/gpuweb/pull/5389",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/459500757",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dsinclair@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "Mozilla members have approved https://github.com/gpuweb/gpuweb/pull/5389 and requested during weekly standardization meetings that we postpone filing standard positions until we reach Candidate Recommendation (CR) status in Q4.\n",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/294#issuecomment-1877411933",
+              "notes": null,
+              "text": "Closed Without a Position",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5180537704677376
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5562829589577728,
+        "name": "WebGPU: Transient attachments",
+        "summary": "Functionality added to the WebGPU spec after its first shipment in a browser.\n\nA new TRANSIENT_ATTACHMENT GPUTextureUsage lets developers create attachments that allow render pass operations to stay in tile memory, avoiding VRAM traffic and potentially avoiding VRAM allocation for the textures.\n",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>WebGPU"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "fbeaufort@google.com",
+        "editors": [
+          "cwallez@google.com",
+          "dneto@google.com"
+        ],
+        "owners": [
+          "fbeaufort@google.com"
+        ],
+        "created": {
+          "by": "fbeaufort@google.com",
+          "when": "2026-01-13 09:46:20.350922"
+        },
+        "updated": {
+          "by": "fbeaufort@google.com",
+          "when": "2026-02-16 09:50:36.547307"
+        },
+        "accurate_as_of": "2026-02-16 09:50:36.547307",
+        "standards": {
+          "spec": "https://gpuweb.github.io/gpuweb/#dom-gputextureusage-transient_attachment",
+          "maturity": {
+            "text": "Final published standard: Recommendation, Living Standard, Candidate Recommendation, or similar final form",
+            "short_text": "Published standard",
+            "val": 5
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/462620664",
+            "blink_components": [
+              "Blink>WebGPU"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "fbeaufort@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1205#issuecomment-3312534193",
+              "notes": "wgpu used by Firefox already has transient attachments support. See https://github.com/gfx-rs/wgpu/pull/8247",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/294#issuecomment-1877411933",
+              "notes": "Apple representative approved the spec PR at https://github.com/gpuweb/gpuweb/pull/5450#pullrequestreview-3574410798",
+              "text": "Closed Without a Position",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6420471342039040
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5112244702674944,
+        "name": "meta name=\"text-scale\"",
+        "summary": "Makes the root element's default font size scale in proportion to both the operating system's and browser's text scale setting. This allows pages that follow best practices around font-relative units (i.e. use rem and em for font sizes and page elements that should change with the user's text size preferences) to respect the user's OS-level text scale setting. This also causes the browser to disable existing browser-based mechanisms (i.e. full-page zoom on windows) and heuristics (i.e. text autosizing on mobile). Now web developers can signal to the browser that the page is constructed in a way (i.e. with rem and em) that will scale well across various user-selected font size preferences. Similar to env(preferred-text-scale), which provides authors with a way to access the text scale; this API extends that by enabling scaling via the root element's default font size and opting-out of automatic text scaling.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Accessibility"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "dgrogan@chromium.org",
+        "editors": [
+          "dgrogan@chromium.org",
+          "pdr@chromium.org"
+        ],
+        "owners": [
+          "dgrogan@chromium.org",
+          "pdr@chromium.org"
+        ],
+        "created": {
+          "by": "dgrogan@chromium.org",
+          "when": "2025-09-15 19:14:33.088114"
+        },
+        "updated": {
+          "by": "dgrogan@chromium.org",
+          "when": "2026-02-23 16:28:06.288328"
+        },
+        "accurate_as_of": "2026-02-23 16:28:06.288328",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-fonts-5/#text-scale-meta",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/430566925",
+            "blink_components": [
+              "Blink>Accessibility"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dgrogan@chromium.org",
+              "pdr@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1326",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/587",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/w3c/csswg-drafts/issues/12380",
+              "notes": "Positive emoji votes on the initial proposal"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5080097275117568
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5152759609425920,
+        "name": "trigger-scope",
+        "summary": "trigger-scope gives authors the ability to limit the names of animation triggers declared by trigger-instantiating properties.\n\nTrigger-Instantiating properties, such as timeline-trigger, declare names which can be referenced by the animation-trigger property in order to attach animations to triggers. However, these names are global by default (similar to anchor-name) and it is often useful for author to limit the visibility of the names so as to isolate animation-to-trigger interactions.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Animation"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "awogbemila@google.com",
+        "editors": [],
+        "owners": [
+          "awogbemila@google.com"
+        ],
+        "created": {
+          "by": "awogbemila@google.com",
+          "when": "2025-12-04 22:40:26.330281"
+        },
+        "updated": {
+          "by": "awogbemila@google.com",
+          "when": "2026-02-12 14:25:19.372301"
+        },
+        "accurate_as_of": "2026-02-07 12:55:54.055402",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-animations-2/#trigger-scope",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/466134208",
+            "blink_components": [
+              "Blink>Animation"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "awogbemila@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1327",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/589",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6023884539297792
+        ],
+        "finch_urls": []
+      }
+    ],
+    "Deprecated": [],
+    "Removed": [],
+    "Stepped rollout": [
+      {
+        "id": 5152728072060928,
+        "name": "Local network access restrictions",
+        "summary": "Chrome 142 restricted the ability to make requests to the user's local network, gated behind a permission prompt. A local network request is any request from a public website to a local IP address or loopback, or from a local website (for example, intranet) to loopback. \n\nGating the ability for websites to perform these requests behind a permission mitigates the risk of cross-site request forgery attacks against local network devices such as routers, and reduces the ability of sites to use these requests to fingerprint the user's local network.\n\nThis permission is restricted to secure contexts. If granted, the permissions additionally relax mixed content blocking for local network requests (since many local devices are not able to obtain publicly trusted TLS certificates for various reasons).\n\nThis work supersedes a prior effort called [Private Network Access](https://chromestatus.com/feature/5737414355058688), which used preflight requests to have local devices opt in. For more information on this feature, see [Adapting your website for new Local Network Access restrictions in Chrome](https://docs.google.com/document/d/1QQkqehw8umtAgz5z0um7THx-aoU251p705FbIQjDuGs/edit?usp=sharing).\n\nChrome 145 introduced more granular permissions for websites requesting access to a user's local network. The previous single `local-network-access permission` is being split into two distinct permissions:\n\n* `local-network`: Grants access to IP addresses in the local network space (for example, intranets, internal devices).\n* `loopback-network`: Grants access to loopback IP addresses (for example, `localhost`, `127.0.0.1`).\n\nThe old `local-network` permission will remain as an alias, ensuring existing configurations and permissions policies continue to function as expected. \n\nThis change provides both users and Admins with more precise control over how websites interact with internal network resources. Current enterprise policies managing local network access will not be affected by this change.\n\nChrome 146 introduces two new enterprise policies for managing local network access restrictions:  [LocalNetworkAccessIpAddressSpaceOverrides](https://chromeenterprise.google/policies/#LocalNetworkAccessIpAddressSpaceOverrides) and  [LocalNetworkAccessPermissionsPolicyDefaultEnabled](https://chromeenterprise.google/policies/#LocalNetworkAccessPermissionsPolicyDefaultEnabled). These policies can be set using [custom configurations](https://support.google.com/chrome/a/answer/14749672).\n\nChrome 147 expands Local Network Access restrictions to include WebSocket and WebTransport connections.\n\nIn Chrome 156, the [LocalNetworkAccessRestrictionsTemporaryOptOut](https://chromeenterprise.google/policies/#LocalNetworkAccessRestrictionsTemporaryOptOut) policy will be removed.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 135,
+        "blink_components": [
+          "Blink>SecurityFeature>LocalNetworkAccess"
+        ],
+        "resources": {
+          "samples": [
+            "https://local-network-access-testing.glitch.me"
+          ],
+          "docs": [
+            "https://github.com/explainers-by-googlers/local-network-access",
+            "https://docs.google.com/document/d/1n0kKxt9pS9qDlu_9i5W8IXA594r4pUOKmN9H35cZ8j0/edit?usp=sharing"
+          ]
+        },
+        "creator": "cthomp@chromium.org",
+        "editors": [
+          "hchao@chromium.org",
+          "jdeblasio@chromium.org",
+          "clamy@chromium.org",
+          "dadrian@google.com"
+        ],
+        "owners": [
+          "cthomp@chromium.org"
+        ],
+        "created": {
+          "by": "cthomp@chromium.org",
+          "when": "2025-03-06 22:16:50.390905"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-07-15 12:31:13.053381"
+        },
+        "accurate_as_of": "2026-06-15 23:41:53.943000",
+        "standards": {
+          "spec": "https://wicg.github.io/local-network-access",
+          "maturity": {
+            "text": null,
+            "short_text": "Unknown status",
+            "val": 0
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/394009026",
+            "blink_components": [
+              "Blink>SecurityFeature>LocalNetworkAccess"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "cthomp@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "In development",
+              "val": 3
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://support.mozilla.org/en-US/kb/control-personal-device-local-network-permissions-firefox",
+              "notes": "Firefox is shipping.\n\nRequest for signals: \n\nhttps://github.com/mozilla/standards-positions/issues/1260",
+              "text": "Shipped/Shipping",
+              "val": 1
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "Request for signals:\n\nhttps://github.com/WebKit/standards-positions/issues/520",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Mixed signals",
+              "val": 3,
+              "url": "https://github.com/explainers-by-googlers/local-network-access/issues",
+              "notes": "Feedback from developers has been mixed, both due the new burden of a permission prompt (compared to PNA) and from some of the difficulty of navigating mixed content (the same as PNA). Many developers understand the reasoning behind adding the new permission though, and are productively engaging on how they can avoid issues."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": "Brave ships a \"localhost access\" permission (see https://brave.com/privacy-updates/27-localhost-permission/)"
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null
+      }
+    ],
+    "Origin trial": [
+      {
+        "id": 5189864286978048,
+        "name": "CPU Performance API",
+        "summary": "Starting in Chrome 152, Chrome will introduce the CPU Performance API, which allows web applications to determine the CPU performance of a user's device. This API targets web applications that will use this information to provide an improved user experience, possibly in combination with the Compute Pressure API, which provides information about the user device’s CPU pressure or utilization and allows applications to react to changes in CPU pressure.\n\nUsers can override the reported performance in Chrome's Performance settings. Administrators can also control this behavior using the [CpuPerformanceTierOverride](https://chromeenterprise.google/policies/#CpuPerformanceTierOverride) policy (which takes precedence over the user setting).\n\nFor more details, see [CPU Performance API Explainer](https://github.com/WICG/cpu-performance).",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 150,
+        "blink_components": [
+          "Blink>PerformanceAPIs"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "nikolaos@chromium.org",
+        "editors": [
+          "mlippautz@chromium.org",
+          "dom@chromium.org"
+        ],
+        "owners": [
+          "nikolaos@chromium.org"
+        ],
+        "created": {
+          "by": "nikolaos@chromium.org",
+          "when": "2025-10-06 16:05:41.485649"
+        },
+        "updated": {
+          "by": "siobhankeating@google.com",
+          "when": "2026-07-16 19:38:40.799623"
+        },
+        "accurate_as_of": "2026-06-29 12:05:35.102124",
+        "standards": {
+          "spec": "https://wicg.github.io/cpu-performance",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/449760252",
+            "blink_components": [
+              "Blink>PerformanceAPIs"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "nikolaos@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1364",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/622",
+              "notes": null,
+              "text": "Oppose",
+              "val": 7
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": "Adobe: https://github.com/WICG/cpu-performance/issues/6\nFigma: https://github.com/WICG/proposals/issues/253#issuecomment-3719833708"
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5086826629038080
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5637601087193088,
+        "name": "Focusgroup",
+        "summary": "Gives authors the ability to declaratively give composite widgets arrow key navigation, a guaranteed tab stop, and last-focused memory, replacing hand-coded roving tabindex scripts.\nExample:\n<div focusgroup=\"toolbar wrap\" aria-label=\"Formatting\">\n  <button>Bold</button>\n  <button>Italic</button>\n  <button>Underline</button>\n</div>",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>DOM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "travil@microsoft.com",
+        "editors": [
+          "masonfreed@google.com"
+        ],
+        "owners": [
+          "janewman@microsoft.com",
+          "leolee@microsoft.com",
+          "masonfreed@google.com"
+        ],
+        "created": {
+          "by": "travil@microsoft.com",
+          "when": "2022-01-11 18:31:05.587394"
+        },
+        "updated": {
+          "by": "janewman@microsoft.com",
+          "when": "2026-06-26 16:58:58.974951"
+        },
+        "accurate_as_of": "2026-06-26 16:58:58.974951",
+        "standards": {
+          "spec": "https://github.com/whatwg/html/pull/11723",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://bugs.chromium.org/p/chromium/issues/detail?id=1286127",
+            "blink_components": [
+              "Blink>DOM"
+            ],
+            "devrel": [],
+            "owners": [
+              "janewman@microsoft.com",
+              "leolee@microsoft.com",
+              "masonfreed@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": true,
+            "status": {
+              "text": "In developer trial (Behind a flag)",
+              "val": 4
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1348",
+              "notes": "Pending",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/171",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "The polyfill (https://www.npmjs.com/package/@microsoft/focusgroup-polyfill) has   had about 400 weekly downloads since it was first released two weeks ago."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": ""
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          6630640844275712
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5074313831120896,
+        "name": "Speculation rules: form_submission field",
+        "summary": "This extends speculation rules syntax to allow developers to specify the form_submission field for prerender.\n\nThis field directs the browser to prepare the prerender as a form submission, so that it can be activated by real form submission navigations. Examples include a simple search form which results in a /search?q=XXX GET request navigation, support of which has been requested by web developers.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Internals>Preload>Prerender"
+        ],
+        "resources": {
+          "samples": [
+            "https://chrome.dev/prerender-demos/prerender-get-form.html"
+          ],
+          "docs": [
+            "https://docs.google.com/document/d/13Xr_kSYZtvhRNaKpCiP7wLKYtDcpLdDWSH4y6gHq0kQ/edit?usp=sharing"
+          ]
+        },
+        "creator": "robertlin@chromium.org",
+        "editors": [
+          "denomoto@chromium.org",
+          "denomoto@google.com"
+        ],
+        "owners": [
+          "robertlin@chromium.org"
+        ],
+        "created": {
+          "by": "robertlin@chromium.org",
+          "when": "2026-02-10 06:24:25.696501"
+        },
+        "updated": {
+          "by": "robertlin@chromium.org",
+          "when": "2026-06-16 20:41:23.705612"
+        },
+        "accurate_as_of": "2026-06-09 04:20:38.402271",
+        "standards": {
+          "spec": "https://storage.googleapis.com/spec-previews/WICG/nav-speculation/pull/426/diff/prerendering.html",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/346555939",
+            "blink_components": [
+              "Internals>Preload>Prerender"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "robertlin@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1355",
+              "notes": "Mozilla is neutral on speculation rules syntax in general (https://github.com/mozilla/standards-positions/issues/620), although positive on prefetching. This new request for this specific feature is still pending for new response after pinging.",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/614",
+              "notes": "WebKit has not yet responded to our 2022 request for a position on speculation rules although positive on same-origin prefetching. (https://github.com/WebKit/standards-positions/issues/54) We opened a new request for this specific feature to ensure we captured any of their input.",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/WICG/nav-speculation/issues/322",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5165217350811648
+        ],
+        "finch_urls": []
+      }
+    ],
+    "In developer trial (Behind a flag)": [
+      {
+        "id": 5637601087193088,
+        "name": "Focusgroup",
+        "summary": "Gives authors the ability to declaratively give composite widgets arrow key navigation, a guaranteed tab stop, and last-focused memory, replacing hand-coded roving tabindex scripts.\nExample:\n<div focusgroup=\"toolbar wrap\" aria-label=\"Formatting\">\n  <button>Bold</button>\n  <button>Italic</button>\n  <button>Underline</button>\n</div>",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>DOM"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "travil@microsoft.com",
+        "editors": [
+          "masonfreed@google.com"
+        ],
+        "owners": [
+          "janewman@microsoft.com",
+          "leolee@microsoft.com",
+          "masonfreed@google.com"
+        ],
+        "created": {
+          "by": "travil@microsoft.com",
+          "when": "2022-01-11 18:31:05.587394"
+        },
+        "updated": {
+          "by": "janewman@microsoft.com",
+          "when": "2026-06-26 16:58:58.974951"
+        },
+        "accurate_as_of": "2026-06-26 16:58:58.974951",
+        "standards": {
+          "spec": "https://github.com/whatwg/html/pull/11723",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://bugs.chromium.org/p/chromium/issues/detail?id=1286127",
+            "blink_components": [
+              "Blink>DOM"
+            ],
+            "devrel": [],
+            "owners": [
+              "janewman@microsoft.com",
+              "leolee@microsoft.com",
+              "masonfreed@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": true,
+            "status": {
+              "text": "In developer trial (Behind a flag)",
+              "val": 4
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1348",
+              "notes": "Pending",
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/171",
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": null,
+              "notes": "The polyfill (https://www.npmjs.com/package/@microsoft/focusgroup-polyfill) has   had about 400 weekly downloads since it was first released two weeks ago."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": ""
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5568425498247168
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5074313831120896,
+        "name": "Speculation rules: form_submission field",
+        "summary": "This extends speculation rules syntax to allow developers to specify the form_submission field for prerender.\n\nThis field directs the browser to prepare the prerender as a form submission, so that it can be activated by real form submission navigations. Examples include a simple search form which results in a /search?q=XXX GET request navigation, support of which has been requested by web developers.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Internals>Preload>Prerender"
+        ],
+        "resources": {
+          "samples": [
+            "https://chrome.dev/prerender-demos/prerender-get-form.html"
+          ],
+          "docs": [
+            "https://docs.google.com/document/d/13Xr_kSYZtvhRNaKpCiP7wLKYtDcpLdDWSH4y6gHq0kQ/edit?usp=sharing"
+          ]
+        },
+        "creator": "robertlin@chromium.org",
+        "editors": [
+          "denomoto@chromium.org",
+          "denomoto@google.com"
+        ],
+        "owners": [
+          "robertlin@chromium.org"
+        ],
+        "created": {
+          "by": "robertlin@chromium.org",
+          "when": "2026-02-10 06:24:25.696501"
+        },
+        "updated": {
+          "by": "robertlin@chromium.org",
+          "when": "2026-06-16 20:41:23.705612"
+        },
+        "accurate_as_of": "2026-06-09 04:20:38.402271",
+        "standards": {
+          "spec": "https://storage.googleapis.com/spec-previews/WICG/nav-speculation/pull/426/diff/prerendering.html",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/issues/346555939",
+            "blink_components": [
+              "Internals>Preload>Prerender"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "robertlin@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1355",
+              "notes": "Mozilla is neutral on speculation rules syntax in general (https://github.com/mozilla/standards-positions/issues/620), although positive on prefetching. This new request for this specific feature is still pending for new response after pinging.",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/614",
+              "notes": "WebKit has not yet responded to our 2022 request for a position on speculation rules although positive on same-origin prefetching. (https://github.com/WebKit/standards-positions/issues/54) We opened a new request for this specific feature to ensure we captured any of their input.",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/WICG/nav-speculation/issues/322",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5123098485587968
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5986946868445184,
+        "name": "Stop re-queueing LaunchParams on reload",
+        "summary": "Prevent the launchQueue from re-sending the last LaunchParams (including file handles) when a user reloads the page. Currently, a page refresh triggers the launch consumer again with the data from the original launch. This change ensures that a reload is treated as a standard navigation rather than a \"re-launch,\" and the launchQueue will not be populated with duplicate files unless a new file launch event occurs. The re-queueing was never spec'd, and was an unfortunate never-removed stop-gap that was implemented before file handles could be saved to IndexedDB.",
+        "feature_type_int": 2,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "UI>Browser>WebAppInstalls>FileHandling"
+        ],
+        "resources": {
+          "samples": [
+            "https://googlechrome.github.io/samples/pwa-testing/principled-ring-yarrow"
+          ],
+          "docs": []
+        },
+        "creator": "dmurph@google.com",
+        "editors": [],
+        "owners": [
+          "dmurph@google.com"
+        ],
+        "created": {
+          "by": "dmurph@google.com",
+          "when": "2026-02-07 00:56:38.340126"
+        },
+        "updated": {
+          "by": "dmurph@google.com",
+          "when": "2026-02-07 01:11:34.372208"
+        },
+        "accurate_as_of": "2026-02-07 00:56:38.340005",
+        "standards": {
+          "spec": "https://wicg.github.io/manifest-incubations/index.html#execute-a-file-handler-launch",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/40204185",
+            "blink_components": [
+              "UI>Browser>WebAppInstalls>FileHandling"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dmurph@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": "https://github.com/WICG/web-app-launch/issues/92",
+              "notes": null
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5369277152624640
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5551475195904000,
+        "name": "Unframed display mode for Isolated Web Apps",
+        "summary": "Unframed display mode allows [Isolated Web Apps](https://chromeos.dev/en/web/isolated-web-apps) to occupy the entire browser window, which optimizes the workspace available. By removing standard window borders and title bars, developers can implement unique user experiences with branding and menu hierarchies that match the look-and-feel of native applications. \n\nAdministrators can manage this feature with existing policies for window management:  \n- [DefaultWindowManagementSetting](https://chromeenterprise.google/policies/#DefaultWindowManagementSetting) configures the default state for the window management for all apps. The policies below can override this default.  \n- [WindowManagementAllowedForUrls](https://chromeenterprise.google/policies/#WindowManagementAllowedForUrls) allows  IWAs with specified origins to enter unframed mode without any user interaction.  \n- [WindowManagementBlockedForUrls](https://chromeenterprise.google/policies/#WindowManagementBlockedForUrls) blocks unframed mode for IWAs with specified origins, forcing Chrome to fallback to other available display modes.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 2,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": 145,
+        "blink_components": [
+          "UI>Browser>WebAppInstalls>Isolated"
+        ],
+        "resources": {
+          "samples": [
+            "https://github.com/edman/unframed-demo"
+          ],
+          "docs": [
+            "https://github.com/WICG/manifest-incubations/blob/gh-pages/unframed-explainer.md"
+          ]
+        },
+        "creator": "laurila@chromium.org",
+        "editors": [],
+        "owners": [
+          "edmanp@google.com",
+          "swethasivaram@google.com"
+        ],
+        "created": {
+          "by": "laurila@chromium.org",
+          "when": "2022-07-20 11:49:54.809061"
+        },
+        "updated": {
+          "by": "edmanp@google.com",
+          "when": "2026-07-16 07:06:33.618490"
+        },
+        "accurate_as_of": "2026-07-01 09:52:49.574001",
+        "standards": {
+          "spec": "https://wicg.github.io/manifest-incubations/index.html#dfn-unframed",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/477512407",
+            "blink_components": [
+              "UI>Browser>WebAppInstalls>Isolated"
+            ],
+            "devrel": [],
+            "owners": [
+              "edmanp@google.com",
+              "swethasivaram@google.com"
+            ],
+            "origintrial": false,
+            "prefixed": false,
+            "flag": true,
+            "status": {
+              "text": "In developer trial (Behind a flag)",
+              "val": 4
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": "",
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": "",
+              "text": "N/A",
+              "val": 9
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Strongly positive",
+              "val": 1,
+              "url": null,
+              "notes": "This feature is crucial for our VDI partners."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": ""
+            }
+          }
+        },
+        "is_released": true,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5818172612018176
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5117755740913664,
+        "name": "WebMCP",
+        "summary": "WebMCP is a proposal for a web API that enables web pages to provide agent-specific paths in their UI. With WebMCP, agent-service interaction takes place via app-controlled UI, providing a shared context available to app, agent, and user.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>Agentic Platform>WebMCP"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": [
+            "https://docs.google.com/document/d/1ZaQvuj4YnUnoqOfEhbfgFynpDRKk2zZZHavTNJ151gM/edit?tab=t.0#heading=h.ggi78l861caa",
+            "https://docs.google.com/document/d/1ycdzuXA-VE8lRDFSArh0Um3PChHV0Hq6Om1MSMG8qPE/edit?tab=t.0#heading=h.edohi3f5z12h"
+          ]
+        },
+        "creator": "bokan@chromium.org",
+        "editors": [
+          "bengr@chromium.org",
+          "masonf@chromium.org",
+          "dom@chromium.org",
+          "mfoltz@chromium.org"
+        ],
+        "owners": [
+          "khushalsagar@chromium.org",
+          "skmanickam@chromium.org",
+          "bengr@chromium.org",
+          "masonf@chromium.org",
+          "dom@chromium.org",
+          "mfoltz@chromium.org"
+        ],
+        "created": {
+          "by": "bokan@chromium.org",
+          "when": "2025-07-08 19:29:42.615078"
+        },
+        "updated": {
+          "by": "dom@chromium.org",
+          "when": "2026-06-04 12:04:47.151707"
+        },
+        "accurate_as_of": "2025-07-08 19:29:42.614770",
+        "standards": {
+          "spec": "https://webmachinelearning.github.io/webmcp",
+          "maturity": {
+            "text": "Specification being incubated in a Community Group",
+            "short_text": "Incubation",
+            "val": 3
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://crbug.com/445637567",
+            "blink_components": [
+              "Blink>Agentic Platform>WebMCP"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "khushalsagar@chromium.org",
+              "skmanickam@chromium.org",
+              "bengr@chromium.org",
+              "masonf@chromium.org",
+              "dom@chromium.org",
+              "mfoltz@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "safari": {
+            "view": {
+              "url": null,
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "No signals",
+              "val": 4,
+              "url": null,
+              "notes": "Web Framework developers: \nHave shown a great deal of interest during the developer trial, as evidenced here: https://www.star-history.com/?repos=webmachinelearning%2Fwebmcp&type=date&legend=bottom-right\nChrome web store features about 9 different extensions with WebMCP on their title and 4* or more ratings. \nhttps://chromewebstore.google.com/search/WebMCP?minimalRating=4\n"
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5129728364904448
+        ],
+        "finch_urls": []
+      },
+      {
+        "id": 5153932394102784,
+        "name": "named-feature() function for CSS @supports",
+        "summary": "The named-feature() function allows CSS @supports rules to query for a small set of specific named features that are not possible to test for using other @supports mechanisms but which are considered highly valuable to test for.",
+        "feature_type_int": 0,
+        "unlisted": false,
+        "enterprise_impact": 1,
+        "enterprise_product_category": 0,
+        "breaking_change": false,
+        "confidential": false,
+        "first_enterprise_notification_milestone": null,
+        "blink_components": [
+          "Blink>CSS"
+        ],
+        "resources": {
+          "samples": [],
+          "docs": []
+        },
+        "creator": "dbaron@chromium.org",
+        "editors": [],
+        "owners": [
+          "dbaron@chromium.org"
+        ],
+        "created": {
+          "by": "dbaron@chromium.org",
+          "when": "2024-08-16 19:18:10.129768"
+        },
+        "updated": {
+          "by": "dbaron@chromium.org",
+          "when": "2026-06-04 16:10:58.808768"
+        },
+        "accurate_as_of": "2026-05-27 19:17:13.028279",
+        "standards": {
+          "spec": "https://drafts.csswg.org/css-conditional-5/#typedef-supports-named-feature-fn",
+          "maturity": {
+            "text": "Specification currently under development in a Working Group",
+            "short_text": "Working draft",
+            "val": 4
+          }
+        },
+        "browsers": {
+          "chrome": {
+            "bug": "https://issues.chromium.org/353715317",
+            "blink_components": [
+              "Blink>CSS"
+            ],
+            "devrel": [
+              "devrel-chromestatus-all@google.com"
+            ],
+            "owners": [
+              "dbaron@chromium.org"
+            ],
+            "origintrial": false,
+            "prefixed": null,
+            "flag": false,
+            "status": {
+              "text": "Proposed",
+              "val": 2
+            },
+            "announced": false
+          },
+          "ff": {
+            "view": {
+              "url": "https://github.com/mozilla/standards-positions/issues/1340",
+              "notes": null,
+              "text": "Positive",
+              "val": 3
+            }
+          },
+          "safari": {
+            "view": {
+              "url": "https://github.com/WebKit/standards-positions/issues/600",
+              "notes": null,
+              "text": "No signal",
+              "val": 5
+            }
+          },
+          "webdev": {
+            "view": {
+              "text": "Positive",
+              "val": 2,
+              "url": "https://github.com/w3c/csswg-drafts/issues/3559",
+              "notes": "In various forums developers have asked questions about how to feature-detect things in CSS that we couldn't previously offer feature detection for.  While some developers have asked for more powerful feature detection (that would be difficult for us to provide), this provides a simple solution for something developers have been asking for."
+            }
+          },
+          "other": {
+            "view": {
+              "notes": null
+            }
+          }
+        },
+        "is_released": false,
+        "milestone": null,
+        "roadmap_stage_ids": [
+          5074574165934080
+        ],
+        "finch_urls": []
+      }
+    ]
+  },
+  "total_count": 29
+}

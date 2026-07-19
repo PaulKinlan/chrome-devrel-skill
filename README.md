@@ -117,6 +117,10 @@ You do not need to know the Chrome launch process or DevRel terminology. A rough
 
 > Put [feature, initiative, or portfolio] into the continuous DevRel loop. Build an explicit inventory and denominator; gather current evidence; run friction, stakeholder and user-impact reviews; create questions and goals; improve the right product/docs/demo/tooling/enablement layers; validate fixes; update the public source of truth; and define event-driven, weekly, milestone and post-launch monitoring.
 
+### Run launch retrospectives
+
+> Build a fixed ChromeStatus inventory for milestones [range] and run one evidence-backed retrospective per feature. Replay every lifecycle phase; retain ChromeStatus, specs/explainers, intents/reviews, implementation/issues, docs/demos, usage, interoperability, frameworks, case studies, support, positive and critical ecosystem evidence, user impact and communication. Score outcomes by dimension, preserve missing/blocked evidence, store every report publicly, and turn recurring lessons into skill changes and regression evals. Make the run resumable if any search provider or agent fails.
+
 ### Prepare for a difficult launch
 
 > Create a launch-resilience plan for [feature]. Preserve legitimate criticism while preparing for press scrutiny, issue-volume spikes, moderation, harassment, doxxing and threats. Define roles, escalation, source of truth, structured feedback, moderation, staff privacy, spokesperson coverage, hold/correction/rollback language, team support and post-incident learning. Do not make individual engineers absorb abuse.
@@ -131,6 +135,8 @@ You do not need to know the Chrome launch process or DevRel terminology. A rough
 - [Evidence-based friction logs](modules/friction-log.md)
 - [Launch resilience and team safety](modules/launch-resilience.md)
 - [Continuous DevRel improvement loop](modules/continuous-loop.md)
+- [Evidence-based launch retrospective method](modules/launch-retrospective.md)
+- [Chrome 140–150 retrospective run](retrospectives/README.md)
 - [Public case notes: HTML-in-Canvas, Baseline, Prompt API, and WEI](research/public-case-notes.md)
 - [Discovery questions](research/discovery-questions.md)
 - [Early skill scaffold](SKILL.md)

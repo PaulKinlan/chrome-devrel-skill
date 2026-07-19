@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+ROOT="${ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
+RUN_ID="${RUN_ID:-2026-07-19-v140-v150}"
+RUN_ROOT="$ROOT/retrospectives/runs/$RUN_ID"
+MODEL="${MODEL:-zai/glm-5.2}"
+MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
+TIMEOUT_SECONDS="${TIMEOUT_SECONDS:-1500}"
+mkdir -p "$RUN_ROOT/reports" "$RUN_ROOT/worker/logs" "$RUN_ROOT/worker/status" "$RUN_ROOT/worker/tmp"
+
+if [ "$#" -eq 0 ]; then
+  echo "usage: $0 FEATURE_ID..." >&2
+  exit 2
+fi
+
+write_status() {
+  local id="$1" status="$2" attempt="$3" message="$4"
+  local tmp="$RUN_ROOT/worker/status/$id.json.tmp-$$"
+  python - "$id" "$status" "$attempt" "$message" > "$tmp" <<'PY'
+import json,sys,datetime
+print(json.dumps({"featureId":int(sys.argv[1]),"status":sys.argv[2],"attempt":int(sys.argv[3]),"message":sys.argv[4],"updatedAt":datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2))
+PY
+  mv "$tmp" "$RUN_ROOT/worker/status/$id.json"
+}
+
+for id in "$@"; do
+  report="$RUN_ROOT/reports/$id.json"
+  if [ -s "$report" ]; then
+    write_status "$id" complete 0 "existing report"
+    echo "[$id] skip existing"
+    continue
+  fi
+  detail="$RUN_ROOT/evidence/chromestatus/features/$id.json"
+  if [ ! -s "$detail" ]; then
+    write_status "$id" blocked 0 "missing ChromeStatus detail"
+    echo "[$id] blocked: no detail" >&2
+    continue
+  fi
+
+  success=0
+  for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+    write_status "$id" active "$attempt" "GLM retrospective research"
+    prompt="$RUN_ROOT/worker/tmp/$id.prompt.txt"
+    raw="$RUN_ROOT/worker/tmp/$id.attempt-$attempt.raw.txt"
+    normalized="$RUN_ROOT/worker/tmp/$id.attempt-$attempt.json"
+    log="$RUN_ROOT/worker/logs/$id.attempt-$attempt.log"
+    cat > "$prompt" <<EOF
+Research one evidence-based Chrome feature launch retrospective.
+
+Feature ID: $id
+Authoritative cached ChromeStatus detail: $detail
+Feature/event manifest: $RUN_ROOT/manifest.features.jsonl
+Report schema: $ROOT/retrospectives/report.schema.json
+Method: $ROOT/modules/launch-retrospective.md
+Lifecycle phase modules: $ROOT/phases/
+Evidence cutoff: current UTC time; distinguish what was knowable at each launch event from later outcomes.
+
+Requirements:
+- Read the cached record first and follow its direct explainer/spec/intent/review/docs/sample/bug links.
+- Prefer direct primary sources. Then research independent ecosystem evidence: usage/adoption, frameworks/tools, case studies, support/friction, positive and critical press/community evidence, user impact and interoperability.
+- Use web search only in bounded varied batches. If a search provider fails, continue with direct URLs and mark missing evidence; never abort or invent.
+- Keep all launch events for this feature.
+- Replay every lifecycle phase. Use not-relevant only with rationale, never to mean untested.
+- Score outcomes by dimension as success/mixed/failure/unscored; do not infer success from shipment, usage alone, press sentiment, or absent criticism.
+- Every material finding must cite source IDs. Include URL, publisher, publication/observation date if known, retrieval timestamp, source type, supported claims and limitations.
+- Record counterfactuals and concrete skill improvements.
+- Use completion partial or blocked whenever material evidence is missing. Complete requires defensible evidence across every relevant dimension.
+- Return ONLY one JSON object conforming to report.schema.json. No Markdown fences or commentary.
+EOF
+    echo "[$id] attempt $attempt"
+    if timeout "$TIMEOUT_SECONDS" pi -p --no-session --no-context-files --no-extensions \
+      --extension /home/paulkinlan/.pi/agent/npm/node_modules/pi-web-access/index.ts \
+      --model "$MODEL" --thinking high --tools read,web_search,fetch_content,get_search_content \
+      --skill "$ROOT" "$(cat "$prompt")" > "$raw" 2> "$log"; then
+      if python - "$id" "$raw" "$normalized" <<'PY'
+import json,sys
+expected=int(sys.argv[1]); raw=open(sys.argv[2]).read(); start=raw.find('{'); end=raw.rfind('}')
+if start<0 or end<start: raise SystemExit('no JSON object')
+data=json.loads(raw[start:end+1])
+required_phases=['intake','incubation','prototype','developerTrials','wideReview','experiment','prepareToShip','release','adoption','support','deprecation']
+required_outcomes=['developerValue','endUserImpact','adoption','interoperability','implementationQuality','evidenceAndCommunication','support','overall']
+assert data.get('schemaVersion')==1
+assert data.get('feature',{}).get('id')==expected
+assert all(k in data.get('phaseReview',{}) for k in required_phases)
+assert all(k in data.get('outcomes',{}) for k in required_outcomes)
+assert data.get('completion',{}).get('status') in ['complete','partial','blocked']
+assert isinstance(data.get('sources'),list)
+open(sys.argv[3],'w').write(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+PY
+      then
+        mv "$normalized" "$report"
+        write_status "$id" complete "$attempt" "report written"
+        echo "[$id] complete"
+        success=1
+        break
+      else
+        echo "[$id] invalid JSON/schema on attempt $attempt" >> "$log"
+      fi
+    else
+      code=$?
+      echo "[$id] pi exited $code on attempt $attempt" >> "$log"
+    fi
+    write_status "$id" failed-retryable "$attempt" "attempt failed; will retry if budget remains"
+  done
+  if [ "$success" -eq 0 ]; then
+    write_status "$id" blocked "$MAX_ATTEMPTS" "all GLM attempts failed; safe to resume"
+    echo "[$id] blocked after $MAX_ATTEMPTS attempts" >&2
+  fi
+done
