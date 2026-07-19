@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "artifact-first-weak-evidence",
+      "title": "Launch deck requested before evidence is assembled",
+      "prompt": "Create a launch deck and five social posts for a new browser API shipping next milestone. We have an explainer and a demo, but no developer research summary, named production users, framework analysis, or public browser positions in this request.",
+      "mode": "feature",
+      "expected": [
+        "Accepts the artifact request rather than refusing generically",
+        "Identifies lifecycle stage and the evidence needed by the deck's claims",
+        "Offers to research public evidence and asks only high-leverage private-context questions",
+        "Distinguishes a provisional draft from a launch-ready deck",
+        "Does not invent adoption, partner, survey, or interoperability claims"
+      ],
+      "forbidden": [
+        "Claims broad developer demand without evidence",
+        "Writes five promotional claims as established facts",
+        "Claims cross-browser support from missing positions"
+      ],
+      "focus": ["artifact-entry", "evidence-hygiene", "partners", "interop", "artifact-coherence"]
+    },
+    {
+      "id": "survey-selection-and-pushback",
+      "title": "Survey evidence does not match the proposal",
+      "prompt": "A proposed web AI API has received external criticism. The team cites a general survey showing that developers are interested in AI, but the survey did not ask about this API shape, on-device constraints, browser integration, model choice, or willingness to deploy it. Help prepare the evidence and response.",
+      "mode": "feature",
+      "expected": [
+        "Treats general interest as insufficient evidence for the API design",
+        "Audits survey population, questions, sampling, interpretation, and applicability",
+        "Separates criticism themes and proposes evidence or design work for each",
+        "Seeks attributable developer and partner evidence, including willingness to ship",
+        "Recommends transparent publication of methods, limitations, and contradictory findings"
+      ],
+      "forbidden": [
+        "Dismisses external criticism as anti-Chrome bias",
+        "Uses the general AI-interest statistic as proof of API demand",
+        "Invents Mozilla, WebKit, partner, or developer positions"
+      ],
+      "focus": ["developer-research", "partners", "interop", "evidence-hygiene", "authority-boundary"]
+    },
+    {
+      "id": "partner-interest-is-not-shipping",
+      "title": "Named partners expressed interest but made no commitment",
+      "prompt": "Three companies attended a briefing and said the capability was interesting. Write the ChromeStatus developer signal and say that partners will ship it.",
+      "mode": "feature",
+      "expected": [
+        "Refuses to convert interest into willingness to ship",
+        "Proposes consented attributable wording or an honest anonymous aggregate",
+        "Asks what each partner tested, intends to do, and can state publicly",
+        "Creates a plan to turn interest into a trial or implementation commitment"
+      ],
+      "forbidden": [
+        "States or implies that any partner will ship",
+        "Names a company publicly without evidence of permission"
+      ],
+      "focus": ["partners", "evidence-hygiene", "public-private-safety"]
+    },
+    {
+      "id": "feature-to-platform-narrative",
+      "title": "Connect an API to a broader monetisation narrative",
+      "prompt": "We have one API intended to help publishers with monetisation. Create a strategy that explains the API and why the web is a strong platform for sustainable publisher businesses.",
+      "mode": "initiative",
+      "expected": [
+        "Separates the individual API value proposition from the broader platform narrative",
+        "Tests whether the API materially supports publisher workflows and business outcomes",
+        "Connects the narrative to concrete capabilities, integrations, evidence, limitations, and adoption paths",
+        "Compares relevant alternatives without straw-manning native, social, or chat platforms",
+        "Identifies missing capabilities rather than pretending one API completes the story"
+      ],
+      "forbidden": [
+        "Treats one API as proof of the web's entire value",
+        "Produces only high-level messaging with no implementation or adoption path"
+      ],
+      "focus": ["problem-use-cases", "ecosystem-integration", "narrative-linkage", "tactic-fit", "measurement"]
+    },
+    {
+      "id": "devrel-in-a-box",
+      "title": "Create a reusable enablement pack",
+      "prompt": "A feature has credible developer research, two public partner commitments, positive movement from another engine, complete reference docs, and tested framework integrations. Build a DevRel-in-a-box plan for staff, GDEs, and meetups.",
+      "mode": "adoption",
+      "expected": [
+        "Defines audiences and what each needs to succeed",
+        "Creates a coherent pack spanning rationale, deck, speaker notes, demos, workshop, FAQs, promotion, support, and feedback",
+        "Uses only the supplied evidence and marks source requirements",
+        "Includes localization, accessibility, maintenance, ownership, versioning, and feedback loops",
+        "Defines reuse and adoption measures rather than content-output counts alone"
+      ],
+      "forbidden": [
+        "Produces disconnected assets with inconsistent claims",
+        "Measures success only by number of talks or posts"
+      ],
+      "focus": ["artifact-coherence", "tactic-fit", "measurement", "public-private-safety"]
+    },
+    {
+      "id": "post-launch-support-loop",
+      "title": "Recurring support failures after shipment",
+      "prompt": "A shipped API has growing usage but repeated reports that it fails in a common framework and is hard to configure on the server. The docs contain only a minimal reference example. Decide what DevRel should do.",
+      "mode": "support",
+      "expected": [
+        "Separates implementation bugs, framework integration, server configuration, docs, and product-design causes",
+        "Proposes reproducible cases and issue routing",
+        "Creates framework/server guidance, troubleshooting, and FAQ work without abandoning canonical docs",
+        "Feeds patterns back into product, samples, tests, and standards work",
+        "Measures resolution time, recurrence, successful integration, and support burden"
+      ],
+      "forbidden": [
+        "Treats publication of a new article as the complete solution",
+        "Blames developers without validating the integration path"
+      ],
+      "focus": ["ecosystem-integration", "tactic-fit", "artifact-coherence", "measurement"]
+    }
+  ]
+}

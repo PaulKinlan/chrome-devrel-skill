@@ -2,7 +2,7 @@
 
 A stage-aware copilot for Chrome Developer Relations work across a feature or initiative's full lifecycle.
 
-This project is in discovery. It is not yet a canonical Chrome process document and has not been published.
+This project is in public discovery and will be iterated in the open. It is not a canonical Chrome process document.
 
 ## Intended users
 
@@ -22,6 +22,17 @@ The skill should help a user:
 4. Choose appropriate DevRel tactics rather than defaulting to an article.
 5. Produce a coherent, reusable asset pack when the evidence is ready.
 6. Measure adoption, support burden, and learning after launch.
+
+## Architecture
+
+The project will use a **public core**: public process sources, reusable reasoning, evidence discipline, artifact templates, and public-safe evals. If private Chrome overlays are added later, they must remain separate and must never leak internal evidence into public outputs.
+
+The skill supports both directions:
+
+- **Evidence first:** investigate a feature or initiative, expose gaps, and build a credible readiness plan.
+- **Artifact first:** accept a request such as “make the launch deck,” but inspect and research the evidence needed to make that artifact accurate and useful before drafting it.
+
+It does not impose a fictional DevRel veto. It records readiness by dimension, explains consequences of missing evidence, and helps teams make better-informed decisions even when Chrome chooses to proceed.
 
 ## Initial modes
 
@@ -48,3 +59,4 @@ The skill should help a user:
 - [Lifecycle and DevRel intervention map](research/blink-lifecycle-map.md)
 - [Discovery questions](research/discovery-questions.md)
 - [Early skill scaffold](SKILL.md)
+- [Evaluation design and fixtures](evals/README.md)

@@ -1,0 +1,48 @@
+# Evaluations
+
+The evals test whether the skill improves decisions and evidence quality—not whether it writes polished prose.
+
+## What the suite should catch
+
+- Drafting requested artifacts before checking their evidence needs
+- Treating weak, irrelevant, selectively sampled, or misinterpreted survey data as developer demand
+- Presenting partner interest as willingness to ship
+- Treating silence or “no signal” as browser support
+- Ignoring framework, library, server, deployment, accessibility, privacy, security, or support constraints
+- Producing Chrome-only adoption plans where interoperability is material
+- Losing the connection between an individual API and a broader developer/platform narrative
+- Producing broad narratives with no concrete capabilities or adoption paths
+- Confusing DevRel readiness advice with formal launch authority
+- Inventing facts, citations, commitments, metrics, or approvals
+- Generating disconnected assets that disagree on audience, terminology, support, or claims
+
+## Evaluation layers
+
+1. **Fixture validation:** deterministic validation that every case has the required structure and assertions.
+2. **Behavior evaluation:** run an agent with `SKILL.md` and a case prompt, retaining the full transcript and cited sources.
+3. **Rubric judge:** score observable behaviors with `rubric.json`; require textual evidence from the response for every score.
+4. **Artifact checks:** validate requested outputs for required metadata, internal consistency, source traceability, and unresolved assumptions.
+5. **Adversarial review:** a separate evaluator tries to find unsupported claims, evidence laundering, privacy-boundary violations, and misleading readiness language.
+6. **Historical replay:** use public records from real launches to test whether the skill identifies known strengths and failure modes without relying on hindsight-only information.
+7. **Prospective outcome review:** compare the skill's recommendations with what happened later; record misses and update fixtures.
+
+## Scoring policy
+
+- Do not use prose style as a proxy for quality.
+- Every rubric score needs quoted evidence from the response or artifact.
+- A critical failure caps the result regardless of aggregate score.
+- Retain per-dimension scores; do not hide failures behind one average.
+- Unknown evidence must remain unknown.
+- Public/private boundary violations, fabricated evidence, or invented approvals are critical failures.
+
+## Current fixtures
+
+The first fixtures are synthetic and public-safe. Public historical fixtures will be added with dated source bundles so they can be replayed without future knowledge leakage.
+
+Run structural validation:
+
+```sh
+node evals/validate.mjs
+```
+
+A model runner and judge calibration set are still to be implemented.

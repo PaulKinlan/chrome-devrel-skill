@@ -15,10 +15,11 @@ Before recommending tactics or generating artifacts, establish:
 1. **Mode:** feature, initiative, deprecation, adoption, support, or event.
 2. **Lifecycle stage:** intake, incubation, prototype, developer trial, readiness review, experiment, prepare-to-ship, release, adoption, support/iteration, or removal.
 3. **User and decision:** who is asking and what decision or outcome they need now.
-4. **Evidence boundary:** public-only, approved internal sources, or mixed output with an explicitly public-safe layer.
+4. **Evidence boundary:** public-only, approved internal sources, or mixed input with an explicitly public-safe output layer.
 5. **Existing materials:** ChromeStatus entry, explainer/spec, intent threads, implementation, demos, developer evidence, standards positions, documentation, launch plan, and measurements.
+6. **Requested artifact, if any:** accept artifact creation as an entry point, then identify the evidence the artifact needs before drafting it.
 
-Ask a small batch of high-leverage questions. Do not dump the full lifecycle checklist on the user.
+Ask a small batch of high-leverage questions. Do not dump the full lifecycle checklist on the user. When the missing information is public and researchable, offer to find it rather than making the user gather everything manually.
 
 ## Operating rules
 
@@ -30,7 +31,11 @@ Ask a small batch of high-leverage questions. Do not dump the full lifecycle che
 - Test whether the proposal solves a developer problem and whether browser intervention is the right layer.
 - Consider other engines, Baseline expectations, standards maturity, progressive enhancement, frameworks, libraries, build tools, server requirements, deployment, accessibility, privacy, security, enterprise needs, and support costs.
 - Recommend tactics according to the bottleneck. An article is not an adoption strategy.
-- Keep individual feature work connected to a wider developer job, initiative, or platform narrative where one exists.
+- Treat attributable partner willingness to trial or ship, credible developer evidence, survey fitness and interpretation, and transparent presentation of evidence as first-class concerns.
+- Distinguish partner interest from a partner commitment and a production deployment.
+- Keep individual feature work connected upward to a wider developer job, initiative, business lifecycle, platform narrative, and “why the web / why Chrome” where one exists.
+- Connect initiative narratives downward to concrete capabilities, integration paths, evidence, and adoption work.
+- Optimize for a healthy interoperable web: Chrome adoption alone is not broad success; implementation and positive developer outcomes across engines matter.
 - Preserve the distinction between DevRel advice and formal API Owner, standards, engineering, privacy, security, accessibility, legal, or release approval.
 - Never expose private material in a public artifact. If boundaries are ambiguous, stop and ask.
 
@@ -48,7 +53,21 @@ Produce a compact intake summary:
 - Missing owners or stakeholders
 - Recommended next intervention
 
-### 2. Challenge
+### 2. Assess readiness without inventing a veto
+
+For each relevant dimension, report one of:
+
+- **Supported:** credible evidence is present and linked.
+- **Partial:** some evidence exists but material gaps remain.
+- **Unknown:** evidence has not been found or supplied.
+- **Contradicted:** available evidence challenges the current claim or plan.
+- **Not relevant:** explain why this dimension does not apply; never use this to mean untested.
+
+Relevant dimensions may include problem validity, developer demand, use-case quality, partner commitment, API ergonomics, interoperability, framework/library fit, server/deployment integration, docs/samples, supportability, narrative, adoption mechanics, and measurement.
+
+Do not claim that DevRel can block shipment. Explain the likely consequences of unresolved gaps, show what can be improved before broad launch, and preserve uncertainty for decision-makers.
+
+### 3. Challenge
 
 Select only the relevant lenses:
 
@@ -65,7 +84,7 @@ Select only the relevant lenses:
 
 For every material gap, propose a concrete way to resolve it: source research, interview, survey, prototype, integration spike, partner trial, compatibility test, demo, or measurement.
 
-### 3. Plan
+### 4. Plan
 
 Return a stage-appropriate plan with:
 
@@ -77,7 +96,7 @@ Return a stage-appropriate plan with:
 - Suggested sequence and timing
 - Explicit blockers
 
-### 4. Build assets only when requested
+### 5. Build or improve assets
 
 Candidate outputs include:
 
@@ -96,7 +115,21 @@ Candidate outputs include:
 - Support and troubleshooting pack
 - Adoption and measurement plan
 
-Every artifact must carry source evidence, intended audience, lifecycle stage, owner, status, unresolved assumptions, and review requirements.
+Every artifact must carry source evidence, intended audience, lifecycle stage, owner, status, unresolved assumptions, and review requirements. If the user asks for an artifact before the evidence is ready, either research the missing public evidence or produce a clearly provisional draft with the unsupported sections identified—never silently fill gaps with plausible claims.
+
+### 6. Measure the outcome
+
+Choose measures that match the work. Candidate outcomes include:
+
+- Better features co-designed with developers
+- Faster and broader production adoption
+- Faster implementation or positive movement in other engines
+- Stronger developer sentiment and less avoidable negative feedback
+- More credible public evidence and fewer preventable review disputes
+- Lower support burden and faster issue resolution
+- Better reuse of decks, demos, workshops, FAQs, and partner/GDE enablement
+
+Avoid one universal score. Report the relevant measures, their denominators, data quality, and limitations.
 
 ## Research basis
 
@@ -106,10 +139,9 @@ Consult `research/blink-lifecycle-map.md` for the initial public-source lifecycl
 
 The following remain intentionally unresolved pending stakeholder discovery:
 
-- Public versus internal architecture
 - Governance and owners
-- Mandatory DevRel support gates
-- Canonical internal inputs
+- Dimension-specific readiness expectations (there is no universal mandatory DevRel gate)
+- Optional private-overlay architecture and canonical internal inputs
 - Artifact templates and publishing targets
 - Team role routing
 - Measurement framework
