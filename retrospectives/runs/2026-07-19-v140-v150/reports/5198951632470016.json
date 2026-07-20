@@ -1,0 +1,438 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5198951632470016,
+    "name": "Algorithm Updates in WebCrypto",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5198951632470016",
+    "category": "Security",
+    "featureType": "New or changed feature",
+    "summary": "Adds post-quantum cryptography (ML-KEM-768/1024, ML-DSA-44/65/87, X-Wing/MLKEM768-X25519 hybrid) and ChaCha20-Poly1305 AEAD to the Web Cryptography API, plus new SubtleCrypto methods (encapsulateKey/encapsulateBits/decapsulateKey/decapsulateBits, getPublicKey, supports).",
+    "blinkComponents": [
+      "Blink>WebCrypto"
+    ],
+    "specLink": "https://wicg.github.io/webcrypto-modern-algos",
+    "flagName": "webcrypto-pqc",
+    "finchName": "WebCryptoPQC",
+    "owners": [
+      "hchao@chromium.org"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:In developer trial (Behind a flag):5198951632470016",
+      "milestone": 150,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The problem is clearly scoped and independently corroborated: WebCrypto exposes low-level primitives but none of its asymmetric cryptography is quantum-resistant, forcing JavaScript crypto libraries either to compile OpenSSL to WASM, reimplement algorithms in pure JS, or simply not be post-quantum. The motivation argues that browser-provided (BoringSSL-backed, potentially FIPS-validated) implementations are preferable to those workarounds. ChromeStatus entry created 2025-10-10 by hchao@chromium.org; developer/editors include davidben/dadrian/jdeblasio. Independent ecosystem sources (Cloudflare's post-quantum strategy targeting 2029, dchest.com's hand-built WebCrypto-compatible ML-KEM/ML-DSA shims, Apple adding ML-KEM to CryptoKit) confirm the gap is real and recurring. The harvest-now-decrypt-later threat model for long-lived confidential data is well established.",
+      "evidenceIds": [
+        "s1",
+        "s9",
+        "s10",
+        "s11"
+      ],
+      "limitations": "ChromeStatus 'Web developers: No signals'; no proposal-specific demand survey exists. The threat is long-horizon, so urgency is asserted rather than measured for the web-application layer specifically."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation venue is the W3C Web Platform Incubator Community Group (WICG) draft 'Modern Algorithms in the Web Cryptography API' authored by Daniel Huigens. The problem is validated and existing workarounds are documented. Adjacent platforms are converging (Apple CryptoKit ML-KEM at WWDC 2025; Node v24 and Deno adding PQC to their WebCrypto). However the proposal is a WICG CG draft explicitly 'not a W3C Standard nor on the W3C Standards Track', and Mozilla flagged the venue (label 'venue: W3C CG') among concerns. Algorithms are optional-to-implement, so engines ship different subsets (Chrome: ML-KEM, ML-DSA, ChaCha20-Poly1305, X-Wing; Mozilla: ML-KEM, ML-DSA, SHA-3), which is an incubation-level interop consideration.",
+      "evidenceIds": [
+        "s3",
+        "s5",
+        "s6",
+        "s13"
+      ],
+      "limitations": "No TAG review has been requested or completed (cached record tag_review_status 'Pending'). The Mozilla concern labels (API design, compatibility, interoperability, performance, usability, venue) indicate unresolved design questions that remain at incubation maturity."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A working implementation exists behind the `webcrypto-pqc` runtime flag / `WebCryptoPQC` Finch feature, reaching Developer Trial at Chrome 150 (desktop + Android). Implementation reuses BoringSSL rather than reimplementing crypto, which the team cites as reducing correctness risk. The 'Ready for Developer Testing' announcement lists the spec, tracking bug, launch bug, flag/Finch names, WPT path (WebCryptoAPI), and measurement use-counters. The API design (KEM encapsulate/decapsulate model, supports() feature detection, getPublicKey helper) is a considered evolution of WebCrypto ergonomics, not a copy of a native API.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "The Chromium tracking bug (issues.chromium.org/issues/450627017) and per-algorithm WPT results were not publicly readable in this run (bug requires sign-in; wpt.fyi dashboard did not render detail), so prototype-phase test/bug evidence is inferable but not directly verified."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The manifest's single launch event is the Chrome 150 Developer Trial (behind `webcrypto-pqc`). DevTrial instructions (a Google Doc), the flag name, and the measurement use-counters are all present and the trial goals are honestly scoped ('get a few sites to test out the new algorithms in real-world scenarios... to ferret out any subtle bugs'; correctness is not a worry because BoringSSL is used; performance worth evaluating). What is missing is any evidence of a deliberately recruited, varied cohort, published trial findings, feedback methodology, or who-tried-what — ChromeStatus records 'Web developers: No signals'.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s15"
+      ],
+      "limitations": "No attributable developer-trial participation, task-completion, or friction evidence was found; the trial appears to be an open-flag trial rather than a recruited cohort."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Other-engine positions are gathered and dated: Firefox/Mozilla 'Neutral' (issue opened 2025-08-06; note 'Despite being neutral, Firefox is shipping anyway') and WebKit 'Neutral' (issue opened 2026-03-26; 'no one likes the Web Crypto API, but everyone agrees we should add PQC to it'). Both are non-blocking and Mozilla is actively implementing. However the formal review gates tracked in the cached record are all incomplete as of cutoff: tag_review_status 'Pending', security_review_status 'Pending', privacy_review_status 'Pending'. The cached interop_compat_risks field honestly states 'Won't work cross-browser until other browsers implement any of these new algorithms.'",
+      "evidenceIds": [
+        "s1",
+        "s5",
+        "s6",
+        "s12"
+      ],
+      "limitations": "No TAG review has occurred; security and privacy review are still Pending; the Mozilla concern labels (API design, interoperability, performance, usability, venue) were not shown to be resolved before DevTrial/OT."
+    },
+    "experiment": {
+      "status": "supported",
+      "finding": "An Origin Trial ('Additional WebCrypto Algorithms', trial name WebCryptoAdditionalAlgorithms202606, ID 1379790335835635713) is justified by an explicit, reasonable uncertainty (real-world bug-finding and performance evaluation that cannot be done behind a flag), runs Chrome 151-154 desktop+Android, and is set up completely (ot_setup_status 6). It is listed on the public Chrome Origin Trials registry and in the Chrome 151 beta post (beta 2026-07-03). The OT documentation URL, feedback-submission URL, and owner/requester emails are all populated. Goals are stated and honest.",
+      "evidenceIds": [
+        "s1",
+        "s7",
+        "s14"
+      ],
+      "limitations": "As of cutoff the OT has just begun (Chrome 151 still in beta); no participant denominator, task outcomes, or interim results exist yet, so the experiment's hypotheses are unanswered rather than validated."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "Not relevant as of cutoff with rationale: the feature has not reached prepare-to-ship. The ship stage (stage_type 160) has no rollout milestone and no Intent to Ship thread (intent_thread_url null); ChromeStatus is_released is false. The active stage is the Origin Trial (intent_stage 3).",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Premature to assess; revisit when an Intent to Ship is filed."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "Not relevant as of cutoff with rationale: there has been no default-on stable shipment, only a flag-gated DevTrial (M150) and a newly opened Origin Trial (M151 beta). The Chrome 151 beta post describes the OT, not a shipped feature. No release-notes readiness (is_releasenotes_content_reviewed=false, is_releasenotes_publish_ready=false).",
+      "evidenceIds": [
+        "s1",
+        "s7"
+      ],
+      "limitations": "Premature to assess release communication quality beyond the beta/OT notice."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Unknown as of cutoff: the feature is not shipped by default, so there is no production adoption to measure. The strongest adjacent signal is independent: dchest.com built mlkem-wasm/mldsa-wasm WebCrypto-compatible shims explicitly to migrate to native WebCrypto when it ships, and Node v24/Deno are adding PQC to their own WebCrypto implementations. These are ecosystem interest, not adoption of this Chrome feature.",
+      "evidenceIds": [
+        "s9",
+        "s13"
+      ],
+      "limitations": "No production deployments, framework integrations, or attributable partner usage of the Chrome implementation were found; the feature is gated behind a flag/OT."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Unknown as of cutoff: with only a DevTrial and a brand-new Origin Trial, there is no public support-issue taxonomy, recurrence data, or known friction pattern for this feature yet. An OT feedback-submission URL (issues.chromium.org component 1456469) exists as the intended channel.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No support telemetry or issue history is available at this stage."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not relevant with rationale: this is a purely additive new-feature launch (post-quantum + AEAD algorithms and new SubtleCrypto methods); it does not restrict, replace, or remove any existing API, so the deprecation/removal phase does not apply.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer value is strongly argued and independently corroborated (post-quantum app-layer crypto via a browser-provided, BoringSSL-backed, potentially FIPS-validated path; lets JS crypto libraries drop WASM/pure-JS workarounds; bundles the long-requested ChaCha20-Poly1305 and adds genuinely useful supports()/getPublicKey helpers). Cloudflare, dchest.com, and the Google Chrome post-quantum strategy all substantiate the underlying need. However there is no proposal-specific demand survey, ChromeStatus records 'Web developers: No signals', and actual adoption is unproven (feature unshipped by default).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s9",
+        "s10",
+        "s11"
+      ],
+      "limitations": "Strong problem-level evidence, but demand for this exact API shape and broad production uptake remain unmeasured."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Direct end-user impact is negligible and indirect: these are low-level cryptographic primitives consumed via libraries, with no user-facing UI or behavior change. The intended indirect benefit is stronger security (quantum-resistant key exchange/signatures) for end-to-end content, signed tokens, and sealed storage, but that benefit is only realized when libraries adopt the primitives and is long-horizon (harvest-now-decrypt-later). Not measurable at this stage.",
+      "evidenceIds": [
+        "s1",
+        "s10"
+      ],
+      "limitations": "No end-user impact data and none realistically collectible until libraries ship quantum-resistant flows using these primitives."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Unscored because the feature is not shipped by default; it exists only as a Chrome 150 flag-gated DevTrial and a just-opened Chrome 151-154 Origin Trial. No production deployments, framework/library integrations, or attributable partner usage of the Chrome implementation were found. Independent WASM shims and Node/Deno implementations signal ecosystem readiness, not adoption of this feature.",
+      "evidenceIds": [
+        "s1",
+        "s7",
+        "s9",
+        "s13"
+      ],
+      "limitations": "Too early; revisit after stable default-on shipment."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Current interoperability is a known, openly-stated gap: the feature is single-engine (Chromium only) and built on a WICG Community Group draft that is explicitly not on the W3C Standards Track, so it 'won't work cross-browser until other browsers implement any of these new algorithms' and is emphatically not Baseline. Engines may ship different algorithm subsets (Chrome vs Mozilla's ML-KEM/ML-DSA/SHA-3). Against that, the trajectory is credible and positive: both Mozilla and WebKit are 'Neutral' rather than opposed, Mozilla is actively implementing (meta bug 1981476, behind-pref/backlog), and the spec is co-designed across vendors. No contradiction or blocking objection was found.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s5",
+        "s6",
+        "s12"
+      ],
+      "limitations": "Multi-engine support is unrealized as of cutoff; do not infer future Baseline from current neutral positions."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The implementation strategy is sound and lower-risk than alternatives: it delegates to BoringSSL (proven, memory-safe, FIPS-validatable) rather than reimplementing lattice cryptography, and WPT coverage (WebCryptoAPI) is referenced. The OT goals explicitly treat cryptographic correctness as low-risk for this reason. However no public evidence of WPT pass rates, open bugs, regressions, or conformance could be verified in this run because the Chromium tracking bug requires authentication and the wpt.fyi detail did not render.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "Test/bug/regression evidence is inferable from the strategy but not directly confirmed from public sources here."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication is largely accurate and honest: the ChromeStatus motivation, interop risk ('won't work cross-browser'), and OT goals are candid and well-referenced; the Chrome 151 beta post and Origin Trials registry describe the feature accurately; independent analyses (trade-assistance.com) correctly caution that it is 'emphatically not Baseline' and recommend feature-detection/fallback. Two material inaccuracies/gaps remain: (1) ChromeStatus standards maturity is recorded as 'Specification currently under development in a Working Group / Working draft', which overstates the venue — the spec self-describes as a WICG Community Group publication 'not a W3C Standard nor on the W3C Standards Track' (Mozilla/WebKit both label the venue WICG/W3C CG); (2) the still-Pending TAG, security, and privacy review statuses are not surfaced as launch risks.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s5",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "The standards-venue metadata discrepancy and unflagged Pending reviews are communication gaps; otherwise claims track the underlying evidence."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Unscored: with only a flag DevTrial and a newly opened Origin Trial, no public support burden, issue recurrence, or resolution-time data exists yet. An OT feedback channel (issues.chromium.org component 1456469) is designated.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No support history to evaluate at this stage."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Overall this is a well-motivated, soundly-engineered addition to a real, independently-validated gap, executed honestly so far through DevTrial (M150) and a properly-justified Origin Trial (M151-154). It does not conceal its limitations: it is single-engine, pre-standardization (WICG CG draft), and not Baseline, with TAG/security/privacy reviews still Pending. Many outcome dimensions (adoption, support, end-user impact) are unscored because the feature has not shipped by default, so this is a mid-experiment launch rather than a settled success or failure. The mixed verdict preserves the genuine tension between strong problem/engineering execution and open interoperability/standards gaps."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/chromestatus/features/5198951632470016.json",
+      "publisher": "Chrome Platform Status (cached feature evidence)",
+      "publishedOrObservedAt": "2025-10-10T16:18:02Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record, stages (DevTrial M150, OT M151-154), motivation, interop risks, review statuses Pending, ownership, flag/Finch names, OT metadata"
+      ],
+      "limitations": "accurate_as_of 2025-10-10; some fields (tag/security/privacy review) remain Pending; standards maturity field mislabels venue as WG/Working draft."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5198951632470016",
+      "publisher": "Chrome Platform Status (server-rendered lite)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Category, status Proposed, summary, motivation, standards/signals, tracking bug, Firefox/WebKit positions"
+      ],
+      "limitations": "Static text mirror of the ChromeStatus record; same underlying data as s1."
+    },
+    {
+      "id": "s3",
+      "url": "https://wicg.github.io/webcrypto-modern-algos",
+      "publisher": "W3C Web Platform Incubator Community Group (WICG)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Algorithm set (ML-KEM, ML-DSA, SLH-DSA, AES-OCB, ChaCha20-Poly1305, SHA-3, cSHAKE, TurboSHAKE, K12, KMAC, Argon2), new SubtleCrypto methods, optional-to-implement algorithms, 'not a W3C Standard nor on the W3C Standards Track'"
+      ],
+      "limitations": "Living CG draft; JWK formats for ML-KEM/ML-DSA noted as not yet standardized (subject to change)."
+    },
+    {
+      "id": "s4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/WKF2N040tGM",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Ready for Developer Testing announcement, spec link, flag/Finch names, all-platforms support, WPT path, DevTrial milestones 150 desktop+Android, Mozilla/WebKit positions, measurement counters"
+      ],
+      "limitations": "Thread replies/ LGTMs not rendered; no explainer link ('No information provided')."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/mozilla/standards-positions/issues/1282",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2025-08-06T12:55:07Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position Neutral; venue W3C CG; concern labels (API design, compatibility, interoperability, performance, usability, venue); references Bugzilla 1981476"
+      ],
+      "limitations": "GitHub issue body is partially loaded; detailed Mozilla rationale comment not fully captured."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/WebKit/standards-positions/issues/641",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2026-03-26T14:30:03Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position Neutral; venue WICG; notes Chromium implementing ML-KEM/ML-DSA/ChaCha20-Poly1305 and Mozilla implementing ML-KEM/ML-DSA/SHA-3"
+      ],
+      "limitations": "No WebKit implementation evidence; position is non-blocking."
+    },
+    {
+      "id": "s7",
+      "url": "https://developer.chrome.com/blog/chrome-151-beta",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-07-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 151 beta (2026-07-03) lists 'WebCrypto algorithm updates' as a new origin trial: ML-KEM, ML-DSA, X-Wing, ChaCha20-Poly1305"
+      ],
+      "limitations": "Beta announcement, not stable release; does not cover ship-by-default milestone."
+    },
+    {
+      "id": "s8",
+      "url": "https://trade-assistance.com/blog/post-quantum-web-crypto-api-chrome-151/",
+      "publisher": "Trade Assistance LLC",
+      "publishedOrObservedAt": "2026-07-08",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "OT runs M151-154 desktop+Android, DevTrial from M150; KEM encapsulate/decapsulate model; 'emphatically not Baseline'; feature-detect and fall back; X-Wing recommended as conservative default; larger key/signature sizes"
+      ],
+      "limitations": "Independent vendor blog, not an official source; working-code analysis."
+    },
+    {
+      "id": "s9",
+      "url": "https://dchest.com/2025/08/09/mlkem-webcrypto/",
+      "publisher": "dchest.com",
+      "publishedOrObservedAt": "2025-08-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Confirms WebCrypto lacked ML-KEM as of Aug 2025; built mlkem-wasm (and later mldsa-wasm) WebCrypto-compatible shims to migrate to native WebCrypto later; browsers already ship ML-KEM internally for TLS; benchmarks; hybrid recommendation"
+      ],
+      "limitations": "Single developer's perspective; dates from before the Chrome implementation landed."
+    },
+    {
+      "id": "s10",
+      "url": "https://blog.cloudflare.com/ml-dsa-will-have-to-do/",
+      "publisher": "The Cloudflare Blog",
+      "publishedOrObservedAt": "2026-07-09T13:40:47Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Post-quantum migration rationale; ML-KEM/ML-DSA standardized by NIST 2024; majority of Cloudflare TLS traffic already ML-KEM; Cloudflare targeting full PQ by 2029; ML-DSA sizes ~40x ECDSA; adoption timeline pressures"
+      ],
+      "limitations": "Focused on TLS/PKI context, not WebCrypto specifically; vendor perspective."
+    },
+    {
+      "id": "s11",
+      "url": "https://blog.google/chromium/advancing-our-amazing-bet-on-asymmetric/",
+      "publisher": "Google Chrome blog",
+      "publishedOrObservedAt": "2024-05-23T17:19:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome's post-quantum strategy; ML-KEM in TLS since Chrome 124 (2024); harvest-now-decrypt-later threat; size/performance costs of PQ authentication"
+      ],
+      "limitations": "TLS/PKI strategy, predates the WebCrypto feature; not proposal-specific demand."
+    },
+    {
+      "id": "s12",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1981476",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2025-08-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox meta tracking bug for Modern Algorithms in WebCrypto; status NEW, P3, behind-pref + firefox-backlog; opened ~Aug 2025, updated 2026-05-07; unassigned at meta level"
+      ],
+      "limitations": "Meta bug, no child-bug completion data captured; does not confirm stable Firefox shipment."
+    },
+    {
+      "id": "s13",
+      "url": "https://github.com/denoland/deno/issues/30900",
+      "publisher": "Deno (GitHub)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Server-side/runtime ecosystem momentum: Node v24 supports ML-DSA and ML-KEM in WebCrypto; PQC support landing in Deno's WebCrypto"
+      ],
+      "limitations": "Independent runtimes, not browsers; date/extent not fully resolved."
+    },
+    {
+      "id": "s14",
+      "url": "https://developer.chrome.com/origintrials/",
+      "publisher": "Chrome for Developers (Origin Trials registry)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "'WebCrypto Algorithms' origin trial is live on the public registry; enables ML-KEM-768, ML-KEM-1024, MLKEM768-X25519 (X-Wing), ML-DSA, ChaCha20-Poly1305"
+      ],
+      "limitations": "Registry listing, no participation/usage numbers."
+    },
+    {
+      "id": "s15",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest (2026-07-19-v140-v150)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Single launch event for this feature within the run scope: 150:In developer trial (Behind a flag)"
+      ],
+      "limitations": "Run scoped to v140-v150, so the M151-154 Origin Trial events are out of scope and not listed here (captured via cached record + beta post instead)."
+    }
+  ],
+  "successes": [
+    "Clear, independently-validated problem statement and candid, well-referenced ChromeStatus record (interop risk explicitly disclosed).",
+    "Sound, lower-risk implementation strategy delegating to BoringSSL rather than reimplementing lattice cryptography; WPT path referenced.",
+    "Honest, justified Origin Trial with explicit goals (ferret out real-world bugs, evaluate performance), complete setup (live on the public registry), and designated feedback channel.",
+    "Pragmatic bundling of the long-requested ChaCha20-Poly1305 AEAD with genuinely useful SubtleCrypto ergonomics helpers (supports() feature detection, getPublicKey, encapsulate/decapsulate methods).",
+    "Non-blocking other-engine positions (Mozilla and WebKit both Neutral) with Mozilla actively implementing, giving a credible multi-engine trajectory despite current single-engine status.",
+    "Accurate independent technical coverage (Chrome 151 beta post, trade-assistance.com) correctly framing it as experimental, non-Baseline, with feature-detection guidance."
+  ],
+  "failures": [
+    "TAG review not completed (tag_review_status Pending), and security and privacy review statuses both still Pending at the time of DevTrial and OT start — material for security-sensitive primitives.",
+    "No proposal-specific developer demand evidence ('Web developers: No signals') and no recruited, varied DevTrial cohort or published findings; the M150 trial is an open flag rather than an evidenced cohort.",
+    "Standards venue is a WICG Community Group draft (not on the W3C Standards Track) yet ChromeStatus maturity metadata records it as 'under development in a Working Group / Working draft' — an overstatement that mis-sets Baseline/standardization expectations.",
+    "Single-engine at OT launch; the self-acknowledged 'won't work cross-browser' limitation is real, and engines may ship different algorithm subsets (e.g., Mozilla adds SHA-3, not ChaCha20-Poly1305).",
+    "Intent to Prototype and Intent to Experiment thread bodies (msgid URLs) were referenced but not directly retrievable, leaving the formal intent discussion evidence incomplete."
+  ],
+  "counterfactuals": [
+    "If TAG, security, and privacy reviews had completed before the DevTrial/OT, the Origin Trial could have begun with design objections resolved rather than carrying Pending statuses into a field experiment on security-critical primitives.",
+    "If the M150 DevTrial had used a deliberately recruited, varied cohort (crypto library authors, E2EE apps, FIPS-required enterprises) with a published findings plan, the OT would have entered with attributable task-completion and friction evidence instead of 'No signals'.",
+    "If ChromeStatus had recorded the standards venue accurately (WICG CG, not a Working Group), early adopters and reviewers would have had correct Baseline/standardization expectations and the Mozilla 'venue' concern would have been visibly acknowledged.",
+    "If the algorithm-subset divergence across engines (Chrome vs Mozilla's SHA-3 preference) had been coordinated during incubation, the cross-browser interoperability gap could narrow faster after shipment.",
+    "If an explicit Baseline/feature-detection requirement had been attached to the OT (beyond the trade-assistance.com guidance), early production experimenters would be less likely to ship Chrome-only quantum-resistant flows."
+  ],
+  "skillImprovements": [
+    "Add a phase-04 (wide review) transition-packet check that surfaces TAG, security, and privacy review status as explicit launch risks whenever a security-sensitive primitive moves from prototype to DevTrial/OT, refusing to silently carry 'Pending' into a field experiment.",
+    "Add a retrospective/evidence-validation rule that detects discrepancies between ChromeStatus standards-maturity metadata and the spec's self-described venue (WICG CG vs Working Group) and flags them as evidence-and-communication defects.",
+    "Add a phase-03 (developer trials) checklist item distinguishing open-flag trials from recruited cohorts, requiring a cohort description and a findings-publication plan, and scoring 'No signals' as unknown rather than neutral.",
+    "Add an interoperability scoring rule for early-stage security primitives that distinguishes 'single-engine, CG draft, openly accepted risk, multi-engine neutral+implementing' from genuinely stalled interop, so early features are scored without over-claiming future Baseline.",
+    "Add a source-retrievability rule: when msgid-form Google Groups intent URLs fail the reader, automatically fall back to the announcement_url (Ready for Developer Testing) and the cr-status.appspot.com gate page, and record attempted-but-unretrieved sources in completion.missingEvidence."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Prototype and Intent to Experiment thread bodies (msgid-form URLs not retrievable via the reader; content inferred from the cached record and the Ready for Developer Testing announcement).",
+      "TAG review outcome (status Pending — not yet performed).",
+      "Security review and privacy review outcomes (both Pending as of cutoff).",
+      "Chromium tracking bug (issues.chromium.org/issues/450627017) detail and per-algorithm WPT pass/fail/regression data (bug requires authentication; wpt.fyi detail did not render).",
+      "Developer-trial cohort, participation, task-completion, and published findings (none found; 'Web developers: No signals').",
+      "Origin Trial participant denominator and interim/final results (OT just opened in Chrome 151 beta).",
+      "Adoption/production-deployment evidence, support-issue history, and end-user impact (feature not shipped by default)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

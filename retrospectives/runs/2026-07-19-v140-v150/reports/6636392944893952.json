@@ -1,0 +1,469 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6636392944893952,
+    "name": "Allow optional rounding parameter for `polygon()`",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6636392944893952",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "webFeature": "shape-function",
+    "featureType": "Chromium catches up",
+    "ownerEmails": [
+      "cgqaq@chromium.org"
+    ],
+    "editorEmails": [
+      "yiorsi@gmail.com"
+    ],
+    "finchName": "CSSPolygonRounding",
+    "specMaturity": "Working draft (editors' draft 2026-05-07; published CRD 2025-06-12)",
+    "shippingMilestone": 150
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:6636392944893952",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:10:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "The ChromeStatus entry (created 2026-04-01 by cgqaq@chromium.org / Jason Leo) states the problem clearly: rounded polygons are a common design pattern and the workarounds (manual bezier control points via path(), or SVG clip-paths) are complex. It links the CSSWG issue, the spec, a CodePen demo and the tracking bug. But the record is sparse: no explainer_links, no doc_links, no sample_links, no initial_public_proposal; tag_review_status is 'Not applicable'. It is classified feature_type 'Chromium catches up' even though no other engine ships it. The motivation restates the CSSWG thread rather than adding Chrome-specific evidence.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4"
+      ],
+      "limitations": "No separate Chrome explainer exists; intake evidence is effectively the CSSWG thread."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Strong public incubation. CSSWG issue #9843 (LeaVerou, opened 2024-01-24) documents many concrete use cases (breadcrumbs, speech bubbles, rounded tabs, rounded hexagon images) backed by dozens of cited Stack Overflow questions and prior art (CSS Paint API rounding by Temani Afif; SVG polyfills by thebabydino). The geometry/clamping algorithm was worked through in-thread (Loirooriol, tabatkins). CSSWG resolved 2024-02-14 'Work on adding corner rounding to polygon()' with broad support (fantasai, tabatkins, astearns, emilio). astearns added spec text on 2024-09-11.",
+      "evidenceIds": [
+        "s2",
+        "s3",
+        "s18"
+      ],
+      "limitations": "Demand is anecdotal/community (Stack Overflow questions, demos), not measured adoption of the existing workarounds."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A reference implementation exists and shipped; a WPT test (polygon-function-rounding-clamp.html) is referenced and its existence was confirmed by reviewers on the intent thread. A CodePen demo (yisi/NPRLEQN) is linked. The clamping algorithm was specified. No public friction log, framework-integration spike, or cross-platform prototype evidence was found.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s14"
+      ],
+      "limitations": "Tracking bug 329302249 and the WPT results page could not be read via the proxy; internal prototype/friction evidence is not public."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial or origin trial was conducted. ChromeStatus shows origintrial=false with no dev-trial milestone, and the Intent to Ship lists 'Goals for experimentation: None'. The feature shipped directly enabled-by-default in Chrome 150. For a self-contained CSS syntax addition of this size a field trial is not customary, but it also means no external developer feedback was gathered before ship.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "not-relevant reflects that no trial stage existed; it does not mean the feature was internally validated."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Mixed. Within the CSSWG the proposal has strong consensus (resolution plus spec text). But no other-engine signal exists: Mozilla position #1197 (filed 2025-03-20, assigned emilio) is 'Needs proposed position'; WebKit position #474 (filed 2025-03-20, assigned smfr / Simon Fraser) has no position. The TAG never reviewed it (confirmed by Jeffrey Yasskin on the intent thread; Mike Taylor explicitly asked 'Did TAG ever look at this?'). The intent lists 'Web developers: No signals'.",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "limitations": "Absent cross-engine signals are not opposition; both position issues remain open. But 'No signal' must not be read as neutral or positive."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial or field experiment was run. Intent: 'Goals for experimentation: None'. Rationale: a pure CSS shape-function addition with no server, permission or runtime behaviour does not require field conditions to validate.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "not-relevant because no experiment was justified or conducted."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (2026-05-27) received LGTM1 (Yoav Weiss), LGTM2 (Chris Harrelson), LGTM3 (Vladimir Levin). But the packet was sparse: 'No information provided' for initial public proposal, TAG review, interoperability/compatibility, WebView risks, debuggability, and anticipated spec changes. Mike Taylor flagged the missing WPT link and the unverified TAG review; Chris Harrelson added the WPT link to ChromeStatus and asked the author to fill it in 'next time'. WPT coverage: Yes. Spec linked. All six Blink platforms: Yes. Finch: CSSPolygonRounding; ship enabled for all users.",
+      "evidenceIds": [
+        "s4",
+        "s1"
+      ],
+      "limitations": "Three LGTMs are process approval, not evidence of developer/user value; several intent fields were empty."
+    },
+    "release": {
+      "status": "mixed",
+      "finding": "Shipped enabled-by-default in Chrome 150 (stable ~2026-06-30 per release timeline; manifest records 'Enabled by default:150') to desktop/Android/WebView. But release communication is weak: no dedicated Chrome DevRel article for polygon round (the developer.chrome.com/css-shape blog of 2025-04-08 is about the shape() function, not polygon round; the implementing-corner-shape blog is about corner-shape); web.dev learn CSS (last updated 2025-08-23) does not mention polygon round; MDN's polygon() page only updated its formal syntax on 2026-07-16 with no prose description or examples and a misleading 'Baseline: Widely available since January 2020' banner (which is about polygon() core, not the round parameter). ChromeStatus announcement_url is null and is_releasenotes_content_reviewed/publish_ready are false.",
+      "evidenceIds": [
+        "s7",
+        "s8",
+        "s9",
+        "s11",
+        "s1"
+      ],
+      "limitations": "Ship timing inferred from the manifest plus the Chrome release schedule; the stable release-notes page was not individually verified to list this feature."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "The feature shipped <1 month before the evidence cutoff; no public usage/use-counter data, framework/library integration, or attributable production case studies were found. Community coverage is nascent: a Japanese technical glossary documents the Chrome 150 behaviour; an independent 2026 clip-path guide (generalistprogrammer.com, 2026-06-17) does not yet cover the round parameter; existing 'rounded polygon' community content (css-tip.com, DEV.to) uses the shape() function or workarounds rather than polygon round. Demand (Stack Overflow, Webflow forum) pre-dates and is independent of the feature.",
+      "evidenceIds": [
+        "s10",
+        "s15",
+        "s16",
+        "s17"
+      ],
+      "limitations": "Too early to assess; no Chrome use-counter data is publicly linked; adoption must not be inferred from shipment."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "At least one known implementation bug exists: Chromium 504697281 'border-shape + polygon(round) produces sharp corners at certain extreme values' (Blink>Paint). The clamping algorithm has inherent edge cases (Loirooriol noted in the CSSWG that per-corner clamping does not guarantee a non-self-intersecting shape). No public support FAQ or troubleshooting pack was found. The feature is too new to assess support burden.",
+      "evidenceIds": [
+        "s12",
+        "s2",
+        "s1"
+      ],
+      "limitations": "Bug details could not be read via the proxy (only title/components from search); severity and resolution are unknown."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New additive CSS capability; nothing is deprecated or removed. Not applicable.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The developer problem is well-validated: rounding polygon clip-path/shape corners is a recurring need documented across many Stack Overflow questions, community demos and the CSSWG thread, where existing workarounds (manual bezier via path(), SVG clip-paths, the Paint API, filters) are described as complex or inflexible. The shipped MVP (a single round <length> applied to all vertices with per-vertex clamping) addresses the most common case the CSSWG identified. The spec itself notes shape() remains the path for more complex curves.",
+      "evidenceIds": [
+        "s2",
+        "s3",
+        "s17",
+        "s18"
+      ],
+      "limitations": "Per-vertex radius override (discussed in the CSSWG) was not in the MVP; value for advanced shapes overlaps with the shape() function."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "This is a developer-authoring CSS feature; there is no direct end-user control, decision, privacy, security, accessibility, or resource evidence, and none is claimed in the motivation. Any end-user benefit (nicer non-rectangular UI) is indirect and unmeasured.",
+      "evidenceIds": [
+        "s1",
+        "s2"
+      ],
+      "limitations": "No end-user impact evidence collected or expected for this feature type."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No defensible adoption evidence: the feature shipped ~2026-06-30, under one month before the cutoff; no use-counter/HTTP Archive/Baseline/dashboard data is linked; no framework/library integration; no attributable production case study.",
+      "evidenceIds": [
+        "s1",
+        "s10"
+      ],
+      "limitations": "Cannot be scored; must not be inferred from shipment."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards progress is real (CSSWG resolution 2024-02; spec text in the CSS Shapes L1 editors' draft; a published CRD 2025-06-12) but the feature is Chrome-only at ship: Gecko 'No signal' (Mozilla #1197 open), WebKit 'No signal' (#474 open), and the TAG never reviewed it. It is not Baseline-eligible. The intent's 'Anticipated spec changes' field was empty, so compat risk from future spec changes (e.g., per-vertex radius, clamping refinements) is unaddressed.",
+      "evidenceIds": [
+        "s3",
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "limitations": "Other-engine silence is not opposition and may resolve; but today the capability is not interoperable."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "The implementation shipped to all six Blink platforms behind Finch (CSSPolygonRounding); a WPT test exists and the intent claims full WPT coverage. A known bug produces sharp corners at extreme values (504697281). The clamping edge cases (possible self-intersection) are acknowledged in the spec/CSSWG discussion. WPT pass/fail and the tracking-bug contents could not be verified.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s12",
+        "s14"
+      ],
+      "limitations": "The WPT dashboard and Chromium bugs were not readable via the proxy; pass/fail and regression history are unverified."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Incubation/standards communication was strong (rich CSSWG issue, WG resolution, spec text). Launch communication and docs were weak: no DevRel article for the feature, a sparse intent packet with empty fields, reviewer-flagged gaps (WPT link, TAG), MDN updated syntax-only post-ship with no examples, web.dev learn not updated, and a ChromeStatus record with no explainer/docs/samples.",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s7",
+        "s8",
+        "s9"
+      ],
+      "limitations": "Communication quality may improve post-ship; assessed as of the cutoff."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "One known Chromium bug (sharp corners at extreme values). Inherent algorithm edge cases are documented. No public support/troubleshooting material. The feature is very new; support burden is not yet measurable.",
+      "evidenceIds": [
+        "s12",
+        "s2"
+      ],
+      "limitations": "Bug severity/resolution unknown; no support telemetry available."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A competent small-CSS-feature ship addressing a well-validated developer need with real CSSWG consensus and an on-schedule Chrome 150 release. It is held back from success by (a) Chrome-only shipment with no other-engine signal and no TAG review (interop/Baseline gap), (b) thin launch communication and documentation, and (c) unmeasurable adoption this early. It cannot be scored success; it is mixed with the interoperability and communication dimensions unresolved.",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "s9",
+        "s11"
+      ],
+      "limitations": "Post-ship adoption/interop may improve; this is the assessment as of the evidence cutoff."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/6636392944893952",
+      "publisher": "Chrome Platform Status (cached run evidence: evidence/chromestatus/features/6636392944893952.json, accurate_as_of 2026-05-30)",
+      "publishedOrObservedAt": "2026-05-30",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner cgqaq@chromium.org, Blink>CSS, web_feature shape-function, Finch CSSPolygonRounding, desktop/android/webview=150, origintrial=false, ff_views=5 (No signal), safari_views=5 (No signal), web_dev_views=4 (No signals), spec maturity Working draft, motivation text, no explainer/doc/sample links, tag_review_status Not applicable, is_released=false as of cache"
+      ],
+      "limitations": "Cache predates the Chrome 150 ship (is_released=false, status Proposed); several fields empty (interop_compat_risks, activation_risks, measurement, etc.)."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/w3c/csswg-drafts/issues/9843",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2024-01-24",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Incubation/motivation: many use cases and Stack Overflow citations; CSSWG resolution 2024-02-14 'Work on adding corner rounding to polygon()'; clamping geometry worked out by Loirooriol/tabatkins; per-corner vs single radius discussion; astearns added spec text 2024-09-11; emilio (Mozilla) noted path() should also cover this; community prior art referenced"
+      ],
+      "limitations": "Issue is standards discussion, not a browser-implementation commitment; demand is anecdotal."
+    },
+    {
+      "id": "s3",
+      "url": "https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-polygon",
+      "publisher": "W3C CSS Working Group (CSS Shapes Module Level 1, editors' draft 2026-05-07; editors Rossen Atanassov, Alan Stearns, Noam Rosenthal)",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "polygon() grammar now includes <'fill-rule'>? [ round <length> ]? ; per-vertex clamping 'radius is never more than the smaller of tan(angle/2) segment / 2 evaluated against both vertex line segments'; spec notes shape() covers complex curves while polygon() only supports simple rounded corners; published CRD 2025-06-12"
+      ],
+      "limitations": "Editors' draft (unstable); published maturity is CRD, but ChromeStatus labels it Working draft."
+    },
+    {
+      "id": "s4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/zURJF7ODxws",
+      "publisher": "blink-dev (Intent to Ship, posted by Chromestatus on behalf of Jason Leo / cgqaq@chromium.org)",
+      "publishedOrObservedAt": "2026-05-27",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship targeting desktop/android/webview=150; Finch CSSPolygonRounding; ship to all users; WPT 'Yes'; TAG review 'No information provided'/'Not applicable'; Gecko No signal, WebKit No signal, Web developers No signals; many fields 'No information provided'; Mike Taylor (DevRel) flagged missing WPT link and asked whether TAG reviewed; LGTM1 Yoav Weiss, LGTM2 Chris Harrelson (added WPT link to ChromeStatus), LGTM3 Vladimir Levin; Jeffrey Yasskin confirmed TAG did not review and CSSWG approval made TAG review unlikely to add much"
+      ],
+      "limitations": "Thread is process approval; several intent fields left empty by the author."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/mozilla/standards-positions/issues/1197",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2025-03-20",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position request for 'CSS Shapes: vertex rounding for polygon()' filed 2025-03-20 by jsnkuhn; assigned to emilio; project status 'Needs proposed position'; still open with no position as of retrieval; mirrors ChromeStatus ff_views=5 (No signal)"
+      ],
+      "limitations": "No Mozilla position has been taken; open issue is not opposition."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/WebKit/standards-positions/issues/474",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2025-03-20",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position request for 'CSS shapes: vertex rounding for polygon()' filed 2025-03-20 by jsnkuhn; assigned to smfr (Simon Fraser); still open with no position as of retrieval; mirrors ChromeStatus safari_views=5 (No signal)"
+      ],
+      "limitations": "No WebKit position has been taken; open issue is not opposition."
+    },
+    {
+      "id": "s7",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/polygon",
+      "publisher": "MDN Web Docs (mozilla)",
+      "publishedOrObservedAt": "2026-07-16",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "MDN polygon() formal syntax updated to include <'fill-rule'>? [ round <length> ]? (page last modified 2026-07-16, post-ship); BUT the Description and Examples do not mention rounding, and the page shows a misleading 'Baseline: Widely available ... since January 2020' banner that applies to polygon() core, not the round parameter"
+      ],
+      "limitations": "MDN is community-edited; Baseline banner predates and does not reflect the new round parameter; no rounding examples."
+    },
+    {
+      "id": "s8",
+      "url": "https://developer.chrome.com/blog/css-shape",
+      "publisher": "Chrome for Developers (Noam Rosenthal)",
+      "publishedOrObservedAt": "2025-04-08",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "press",
+      "supports": [
+        "The only adjacent Chrome DevRel article ('Use shape() for responsive clipping') covers the shape() function (Chrome 135/Safari 18.4), not the polygon() round parameter; confirms no dedicated DevRel article for polygon round was found"
+      ],
+      "limitations": "Article is about a different, related capability; negative evidence (absence of a polygon-round article) is limited to what was discoverable."
+    },
+    {
+      "id": "s9",
+      "url": "https://web.dev/learn/css/paths-shapes-clipping-masking",
+      "publisher": "web.dev (Learn CSS)",
+      "publishedOrObservedAt": "2025-08-23",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "web.dev Learn CSS page (last updated 2025-08-23) documents round only on rect()/inset(); the polygon() section does not mention the round parameter — a first-party documentation gap"
+      ],
+      "limitations": "Page may be updated later; assessed as of the cutoff."
+    },
+    {
+      "id": "s10",
+      "url": "https://generalistprogrammer.com/tutorials/css-clip-path-complete-guide",
+      "publisher": "Generalist Programmer",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "A 2026 independent clip-path guide (published days before Chrome 150 stable) does not cover the polygon() round parameter; it documents round only on inset()/rect(); indicates nascent community coverage"
+      ],
+      "limitations": "Single community source; not representative of all coverage."
+    },
+    {
+      "id": "s11",
+      "url": "https://fosspost.org/chrome-version-history/",
+      "publisher": "Chrome release timeline (Chrome Releases blogspot, Chromium Dash schedule, Chrome Enterprise release notes, fosspost.org, askvg.com)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable shipped ~2026-06-30 (150.0.7871.x) across desktop/Android/iOS; Chrome 149 stable 2026-06-12; Chrome 151 early stable 2026-07-15 / stable ~2026-07-28 — so the polygon round feature (manifest 'Enabled by default:150') has shipped by the evidence cutoff"
+      ],
+      "limitations": "Exact feature-level inclusion in Chrome 150 stable release notes not individually verified; timing corroborated from multiple secondary sources."
+    },
+    {
+      "id": "s12",
+      "url": "https://issues.chromium.org/issues/504697281",
+      "publisher": "Chromium issue tracker (Blink>Paint)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Known bug: 'border-shape + polygon(round) produces sharp corners at certain extreme values' (title and Blink>Paint component observed via search result)"
+      ],
+      "limitations": "Full bug details, severity and resolution could not be read (reader timed out); only title/components observed."
+    },
+    {
+      "id": "s14",
+      "url": "https://wpt.fyi/results/css/css-shapes/shape-functions/polygon-function-rounding-clamp.html",
+      "publisher": "web-platform-tests dashboard",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "A dedicated WPT test for polygon vertex-rounding clamping exists (existence also confirmed by Yoav Weiss/Chris Harrelson on the intent thread)"
+      ],
+      "limitations": "The dashboard is JavaScript-rendered; only the page shell was retrieved, so per-engine pass/fail status is unverified."
+    },
+    {
+      "id": "s15",
+      "url": "https://yosuke4061.com/new_toppage/powerword/polygon-rounding/index.html",
+      "publisher": "yosuke4061.com (PowerWord glossary)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent (Japanese) technical glossary entry documenting the polygon() optional rounding parameter and its Chrome 150 ship"
+      ],
+      "limitations": "Publication date unknown; single community source."
+    },
+    {
+      "id": "s16",
+      "url": "https://discourse.webflow.com/t/how-to-create-clip-path-shapes-with-round-corners/328260",
+      "publisher": "Webflow forum",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer demand/friction: a user requests rounded clip-path shapes while noting their tool only supports polygon() not path() — illustrative of the workaround gap the feature addresses"
+      ],
+      "limitations": "Anecdotal single thread; date unknown."
+    },
+    {
+      "id": "s17",
+      "url": "https://stackoverflow.com/questions/31765345/how-to-round-out-corners-when-using-css-clip-path",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing developer demand and documented workarounds (SVG filters, etc.) for rounding clip-path polygon corners — cited within the CSSWG incubation"
+      ],
+      "limitations": "Anecdotal; one of many such threads referenced in the CSSWG issue."
+    },
+    {
+      "id": "s18",
+      "url": "https://css-tricks.com/exploring-the-css-paint-api-rounding-shapes/",
+      "publisher": "CSS-Tricks (Temani Afif)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Prior-art community solution (CSS Paint API) for rounding shapes, including per-corner radius; referenced in the CSSWG issue as pre-feature workaround evidence"
+      ],
+      "limitations": "Workaround predates and is independent of the shipped feature."
+    }
+  ],
+  "successes": [
+    "Genuine, evidence-backed developer problem with strong CSSWG incubation and consensus (resolution 2024-02-14, spec text 2024-09-11) before implementation.",
+    "On-schedule Chrome 150 ship to all six Blink platforms behind a Finch flag (CSSPolygonRounding) with a referenced WPT test.",
+    "DevRel reviewer (Mike Taylor) caught process gaps in the intent (missing WPT link, unverified TAG review); reviewers added the WPT link to ChromeStatus and the TAG status was clarified on-thread (Jeffrey Yasskin)."
+  ],
+  "failures": [
+    "Shipped Chrome-only with 'No signal' from both Gecko (#1197) and WebKit (#474) and no TAG review; not interoperable and not Baseline as of ship.",
+    "Thin launch communication: no dedicated DevRel article for the feature, a sparse intent packet with many empty fields, web.dev learn not updated, and MDN updated syntax-only post-ship with no examples and a misleading Baseline banner.",
+    "No adoption evidence and no usage-measurement plan; the ChromeStatus record carries no explainer, docs, or samples."
+  ],
+  "counterfactuals": [
+    "If a TAG review or an explicit, dated Gecko/WebKit position had been sought and recorded before ship, the interoperability risk (and the 'No signal' optics) would have been lower and the ship decision better evidenced.",
+    "If a short DevRel article or web.dev update and an MDN example (covering clamping edge cases) had been ready at ship, discoverability and correct usage would be better.",
+    "If even a small attributable dev/origin trial had been run, early adoption signals and edge-case bugs (e.g., 504697281) might have surfaced earlier.",
+    "If the intent packet had pre-filled interop/compat, WebView-risk, debuggability and anticipated-spec-changes fields, reviewers would not have had to request them."
+  ],
+  "skillImprovements": [
+    "Add a phase-04 (wide review) gate requiring an explicit current Gecko/WebKit/TAG position or a dated 'no signal' rationale before a non-Baseline CSS feature ships; treat open position issues as 'unknown', not neutral.",
+    "Add a phase-06/07 artifact requirement: for any new CSS syntax, a DevRel article/web.dev update and an MDN example with non-trivial cases must exist or be scheduled at ship; otherwise score evidenceAndCommunication no higher than partial.",
+    "Add a phase-06 lint: ChromeStatus/intent fields (WPT link, initial public proposal, TAG, interop/compat, debuggability, anticipated spec changes) must be non-empty or explicitly N/A; auto-flag empty required fields before LGTM.",
+    "Add a regression/eval rule: a CSS shape feature that ships Chrome-only must default to 'mixed' on interoperability until a second engine signals; add this as a strong-case example.",
+    "Improve evidence tooling: issues.chromium.org and the WPT dashboard consistently failed via the Z.AI proxy; add a fallback (chromestatuslite, raw GitHub, or a chromium-issues API) so tracking-bug and test-status evidence is not systematically missing."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chromium tracking bug 329302249 contents (proxy returned HTTP 500 repeatedly).",
+      "Chromium bug 504697281 full details/severity/resolution (proxy timed out; only title/components observed via search).",
+      "WPT pass/fail status for polygon-function-rounding-clamp.html (dashboard is JS-rendered; only the shell was retrieved).",
+      "Post-ship usage/adoption data (no public use-counter/HTTP Archive data; the feature shipped <1 month before the cutoff).",
+      "Current Gecko/WebKit implementation intent (both position issues remain open with no position taken).",
+      "Any dedicated Chrome DevRel article for the polygon round feature (none found as of the cutoff)."
+    ],
+    "reviewedAt": "2026-07-20T07:12:00Z"
+  }
+}

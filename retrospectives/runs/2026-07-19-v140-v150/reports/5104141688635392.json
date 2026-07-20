@@ -1,0 +1,627 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5104141688635392,
+    "name": "CSS `text-fit` property",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5104141688635392",
+    "category": "CSS",
+    "blinkComponents": [
+      "Blink>Layout>Inline"
+    ],
+    "finchName": "CssTextFit",
+    "shippingYear": 2026,
+    "owners": [
+      "tkent@chromium.org",
+      "ikilpatrick@chromium.org",
+      "kojii@chromium.org"
+    ],
+    "shippedMilestones": {
+      "desktop": 150,
+      "android": 150,
+      "webview": 150,
+      "ios": null
+    }
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5104141688635392",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear, recurring developer problem with identified owners. The explainer by the Blink Layout Team names the job (fit lines of text to container width by scaling font-size instead of justification), the segments (publishing/headlines/dynamic content), and the existing workarounds (manual tuning or JavaScript) [s1,s2]. The ChromeStatus entry was created 2025-04-16 by tkent with owners tkent/ikilpatrick/kojii and an external proposer, Roman Komarov (kizu, DataDog) [s1,s7]. Demand is traceable to a long-standing CSSWG issue [s10].",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s7",
+        "s10"
+      ],
+      "limitations": "No public end-user or customer research is recorded; the TAG review states user research is 'No public one' [s7]."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "CSSWG resolved (1 Apr 2025 F2F) to add the feature and later to place it in CSS Text Level 5 [s10,s12]; web-dev signal is strongly positive (110+ votes; 83 ChromeStatus stars) [s1,s10]; the explainer includes goals, non-goals, alternatives and adjacent-platform/JS-workaround analysis [s2,s23]. However, material design disagreements with the proposer/co-editor stayed unresolved through incubation: grow-only vs grow+shrink, full font-size-relative scaling vs implementation-dependent, and a default 200% grow limit [s13,s14,s15]. The accessibility concern (WCAG 1.4.4) was raised immediately at prototype and persisted [s5,s11]. No attributable production partner/trial commitment exists [s7].",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s7",
+        "s10",
+        "s12",
+        "s13",
+        "s14",
+        "s15",
+        "s23"
+      ],
+      "limitations": "Incubation secured strong demand and a standards home but left the core design questions and the central accessibility question open."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype was sent 2025-04-24 [s5]; a Blink implementation landed in Blink>Layout>Inline with wpt_internal tests [s1,s7], and the Chrome team posted prototype feedback that the proposer publicly contested [s13,s15]. The prototype did not resolve the proposer's objections on the scaling model or the default limit, and at TAG-review time WPT tests were 'Not merged yet' [s7,s15].",
+      "evidenceIds": [
+        "s1",
+        "s5",
+        "s7",
+        "s13",
+        "s15"
+      ],
+      "limitations": "No friction log, framework-integration spike, or representative-cohort evidence surfaced; prototype validation was informal (proposer + CSSWG/blog), not a structured task-based trial."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No structured developer trial (behind a flag) or Origin Trial was conducted: the only recorded launch event is M150 enabled-by-default, and ChromeStatus has no dev-trial/OT stage, no flag, and null devtrial instructions [s1]. Informal validation existed via Canary prototype testing by the proposer and CSSWG/blog discussion [s14,s15]. Rationale for not-relevant: the feature deliberately skipped a formal trial cohort, which is a process state rather than an untested claim; informal feedback was gathered but not through a representative developer trial.",
+      "evidenceIds": [
+        "s1",
+        "s14",
+        "s15"
+      ],
+      "limitations": "Absence of a trial means there is no pre-ship task-completion, friction, framework-integration, or field evidence."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG review was requested (w3ctag#1208, in progress) but was 'Issues open / no feedback for a month' at intent-to-ship and was never closed [s1,s6,s7]. Gecko and WebKit standards-position issues were filed (mozilla#1377, WebKit#637) but both remain 'No signal' with no position taken [s8,s9]; an API owner (Bratell) publicly noted disappointment at the lack of other-engine engagement [s6]. CSSWG agreed to add the feature and place it in css-text-5 [s10,s12]; web-dev is strongly positive [s1,s10]. Accessibility review is open across CSSWG and ARIA WG with no consensus [s6,s11].",
+      "evidenceIds": [
+        "s1",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s10",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Wide review was initiated but produced no other-engine support, an unclosed TAG review, and an unresolved accessibility position."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "There was no Origin Trial (origintrial=false; no OT stage/id/feedback) and no field experiment [s1]. The team's rationale (new additive CSS property, no default behavior change, low compat risk) makes a trial defensible, but it forgoes field evidence on the one genuinely uncertain dimension: real-world accessibility/zoom behavior [s6,s11]. Rationale for not-relevant: a field experiment was a deliberate non-choice rather than an untested dimension; the accepted substitute is post-ship monitoring [s6].",
+      "evidenceIds": [
+        "s1",
+        "s6",
+        "s11"
+      ],
+      "limitations": "No field-exposure or field-a11y data was collected before default-on shipment."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was sent 2025-05-07 and received 3 LGTMs (Bratell, Taylor, Byers) after a rigorous accessibility exchange; an API owner required the a11y rationale, perf tradeoff, and monitoring plan to be captured in ChromeStatus 'Anticipated spec changes', which was done [s1,s6]. Spec text was merged to css-text-5 (PR #13616, 2026-04-20) [s3,s4]; the WPT path was linked; rollout is enabled for all on desktop/Android/WebView/M150 [s1,s6]. Gaps remained: TAG review still open; MDN reference page absent; no CanIUse entry; other-engine 'No signal' not flagged as a risk [s7,s8,s9,s19,s20].",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s19",
+        "s20"
+      ],
+      "limitations": "The ship packet was evidence-backed and well-questioned but shipped with a known open accessibility issue, missing reference docs, and no cross-engine support."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled-by-default in Chrome 150 stable on 2026-06-30 (desktop/Android/WebView; iOS null) [s1,s16,s17,s18,s21,s22,s27]. Communication was coordinated and accurate: New in Chrome 150 (headline feature), web.dev 'New to the web platform in June', release notes, and a CodePen demo; claims match the actual rollout [s17,s18].",
+      "evidenceIds": [
+        "s1",
+        "s16",
+        "s17",
+        "s18",
+        "s21",
+        "s22",
+        "s27"
+      ],
+      "limitations": "Only about 3 weeks post-stable at the evidence cutoff; no usage/support outcome data yet; MDN and CanIUse remain absent [s19,s20]."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early to assess. The feature has been stable for roughly 3 weeks at cutoff; no public Chrome use-counter/usage data, framework/library integration evidence, or attributable case studies or production deployments were found [s1].",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Temporal gap; reassess after usage data and at least one Baseline/other-engine cycle."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too early to assess. No recurring support-issue taxonomy, regressions, or compatibility reports are observable yet; the team committed to monitor accessibility in practice [s1,s6].",
+      "evidenceIds": [
+        "s1",
+        "s6"
+      ],
+      "limitations": "Temporal gap; support burden and issue-resolution patterns are not yet visible."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive CSS property with no removal or deprecation path in scope [s1]. Rationale for not-relevant: deprecation does not apply to a greenfield feature launch; included for lifecycle completeness only.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a genuine, long-standing, recurring developer problem (responsive fit-to-width typography) previously solved only with manual tuning or fragile JavaScript/registered-custom-property hacks; web-dev signal is strongly positive (110+ votes, 83 stars) with an influential CSS author (kizu) as proposer [s1,s2,s10,s23]. The native declarative solution is a clear value over JS workarounds (avoids layout thrash and flash-of-unstyled-content) [s2].",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s10",
+        "s23"
+      ],
+      "limitations": "Value is partly undercut by unresolved design disagreements with the proposer over the scaling model's power and defaults [s13,s15]."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Stated end-user benefits (no reflow 'jump', better first contentful paint vs JS) are plausible but unmeasured [s2]. A real end-user-control risk exists: when the fitted container's inline size depends on the viewport, full-page zoom may not change the rendered text size at all, potentially failing WCAG 1.4.4 Resize Text; shipped without a default safeguard and with the issue open [s3,s6,s11,s14].",
+      "evidenceIds": [
+        "s2",
+        "s3",
+        "s6",
+        "s11",
+        "s14"
+      ],
+      "limitations": "No field accessibility evidence either way yet; benefits are claimed, not measured."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Only about 3 weeks in stable; no usage, framework, or production-adoption evidence is available [s1]. Cannot be scored.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Temporal; too early for use-counter or Baseline movement."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "A standards home exists: CSSWG agreed to add the feature and placed it in CSS Text Level 5 (editors' draft / Working Draft, not Candidate Recommendation) [s3,s4,s10,s12]. But at launch it is Chromium-only: Gecko and WebKit have 'No signal' and no implementation, the TAG review is unclosed, and it is not Baseline [s1,s7,s8,s9,s18]. An API owner flagged disappointment at absent other-engine engagement [s6].",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s10",
+        "s12",
+        "s18"
+      ],
+      "limitations": "Standards agreement is positive but cross-engine support is absent; the Chrome-only period was not flagged in launch materials."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "A Blink implementation shipped with WPT coverage (css/css-text/text-fit) and DevTools deemed sufficient; it is additive and compat-safe by default [s1,s6,s24]. But the scaling model is partly implementation-dependent (optical sizing makes scaling non-proportional; the spec says the exact method is 'up to the implementation') and diverges from the proposer's desired full font-size-relative scaling, and it shipped with an open behavior (accessibility) the team explicitly expects may change [s3,s4,s11,s13,s15].",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s6",
+        "s11",
+        "s13",
+        "s15",
+        "s24"
+      ],
+      "limitations": "Detailed WPT pass/fail and the tracking-bug contents could not be retrieved (JS-rendered/auth-gated) [s24,s25]; the implementation is functional but not spec-stable."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Strong pre-ship evidence and comms: an explainer, normative spec, transparent intent threads with rigorous API-owner accessibility questioning, and accurate coordinated launch assets (release notes, New in Chrome 150, web.dev summary, demo) [s2,s3,s5,s6,s16,s17,s18]. Weak or missing: the TAG review was never closed and 'No signal' from other engines was not surfaced as a risk in messaging; the MDN reference page and CanIUse entry were absent at launch; and the co-editor publicly reported near-silence on his proposed safeguards [s7,s8,s9,s14,s15,s19,s20].",
+      "evidenceIds": [
+        "s2",
+        "s3",
+        "s5",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s14",
+        "s15",
+        "s16",
+        "s17",
+        "s18",
+        "s19",
+        "s20"
+      ],
+      "limitations": "Launch claims were accurate, but discoverability and cross-engine-positioning gaps remain."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too early to score: no support burden, issue taxonomy, or resolution patterns are observable within roughly 3 weeks of stable [s1].",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Temporal."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, well-documented, compat-safe CSS feature with strong developer demand and clean launch communication, but it shipped Chromium-only (no Gecko/WebKit signal, unclosed TAG review, not Baseline), with an open multi-WG accessibility issue and no default safeguard, unresolved design disagreements with its own proposer/co-editor, no formal developer or origin trial, and missing MDN/CanIUse at stable. Adoption and user-impact outcomes cannot yet be scored; the overall status deliberately does not hide the mixed interop, accessibility, and documentation dimensions.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s11",
+        "s13",
+        "s19"
+      ],
+      "limitations": "Post-launch outcome dimensions are unscored due to recency; this is a launch-time assessment."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5104141688635392",
+      "publisher": "ChromeStatus / Chromium",
+      "publishedOrObservedAt": "2026-07-17",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, finch name CssTextFit, shipped milestones (desktop/android/webview 150, ios null), web-dev strongly positive (110+ votes), Gecko/WebKit No signal, TAG review open, WPT link, spec link, bug link, motivation and interop/a11y risk text"
+      ],
+      "limitations": "Cached accurate_as_of 2026-07-17; the cached status field still shows 'Proposed' and is_released=false although M150 stable shipped 2026-06-30 (status field lags)."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/explainers-by-googlers/css-fit-text/blob/main/README.md",
+      "publisher": "Google Blink Layout Team (explainer)",
+      "publishedOrObservedAt": "2025-04-16",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Problem statement, use cases (expand/shrink), goals and non-goals, considered alternatives, performance/UX/authoring rationale versus JS workarounds, proposed text-fit syntax"
+      ],
+      "limitations": "Early design sketch; marked 'not approved to ship'; some sections (e.g., combining behaviors, fit-method) later removed/revised."
+    },
+    {
+      "id": "s3",
+      "url": "https://drafts.csswg.org/css-text-5/#text-fit-property",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Normative text-fit definition (none|grow|shrink + consistent|per-line|per-line-all + percentage limit), scalable-parts model, processing order, open accessibility note referencing csswg#12886, implementation-dependent scaling note"
+      ],
+      "limitations": "Editors' draft / Working Draft (maturity val 4), not Candidate Recommendation; subject to change."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/w3c/csswg-drafts/pull/13616",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec text introducing text-fit added to css-text (commit 537f46d, merged 2026-04-20); which properties use the 'used' font-size"
+      ],
+      "limitations": "Diff view; reflects a point-in-time spec state."
+    },
+    {
+      "id": "s5",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/CAGH7WqFRjktXpATLSqzsEOfm7N-vhCUNh3goRz9_wBAJFinfAA%40mail.gmail.com",
+      "publisher": "blink-dev (TAMURA Kent)",
+      "publishedOrObservedAt": "2025-04-24",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype with motivation, Blink component, web-dev strongly positive (90+ votes at the time), Gecko/WebKit 'will file', Alan Stearns raising accessibility concerns the same day, kizu feedback blog link"
+      ],
+      "limitations": "Single thread; does not cover later design changes."
+    },
+    {
+      "id": "s6",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/55BYmN6RZtE",
+      "publisher": "blink-dev (TAMURA Kent et al.)",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship (2026-05-07) with motivation, TAG 'Issues open / no feedback for a month', open a11y issue 12886, ship enabled for all on desktop/android/webview M150, 3 LGTMs (Bratell, Taylor, Byers), Alison Maher accessibility challenge, Chris Harrelson on ARIA/CSSWG discussion and perf cost, monitoring plan, Bratell disappointment at other-engine silence"
+      ],
+      "limitations": "API-owner LGTMs are Chromium process approvals, not standards or DevRel approval."
+    },
+    {
+      "id": "s7",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1208",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": "2026-03-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review in progress / 'Issues open', review type 'later review', topic accessibility+CSS, WPT 'Not merged yet' at request time, 'No public' user research, contacts tkent-google and kizu"
+      ],
+      "limitations": "Review never closed; no TAG position text was issued."
+    },
+    {
+      "id": "s8",
+      "url": "https://github.com/mozilla/standards-positions/issues/1377",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": "2026-03-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla standards-position request filed; position remains 'No signal'; notes CSSWG agreed to add the feature; Bugzilla 2038425 referenced"
+      ],
+      "limitations": "No Mozilla position taken; no Gecko implementation signal."
+    },
+    {
+      "id": "s9",
+      "url": "https://github.com/WebKit/standards-positions/issues/637",
+      "publisher": "WebKit / Apple",
+      "publishedOrObservedAt": "2026-03-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit standards-position request filed; position remains 'No signal'; notes CSSWG agreed to add the feature"
+      ],
+      "limitations": "No WebKit position taken; no Safari implementation signal."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/w3c/csswg-drafts/issues/2528",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2018",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Original feature request (long-standing), CSSWG resolution to add the feature (1 Apr 2025 F2F), 110+ developer votes, accessibility discussion started by Patrick H. Lauke"
+      ],
+      "limitations": "Issue body rendered as navigation chrome when fetched; key facts (votes, resolution, a11y discussion) corroborated by s1, s5, s6, s12, s14. Approximate open date."
+    },
+    {
+      "id": "s11",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12886",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2025-09-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Open accessibility issue on default scaling limit vs WCAG 1.4.4 Resize Text; kizu's 200% default proposal; multi-WG (CSSWG, ARIA WG) discussion with no consensus; Chris Harrelson's proposed solution"
+      ],
+      "limitations": "Issue body not directly parsed; substance corroborated by intent thread s6, the spec note s3, and kizu's posts s14,s15."
+    },
+    {
+      "id": "s12",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12885",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2025-09-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "CSSWG RESOLVED to place the feature in CSS Text Level 5 (IRC log)"
+      ],
+      "limitations": "Exact meeting date inferred from issue context."
+    },
+    {
+      "id": "s13",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12888",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2025-09-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Design disagreement on scaling of font-size-based values; Chrome team argues for implementation-dependent scaling; kizu strongly opposes; quotes Chrome prototype feedback"
+      ],
+      "limitations": "Captures proposer's framing; engine-implementation detail not independently verified."
+    },
+    {
+      "id": "s14",
+      "url": "https://blog.kizu.dev/fit-to-width-discussions-and-feedback/",
+      "publisher": "Roman Komarov (kizu)",
+      "publishedOrObservedAt": "2025-05-01",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Detailed explainer feedback: grow-only preference, WCAG 1.4.4 problem (viewport dependency), proposed default 200% grow limit (relaxed/strict), syntax and fit-method critiques"
+      ],
+      "limitations": "Single influential author's perspective; not representative developer research."
+    },
+    {
+      "id": "s15",
+      "url": "https://blog.kizu.dev/text-fit-update/",
+      "publisher": "Roman Komarov (kizu)",
+      "publishedOrObservedAt": "2025-10-02",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Post-prototype status: kizu disagrees with Chrome team on scaling model, grow/shrink, and default limit; reports near-silence on his proposed safeguards; co-editor intent"
+      ],
+      "limitations": "Author's subjective account of engagement."
+    },
+    {
+      "id": "s16",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable release notes (2026-06-30); text-fit listed as enabled-by-default; summary matches ChromeStatus record"
+      ],
+      "limitations": "Vendor-published; descriptive only."
+    },
+    {
+      "id": "s17",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-150",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "New in Chrome 150 blog lists text-fit as a headline feature; includes CodePen demo; accurate claims matching rollout"
+      ],
+      "limitations": "Vendor marketing/blog; no interop or adoption claims."
+    },
+    {
+      "id": "s18",
+      "url": "https://web.dev/blog/web-platform-06-2026",
+      "publisher": "web.dev (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "'New to the web platform in June' lists text-fit under Chrome 150 only with no Baseline status (contrast: field-sizing became Baseline Newly available); confirms no Safari stable in June and Firefox 152 unrelated"
+      ],
+      "limitations": "Vendor-published; Baseline status inferred by absence."
+    },
+    {
+      "id": "s19",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-fit",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN reference page for text-fit returns 'Page not found' (404) at retrieval; no dedicated MDN documentation at/after stable launch"
+      ],
+      "limitations": "Absence at a single retrieval; page may be authored later."
+    },
+    {
+      "id": "s20",
+      "url": "https://caniuse.com/?search=text-fit",
+      "publisher": "Can I Use",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "No dedicated CanIUse feature entry for text-fit at retrieval (search resolves to unrelated fit-content/text entries)"
+      ],
+      "limitations": "Absence at a single retrieval; entry may be added later."
+    },
+    {
+      "id": "s21",
+      "url": "https://chromestatuslite.com/?version=150",
+      "publisher": "chromestatuslite.com",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent listing of Chrome 150 features shows text-fit enabled-by-default"
+      ],
+      "limitations": "Third-party mirror of ChromeStatus data."
+    },
+    {
+      "id": "s22",
+      "url": "https://web-standards.dev/news/2026/07/chrome-150/",
+      "publisher": "web-standards.dev",
+      "publishedOrObservedAt": "2026-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent coverage of Chrome 150 web-standards changes mentions text-fit scaling font-size to fill its box"
+      ],
+      "limitations": "Brief summary; independent but secondary."
+    },
+    {
+      "id": "s23",
+      "url": "https://kizu.dev/fit-to-width/",
+      "publisher": "Roman Komarov (kizu)",
+      "publishedOrObservedAt": "2024",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Prior-art CSS-only fit-to-width technique using registered custom properties and container queries; evidence of workaround complexity and demand for a native property"
+      ],
+      "limitations": "Author's technique writeup; approximate publication year."
+    },
+    {
+      "id": "s24",
+      "url": "https://wpt.fyi/results/css/css-text/text-fit",
+      "publisher": "web-platform-tests dashboard",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT results path for text-fit exists and was linked from the Intent to Ship"
+      ],
+      "limitations": "Page is JavaScript-rendered and could not be fetched; per-test pass/fail and cross-engine results not captured."
+    },
+    {
+      "id": "s25",
+      "url": "https://issues.chromium.org/issues/417306102",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": "2025-04-16",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug for the feature (referenced by ChromeStatus and Intent to Ship)"
+      ],
+      "limitations": "Issue tracker is JS-rendered/auth-gated and could not be retrieved; status, open regressions, and test results not directly verified."
+    },
+    {
+      "id": "s27",
+      "url": "https://chromereleases.googleblog.com/",
+      "publisher": "Chrome Releases blog",
+      "publishedOrObservedAt": "2026-07-16",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable/Android/ChromeOS desktop updates rolling out in July 2026, confirming stable availability"
+      ],
+      "limitations": "Release blog; does not discuss this feature specifically."
+    }
+  ],
+  "successes": [
+    "Genuine, long-standing developer problem (responsive fit-to-width typography) with strong, traceable demand (long-running CSSWG issue, 110+ votes, influential proposer) and documented JavaScript-workaround pain [s1,s2,s10,s23].",
+    "Additive, compat-safe CSS property (no default behavior change) shipped enabled-by-default across desktop/Android/WebView in M150 with no reported breakage [s1,s16,s17].",
+    "Rigorous Intent-to-Ship review: an API owner explicitly challenged shipping with an open accessibility issue, and the team captured the ARIA/CSSWG context, perf tradeoff, and monitoring plan in ChromeStatus before the LGTMs [s1,s6].",
+    "Standards venue secured: CSSWG resolution to add the feature and place it in CSS Text Level 5, with spec text merged (PR #13616) [s3,s4,s10,s12].",
+    "Accurate, coordinated launch communication matching the actual rollout (New in Chrome 150 headline, release notes, web.dev summary, CodePen demo) [s16,s17,s18]."
+  ],
+  "failures": [
+    "Shipped Chromium-only with 'No signal' from both Gecko and WebKit and an unclosed TAG review; not Baseline, and the Chrome-only status was not flagged as a risk in launch materials [s1,s7,s8,s9,s18].",
+    "Shipped with an open, multi-WG accessibility issue (WCAG 1.4.4 Resize Text) and no default safeguard; the accepted substitute is post-ship monitoring rather than a resolved mitigation [s3,s6,s11,s14].",
+    "Core design disagreements with the proposer/co-editor (grow-only vs grow+shrink; full font-size-relative scaling vs implementation-dependent; default 200% grow limit) were left unresolved, leaving the scaling model implementation-dependent and the most invested external expert publicly frustrated [s13,s14,s15].",
+    "No formal developer trial or Origin Trial, so no pre-ship task-completion, friction, framework-integration, or field accessibility evidence was collected [s1,s6].",
+    "MDN reference page and CanIUse entry absent at the stable launch of a headline CSS feature [s19,s20]."
+  ],
+  "counterfactuals": [
+    "A structured developer trial or Origin Trial before default-on would have produced field evidence on the one genuinely uncertain dimension (real-world zoom/accessibility behavior in viewport-dependent containers) and on the scaling-model divergence, instead of relying on post-ship monitoring [s6,s11].",
+    "Adopting kizu's default 200% grow limit, or prototyping the team's own heuristic before ship, would have closed the WCAG 1.4.4 concern proactively; the stated blocker (double-layout perf cost, uncertainty it 'works well') was a product judgment that accepted an open accessibility risk without first measuring the perf claim [s6,s11,s14].",
+    "Resolving or explicitly flagging the Gecko/WebKit 'No signal' state and the unclosed TAG review in launch materials would have made the Chrome-only/Baseline status transparent instead of implicit [s7,s8,s9].",
+    "Preparing MDN and CanIUse entries before stable would have given early adopters discoverable, accurate reference documentation at launch [s19,s20]."
+  ],
+  "skillImprovements": [
+    "Phase 04/06 rule: a 'No signal' from any major engine must be surfaced as an explicit interoperability/Baseline risk row (with date and last-touch) in the ship brief and launch materials; never omit it or treat silence as neutral.",
+    "Release-readiness gate for headline CSS features: require an MDN reference page and CanIUse entry to exist (or be tracked-to-close with a named owner) before stable; absence is a documented gap, not silent.",
+    "Prepare-to-ship 'accepted open issue' protocol: when shipping with a known unresolved cross-WG issue, the ChromeStatus entry must capture the accepted-risk rationale, monitoring plan, owner, and trigger conditions for a post-ship behavior change by default, not only when an API owner asks.",
+    "Experiment-phase decision prompt: for additive low-risk features, make the 'trial vs skip' decision explicit and record what field evidence is foregone and how it will be recovered post-launch (telemetry/accessibility monitoring).",
+    "Add a retrospective regression eval case for 'shipped Chromium-only with an open accessibility issue and unclosed TAG review' to verify reports do not infer success from shipment, usage, or press sentiment and do flag missing cross-engine and accessibility evidence."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-stable usage/adoption data (Chrome use counter) not yet available roughly 3 weeks after M150 stable.",
+      "Framework/library integration and production case studies: none found yet.",
+      "Support-issue taxonomy and regression/compatibility reports: too early to observe.",
+      "Other-engine (Gecko/WebKit) position or implementation: still 'No signal'.",
+      "Detailed WPT pass/fail and tracking-bug (417306102) contents: pages are JavaScript-rendered or auth-gated and could not be retrieved.",
+      "MDN reference page and CanIUse entry: confirmed absent at retrieval."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

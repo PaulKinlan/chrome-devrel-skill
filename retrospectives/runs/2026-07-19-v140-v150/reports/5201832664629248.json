@@ -1,0 +1,517 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5201832664629248,
+    "name": "Additional Windowing Controls",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5201832664629248",
+    "blinkComponents": [
+      "Blink>WindowDialog"
+    ],
+    "category": "Miscellaneous",
+    "featureType": "New or changed feature",
+    "enhancesFeature": "Window Management (5252960583942144, shipped Chrome 100)",
+    "owners": [
+      "msw@chromium.org",
+      "pchodur@google.com"
+    ],
+    "creator": "isandrk@chromium.org",
+    "flagName": "enable-desktop-pwas-additional-windowing-controls",
+    "finchName": "DesktopPWAsAdditionalWindowingControls"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Origin trial:5201832664629248",
+      "milestone": 150,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Feature created 2022-11-08 and publicly proposed on WICG ('[Proposal] Additional Windowing Controls APIs', 2022-11-23). The problem is concretely scoped: VDI web clients (Citrix, VMware/Omnissa) cannot integrate remote app window controls with the local desktop, leaving titlebar controls 'inoperative, redundant, and confusing'. Owner/creator Ivan Sandrk and spec mentor Michael Wasserman are identified. Intent stage 'Start incubating'.",
+      "evidenceIds": [
+        "cs-cached",
+        "explainer",
+        "wicg-proposal",
+        "mozaic-207"
+      ],
+      "limitations": "WICG discourse page could not be fully retrieved (read timed out); intake date inferred from the cached record and a secondary community index."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Active incubation with a detailed explainer that documents alternatives (setDisplayState vs minimize/maximize/restore; sync attributes vs CSS media features; app-region extension) and an explicit security/privacy threat model. The API shape materially evolved during incubation: the original proposal (per the AWC-specific position requests) exposed window.displayState/ondisplaystatechange/onmove/resizable; the current explainer moved state reads to CSS media features display-state/resizable and explicitly rejected window.onmove over privacy concerns (citing WebKit/standards-positions#289). The explainer migrated repos (ivansandrk/additional-windowing-controls -> explainers-by-googlers/additional-windowing-controls).",
+      "evidenceIds": [
+        "explainer",
+        "mozilla-712",
+        "webkit-96",
+        "tag-dr-1246"
+      ],
+      "limitations": "No dated revision history of the explainer was retrieved, so the chronology of the API-shape evolution is inferred from the two position-request snapshots vs the current explainer."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype posted to blink-dev (oCxWg8q_OQY, Jan 2023, Ivan Sandrk) and a Chromium implementation exists behind the 'Desktop PWA Additional Windowing Controls' flag (confirmed in chromium flag_descriptions.cc: 'Enable PWAs to: (1) manually recreate the ...'). requires_embedder_support is true. The phase is real and staffed, but the intent-thread body could not be read (groups.google.com did not render), and no prototype-quality metrics were located.",
+      "evidenceIds": [
+        "intent-prototype",
+        "chromium-flagdesc",
+        "cs-cached",
+        "mozaic-207"
+      ],
+      "limitations": "Intent-thread content not retrieved; prototype/feature-completeness across the four platforms (ChromeOS/Windows/Mac/Linux) not independently verified."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A 'Ready for Developer Testing: Additional Windowing Controls' blink-dev intent was circulated (referenced in a May 2026 platform roundup) and a live demo/sample (awc-demo-4a08a808.web.app) is linked from the explainer. The cached record lists devtrial status 'In developer trial (Behind a flag)' with a sample. The dev-trial intent body was not retrievable and no independent developer trial feedback (surveys, blog posts) was found.",
+      "evidenceIds": [
+        "mozaic-207",
+        "explainer",
+        "cs-cached"
+      ],
+      "limitations": "Dev-trial intent body not retrieved; devtrial_instructions is null in the cached record; no third-party trial feedback located."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "AWC-SPECIFIC review requests exist for Mozilla (#712, opened 2022-11-24), WebKit (#96, opened 2022-11-24) and a W3C TAG design-review (#1246, 'New Spec: Additional Windowing Controls'). However: (a) the formal Mozilla/WebKit position labels could not be retrieved (the issues' resolution timelines are JS-rendered); (b) the cached ChromeStatus record marks both Firefox and Safari 'No signal' but cross-links the WRONG issues (#542/#117 are the parent Window Management/Placement requests, not the AWC ones); (c) the parent Window Management feature itself also has 'No signal' from both engines and Safari's parent request carries privacy + annoyance concern labels. net: no positive cross-engine position is evidenced.",
+      "evidenceIds": [
+        "mozilla-712",
+        "webkit-96",
+        "mozilla-542-parent",
+        "webkit-117-parent",
+        "tag-dr-1246",
+        "cs-cached"
+      ],
+      "limitations": "Position-resolution labels/comments not retrievable from the reader; TAG review status not directly read (seen via a bot index). cached record's tag_review_status is 'Pending'."
+    },
+    "experiment": {
+      "status": "supported",
+      "finding": "An Origin Trial is registered for desktop ChromeOS/Windows/Mac/Linux across milestones 150-152 (not Android/WebView). Goals are explicit ('usability beyond VDI clients', 'exact shape of the API'); experiment_risks 'None'; ot_documentation_url points to the explainer. Chrome 150 stable shipped 2026-06-30, so the OT is live and ~3 weeks old at the cutoff. The feature appears on the ChromeStatus home page under active 'Origin trial'.",
+      "evidenceIds": [
+        "cs-cached",
+        "explainer",
+        "cs-home-ot",
+        "chrome-release"
+      ],
+      "limitations": "Origin-trial registration/usage numbers not retrieved; the cached record's top-level browsers.chrome.status still reads 'In developer trial (Behind a flag)' while the active stage is the OT stage - a minor status-label inconsistency."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "No Intent to Ship is evidenced: the Ship stage (stage_type 160) exists in the cached record but has no intent_thread_url, and rollout_milestone is null. tag_review_status, security_review_status and privacy_review_status are all 'Pending' in the cached record (though a TAG review #1246 is open). The feature is not yet at the prepare-to-ship gate.",
+      "evidenceIds": [
+        "cs-cached",
+        "tag-dr-1246"
+      ],
+      "limitations": "Intent-to-ship not posted as of cutoff; review statuses may advance before ship."
+    },
+    "release": {
+      "status": "unknown",
+      "finding": "The feature has NOT shipped by default. The only launch event in scope is the Origin Trial at milestone 150; desktop_last is 152, indicating the trial continues. The cached record's is_released=true most plausibly reflects OT registration rather than general availability. No GA/Enabled-by-default milestone is recorded.",
+      "evidenceIds": [
+        "cs-cached",
+        "cs-home-ot",
+        "chrome-release"
+      ],
+      "limitations": "GA timing unknown; rollout_plan text ('Will ship enabled for all users') is aspirational and not yet executed."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No usage, adoption, or production case-study evidence exists yet: the Origin Trial began with Chrome 150 stable (~2026-06-30) and is only ~3 weeks old at the cutoff. Named VDI partners (Citrix, VMware/Omnissa) and (for the parent feature) Google Slides have expressed demand, but this is stated intent, not measured adoption. web_dev_views is 'Strongly positive' in the cached record.",
+      "evidenceIds": [
+        "cs-cached",
+        "chrome-release",
+        "cs-parent-lite"
+      ],
+      "limitations": "No Chrome use-counter/HTTP Archive/web-features usage data located; adoption cannot be scored at this point."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too early to assess: the feature is in a fresh Origin Trial. No support issues, migration/friction reports, or known failures were located. The tracking bug (chromium 1235296) page did not render through the reader.",
+      "evidenceIds": [
+        "cs-cached",
+        "chrome-release"
+      ],
+      "limitations": "Bug tracker and support forums not effectively retrievable; support burden genuinely unmeasurable at OT+3weeks."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new capability (additive window-control APIs and CSS media features), not a deprecation or removal. No deprecation/removal lifecycle applies.",
+      "evidenceIds": [
+        "cs-cached",
+        "explainer"
+      ],
+      "limitations": "Not-applicable by feature type; nothing to test."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The developer problem is genuine, well-documented, and validated by named enterprise partners: VDI clients (Citrix, VMware/Omnissa) need to integrate remote app window controls with local windows, and the explainer + AWC position requests carry that demand directly. The proposal also serves the broader custom-titlebar/Window-Controls-Overlay ecosystem and depends on a parallel app-region standardization effort. Value is real but narrow (primarily desktop PWA / VDI).",
+      "evidenceIds": [
+        "explainer",
+        "mozilla-712",
+        "webkit-96",
+        "cs-cached",
+        "cs-parent-lite"
+      ],
+      "limitations": "Demand is concentrated in a niche (VDI); broad cross-segment developer demand beyond VDI/PWAs is not evidenced."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Design intent is to remove confusing/inoperative titlebar controls and let remote (and custom) app windows behave like local ones, but no measured end-user impact exists. The OT is ~3 weeks old and no user-research, telemetry, or case-study outcome has been published.",
+      "evidenceIds": [
+        "cs-cached",
+        "explainer",
+        "chrome-release"
+      ],
+      "limitations": "Unscored by necessity: end-user impact is not yet measurable."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption signal: no usage counters, no production deployments, no framework/library integration, no caniuse/web-features entry specific to AWC (caniuse tracks only the parent 'window-management'). The OT is too recent for durable production use.",
+      "evidenceIds": [
+        "cs-cached",
+        "caniuse",
+        "chrome-release"
+      ],
+      "limitations": "Adoption evidence cannot yet exist; scored unscored rather than inferred from partner intent."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Current interop state is poor and partly risky, though this is consistent with a brand-new single-engine OT. Concretely: (1) Chrome-only - no positive signal from Firefox (AWC request mozilla/standards-positions#712) or Safari (webkit/standards-positions#96), and the parent Window Management feature is also 'No signal' from both; (2) the AWC methods (minimize/maximize/restore/setResizable, display-state, resizable) are NOT present in the published W3C Working Draft nor the Editor's Draft (both rev 2cafe161, 2024-06-07) - the API lives only in the explainer; (3) naming collision: window.setResizable() already exists as a deprecated non-standard no-op (Netscape 4.x compat per MDN), which AWC would redefine with real semantics, a feature-detection hazard; (4) not Baseline-eligible. Mitigating: there are open AWC-specific review threads and the API shape was revised in response to earlier feedback.",
+      "evidenceIds": [
+        "w3c-tr-spec",
+        "w3c-ed-spec",
+        "mozilla-712",
+        "webkit-96",
+        "mozilla-542-parent",
+        "webkit-117-parent",
+        "mdn-setResizable",
+        "caniuse",
+        "cs-parent-lite"
+      ],
+      "limitations": "Formal position resolutions not retrievable; could not be more conclusive. Early stage means interop could still improve pre-ship."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "A Chromium implementation exists and is flag-gated (confirmed in flag_descriptions.cc; flag 'enable-desktop-pwas-additional-windowing-controls', finch 'DesktopPWAsAdditionalWindowingControls'). However the cached record states WPT coverage is inherently limited ('cannot be fully covered by automated Web Platform Tests because it requires standalone PWA windows') with only three tentative test files listed, and the WPT dashboard did not render to verify pass rates. The tracking bug (1235296) body was not retrievable, so defect/regression state is unknown. The setResizable naming collision is also an implementation/compat risk.",
+      "evidenceIds": [
+        "chromium-flagdesc",
+        "cs-cached",
+        "mdn-setResizable"
+      ],
+      "limitations": "WPT pass rates not verified (JS-rendered dashboard); bug/regression state not retrieved; cross-platform parity (ChromeOS first, Windows/Mac/Linux later per the record) not independently confirmed."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The explainer and sample are high quality and self-documenting (good). But several material evidence/communication gaps exist: (a) the cached spec_link (w3.org/TR/window-management/#api-window-minimize-method) points to a spec anchor that does NOT exist in the current TR or Editor's Draft - the AWC methods are not in the spec; (b) the cached record's Firefox/Safari position URLs point to the PARENT feature's issues (#542/#117), not the AWC-specific ones (#712/#96) - a provenance error that would mislead a reviewer relying on the cached 'No signal'; (c) tag_review_status/security_review_status/privacy_review_status are all 'Pending' in the cached record; (d) no launch communications (web.dev/developer.chrome.com article, Chrome 150 release-note mention) were found - the Chrome 150 release notes reference only stability/performance.",
+      "evidenceIds": [
+        "cs-cached",
+        "w3c-tr-spec",
+        "w3c-ed-spec",
+        "mozilla-712",
+        "webkit-96",
+        "mozilla-542-parent",
+        "webkit-117-parent",
+        "chrome-release"
+      ],
+      "limitations": "Absence of a web.dev article is inferred from an empty search result, not an exhaustive inventory; internal launch-comms artifacts are not publicly visible."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support burden is observable: the OT is ~3 weeks old. No support issues, migration friction, or known failures were located; the tracking bug did not render.",
+      "evidenceIds": [
+        "cs-cached",
+        "chrome-release"
+      ],
+      "limitations": "Support dimension genuinely unmeasurable at this stage."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, well-incubated niche capability (strong VDI/partner problem, evolved API shape, registered multi-milestone Origin Trial) sitting at an early, single-engine stage with real risks: the API is not yet in the specification, both other engines show no positive signal, a setResizable naming collision exists, WPT coverage is structurally limited, and the cached ChromeStatus record has communication/provenance gaps (broken spec anchor, parent-feature position URLs). Outcome dimensions that depend on real-world use (end-user impact, adoption, support) are unscoreable because the Origin Trial is only ~3 weeks old.",
+      "evidenceIds": [
+        "cs-cached",
+        "explainer",
+        "w3c-tr-spec",
+        "mozilla-712",
+        "webkit-96",
+        "mdn-setResizable",
+        "chrome-release"
+      ],
+      "limitations": "Overall is necessarily provisional; a future re-run after the OT completes (milestone 152) and an Intent to Ship should re-score adoption, interop, and end-user impact."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs-cached",
+      "url": "https://chromestatus.com/feature/5201832664629248",
+      "publisher": "Chrome Platform Status (cached snapshot, accurate_as_of 2022-11-08, last updated 2026-07-16)",
+      "publishedOrObservedAt": "2026-07-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "feature metadata, stages, OT 150-152, flag/finch names, owners, reviews Pending, WPT limitation note, web_dev 'Strongly positive', is_released/ship state"
+      ],
+      "limitations": "Local cached JSON, not a live fetch; top-level status reads 'In developer trial (Behind a flag)' while the active stage is the Origin Trial; ff/safari position URLs point to parent-feature issues."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/explainers-by-googlers/additional-windowing-controls",
+      "publisher": "explainers-by-googlers (Google) / Ivan Sandrk et al.",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "problem/use-cases (VDI Citrix/Omnissa), proposed API (minimize/maximize/restore/setResizable, display-state/resizable media features), alternatives considered, security/privacy threat model, rejection of window.onmove, demo link"
+      ],
+      "limitations": "Living document with no visible per-revision dates; chronology of API-shape evolution inferred, not dated."
+    },
+    {
+      "id": "mozilla-712",
+      "url": "https://github.com/mozilla/standards-positions/issues/712",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2022-11-24",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "AWC-specific Mozilla position request exists (opened 2022-11-24, Ivan Sandrk); original API shape (window.displayState, ondisplaystatechange, onmove, resizable); VDI Citrix/VMware motivation"
+      ],
+      "limitations": "Only the issue body was retrieved; the formal Mozilla position label/resolution and comments are JS-rendered and were not captured."
+    },
+    {
+      "id": "webkit-96",
+      "url": "https://github.com/WebKit/standards-positions/issues/96",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2022-11-24",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "AWC-specific WebKit position request exists (opened 2022-11-24, Ivan Sandrk); cross-references mozilla/standards-positions#712; original API shape incl. window.onmove"
+      ],
+      "limitations": "Only the issue body retrieved; WebKit's resolution/labels/comments not captured."
+    },
+    {
+      "id": "mozilla-542-parent",
+      "url": "https://github.com/mozilla/standards-positions/issues/542",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2021-06-14",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "This is the PARENT 'Window Management' request (not AWC); status 'Needs proposed position'; used (erroneously) by the cached record as the Firefox AWC position URL"
+      ],
+      "limitations": "Parent feature only; confirms the cached record points to the wrong issue for AWC."
+    },
+    {
+      "id": "webkit-117-parent",
+      "url": "https://github.com/WebKit/standards-positions/issues/117",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2023-01-04",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "This is the PARENT 'Multi-Screen Window Placement API' request (not AWC); status 'Needs position'; carries 'concerns: privacy' and 'concerns: annoyance' labels; used (erroneously) by the cached record as the Safari AWC position URL"
+      ],
+      "limitations": "Parent feature only; confirms the cached record points to the wrong issue for AWC."
+    },
+    {
+      "id": "w3c-issue-3",
+      "url": "https://github.com/w3c/window-management/issues/3",
+      "publisher": "W3C window-management (issue by web developer)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "developer request 'allow window minimize & restore (focus)' - the cited source for ChromeStatus web_dev 'Strongly positive' view"
+      ],
+      "limitations": "Retrieved page was heavily corrupted/garbled; only title and opening description reliably captured."
+    },
+    {
+      "id": "w3c-tr-spec",
+      "url": "https://www.w3.org/TR/window-management/",
+      "publisher": "W3C (Window Management Working Draft)",
+      "publishedOrObservedAt": "2024-06-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Published Working Draft (rev 2cafe161) covers ONLY the parent API (isExtended, getScreenDetails, ScreenDetails/ScreenDetailed, FullscreenOptions, permissions); contains NO minimize/maximize/restore/setResizable/display-state/resizable"
+      ],
+      "limitations": "Snapshot dated 2024-06-07; the cached spec_link anchor #api-window-minimize-method is absent from this document."
+    },
+    {
+      "id": "w3c-ed-spec",
+      "url": "https://w3c.github.io/window-management/",
+      "publisher": "W3C (Window Management Editor's Draft)",
+      "publishedOrObservedAt": "2024-06-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Editor's Draft (same rev 2cafe161) also contains ONLY the parent API; AWC methods absent from the incubating spec text as retrieved"
+      ],
+      "limitations": "Same content/revision as the TR snapshot; spec may not have been updated since 2024 even as the OT begins."
+    },
+    {
+      "id": "caniuse",
+      "url": "https://caniuse.com/wf-window-management",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "only the parent 'window-management' web feature is tracked; no caniuse/web-features entry specific to AWC's display-state/resizable media features"
+      ],
+      "limitations": "Search-based; individual support tables not parsed."
+    },
+    {
+      "id": "cs-parent-lite",
+      "url": "https://chromestatuslite.com/feature/5252960583942144",
+      "publisher": "Chrome Platform Status (server-rendered, parent Window Management)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "parent Window Management shipped Chrome 100 ('Chromium catches up'); Firefox/Safari 'No signal'; web developers 'Positive' (Citrix, Google Slides); MDN + web.dev docs exist for the parent"
+      ],
+      "limitations": "Parent feature only; provides host-spec baseline context for AWC."
+    },
+    {
+      "id": "chrome-release",
+      "url": "https://chromereleases.googleblog.com/",
+      "publisher": "Chrome Releases blog / Chromium Dash",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable promotion to Windows/Mac/Linux on 2026-06-30 (early stable 2026-06-17; beta Jun 3-18); therefore the AWC Origin Trial is ~3 weeks old at the 2026-07-19 cutoff; Chrome 150 release notes mention only stability/performance (no AWC)"
+      ],
+      "limitations": "Release-date evidence aggregated from the blog and chromiumdash; no AWC mention in the 150 stable post."
+    },
+    {
+      "id": "mdn-setResizable",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/setResizable",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2025-06-26",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "legacy Window.setResizable() is a deprecated, non-standard NO-OP kept for Netscape 4.x compatibility; 'Not part of any current specifications' - a naming collision with AWC's proposed window.setResizable(bool)"
+      ],
+      "limitations": "MDN page last modified 2025-06-26; describes the legacy method, not the AWC semantics."
+    },
+    {
+      "id": "chromium-flagdesc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/126ae9c7fa7eb8331235b9467031c2dcdaaf30f0/chrome/browser/flag_descriptions.cc",
+      "publisher": "The Chromium Authors (chromium/src)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "implementation exists behind flag 'Desktop PWA Additional Windowing Controls' ('Enable PWAs to: (1) manually recreate the ...')"
+      ],
+      "limitations": "Single pinned blob; not a dated changelog; full implementation scope not assessed."
+    },
+    {
+      "id": "cs-home-ot",
+      "url": "https://chromestatus.com/",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "AWC listed under active 'Origin trial' on the ChromeStatus home page at retrieval"
+      ],
+      "limitations": "Transient home-page listing; not a durable artifact."
+    },
+    {
+      "id": "mozaic-207",
+      "url": "https://mozaic.fm/episodes/207/monthly-platform-202605.html",
+      "publisher": "mozaic.fm (Monthly Platform roundup)",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "'Ready for Developer Testing: Additional Windowing Controls' blink-dev thread (gmYffo5WOE8) circulated ~May 2026; references a Mozilla standards-positions thread"
+      ],
+      "limitations": "Secondary aggregator; the linked blink-dev thread itself was not retrieved."
+    },
+    {
+      "id": "tag-dr-1246",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1246",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": "2025-12-23",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "a TAG design-review titled 'New Spec: Additional Windowing Controls' exists (opened ~2025-12-23)"
+      ],
+      "limitations": "Observed via a TAG bot index, not the issue body directly; TAG verdict not retrieved."
+    },
+    {
+      "id": "intent-prototype",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/oCxWg8q_OQY",
+      "publisher": "blink-dev (Ivan Sandrk)",
+      "publishedOrObservedAt": "2023-01",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: Additional Windowing Controls posted to blink-dev (~Jan 2023)"
+      ],
+      "limitations": "Thread body not retrieved (groups.google.com did not render); existence/title confirmed via search."
+    },
+    {
+      "id": "wicg-proposal",
+      "url": "https://discourse.wicg.io/t/proposal-additional-windowing-controls/6044",
+      "publisher": "WICG Discourse",
+      "publishedOrObservedAt": "2022-11-23",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "public WICG incubation proposal '[Proposal] Additional Windowing Controls APIs' dated 2022-11-23"
+      ],
+      "limitations": "Full content not retrieved (reader timed out); date/title confirmed via a community index."
+    }
+  ],
+  "successes": [
+    "Genuine, well-scoped developer problem validated by named enterprise partners (Citrix, VMware/Omnissa) and documented in both the explainer and the AWC-specific standards-position requests.",
+    "Serious incubation: a detailed explainer with explicit alternatives analysis, an evolving API shape that moved state reads to CSS media features and dropped window.onmove over privacy concerns, and AWC-specific review threads opened with Mozilla (#712), WebKit (#96) and the TAG (#1246).",
+    "Clean experiment design: a multi-milestone desktop Origin Trial (150-152) with explicit goals (usability beyond VDI; API-shape feedback), defined platform scope, a working sample/demo, and a flag-gated Chromium implementation.",
+    "Strong lineage: builds on the already-shipped parent Window Management feature (Chrome 100) and reuses its permission model, reducing net-new surface."
+  ],
+  "failures": [
+    "The AWC API methods are not present in the published W3C Working Draft or the Editor's Draft as retrieved (rev 2cafe161, 2024-06-07); the API lives only in the explainer despite an Origin Trial already running.",
+    "The cached ChromeStatus spec_link (w3.org/TR/window-management/#api-window-minimize-method) is a broken anchor - the section does not exist.",
+    "The cached ChromeStatus record cross-links the WRONG standards-position issues for Firefox/Safari (#542/#117 are the parent Window Management/Placement requests), not the AWC-specific #712/#96 - a provenance error that misrepresents 'No signal'.",
+    "No positive cross-engine signal: both Mozilla (#712) and WebKit (#96) AWC requests are unresolved, and the parent feature is also 'No signal' from both engines (Safari's parent request carries privacy + annoyance concern labels).",
+    "Naming collision: AWC reuses window.setResizable(), which MDN documents as a deprecated non-standard no-op (Netscape 4.x), creating a feature-detection/interop hazard.",
+    "No launch communications located (no web.dev/developer.chrome.com article; Chrome 150 release notes do not mention AWC).",
+    "WPT coverage is structurally limited (requires standalone PWA windows) with only three tentative test files, and pass rates could not be verified."
+  ],
+  "counterfactuals": [
+    "If the spec text (TR/ED) had been updated to include the AWC methods before the Origin Trial, the interop and evidence-quality dimensions would be defensibly stronger and the broken spec_link would not exist.",
+    "If a reviewer trusted the cached 'No signal' ff/safari fields without checking the linked issues, they would miss that AWC has its OWN open review threads (#712/#96) and would wrongly attribute the parent feature's positions to AWC.",
+    "If a launch web.dev/developer.chrome.com explainer and a public origin-trial registration page had shipped alongside the OT, developer-trial participation and early adoption signal would be more measurable.",
+    "If window.setResizable had been given a distinct name (or the legacy no-op explicitly spec'd/reconciled), the naming-collision interop risk would be removed.",
+    "Because the OT began only ~3 weeks before the cutoff, adoption/end-user-impact/support dimensions are unscoreable; a retrospective run at OT start should recognize this and either defer or explicitly flag those dimensions rather than attempt to score them."
+  ],
+  "skillImprovements": [
+    "Add a phase-packet check that validates ChromeStatus cross-referenced standards-position URLs correspond to the SPECIFIC feature (not the host/parent spec); when 'No signal' is recorded, confirm the linked issue is the feature's own request and record both the specific and parent issue IDs.",
+    "Add a check that spec_link anchors resolve to actual normative text in the linked spec before counting standards maturity as 'supported'; flag broken/forward-reference anchors (e.g., #api-window-minimize-method missing from the current spec).",
+    "Add a 'recency-aware outcome gating' rule: when a feature's only launch event is a brand-new Origin Trial (<= ~1 milestone old), automatically mark adoption/endUserImpact/support as unscored-with-rationale and require a re-run after the trial window, rather than attempting to score them.",
+    "Add a naming-collision/feature-detection lint for new APIs that reuse names of existing deprecated/no-op members (e.g., window.setResizable) and require the explainer to address it.",
+    "For JS-rendered evidence (GitHub issue timelines, WPT dashboard, groups.google.com, bugs.chromium.org), record attempted-but-unrendered sources as explicit missingEvidence so a follow-up provider/browser pass can fill the gap rather than silently dropping it.",
+    "Treat tag_review_status/security_review_status/privacy_review_status == 'Pending' in a cached record as a prepareToShip gate risk that must be reconciled before any 'success' outcome is claimed."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Formal Mozilla (#712) and WebKit (#96) AWC position resolutions/labels - issue timelines are JS-rendered and were not captured.",
+      "TAG design-review #1246 verdict/status - only seen via a bot index, not the issue body.",
+      "Intent-to-Prototype (oCxWg8q_OQY) and 'Ready for Developer Testing' (gmYffo5WOE8) blink-dev thread bodies - groups.google.com did not render.",
+      "Chromium tracking bug 1235296 body/status - page did not render through the reader.",
+      "WPT pass rates for the three tentative AWC test files - dashboard is JS-rendered.",
+      "Origin-trial registration numbers / Chrome use-counter / HTTP Archive / web-features usage - not located (and likely unavailable ~3 weeks into the OT).",
+      "Any production deployment, case study, framework/library integration, or measured end-user impact - cannot yet exist at OT+3weeks.",
+      "Any support-issue / migration-friction evidence - not yet observable."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

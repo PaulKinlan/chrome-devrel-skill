@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6260680824061952,
+    "name": "Sub apps",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6260680824061952",
+    "category": "Isolated Web Apps-specific API",
+    "owner": "vkrot@google.com",
+    "specMentor": "dom@chromium.org",
+    "isReleased": false,
+    "chromeStatusStatus": "Proposed",
+    "flagName": "#enable-sub-apps",
+    "finchName": "SubApps",
+    "plannedDesktopShipMilestone": 153
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:In developer trial (Behind a flag):6260680824061952",
+      "milestone": 150,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The problem is clearly scoped and owned: a single signed Isolated Web App cannot present multiple distinct OS-level apps (suite/productivity and app-streaming scenarios), forcing developers either to ship separate heavyweight IWAs with fragmented storage/updates or one confusing monolithic window. ChromeStatus entry created 2026-05-04 by vkrot@google.com with correct category 'Isolated Web Apps-specific API', owner, spec mentor (dom@chromium.org), and editors identified; motivation, availability, adoption and measurement fields are populated. Public incubation started via WICG/proposals#282 (2026-05-11). The intake mechanics are sound; the forward risk is that developer demand is asserted by the team rather than evidenced (carried into incubation).",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "proposal-282",
+        "explainer",
+        "iwa-process"
+      ],
+      "limitations": "Demand evidence is thin at intake; adoption_expectation is 'small number of developers inside IWAs' and adoption_plan is 'working directly with developers' — team-stated, not independently evidenced."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Use cases are concrete and well-written (seamless app streaming; office productivity suites) with goals, security/privacy considerations, and an API design that fits the IWA high-trust model. Public venue is correct (WICG proposal -> adopted to WICG/sub-apps). However, there is no public demand research, segment map, interview/survey evidence, attributable partner interest, or visible counterevidence search; web developers show 'No signals' and the proposal thread shows no captured public discussion. The explainer's 'Considered Alternatives' only covers chrome.app.window.create and omits adjacent open-web/PWA install composition and any prior general-web sub-app attempts.",
+      "evidenceIds": [
+        "explainer",
+        "proposal-282",
+        "chromestatus-cached",
+        "iwa-process"
+      ],
+      "limitations": "No independent developer/segment/counterevidence record is public; the 'why IWA-only and not open web' case is reasonable but not stress-tested against alternatives in the explainer."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A working implementation exists behind the #enable-sub-apps runtime flag with programmatic telemetry counters (SubAppsAdd/SubAppsRemove/SubAppsList via MeasureAs), JS interface tests in third_party/blink/web_tests/external/wpt/subapps plus browsertests (sub_apps_service_impl_browsertest.cc), a Bikeshed spec at wicg.github.io/sub-apps, and a demo/sample repo. Security review and privacy review both reached 'Issues addressed' before the developer trial, with a spec mentor assigned. For an IWA-specific API this is credible prototype-level evidence.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "explainer",
+        "demo"
+      ],
+      "limitations": "wpt is false at the ChromeStatus level (no official WPT row / cross-implementation conformance), debuggability is noted as minimal ('no special DevTools support'), and requires_embedder_support is true. The demo is ChromeOS-first and not officially supported on other desktops."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "This is the in-scope launch event (M150, behind a flag). The trial mechanism exists: flag (#enable-sub-apps, plus the two IWA flags), a sample/demo repo with install instructions, defined enterprise prompt-control policies, and a documented API. But there is NO public evidence of an actually recruited cohort, task completion, attributable developer feedback, or published findings; web developers show 'No signals' and independent community channels (Reddit/HN) show no discussion. Reach is structurally narrow because the trial requires ChromeOS (or unsupported desktop), three flags, manual install via chrome://web-app-internals, and only allowlisted/curated IWAs can be broadly installed. 'Flag + demo' is present; a representative trial is not evidenced.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatus-lite",
+        "demo",
+        "iwa-allowlist",
+        "explainer"
+      ],
+      "limitations": "Cohort, methodology, participation denominator, task-completion, and feedback instruments are not public; intent-thread contents that might describe the trial plan could not be retrieved."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "The reviews that apply to IWA-specific APIs are in good shape: security and privacy reviews 'Issues addressed', spec mentor assigned, Bikeshed spec. Cross-engine/standards/Web-developer review is effectively absent-but-accepted: Firefox 'No signal', Safari 'No signal', Web developers 'No signals'; the W3C TAG declined to review Isolated Web Apps at all (design-reviews#842: 'we don't think our review would add much. We don't object'), which is why Sub apps carries no standalone TAG review; the feature is not in web-features and has no Baseline path. The chromium.org IWA launch process explicitly treats other-engine/TAG disinterest as expected, but per evidence discipline 'No signal' is neither support nor objection.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatus-lite",
+        "tag-842",
+        "iwa-process",
+        "explainer"
+      ],
+      "limitations": "'No signal' must not be read as neutral/positive approval; no cross-engine implementation or standards commitment exists; tag_review_status is 'Pending' at the feature level while the operative stance is 'TAG does not review IWAs'."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial exists or is registered: origintrial is false, all OT fields are null, and the IWA-specific launch process marks an OT as optional (step 5). A traditional cross-origin web OT is not the applicable instrument for an API confined to curated, signed, flag-gated IWAs; the chosen feedback path is developer-trial plus direct partner work. This is marked not-relevant specifically because the standard OT mechanism does not apply to this category — not because field risk is unimportant.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "iwa-process",
+        "iwa-allowlist"
+      ],
+      "limitations": "The consequence is that production-field and at-scale OS-integration behavior (file-handler/protocol-handler conflicts, prompt fatigue, quota edges) remains untested before prepare-to-ship; that gap is tracked under developerTrials/prepareToShip, not here."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Prepare-to-ship is staged but not complete as of cutoff. Stage 160 exists with desktop_first 153 and an Intent-to-Ship thread; enterprise was notified at first_enterprise_notification_milestone 149 (before the M150 dev trial); is_releasenotes_content_reviewed and is_releasenotes_publish_ready are true; security/privacy are 'Issues addressed'. However the feature is not shipped (status 'Proposed', is_released false), M153 is outside the run scope (v140-v150), tag_review_status is still 'Pending', there is no chromeos.dev/developer.chrome.com documentation article (docs point only to GitHub), and the public transition packet (evidence-backed ship brief, partner permissions, current positions) is not substantiated by retrievable evidence.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatus-lite",
+        "iwa-process",
+        "explainer"
+      ],
+      "limitations": "Intent-to-Ship thread (Google Groups msgid) could not be retrieved; internal launch/buganizer links are not publicly accessible; documentation readiness for ship is incomplete."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "No stable/default-on release has occurred. is_released is false, ChromeStatus status is 'Proposed', and the only in-scope event is the M150 flag-gated developer trial. There are no release-communication artifacts (chromeos.dev/developer.chrome.com article, release-notes entry, published demo beyond the GitHub sample). Marked not-relevant because release has not happened — not because comms were untested at a real launch.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatus-lite"
+      ],
+      "limitations": "Release-readiness and launch-communication quality cannot be scored pre-shipment."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No adoption evidence exists and the ecosystem is structurally capped: IWAs are in 'early product state' restricted to a 'small audience of developers' behind a Google-managed allowlist (Chrome 143+), Sub apps is ChromeOS/Chrome-only, web-developer signals are 'No signals', the explainer repo has 0 stars/0 forks, and independent community channels show no discussion. Enterprise policy controls are prepared, which is readiness, not adoption. Too early and too gated to assess; absent evidence is treated as unknown, not as failure.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "iwa-allowlist",
+        "explainer",
+        "enterprise-policy"
+      ],
+      "limitations": "No usage/UseCounter data is public; the curated allowlist means any real adoption would be private/partner-led and not visible in public telemetry or web-features."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No production users means no observed support burden, issues, or regressions. Preparation exists: three granular enterprise prompt policies and the general IWA enterprise FAQ. Supportability cannot be assessed until the feature reaches real IWA users.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "enterprise-policy",
+        "iwa-allowlist"
+      ],
+      "limitations": "No public issue tracker content (buganizer 414729785 is corp-only); no support trend data."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "The feature is brand new (ChromeStatus created 2026-05-04) and is not being restricted, replaced, or removed. No deprecation/removal is in scope. Marked not-relevant with rationale, not as untested: there is simply no deprecation event to review.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "manifest"
+      ],
+      "limitations": "None for this phase; if the concept is ever pursued for the open web, the historical sensitivity of multi-app/secondary-app models would need explicit handling."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Credible, well-scoped developer problem (distinct OS identities under one signed, single-update package) with a thoughtful design that fits the IWA model and the chromium.org 'last resort / breaks same-origin identity concepts' rationale, plus working implementation and reviews. Against that: no independent developer demand evidence (web-dev 'No signals', zero community discussion), no attributable partner commitments, and the primary use cases (app streaming / virtual desktop) are already served by mature competitors (e.g., Cameyo by Google, Parallels DaaS, Kasm). Net: plausibly valuable for a narrow curated IWA audience, unproven beyond it.",
+      "evidenceIds": [
+        "explainer",
+        "chromestatus-cached",
+        "iwa-process",
+        "cameyo",
+        "iwa-allowlist"
+      ],
+      "limitations": "Demand is team-asserted; no survey/interview/partner evidence; alternatives analysis in the explainer is narrow."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Not shipped to end users, so actual user impact is unmeasurable. At the design level the intended impact is positive (distinct launcher icons, per-sub-app file/protocol handlers, unified install/update) with real controls (batched install prompt with scroll container, 20-sub-app quota, per-integration user approval such as 'open always with', enterprise prompt policies) and acknowledged residual risks (bidirectional permission inheritance between parent and sub-app; dynamic service-worker-generated manifests limiting manifest auditability; identity-spoofing risk mitigated by IWA signing/no dynamic JS). Design quality is not scored as outcome impact without user exposure.",
+      "evidenceIds": [
+        "explainer",
+        "chromestatus-cached",
+        "enterprise-policy"
+      ],
+      "limitations": "No user research, accessibility review evidence, or real-user data; scored unscored to avoid inferring impact from design quality."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Pre-shipment and structurally gated (curated allowlist, ChromeOS-only, flag-gated dev trial). No adoption, registration, or production-use evidence is public. Scored unscored per the rule not to infer success or failure from absent usage.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "iwa-allowlist",
+        "explainer"
+      ],
+      "limitations": "Any adoption would be private/partner-led and invisible in public telemetry."
+    },
+    "interoperability": {
+      "status": "unscored",
+      "finding": "Structurally Chrome-only by category: Firefox/Safari 'No signal', Web developers 'No signals', TAG declined to review IWAs, not in web-features, no Baseline path, spec is a WICG incubation working draft. The chromium.org process accepts Chrome-only for IWA-specific APIs while requiring designs to 'plan for the possibility of adoption by the web'. There is no cross-engine implementation to assess, so interop is unscored rather than scored as failure (which would penalize the feature for its category's nature); the 'No signal' positions must not be read as support.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatus-lite",
+        "tag-842",
+        "iwa-process",
+        "explainer"
+      ],
+      "limitations": "If/when Sub apps is considered for the open web, identity-spoofing, permission-sharing, and prompt-spam concerns would need new cross-engine safeguards."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Credible within-Chromium quality: implementation behind a flag with telemetry counters, JS interface tests plus browsertests, Bikeshed spec, spec mentor, and security/privacy reviews 'Issues addressed'. Pulling the other way: wpt is false (no official WPT row or cross-implementation conformance), debuggability is minimal ('no special DevTools support'), and the reachable test surface is ChromeOS-first with high install friction. No bug/regression evidence exists yet because nothing has shipped.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "explainer",
+        "demo"
+      ],
+      "limitations": "Test breadth is limited to local interface and browsertests; no cross-implementation conformance; no production bug history."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication is honest and process-compliant: the ChromeStatus record is detailed and conservative (availability explicitly limited to ChromeOS IWAs, adoption expectation 'small number', enumerated security/privacy risks with mitigations, defined measurement), enterprise was notified at M149 before the M150 dev trial, and claims match the explainer. Against that: the evidence base is thin (no independent demand/partner/usage evidence), there is no chromeos.dev/developer.chrome.com article (docs point only to GitHub), the Intent threads are not publicly retrievable (Google Groups msgid rejected by the reader), no trial findings are published, and the tag_review field points to the parent IWA review (#842) which could be misread as a Sub-apps-specific review.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatus-lite",
+        "explainer",
+        "iwa-process",
+        "tag-842"
+      ],
+      "limitations": "Intent-thread contents and internal buganizer/launch records are not externally verifiable; no published trial findings."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No production users, so no support burden, issues, or resolution trends to score. Enterprise controls (three prompt policies) and the general IWA FAQ exist as preparation. Scored unscored, not success, because readiness is not a support outcome.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "enterprise-policy",
+        "iwa-allowlist"
+      ],
+      "limitations": "Buganizer (414729785) and launch (4466158) records are corp-only; no public support data."
+    },
+    "overall": {
+      "status": "unscored",
+      "finding": "Pre-shipment developer-trial (M150, behind a flag) of an IWA-specific API. Design and process are sound for the category (credible problem, thoughtful abuse model, security/privacy 'Issues addressed', enterprise notified, conservative comms), but the headline outcome dimensions (developer value beyond team assertion, adoption, end-user impact, interoperability) are unknown or structurally capped by the curated, ChromeOS-only IWA distribution model, and several material artifacts (independent demand, trial cohort/findings, docs article, retrievable intent threads) are missing. Overall is unscored rather than mixed because the dominant outcome dimensions are genuinely unknown pre-shipment; this must not be read as either success or failure.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "explainer",
+        "iwa-process",
+        "iwa-allowlist",
+        "tag-842",
+        "demo"
+      ],
+      "limitations": "No shipment, no adoption, no users; broad outcomes cannot be defensibly scored yet."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus-cached",
+      "url": "https://chromestatus.com/feature/6260680824061952",
+      "publisher": "Chrome Platform Status (cached authoritative record)",
+      "publishedOrObservedAt": "2026-07-16T07:05:58Z",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature detail: category Isolated Web Apps-specific API; owner vkrot@google.com; spec mentor dom@chromium.org; created 2026-05-04; is_released false; status Proposed; flag #enable-sub-apps; finch SubApps; stage 160 desktop_first 153 (prepare to ship); stage 130 desktop_first 150 (prototype); security/privacy review 'Issues addressed'; tag_review_status Pending; FF/Safari 'No signal', Web-dev 'No signals'; wpt false with local interface + browsertests; measurement counters SubAppsAdd/Remove/List; three enterprise policies; availability limited to ChromeOS IWAs; adoption_expectation 'small number of developers'"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-06-26; internal buganizer (414729785) and launch (4466158) links are corp-only and not externally accessible."
+    },
+    {
+      "id": "chromestatus-lite",
+      "url": "https://chromestatuslite.com/feature/6260680824061952",
+      "publisher": "Chrome Platform Status (server-rendered lite)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Live confirmation: Status 'Proposed'; Category 'Isolated Web Apps-specific API'; FF/Safari/Web-dev 'No signal'/'No signals'; spec https://wicg.github.io/sub-apps; three enterprise policy links; docs/samples/explainers all point to GitHub"
+      ],
+      "limitations": "Lite mirror; no stage/intent or review detail."
+    },
+    {
+      "id": "manifest",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Run manifest (immutable input)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Single launch event for feature 6260680824061952: milestone 150, category 'In developer trial (Behind a flag)', eventId '150:In developer trial (Behind a flag):6260680824061952'"
+      ],
+      "limitations": "Manifest is the authoritative event inventory; no additional launch events are recorded for this feature."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/WICG/sub-apps",
+      "publisher": "WICG/sub-apps (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer/spec: use cases (app streaming, office suites); shared-origin and bidirectional permission-inheritance model; Permissions-Policy 'sub-apps'; window.subApps.add/remove/list API; install-path vs manifest-string choice; single-batch Promise response; sub-app identity/scope rules; static + dynamic (service-worker) provisioning; 20-sub-app-per-parent quota; identity-spoofing mitigation via IWA signing/no dynamic JS; considered alternative chrome.app.window.create; acknowledgements (D. Farolino, A. Rayskiy, E. Anjos, D. Bylica, D. Murphy)"
+      ],
+      "limitations": "Repo: 0 stars, 0 forks, 1 PR, 16 commits, Bikeshed only; 'Considered Alternatives' omits prior general-web sub-app attempts and adjacent PWA install composition; no per-commit dates captured."
+    },
+    {
+      "id": "proposal-282",
+      "url": "https://github.com/WICG/proposals/issues/282",
+      "publisher": "WICG/proposals (GitHub)",
+      "publishedOrObservedAt": "2026-05-11T13:51:57Z",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Initial public proposal 'Sub apps in Isolated Web Apps' opened 2026-05-11 by vkrot-cell; status Closed with label 'repo_adopted' (moved to WICG/sub-apps)"
+      ],
+      "limitations": "No visible public discussion/comments were captured by the reader; comment thread not surfaced."
+    },
+    {
+      "id": "tag-842",
+      "url": "https://github.com/w3ctag/design-reviews/issues/842",
+      "publisher": "W3C TAG design-reviews (GitHub)",
+      "publishedOrObservedAt": "2023-05-06T00:04:35Z",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review of parent Isolated Web Apps (opened by reillyeon 2023-05-06); Resolution 'decline': 'The TAG declines to review this work. We don't think our review would add much. We don't object.'; Topic 'powerful APIs'; Venue WICG; this is the basis for Sub apps carrying no standalone TAG review"
+      ],
+      "limitations": "This is the parent IWA review, not a Sub-apps-specific review; the specific ChromeStatus-cited comment (2917031448) was not separately captured."
+    },
+    {
+      "id": "demo",
+      "url": "https://github.com/vkrot-cell/subapps-demo",
+      "publisher": "vkrot-cell/subapps-demo (GitHub; fork of bylicaatgoogle/subapps-demo)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Developer-trial sample: requires ChromeOS device; enable flags #enable-isolated-web-apps, #enable-isolated-web-app-dev-mode, #enable-sub-apps; install via chrome://web-app-internals 'Install IWA from Update Manifest' from https://subapps-demo-iwa.web.app/releases/update_manifest.json; includes calculator sub-app manifest and dynamic service-worker-generated sub-apps; 'works on any Desktop but not officially supported'"
+      ],
+      "limitations": "High-friction install path; ChromeOS-first; no evidence of any external developer actually running the trial."
+    },
+    {
+      "id": "iwa-process",
+      "url": "https://www.chromium.org/blink/launching-features/isolated-web-apps/",
+      "publisher": "The Chromium Projects",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Authoritative IWA-specific API launch process: 'web platform by default'; restricting to IWAs should be the last resort and only when an API 'breaks fundamental concepts in the web's security model, such as the same-origin policy'; do NOT request TAG review (TAG declined IWAs) and Mozilla/Apple are 'similarly disinterested'; request feedback from app developers and JS runtimes (Electron/Node.js/Deno/Bun); blink-dev intents + additional IWA-owner gate + 3 Blink API-owner LGTMs; OT optional (step 5); docs to chromeos.dev by prepare-to-ship; 'plan for the possibility of APIs to be adopted by the web'"
+      ],
+      "limitations": "Process document, not feature-specific; page is undated."
+    },
+    {
+      "id": "iwa-allowlist",
+      "url": "https://developer.chrome.com/docs/iwa/allowlist",
+      "publisher": "Chrome for Developers (Demián Renzulli)",
+      "publishedOrObservedAt": "2025-10-15",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "From Chrome 143 on ChromeOS only allowlisted IWAs installable/updatable via Admin Panel (other OSes at their initial IWA support); 'IWA is currently restricted to a small audience of developers because it is in an early product state'; requires a Google partner contact / early-adopter program; criteria exclude use cases achievable via open web or browser extensions; impacts IsolatedWebAppInstallForceList and DeviceLocalAccounts"
+      ],
+      "limitations": "Describes the IWA distribution gate generally, not Sub apps specifically."
+    },
+    {
+      "id": "enterprise-policy",
+      "url": "https://chromeenterprise.google/policies/#DefaultSubAppsWithoutPromptsSetting",
+      "publisher": "Chrome Enterprise policies",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Independent corroboration of enterprise controls: DefaultSubAppsWithoutPromptsSetting 'controls whether Isolated Web Apps (IWAs) will by default be able to add Sub Apps'; setting to 1 allows IWA origins to add Sub Apps; matches the three ChromeStatus-listed policies"
+      ],
+      "limitations": "Policy index anchor; full descriptions for SubAppsWithoutPromptsAllowedForOrigins and SubAppsWithoutPromptsBlockedForOrigins not separately fetched."
+    },
+    {
+      "id": "allowlist-psa",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/iTCPaBw6HxU/m/xSwr3FDWAgAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "PSA: 'Starting in Chrome 143, only Isolated Web Apps (IWAs) that are on a Google-managed allowlist can be installed or updated via administrator [policy]'"
+      ],
+      "limitations": "Search snippet only; full thread not retrieved."
+    },
+    {
+      "id": "iwa-hub",
+      "url": "https://chromeos.dev/en/web/isolated-web-apps",
+      "publisher": "ChromeOS.dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Parent platform context: IWAs are 'isolated, bundled, versioned, signed, and trusted' applications; Sub apps depends on this model"
+      ],
+      "limitations": "Parent IWA documentation; no Sub-apps-specific article was found on chromeos.dev or developer.chrome.com."
+    },
+    {
+      "id": "cameyo",
+      "url": "https://cameyo.google/",
+      "publisher": "Cameyo by Google",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Existing virtual app delivery / app-streaming competitor relevant to the primary Sub apps use case (alongside Parallels DaaS and Kasm Workspaces surfaced in the same search)"
+      ],
+      "limitations": "Vendor page; not a statement of intent to adopt IWA/Sub apps."
+    }
+  ],
+  "successes": [
+    "Honest, conservative ChromeStatus framing: availability explicitly limited to ChromeOS IWAs, adoption expectation 'small number of developers', security/privacy risks enumerated with mitigations, and programmatic measurement counters defined.",
+    "Security and privacy reviews reached 'Issues addressed' before the M150 developer trial, with a spec mentor (dom@chromium.org) and a Bikeshed spec.",
+    "Enterprise preparedness ahead of the trial: first_enterprise_notification_milestone 149 (before M150) plus three granular, independently published prompt-control policies on chromeenterprise.google.",
+    "Thoughtful abuse model appropriate to the high-trust IWA context: restricted to signed IWAs (no dynamic JS), batched install prompt with scroll container to prevent dialog spam, a hard 20-sub-app-per-parent quota, and per-OS-integration user approval (e.g., file handlers require the user to choose 'open always with').",
+    "Correct public incubation path: WICG/proposals#282 -> adopted to its own WICG/sub-apps repo with goals, non-goals, and a documented considered-alternative (chrome.app.window.create)."
+  ],
+  "failures": [
+    "No public developer-trial cohort, methodology, participation denominator, task-completion, attributable feedback, or published findings; 'Web developers: No signals' and independent community channels show zero discussion. The trial is a mechanism with no visible participants.",
+    "No chromeos.dev or developer.chrome.com documentation article; documentation points only to the GitHub explainer/sample, below the chromium.org expectation that docs be finalized (with a chromeos.dev article) by prepare-to-ship.",
+    "Intent threads (Intent-to-Prototype and Intent-to-Ship via Google Groups msgid URLs) are not retrievable by external tooling, so the public cannot verify adoption/risk claims captured in the cached record.",
+    "Limited test breadth: wpt is false (no official WPT row or cross-implementation conformance); only local JS interface tests plus browsertests exist, and debuggability is minimal ('no special DevTools support').",
+    "High developer-trial friction that likely suppresses the very feedback the trial is meant to collect: ChromeOS-first, three flags, manual install via chrome://web-app-internals, and the curated IWA allowlist gate.",
+    "Structural interoperability ceiling accepted but unaddressed for the open web: Firefox/Safari 'No signal', Web developers 'No signals', TAG declined IWAs, not in web-features/Baseline."
+  ],
+  "counterfactuals": [
+    "If the team had published attributable partner evidence (which streaming/suite vendors specifically need distinct OS identities under one signed bundle) before the dev trial, developer-value would move from team-asserted to evidence-backed; its absence keeps that dimension mixed.",
+    "If a structured field test or Origin Trial had been run with allowlisted IWA partners, production OS-integration behavior (file-handler/protocol-handler conflicts, prompt fatigue, quota edge cases) and end-user impact could have been validated before the M153 prepare-to-ship stage; instead these remain unknown going into ship.",
+    "If the explainer had explicitly addressed prior art and adjacent alternatives (general-web sub-app history, PWA install + File Handling + Protocol Handling composition, scope extensions, and JS-runtime analogues per the chromium.org feedback list), the 'why IWA-only and not open web' justification would better survive the 'last resort' principle.",
+    "If the devtrial had lowered friction (a single flag, documented Mac/Linux parity, and a hosted playable demo not requiring chrome://web-app-internals), independent developer signals might exist; the current three-flag + internal-URL + ChromeOS gating plausibly suppresses independent feedback.",
+    "Hindsight-bounded, not launch-time knowledge: if Sub apps is ever pursued for the open web, the identity-spoofing, bidirectional permission-sharing, and prompt-spam concerns that have historically dogged multi-app/secondary-app models on the open web would resurface; the IWA restriction is precisely the mitigation, so a web-bound path would require new safeguards."
+  ],
+  "skillImprovements": [
+    "Add a phase-03 (developer trials) transition-packet check for IWA-specific APIs requiring evidence that the curated-allowlist audience was actually activated for the trial (named partners, task completion), not merely that a flag and sample exist; codify the rule 'flag + demo does not equal a trial'.",
+    "Add a retrospective eval rule: when category == 'Isolated Web Apps-specific API', automatically flag (a) the ChromeOS-only + curated-audience structural adoption cap, (b) 'No signal' from other engines to be scored as unknown-not-support, and (c) require a chromeos.dev/developer.chrome.com documentation article before counting prepare-to-ship as supported.",
+    "Add a required incubation field for 'alternatives/prior art' that must enumerate adjacent open-web, native, mini-app, and JS-runtime (Electron/Node/Deno/Bun) approaches plus any prior attempts, aligned to the chromium.org 'who to request feedback from' list.",
+    "Add a friction-log artifact requirement for any developer trial: reproduce the full install path (flags + chrome://web-app-internals + allowlist) and record time-to-first-sub-app; high-friction install paths should block counting the trial as representative.",
+    "Add a source-retrievability rule: Google Groups msgid intent URLs and corp buganizer/launch links are not retrievable by external tooling, so the capture step must record intent-thread summary and claims into cached evidence at intake time to avoid blocking later research.",
+    "Add a counterfactual/lineage prompt for any 'suite / multi-window / secondary-app' proposal requiring an explicit search for and reference to (or refutation of) prior general-web attempts, so history is not silently repeated."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent-to-Prototype and Intent-to-Ship thread contents (Google Groups msgid URLs not retrievable; adoption/risk/interoperability-claims stance only partially captured in the cached record).",
+      "Any developer-trial cohort, participation denominator, task-completion, or attributable feedback (none public; 'Web developers: No signals').",
+      "Independent developer/partner demand evidence (web-dev 'No signals'; zero independent community discussion; no attributable partner commitments).",
+      "Adoption/usage data (pre-shipment; not present in public UseCounter/web-features telemetry).",
+      "End-user impact evidence (not shipped to users; no user research or accessibility review evidence).",
+      "chromeos.dev/developer.chrome.com documentation article (absent; docs point only to GitHub).",
+      "Cross-engine implementation or standards positions (Firefox/Safari 'No signal'; TAG declined IWAs; not in web-features/Baseline).",
+      "Official WPT/conformance results beyond local interface tests and browsertests (wpt false).",
+      "Internal buganizer (414729785) and launch (4466158) records (corp-only, not externally accessible)."
+    ],
+    "reviewedAt": "2026-07-20T07:30:00Z"
+  }
+}

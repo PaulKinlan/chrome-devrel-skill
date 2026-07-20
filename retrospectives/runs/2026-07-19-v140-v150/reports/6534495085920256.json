@@ -1,0 +1,466 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6534495085920256,
+    "name": "Parse processing instructions in HTML",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6534495085920256",
+    "blinkComponent": "Blink>HTML>Parser",
+    "finchName": "HTMLProcessingInstruction",
+    "webFeature": "html",
+    "owners": [
+      "nrosenthal@chromium.org",
+      "foolip@chromium.org"
+    ],
+    "shippedAsPartOf": "https://chromestatus.com/feature/5111042975465472 (Out of order streaming)",
+    "stableShipDate": "2026-06-30"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:6534495085920256",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear, bounded problem and owner set. ChromeStatus entry created 2026-02-03 by nrosenthal, component Blink>HTML>Parser, owners nrosenthal+foolip. Motivation is explicitly tied to the parent 'Out of order streaming' work: defining declarative ranges with elements is insufficient, and a 'lighter' non-element node is wanted that does not perturb CSS relationships, with future uses named (CSS custom highlights, HTML response buffering/streaming). The feature_note records that it ships as part of feature 5111042975465472, so the parent/child relationship is explicit at intake.",
+      "evidenceIds": [
+        "s_cs",
+        "s_parent"
+      ],
+      "limitations": "ChromeStatus motivation is the team's own framing; no independent problem-validation study is linked."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Public WICG incubation with a substantive explainer. The patching-explainer.md defines goals, non-goals, multiple rejected alternatives (a `marker` attribute, marker pointers on Element, a `contentmethod` attribute, a new node type), the Self-Review Security/Privacy questionnaire, and integration paths (custom highlights, DOM Parts, script-initiated patching). Initial public proposal at WICG/webcomponents#1116. The parser-level concern (recognising XML PI syntax previously parsed as bogus comments) is surfaced early as the key compat risk. Independent demand for out-of-order streaming predates the proposal (framework interest, community posts).",
+      "evidenceIds": [
+        "s_explainer",
+        "s_marko",
+        "s_mww"
+      ],
+      "limitations": "The PI primitive's standalone jobs are mediated through the parent feature; direct developer demand for 'PI parsing' as such is not separately evidenced."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Concrete prototype/spec work behind a flag with tests and multi-engine implementation bugs. Spec PR #12118 first commit 2026-01-30 carries detailed in-commit rationale (consume exactly the same characters as bogus comments to minimise risk; blocklist `xml`/`xml-stylesheet`; target rules). Tests written at web-platform-tests/wpt#60828. Implementation bugs filed for Chromium (#481087638), Gecko (bugzilla 2046367) and WebKit (317651). The PR's own implementer-interest checklist states 'At least two implementers are interested (and none opposed): Chromium, WebKit.' The Chrome blog reports experimental availability from Chrome 148 behind chrome://flags/#enable-experimental-web-platform-features.",
+      "evidenceIds": [
+        "s_spec",
+        "s_i2e",
+        "s_blog",
+        "s_wpt"
+      ],
+      "limitations": "No published task-based friction log from the prototype stage; no framework-integration spike results."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "Informal developer exposure, not a structured trial. The I2E thread (2026-04-01) records the feature 'enabled as an experimental feature in Canary for a few weeks' with 'no bugs filed on it so far'. The Chrome blog (2026-05-19) invites developer testing from Chrome 148 and ships npm polyfills (template-for-polyfill, html-setters-polyfill) to broaden reach. However there is no cohort, methodology, task-completion, or published friction report. An independent developer (Modern Web Weekly, 2026-06-05) did hit a real friction: the safe `streamAppendHTML()` variant 'results in empty HTML and doesn't work' for templates/markers, forcing the Unsafe variant.",
+      "evidenceIds": [
+        "s_i2e",
+        "s_blog",
+        "s_mww"
+      ],
+      "limitations": "No attributable developer-trial cohort or published friction findings from the team; the one documented friction comes from an outside developer, not a trial readout."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Broad standards review with positive outcomes, on a clear timeline. TAG design-review #1134 (opened 2025-08-12) is closed 'Resolution: satisfied' (CG early review). WHATWG spec PR #12118 was merged by editor annevk on 2026-06-25 (5 days before stable). Mozilla position #1369 = position: positive; WebKit position #628 = position: support. Caveat on timing and attribution: at I2E time (2026-03-31) the same Gecko and WebKit issues were recorded as 'No signal' and TAG as 'Pending'; the positive/support labels crystallised later, and both vendor issues are filed against the parent 'Out of order streaming' feature, not against this PI entry specifically.",
+      "evidenceIds": [
+        "s_tag",
+        "s_spec",
+        "s_moz",
+        "s_webkit",
+        "s_i2e"
+      ],
+      "limitations": "Vendor positions are on the parent feature; the vendor issues' comment threads (substantive review content) were not retrievable via the reader, only labels/metadata. At I2E the positions were 'No signal'."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "A field experiment was justified and approved, but no public outcome report exists. The I2E (2026-03-31) explicitly chose a 1%-stable finch (HTMLProcessingInstruction) rather than an Origin Trial, because real-origin exposure was needed to uncover web-compat issues from changing parser behaviour, while the design could still be revised. Mike Taylor asked about fuzzing and Daniel Bratell about canary/beta risk; nrosenthal answered fuzzers 'found some bugs during early development' (since fixed) and that Canary exposure had produced no filed bugs. Yoav Weiss LGTM'd 'to experiment M148-M150 inclusive'. The conservative design (identical character consumption to bogus comments) is the stated compat mitigation. However no public readout of the 1%→100% finch (compat findings, telemetry, holdback comparison) was found; the Chromium tracking bug is not publicly readable.",
+      "evidenceIds": [
+        "s_i2e",
+        "s_cs"
+      ],
+      "limitations": "Finch telemetry/readout and the Chromium bug detail are not in public evidence; 'no compat issues' is inferred from absence of filed bugs, not a published result."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Ship intent and plan exist and the launch executed on schedule, but the authoritative record lagged reality near ship. An Intent to Ship is present (stage_type 160, intent_stage 5; msgid thread URL in the cached record) targeting desktop/android/webview first=150, rollout_plan 'Will ship enabled for all users'. Spec merged 2026-06-25; stable shipped 2026-06-30. However at the ChromeStatus accurate_as_of (2026-06-22) the record still showed browsers.chrome.status='Proposed', is_released=false, and both security_review_status and privacy_review_status='Pending', i.e. the gate/review and release-status fields were stale versus the imminent ship. The I2S thread itself and the Chromium bug could not be retrieved (msgid URL rejected; issues.chromium.org requires auth).",
+      "evidenceIds": [
+        "s_cs",
+        "s_spec",
+        "s_relnotes"
+      ],
+      "limitations": "Intent-to-Ship thread content, Chromium bug detail, and the actual security/privacy review sign-off state were not retrievable; review-status fields show 'Pending' at the cache date."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "The feature shipped in Chrome 150 stable on 2026-06-30 across Android, ChromeOS, Linux, macOS, Windows (and WebView; iOS null). The Chrome 150 release notes list both 'Out of order streaming' (bug 431374376) and 'Parse processing instructions in HTML' (bug 481087638) as separate items with accurate descriptions; no deprecations/removals in the release. Communication shipped alongside: official Chrome blog (2026-05-19), MDN/ProcessingInstruction exists, npm polyfills published, independent tutorials and an independent SPA demo. Claims in the release notes match the spec (PI syntax <?target data>, attribute-style API).",
+      "evidenceIds": [
+        "s_relnotes",
+        "s_blog",
+        "s_mww",
+        "s_fcc"
+      ],
+      "limitations": "ChromeStatus status fields lagged the ship (see prepareToShip); not a release-note error but an authoritative-record freshness gap."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early and no usage evidence. The feature has been stable for ~3 weeks at the evidence cutoff (shipped 2026-06-30). No Chrome UseCounter/HTTP Archive/web-features adoption data is available yet. Adoption-enabling artifacts exist (npm polyfills, demos, tutorials, framework docs for the parent concept in Marko.js) and independent educational coverage exists, but these are enablers/interest, not production adoption. No attributable production deployment was found.",
+      "evidenceIds": [
+        "s_blog",
+        "s_mww",
+        "s_fcc",
+        "s_marko"
+      ],
+      "limitations": "Usage data not yet collected/reported at this point in the lifecycle; absence of adoption evidence is expected, not a research failure."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too early to assess. ~3 weeks post-ship. No support-issue taxonomy, known-issues page, or support-burden data found. One real friction is documented by an independent developer (safe streaming variant does not preserve <template>/markers; Unsafe required) which is a candidate support/Docs topic. No reported regressions in the release notes.",
+      "evidenceIds": [
+        "s_mww",
+        "s_relnotes"
+      ],
+      "limitations": "No support telemetry or issue volume available; cannot score."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable. This is a new parser capability / new feature launch, not a deprecation, restriction, or removal. There is no removal path, migration, or reverse-trial in scope. (Used per the rule: not-relevant is justified, not a substitute for untested.) The only deprecation-adjacent note is the deliberate non-parsing of `<?xml`/`<?xml-stylesheet>` as bogus comments to preserve existing behaviour.",
+      "evidenceIds": [
+        "s_spec",
+        "s_cs"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Real, pre-existing developer demand for the capability the primitive enables, but the PI parsing sub-feature is plumbing whose value is mediated through the parent 'Out of order streaming' feature and named future uses (CSS custom highlights, DOM Parts). Demand for out-of-order/declarative streaming is independently evidenced (Marko.js framework docs, community explorations, positive independent press calling it 'huuuuge' and 'revolutionary'). The standalone PI primitive is not directly developer-facing. An independent developer hit a concrete friction (Unsafe streaming required for templates). Value is plausible and motivated but, at ~3 weeks post-ship, unproven in production.",
+      "evidenceIds": [
+        "s_explainer",
+        "s_blog",
+        "s_mww",
+        "s_marko"
+      ],
+      "limitations": "Demand evidence is largely for the parent feature; standalone PI value is inferred from its role as an enabler."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No measurable end-user impact evidence. The parser change has no direct end-user surface; intended end-user benefit (faster perceived loads via out-of-order streaming) depends on sites adopting the parent feature, which has not yet happened at scale. No CWV/INP/LCP or user-experience measurement is available.",
+      "evidenceIds": [
+        "s_blog",
+        "s_explainer"
+      ],
+      "limitations": "End-user impact is wholly indirect and not yet observable; unscored rather than inferred."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No usage/production-adoption data available. Feature stable since 2026-06-30 (~3 weeks). No UseCounter, HTTP Archive, web-features/Baseline, or partner/production deployment evidence exists yet. Adoption enablers (npm polyfills, demos, tutorials) and framework interest are present but are not adoption.",
+      "evidenceIds": [
+        "s_blog",
+        "s_mww",
+        "s_fcc",
+        "s_marko"
+      ],
+      "limitations": "Too early in lifecycle; no adoption instrumentation reported. Unsccored, not failure."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Strong standards alignment but Chrome-only implementation at ship. Spec merged into the HTML standard (PR #12118, 2026-06-25) before stable; TAG satisfied; Mozilla positive and WebKit support; tentative WPT test exists (wpt#60828); three-engine implementation bugs filed. However at cutoff only Chromium ships it: WebKit bug 317651 is NEW (filed 2026-06-23, references the merged PR, no implementation) and Gecko bug 2046367 is NEW, UNASSIGNED, flagged behind-pref/firefox-backlog, filed 'mostly to have something to reference for the required Sanitizer API work.' The ChromeStatus ff/safari 'Positive/Support' labels are on the parent OoOS feature and reflect position, not implementation. Baseline (≥2 engines, 30 months) is far off; npm polyfills bridge the gap for now.",
+      "evidenceIds": [
+        "s_spec",
+        "s_tag",
+        "s_moz",
+        "s_webkit",
+        "s_webkit_bug",
+        "s_gecko_bug",
+        "s_wpt",
+        "s_blog"
+      ],
+      "limitations": "Live WPT cross-browser pass/fail not retrievable (JS-rendered dashboard); exact Gecko/WebKit implementation progress beyond bug status unknown."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Solid compat de-risking and a clean stable ship, but late design churn and no public post-ship telemetry. Compat was de-risked via HTTP Archive analysis ('relatively safe; doesn't parse xml-stylesheet and special characters like $'), fuzzers that 'found some bugs during early development' (fixed), Canary exposure with no filed bugs, then a 1% stable finch; the design deliberately consumes exactly the same characters as bogus comments to minimise parser-change risk. Released in Chrome 150 stable with no regressions listed. Against this: the PI target case-sensitivity flip-flopped during the PR (lowercased 2026-03-18 → 'Don't lowercase PI target' finalised only 2026-06-16, ~2 weeks before stable) and underscore-in-target was allowed 2026-06-15, i.e. the API surface was still being settled as the release train was committed; and no public compat/stability telemetry for the finch or post-ship period was found.",
+      "evidenceIds": [
+        "s_spec",
+        "s_i2e",
+        "s_cs",
+        "s_relnotes"
+      ],
+      "limitations": "Chromium bug/finch telemetry not publicly readable; post-ship stability evidence is absence-of-reported-bugs, not a measured result."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Communication was coherent, accurate, and shipped with enablement. Official Chrome blog 'Declarative partial updates' (Barry Pollard + Noam Rosenthal, 2026-05-19), accurate Chrome 150 release-notes entries for both the PI feature and the parent OoOS feature, MDN ProcessingInstruction, and npm polyfills (template-for-polyfill, html-setters-polyfill) all describe consistent behaviour matching the merged spec. Claims match actual rollout (M150, all desktop+android+webview, no iOS). One data-quality caveat: the ChromeStatus authoritative record lagged the ship (status='Proposed', reviews='Pending', is_released=false at the 2026-06-22 accurate_as_of, despite a 2026-06-30 stable ship and 2026-06-25 spec merge) — a record-freshness gap, not a messaging error.",
+      "evidenceIds": [
+        "s_blog",
+        "s_relnotes",
+        "s_cs",
+        "s_spec"
+      ],
+      "limitations": "ChromeStatus status/review fields were stale at the cache date; scored on the public communication artifacts, which were accurate."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support evidence yet (~3 weeks post-ship). No known-issues material, support-volume data, or issue taxonomy found. One candidate support/docs topic is documented externally: the safe streaming variant does not preserve templates/markers, so the Unsafe variant is required. No reported post-ship regressions.",
+      "evidenceIds": [
+        "s_mww",
+        "s_relnotes"
+      ],
+      "limitations": "No support telemetry available; cannot score."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-run, standards-first launch of a foundational parser primitive that shipped cleanly with strong cross-engine signals and good DevRel enablement — but real developer/end-user value, adoption, and interoperability remain unproven. Strengths: spec merged before stable, TAG satisfied, Mozilla positive + WebKit support, conservative compat design, fuzzing + Canary + 1% finch de-risking, npm polyfills and docs shipped alongside. Open/mixed: Chrome-only in practice (Gecko unassigned/behind-pref, WebKit bug NEW), the PI value is mediated through the parent OoOS feature, the API surface was still churning ~2 weeks pre-ship, the authoritative ChromeStatus record lagged the launch, and adoption/usage/support are not yet observable at ~3 weeks post-ship. Overall is deliberately mixed; it does not hide the unscored adoption/end-user dimensions or the Chrome-only interop reality.",
+      "evidenceIds": [
+        "s_spec",
+        "s_tag",
+        "s_moz",
+        "s_webkit",
+        "s_i2e",
+        "s_relnotes",
+        "s_blog",
+        "s_gecko_bug",
+        "s_webkit_bug"
+      ],
+      "limitations": "Post-ship outcome dimensions (adoption, end-user impact, support) are too early to evidence; the report cannot assert success or failure on them."
+    }
+  },
+  "sources": [
+    {
+      "id": "s_cs",
+      "url": "https://chromestatus.com/feature/6534495085920256",
+      "publisher": "Chrome Platform Status (cached run evidence file)",
+      "publishedOrObservedAt": "2026-06-22",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, motivation, interop risk, stages, launch milestones, ff/safari/webdev signals, finch name HTMLProcessingInstruction; parent-feature link"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-06-22; status/review/is_released fields lag the actual 2026-06-30 stable ship and 2026-06-25 spec merge."
+    },
+    {
+      "id": "s_parent",
+      "url": "https://chromestatus.com/feature/5111042975465472",
+      "publisher": "Chrome Platform Status (cached run evidence file)",
+      "publishedOrObservedAt": "2026-06-22",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Parent 'Out of order streaming' feature created 2025-07-11, ships M148 devtrial + M150 enabled; PI parsing split out 2026-02-03 as foundational sub-feature"
+      ],
+      "limitations": "Parent web_feature='Missing feature' (no own enum); PI entry carries the official 'html' web feature."
+    },
+    {
+      "id": "s_explainer",
+      "url": "https://github.com/WICG/declarative-partial-updates/blob/main/patching-explainer.md",
+      "publisher": "WICG / declarative-partial-updates",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer with goals/non-goals, rejected alternatives, marker APIs, script-initiated patching, future enhancements (custom highlights, DOM Parts), Security/Privacy questionnaire"
+      ],
+      "limitations": "Living document; no commit-date captured for the read version."
+    },
+    {
+      "id": "s_spec",
+      "url": "https://github.com/whatwg/html/pull/12118",
+      "publisher": "WHATWG / html",
+      "publishedOrObservedAt": "2026-06-25",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec PR 'Parse XML-style <?target data?> processing instructions' by foolip, merged by annevk 2026-06-25; 29 commits; design rationale; xml/xml-stylesheet blocklist; tests at wpt#60828; impl bugs Chromium/Gecko/WebKit"
+      ],
+      "limitations": "PR conversation comments not fully retrievable; relied on PR description, commit history and files-changed view."
+    },
+    {
+      "id": "s_tag",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1134",
+      "publisher": "W3C TAG / design-reviews",
+      "publishedOrObservedAt": "2025-08-12",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review 'Incubation: patching (interleaved out-of-order streaming)' opened 2025-08-12 by noamr; closed with label 'Resolution: satisfied'; CG early review"
+      ],
+      "limitations": "Only labels/metadata retrievable; TAG reviewer comment text not captured."
+    },
+    {
+      "id": "s_moz",
+      "url": "https://github.com/mozilla/standards-positions/issues/1369",
+      "publisher": "Mozilla / standards-positions",
+      "publishedOrObservedAt": "2026-03-10",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position: positive (label position: positive), team DOM, venue WHATWG; opened 2026-03-10; assigned hsivonen"
+      ],
+      "limitations": "Filed against parent 'Out of order streaming'; project status 'Position is proposed'; comment reasoning not captured."
+    },
+    {
+      "id": "s_webkit",
+      "url": "https://github.com/WebKit/standards-positions/issues/628",
+      "publisher": "WebKit / standards-positions",
+      "publishedOrObservedAt": "2026-03-10",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position: support (label position: support), topic html/markup, venue WHATWG HTML; opened 2026-03-10; assigned annevk"
+      ],
+      "limitations": "Filed against parent 'Out of order streaming'; comment reasoning not captured."
+    },
+    {
+      "id": "s_webkit_bug",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=317651",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2026-06-23",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit implementation bug 'Parse processing instructions in HTML' status NEW, reported 2026-06-23 by nrosenthal, references merged PR #12118; Radar 181023584 2026-06-30; no implementation landed"
+      ],
+      "limitations": "Status reflects NEW with no patch; current progress beyond 2026-06-30 not verified."
+    },
+    {
+      "id": "s_gecko_bug",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2046367",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2026-06-10",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Gecko implementation bug status NEW, UNASSIGNED, behind-pref + firefox-backlog, Core::DOM: HTML Parser, last updated 2026-06-10; reporter tschuster notes spec 'not landed yet' at filing and was filed 'mostly to reference for required Sanitizer API work'"
+      ],
+      "limitations": "Unassigned; no implementation; see-also 2044714 not examined."
+    },
+    {
+      "id": "s_i2e",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/NsT_aLXixXc",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-03-31",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment 2026-03-31: 1%-stable finch HTMLProcessingInstruction (not OT) to uncover compat issues; at I2E Gecko/WebKit 'No signal', TAG 'Pending'; Canary exposure 'a few weeks, no bugs filed'; fuzzers found early dev bugs; Yoav Weiss LGTM M148-M150; supports all six Blink platforms"
+      ],
+      "limitations": "Thread text captured; linked Intent-to-Prototype msgid and the Intent-to-Ship msgid thread were not separately retrievable."
+    },
+    {
+      "id": "s_relnotes",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable release date 2026-06-30; lists both 'Parse processing instructions in HTML' (bug 481087638) and 'Out of order streaming' (bug 431374376) with accurate descriptions; no deprecations/removals in release"
+      ],
+      "limitations": "Release-notes summary; does not include compat telemetry or usage."
+    },
+    {
+      "id": "s_blog",
+      "url": "https://developer.chrome.com/blog/declarative-partial-updates",
+      "publisher": "Chrome for Developers (Barry Pollard, Noam Rosenthal)",
+      "publishedOrObservedAt": "2026-05-19",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Official DevRel blog 'Declarative partial updates' published 2026-05-19; explains <?marker>/<<?start>/<<?end> + <template for>; use cases (island architecture, content-when-ready, optimal ordering); restrictions; npm polyfills template-for-polyfill + html-setters-polyfill; 'standardized with positive feedback from other browser vendors'; experimental from Chrome 148"
+      ],
+      "limitations": "Published before spec merge (2026-06-25) and stable ship (2026-06-30); says standards 'in the process' at the time."
+    },
+    {
+      "id": "s_mww",
+      "url": "https://modernwebweekly.substack.com/p/out-of-order-streaming-html-is-coming",
+      "publisher": "Modern Web Weekly (Danny Moerkerke)",
+      "publishedOrObservedAt": "2026-06-05",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent positive community coverage with a built SPA demo; confirms 'WebKit announced support, Firefox positive'; documents a real developer friction: safe streamAppendHTML() 'results in empty HTML and doesn't work', Unsafe variant required for templates/markers"
+      ],
+      "limitations": "Independent single-author newsletter; one data point on developer friction."
+    },
+    {
+      "id": "s_marko",
+      "url": "https://markojs.com/docs/explanation/streaming",
+      "publisher": "Marko.js",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Framework (Marko.js) documents out-of-order streaming concept, signalling ecosystem demand for the parent capability"
+      ],
+      "limitations": "Retrieved as search snippet only; full page not read; about the concept, not this specific API."
+    },
+    {
+      "id": "s_fcc",
+      "url": "https://www.freecodecamp.org/news/how-declarative-partial-updates-work-in-html/",
+      "publisher": "freeCodeCamp",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent educational/tutorial coverage of declarative partial updates including processing-instruction placeholders"
+      ],
+      "limitations": "Retrieved as search snippet only; full article not read; publication date unknown."
+    },
+    {
+      "id": "s_wpt",
+      "url": "https://github.com/web-platform-tests/wpt/pull/60828",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tentative WPT test parse-processing-instruction.tentative.html authored alongside the spec (referenced from PR #12118)"
+      ],
+      "limitations": "PR read failed (provider error); live wpt.fyi dashboard is JS-rendered and returned no pass/fail data; cross-browser results not retrieved."
+    }
+  ],
+  "successes": [
+    "Standards-first sequencing: WICG explainer → WHATWG spec PR #12118 merged by editor (annevk) on 2026-06-25, before the 2026-06-30 stable ship; TAG design-review #1134 satisfied; Mozilla positive and WebKit support; tests written and implementation bugs filed in all three engines. [s_spec, s_tag, s_moz, s_webkit, s_wpt]",
+    "Conservative, well-de-risked parser change: HTTP Archive analysis ('relatively safe'), fuzzing that found and fixed early-development bugs, multi-week Canary exposure with no filed bugs, then a 1%-stable finch (HTMLProcessingInstruction) before full ship; the design consumes exactly the same characters as the prior bogus-comment behaviour to minimise web-compat risk. [s_i2e, s_spec, s_cs]",
+    "DevRel enablement shipped with the platform feature: official Chrome blog (2026-05-19), accurate Chrome 150 release notes, and npm polyfills (template-for-polyfill, html-setters-polyfill) so developers can use the capability cross-browser before Gecko/WebKit ship. [s_blog, s_relnotes]",
+    "Spec carries in-commit rationale and rejected alternatives, easing multi-engine review. [s_spec, s_explainer]"
+  ],
+  "failures": [
+    "ChromeStatus authoritative record lagged the launch: at the 2026-06-22 accurate_as_of it showed browsers.chrome.status='Proposed', is_released=false, security_review_status='Pending', privacy_review_status='Pending' — despite the spec merging 2026-06-25 and stable shipping 2026-06-30. Anyone using ChromeStatus as the launch readout would have been misled about release/review state. [s_cs vs s_spec/s_relnotes]",
+    "API surface was still churning ~2 weeks before stable: PI target case-sensitivity changed repeatedly (lowercased 2026-03-18 → 'Don't lowercase PI target' finalised 2026-06-16) and underscore-in-target allowed 2026-06-15, signalling the design was not fully settled when the release train committed. [s_spec]",
+    "Interop is Chrome-only at ship despite the 'Positive/Support' labels: Gecko bug is NEW/UNASSIGNED/behind-pref (filed as a reference for Sanitizer API work), WebKit bug is NEW with no patch. The ChromeStatus ff/safari positions are filed against the parent feature and reflect position, not implementation — a real risk of overstating cross-browser availability. [s_gecko_bug, s_webkit_bug, s_moz, s_webkit, s_cs]",
+    "No published finch readout or post-ship compat/stability telemetry: 'no compat issues' rests on absence of filed bugs and the Chromium bug is not publicly readable, so the compat outcome is asserted rather than evidenced. [s_i2e, s_cs]"
+  ],
+  "counterfactuals": [
+    "If the spec had merged a cycle earlier (it merged 2026-06-25, five days before stable), the launch would not have shipped under a 'standards maturity: Working draft / under development' label, removing ambiguity about spec stability at ship.",
+    "If a published 1%→100% finch readout existed, the 'no web-compat issues' claim would be defensible public evidence instead of an inference from absence of bug reports.",
+    "If implementation status (engine bug state) rather than standards position were the tracked interop metric, the 'Positive/Support' labels would not have risked over-representing cross-browser availability at launch.",
+    "If a short, published developer-trial friction report existed, the externally-discovered friction (safe streaming variant drops templates/markers; Unsafe required) could have been addressed in official docs before broad release.",
+    "If the parent/child feature relationship were surfaced in the launch readout, the foundational PI primitive would not be scored as if it were the directly user-facing capability."
+  ],
+  "skillImprovements": [
+    "Add a retrospective rule: score interoperability from engine IMPLEMENTATION status (bug NEW/assigned/landed/shipped), never from a positive/support standards position alone; require an implementation-status check per engine and label position-vs-implementation distinctly.",
+    "Add a phase-04/06 freshness check: flag when ChromeStatus status / *_review_status / is_released fields lag the actual milestone ship by more than N days, so a stale authoritative record is not mistaken for the launch state.",
+    "Add a 'spec maturity at ship date' checkpoint: capture whether the normative spec is merged before stable, record the merge-commit timestamp, and treat same-week merges as a risk flag.",
+    "Require counterfactual evidence for compat claims: 'no compat issues' must cite a finch/telemetry readout or HTTP Archive result, not absence of bug reports.",
+    "Add a parent/child feature handling rule: when a sub-feature ships as part of a parent (e.g. PI parsing within Out of order streaming), capture the relationship and avoid scoring the plumbing primitive as the directly user-facing capability, and avoid double-counting shared evidence.",
+    "Add a late-design-churn detector: flag substantive API-surface changes (e.g. case-sensitivity, allowed characters) within ~2 weeks of the stable branch cut as a prepare-to-ship risk."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship thread content (msgid URL rejected by the reader) and the Intent to Prototype thread detail",
+      "Chromium tracking bug #481087638 detail and the 1%→100% finch/telemetry readout (issues.chromium.org requires auth; not public)",
+      "Live WPT cross-browser pass/fail for parse-processing-instruction (dashboard is JS-rendered; PR read failed) and whether the .tentative test was de-tentative after spec merge",
+      "Post-ship adoption/usage data and production deployments — not yet collected at ~3 weeks post stable (2026-06-30)",
+      "Post-ship support issue volume/known-issues — not yet observable at ~3 weeks post stable",
+      "TAG/Mozilla/WebKit reviewer comment reasoning (only labels/metadata were retrievable)"
+    ],
+    "reviewedAt": "2026-07-20T06:30:00Z"
+  }
+}

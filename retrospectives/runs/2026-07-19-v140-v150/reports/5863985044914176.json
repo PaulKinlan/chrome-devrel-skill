@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5863985044914176,
+    "name": "Clone into all descendant selectedcontent elements",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5863985044914176",
+    "category": "DOM",
+    "blinkComponent": "Blink>Forms>Select",
+    "featureType": "No developer-visible change",
+    "owner": "jarhar@chromium.org",
+    "finchName": "SelectedcontentSpec",
+    "specLink": "https://github.com/whatwg/html/pull/12263",
+    "bugUrl": "https://issues.chromium.org/issues/458113204",
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5863985044914176",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T05:55:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry 5863985044914176 classifies the work as a PSA / 'No developer-visible change' scoped to two <selectedcontent> edge cases (1) keeping multiple descendant selectedcontent elements up to date rather than only the first in DOM order, and (2) deferring selectedcontent updates that would run during insertion/removal/moving steps to fix security issues, via post-insertion steps or microtasks. Owned by jarhar@chromium.org under Blink>Forms>Select, with spec PR whatwg/html#12263 and tracking bug 458113204 linked. The run manifest records a single planned launch event (M150 Enabled by default). Scope, ownership and evidence links are clear and internally consistent. [chromestatus-5863985044914176][chromestatuslite-5863985044914176][manifest-feature]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "chromestatuslite-5863985044914176",
+        "manifest-feature"
+      ],
+      "limitations": "No material intake gaps."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation for this spec-alignment fix is the WHATWG HTML spec thread: PR #12263 'Clone into all descendant selectedcontent elements' opened 2026-03-15, with the ChromeStatus note that Apple/WebKit feedback is the primary motivation. Related open WHATWG issues (#11880 clearing non-primary selectedcontent is broken; #11883 form.reset() does not reset selectedcontent; #12509 updating selected option content does not clone; #11766 changes to option descendants) show continuing spec-defect activity around selectedcontent. Apple is concurrently implementing the parent customizable-select feature in Safari 27 beta (announced WWDC26). [chromestatus-5863985044914176][whatwg-pr-12263][whatwg-issues-selectedcontent][webkit-safari27-customselect]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "whatwg-pr-12263",
+        "whatwg-issues-selectedcontent",
+        "webkit-safari27-customselect"
+      ],
+      "limitations": "PR #12263 diff could not be retrieved (web reader network errors); no broad developer use-case validation exists, which is appropriate for an edge-case fix."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation is tracked in bug 458113204 (P3/S2, Blink>Forms>Select, assigned jarhar), explicitly filed on 2025-11-06 because 'test coverage is not sufficient and the spec does not match the implementation', referencing WPT PR 55849. Multiple Chromium CLs landed (7125591, 7127725, 7128135, +10 more; one pending 7922888). The security hardening (deferring updates during insertion/removal/moving steps) is the core prototype work. [crbug-458113204][chromestatus-5863985044914176]",
+      "evidenceIds": [
+        "crbug-458113204",
+        "chromestatus-5863985044914176"
+      ],
+      "limitations": "Individual CL diffs are not publicly readable; no public regression-test outcomes or telemetry."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial: this is a PSA 'No developer-visible change' that only affects invalid/edge cases on a feature with ~0.02% usage; there is no developer-facing API surface to trial. [chromestatus-5863985044914176][chromestatuslite-5863985044914176]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "chromestatuslite-5863985044914176"
+      ],
+      "limitations": "Marked not-relevant because there is genuinely nothing to trial, not because trials were untested/skipped negligently."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Tag review marked 'Not applicable' (appropriate for a spec-alignment PSA) and interop risk assessed low. Other-engine engagement is the stated motivation: Apple/WebKit feedback drives the change and Safari 27 beta implements the parent customizable-select feature. Firefox and Web-develop signals are both 'No signal'. [chromestatus-5863985044914176][chromestatuslite-5863985044914176][webkit-safari27-customselect]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "chromestatuslite-5863985044914176",
+        "webkit-safari27-customselect"
+      ],
+      "limitations": "Security review and privacy review are both 'Pending' in the cached snapshot and were not re-verified; spec PR #12263 merge state unconfirmed; Firefox has no recorded position."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial: a PSA with no field uncertainty requiring real-origin experimentation, and rollout_plan is 'Will ship enabled for all users'. [chromestatus-5863985044914176]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176"
+      ],
+      "limitations": "Marked not-relevant because no field hypothesis needs testing, not because experimentation was avoided while needed."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Ship plan targets M150 desktop/android/webview (not iOS), rollout 'Will ship enabled for all users', behind finch 'SelectedcontentSpec'; the tracking bug carries Merged-150 and Merged-7871 (the M150 branch) labels, indicating the code is merged to the release branch. [chromestatus-5863985044914176][crbug-458113204]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "crbug-458113204"
+      ],
+      "limitations": "At evidence cutoff ChromeStatus still shows status 'Proposed', is_released=false, security/privacy review Pending, and release-notes not review-ready or publish-ready; finch enablement in stable is unverified."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Chrome 150 reached stable on 2026-06-30 (desktop Win/Mac/Linux; 150.0.7871.x in mid-July) and the tracking bug is merged to the M150 branch. However the canonical ChromeStatus record still reads 'Proposed'/is_released=false at cutoff and no release note or PSA post mentions this change, so actual enable-by-default enablement of finch 'SelectedcontentSpec' cannot be confirmed from public evidence. [chromereleases-m150][crbug-458113204][chromestatuslite-5863985044914176]",
+      "evidenceIds": [
+        "chromereleases-m150",
+        "crbug-458113204",
+        "chromestatuslite-5863985044914176"
+      ],
+      "limitations": "Cannot verify the finch is enabled-by-default in stable; no release-notes or PSA record found."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "A behavior/spec-alignment PSA with no new capability to adopt; the parent customizable-select feature remains at ~0.02% usage (per ChromeStatus) and <selectedcontent> is not Baseline. Its adoption is tracked separately under the parent feature. [chromestatus-5863985044914176][mdn-selectedcontent]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "mdn-selectedcontent"
+      ],
+      "limitations": "Marked not-relevant because adoption is not a meaningful metric for a no-developer-visible-change fix, not because adoption was unmeasured."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support issues, regression reports, or developer friction attributable to this change were found in public sources.",
+      "evidenceIds": [],
+      "limitations": "Too early and too narrow (edge cases on a ~0.02%-usage feature) for a support signal; none located."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not a deprecation or removal; a spec-alignment/security fix (feature_type 'No developer-visible change'). [chromestatus-5863985044914176]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176"
+      ],
+      "limitations": "Marked not-relevant because the lifecycle type is not deprecation."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Delivers narrow but real value as a correctness/security fix (deferring selectedcontent updates during insertion/removal/moving steps to close security issues) and interop alignment with the WHATWG spec and Apple's direction. Direct developer-facing value is minimal by design ('No developer-visible change') and the affected surface has ~0.02% usage. [chromestatus-5863985044914176][crbug-458113204][mdn-selectedcontent]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "crbug-458113204",
+        "mdn-selectedcontent"
+      ],
+      "limitations": "No developer demand or satisfaction evidence exists (none is expected for a PSA)."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "The only plausible end-user benefit is the security hardening and correctness on edge cases; no quantified end-user impact exists and the affected feature has ~0.02% usage, so success is not inferred. [chromestatus-5863985044914176]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176"
+      ],
+      "limitations": "Security benefit is unquantified; no end-user telemetry available."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "Adoption is not a meaningful outcome for a no-developer-visible-change spec-alignment fix; there is no new capability to opt into. [chromestatus-5863985044914176]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176"
+      ],
+      "limitations": "Parent customizable-select adoption is tracked separately."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Strong directional alignment: the change is motivated by Apple/WebKit feedback and Apple is implementing the parent customizable-select in Safari 27 beta; WPT coverage is being added (bug cites WPT PR 55849); tag review N/A; interop risk assessed low. Gaps remain: spec PR #12263 merge state is unconfirmed and the WHATWG living-standard text read still describes first-selectedcontent + clear-non-primary semantics; Firefox has no signal; <selectedcontent> is not Baseline. [chromestatus-5863985044914176][crbug-458113204][webkit-safari27-customselect][whatwg-pr-12263][whatwg-html-selectedcontent-spec][mdn-selectedcontent]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "crbug-458113204",
+        "webkit-safari27-customselect",
+        "whatwg-pr-12263",
+        "whatwg-html-selectedcontent-spec",
+        "mdn-selectedcontent"
+      ],
+      "limitations": "Spec/implementation convergence is not externally verifiable; no Safari 27 confirmation of these specific edge-case semantics; PR content not retrievable."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Active correction of a self-identified gap (bug 458113204: insufficient test coverage + spec/impl mismatch) with multiple landed CLs and explicit security hardening; wpt=true. [crbug-458113204][chromestatus-5863985044914176]",
+      "evidenceIds": [
+        "crbug-458113204",
+        "chromestatus-5863985044914176"
+      ],
+      "limitations": "CL diffs are not readable; no public regression/telemetry outcomes; the security fix is not independently validated."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "ChromeStatus PSA communication is honest and well-scoped (PSA because only edge cases + low usage) with clear ownership and accurate signal notes (e.g., Apple feedback is the motivation). However launch-status evidence is incomplete: status still 'Proposed'/is_released=false after M150 shipped, security/privacy reviews Pending in the snapshot, release-notes not review-ready, and no public PSA/release-note record of the behavior/security change. [chromestatus-5863985044914176][chromestatuslite-5863985044914176][chromereleases-m150]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "chromestatuslite-5863985044914176",
+        "chromereleases-m150"
+      ],
+      "limitations": "Reviews may be complete outside the cached snapshot; this cannot be confirmed from public evidence."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support signal is available for this change.",
+      "evidenceIds": [],
+      "limitations": "Too early and too narrow to assess."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "An appropriately scoped, security-motivated spec-alignment PSA with genuine other-engine (Apple/WebKit) engagement and a self-critical bug-driven test/spec effort. However its launch is not verifiably complete at cutoff (ChromeStatus still Proposed, reviews Pending in snapshot, spec PR merge unconfirmed) and measurable outcome evidence is absent — which is expected for a no-developer-visible-change fix and does not by itself imply failure. Overall is mixed because the strongest dimensions (interop direction, implementation correction) are partially offset by incomplete launch-status and spec-convergence evidence. [chromestatus-5863985044914176][crbug-458113204][whatwg-pr-12263][chromestatuslite-5863985044914176][chromereleases-m150]",
+      "evidenceIds": [
+        "chromestatus-5863985044914176",
+        "crbug-458113204",
+        "whatwg-pr-12263",
+        "chromestatuslite-5863985044914176",
+        "chromereleases-m150"
+      ],
+      "limitations": "Overall does not hide the mixed dimensions; success is not inferred from shipment, the manifest milestone, or absence of criticism."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus-5863985044914176",
+      "url": "https://chromestatus.com/feature/5863985044914176",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2026-05-29T23:41:34Z",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: PSA / No developer-visible change; two selectedcontent edge cases incl. security fix; Blink>Forms>Select; owner jarhar; finch SelectedcontentSpec; M150 desktop/android/webview; spec whatwg/html#12263; bug 458113204; ff/safari/webdev No signal; tag review Not applicable; security/privacy review Pending; wpt true; ~0.02% customizable-select usage"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-05-29 (pre-M150 ship); is_released=false at snapshot."
+    },
+    {
+      "id": "chromestatuslite-5863985044914176",
+      "url": "https://chromestatuslite.com/feature/5863985044914176",
+      "publisher": "Chrome Platform Status (chromestatuslite mirror)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Live server-rendered readout still shows Status 'Proposed (Chrome Proposed)' and unchanged signals after M150 shipped, corroborating the launch-status discrepancy"
+      ],
+      "limitations": "Mirror of ChromeStatus; confirms current status field but does not prove finch runtime enablement."
+    },
+    {
+      "id": "crbug-458113204",
+      "url": "https://issues.chromium.org/issues/458113204",
+      "publisher": "Chromium Issue Tracker (Google)",
+      "publishedOrObservedAt": "2025-11-06T08:35:00Z",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug 'selectedcontent element behavior does not match spec' filed 2025-11-06 by jarhar; P3/S2; Blink>Forms>Select; states test coverage insufficient and spec does not match implementation; references WPT PR 55849; CLs 7125591/7127725/7128135 (+10 more) and pending 7922888; Merged-150 and Merged-7871 labels"
+      ],
+      "limitations": "Comments not fully visible to unauthenticated public; individual CL contents not readable; resolution/verify status not visible."
+    },
+    {
+      "id": "whatwg-pr-12263",
+      "url": "https://github.com/whatwg/html/pull/12263",
+      "publisher": "WHATWG (GitHub)",
+      "publishedOrObservedAt": "2026-03-15",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec PR 'Clone into all descendant selectedcontent elements' opened 2026-03-15; closes related selectedcontent issues; is the linked canonical spec for this feature"
+      ],
+      "limitations": "Full PR diff/content and merge state could not be retrieved (Z.AI web reader returned persistent network errors for github.com); merge/open state unconfirmed."
+    },
+    {
+      "id": "whatwg-html-selectedcontent-spec",
+      "url": "https://html.spec.whatwg.org/dev/form-elements.html",
+      "publisher": "WHATWG (HTML Living Standard)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Current living-standard text for the selectedcontent element and algorithms: get-enabled returns first selectedcontent descendant; clear-non-primary selectedcontent; clone/clear/update; post-connection and removing steps"
+      ],
+      "limitations": "Living standard is undated; the text read still describes first-selectedcontent + clear-non-primary semantics, so whether PR #12263 ('clone into all') is reflected is ambiguous."
+    },
+    {
+      "id": "mdn-selectedcontent",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/selectedcontent",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026-07-04T09:59:17Z",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "other",
+      "supports": [
+        "<selectedcontent> is 'Limited availability' / not Baseline because it does not work in some widely-used browsers; documents cloneNode-based clone behavior and the dynamic-content caveat"
+      ],
+      "limitations": "Reference docs for the element generally; does not describe this specific edge-case/security change."
+    },
+    {
+      "id": "chromereleases-m150",
+      "url": "https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop_0175352312.html",
+      "publisher": "Chrome Releases (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 150 to stable channel for Windows, Mac and Linux on 2026-06-30; corroborated by 150.0.7871.x stable versions in mid-July 2026"
+      ],
+      "limitations": "Release post does not mention this feature specifically."
+    },
+    {
+      "id": "webkit-safari27-customselect",
+      "url": "https://webkit.org/blog/17967/news-from-wwdc26-webkit-in-safari-27-beta/",
+      "publisher": "WebKit Blog (Apple)",
+      "publishedOrObservedAt": "2026-06-09",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Safari 27 beta adds support for customizable <select>; Apple is actively implementing the parent feature, consistent with the ChromeStatus note that Apple feedback motivated this selectedcontent change"
+      ],
+      "limitations": "Parent feature; does not confirm Safari 27 implements these specific selectedcontent edge-case semantics."
+    },
+    {
+      "id": "webkit-golden-rule",
+      "url": "https://webkit.org/blog/18117/the-golden-rule-of-customizable-select/",
+      "publisher": "WebKit Blog (Apple)",
+      "publishedOrObservedAt": "2026-06-15T14:20:31-07:00",
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Apple developer guidance on customizable select (accessibility/progressive-enhancement), confirming ongoing Apple engagement with the feature surface"
+      ],
+      "limitations": "Guidance post, not a statement on selectedcontent edge-case semantics."
+    },
+    {
+      "id": "chrome-blog-customselect",
+      "url": "https://developer.chrome.com/blog/a-customizable-select",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Parent customizable <select> feature launched from Chrome 135, providing context for the selectedcontent element this change targets"
+      ],
+      "limitations": "Parent-feature blog; predates and does not cover this edge-case change."
+    },
+    {
+      "id": "whatwg-issues-selectedcontent",
+      "url": "https://github.com/whatwg/html/issues/11880",
+      "publisher": "WHATWG (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Cluster of related open WHATWG issues (#11880 clearing non-primary selectedcontent broken; #11883 form.reset does not reset selectedcontent; #12509 dynamic clone; #11766 option-descendant changes) showing continuing spec-defect activity around selectedcontent that PR #12263 addresses"
+      ],
+      "limitations": "Related issues, not the content of PR #12263 directly; issue contents only partly retrievable via search snippets."
+    },
+    {
+      "id": "manifest-feature",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest (immutable input)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:55:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Single launch event for feature 5863985044914176: eventId '150:Enabled by default:5863985044914176', milestone 150, category 'Enabled by default'"
+      ],
+      "limitations": "Planned event derived from the ChromeStatus stage (desktop_first=150); it is not independent corroboration of actual enablement in stable."
+    }
+  ],
+  "successes": [
+    "Correctly classified and scoped as a PSA / 'No developer-visible change' rather than an Intent to Ship, transparently citing low (~0.02%) usage and edge-case-only impact. [chromestatus-5863985044914176]",
+    "Bug-driven with a self-critical tracking issue (458113204) acknowledging insufficient WPT coverage and a spec/implementation mismatch, driving coordinated test + spec work (bug -> whatwg/html#12263). [crbug-458113204][whatwg-pr-12263]",
+    "Motivated by and aligned with another engine: Apple/WebKit feedback drives the change and Apple is concurrently implementing the parent customizable-select in Safari 27 beta, supporting interoperability. [chromestatus-5863985044914176][webkit-safari27-customselect]",
+    "Security hardening (deferring selectedcontent updates during insertion/removal/moving steps) treated as a first-class part of the change rather than an afterthought. [chromestatus-5863985044914176]"
+  ],
+  "failures": [
+    "Launch-status tracking is incomplete at cutoff: ChromeStatus status remains 'Proposed' and is_released=false after Chrome 150 stable shipped 2026-06-30, so the manifest's single 'M150 Enabled by default' event is not corroborated by the canonical public record. [chromestatuslite-5863985044914176][chromereleases-m150]",
+    "Security and privacy reviews show 'Pending' in the cached snapshot and were not re-verified in public; release-notes were neither content-reviewed nor publish-ready at snapshot. [chromestatus-5863985044914176]",
+    "Spec/implementation convergence is not externally verifiable: PR #12263 merge state is unconfirmed and the WHATWG living-standard text read still describes first-selectedcontent + clear-non-primary semantics. [whatwg-pr-12263][whatwg-html-selectedcontent-spec]",
+    "No discoverable release-note or PSA record of the behavior/security change exists, and Firefox has no recorded signal on the spec PR. [chromestatus-5863985044914176][whatwg-pr-12263]"
+  ],
+  "counterfactuals": [
+    "If security/privacy review completion and the finch enablement were recorded on ChromeStatus before/at M150 ship, the launch could be verified as complete rather than inferred from branch-merge labels.",
+    "If the spec PR had been merged into the WHATWG living standard (or its merge state surfaced in ChromeStatus), outside observers and other implementers could verify spec/implementation alignment without reading the private bug.",
+    "If the owner had flipped ChromeStatus from 'Proposed' to 'Enabled by default' (or recorded the finch rollout state) at the M150 branch, the manifest's launch event would match the canonical record.",
+    "A one-line release note or PSA entry would have given developers a discoverable record of the selectedcontent behavior/security change.",
+    "If WPT coverage had been sufficient at the original customizable-select ship, the spec/impl mismatch (bug 458113204) might have been caught earlier rather than as a follow-up PSA."
+  ],
+  "skillImprovements": [
+    "Add a launch-status reconciliation check that flags manifest 'Enabled by default' events not corroborated by ChromeStatus is_released=true and review-completion at cutoff, surfacing it as a launch-status risk instead of treating the manifest milestone as ground truth.",
+    "Add an evidence rule to capture spec-PR merge state (open/merged/closed) plus the living-standard delta for spec-alignment PSAs, so spec/implementation convergence is verifiable without reading private bug trackers.",
+    "Add a lightweight 'PSA / no-developer-visible-change' retrospective track that skips developer-trials/experiment/adoption phases but still requires verified finch enablement, review-completion, and a discoverable release-note/PSA record.",
+    "Add a regression eval that distinguishes a planned launch event from verified enablement in stable, to prevent inferring success from a manifest milestone alone.",
+    "Add an eval case for security-hardening PSAs requiring the security-review status to be resolved (not 'Pending') before the release phase can be marked supported."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Actual finch 'SelectedcontentSpec' enable-by-default enablement in Chrome 150 stable (ChromeStatus still 'Proposed'/is_released=false at cutoff).",
+      "Security and privacy review completion (both 'Pending' in the cached snapshot; not re-verifiable from public sources).",
+      "Spec PR whatwg/html#12263 merge state and exact diff (the Z.AI web reader could not retrieve the PR due to persistent network errors).",
+      "Independent confirmation that Safari 27 (or Firefox) implements these specific selectedcontent edge-case semantics.",
+      "Any release-note or PSA record of the behavior/security change."
+    ],
+    "reviewedAt": "2026-07-20T05:55:00Z"
+  }
+}

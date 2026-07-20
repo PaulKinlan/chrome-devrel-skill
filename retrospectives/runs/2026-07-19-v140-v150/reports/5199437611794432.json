@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5199437611794432,
+    "name": "WebGPU: Immediates",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5199437611794432",
+    "category": "Graphics",
+    "webFeature": "webgpu",
+    "ownerEmails": [
+      "shaoboyan@microsoft.com"
+    ],
+    "editorEmails": [
+      "cwallez@google.com",
+      "dneto@google.com",
+      "fbeaufort@google.com",
+      "kainino@google.com"
+    ],
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5199437611794432",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus feature created 2026-03-25 by shaoboyan@microsoft.com (Microsoft) with Google WebGPU editors (cwallez, dneto, fbeaufort, kainino). Category Graphics; Blink>WebGPU. The problem is concrete and browser-layer-appropriate: passing small, frequently-updated per-draw data (object/material indices, transforms) currently forces GPU buffer creation and bind-group management, creating CPU overhead. This is the web analog of a well-established native GPU capability (Vulkan push constants / D3D12 root constants / Metal setBytes), tracked in gpuweb since issue #75. Owner, motivation, availability expectation, and affected constituencies are clearly recorded.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s5"
+      ],
+      "limitations": "Cached record is the only intake artifact; no separate intake memo or stakeholder map was retrieved."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Long, multi-year incubation. Original push-constants investigation is gpuweb issue #75; a dedicated 'ImmediateData' proposal was created 2024-04-29 and reached status Merged. Open design questions were resolved through tracked issues: per-stage vs unified range (#5116), internal-slot location (#5117), render-bundle support semantics (#5118, authored by the feature owner, resolved toward snapshot behavior), and unset-immediate validation (#5318). The merged proposal is detailed: new `immediate` WGSL address space, `var<immediate>`, `maxImmediateSize` (default 64 bytes = sizeof(mat4x4)), `immediateSize` on GPUPipelineLayoutDescriptor, and an encoder method. Microsoft drove the design; the W3C GPU for the Web WG approved it with WebKit and Firefox participants.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4",
+        "s5"
+      ],
+      "limitations": "Full WG meeting minutes and the complete issue-history for #5116/#5117/#5318 were not individually retrieved; incubation is reconstructed from the merged proposal and one representative design issue."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation is tracked under chromium bug 366291600 (Blink>WebGPU, owner shaoboyan). The record states WebGPU/WGSL conformance is exercised through the separate gpuweb/CTS harness rather than WPT, and references CTS immediates pull requests. Feature-detection is via the `immediate_address_space` WGSL language extension exposed through navigator.gpu.wgslLanguageFeatures, indicating a runtime-flag/gated prototype path.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s13"
+      ],
+      "limitations": "The chromium bug and the CTS immediates PRs could not be read (reader errors/timeouts), so implementation completeness, landed CLs, and CTS coverage breadth at ship are not directly verified."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "No public developer trial was run. The run manifest records only a single launch event (Chrome 150, Enabled by default); there is no 'In developer trial' event, devtrial_instructions is null, and no attributable developer-trial cohort or feedback instrument is evidenced for this specific API surface. This is a process gap to note for a new WGSL address space + encoder method, not a claim that it was untested (internal CTS/flag testing and the wgslLanguageFeatures gate applied).",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Absence of evidence of a public developer trial; any internal/early-access testing would not appear in the public record."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Strong cross-engine spec-level review. Firefox position is Positive (review on spec PR #5423). Safari/WebKit position is Positive, treated as a positive signal per the WebKit standards-positions convention (spec approval constitutes support). WebDev view is Positive. The record states the feature was approved in W3C GPU for the Web WG meetings with WebKit and Firefox participants. Security and privacy reviews are marked Not applicable. Standards maturity is Working draft (spec under development in the WG).",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s14"
+      ],
+      "limitations": "TAG review status is still 'Pending' in the cached record (2026-06-02). The spec PR #5423 diff and the intent-thread review exchange could not be retrieved, so reviewer-specific objections/conditions are not verified."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was used or requested (origintrial:false; no 'Origin trial' launch event). This is consistent with how WGSL language-extension additions ship: on spec maturity plus CTS coverage, gated at runtime by the wgslLanguageFeatures feature-detect, with no field-experiment uncertainty requiring real-origin conditions evidenced. This is a process observation, not a claim the feature was untested.",
+      "evidenceIds": [
+        "s1",
+        "s2"
+      ],
+      "limitations": "If field uncertainty existed it is not evidenced in the public record; the no-OT decision itself is not documented in a retrieved artifact."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "An Intent to Ship thread exists (stage 160, intent_stage 5). The ChromeStatus record is complete for ship: motivation, interop/compat risks ('approved in W3C GPU for the Web WG including WebKit and Firefox'), availability expectation (desktop/Android/WebView day-one in 150 where WebGPU is supported; iOS null; Linux follows WebGPU), rollout plan 'Will ship enabled for all users', and finch_name 'UnsafeFeatures'. Desktop/Android/WebView first-ship milestone is 150.",
+      "evidenceIds": [
+        "s1",
+        "s12"
+      ],
+      "limitations": "The Intent to Ship thread content was not retrievable (reader rejected the msgid URL format), so the precise ship rationale, accepted risks, and API-owner LGTMs are not verified. Chromium bug details (implementation/rollout state) were not retrievable."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 150, whose stable release date is 2026-06-30, on desktop, Android, and WebView. Coordinated, accurate ship communication: a dedicated 'What's New in WebGPU (Chrome 149-150)' blog (François Beaufort, 2026-06-17) with a working code sample and feature-detection guidance; the feature is listed in the Chrome 150 release notes; independent community coverage (webgpu.com, 2026-06-29); and an in-depth independent tutorial (WebGPUFundamentals) existed at ship. NOTABLE: the shipped API method is `setImmediates()` in both the official blog and the current WebGPUFundamentals tutorial, whereas the cached ChromeStatus record and the merged explainer both name it `setImmediateData()` — an authoritative-record inconsistency at ship.",
+      "evidenceIds": [
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s1",
+        "s2"
+      ],
+      "limitations": "The method-name drift (setImmediateData -> setImmediates) is inferred from the disagreement between the pre-ship record/explainer and the shipped blog/tutorial; the spec PR diff that would show the rename was not retrievable."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No durable production-adoption evidence exists at the evidence cutoff (~19 days after stable ship). Signals of ecosystem interest but not integration: PlayCanvas opened engine issue #8917 to 'investigate support' for immediates, explicitly noting it 'shipped in Chrome 149/150'. No immediates-specific integration in Babylon.js, Three.js, ONNX Runtime, or Transformers.js was found. WebGPUFundamentals provides education enabling adoption. No Chrome use-counter/HTTP Archive/Baseline data for immediates was located.",
+      "evidenceIds": [
+        "s10",
+        "s9",
+        "s8"
+      ],
+      "limitations": "Too recent for usage/adoption metrics; the PlayCanvas issue page was not fully retrieved (snippet only), and no framework has confirmed shipping immediates support."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No immediates-specific support issues, regressions, or known-friction reports were found in the public record at the cutoff. The design bakes in safety: a validation error is raised if required immediate slots are unset at draw/dispatch, and immediates reset to undefined at pass start and around executeBundles, reducing a common class of silent-misuse bugs. Runtime gating via wgslLanguageFeatures provides clean fallback.",
+      "evidenceIds": [
+        "s2",
+        "s9"
+      ],
+      "limitations": "Recency means the support burden is genuinely unevidenced; chromium bug/tracker detail was not retrievable to confirm absence of post-ship regressions."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new capability, not a deprecation or removal; no restriction, replacement, or removal is in scope. The Chrome 150 release notes contain no related deprecation. Phase is not applicable.",
+      "evidenceIds": [
+        "s7"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The developer problem is real, well-scoped, and independently affirmed. Avoiding GPU buffer and bind-group overhead for tiny per-draw values is a proven native-GPU need (push/root constants) long requested for WebGPU (issue #75). Independent expert coverage (WebGPUFundamentals, webgpu.com) affirms the fast path for per-draw indices/colors/transforms and the mental model ('mini uniform buffer'). The 64-byte default limit (sizeof(mat4x4)) and the single-var<immediate>-per-entry-point rule are intentional scope narrowing, not a defect; WebGPUFundamentals notes developers 'need to be creative' given the limit. Value is grounded in the problem space and expert affirmation, not inferred from shipment.",
+      "evidenceIds": [
+        "s2",
+        "s5",
+        "s8",
+        "s9",
+        "s1"
+      ],
+      "limitations": "No measured production performance gains (e.g., draw-call CPU-time reductions) are evidenced; the win is argued from design and analogy, not benchmarked in shipped apps."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No end-user-impact evidence (framerate, battery, load time, or measurable UX outcomes attributable to immediates) exists at the cutoff. Any end-user benefit is indirect (potentially smoother/more-dense rendering if adopted by engines).",
+      "evidenceIds": [],
+      "limitations": "Recency plus the absence of any production deployment means user impact is genuinely unknown; must not be inferred from the performance rationale."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No durable production adoption at the cutoff. Only interest-stage ecosystem signal (PlayCanvas investigation) and educational material exist. Shipped ~19 days before the cutoff; too early for use counters or framework integration.",
+      "evidenceIds": [
+        "s10",
+        "s9"
+      ],
+      "limitations": "Adoption cannot be scored until frameworks integrate and usage data accumulates; do not infer adoption from the ship announcement."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Strong at the specification layer, weak at the runtime layer at cutoff. Spec-level: Firefox Positive, WebKit Positive, WebDev Positive, W3C WG approval — the strongest available standards signal for a WebGPU addition. Runtime-level: only Chrome 150 ships immediates at the cutoff; WebGPUFundamentals states immediates 'will hopefully be shipping in all browsers by the end of 2026' and that the feature-detect should ideally be unnecessary by 2027. General WebGPU is now cross-browser (Chrome 113+/Firefox 141-145/Safari in macOS Tahoe 26/iOS 26), but that does not confirm immediates in those engines.",
+      "evidenceIds": [
+        "s1",
+        "s9",
+        "s11",
+        "s14"
+      ],
+      "limitations": "No direct evidence of immediates implementation/ship in Firefox (wgpu) or Safari (WebKit); the Positive positions are spec approvals, not shipping commitments for this sub-feature. Baseline status for immediates is therefore not yet established."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Specified with care: explicit validation (unset immediates error at draw/dispatch), defined reset semantics (pass start; around executeBundles), render-bundle snapshot behavior, maxImmediateSize limit, and pipeline-layout compatibility rules; feature-detectable via wgslLanguageFeatures. CTS coverage is referenced (gpuweb/cts immediates PRs).",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s9",
+        "s1"
+      ],
+      "limitations": "Implementation/CTS/regression detail was not retrievable (chromium bug and CTS PRs unread), so completeness, cross-platform behavior, and post-ship bug rate are unverified. The method-name inconsistency (setImmediateData vs setImmediates) is itself an implementation-vs-documentation consistency concern."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Launch communication was strong and accurate: a dedicated blog with a working sample, release-notes inclusion, independent coverage, and an independent tutorial all existed at ship and agreed on the shipped `setImmediates()` API and the `immediate_address_space` detection path. However, the authoritative ChromeStatus record is internally inconsistent and stale relative to ship: it names the method `setImmediateData()`, marks is_released:false and status 'Proposed', leaves tag review 'Pending', and has empty sample_links/doc_links, all as of accurate_as_of 2026-06-02 (one month pre-ship). The merged explainer also still uses setImmediateData.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s6",
+        "s7",
+        "s8",
+        "s9"
+      ],
+      "limitations": "Communication quality is good in the shipped-facing assets but poor in the registry-of-record; the rename was not reconciled in the explainer/ChromeStatus at the cutoff."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support-burden evidence at the cutoff (recency). The validation-and-reset design and the wgslLanguageFeatures gate reduce likely misuse, but this is design inference, not measured support load.",
+      "evidenceIds": [
+        "s2",
+        "s9"
+      ],
+      "limitations": "Cannot score without post-ship support/issue data, which was not located and may not yet exist."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-grounded, cleanly-communicated ship of a genuinely useful capability with the strongest possible cross-engine spec signal — but a very recent Chrome-only runtime launch with no adoption, usage, user-impact, or support evidence, a registry-of-record that is stale and inconsistent with shipped docs (method name, release status, tag review, samples), and no developer-trial or origin-trial evidence trail for the new API surface. Mixed dimensions are not hidden by the strong design and comms.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s10",
+        "s11"
+      ],
+      "limitations": "Overall is constrained by recency; several dimensions are unscored rather than negative."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5199437611794432",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, owner shaoboyan@microsoft.com, Google editors, category Graphics, Blink>WebGPU",
+        "Spec/explainer/bug/intent links; motivation and interop/compat risk text",
+        "Cross-engine positions: Firefox Positive, Safari Positive, WebDev Positive; W3C WG approval",
+        "Rollout: desktop/android/webview first 150, iOS null; rollout plan ship-enabled-for-all; finch_name UnsafeFeatures",
+        "Standards maturity Working draft; TAG review Pending; security/privacy Not applicable",
+        "Cached record names method setImmediateData(); is_released false; status Proposed; sample_links/doc_links empty"
+      ],
+      "limitations": "accurate_as_of 2026-06-02 is pre-ship; record is stale vs actual Chrome 150 ship (2026-06-30) and inconsistent with shipped setImmediates API."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/gpuweb/gpuweb/blob/main/proposals/immediate-data.md",
+      "publisher": "W3C gpuweb (proposals)",
+      "publishedOrObservedAt": "2024-04-29",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "ImmediateData proposal: status Merged, created 2024-04-29, references issue #75 and spec PR #5423",
+        "Design: immediate address space, var<immediate>, maxImmediateSize default 64, immediateSize in GPUPipelineLayoutDescriptor",
+        "Encoder method setImmediateData() on GPUBindingCommandsMixin; validation rules; render-bundle snapshot behavior",
+        "Resolved design issues #5116 (unified range), #5117 (slot location), #5118 (render bundle), #5318 (validation)"
+      ],
+      "limitations": "Explainer uses setImmediateData while shipped blog/tutorial use setImmediates; the spec PR diff itself was not retrieved."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/gpuweb/gpuweb/pull/5423",
+      "publisher": "W3C gpuweb",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "The WebGPU spec change referenced as the spec link by both ChromeStatus and the explainer"
+      ],
+      "limitations": "Content not retrieved (reader returned 500/network errors on repeated attempts). Substance covered via the explainer (s2)."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/gpuweb/gpuweb/issues/5118",
+      "publisher": "W3C gpuweb",
+      "publishedOrObservedAt": "2025-03-21",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Render-bundle support design discussion authored by feature owner shaoboyan; three options; resolved toward snapshot-content behavior",
+        "Evidence of substantive design iteration during incubation"
+      ],
+      "limitations": "Single design sub-issue; does not by itself document the full incubation history."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/gpuweb/gpuweb/issues/75",
+      "publisher": "W3C gpuweb",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Original 'Investigation: Push Constants' issue motivating the immediates proposal; long-standing developer request (push constants expected to outperform memory-backed updates)"
+      ],
+      "limitations": "Retrieved as a search snippet only; full timeline not read."
+    },
+    {
+      "id": "s6",
+      "url": "https://developer.chrome.com/blog/new-in-webgpu-149-150",
+      "publisher": "Chrome for Developers (François Beaufort)",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Official ship announcement; shipped API method setImmediates(); feature-detect via navigator.gpu.wgslLanguageFeatures.has('immediate_address_space')",
+        "layout:'auto' infers immediateSize; code sample; kudos to Microsoft; shipped in Chrome 149-150"
+      ],
+      "limitations": "First-party announcement; method name setImmediates differs from the cached ChromeStatus record's setImmediateData."
+    },
+    {
+      "id": "s7",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable release date 2026-06-30",
+        "Lists 'WebGPU: Immediates' with description; no related deprecation in this release"
+      ],
+      "limitations": "First-party release notes; platform/feature gating not itemized per feature."
+    },
+    {
+      "id": "s8",
+      "url": "https://www.webgpu.com/news/chrome-149-150-webgpu-immediates/",
+      "publisher": "WebGL / WebGPU Community",
+      "publishedOrObservedAt": "2026-06-29",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent affirmation of value (per-draw small-data overhead; 'death by small updates')",
+        "Confirms setImmediates() and immediate_address_space detection; situates the change in WebGPU maturation"
+      ],
+      "limitations": "Independent community blog that largely amplifies the Chrome announcement; not a separate primary source."
+    },
+    {
+      "id": "s9",
+      "url": "https://webgpufundamentals.org/webgpu/lessons/webgpu-immediates.html",
+      "publisher": "WebGPUFundamentals.org (greggman)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Shipped API: passEncoder.setImmediates(byteOffset, src, srcOffset?, size?)",
+        "64-byte default limit; single var<immediate> per shader; must-initialize and reset semantics (pass start; around executeBundles)",
+        "'New (2026) feature... core... hopefully shipping in all browsers by the end of 2026'; detection via immediate_address_space; typical use = indices into storage buffers; 'need to be creative' given the 64-byte limit"
+      ],
+      "limitations": "Independent, informal tutorial; no measured performance numbers; author dates it to 2026 without a precise publish date."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/playcanvas/engine/issues/8917",
+      "publisher": "PlayCanvas engine (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Framework interest: issue to 'investigate support' for immediates, noting it 'shipped in Chrome 149/150'; classifies as push/root constants"
+      ],
+      "limitations": "Retrieved as a search snippet only (page returned a reader error); represents interest, not a shipped PlayCanvas integration."
+    },
+    {
+      "id": "s11",
+      "url": "https://web.dev/blog/webgpu-supported-major-browsers",
+      "publisher": "web.dev (François Beaufort)",
+      "publishedOrObservedAt": "2025-11-25",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "General WebGPU cross-browser availability context: Chrome 113+ (Win/Mac/ChromeOS), 121 Android; Firefox 141 Windows / 145 macOS Tahoe ARM64; Safari in macOS Tahoe 26, iOS/iPadOS/visionOS 26",
+        "Establishes the WebGPU baseline into which immediates is a post-1.0 addition"
+      ],
+      "limitations": "Concerns WebGPU generally, NOT immediates specifically; does not confirm immediates in Firefox/Safari engines."
+    },
+    {
+      "id": "s12",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6a0586bd.050a0220.5fc49.0c6e.GAE%40google.com",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Existence of an Intent to Ship thread for the feature (ChromeStatus stage 160, intent_stage 5, active stage)"
+      ],
+      "limitations": "Content not retrieved: the reader rejected the msgid URL format and a canonical-thread resolution was not found; ship rationale, accepted risks, and LGTMs are unverified."
+    },
+    {
+      "id": "s13",
+      "url": "https://issues.chromium.org/issues/366291600",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Implementation tracking bug exists for Blink>WebGPU with owner shaoboyan (per ChromeStatus record)"
+      ],
+      "limitations": "Content not retrieved (reader returned 500); implementation status, landed CLs, CTS linkage, and any regressions are unverified."
+    },
+    {
+      "id": "s14",
+      "url": "https://github.com/gpuweb/gpuweb/wiki/Implementation-Status",
+      "publisher": "W3C gpuweb wiki",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "General WebGPU implementation-status reference across engines",
+        "Safari/WebKit position convention that spec approval is a positive signal (referenced via WebKit standards-positions #294 in the ChromeStatus record)"
+      ],
+      "limitations": "Wiki retrieved as a search snippet only; does not itemize immediates per engine."
+    }
+  ],
+  "successes": [
+    "Multi-year, well-grounded incubation built on a proven native GPU concept (push constants/root constants), tracked since gpuweb issue #75 and formalized in a dedicated merged proposal (2024).",
+    "Strongest available cross-engine spec signal for a WebGPU addition: Firefox Positive, WebKit Positive, WebDev Positive, and W3C GPU for the Web WG approval with WebKit/Firefox participants.",
+    "Coordinated, accurate ship communication that agreed on the shipped API: a dedicated Chrome blog with a working sample and feature-detection guidance, Chrome 150 release-notes inclusion, independent community coverage, and an in-depth independent tutorial (WebGPUFundamentals) all present at ship.",
+    "Cross-org authorship with a clear owner (Microsoft, shaoboyan) and named Google WebGPU editors, and explicit attribution ('kudos to Microsoft') in the launch blog.",
+    "Safe runtime design: feature-detectable WGSL language extension (immediate_address_space), explicit validation for unset immediates, defined reset semantics, and a small default limit (64 bytes) that narrows scope deliberately."
+  ],
+  "failures": [
+    "The authoritative ChromeStatus record is stale and internally inconsistent at ship: it names the method setImmediateData() while shipped docs/tutorials use setImmediates(), marks is_released:false and status 'Proposed', and has empty sample_links/doc_links (accurate_as_of 2026-06-02, one month pre-ship). The merged explainer also still uses setImmediateData.",
+    "No public developer trial or origin trial was run for this new WGSL address space + encoder method; there is no attributable developer-evidence trail (cohort, friction, feedback) for the API surface before broad ship.",
+    "TAG review status remained 'Pending' in the record at ship; the wide-review packet was not fully closed.",
+    "Immediates shipped Chrome-only at the runtime layer; cross-engine runtime availability (Firefox/wgpu, Safari/WebKit) is unevidenced, so Baseline/interoperability is not yet established despite the positive spec positions.",
+    "No usage, adoption, user-impact, or support evidence exists at the cutoff because the feature is only ~19 days past stable."
+  ],
+  "counterfactuals": [
+    "A short flagged developer trial or small origin trial would have produced an attributable developer-evidence ledger and could have surfaced the setImmediateData->setImmediates naming drift and per-draw ergonomics feedback before broad ship.",
+    "Updating the ChromeStatus record through release (is_released, current method name, sample_links, doc_links, TAG review) would have prevented the authoritative registry from disagreeing with the shipped blog and tutorials.",
+    "Completing TAG review before ship would have closed the wide-review packet instead of leaving it 'Pending' at launch.",
+    "Shipping canonical samples/demos in the ChromeStatus sample_links would have given reviewers and framework authors a single reference implementation alongside the WebGPUFundamentals tutorial.",
+    "Distinguishing spec-level interop (Positive positions) from runtime interop (Chrome-only) in the launch materials would have set accurate Baseline expectations for developers."
+  ],
+  "skillImprovements": [
+    "Add a retrospective rule that flags any ChromeStatus record whose API names differ from shipped release notes/current tutorials, and that requires is_released, sample_links, doc_links, TAG review, and the current API name to be reconciled when a feature ships.",
+    "In the prepare-to-ship phase packet, treat the combination 'TAG review Pending' + 'no developer trial and no origin trial' + 'Chrome-only runtime availability' as an explicit accepted-risk set requiring documentation, rather than allowing silent ship.",
+    "For WGSL language-extension features, add a mandatory pre-ship check that the wgslLanguageFeatures feature-detect string is stable, documented, and matches the shipped blog/tutorial exactly.",
+    "Add a regression-eval case for a recently shipped capability with strong spec-level interop but Chrome-only runtime availability, to force the retrospective to score interoperability as mixed (not success) and to distinguish standards maturity from Baseline.",
+    "Add an evidence-family checklist item for 'authoritative record vs shipped reality' reconciliation, so stale accurate_as_of snapshots do not propagate into retrospective sources."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship thread content (blink-dev msgid URL rejected by reader; canonical thread not resolved) — ship rationale, accepted risks, LGTMs unverified.",
+      "Chromium bug 366291600 content (reader 500) — implementation completeness, landed CLs, CTS linkage, regressions unverified.",
+      "Spec PR #5423 diff (reader 500/timeout) — including the apparent setImmediateData->setImmediates rename.",
+      "CTS immediates coverage (gpuweb/cts) — breadth and pass state not directly verified.",
+      "Post-ship adoption/usage data and framework integration — too recent (~19 days post-ship); only interest-stage signals exist.",
+      "Cross-engine runtime implementation/ship of immediates in Firefox (wgpu) and Safari (WebKit) — only spec-level Positive positions evidenced; Baseline not established.",
+      "Post-ship support issues / regressions specific to immediates — none located; may not yet exist.",
+      "Concrete measured performance/user-impact outcomes — none evidenced."
+    ],
+    "reviewedAt": "2026-07-20T06:00:00Z"
+  }
+}

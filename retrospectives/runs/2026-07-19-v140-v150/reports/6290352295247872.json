@@ -1,0 +1,423 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6290352295247872,
+    "name": "Opaque origin for data: URLs",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6290352295247872",
+    "category": "Security",
+    "blinkComponents": [
+      "Blink>Workers"
+    ],
+    "ownerEmails": [
+      "yyanagisawa@google.com"
+    ],
+    "finchName": "kDataUrlWorkerOpaqueOrigin",
+    "bugUrl": "https://crbug.com/40051700",
+    "specLink": "https://html.spec.whatwg.org/multipage/workers.html#script-settings-for-workers",
+    "shippedMilestones": {
+      "desktop": 150,
+      "android": 150,
+      "webview": 150,
+      "ios": null
+    }
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:6290352295247872",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:50:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2026-04-08 by yyanagisawa@google.com with owner, Blink component (Blink>Workers), category (Security), spec link, motivation, risks, measurement counters and a tracking bug (crbug 40051700). Problem statement is concrete: data: URL Dedicated/Shared Workers inherit the creator origin, deviating from the HTML spec and enabling BroadcastChannel/storage access. Entry diagnosis and owner assignment are present.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Cached record is accurate as of 2026-06-15; no explainer_links and no initial_public_proposal_url were recorded, so the earliest problem framing outside ChromeStatus is not captured."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The problem (same-origin data leakage via BroadcastChannel/LocalStorage/IndexedDB) and the spec anchor (HTML worker settings, Step 3) are clear, and the underlying standards question is long-standing (WHATWG html#1319, 2016). However there is no explainer, no use-case brief, no developer research, and the intent explicitly states it is 'currently unclear how many developers intentionally rely on the existing non-standard origin inheritance behavior.' The compatibility denominator was left unresolved until the ship review.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S6"
+      ],
+      "limitations": "No explainer or public incubation venue; reliance on the non-standard behavior was never measured, only inferred from page-load use counters."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "The change is implemented in shared core Chromium worker infrastructure (content layer) behind the kDataUrlWorkerOpaqueOrigin feature flag, with a WPT test (opaque-origin.html) covering data: URL dedicated and shared workers. There is no separate prototype artifact, no task-based friction log, and no framework/server integration spike.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5"
+      ],
+      "limitations": "No prototype document or integration matrix exists; verification is limited to the single WPT file plus the author's later site testing."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial (behind-a-flag external cohort) was run, and none was warranted: this is a default-on spec-alignment security behavior change, not an opt-in capability for developers to evaluate against tasks. The cached stages (types 110-160) contain no dev-trial URLs, origin trial IDs or instructions.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Not-relevant because a developer trial is not a meaningful phase for a default-on behavior fix; this is not used to mean untested (the author instead did direct site inspection)."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Wide review effectively occurred on the blink-dev Intent to Ship thread (4Hy56DZjF34): Gecko and WebKit are recorded as already shipping the spec behavior (Chrome was the outlier), reviewers (Mike Taylor, Rick Byers, Vladimir Levin, Chris Harrelson) pressed on debuggability and non-enterprise safety, and 4 LGTMs were granted by 2026-05-07. But TAG review status is 'Pending' and was not completed at ship, web-develop signals are 'No signals,' and no Mozilla/WebKit position document was linked (only ChromeStatus ff_views/safari_views fields).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "limitations": "No formal TAG review; no attributable web/framework developer signal; interop claim rests on ChromeStatus position fields plus a WPT test rather than a cited standards-venue confirmation."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted or appropriate. The change ships default-on for all users, guarded by the kDataUrlWorkerOpaqueOrigin flag and an enterprise policy escape hatch (DataUrlInWebWorkerOpaqueOriginEnabled); origintrial is false and no OT stage data exists. There were no stated field-experiment hypotheses because the question is conformance/security, not adoption signal collection.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S8"
+      ],
+      "limitations": "Not-relevant because no field experiment was needed; not used to mean untested."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "The Intent to Ship provides motivation, interop/compat/security analysis, activation risks, debuggability, measurement counters (5568/5569), an all-six-Blink-platform statement, a rollout plan ('ship enabled for all users'), a feature flag and a temporary enterprise escape hatch. Unusually for a change this small, the author then tested ~182 sites using data: URL workers (63 with no worker started, 119 with no detected BroadcastChannel/localStorage/IndexedDB/self.origin issues; dynamic trap injection on more than half), which satisfied reviewers. Estimated milestones (desktop/Android/WebView = 150) match the actual ship.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S8"
+      ],
+      "limitations": "Formal tag/security/privacy review statuses are all 'Pending' in the cached record at ship time; the site test was the author's own (not independently reproduced)."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "The feature shipped in Chrome 150 stable (desktop/Android/WebView), with stable promoted 2026-06-30. The Chrome for Developers release notes describe it accurately under 'Security and Web Speech', naming the behavior change, the spec, tracking bug #40051700, and the storage-partition preservation. An enterprise policy (DataUrlInWebWorkerOpaqueOriginEnabled) is documented on Chrome Enterprise / ADMX mirrors and inherited by Microsoft Edge.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S9",
+        "S10",
+        "S11"
+      ],
+      "limitations": "No dedicated developer article, migration sample or FAQ beyond the release-notes paragraph; the ADMX policy mirror text says 'milestone 149' whereas the authoritative Chrome Enterprise page and the release say 150 (a wording-drift gap)."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "'Adoption' is not a meaningful dimension here: this is a default-on security/conformance behavior change, not a developer-facing capability with an adoption funnel. Developers do not opt into it; the relevant post-ship question is compatibility/breakage, assessed under support/implementationQuality.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "Not-relevant by design (not 'untested'); no adoption metrics apply."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Only about three weeks have elapsed since Chrome 150 stable (2026-06-30) at the evidence cutoff, and no support-issue patterns, regressions or breakage reports attributable to this change were found in search. The known debuggability risk (BroadcastChannel fails silently; storage throws SecurityError; self.origin returns null) is acknowledged but unmitigated in product for the silent case.",
+      "evidenceIds": [
+        "S2",
+        "S3"
+      ],
+      "limitations": "Too early to assess support burden; absence of public breakage reports is not confirmation of none. The crbug/issue tracker could not be retrieved directly to check for post-ship reports."
+    },
+    "deprecation": {
+      "status": "partial",
+      "finding": "The legacy same-origin-inheritance behavior is effectively being removed, with a reverse-escape-hatch: the enterprise policy DataUrlInWebWorkerOpaqueOriginEnabled, when Disabled, restores legacy inheritance, and it is explicitly temporary (to be removed in milestone 157). Detection guidance exists by API (SecurityError for storage; null for self.origin; silent for BroadcastChannel). Enterprise notification began at milestone 148.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S8"
+      ],
+      "limitations": "The silent BroadcastChannel failure path has no console/devtools signal, weakening detection; first_enterprise_notification_milestone is 148 but the policy mirror mis-states 149; removal-at-157 is a future job not yet tracked as a deprecation milestone."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Mixed. Developers gain cross-browser consistency (Chrome now matches Firefox, Safari and the HTML spec) and removal of a same-origin data-leakage footgun, but there is no new capability; the small set relying on same-origin data: URL workers faces a forced migration to postMessage() or regular script URLs, with BroadcastChannel breakage being silent.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S5",
+        "S7"
+      ],
+      "limitations": "Net value depends on how many relied on the old behavior intentionally, which was never measured."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Mixed. The change is a well-reasoned security improvement that isolates data: URL workers from creator same-origin state (BroadcastChannel/storage), with low observed breakage so far; but no concrete attack prevented is documented and there is residual breakage risk for end users on affected sites.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Security benefit is reasoned rather than measured; post-ship user-facing impact data is not yet available."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "Not applicable: a default-on security/conformance behavior change has no adoption funnel. See phaseReview.adoption.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "Dimension does not apply; not used to mean untested."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "Success. This is the clearest win: the change aligns Chrome with the HTML Living Standard and with Firefox and Safari, which already assign opaque origins to data: URL workers; Chrome was the documented outlier. The WPT opaque-origin.html test (authored 2022) explicitly asserts data: URL dedicated/shared workers 'should have opaque origins per the HTML spec,' so it would have failed in pre-fix Chrome and now passes; the 2022 BroadcastChannel-in-opaque-origin work established the self-contained opaque-origin semantics this depends on. Microsoft Edge inherits the behavior via Chromium.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S11"
+      ],
+      "limitations": "Interop positions rest on ChromeStatus fields plus the WPT test rather than cited Mozilla/WebKit position docs; Safari had a known prior bug (webkit.org/b/238090) on opaque-origin BroadcastChannel isolation that is a related but distinct aspect."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Mixed. Strong mitigation: implemented in shared core worker infra (uniform across all six Blink platforms), guarded by feature flag + temporary enterprise policy, backed by a WPT test, and supported by pre-ship site testing on ~182 sites. Weaknesses: formal tag/security/privacy review statuses are all 'Pending' at ship, and there is no post-ship conformance/regression evidence yet.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S8"
+      ],
+      "limitations": "Reviews pending in the record; conformance verified via one WPT file; no independent regression run observed."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Mixed. The intent-thread Q&A was unusually thorough for a change of this size (explicit failure-mode analysis, site-testing results, 4 LGTMs) and the release-notes entry is accurate. But there is no explainer, no TAG review, no developer migration doc/sample, web-develop signals are explicitly 'No signals,' and the compatibility denominator (intentional reliance) is an unmeasured upper bound. An ADMX policy mirror states milestone 149 while authoritative sources say 150.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S8",
+        "S9"
+      ],
+      "limitations": "Reliance estimate is the author's own use-counter reading; a documentation/source-consistency drift exists in policy mirrors."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Unscored. Only ~3 weeks post-stable at the cutoff; no attributable support issues, regressions or breakage reports found. The acknowledged silent-failure mode for BroadcastChannel is an open support risk.",
+      "evidenceIds": [
+        "S2",
+        "S3"
+      ],
+      "limitations": "Insufficient elapsed time and no retrievable tracker data to score support burden or issue resolution."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Mixed overall. A well-justified, low-risk spec-alignment security fix that closes an interop outlier (success on interoperability), with strong pre-ship site testing and layered mitigation; but it ships with pending formal reviews, no developer migration artifact, an unmeasured compatibility denominator, an unmitigated silent-failure path, and no post-ship outcome evidence yet. Shipment is appropriate; success is not inferred from shipment.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S8"
+      ],
+      "limitations": "Cannot be scored success until post-ship breakage/support evidence and the M157 policy-removal deprecation are observed."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6290352295247872",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-06-15)",
+      "publishedOrObservedAt": "2026-06-15",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner, spec link, finch name kDataUrlWorkerOpaqueOrigin, stages (no OT/dev-trial), ship targets desktop/android/webview=150, enterprise notification M148, ff/safari=Shipped/Shipping, webdev=No signals, tag/security/privacy review Pending, motivation/risks/measurement text"
+      ],
+      "limitations": "Cached snapshot, not live; some fields (intent_thread_url per stage) are empty; is_released=false in snapshot despite ship."
+    },
+    {
+      "id": "S2",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/4Hy56DZjF34",
+      "publisher": "blink-dev (Intent to Ship: Opaque origin for data: URL Dedicated and Shared Workers)",
+      "publishedOrObservedAt": "2026-04-30",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship 2026-04-30 by Yoshisato Yanagisawa; motivation; interop low/compat moderate risk; ~0.13% page loads data: URL dedicated workers, 0.01% shared workers; feature flag + enterprise escape hatch; ~182-site test (63 no worker, 119 no issues, dynamic trap on >half); failure modes (Storage SecurityError, BroadcastChannel silent, self.origin null); 4 LGTMs (Harrelson, Levin, Taylor, Byers) by 2026-05-07; WPT test confirmation"
+      ],
+      "limitations": "Reliance/site-test figures are the author's self-reported analysis; BroadcastChannel-specific prevalence cited via metric 5856 not independently verified."
+    },
+    {
+      "id": "S3",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Chrome 150 Release notes)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 150 stable date 2026-06-30; 'Opaque origin for data: URLs' described under Security; spec/tracking bug #40051700; storage-partition preservation statement"
+      ],
+      "limitations": "Single paragraph; no migration sample or FAQ; no breakage metrics."
+    },
+    {
+      "id": "S4",
+      "url": "https://html.spec.whatwg.org/multipage/workers.html#script-settings-for-workers",
+      "publisher": "WHATWG (HTML Living Standard)",
+      "publishedOrObservedAt": "2026-07-17",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Living Standard authority for worker script settings (Step 3 = opaque origin handling) cited as the basis for the change; 'Published standard' maturity"
+      ],
+      "limitations": "Spec section is large; the precise Step 3 opaque-origin algorithm was not extracted verbatim due to output truncation."
+    },
+    {
+      "id": "S5",
+      "url": "https://https://raw.githubusercontent.com/web-platform-tests/wpt/master/webmessaging/broadcastchannel/opaque-origin.html",
+      "publisher": "web-platform-tests (WPT)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "4 promise_tests in opaque-origin.html including 'BroadcastChannel messages from data URL dedicated/shared workers should be self-contained'; comments state data: URL workers 'should have opaque origins per the HTML spec,' confirming the test encodes the spec behavior Chrome was violating"
+      ],
+      "limitations": "Current master read; exact authoring commit/date not captured; demonstrates expected behavior, not live pass/fail per browser (dashboard did not render)."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/whatwg/html/issues/1319",
+      "publisher": "WHATWG/html (GitHub issue)",
+      "publishedOrObservedAt": "2016-05-25",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Long-standing spec question about BroadcastChannel in opaque/unique origins (2016); notes Firefox throws from sandboxed iframe; establishes the standards ambiguity this change leans into"
+      ],
+      "limitations": "Issue body only; closed; does not by itself state the data: URL worker origin rule."
+    },
+    {
+      "id": "S7",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/-Ph_KkAJ24U",
+      "publisher": "blink-dev (PSA: Enabling BroadcastChannel usage in opaque origin contexts)",
+      "publishedOrObservedAt": "2022-03-18",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "M102 change allowing BroadcastChannel in opaque-origin contexts; establishes that opaque-origin BroadcastChannel is self-contained (cannot reach other browsing contexts) — the mechanism behind the silent-failure risk; references WPT opaque-origin.html and webkit.org/b/238090"
+      ],
+      "limitations": "Distinct from (but prerequisite to understanding) the data: URL worker change; pre-dates this feature by ~4 years."
+    },
+    {
+      "id": "S8",
+      "url": "https://gpedit.tplant.com.au/en-us/policy/chrome/DataUrlInWebWorkerOpaqueOriginEnabled/",
+      "publisher": "ADMX Viewer (Chrome enterprise policy mirror)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Policy DataUrlInWebWorkerOpaqueOriginEnabled: Enabled/unset = secure opaque-origin default; Disabled = legacy inheritance; intended temporary, removed in milestone 157; first notified M148"
+      ],
+      "limitations": "Third-party mirror; mirror text says default change is 'milestone 149' which conflicts with authoritative Chrome 150 sources (likely a mirror wording error)."
+    },
+    {
+      "id": "S9",
+      "url": "https://chromeenterprise.google/policies/data-url-in-web-worker-opaque-origin-enabled/",
+      "publisher": "Chrome Enterprise (policy list)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Authoritative policy exists; search snippet references 'Chrome 150 (Beta)', correcting the mirror's 149; confirms enterprise escape hatch is part of the launch"
+      ],
+      "limitations": "Full page timed out on retrieval; details taken from search snippet corroborated by S8."
+    },
+    {
+      "id": "S10",
+      "url": "https://https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop_0175352312.html",
+      "publisher": "Chrome Releases (stable channel update)",
+      "publishedOrObservedAt": "2026-06",
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 150 promoted to stable for Windows/Mac/Linux (150.0.7871.46/.47) in June 2026; confirms ship timing"
+      ],
+      "limitations": "Generic stable post; does not enumerate this specific feature."
+    },
+    {
+      "id": "S11",
+      "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/dataurlinwebworkeropaqueoriginenabled",
+      "publisher": "Microsoft Learn (Edge policies)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Edge (Chromium) documents DataUrlInWebWorkerOpaqueOriginEnabled with the same semantics — corroborates cross-engine behavior inheritance"
+      ],
+      "limitations": "Retrieved via search snippet only; page body not fetched."
+    },
+    {
+      "id": "S12",
+      "url": "https://chromestatus.com/metrics/feature/timeline/popularity/5568",
+      "publisher": "Chrome Platform Status (use counters)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:50:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Data: URL dedicated/shared worker prevalence (~0.13% / ~0.01% page loads) and BroadcastChannel-in-this-case prevalence (counter 5856) as cited by the feature owner; the basis for the 'moderate' compatibility rating"
+      ],
+      "limitations": "JS-rendered metric charts could not be retrieved directly; values are taken from the cached record and the owner's intent-thread statement rather than independently observed, and page-load prevalence is an upper bound on reliance, not measured reliance on the non-standard behavior."
+    }
+  ],
+  "successes": [
+    "Unusually rigorous pre-ship validation for a small change: the owner inspected ~182 sites using data: URL workers and dynamically injected traps into more than half, which directly answered reviewer safety questions.",
+    "Correctly identified Chrome as the interop outlier and aligned to the HTML spec and to Firefox/Safari, which already ship opaque origins for data: URL workers.",
+    "Layered mitigation before stable: feature flag (kDataUrlWorkerOpaqueOrigin), a temporary enterprise escape-hatch policy (DataUrlInWebWorkerOpaqueOriginEnabled), documented per-API failure modes, and uniform implementation across all six Blink platforms.",
+    "Clear and accurate Chrome 150 release-notes entry naming the behavior change, spec and tracking bug.",
+    "The WPT test (opaque-origin.html) already encoded the spec-correct expectation, giving a concrete conformance anchor."
+  ],
+  "failures": [
+    "TAG review was not completed at ship (status Pending); for a change justified primarily as spec alignment, standards-venue confirmation was absent.",
+    "No explainer and no developer migration artifact (e.g., a postMessage() migration sample) shipped alongside the change.",
+    "Web-develop signals were explicitly 'No signals,' and the number of developers intentionally relying on same-origin data: URL workers was never measured — compatibility risk was rated on page-load prevalence (an upper bound) only.",
+    "The BroadcastChannel failure path is silent (no console/devtools signal), an acknowledged debuggability weakness left unmitigated in product.",
+    "A third-party enterprise-policy mirror states the default change as 'milestone 149' while authoritative Chrome sources say 150, a source-consistency drift that could mislead admins relying on the escape hatch.",
+    "No post-ship breakage or support evidence is available yet (only ~3 weeks since stable)."
+  ],
+  "counterfactuals": [
+    "Measuring *intentional* reliance on same-origin data: URL workers (not just use-counter page-load %) before ship would have made the 'moderate' compatibility rating defensible instead of an explicitly 'unclear' denominator; the owner's site testing partially compensated but did not replace it.",
+    "Publishing a short developer migration note (move BroadcastChannel traffic to postMessage() or a regular script URL) before stable would have reduced the impact of the one silent-failure path, which is otherwise hard for developers to diagnose.",
+    "Completing a TAG review before ship would have converted the interop claim from 'Firefox/Safari already ship + a WPT test' into a standards-venue confirmation, strengthening the weakest review dimension.",
+    "Reconciling the enterprise-policy mirror text ('milestone 149') with the authoritative Chrome Enterprise page (150) before launch would have avoided confusing admins who depend on the escape hatch.",
+    "Tracking the M157 removal of DataUrlInWebWorkerOpaqueOriginEnabled as an explicit deprecation milestone at ship time would prevent the escape hatch from quietly expiring without a re-check of remaining breakage."
+  ],
+  "skillImprovements": [
+    "Add a retrospective rule for default-on behavior changes that close a security hole: explicitly distinguish (a) page-load prevalence of the affected API from (b) measured reliance on the *non-standard* behavior being changed, and treat (a) only as an upper-bound denominator.",
+    "Add a 'silent-failure debuggability' gate: when a change makes an API silently no-op (here BroadcastChannel) versus throw (Storage) versus change a return value (self.origin), require a pre-ship console/DevTools signal or a migration doc, because silent failure is the hardest path for developers to diagnose.",
+    "Require cross-checking any third-party enterprise-policy mirror against the authoritative chromeenterprise.google.com policy page before counting the escape hatch as launch-ready, to catch milestone/wording drift.",
+    "For spec-alignment interop claims, require a direct link to the standards-venue position or to a passing/failing WPT test rather than relying solely on ChromeStatus ff_views/safari_views fields.",
+    "Treat a temporary enterprise escape hatch that has a stated removal milestone (here M157) as a tracked follow-up deprecation/removal job in the retrospective, not as resolved at ship — add a regression eval that re-checks breakage before the policy is removed.",
+    "Add guidance that for small security/conformance fixes, the bar for 'no explainer / no dev trial' is acceptable, but the bar for 'no TAG review + no web-dev signal + unmeasured reliance' should trigger an explicit accepted-risk record rather than a clean LGTM."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-ship breakage/support/regression evidence: only ~3 weeks elapsed since Chrome 150 stable (2026-06-30) and no attributable reports found; cannot score support burden or confirm the compatibility assumption held.",
+      "Measured denominator of developers intentionally relying on same-origin data: URL workers (was explicitly 'unclear' at ship and never resolved).",
+      "Live use-counter chart values (metrics 5568/5569/5856) not independently retrievable; values taken from the owner's statement and cached record.",
+      "TAG review (Pending at ship) and attributable Mozilla/WebKit position documents (only ChromeStatus fields + WPT test available).",
+      "Direct crbug 40051700 / issue-tracker content could not be retrieved (reader errors), so internal implementation/test/regression detail and any post-ship comments are unverified.",
+      "The M157 removal of the enterprise escape hatch is a future outcome not yet observable at the cutoff."
+    ],
+    "reviewedAt": "2026-07-20T06:50:00Z"
+  }
+}

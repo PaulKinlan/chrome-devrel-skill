@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5515971464527872,
+    "name": "Expose unprintable areas via CSS",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5515971464527872",
+    "blinkComponent": "Blink>Layout>Printing",
+    "category": "CSS",
+    "specLink": "https://drafts.csswg.org/css-page-3/#page-margin-safety",
+    "finchName": "CSSSafePrintableInset",
+    "owner": "mstensho@chromium.org",
+    "shippedDescriptor": "page-margin-safety",
+    "webFeatureId": "Missing feature"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5515971464527872",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T22:10:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear, narrow, long-standing CSS paged-media gap: authors who set custom @page margins or add page-margin boxes (headers/footers) cannot detect the printer's non-printable edge area, so content is clipped. ChromeStatus entry created 2025-05-28 by the implementer (mstensho), with motivation, explainer, spec, bug, and initial public proposal all linked. Browser/OS already has the inset data internally; the gap is purely that it is not web-exposed.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "csswg-11395",
+        "explainer"
+      ],
+      "limitations": "ChromeStatus status text was still 'Proposed' and is_released=false at accurate_as_of 2026-06-01, predating the realized stable ship; the manifest launch event (150:Enabled by default) and release notes establish actual shipment."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Genuine multi-stakeholder incubation. CSSWG issue #11395 opened 2024-12-19; labelled css-page-3 and placed on the CSSWG April 2025 and TPAC 2025 (Thursday afternoon) agendas. The design was openly contested and evolved: original env(unprintable-area-width) proposal, renamed env(safe-printable-inset), with Mozilla offering a counter-proposal (a keyword/descriptor that clamps used margins rather than exposing a raw value). The shipped design (page-margin-safety descriptor in css-page-3) reflects this convergence. Use cases, non-uniform-inset caveat, and alternatives are documented in the explainer.",
+      "evidenceIds": [
+        "csswg-11395",
+        "explainer",
+        "mozilla-1258"
+      ],
+      "limitations": "WG resolution detail and the full comment thread were not retrievable from the issue fragment (GitHub issue body only); resolution inferred from closed status + agenda placement + converged spec."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation existed behind the Blink runtime flag CSSSafePrintableInset from Chrome 139 (explainer states it is testable via the flag or --enable-experimental-web-platform-features), and a WPT testing mechanism was proposed (RFC #233, a <meta name=\"safe-printable-inset\"> for print tests). The explainer carries runnable @page examples. However, the WPT test infrastructure remained unfinished, and there is no evidence of task-based friction testing or framework/server integration beyond the author's own examples.",
+      "evidenceIds": [
+        "explainer",
+        "chromestatus-record",
+        "intent-to-ship"
+      ],
+      "limitations": "Intent to Prototype thread (S9) and Chromium bug (S12) could not be retrieved; prototype-phase decisions and early security/privacy treatment are inferred from the explainer and Intent to Ship."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "The feature sat behind a flag from Chrome 139 to 150, but there is no formal 'In developer trial (Behind a flag)' launch event in the manifest, no attributable developer cohort, and 'Web developers: No signals' in the Intent to Ship and ChromeStatus. No evidence that a varied cohort of developers tried it on real printers and reported back.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "intent-to-ship"
+      ],
+      "limitations": "Flag availability is not the same as a developer trial with feedback; no trial findings, partner evidence, or issue themes found."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Substantive review occurred and was largely favorable: TAG review #1115 closed with 'Resolution: validated' / 'we largely support the direction' (assigned xiaochengh); Mozilla standards-position #1258 labelled 'position: positive'; spec is in the CSSWG (css-page-3) and is edited by fantasai (Apple). But gaps remain: WebKit standards-position #519 is still open with no position ('No signal'), the CSSWG-drafts issue was filed under css-env-1 by Mozilla/WebKit while the shipped artifact moved to css-page-3, and ChromeStatus records security_review_status and privacy_review_status as 'Pending' as of 2026-06-01.",
+      "evidenceIds": [
+        "tag-1115",
+        "mozilla-1258",
+        "webkit-519",
+        "spec-css-page-3",
+        "chromestatus-record"
+      ],
+      "limitations": "'No signal' from WebKit must not be read as neutral or positive. Security/privacy review completion is not publicly confirmed; the explainer's self-review is the only on-record treatment."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial or field experiment. origintrial=false in ChromeStatus; the Intent to Ship states 'Goals for experimentation: None'. The feature went flag (Chrome 139) directly to default-on (Chrome 150). Not-relevant because no field evidence was sought, not because it was untested in any form.",
+      "evidenceIds": [
+        "intent-to-ship",
+        "chromestatus-record"
+      ],
+      "limitations": "A trial could in principle have surfaced real-printer edge cases (e.g., the explainer's own concern about a single very large unprintable edge), but one was not run."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship filed 2026-04-29 by mstensho; received 3 LGTMs (Philip Jägenstedt, Yoav Weiss, Daniel Bratell) with rollout to desktop/Android/WebView at 150, 'Will ship enabled for all users', no //chrome code, iOS excluded. Several prepare-to-ship packets are incomplete: 'Is this feature fully tested by web-platform-tests? = No' with the WPT testing RFC 'stuck in review' (only tentative tests in Chromium's content_shell runner, not portable WPT); 'Interoperability and Compatibility', 'WebView application risks', and 'Debuggability' left as 'No information provided'; security/privacy 'Pending' in ChromeStatus. LGTM1 explicitly accepted shipping without the WPT infra and deferring portable tests.",
+      "evidenceIds": [
+        "intent-to-ship",
+        "chromestatus-record",
+        "tag-1115"
+      ],
+      "limitations": "Intent threads are the main evidence; Chromium tracking bug and WPT RFC could not be retrieved to corroborate review/test completion state at branch time."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 150 stable on 2026-06-30 as 'Expose unprintable areas with CSS', described accurately (page-margin-safety descriptor to steer clear of unprintable areas) with tracking bug, ChromeStatus and Spec links in the Chrome 150 release notes. Microsoft Edge platform release notes 150 also list page-margin-safety. No deprecations/removals in 150. Release communication matches the actual rollout.",
+      "evidenceIds": [
+        "chrome150-relnotes",
+        "edge150-relnotes",
+        "chromestatus-record"
+      ],
+      "limitations": "Release notes coverage is accurate but minimal (one paragraph); see evidenceAndCommunication outcome for the docs/MDN/sample gap."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Only ~3 weeks post-stable at the evidence cutoff. No adoption evidence found: no MDN reference page, no caniuse entry, not in web-features/Baseline ('Missing feature' web feature id), empty docs/sample arrays in ChromeStatus, empty results for production/GitHub usage searches. Secondary community signals exist (a Japanese-language CSS reference notes Chrome 150 page-margin-safety availability). Absence of evidence is not absence of adoption, but nothing defensible exists yet for a niche printing feature.",
+      "evidenceIds": [
+        "chrome150-relnotes",
+        "community-jp-tohoho",
+        "chromestatus-record"
+      ],
+      "limitations": "Too early and too niche to expect measurable adoption; the correct posture is unknown rather than low."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues, regressions, or known-problem reports found in the available sources as of the cutoff. Support state is genuinely unmeasured this soon after stable.",
+      "evidenceIds": [
+        "chromestatus-record"
+      ],
+      "limitations": "No support channel evidence retrieved; cannot assert low or high support burden."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New CSS capability, not a restriction/removal of existing behavior. breaking_change=false, enterprise_impact=1 (none). No replacement/migration or reverse-trial work applies. Not-relevant because the feature adds an option, not a deprecation.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "intent-to-ship"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Addresses a real, well-scoped, long-standing gap in CSS paged media that experts (CSSWG, the Apple-employed spec editor, Mozilla) treated as legitimate; the motivation is concrete (clipped custom headers/footers/content). However, independent developer demand evidence is absent: 'Web developers: No signals', no attributable developer or partner evidence, and the audience (authors who print-formal paged documents) is niche.",
+      "evidenceIds": [
+        "csswg-11395",
+        "explainer",
+        "chromestatus-record",
+        "intent-to-ship"
+      ],
+      "limitations": "Legitimacy from spec experts is not the same as demonstrated developer demand."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Potential end-user benefit is indirect and author-dependent: when authors adopt page-margin-safety, printed headers/footers/content will not be clipped into the unprintable margin. But end users cannot invoke it themselves, and no realized end-user impact has been measured.",
+      "evidenceIds": [
+        "explainer",
+        "intent-to-ship"
+      ],
+      "limitations": "No user-impact data; benefit is hypothetical pending author adoption."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No measurable adoption as of the cutoff (no MDN/caniuse/Baseline, no production usage or case studies, 'Web developers: No signals'). Shipment is not adoption.",
+      "evidenceIds": [
+        "chrome150-relnotes",
+        "community-jp-tohoho"
+      ],
+      "limitations": "Feature is ~3 weeks old; unscored rather than failed reflects recency, not hidden adoption."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards path is credible and cross-engine in design (WG-tracked css-page-3, TAG validated, Mozilla Positive, spec edited by fantasai at Apple). But at shipment the feature is Chrome-only: no other-engine implementation evidence, WebKit standards-position still open with 'No signal' (do not treat silence as support), spec maturity is only a Working Draft / Editor's Draft, and it is not in Baseline. The env()->page-margin-safety rename also means the Mozilla/WebKit position issues were filed against css-env-1 while the ship target is css-page-3.",
+      "evidenceIds": [
+        "intent-to-ship",
+        "mozilla-1258",
+        "webkit-519",
+        "spec-css-page-3",
+        "tag-1115",
+        "chromestatus-record"
+      ],
+      "limitations": "No Firefox/Safari implementation signals found; positive position != implementation."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "A working Chromium implementation shipped cleanly (flag since 139, default-on in 150, all Blink platforms except iOS, no //chrome code, clean release). The explicit weakness is test infrastructure: the Intent to Ship states the feature is NOT fully tested by web-platform-tests, the WPT print-test RFC (#233) was still in review at ship, and only 'a few tentative tests' live in Chromium's content_shell runner rather than portable WPT. This was acknowledged and accepted by the LGTMers.",
+      "evidenceIds": [
+        "intent-to-ship",
+        "explainer",
+        "wpt-rfc-233-unretrieved"
+      ],
+      "limitations": "WPT RFC #233 and the Chromium bug could not be retrieved directly; test status is characterized via the Intent to Ship. No crash/regression data found either way."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Accurate, on-schedule release communication exists (Chrome 150 release notes, Edge platform notes, ChromeStatus). But documentation/enablement is thin for a shipped stable feature: no MDN reference page, no caniuse/web-features/Baseline entry, and the ChromeStatus doc_links and sample_links arrays are empty. Communication leans on release notes + author explainer + spec rather than reference docs or samples.",
+      "evidenceIds": [
+        "chrome150-relnotes",
+        "chromestatus-record",
+        "intent-to-ship"
+      ],
+      "limitations": "A community (Japanese-language) note exists but is a secondary signal; no English devrel article/demo found."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support issues, known-problem reports, or issue-taxonomy evidence available this soon after stable.",
+      "evidenceIds": [],
+      "limitations": "No support-channel evidence retrieved; state is unmeasured, not benign."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A legitimate, well-scoped problem taken through genuine multi-stakeholder incubation and review, converging on a WG-tracked design and shipping cleanly in Chrome 150. At the evidence cutoff it is a single-engine launch (WebKit no signal, no other-engine implementation, not Baseline), shipped without portable WPT coverage (an accepted, acknowledged gap), with thin reference documentation and no measurable adoption or end-user impact. Net: sound process and real problem; incomplete interop/testing/docs evidence; too early to judge adoption or impact.",
+      "evidenceIds": [
+        "intent-to-ship",
+        "chrome150-relnotes",
+        "tag-1115",
+        "mozilla-1258",
+        "webkit-519",
+        "spec-css-page-3",
+        "chromestatus-record"
+      ],
+      "limitations": "Overall is mixed because multiple dimensions remain unscored (adoption, end-user impact, support) and interoperability/implementation-quality are genuinely partial."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus-record",
+      "url": "https://chromestatus.com/feature/5515971464527872",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-06-01)",
+      "publishedOrObservedAt": "2026-06-01",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner, blink component, spec/explainer/intent links, stage/launch events, Gecko Positive / WebKit No signal / WebDev No signals, security & privacy reviews Pending, finch CSSSafePrintableInset, rollout desktop/android/webview=150"
+      ],
+      "limitations": "Cache accurate as of 2026-06-01; status text 'Proposed'/is_released=false predates the realized Chrome 150 stable ship. Provided as read-only input."
+    },
+    {
+      "id": "csswg-11395",
+      "url": "https://github.com/w3c/csswg-drafts/issues/11395",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2024-12-19",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Initial public proposal (2024-12-19), problem framing, env(unprintable-area-width)/env(safe-printable-inset) origins, css-page-3 label, on CSSWG April 2025 + TPAC 2025 agendas, issue closed"
+      ],
+      "limitations": "Reader returned the issue body/fragment without the full comment thread; WG resolution text not captured."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/mstensho/unprintable-areas",
+      "publisher": "Morten Stenshorne (mstensho) via GitHub",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer with runnable @page examples, non-uniform-inset rationale (single max value), Mozilla counter-proposal (keyword/clamp) discussion, privacy/security/accessibility self-review, testable in Chrome 139 via CSSSafePrintableInset flag"
+      ],
+      "limitations": "No dated release; community signal low (1 star, 1 watcher)."
+    },
+    {
+      "id": "tag-1115",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1115",
+      "publisher": "W3C Technical Architecture Group (design-reviews)",
+      "publishedOrObservedAt": "2025-06-23",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Early TAG review requested 2025-06-23; Closed; labels 'Resolution: validated' / 'we largely support the direction', 'Focus: API design (pending)', 'Review type: WG early review', 'Venue: CSS WG'"
+      ],
+      "limitations": "TAG issue body filed with placeholder Mozilla/WebKit URLs (NNN); actual position issues were filed the next day. Comment detail not captured."
+    },
+    {
+      "id": "mozilla-1258",
+      "url": "https://github.com/mozilla/standards-positions/issues/1258",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2025-06-24",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position request opened 2025-06-24; Closed; label 'position: positive', topic: CSS; reviewer dholbert; references css-env-1 and env(safe-printable-inset)"
+      ],
+      "limitations": "Filed against css-env-1 / env() design rather than the shipped css-page-3 page-margin-safety descriptor; project status showed 'Position is proposed' alongside the positive label."
+    },
+    {
+      "id": "webkit-519",
+      "url": "https://github.com/WebKit/standards-positions/issues/519",
+      "publisher": "WebKit (standards-positions)",
+      "publishedOrObservedAt": "2025-06-24",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position request opened 2025-06-24; still Open; labels topic: css / venue: W3C CSS WG; no position label, no assignee (= 'No signal')"
+      ],
+      "limitations": "Open issue with no position must not be read as support or opposition; references css-env-1 design."
+    },
+    {
+      "id": "spec-css-page-3",
+      "url": "https://drafts.csswg.org/css-page-3/#page-margin-safety",
+      "publisher": "W3C CSS Working Group (CSS Paged Media Module Level 3, Editor's Draft)",
+      "publishedOrObservedAt": "2026-03-03",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Final shipped design is the page-margin-safety @page property in section 7.6 'Staying within the printable area'; <safe-printable-inset> used in fixed-dimension margin-box computation (5.3.3); Editor Elika Etemad/fantasai (Apple); Working Draft maturity"
+      ],
+      "limitations": "Editor's Draft / Working Draft (unstable); full 7.6 prose is in a single oversized line and was not fully extracted."
+    },
+    {
+      "id": "intent-to-ship",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/35N2MHzpowc",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-04-29",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship filed 2026-04-29 by mstensho; 3 LGTMs (Jägenstedt, Weiss, Bratell); ship at desktop/android/webview=150; TAG 'Issues addressed'; Gecko Positive / WebKit No signal / WebDev No signals; NOT fully tested by WPT (RFC #233 in review, tentative tests in content_shell only); no //chrome code; Finch CSSSafePrintableInset; 'Goals for experimentation: None'; Interop/compat, WebView risks, debuggability left blank"
+      ],
+      "limitations": "Google Groups render; no separate security/privacy review result recorded in the intent body."
+    },
+    {
+      "id": "intent-to-prototype-unretrieved",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/CAKWZFm6j2Zg0UC78mnzF%2BRzeycQXzTPU_YpEZtAYAYQWNvgR8A%40mail.gmail.com",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Referenced as the Intent to Prototype in the cached record and the Intent to Ship"
+      ],
+      "limitations": "UNRETRIEVED: read attempts timed out. Existence/ID confirmed via ChromeStatus and Intent to Ship; content (prototype decisions, early review treatment) not captured."
+    },
+    {
+      "id": "chrome150-relnotes",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable release date 2026-06-30; 'Expose unprintable areas with CSS' ships page-margin-safety descriptor; tracking bug 368070327; ChromeStatus + Spec links; no deprecations/removals in 150"
+      ],
+      "limitations": "One-paragraph item among many 150 features; no MDN/sample/demo links provided."
+    },
+    {
+      "id": "edge150-relnotes",
+      "url": "https://learn.microsoft.com/en-us/microsoft-edge/web-platform/release-notes/150",
+      "publisher": "Microsoft Edge Web Platform release notes",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Edge platform release notes 150 list page-margin-safety as a way to detect where it is safe to print"
+      ],
+      "limitations": "Observed via search snippet only; full page not read."
+    },
+    {
+      "id": "wpt-rfc-233-unretrieved",
+      "url": "https://github.com/web-platform-tests/rfcs/pull/233",
+      "publisher": "web-platform-tests/rfcs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Proposes <meta name=\"safe-printable-inset\"> for WPT print tests (per Intent to Ship characterization)"
+      ],
+      "limitations": "UNRETRIEVED: four read attempts failed (timeouts / 500 / fetch errors). Status ('in review') and 'generally positive' feedback characterized solely via the Intent to Ship, not the primary source."
+    },
+    {
+      "id": "community-jp-tohoho",
+      "url": "https://www.tohoho-web.com/css/rule/page.htm",
+      "publisher": "とほほのWWW入門 (tohoho-web, community reference)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T22:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent (Japanese-language) community note that page-margin-safety became usable from Chrome 150 (June 2026)"
+      ],
+      "limitations": "Secondary community signal; translation/summary, not an authoritative doc; not evidence of adoption."
+    }
+  ],
+  "successes": [
+    "Identified and scoped a real, durable CSS paged-media gap (authors cannot avoid the non-printable margin area when setting custom @page margins or margin boxes) and drove it through the CSSWG (issue on April 2025 + TPAC 2025 agendas, closed).",
+    "Design was iterated through genuine multi-stakeholder review: Mozilla's env()-vs-keyword concern was incorporated, converging from env(safe-printable-inset) on css-env-1 to the page-margin-safety descriptor in css-page-3 edited by fantasai (Apple) — a cross-engine editor signal.",
+    "Clean, accurate, on-schedule release: Chrome 150 stable (2026-06-30) and Edge platform notes both describe page-margin-safety correctly, with 3 LGTMs and an all-platform (desktop/Android/WebView) rollout requiring no //chrome code.",
+    "Honest explainer with explicit privacy/security/accessibility self-review, non-goals, and alternatives (including the Mozilla counter-proposal and the print-preview-fit alternative)."
+  ],
+  "failures": [
+    "Shipped default-on without portable WPT coverage: the WPT print-test RFC (#233) was still 'in review' at ship and tests exist only in Chromium's content_shell runner, not in shared web-platform-tests. The Intent to Ship explicitly answers 'fully tested by WPT? = No' and LGTM1 acknowledged deferring portable tests — a real cross-engine interop/correctness risk.",
+    "Single-engine launch with no interop: no Firefox/Safari implementation evidence; WebKit standards-position #519 still open with 'No signal' (despite the spec editor being Apple-employed); not in Baseline; 'Web Feature ID: Missing feature'.",
+    "Documentation/enablement gap for a shipped stable feature: no MDN reference page, no caniuse/web-features/Baseline entry, and empty doc_links/sample_links in ChromeStatus. Discovery leans on release notes + author explainer.",
+    "Incomplete prepare-to-ship evidence: security_review_status and privacy_review_status 'Pending' in ChromeStatus (accurate_as_of 2026-06-01); Intent to Ship left Interoperability & Compatibility, WebView application risks, and Debuggability as 'No information provided'.",
+    "No developer-demand evidence for a niche printing feature: 'Web developers: No signals', no attributable partner/trial evidence, no cohort feedback from the Chrome 139-150 flag period."
+  ],
+  "counterfactuals": [
+    "If the WPT print-test infra (RFC #233) had landed before ship, cross-engine test coverage would exist and reduce silent interop drift risk, giving Firefox/Safari a concrete conformance target — at the cost of slipping past Chrome 150.",
+    "If WebKit had been engaged to a closed position pre-ship, the 'No signal' gap and Chrome-only reality could have been reduced; the mismatch between an Apple-employed spec editor and a silent WebKit standards-position issue is itself a friction signal an earlier WebKit bug could have surfaced.",
+    "If an MDN page plus a runnable sample had been ready at ship, discoverability and adoption would be materially stronger; this absence is a process/DevRel gap, not a product-design flaw.",
+    "If a behind-the-flag developer trial with an attributable cohort had been run across Chrome 139-150, it could have produced the missing 'web developer' signal and stress-tested real-printer edge cases (e.g., the explainer's own concern about a printer with one very large unprintable edge) before default-on.",
+    "Filing Mozilla/WebKit/TAG reviews against css-env-1 while the artifact shipped as css-page-3 page-margin-safety left the public review trail pointing at a superseded design — re-requesting positions against the shipped descriptor might change the 'No signal' picture."
+  ],
+  "skillImprovements": [
+    "prepare-to-ship packet: add a rule that an 'Enabled by default' must not ship with 'fully tested by WPT = No' without (a) an explicit accepted-risk note and (b) a filed, owner-tracked plan to land portable WPT; flag this as a readiness gap in retrospectives.",
+    "wide-review check: when the spec editor is employed by engine X but engine X's standards-position issue is still open / 'No signal', surface that mismatch as a concrete review-friction signal rather than treating silence as neutral.",
+    "release-readiness check: require either a live MDN reference page or a tracked docs-gap ticket before counting 'release communication / evidenceAndCommunication' as supported; empty doc_links/sample_links arrays should downgrade the dimension.",
+    "developer-trials check: features that ship with 'Web developers: No signals' after a flag period should be flagged as having skipped attributable developer evidence (interest -> evaluation -> trial -> production), and prompted to recruit a varied cohort.",
+    "review-tracking check: when the shipped artifact moves specs/names (e.g., css-env-1 env() -> css-page-3 page-margin-safety), require re-confirmation that TAG/Mozilla/WebKit positions were re-requested against the final artifact.",
+    "regression eval: add this niche-but-shipped CSS printing feature as an ambiguous/weak case to verify the model does not infer adoption, interop success, or end-user impact from a clean on-schedule shipment."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Prototype thread (Google Groups; read timed out) — would confirm prototype-phase decisions and early security/privacy treatment.",
+      "Chromium tracking bug #368070327 (issues.chromium.org; reads failed) — would show implementation timeline, regressions, and test/review completion.",
+      "WPT RFC #233 (web-platform-tests/rfcs; four read attempts failed) — print-test infra status currently characterized only via the Intent to Ship.",
+      "Security and privacy review completion (ChromeStatus shows 'Pending' as of 2026-06-01; no public confirmation of completion at ship).",
+      "Post-shipment adoption/usage data (Chrome use counters, web-features/Baseline entry, production deployments) — too early and currently 'Missing feature'.",
+      "MDN/caniuse reference page — not present at cutoff.",
+      "Attributable developer-trial / partner feedback — none found ('Web developers: No signals').",
+      "Full prose of css-page-3 section 7.6 (page-margin-safety) — embedded in an oversized single line; only TOC + computation rules confirmed."
+    ],
+    "reviewedAt": "2026-07-19T22:10:00Z"
+  }
+}

@@ -1,0 +1,453 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5068127364186112,
+    "name": "AccentColor and AccentColorText system colors",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5068127364186112",
+    "category": "CSS",
+    "webFeature": "system-color",
+    "featureType": "Chromium catches up",
+    "blinkComponent": "Blink>CSS",
+    "flagName": "CSSSystemAccentColorKeyword",
+    "finchName": "CSSSystemAccentColorKeyword",
+    "specLink": "https://www.w3.org/TR/css-color-4/#css-system-colors",
+    "shippingYear": 2026,
+    "starCount": 129,
+    "owners": [
+      "jarhar@chromium.org",
+      "ortuno@chromium.org",
+      "priyapal@microsoft.com",
+      "akyereboah@microsoft.com",
+      "almaher@microsoft.com"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5068127364186112",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2023-06-21 by jarhar@chromium.org with a concrete, recurring developer problem: installed web apps cannot read the OS accent color and must hardcode theme values, diverging from user-configured platform settings. Developer demand is independently evidenced (129 ChromeStatus stars; the tracking bug cites 25+ upvotes). The motivation explicitly scopes the value to installed web app contexts where native-like OS integration is expected. The feature_type is 'Chromium catches up' (Firefox already shipped; spec already standardized), so browser intervention at the CSS-system-color layer is well-grounded.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S8",
+        "S16"
+      ],
+      "limitations": "Demand evidence is limited to star/upvote counts on a single Chromium bug; no attributable partner or survey evidence was recorded at intake."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubation occurred primarily in the CSSWG, not in a separate WICG explainer (explainer_links empty). The keywords were standardized in CSS Color 4 via issue #7347 (closed 2022-06-16): emilio proposed them, fantasai/dbaron settled the AccentColor/AccentColorText naming, and fantasai added the requirement that UAs choose a contrasting AccentColorText. The spec is mature (Published standard / Recommendation-level maturity per ChromeStatus).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "limitations": "No standalone public explainer or use-case brief; incubation artifacts live entirely in the CSSWG record, so segment/use-case analysis is thin."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A working implementation existed behind flag CSSSystemAccentColorKeyword (commit f14e290 'Implement AccentColor and AccentColorText system colors'; dev-trial availability since Chrome 115 desktop+Android per the record's stages). However, the dominant design risk (fingerprinting exposure of the user's system accent color) remained unresolved for roughly three years between spec (2022) and ship (2026), blocking graduation from prototype. The mitigation that finally unblocked shipment (scope to installed web apps + initial profile) was the long pole, not the keyword implementation.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S16"
+      ],
+      "limitations": "Prototype friction logs, framework-integration spikes, and an open design-decision log are not present in the public record."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The feature was technically available behind flag since Chrome 115 (desktop+Android), and the record asserts 'It will not be challenging for developers to take advantage of this feature as-is.' But there is no evidence of a recruited developer cohort, task-based feedback instruments, friction findings, or published trial themes across the multi-year flag window. The activation_risks field substitutes a confidence assertion for trial evidence.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No published developer-trial cohort, methodology, task-completion, or findings; 'Positive' web-dev signal rests only on bug upvotes, not attributable trial outcomes."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Wide review was genuinely conducted and recorded honestly. TAG review was 'Not applicable' (standardized spec keywords). Mozilla position 'Shipped/Shipping' (Firefox 103). WebKit 'No signal' (position #136; WebKit returns a static color). Security and privacy review status both 'Issues addressed'. In the Intent to Ship thread an API owner (Yoav Weiss) challenged the initial 'no interop/compat risk' claim, and the author corrected it on-list by explaining that Gecko exposes the real system color broadly, WebKit returns a constant, and Chrome scopes to PWAs; 3 LGTMs followed (Rick Byers, Daniel Bratell, Yoav Weiss). The review process surfaced and recorded the divergence rather than converting silence to support.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S7",
+        "S8"
+      ],
+      "limitations": "The interop-risk assessment was initially understated in the intent and only corrected after owner challenge; the WebKit 'No signal' conceals stated interest contingent on an acceptable privacy mitigation."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run and none was warranted: the feature is an additive, opt-in CSS keyword with no existing-content compat surface, so field evidence behind real origins was not needed to answer a ship-blocking question. The one genuinely risky change (scoping accent-color: auto to the same PWA/initial-profile context) was handled separately and sequenced one milestone earlier (Chrome 149, feature 5106043975761920) specifically as a rollback buffer before the AccentColor ship in 150. Privacy scoping was validated via internal privacy review rather than a field experiment.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S14"
+      ],
+      "limitations": "Skipping a field experiment is defensible for an additive keyword, but it means the developer reaction to the PWA-only scoping was never measured in the field before ship."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Engineering/rollout preparation was solid: spec linked, WPT + browser tests present (color-valid-system-color.html; content/browser/accent_color_browsertest.cc), flag/finch name defined, rollout plan 'Will ship enabled for all users', debuggability via DevTools auto-complete, and the 149-before-150 sequencing as rollback resilience. Gaps: doc_links and sample_links are both empty (no dedicated reference doc or sample at ship), availability/adoption expectations fields are blank, and the ChromeStatus web_feature maps to the broad legacy 'system-color' Baseline entry rather than to AccentColor/AccentColorText specifically, which understates the real cross-engine divergence in any ship brief.",
+      "evidenceIds": [
+        "S1",
+        "S13",
+        "S16"
+      ],
+      "limitations": "No canonical doc/sample artifact; Baseline/web-features mapping does not distinguish these keywords from pre-existing system colors."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Release communication was accurate and versioned. Chrome 150 beta (2026-06-03) and the stable release notes (stable 2026-06-30) both describe the keywords and state the key limitation verbatim ('Users must be in an installed web application on the initial profile to see the system accent color rendered'). No overclaiming of platform coverage; the desktop-only, Android-excluded, PWA-scoped reality matches the messaging.",
+      "evidenceIds": [
+        "S9",
+        "S10"
+      ],
+      "limitations": "Coverage is a one-line mention among many CSS items; no dedicated article, demo, or DevRel-in-a-box pack accompanied the launch."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Chrome 150 stable shipped 2026-06-30, only ~3 weeks before the evidence cutoff. No usage/UseCounter data, framework/library integration, case studies, or attributable production deployments are available yet. The addressable adoption population is also structurally narrow (installed PWAs, initial profile, desktop only), so even once data exists it will understate general web interest.",
+      "evidenceIds": [
+        "S9"
+      ],
+      "limitations": "Post-launch adoption evidence does not yet exist; the feature's scope limits the population that can adopt."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too soon after the 2026-06-30 stable ship to observe recurring support issues, developer questions, or compatibility reports. No public support material, known-issues page, or issue taxonomy exists at cutoff. The feature's low-risk additive profile suggests modest support burden, but this is inference, not evidence.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No support evidence available within the evidence window."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a brand-new, additive CSS keyword launch; there is no deprecation, removal, replacement, or migration path to assess. No existing behavior is being restricted or removed by this feature itself.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not applicable to an additive new-feature launch; the related 149 scoping change (feature 5106043975761920) does narrow accent-color: auto but is tracked under its own entry."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The addressed problem is real and recurring (native-like OS theming for web apps) with demonstrated demand, and the capability finally shipped. But the delivered value is heavily circumscribed: useful only inside installed web apps on the initial profile, desktop-only (Android deliberately excluded due to wallpaper-derived accent-color privacy risk). The majority of web developers (non-installed sites, Android, secondary profiles) receive no value, by design. Real value delivered to a narrow segment; no value elsewhere.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S9"
+      ],
+      "limitations": "No evidence yet of how many installed PWAs actually adopted the keywords."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "For end users of installed desktop PWAs on the initial profile, apps can now match the OS accent color, improving native-feel and theme consistency; fingerprinting privacy is protected by the scoping. Impact is positive but narrow and opt-in. Users outside that context see no change (or a constant fallback). No accessibility-specific impact evidence was found, though AccentColorText is specified to preserve contrast.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Reach is limited to desktop installed-PWA users on the initial profile; no measured end-user outcomes."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Chrome 150 stable shipped 2026-06-30, ~3 weeks before cutoff. No UseCounter, HTTP Archive, framework, or case-study adoption evidence exists yet. Cannot score adoption from shipment alone.",
+      "evidenceIds": [
+        "S9"
+      ],
+      "limitations": "Adoption data not yet available; intentionally unscored rather than inferred from launch."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "The keyword names are standardized and shipped by all three engines, but the resolved values and availability diverge materially: Firefox exposes the real system accent color broadly (looser scope), WebKit returns a static 'Safari blue' constant, and Chrome resolves to the real color only inside installed PWAs on the initial profile (constant fallback elsewhere). No unified cross-UA fingerprinting mitigation exists (CSSWG #10372 still open). A late spec change (PR #12733, 2025-09) further refined AccentColor to derive from the accent-color property unless in Forced Colors Mode. Compounding this, webstatus.dev/Baseline folds AccentColor/AccentColorText into the legacy 'system-color' entry marked 'Widely available' since 2020 (Chrome 1), masking the real keyword-level divergence from tooling.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S13"
+      ],
+      "limitations": "Cross-engine value/availability divergence is real but partly still in flux; Baseline tracking does not yet isolate these keywords."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Implementation is clean where shipped: WPT and browser tests pass, security/privacy reviews 'Issues addressed', DevTools integration automatic, and the deliberately sequenced 149 scoping buffer before the 150 ship is sound risk management. No regressions reported at cutoff. However, platform coverage is intentionally incomplete (desktop only; Android, iOS, WebView all null) and the team acknowledges E2E testability is limited because the resolved color depends on OS state that cannot be fully simulated in automation.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S16"
+      ],
+      "limitations": "No post-ship regression data yet; OS-dependent E2E coverage is acknowledged incomplete."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication was accurate and honest: the intent thread corrected its interop framing after owner challenge, and the beta/stable notes state the PWA+initial-profile limitation plainly. Against that: no dedicated docs or samples shipped (empty doc_links/sample_links), no published developer-trial findings despite a multi-year flag window, developer-demand evidence rests only on bug upvotes, and the Baseline/web-features mapping understates interop divergence. Evidence quality is strong for engineering/review claims and weak for demand, trial, and adoption.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S9",
+        "S10",
+        "S13"
+      ],
+      "limitations": "Demand/trial evidence is thin; no launch-day doc/sample artifact."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Launched 2026-06-30; no support-issue, recurrence, or friction evidence exists within the cutoff window. Cannot score support burden from the absence of reported issues.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No support evidence available; intentionally unscored."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A standardized, in-demand CSS capability shipped with honest communication, solid engineering, privacy-first scoping, and deliberate launch resilience (149-before-150 buffer). Set against genuinely mixed interoperability (three engines, three behaviors; no unified fingerprinting mitigation; Baseline tracking masks the divergence), deliberately narrow platform coverage (desktop-only) and narrow developer reach (PWA + initial profile), absent docs/samples, no structured trial evidence, and adoption/support unscored this soon after launch. Overall is mixed and must not collapse to success given the unscored and mixed dimensions.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S9",
+        "S13"
+      ],
+      "limitations": "Adoption and support cannot be scored within the evidence window; interop remains in active standards flux."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5068127364186112",
+      "publisher": "Chrome for Developers / ChromeStatus",
+      "publishedOrObservedAt": "2026-06-24",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, stages, dev-trial since M115, ship at M150 desktop-only, security/privacy review 'Issues addressed', web_dev Positive (25+ upvotes), Mozilla Shipped, WebKit No signal, empty doc/sample links"
+      ],
+      "limitations": "Cached record accurate as of 2026-06-24; live values may have shifted."
+    },
+    {
+      "id": "S2",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/knAC85FErrE",
+      "publisher": "blink-dev (Intent to Ship)",
+      "publishedOrObservedAt": "2026-04-15",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship 2026-04-10; Yoav Weiss challenge to 'no interop risk'; author's correction on Gecko/WebKit divergence; 3 LGTMs (Byers, Bratell, Weiss) 2026-04-15; PWA+initial-profile scoping rationale; Android exclusion due to wallpaper privacy risk"
+      ],
+      "limitations": "Intent thread captures API-owner reasoning, not developer demand or adoption."
+    },
+    {
+      "id": "S3",
+      "url": "https://www.w3.org/TR/css-color-4/#css-system-colors",
+      "publisher": "W3C (CSS Color Module Level 4)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "AccentColor and AccentColorText defined as system-color keywords; spec maturity 'Published standard'"
+      ],
+      "limitations": "Living standard; section may evolve (see S6)."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/csswg-drafts/issues/7347",
+      "publisher": "W3C CSSWG",
+      "publishedOrObservedAt": "2022-06-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Original proposal; naming resolution (AccentColor/AccentColorText); two-color contrast requirement; keywords added to CSS Color 4; Chromium implementation bug filed"
+      ],
+      "limitations": "Issue closed in 2022; does not reflect later fingerprinting/scoping debate."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3c/csswg-drafts/issues/10372",
+      "publisher": "W3C CSSWG",
+      "publishedOrObservedAt": "2025-12-17",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Open issue on fingerprinting mitigation for AccentColor/AccentColorText; no unified cross-UA mitigation; tainting/bucketing alternatives discussed; consistency concern between AccentColor and accent-color: auto"
+      ],
+      "limitations": "Issue still open; last observed comment 2025-12-17; resolution may change semantics."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/w3c/csswg-drafts/pull/12733",
+      "publisher": "W3C CSSWG",
+      "publishedOrObservedAt": "2025-09-04",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Late spec change: AccentColor takes its value from accent-color unless Forced Colors Mode is enabled, affecting cross-engine value semantics"
+      ],
+      "limitations": "PR-level change; timing relative to Chrome 150 ship not fully established."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/136",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position 'No signal'; WebKit returns a constant color rather than the user's system accent color; interest contingent on an acceptable privacy mitigation"
+      ],
+      "limitations": "No dated resolution; 'No signal' understates the documented conditional interest."
+    },
+    {
+      "id": "S8",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1775247",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2022-07-25",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox shipped AccentColor/AccentColorText in Firefox 103; exposes the real system accent color (looser scope than Chrome)"
+      ],
+      "limitations": "Bug record is terse; does not detail Firefox's exposure scope across platforms."
+    },
+    {
+      "id": "S9",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable (2026-06-30) documents AccentColor/AccentColorText and states the installed-web-app + initial-profile limitation; desktop stable date"
+      ],
+      "limitations": "One-line item among many CSS features; no usage data."
+    },
+    {
+      "id": "S10",
+      "url": "https://developer.chrome.com/blog/chrome-150-beta",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 beta announcement describes the keywords and the installed-web-app/initial-profile rendering condition"
+      ],
+      "limitations": "Beta-level; no adoption metrics."
+    },
+    {
+      "id": "S11",
+      "url": "https://caniuse.com/mdn-css_types_color_system-color_accentcolor_accentcolortext",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Cross-browser support summary: Firefox dynamic since v103, WebKit static color, Chromium scoped to installed web apps"
+      ],
+      "limitations": "Aggregated third-party data; not authoritative for exact version/scoping behavior."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/system-color",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Reference documentation of AccentColor/AccentColorText as system-color keywords and their semantics"
+      ],
+      "limitations": "Generic reference; not feature-specific launch communication."
+    },
+    {
+      "id": "S13",
+      "url": "https://webstatus.dev/features/system-color",
+      "publisher": "Web Platform Status (webstatus.dev)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "'system-color' feature is Baseline 'Widely available' since 2020-07-27 (Chrome 1), referring to legacy system colors, not AccentColor/AccentColorText specifically; WPT system-color tests pass in all engines"
+      ],
+      "limitations": "Baseline/web-features entry does not isolate AccentColor/AccentColorText, masking keyword-level cross-engine value divergence."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromestatus.com/feature/5106043975761920",
+      "publisher": "Chrome for Developers / ChromeStatus",
+      "publishedOrObservedAt": "2026-05-11",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Related 'Web app scope system accent color' feature: scopes accent-color: auto system-color use to installed web apps + initial profile; shipped Chrome 149 per run manifest; Mozilla Positive (Emilio), WebKit No signal; provides the rollback buffer before the M150 AccentColor ship"
+      ],
+      "limitations": "Separate feature entry; its own review/security/privacy status was still pending as of accurate_as_of."
+    },
+    {
+      "id": "S15",
+      "url": "https://lists.w3.org/Archives/Public/public-css-archive/2025Aug/0908.html",
+      "publisher": "W3C public-css-archive (Lea Verou)",
+      "publishedOrObservedAt": "2025-08-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Community/expert concern that AccentColor and accent-color must not resolve to different colors on the same page at the same time; ideally both available everywhere"
+      ],
+      "limitations": "Single community voice; not a broad developer survey."
+    },
+    {
+      "id": "S16",
+      "url": "https://github.com/chromium/chromium/commit/f14e2905b3448a4869f4bb9a31260becf9571eba",
+      "publisher": "Chromium",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Initial Chromium implementation 'Implement AccentColor and AccentColorText system colors'; corroborated by content/browser/accent_color_browsertest.cc scoping tests cited in the ChromeStatus record"
+      ],
+      "limitations": "Commit date not captured; implementation evolved across the multi-year flag window."
+    }
+  ],
+  "successes": [
+    "Honest interop framing in the Intent to Ship thread: the author corrected the initial 'no interop/compat risk' assertion on-list after an API-owner challenge, rather than leaving a misleading claim (S2).",
+    "Privacy-first scoping (installed web app + initial profile) finally unblocked a feature that had sat behind flag for roughly three years due to fingerprinting risk; security and privacy review both recorded 'Issues addressed' (S1, S2).",
+    "Deliberate launch resilience: the riskier accent-color: auto scoping change was shipped one milestone earlier (Chrome 149) as a rollback buffer before the AccentColor ship in Chrome 150 (S1, S14).",
+    "Accurate, versioned release communication in both the Chrome 150 beta post and stable release notes, each stating the key limitation verbatim without overclaiming platform coverage (S9, S10)."
+  ],
+  "failures": [
+    "No dedicated documentation or code samples shipped with the feature; doc_links and sample_links are both empty, leaving only one-line release-notes coverage (S1, S9, S10).",
+    "No published developer-trial cohort, methodology, or findings despite a multi-year flag window since Chrome 115; the 'Positive' web-dev signal rests only on bug upvotes (S1).",
+    "Baseline/web-features tracking folds AccentColor/AccentColorText into the legacy 'system-color' entry marked 'Widely available' since 2020 (Chrome 1), masking the real keyword-level cross-engine value divergence from tooling and ship briefs (S13).",
+    "Genuine interoperability divergence at ship: Firefox exposes the real system color broadly, WebKit returns a static constant, Chrome resolves the real color only inside PWAs on the initial profile, with no unified fingerprinting mitigation yet standardized (S2, S5, S7, S8)."
+  ],
+  "counterfactuals": [
+    "If AccentColor/AccentColorText had been registered as a distinct web-features/Baseline entry rather than folded into legacy 'system-color', tooling and ship briefs would have surfaced the cross-engine value divergence instead of inheriting a misleading 'widely available since 2020' label.",
+    "If a lightweight structured developer trial (or a short Origin Trial) had been run during the multi-year flag window, the team could have published demand/friction evidence and likely produced docs/samples before ship rather than after.",
+    "If the CSSWG had converged on a unified fingerprinting mitigation earlier (issue #10372), Chrome might have shipped without the PWA-only restriction, materially broadening developer and end-user value; the three-year incubation-to-ship gap was dominated by this unresolved privacy question.",
+    "Without sequencing the accent-color: auto scoping change into Chrome 149 as a buffer, a compat regression in that change could have blocked or rolled back the Chrome 150 AccentColor ship; the sequencing was the decisive risk control."
+  ],
+  "skillImprovements": [
+    "Add a wide-review/transition-packet rule: when a ChromeStatus web_feature maps to a broad Baseline feature that predates the specific keywords/values being shipped, flag the inherited Baseline label as potentially masking interop divergence and require an explicit per-keyword interop assessment (directly addresses the 'system-color' vs AccentColor masking here).",
+    "Add an anti-pattern eval for wide review: 'no interop/compat risk' assertions for features where other engines ship divergent resolved *values* (not just divergent *parsing*) must be automatically challenged and require an on-record correction, mirroring the manual catch that happened in this intent thread.",
+    "Add a 'new CSS keyword' transition-packet checklist item that still requires either a canonical doc/sample or an explicit, recorded waiver before ship, so additive low-risk features do not reach stable with empty doc_links/sample_links.",
+    "Add guidance that privacy-scoped additive features (e.g., PWA-only) should have a scheduled +90-day post-ship adoption/support check-in, because 'low risk' additive launches tend to accrue no follow-up evidence and remain unscored.",
+    "Add a counterfactual prompt for long-incubation features: 'What specifically changed that unblocked shipment, was a field experiment needed to validate that unblocking decision, and what evidence proves the chosen scoping is acceptable to developers?'"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-launch adoption evidence (UseCounter/HTTP Archive/framework integration/case studies) — Chrome 150 stable shipped 2026-06-30, only ~3 weeks before the evidence cutoff; adoption intentionally unscored.",
+      "Post-launch support evidence (recurring issues, friction, known-issues material) — not yet observable within the cutoff window; support intentionally unscored.",
+      "Attributable developer-trial/partner evidence — no cohort, findings, or partner commitments were published despite the multi-year flag window.",
+      "Resolution of CSSWG issue #10372 (unified cross-UA fingerprinting mitigation) — still open; keyword-level interop semantics may shift.",
+      "Authoritative confirmation of whether PR #12733 (AccentColor derives from accent-color unless Forced Colors Mode) landed in the CSS Color 4 snapshot Chrome 150 shipped against."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

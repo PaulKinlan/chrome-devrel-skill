@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5183671737909248,
+    "name": "Animatable zoom",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5183671737909248",
+    "webFeature": "zoom",
+    "blinkComponents": [
+      "Blink>CSS"
+    ],
+    "featureType": "Chromium catches up",
+    "finchName": "CSSZoomAnimation",
+    "ownerEmails": [
+      "cgqaq@chromium.org"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5183671737909248",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2026-05-05 by cgqaq@chromium.org (Jason Leo), classified as a 'Chromium catches up' CSS feature under Blink>CSS with web_feature 'zoom'. The entry correctly frames the change as a small interop/parity catch-up (Chrome previously animated zoom discretely; the work makes it interpolate by computed value). The entry itself is sparsely populated: motivation, explainer_links, spec_link, doc_links, sample_links and interop_compat_risks are all empty/null, which is consistent with a catch-up but leaves no authored problem statement.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "No motivation, explainer, or initial-public-proposal was recorded on the entry; the problem framing is implicit from the interop context."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Design incubation occurred externally in the CSS Working Group, not inside Chrome. CSSWG issue #10872 ('[css-viewport] Is zoom supposed to be non animatable?') was opened 2024-09-12 by Brian Birtles, documenting the three-way inconsistency (Chrome discrete, Safari non-animatable, Gecko smooth/number). The CSSWG resolved at its January 2025 meeting that zoom should interpolate by computed value, matching Gecko. By the time Chrome entered its own process the standards question was already decided and Firefox had long shipped the target behavior.",
+      "evidenceIds": [
+        "S4",
+        "S7"
+      ],
+      "limitations": "The resolution text/minutes themselves were not directly retrieved; the resolution is inferred from the closed issue linking PR #13910, the WebKit bug citing 'Recent web specification change', and the Mozilla bug closing INVALID with 'The spec got resolved to our current behavior'."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "The change is small (register zoom's animation type as 'by computed value' instead of discrete) and is WPT-tested: zoom-interpolation.html asserts 'zoom is animated by computed value (number)'. A stage_type 230 (prototype/intent 2) exists in the record. However, the actual Chromium CL/tracking bug (393810951) could not be read (buganizer requires auth/JS; reader returned 500), so implementation detail, review comments, and any sub-tests beyond the single interpolation test are unverified from public evidence.",
+      "evidenceIds": [
+        "S1",
+        "S9"
+      ],
+      "limitations": "No public prototype/friction evidence; the Chromium CL and the bug's task graph are behind authenticated buganizer and were not retrievable."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial, devtrial instructions, or about:flags entry exists for this feature (devtrial_instructions and flag_name are null); it shipped directly to stable. For a one-line CSS animation-type catch-up with no new API surface and two engines already shipping the target behavior, a Chrome dev trial would not have resolved material design uncertainty, so the absence is defensible rather than an untested gap.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No developer-trial evidence was gathered; this is a process choice, not an untested dimension."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG review is marked 'Not applicable', which Mike Taylor confirmed is correct under the wide-review exceptions for catch-up features where other engines have implemented (he had to prompt the author to state this for reviewers). Engine signals are strong and positive: Gecko 'Shipped/Shipping' (it had the target behavior first), WebKit 'Shipped/Shipping' (implemented 2026-05-22 per bug 315081). However 'Web developers: No signals' is explicit, and at intent time (2026-05-27) there was no merged spec — Jason Leo could only point to an unmerged PR (#13910). Mike Taylor also had to request the WPT link. Three LGTMs followed (Mike Taylor, Yoav Weiss, Chris Harrelson, all 2026-05-28).",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S7",
+        "S8"
+      ],
+      "limitations": "Web-developor demand was 'no signals'; the spec was unmerged at the moment of review (it merged into the Editor's Draft dated 2026-05-28, after the LGTMs)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial (experiment goals/risks, origin_trial_id all null) and no field experiment was warranted: the behavioral change is deterministic, already specced and shipped by two engines, and 'will ship enabled for all users'. There is no field uncertainty an OT would have resolved.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "Absence of an OT is a justified process choice for a small interop fix, not an untested dimension."
+    },
+    "prepareToShip": {
+      "status": "mixed",
+      "finding": "Intent to Ship (2026-05-26) targets desktop/Android/WebView M150, ships all platforms via the CSSZoomAnimation finch, requires no //chrome code, and is fully WPT-tested per the author. The ship is well-targeted and the interop basis is sound. Weaknesses in the ship packet: no motivation, no explainer, no spec link, and no interop-risk discussion in the intent; security_review_status and privacy_review_status were still 'Pending' in the cached record (accurate_as_of 2026-05-05), with no public evidence of their final resolution before stable.",
+      "evidenceIds": [
+        "S3",
+        "S1"
+      ],
+      "limitations": "Final security/privacy review outcomes and the review-history details inside bug 393810951 could not be retrieved."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Chrome 150 stable reached desktop on 2026-06-30 (early stable 2026-06-17). The Chrome 150 release notes include an accurate 'Animatable zoom' paragraph restating the behavior. star_count is 40 (modest). Communication assets are minimal: the release-notes entry for this feature is the only DevRel surface found, it carries no Spec link (unlike its sibling M150 CSS entries), no dedicated article, demo, or video was located, and the launch coincided with no public announcement beyond the notes.",
+      "evidenceIds": [
+        "S10",
+        "S12",
+        "S1"
+      ],
+      "limitations": "No dedicated DevRel article/sample/demo was found via search; absence is asserted from search saturation, not exhaustive coverage."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "The feature shipped only ~3 weeks before the evidence cutoff (stable 2026-06-30 vs cutoff 2026-07-20). No use counter is linked in the ChromeStatus record, no HTTP Archive/BigQuery or web-features adoption metric is available this soon, and community/press search surfaced no independent adoption, blog post, or case study for the animatable-zoom sub-feature (results loop back to the ChromeStatus entry or discuss transform-based scaling). Adoption is therefore not yet measurable.",
+      "evidenceIds": [
+        "S1",
+        "S13"
+      ],
+      "limitations": "Recency makes adoption evidence unavailable by construction; this is unknown, not negative."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues, regressions, or migration friction attributable to this change were found. The Chromium tracking bug and any post-ship issues are behind authenticated buganizer. Too little time has elapsed since stable to observe a support pattern.",
+      "evidenceIds": [
+        "S1",
+        "S13"
+      ],
+      "limitations": "Support evidence cannot yet exist this soon after ship; buganizer internals are not publicly retrievable."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is an additive CSS behavior change (discrete -> by-computed-value interpolation), not a deprecation or removal; no migration, replacement, or reverse-trial path applies. The Chrome 150 release notes confirm 'There are no deprecations and removals in this release.'",
+      "evidenceIds": [
+        "S10"
+      ],
+      "limitations": "Not a deprecation by definition."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Real but incremental value. The change removes a genuine cross-browser inconsistency (zoom animated discretely in Chrome, smoothly in Firefox, not at all in old Safari) and completes the zoom property for the animation use case; unlike transform:scale, animating zoom affects layout, so it is a distinct capability. Set against this: there is no demonstrated developer demand (ChromeStatus 'Web developers: No signals'), the capability overlaps heavily with the long-standing transform:scale workaround, and value is parity rather than a new primitive.",
+      "evidenceIds": [
+        "S3",
+        "S6",
+        "S11",
+        "S13"
+      ],
+      "limitations": "No attributable developer demand or usage evidence exists to weigh demand quantitatively."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "This is a developer-facing CSS authoring feature; end-user impact is indirect (smoother zoom-driven scaling only where authors choose to animate zoom). No end-user benefit, cost, accessibility, privacy, or resource evidence was found or is meaningfully measurable for this change.",
+      "evidenceIds": [
+        "S1",
+        "S6"
+      ],
+      "limitations": "No end-user evidence applies; scored unscored rather than inferred."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Cannot be scored: the feature is <4 weeks past stable at the evidence cutoff, no use counter or adoption metric is linked, and no independent adoption signal was found. Per the method, recency with no data is unknown/unscored, not failure.",
+      "evidenceIds": [
+        "S1",
+        "S13"
+      ],
+      "limitations": "Adoption data does not yet exist for a feature this fresh."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "The strongest dimension and the explicit goal. After this ship all three engines agree: Gecko has long interpolated zoom by computed value, WebKit implemented the same on 2026-05-22 (bug 315081), and Chrome caught up in M150 (2026-06-30). The CSSWG resolved the question (issue #10872) and PR #13910 merged the one-line spec change ('Animation type: not animatable' -> 'by computed value type') into the CSS Viewport L1 Editor's Draft dated 2026-05-28, before stable. A WPT test (zoom-interpolation.html) asserts the agreed behavior.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "limitations": "Actual WPT cross-browser pass/fail at launch could not be retrieved (wpt.fyi is JS-rendered and the results API was rejected by the reader), so conformance is inferred from the test's existence/assert plus the converging engine implementations rather than measured run results."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Positive signals: ships on all six Blink platforms, behind the CSSZoomAnimation finch with 'will ship enabled for all users', requires no //chrome code, and is covered by WPT. Gaps: the actual Chromium CL and bug history (393810951) were not retrievable, WPT run results are unverified, and there is no public regression/conformance evidence either way.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S9"
+      ],
+      "limitations": "Implementation internals and post-ship regressions are behind authenticated buganizer; WPT pass rates not retrieved."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Accurate core technical claims, but a thin and partly stale packet. The intent omitted motivation, explainer, spec link and interop-risk text; the M150 release-notes entry omits the Spec link that every sibling CSS feature in the same notes includes. Documentation lag is concrete: MDN's zoom page (last modified 2026-04-20) still lists 'Animation type: Not animatable' through launch, and third-party references (e.g. TestMu) repeat the old 'not animatable, use transform:scale' guidance — contradicting the shipped behavior.",
+      "evidenceIds": [
+        "S3",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "limitations": "The MDN 'Not animatable' value may reflect editor-draft lag rather than browser-compat-data; the exact bcd/MDN update timing was not pinned down."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support signal either way. Too recent for a support pattern, and the Chromium bug is not publicly readable.",
+      "evidenceIds": [
+        "S1",
+        "S13"
+      ],
+      "limitations": "Support evidence is not yet observable."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A clean, on-schedule interop catch-up that achieved its stated goal (all three engines + the spec now agree that zoom interpolates by computed value), with no new API surface and minimal risk. Held back from success by: no demonstrated developer demand, adoption/usage that is unmeasurable this soon after ship, a thin evidence/communication packet at intent and release, and concrete documentation lag (MDN still says 'Not animatable' at launch). Completion is partial because adoption, support, security/privacy-review outcome, and WPT run results are missing.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S6",
+        "S8",
+        "S10",
+        "S11"
+      ],
+      "limitations": "Overall is mixed by design; it does not hide the unscored adoption/support dimensions."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5183671737909248",
+      "publisher": "Chrome Platform Status (cached record at evidence/chromestatus/features/5183671737909248.json)",
+      "publishedOrObservedAt": "2026-05-05T19:00:14Z",
+      "retrievedAt": "2026-07-20T05:50:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature definition; feature_type 'Chromium catches up'; finch CSSZoomAnimation; M150 desktop/android/webview; Gecko+WebKit 'Shipped/Shipping'; webdev 'No signals'; WPT yes; security/privacy review 'Pending' as of accurate_as_of; star_count 40"
+      ],
+      "limitations": "accurate_as_of 2026-05-05; does not reflect post-stable status or final review outcomes."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/feature/5183671737909248",
+      "publisher": "Run manifest (manifest.features.jsonl)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-20T05:50:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Single launch event: milestone 150, category 'Enabled by default', eventId '150:Enabled by default:5183671737909248'"
+      ],
+      "limitations": "Manifest is the run inventory; status was 'pending'."
+    },
+    {
+      "id": "S3",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6a1669dd.a860e6c2.3bc0d5.00a4.GAE@google.com",
+      "publisher": "blink-dev (Intent to Ship: Animatable zoom)",
+      "publishedOrObservedAt": "2026-05-26T21:50:04Z",
+      "retrievedAt": "2026-07-20T05:52:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Posted by Chromestatus 2026-05-26; contact cgqaq@chromium.org; no spec/motivation/explainer; Gecko & WebKit Shipped/Shipping; webdev No signals; WPT yes; finch CSSZoomAnimation; ships all users M150; tracking bug 393810951; spec absent (unmerged PR #13910 per Jason Leo 2026-05-27); LGTM1 Mike Taylor, LGTM2 Yoav Weiss, LGTM3 Chris Harrelson (all 2026-05-28); Mike Taylor confirmed TAG 'Not applicable' under wide-review exceptions"
+      ],
+      "limitations": "Groups render hides email addresses; thread body captured but some replies collapsed."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/csswg-drafts/issues/10872",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2024-09-12T00:23:04Z",
+      "retrievedAt": "2026-07-20T05:54:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Issue opened 2024-09-12 by birtles: zoom non-animatable per spec; Chrome discrete, Safari non-animatable, Gecko smooth; CSSWG January 2025 meeting agenda; closed by PR #13910; labels Needs Edits / Needs Testcase (WPT) / css-viewport-1"
+      ],
+      "limitations": "Resolution minutes not directly retrieved; labels 'Needs Edits'/'Needs Testcase' may be stale relative to the merged PR and existing WPT."
+    },
+    {
+      "id": "S5",
+      "url": "https://patch-diff.githubusercontent.com/raw/w3c/csswg-drafts/pull/13910.diff",
+      "publisher": "W3C CSS Working Group (PR #13910 'Make zoom interpolate by computed value type')",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-20T05:58:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "One-line spec edit in css-viewport-1/Overview.bs: 'Animation type: not animatable' -> 'Animation type: by computed value type'"
+      ],
+      "limitations": "Diff does not carry a merge timestamp; merge inferred from the Editor's Draft date (S6) and the csswg-drafts repo description referencing #13910."
+    },
+    {
+      "id": "S6",
+      "url": "https://drafts.csswg.org/css-viewport/",
+      "publisher": "W3C CSS Viewport Module Level 1 (Editor's Draft)",
+      "publishedOrObservedAt": "2026-05-28",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Editor's Draft dated 28 May 2026 (Bikeshed generator updated 2026-06-09) lists zoom 'Animation type: by computed value type' in both the property definition and Property Index, confirming PR #13910 merged before Chrome 150 stable"
+      ],
+      "limitations": "Editor's Draft is non-normative work-in-progress."
+    },
+    {
+      "id": "S7",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1917602",
+      "publisher": "Mozilla Bugzilla (Core :: CSS Transitions and Animations)",
+      "publishedOrObservedAt": "2025-03-31",
+      "retrievedAt": "2026-07-20T05:54:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "'CSS zoom property is animatable contrary to what spec says'; reporter Vadim Makeev noted Chrome discrete, Safari none, Firefox smooth; an r+ discrete-animation patch landed for Firefox 132 then was backed out to await the spec; resolved INVALID with 'The spec got resolved to our current behavior' (Firefox already interpolated as a number); depends on csszoom meta; references csswg issue #10872"
+      ],
+      "limitations": "Page og:description 'Last updated 2025-03-31' and relative timestamps are a reader-cache snapshot; exact close date of the INVALID resolution is imprecise."
+    },
+    {
+      "id": "S8",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=315081",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2026-05-22",
+      "retrievedAt": "2026-07-20T05:54:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "'[CSS Viewport] Make zoom animatable by computed value'; reported 2026-05-19 by Ahmad Saleem citing 'Recent web specification change - issue #10872'; PR WebKit/WebKit#65168; committed 313735@main (ec9c24b678b4) 2026-05-22; RESOLVED FIXED"
+      ],
+      "limitations": "Bug body is terse; no review-discussion detail captured."
+    },
+    {
+      "id": "S9",
+      "url": "https://raw.githubusercontent.com/web-platform-tests/wpt/master/css/css-viewport/animations/zoom-interpolation.html",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:58:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Test 'zoom interpolation' with assert 'zoom is animated by computed value (number)'; help links to drafts.csswg.org/css-viewport/#zoom-property and issue #10872"
+      ],
+      "limitations": "Source only; cross-browser pass/fail at launch not retrieved."
+    },
+    {
+      "id": "S10",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Chrome 150 Release Notes)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T05:56:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Stable release date 2026-06-30; 'Animatable zoom' paragraph restates behavior; tracking bug #393810951; this CSS entry is the only M150 CSS/UI item in the notes without a Spec link; 'no deprecations and removals in this release'"
+      ],
+      "limitations": "Release notes are a curated summary, not the full launch asset set."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/zoom",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-04-20T01:47:07Z",
+      "retrievedAt": "2026-07-20T05:57:00Z",
+      "sourceType": "other",
+      "supports": [
+        "zoom 'Baseline 2024 / Newly available since May 2024' (for the base property, not the animatable variant); 'Formal definition' still lists 'Animation type: Not animatable' as of 2026-04-20 last-modified; notes transform:scale as alternative"
+      ],
+      "limitations": "MDN value may lag browser-compat-data; exact update timing of the 'Not animatable' value vs the shipped behavior not pinned."
+    },
+    {
+      "id": "S12",
+      "url": "https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop_0175352312.html",
+      "publisher": "Chrome Releases blog / Chromium Dash schedule",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T05:51:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 promoted to stable for Windows/Mac/Linux 2026-06-30; early stable ~2026-06-17; M151 stable ~2026-07-27"
+      ],
+      "limitations": "Exact early-stable vs full-stable rollout granularity is approximate."
+    },
+    {
+      "id": "S13",
+      "url": "https://www.testmuai.com/learning-hub/css-zoom-browser-support/",
+      "publisher": "Aggregated web search (Z.AI webSearchPrime) saturation across TestMu AI, CSS-Tricks, jakearchibald.com, GSAP forums, Stack Overflow",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T05:58:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Near-zero independent coverage of the animatable-zoom sub-feature; existing guidance (TestMu) still says zoom is 'Not animatable ... use transform: scale() instead'; Jake Archibald's 2025 'Animating zooming' article concerns transform order, not the zoom property; searches loop back to the ChromeStatus entry"
+      ],
+      "limitations": "Search saturation is not exhaustive; absence of coverage is asserted, not proven."
+    }
+  ],
+  "successes": [
+    "Achieved the explicit interop goal: after M150, Gecko, WebKit and Chrome all interpolate zoom by computed value, and the CSSWG spec text (PR #13910) was merged into the Editor's Draft dated 2026-05-28, before stable — a textbook successful 'catch-up'.",
+    "Correctly scoped process: no OT/dev-trial overhead for a one-line deterministic change, TAG 'Not applicable' correctly applied under the catch-up wide-review exception, and a WPT test asserts the agreed behavior.",
+    "Clean, low-risk ship on all six Blink platforms behind the CSSZoomAnimation finch with no //chrome code and no deprecations/removals attached."
+  ],
+  "failures": [
+    "Thin evidence/communication packet: the intent and ChromeStatus entry omitted motivation, explainer, spec link and interop-risk text; the M150 release-notes entry is the only CSS/UI item in the notes without a Spec link, and no dedicated article/demo/sample was found.",
+    "Documentation lag at launch: MDN's zoom page (last modified 2026-04-20) still states 'Animation type: Not animatable', and third-party references repeat the old 'use transform:scale' guidance — contradicting the shipped behavior developers would observe.",
+    "No demonstrated developer demand ('Web developers: No signals'), so the value proposition rests on parity/inference rather than attributable developer evidence."
+  ],
+  "counterfactuals": [
+    "If PR #13910 had been merged into the spec before the Intent to Ship (rather than during the review window), the intent would have carried a spec link and Mike Taylor's first objection (missing spec) would have been preempted, and the M150 release-notes Spec link gap would likely not have occurred.",
+    "If MDN/browser-compat-data had been updated to 'by computed value type' at or before stable, developers would not be seeing authoritative guidance ('Not animatable') that contradicts the shipped behavior.",
+    "If even a short DevRel sample showing the discrete->smooth delta and when to prefer zoom (layout-affecting) over transform:scale had accompanied launch, developer discoverability of the change would be materially higher; as shipped, the change is effectively invisible to authors.",
+    "If a small cross-browser WPT/conformance snapshot had been linked at ship, the interop 'success' claim would rest on measured results rather than inferred convergence."
+  ],
+  "skillImprovements": [
+    "Add a phase-06 (prepare-to-ship) check for 'Chromium catches up' CSS features: require either a merged spec link or an explicit 'spec text pending, ED draft attached' note plus a tracked MDN/browser-compat-data update ticket before stable; treat missing spec link in release notes as a defect.",
+    "Add a documentation-lag regression rule: for any CSS animation/behavior change, verify MDN 'Animation type' and browser-compat-data match the shipped behavior at launch; flag a doc-lag alert when they diverge (as here, MDN 'Not animatable' vs shipped 'by computed value type').",
+    "Add a wide-review packet template item: when TAG is 'Not applicable', auto-insert the cited catch-up exception (per chromium.org wide-review/#exceptions) and the other-engine ship evidence, so reviewers are not forced to prompt for it (as Mike Taylor did).",
+    "Add a completion/recency rule to the retrospective method: features fewer than ~4 weeks past stable cannot be marked 'complete' on adoption/support dimensions; default to 'partial' with a recency rationale and schedule a re-run.",
+    "Encourage a minimal, reusable before/after sample for even small CSS behavior deltas (here discrete vs interpolated zoom) so the behavioral change is demonstrable and discoverable without a full article."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Adoption/usage: feature shipped 2026-06-30, only ~3 weeks before the 2026-07-20 cutoff; no use counter, HTTP Archive/BigQuery, or web-features adoption metric exists this soon.",
+      "Chromium tracking bug (393810951) and the implementing CL: buganizer requires auth/JS and the reader returned 500; implementation detail, review comments, and any regressions are unverified.",
+      "WPT cross-browser pass/fail at launch: wpt.fyi is JS-rendered (empty body) and the results API URL was rejected by the reader; conformance is inferred from the test's assert plus converging engine implementations.",
+      "Security/privacy review final outcomes: both were 'Pending' in the cached record (accurate_as_of 2026-05-05); no public evidence of their resolution before stable was found.",
+      "Support patterns: too recent to observe; buganizer internals not publicly retrievable."
+    ],
+    "reviewedAt": "2026-07-20T06:00:00Z"
+  }
+}

@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5121011285622784,
+    "name": "CSS image(<color>) function",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5121011285622784",
+    "webFeature": "image-function",
+    "specLink": "https://drafts.csswg.org/css-images-4/#image-notation",
+    "blinkComponent": "Blink>CSS",
+    "featureType": "Chromium catches up",
+    "finchName": "CSSImageFunction",
+    "owner": "cgqaq@chromium.org"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5121011285622784",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T05:20:52Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2026-05-10 by cgqaq@chromium.org with a concrete, spec-grounded problem statement: CSS lacks a primitive transparent/solid-color <image>, forcing workarounds like linear-gradient(transparent); the gap blocks correct light-dark(..., none) round-tripping and registered <image> custom properties. Owner, component (Blink>CSS), spec link, tracking bug, and motivation are all present and internally consistent. Feature is classified 'Chromium catches up' to CSS Images L4.",
+      "evidenceIds": [
+        "S1",
+        "S6"
+      ],
+      "limitations": "'Initial public proposal' is 'No information provided' and there is no Chrome-authored explainer; the problem is asserted via CSS WG resolution rather than Chrome-led developer research."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation occurred in the CSS Working Group, not as a Chrome-specific design: the spec (CSS Images L4) already defined image(), the WG resolved (w3c/csswg-drafts#12513) that light-dark(..., none) computes to image(transparent), and image() was narrowed to image(<color>) with the broader syntax moved to css-images-5. The use case (transparent-image primitive, light-dark round-trip, custom-property initial values, overlay idiom) is real and WG-validated.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S6"
+      ],
+      "limitations": "No Chrome explainer, no TAG review (marked 'Not applicable'), and 'Web developers: No signals' in the record, so Chrome did not independently validate demand; it relied on WG/spec consensus and the light-dark() dependency."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "An Intent to Prototype was filed (ChromeStatus stage 220, referenced from the Intent to Ship) and an implementation exists behind the CSSImageFunction runtime feature with WPT parsing tests (image-function-valid/computed/invalid). The grammar is minimal (image() = image(<color>)), reducing prototype risk.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S6"
+      ],
+      "limitations": "No public friction log or framework/server integration spike was found; prototype validation appears to rest on the spec and WPT rather than task-based testing. The Intent to Prototype thread itself could not be read directly (reader rejected its URL-encoded msgid), so its content is inferred from the Intent to Ship reference."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial was conducted: the manifest contains only the milestone-150 'Enabled by default' event, with no behind-flag dev-trial stage. For a narrow, spec-stable CSS parsing/rendering primitive with WPT coverage and pre-existing cross-engine implementation, a recruited developer-trial cohort was not warranted.",
+      "evidenceIds": [
+        "S1",
+        "S6"
+      ],
+      "limitations": "Consequently no external pre-ship developer feedback, ergonomic findings, or integration evidence was gathered through a trial; the only independent developer signal found post-ship is community coverage (S9)."
+    },
+    "wideReview": {
+      "status": "mixed",
+      "finding": "Wide review was rigorous on the Chromium side and surfaced a real interop defect. TAG review was marked 'Not applicable'. The blink-dev Intent to Ship disclosed Gecko as 'Shipped/Shipping' and WebKit as 'No signal', but Dan Clark (Microsoft/Edge) noted image()/light-dark(none) WPTs still failed on Firefox Stable 151; Emilio Cobos Álvarez (Mozilla) clarified that Firefox's light-dark(none) ship was an internal-representation accident and that image(<color>) proper only lands in Firefox 152. LGTMs then followed from Dan Clark, Mike Taylor, and Yoav Weiss. WebKit has no written position: standards-positions #658 (light-dark with images) shows 'WebKittens: No response' and #402 (image() itself, opened 2024-09-23) also has no WebKit reply.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S3"
+      ],
+      "limitations": "No formal WebKit/Safari position exists for image(); the WebKit signals tracked in ChromeStatus actually point at the adjacent light-dark-with-images issue (#658), not image() directly. The Chromium 'position identified' project label on #658 is not a published WebKit stance."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial or field experiment was run (experiment_timeline null; no OT stage; no Intent to Experiment). There were no field-only uncertainties to resolve for a self-contained parsing/rendering primitive whose behavior is fully specified and WPT-covered.",
+      "evidenceIds": [
+        "S1",
+        "S6"
+      ],
+      "limitations": "No field compatibility or real-origin telemetry was collected; compatibility risk was assessed via WPT and cross-engine review rather than live exposure."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship (2026-05-26) reached 3+ LGTMs by 2026-05-27 after the interop clarification. Plan: ship enabled for all users via Finch 'CSSImageFunction' on desktop/Android/WebView in milestone 150, all six Blink platforms, no //chrome code, no enterprise impact, no breaking change. The Chrome 150 release notes list the feature with an accurate description and links to tracking bug, ChromeStatus, and spec.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S1"
+      ],
+      "limitations": "Cached ChromeStatus (accurate_as_of 2026-05-10) still shows security_review_status and privacy_review_status as 'Pending'; their final states at ship could not be confirmed from public sources. Chromium tracking bug 510426954 contents were not readable via the reader."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Chrome 150 stable released 2026-06-30 with the feature included; the release notes describe image(<color>) accurately ('generate a solid-color image from any color; image() = image(<color>)') alongside the separate but related 'CSS light-dark() with image values' feature. Claims match the actual rollout (desktop/Android/WebView). A Chrome 150 beta announcement was made. The related Firefox 152 release (2026-06-16) shipped image(<color>) per Mozilla, so Chrome shipped into a recently-interoperable state.",
+      "evidenceIds": [
+        "S7",
+        "S10",
+        "S6",
+        "S3"
+      ],
+      "limitations": "No dedicated Chrome blog/article or sample was published for image() specifically; it is a minor release-notes item. MDN reference docs were stale at release (see evidenceAndCommunication)."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Too early and no data to score. The feature shipped ~3 weeks before the evidence cutoff. ChromeStatus records 'Web developers: No signals' and no use-counter/telemetry, framework, library, or tool-integration evidence was found. Independent grassroots interest exists: a June 2026 community post demonstrates a concrete overlay use case (stacking a semi-transparent color over a photo in background-image layers) and notes the color behaves as a real image that keeps text selectable.",
+      "evidenceIds": [
+        "S9",
+        "S1"
+      ],
+      "limitations": "Cannot infer adoption from shipment or from a single community post. No Chrome use-counter bucket, HTTP Archive/web-features Baseline status, or framework/library support data was available within the cutoff."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No Chrome-specific support burden, known issues, or regressions were found within the cutoff. The only friction signal is interop/WPT, not support load: a Mozilla bug commenter notes Firefox fails one css-color light-dark-image WPT and disputes the expected result, filing an issue.",
+      "evidenceIds": [
+        "S3"
+      ],
+      "limitations": "Feature is days-to-weeks old; support ticket volume, recurrence, and resolution time are unknown. The WPT disagreement concerns the dependent light-dark() behavior, not image(<color>) parsing directly."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new feature addition, not a deprecation or removal: no existing API is restricted, removed, or put behind a reverse trial. The Chrome 150 release notes explicitly state 'There are no deprecations and removals in this release.'",
+      "evidenceIds": [
+        "S7"
+      ],
+      "limitations": "Not applicable; included only to replay the phase explicitly."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The value is concrete and demonstrated. image(<color>) gives an unambiguous <image> for transparent/solid-color cases, fixes the light-dark(..., none) round-trip, supplies a valid initial value for registered <image> custom properties, and replaces the linear-gradient(transparent)/linear-gradient(red,red) idiom with a self-documenting expression. An independent working demo (overlay a semi-transparent color over a photo, keeping text selectable) confirms genuine ergonomic value, and the motivation was CSS-WG-validated.",
+      "evidenceIds": [
+        "S2",
+        "S6",
+        "S9"
+      ],
+      "limitations": "Narrow scope: it is a 'Chromium catches up' ergonomic/correctness primitive, not a capability that was previously impossible (the overlay/transparent cases had workarounds). Formal 'Web developers: No signals' means it was not demand-validated through Chrome research."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Direct end-user impact is negligible by nature (a CSS authoring primitive). Indirect benefit is more correct dark-mode/light-dark() behavior when none is the chosen branch. No accessibility, privacy, or security regression is evidenced; background-image semantics around assistive technology are unchanged.",
+      "evidenceIds": [
+        "S2",
+        "S8",
+        "S7"
+      ],
+      "limitations": "No measurable user-facing outcome; scored unscored rather than inferring success from absence of harm."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Cannot be scored: feature shipped 2026-06-30, ~3 weeks before cutoff; no usage telemetry, use-counter bucket, framework/library integration, or Baseline status was available. One independent community demo exists but cannot represent adoption.",
+      "evidenceIds": [
+        "S9",
+        "S1"
+      ],
+      "limitations": "Per method, shipment and a single community post are not adoption. Revisit after telemetry and HTTP Archive/web-features data mature."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Two engines now ship image(<color>): Chrome 150 (2026-06-30) and Firefox 152 (2026-06-16, per Mozilla's confirmation on blink-dev). Safari has it in Safari Technology Preview 246 (community-verified) but there is no confirmation it is in Safari stable and no formal WebKit standards position. The spec (CSS Images L4) is a Working Draft / Editor's Draft. WPT parsing tests exist. One WPT disagreement on the dependent light-dark-image test was raised against Firefox.",
+      "evidenceIds": [
+        "S6",
+        "S3",
+        "S9",
+        "S4",
+        "S5",
+        "S2"
+      ],
+      "limitations": "The raw cross-browser WPT pass/fail matrix could not be retrieved (wpt.fyi is JS-rendered and its API errored); interop status rests on qualitative evidence. Safari stable status and Baseline 'widely available' timing remain open."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Implementation is backed by WPT parsing tests (image-function-valid/computed/invalid), shipped cleanly on all six Blink platforms with no crashes or regressions reported, and withstood cross-engine LGTM scrutiny (including a Firefox-stable WPT check). The minimal grammar limits implementation risk.",
+      "evidenceIds": [
+        "S6",
+        "S1",
+        "S2"
+      ],
+      "limitations": "Current cross-browser WPT pass/fail results were not obtainable; no public performance, edge-case, or computed-value fidelity data was reviewed beyond the existence of the tests."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The blink-dev Intent to Ship was high-quality and transparent: motivation well-argued, browser positions disclosed, and the Firefox interop discrepancy openly surfaced and resolved before LGTM. Chrome 150 release notes are accurate. However, the ChromeStatus standards-position fields were imprecisely attributed: both the Gecko 'Shipped/Shipping' (bugzilla 2023569) and WebKit 'No signal' (standards-positions #658) point at the adjacent light-dark-with-images feature, not image() itself, which reviewers had to manually de-risk. MDN reference docs were stale at launch, still showing the old multi-argument image() grammar.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S1",
+        "S3",
+        "S4",
+        "S8"
+      ],
+      "limitations": "The conflation of adjacent-feature positions is a real communication-precision gap; MDN staleness is community-doc lag, not a Chrome claim, but it affects developer accuracy at launch."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Insufficient elapsed time and no data: no Chrome support issues, recurrence, or resolution metrics found within cutoff. The only signal is a disputed light-dark-image WPT against Firefox (interop, not support burden).",
+      "evidenceIds": [
+        "S3"
+      ],
+      "limitations": "Too early to assess support burden; revisit after stable has been in the field."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A clean, transparent, on-schedule launch of a narrow, spec-grounded CSS catch-up primitive, with rigorous cross-engine review that caught and corrected an interop signal error, and with two engines shipping within two weeks. But mixed rather than successful overall: Safari has no formal position and only preview implementation (stable unconfirmed), the spec is still a Working Draft, ChromeStatus standards-position signals were attributed to the adjacent light-dark feature, MDN was stale at launch, and adoption/end-user outcomes are unscored due to recency and absent telemetry.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S3",
+        "S4",
+        "S5",
+        "S9",
+        "S8"
+      ],
+      "limitations": "Overall does not hide the unscored adoption/support dimensions or the incomplete interop picture; success of the launch process is distinct from durable outcome success."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5121011285622784",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-05-10)",
+      "publishedOrObservedAt": "2026-05-10T14:31:50Z",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature scope image(<color>), Blink>CSS, Chromium catches up, CSSImageFunction finch, ship desktop/android/webview 150",
+        "Standards positions Gecko Shipped/Shipping (bug 2023569) and WebKit No signal (#658), both annotated 'light-dark(none,none) depends on image(none)'",
+        "Motivation: transparent-image primitive, light-dark() round-trip, registered <image> custom properties, replaces linear-gradient(transparent)",
+        "WPT links, tag_review_status Not applicable, security/privacy review Pending (pre-ship snapshot)"
+      ],
+      "limitations": "Snapshot accurate_as_of 2026-05-10 (pre-ship); is_released=false in the cached copy. Browser-signal URLs point at the dependent light-dark feature rather than image() directly."
+    },
+    {
+      "id": "S2",
+      "url": "https://drafts.csswg.org/css-images-4/#image-notation",
+      "publisher": "W3C CSS Working Group (CSS Images Module Level 4, Editor's Draft 7 May 2026)",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "image() = image(<color>); represents a solid-color image of the specified color with no natural dimensions",
+        "Note: prior additional image() behaviors shifted to css-images-5 (scope narrowed)",
+        "<image> type grammar; Working Draft / Editor's Draft maturity",
+        "Editors: Tab Atkins Jr. (Google), Elika Etemad/fantasai (Apple), Lea Verou"
+      ],
+      "limitations": "Editor's Draft, explicitly non-stable ('may change at any moment')."
+    },
+    {
+      "id": "S3",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2023569",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2026-04-09",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "'Ship light-dark() for images' resolved/fixed in Firefox 150 (emilio), resolved via w3c/csswg-drafts#12513",
+        "Firefox release metadata indicates Firefox 152.0 released 2026-06-16 (LATEST_FIREFOX_VERSION 152.0.6, LAST_RELEASE_DATE 2026-06-16)",
+        "Commenter notes Firefox fails one css-color light-dark-image WPT and disputes the expected result",
+        "Release note wording: light-dark() on images for dark mode"
+      ],
+      "limitations": "This bug is about light-dark() for images (the dependent feature in Firefox 150), not image(<color>) directly; image() proper landed later (Firefox 152 per S6). '4 months ago' relative timestamps are approximate."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/WebKit/standards-positions/issues/658",
+      "publisher": "WebKit/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-04-29",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "'CSS light-dark() with image values' opened 2026-04-29 by CGQAQ; WebKittens: No response in the issue body",
+        "Notes Mozilla already ships it (bug 2023569) and that it matches Firefox's implementation",
+        "Project field shows 'Position identified' but no published WebKit stance appears in the issue"
+      ],
+      "limitations": "This is the light-dark-with-images position request that ChromeStatus cites as the WebKit signal; it is not a position on image(<color>) itself, and contains no written WebKit position."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/WebKit/standards-positions/issues/402",
+      "publisher": "WebKit/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2024-09-23",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Earlier, direct request for a WebKit position on CSS Images L4 image() (opened 2024-09-23 by jsnkuhn)",
+        "WebKittens: No response; references mozilla/standards-positions#856 and WebKit bug 72584",
+        "Describes the broader old image() (spriting, solid color via image(red), fallbacks) rather than the narrowed image(<color>)"
+      ],
+      "limitations": "No WebKit position identified; long-standing open request, not acted on publicly."
+    },
+    {
+      "id": "S6",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6a153cb7.050a0220.12419.0223.GAE@google.com",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-05-26",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship CSS image(<color>) 2026-05-26 by cgqaq; ship desktop/android/webview 150; Finch CSSImageFunction; all six Blink platforms",
+        "Disclosed Gecko Shipped/Shipping (bug 2023569) and WebKit No signal (#658) with 'light-dark(none,none) depends on image(none)' notes",
+        "Dan Clark (Microsoft/Edge): image()/light-dark(none) WPTs fail on Firefox Stable 151; requested Mozilla confirmation",
+        "Emilio Cobos Álvarez (Mozilla): Firefox's light-dark(none) ship was an internal-representation accident; image(<color>) implemented after CSSWG discussion and should ship in Firefox 152",
+        "LGTMs from Dan Clark, Mike Taylor, Yoav Weiss (2026-05-27); references Intent to Prototype thread"
+      ],
+      "limitations": "Reader rejected the URL-encoded msgid form; accessed via the @ form. The referenced Intent to Prototype thread could not be read directly."
+    },
+    {
+      "id": "S7",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Release notes)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 150 stable release date 2026-06-30; applies to Android, ChromeOS, Linux, macOS, Windows",
+        "'CSS image(<color>) function' listed with accurate description and tracking bug 510426954 + ChromeStatus + spec links",
+        "Separate 'CSS light-dark() with image values' also shipped in 150 (tracking bug 491829958)",
+        "'There are no deprecations and removals in this release'"
+      ],
+      "limitations": "Release notes; descriptive, not a measurement of adoption or quality."
+    },
+    {
+      "id": "S8",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/image",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2025-10-10",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN <image> page last modified 2025-10-10 (before Chrome 150 ship)",
+        "Formal syntax still shows the OLD multi-argument image(): image(<image-tags>? [<image-src>?, <color>?]!), not the narrowed image(<color>)",
+        "Notes background images are not announced to assistive technology (accessibility consideration)"
+      ],
+      "limitations": "Community-maintained; staleness is a doc-lag observation, not a Chrome claim. Browser-compat table did not render (JS) and was not captured."
+    },
+    {
+      "id": "S9",
+      "url": "https://www.linkedin.com/posts/saronyitbarek_css-has-a-lesser-known-function-called-image-activity-7475225427196715008-NkD3",
+      "publisher": "Saron Yitbarek (LinkedIn community post)",
+      "publishedOrObservedAt": "2026-06-23T16:37:04Z",
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "community",
+      "supports": [
+        "image() supported in Safari Technology Preview 246",
+        "Concrete use case: stack a semi-transparent color over a photo using background-image layers (image(rgb(0 0 0 / 25%)), url(photo.png))",
+        "Comment (Schalk Neethling): overlay only affects the image, text remains selectable, avoiding pseudo-element/z-index workarounds",
+        "Demo by Tim Nguyen referenced"
+      ],
+      "limitations": "Single grassroots post; not representative of broad adoption. Confirms STP 246 support but not Safari stable status."
+    },
+    {
+      "id": "S10",
+      "url": "https://x.com/ChromiumDev/status/2067727195754152416",
+      "publisher": "ChromiumDev (X / Twitter)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:25:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 beta announced with CSS styling/navigation features"
+      ],
+      "limitations": "Exact post date not captured; only search snippet available. Corroborates beta timing, not the feature itself."
+    }
+  ],
+  "successes": [
+    "Transparent, high-quality Intent to Ship: motivation well-argued, positions disclosed, and a real interop signal error (Firefox 'Shipped' was actually the light-dark(none) accident; image(<color>) proper only in Firefox 152) was caught by cross-engine review (Dan Clark) and resolved by Mozilla (Emilio) before LGTMs (S6).",
+    "Clean, on-schedule ship on all six Blink platforms (Chrome 150 stable 2026-06-30) with accurate release notes, correct scope (image(<color>) only, broader image() deferred to css-images-5), and WPT coverage (S7, S2, S1).",
+    "Cross-engine alignment achieved quickly: Firefox 152 shipped image(<color>) on 2026-06-16, ~2 weeks before Chrome 150; Safari Technology Preview 246 also supports it (S6, S3, S9).",
+    "Independent validation of genuine developer value via a working overlay use case that keeps text selectable (S9)."
+  ],
+  "failures": [
+    "ChromeStatus standards-position signals were attributed to the adjacent light-dark-with-images feature, not image() itself: both the Gecko 'Shipped/Shipping' (bug 2023569) and WebKit 'No signal' (#658) point at light-dark issues, producing an imprecise interop picture that reviewers had to manually correct (S1, S4, S6).",
+    "No formal WebKit/Safari position on image() (both #402 and #658 unanswered), and Safari stable status for image(<color>) is unconfirmed (only Technology Preview 246 verified) (S4, S5, S9).",
+    "MDN reference documentation was stale at launch, still describing the old multi-argument image() grammar rather than the narrowed image(<color>) (S8).",
+    "No usage/adoption telemetry, framework/library/tool integration, or 'web developer signals' were available; the feature shipped with 'Web developers: No signals' (S1)."
+  ],
+  "counterfactuals": [
+    "If Dan Clark had not checked the image()/light-dark(none) WPTs against Firefox Stable 151, Chrome could have shipped believing Firefox already supported image(<color>), and launch communications could have overstated interoperability; the manual WPT check was the safeguard (S6).",
+    "If the WebKit standards-position request had targeted image() directly (rather than the conflated light-dark-with-images #658), the interop picture and Safari intent would be clearer today (S4, S5).",
+    "If a Chrome-authored explainer or sample had existed (explainer_links is empty), the overlay/clean-up use cases might have surfaced earlier and generated the developer signals that were absent, and MDN might have been updated sooner (S1, S8, S9).",
+    "A dedicated Chrome use-counter bucket for image() (webdx_usecounter_enum is null) would let adoption be measured post-ship; without it, adoption remains unscored (S1)."
+  ],
+  "skillImprovements": [
+    "Phase 04 (wide review) rule: when a feature's primary motivation depends on another feature (here light-dark()), the standards-position fields must cite a position for THIS feature, not the dependency; the transition packet should flag adjacent-feature conflation explicitly.",
+    "Phase 06 (prepare-to-ship) check: reconcile each ChromeStatus browser-signal URL against the actual feature scope before claiming 'Shipped/Shipping'; here the Gecko signal pointed at a light-dark bug and required manual WPT de-risking.",
+    "Phase 07 (release) check: verify MDN/caniuse reflect the narrowed spec at launch and file a docs PR for stale formal syntax (old multi-argument image()) before stable.",
+    "Add a retrospective eval case for 'spec catch-up CSS primitive' so narrow ergonomic features are neither over-scored as broad successes nor allowed to inherit adjacent-feature positions as their own signals.",
+    "Encourage registering a use-counter bucket at Intent to Ship for features whose adoption is otherwise unmeasurable, so post-launch outcome assessment is not blocked."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Raw cross-browser WPT pass/fail matrix for image-function-valid/computed/invalid (wpt.fyi is JS-rendered and its results API returned a 500; only qualitative WPT evidence from the intent thread was obtained).",
+      "Confirmed Safari STABLE version shipping image(<color>) (only Safari Technology Preview 246 was verified via community source; no formal WebKit standards position and no stable confirmation).",
+      "Intent to Prototype thread content (reader rejected its URL-encoded msgid; inferred only from the Intent to Ship reference).",
+      "Any Chrome use-counter/usage telemetry, HTTP Archive/web-features Baseline status, or framework/library/tool integration evidence (feature ~3 weeks old at cutoff; none found; use-counter enum is null).",
+      "Chromium tracking bug 510426954 contents and final security/privacy review states at ship (cached record showed both as 'Pending')."
+    ],
+    "reviewedAt": "2026-07-20T05:25:00Z"
+  }
+}

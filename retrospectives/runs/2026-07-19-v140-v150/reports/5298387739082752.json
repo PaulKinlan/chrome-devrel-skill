@@ -1,0 +1,392 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5298387739082752,
+    "name": "Update text selection on mouseup before dispatching click event",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5298387739082752",
+    "category": "User input",
+    "blinkComponents": [
+      "Blink>Input"
+    ],
+    "featureType": "No developer-visible change",
+    "webFeature": "mouse-events",
+    "ownerEmails": [
+      "perryuwang@gmail.com"
+    ],
+    "editorEmails": [
+      "mustaq@chromium.org"
+    ],
+    "finchName": "DefaultMouseUpActionBeforeClickDispatched",
+    "allPlatforms": true,
+    "wpt": true,
+    "starCount": 39,
+    "isReleased": false,
+    "chromeStatus": "Proposed"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:In developer trial (Behind a flag):5298387739082752",
+      "milestone": 150,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:15:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem is clearly and accurately framed: Chromium runs the mouseup default action (committing/collapsing a drag text-selection) AFTER dispatching click, so click handlers reading window.getSelection() or input.selectionStart/End see stale selection and must work around it with setTimeout or a separate selectionchange listener. The pain is real and long-standing (documented 2010, 2017) and a browser-layer internal-dispatch reorder is the appropriate, no-new-API intervention; the feature is correctly typed 'No developer-visible change'. Owner is Blink>Input (Perry Wang) with Mustaq Ahmed as editor/reviewer. Knowable at intake: the problem statement, that this is a Chromium behavior rather than a new API, and that a flag-gated change is feasible.",
+      "evidenceIds": [
+        "cs",
+        "bug",
+        "bango2010",
+        "so-selection"
+      ],
+      "limitations": "No public intake/explainer artifact; decision history is owner-internal and not machine-readable."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The developer problem is validated by independent, multi-year community evidence and an adjacent Blink>Input precedent that ships mouse-cascade changes via the intent process. However the public incubation artifacts are thin: the ChromeStatus record carries no explainer_links, no use-case/partner research, no alternatives analysis, and records Web developers 'No signals'; the cited workaround (setTimeout/selectionchange) is asserted rather than backed by a study.",
+      "evidenceIds": [
+        "cs",
+        "bango2010",
+        "so-selection",
+        "so-prevent-click",
+        "intent-disabled-formcontrols"
+      ],
+      "limitations": "No public demand research, named partners, or documented alternatives/adjacent-platform analysis."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A prototype/implementation exists behind a runtime flag: stages include Intent to Prototype (stage 320) and 'Ready for trial' (stage 330, desktop_first/android_first M150); a finch flag 'DefaultMouseUpActionBeforeClickDispatched' is registered for safe rollback; WPT coverage is flagged true and all_platforms true. The tracking bug 40686462 ('We should do default \"mouseup\" action before dispatching \"click\" event'; the default action sets the selection) confirms the implementation target.",
+      "evidenceIds": [
+        "cs",
+        "bug"
+      ],
+      "limitations": "Full bug/CL content and WPT test URLs are not readable (the bug is unreachable via the reader; no test URL is recorded)."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The single launch event for this feature is the M150 developer trial behind a flag on desktop and Android. This is the correct phase to learn whether reordering selection-commit before click breaks sites that depended on the old order. But there is no public evidence of a recruited cohort, friction log, feedback instrument, or findings; devtrial_instructions is null. Task completion and compatibility cannot be assessed from public artifacts.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No public trial cohort, methodology, or findings; the trial is very recent (M150) as of the cutoff."
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Wide review is effectively absent as of the cached record (accurate_as_of 2026-04-26): tag_review_status 'Not applicable'; Firefox 'No signal', Safari 'No signal', Web developers 'No signals'; spec_link null and standards maturity 'Unknown status'; security_review and privacy_review both 'Pending'. 'No signal' is not alignment or support and must not be read as neutral-positive.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "Positions/reviews may evolve after 2026-04-26; there is no explainer/spec for reviewers to evaluate against, so cross-browser alignment is unverified."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial is planned or needed: origintrial=false and the feature is a 'No developer-visible change' behavior fix. The team chose a flag-based developer trial and a planned direct ship (rollout_plan 'Will ship enabled for all users'); a field experiment is not on this feature's path and there is no stated field uncertainty an OT would resolve.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "If compat risk materializes during the dev trial, an OT could be reconsidered; it is not currently part of the plan."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "A prepare-to-ship stage exists (stage 360 / intent_stage 5) and a rollout plan ('Will ship enabled for all users') is declared. But the ship gates are incomplete: security_review and privacy_review are 'Pending', rollout_milestone is null, no Intent-to-Ship thread is indexed (intent_thread_url null), and the feature is still Chrome status 'Proposed' / not released.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "Reviews are pending as of 2026-04-26; no public Intent to Ship; the ship milestone is not fixed."
+    },
+    "release": {
+      "status": "unknown",
+      "finding": "The feature has not reached stable release: the only launch event is the M150 developer trial behind a flag, and is_released=false / status 'Proposed'. The release phase is therefore not yet reached as of the evidence cutoff; nothing about release communication or rollout can be assessed.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No post-dev-trial ship evidence; release-comms and rollout state unknown."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Not shipped, and as a 'No developer-visible change' behavior fix there is no adoptable API surface or UseCounter, so adoption is not a meaningful success metric; Web developers 'No signals'.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "Pre-ship; no adoption metric is applicable to this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Not shipped; no public support issues or known-issues material exist yet beyond the tracking bug. The support phase is not yet reached.",
+      "evidenceIds": [
+        "cs",
+        "bug"
+      ],
+      "limitations": "Pre-ship; no support-burden or issue-resolution evidence."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a behavior-alignment fix, not a deprecation or removal; no reverse trial, removal path, migration, or deadline applies.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "None; the deprecation/removal lifecycle does not apply."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem addressed is genuine, important, and documented for over a decade (click handlers see stale selection because Chromium commits drag-selection after click, forcing setTimeout/selectionchange workarounds), and a no-new-API internal reorder is the right-shaped fix. But no delivered value is yet measurable: the feature is only in a flag trial at M150 with no public feedback or before/after friction evidence.",
+      "evidenceIds": [
+        "cs",
+        "bango2010",
+        "so-selection"
+      ],
+      "limitations": "No outcome or feedback data; value is demonstrated in principle only, not in the field."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "This is an internal event-timing change with no new user-facing surface ('No developer-visible change'); a more consistent selection-on-click is plausible for end users but entirely unmeasured, and the impact is subtle.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No end-user impact evidence; subtle internal timing change."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Behavior fix with no adoptable API and no UseCounter; not shipped. Adoption is not an applicable success metric for this feature.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "Not applicable pre-ship."
+    },
+    "interoperability": {
+      "status": "unscored",
+      "finding": "The change is framed as meeting 'developer expectations', not as conforming to a spec mandate, and the relevant mouse-event ordering now lives in the Pointer Events spec whose default-action/activation-behavior text does not clearly pin this ordering. Firefox/Safari/Web-dev are all 'No signal', and community evidence shows Chrome, Firefox and Safari already differ on selection-on-mouseup, so whether this brings Chromium closer to or further from other engines is unverified rather than confirmed.",
+      "evidenceIds": [
+        "cs",
+        "uievents-spec",
+        "pointer-events-spec",
+        "so-selection",
+        "maisie-click-target"
+      ],
+      "limitations": "No engine positions; no interop test result demonstrating alignment; cross-browser behavior unconfirmed. 'No signal' is not alignment."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Positive signals: WPT coverage flagged true, a registered finch flag for safe rollback, all-platform intent, and stage progression through prototype/trial/prepare-to-ship. Gaps: security and privacy reviews still 'Pending', no public CL/WPT URLs, no compat telemetry, and the click-cascade area has shipped regressions before (41448177).",
+      "evidenceIds": [
+        "cs",
+        "crbug-41448177"
+      ],
+      "limitations": "Reviews pending; no post-trial compat/quality outcome data; the tracking bug/CL are unreadable via the reader."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The problem statement is communicated clearly and accurately on ChromeStatus (summary + motivation explain the cascade, stale selection, and the workaround). But the evidence/communication package is incomplete: no explainer, spec link, docs, samples, or public intent thread, and reviews are pending. The authoritative bug and the ChromeStatus activity page are not machine-readable.",
+      "evidenceIds": [
+        "cs",
+        "bug"
+      ],
+      "limitations": "For a no-API change a full doc set is arguably lower priority, but the absence of an intent thread plus pending security/privacy reviews is a real evidence gap."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Pre-ship; no support burden or issue-resolution evidence exists yet beyond the tracking bug.",
+      "evidenceIds": [
+        "cs",
+        "bug"
+      ],
+      "limitations": "Not reached."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A sound, well-grounded behavior fix for a real, long-standing developer pain, launched appropriately as a flag trial with WPT/finch gating and strong Blink>Input ownership. But as of the cutoff it is pre-ship with an effectively absent wide review (no engine signals, reviews pending), an unverified interoperability story, and no outcome or trial-feedback evidence; success is not inferred from the trial, from usage, or from absent criticism.",
+      "evidenceIds": [
+        "cs",
+        "bango2010",
+        "so-selection",
+        "uievents-spec",
+        "pointer-events-spec"
+      ],
+      "limitations": "Overall reflects pre-ship evidence and should be re-scored after stable ship plus interop confirmation."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs",
+      "url": "https://chromestatus.com/feature/5298387739082752",
+      "publisher": "Chrome Platform Status (cached record + readable mirror chromestatuslite.com/feature/5298387739082752)",
+      "publishedOrObservedAt": "2026-04-26",
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Authoritative feature record: summary, motivation, feature type 'No developer-visible change', Blink>Input, owner perryuwang/editor mustaq, finch name DefaultMouseUpActionBeforeClickDispatched",
+        "Stages 320 (intent to prototype), 330 (ready for trial; desktop_first/android_first M150), 360 (prepare to ship)",
+        "Firefox/Safari 'No signal', Web developers 'No signals', tag review 'Not applicable', security/privacy 'Pending'",
+        "wpt=true, all_platforms=true, is_released=false, Chrome status 'Proposed', rollout_plan 'Will ship enabled for all users'"
+      ],
+      "limitations": "Activity page is JS-rendered and returned only boilerplate via the reader; accurate_as_of 2026-04-26 so review states may have advanced."
+    },
+    {
+      "id": "bug",
+      "url": "https://issues.chromium.org/issues/40686462",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug title 'We should do default \"mouseup\" action before dispatching \"click\" event'",
+        "Snippet: the default action of mouseup is 'set selection', so selection should change after mouseup dispatch"
+      ],
+      "limitations": "Full bug content unreachable via the reader (persistent 500 network error / timeout on issues.chromium.org); only title and one content snippet obtained via search."
+    },
+    {
+      "id": "so-selection",
+      "url": "https://stackoverflow.com/questions/44030104/why-window-getselection-is-different-between-firefox-and-chrome",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": "2017-05-17",
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing cross-browser inconsistency: on mouseup, Chrome returns collapsed/empty selection while Firefox returns the selection",
+        "Selection-on-mouseup is a real, observable developer friction"
+      ],
+      "limitations": "Anecdotal Q&A; confirms difference exists but does not quantify prevalence."
+    },
+    {
+      "id": "bango2010",
+      "url": "https://blog.reybango.com/2010/04/14/my-solution-to-google-chrome-safari-double-firing-the-mouseup-event-when-selecting-text/",
+      "publisher": "Rey Bango (blog)",
+      "publishedOrObservedAt": "2010-04-14",
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Mouseup+selection pain in Chrome/Safari documented since at least 2010",
+        "Developers resorted to closure-based workarounds to filter stale/duplicate selection"
+      ],
+      "limitations": "Single author, dated; establishes longevity rather than current prevalence."
+    },
+    {
+      "id": "crbug-41448177",
+      "url": "https://issues.chromium.org/41448177",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Prior Chromium regression 'Click event target is always mouseup target, different from mousedown target'",
+        "Shows the click/mouseup cascade area has shipped regressions before (relevant to compat risk of reordering)"
+      ],
+      "limitations": "Read via search snippet only; full content not fetched."
+    },
+    {
+      "id": "mozbug-1004895",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1004895",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Cross-engine inconsistency: mouseup does not trigger click on the expected item in Firefox",
+        "Workarounds exist, confirming mouseup/click delivery is not uniform across engines"
+      ],
+      "limitations": "Read via search snippet only; full content not fetched."
+    },
+    {
+      "id": "so-prevent-click",
+      "url": "https://stackoverflow.com/questions/18342747/why-cant-a-mouseup-event-prevent-a-click-event",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "community",
+      "supports": [
+        "The timing relationship between mouseup default action and click dispatch is a known, cross-browser developer puzzle"
+      ],
+      "limitations": "Anecdotal Q&A; tangential to the specific selection-commit ordering."
+    },
+    {
+      "id": "uievents-spec",
+      "url": "https://www.w3.org/TR/uievents/",
+      "publisher": "W3C (UI Events)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Mouse Events have been moved to the Pointer Events specification",
+        "select event is dispatched after the selection occurs; getSelection() is the access path"
+      ],
+      "limitations": "Living spec; does not normatively pin the mouseup-default-action vs click ordering that this change implements."
+    },
+    {
+      "id": "pointer-events-spec",
+      "url": "https://www.w3.org/TR/pointerevents/",
+      "publisher": "W3C (Pointer Events)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Default action is handled during dispatch by triggering the activation behavior algorithm for the target"
+      ],
+      "limitations": "Full click/activation-behavior section not read; ordering nuance inferred from snippet, so spec mandate for this change is not established."
+    },
+    {
+      "id": "intent-disabled-formcontrols",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/9i0H0J0BzE4",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Blink>Input precedent: an Intent to Ship changed mouse-event delivery (mouseup/mousedown/click cascade) via the standard intent process",
+        "Shows the owning team ships cascade changes through proper review"
+      ],
+      "limitations": "Adjacent feature, not this one; no intent thread was found for THIS feature."
+    },
+    {
+      "id": "maisie-click-target",
+      "url": "https://blog.maisie.ink/click-event-target/",
+      "publisher": "blog.maisie.ink",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:15:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Click-event behavior still differs across browsers and remains a source of real, recent developer friction"
+      ],
+      "limitations": "Read via search snippet only; primarily about click target rather than selection commit."
+    }
+  ],
+  "successes": [
+    "Clear, accurate problem framing grounded in a real, multi-year (>=2010) developer pain, correctly classified as a no-API behavior fix rather than a new feature.",
+    "Sound launch mechanics for a low-surface interop change: flag-based developer trial at M150, a registered finch flag (DefaultMouseUpActionBeforeClickDispatched) for safe rollback, WPT coverage flagged true, and all-platform intent.",
+    "Strong internal ownership in Blink>Input (owner Perry Wang, editor/reviewer Mustaq Ahmed), with an adjacent precedent (the disabled-form-controls mouse-events Intent to Ship) showing the team routes similar cascade changes through the standard intent process."
+  ],
+  "failures": [
+    "Thin public review/evidence package as of the cached record: no explainer, spec link, docs, samples, or indexed intent thread; tag review 'Not applicable'; Firefox, Safari and Web developers all 'No signal'; security and privacy reviews 'Pending'.",
+    "The interoperability rationale is asserted as 'developer expectations' but not evidenced or confirmed against actual Firefox/Safari behavior, and available community evidence shows those engines already differ from Chrome on selection-on-mouseup.",
+    "The authoritative tracking bug (40686462) and the ChromeStatus activity page are not machine-readable (auth/JS), leaving the intent and review history unverifiable from public artifacts.",
+    "No compat safety net appropriate to a cascade-order change: there is no UseCounter (it is a no-API change) and no public compat telemetry or 'sites that depend on the old order' scan."
+  ],
+  "counterfactuals": [
+    "If a short public explainer plus an explicit Chrome-vs-Firefox-vs-Safari selection-on-click behavior matrix (with dated observations) had been attached, the 'developer expectations' rationale would be verifiable and Firefox/Safari 'No signal' could be converted into informed positions before ship.",
+    "If the team had run a representative developer-trial cohort with a friction log (does committing selection before click break toolbars/editors that read pre-commit selection?), the compat risk would be evidenced rather than asserted.",
+    "If an Intent-to-Prototype/Ship blink-dev thread had been posted (as for the analogous disabled-form-controls change), wide-review objections and Mozilla/WebKit signals could surface before ship instead of remaining 'No signal'.",
+    "Because the click-cascade area has shipped regressions before (41448177), a targeted compat/telemetry safety net would materially reduce rollback risk for a default-on flip; its current absence is a latent risk."
+  ],
+  "skillImprovements": [
+    "Add a phase-04 (wide review) rule that, for any change touching shared event-cascade ordering, requires an explicit dated Chrome/Firefox/Safari behavior table and forbids treating 'No signal' as alignment or support.",
+    "Add a dev-trials artifact requirement for behavior-alignment fixes: capture a 'sites that depend on the old order' compat scan plus a small friction-log cohort before flipping default-on, since these changes have no UseCounter to detect breakage.",
+    "Add a primary-source readability fallback: when issues.chromium.org or JS-rendered ChromeStatus activity pages cannot be fetched, record the failure and require an owner-confirmed excerpt rather than relying on search snippets.",
+    "Add an evidence-completeness gate for 'No developer-visible change' features: still require an explainer or design-rationale doc and at least one standards/intent link, because 'no API surface' does not imply 'no review needed' for cascade-order changes."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Full content of tracking bug 40686462 (unreachable via reader; only title and one snippet obtained)",
+      "Public Intent-to-Prototype/Ship thread for this feature (none indexed; record intent_thread_url null)",
+      "Firefox/Safari/WebKit formal positions (all 'No signal')",
+      "Completed security and privacy reviews (both 'Pending' as of 2026-04-26)",
+      "Developer-trial cohort, methodology, feedback and friction findings (none public)",
+      "Interop test result demonstrating Chrome aligns with Firefox/Safari after the change",
+      "Usage/adoption/compat telemetry (pre-ship; not applicable for a no-API change but needed before default-on)"
+    ],
+    "reviewedAt": "2026-07-20T07:15:00Z"
+  }
+}

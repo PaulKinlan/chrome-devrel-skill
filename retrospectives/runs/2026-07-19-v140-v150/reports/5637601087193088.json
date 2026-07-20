@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5637601087193088,
+    "name": "Focusgroup",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5637601087193088",
+    "category": "DOM",
+    "blinkComponents": [
+      "Blink>DOM"
+    ],
+    "summary": "Declarative HTML attribute giving composite widgets arrow-key navigation, a guaranteed tab stop, and last-focused memory, replacing hand-coded roving tabindex scripts.",
+    "owners": [
+      "janewman@microsoft.com",
+      "leolee@microsoft.com",
+      "masonfreed@google.com"
+    ],
+    "creator": "travil@microsoft.com",
+    "originTrialId": "4231694799868002305",
+    "useCounter": "kFocusgroup",
+    "standardsMaturity": "Working draft (WHATWG HTML PR #11723, under development)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "146:In developer trial (Behind a flag):5637601087193088",
+      "milestone": 146,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "146:Origin trial:5637601087193088",
+      "milestone": 146,
+      "category": "Origin trial"
+    },
+    {
+      "eventId": "150:Enabled by default:5637601087193088",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Feature is a deliberate re-scope/revival of an earlier (2022-01-11, travil@microsoft.com) broader focusgroup proposal. The developer problem - hand-coded roving tabindex for composite widgets - is real, recurring, and independently re-implemented by React, Angular CDK, and Fluent UI per the RFC blog. The re-scoping (enumerated behavior tokens, deferred CSS+grid, move toward WHATWG) directly responded to the earlier round's venue and scope criticism, which the RFC blog frames as 'bringing focusgroup back.' Microsoft-authored with Google (Mason Freed) owning the Chromium origin trial - a cross-org launch.",
+      "evidenceIds": [
+        "cs-record",
+        "manifest",
+        "rfc-blog",
+        "explainer"
+      ],
+      "limitations": "Original intake artifacts (problem brief, segment map) are not separately published; the explainer subsumes them."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Genuine multi-venue incubation: OpenUI Community Group (primary venue), ARIA Working Group (w3c/aria#1947 exploring 'focusgroups on elements that aren't expected'), W3C APA (ACTION-2326 report on the proposal), and an earlier W3C TAG early review (#732). The scoped explainer is comprehensive: goals/non-goals, alternatives considered, privacy/security sections, open questions, and polyfilling. The move to a WHATWG HTML PR resolved the 'concerns: venue' raised against the original OpenUI-only version.",
+      "evidenceIds": [
+        "explainer",
+        "spec-pr",
+        "aria-1947",
+        "apa-action",
+        "openui-734",
+        "tag-732"
+      ],
+      "limitations": "No published developer-research evidence ledger (interviews, demand surveys) beyond the roving-tabindex boilerplate argument; demand is argued from framework practice rather than measured proposal-specific demand."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Chromium implementation exists behind the Focusgroup flag (Blink>DOM) with task-based interactive demos and the RFC blog (2026-03-05) inviting feedback. The spec PR history shows rapid iteration: nomemory token, default modifiers per behavior, <button> child role inference, top-layer exclusion, key-conflict and scrolling-interaction handling. DevTools error logging for invalid focusgroup value combinations is supported.",
+      "evidenceIds": [
+        "rfc-blog",
+        "spec-pr",
+        "explainer",
+        "cs-record"
+      ],
+      "limitations": "No public friction-log or framework/server/mobile compatibility-matrix artifact was found; prototype evidence is demo-led, and the iOS platform is explicitly not targeted."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "M146 behind-a-flag developer trial plus a public RFC (2026-03-05) with explicit feedback questions, a GitHub issue route (openui/open-ui), and a polyfill enabling pre-availability testing. Two independent developer analyses exist (Steve Frenzel, 2026-04-20; Eric Eggert's is older). The cohort, task-completion rates, and methodology were not published.",
+      "evidenceIds": [
+        "cs-record",
+        "manifest",
+        "rfc-blog",
+        "frenzel",
+        "eggert"
+      ],
+      "limitations": "No public cohort representativeness report, task-completion data, or structured-survey results; feedback is anecdotal via issues and blog posts. Eggert's critique predates the scoped rewrite."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Multi-stakeholder review is real but unfinished at ship. Mozilla position #1348 is Positive (opened 2026-02-03). W3C TAG #1152 (Incubation: Scoped Focusgroup, opened 2025-09-18) is still Open with 'Progress: pending external feedback' across API design, accessibility, and web architecture. WebKit #171 remains Open / 'Needs position' with original concerns:venue + accessibility (cookiecrook/J. Craig on decoupling focus/selection and AT changes). Per the cached record, tag_review_status, security_review_status, and privacy_review_status were all 'Pending' when the feature shipped in M150.",
+      "evidenceIds": [
+        "tag-1152",
+        "moz-1348",
+        "webkit-171",
+        "cs-record",
+        "aria-1947",
+        "apa-action"
+      ],
+      "limitations": "The feature shipped a new web-facing HTML attribute while TAG, security, and privacy reviews were still Pending and WebKit had no resolved positive position; 'No signal' from WebKit in the cached record is a flagged risk, not neutral."
+    },
+    "experiment": {
+      "status": "unknown",
+      "finding": "An Origin Trial (ID 4231694799868002305) ran desktop+android from M146 through M149 with ot_setup_status=complete and goals of testing the new design and gathering feedback. However the cached record carries no experiment_risks, no origin_trial_feedback_url, and no published readout; no public participant denominator, hypotheses, metrics, or findings were located.",
+      "evidenceIds": [
+        "cs-record",
+        "manifest"
+      ],
+      "limitations": "The OT intent thread (Google Groups) could not be retrieved by the reader and no interim/final readout is public; it is unknown what the OT measured or decided, so the experiment phase cannot be scored as supported."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship thread exists (stage 160). WHATWG spec PR #11723 marked ready-for-review 2025-11-24 and iterated through 2026-04. Docs/demos are strong (RFC blog, explainer, interactive demos, polyfill). adoption_expectation cites Fluent UI Web Components V3 integration 'expected to ship in the coming months' - a commitment, not verified production deployment. MDN and caniuse entries are absent (Mozilla issue records 'MDN URL: No response', 'Caniuse URL: No response').",
+      "evidenceIds": [
+        "cs-record",
+        "spec-pr",
+        "rfc-blog",
+        "explainer",
+        "moz-1348",
+        "polyfill"
+      ],
+      "limitations": "Partner adoption is interest/commitment-stage only; MDN/caniuse/Baseline reference docs are not yet in place; availability_expectation honestly states Baseline depends on other implementations."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Chrome 150 stable (2026-06-30) shipped Focusgroup for Android, ChromeOS, Linux, macOS, and Windows (desktop/android/webview 150; iOS null). Coordinated comms: Chrome for Developers RFC blog, Chrome 150 beta blog, release notes, and a LinkedIn announcement. Release-notes and beta-blog descriptions match the shipped Chrome-only behaviour and the keyboard/arrows requirement; no deprecations accompanied it. General press (Winaero, X/AlternativeTo) coverage was accurate and non-hyped.",
+      "evidenceIds": [
+        "cr150-notes",
+        "rfc-blog",
+        "cs-record",
+        "manifest"
+      ],
+      "limitations": "Release communications do not prominently surface that TAG/security/privacy reviews are Pending or that no second engine has shipped; the limitation is acknowledged only indirectly via availability_expectation."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Too early and evidence too thin to score. Fluent UI Web Components maintainers intend to integrate focusgroup in V3 (commitment, not verified). The @microsoft/focusgroup-polyfill is at v1.5.0 (published ~2026-05) with only 1 npm dependent; the cached record notes ~400 weekly polyfill downloads two weeks after release. A Chrome use counter (kFocusgroup) exists but no public usage numbers, case studies, or verified production deployments were found.",
+      "evidenceIds": [
+        "cs-record",
+        "polyfill",
+        "rfc-blog"
+      ],
+      "limitations": "Per the method, shipment, polyfill downloads, and partner intent are not scored as adoption success; no attributable production deployment or usage denominator is available."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Support route is the OpenUI GitHub issue tracker; recurring themes are visible (interactions with native elements - openui#995; focusgroup on unexpected elements - w3c/aria#1947). No public support-health, recurrence, or triage dashboard exists. Feature shipped 2026-06-30, only weeks before the evidence cutoff.",
+      "evidenceIds": [
+        "openui-995",
+        "aria-1947",
+        "rfc-blog"
+      ],
+      "limitations": "No support-burden, recurrence, or resolution-time data; too early post-ship to assess support outcomes."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new-feature launch (a new HTML attribute), not a deprecation or removal. There is no existing API to remove, no migration path to define, and no deprecation event in the manifest. Raised for completeness per the schema requirement.",
+      "evidenceIds": [
+        "manifest",
+        "cs-record"
+      ],
+      "limitations": "None; phase is genuinely out of scope for this feature type."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The developer problem is well-validated: roving tabindex for toolbars/tablists/menus/listboxes/radiogroups is universal boilerplate, independently re-implemented across React, Angular CDK, and Fluent UI, and the declarative one-attribute solution is widely welcomed by independent developers (Frenzel: 'super stoked... high hopes').",
+      "evidenceIds": [
+        "rfc-blog",
+        "explainer",
+        "frenzel",
+        "eggert"
+      ],
+      "limitations": "Demand is argued from framework practice rather than proposal-specific survey data."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Potential positive end-user impact (standardized arrow navigation, guaranteed single tab stop, last-focused memory, APG-aligned role inference) is plausible but unmeasured. Independent accessibility experts raised real misuse risks: Eggert warned that generalising arrow navigation invites over-eager misuse analogous to tabindex/ARIA abuse, and Frenzel flagged unclear menu-vs-navigation distinction and missing JAWS/NVDA feedback in the chatbot pattern. No production user-impact data exists.",
+      "evidenceIds": [
+        "explainer",
+        "eggert",
+        "frenzel",
+        "rfc-blog"
+      ],
+      "limitations": "No measured end-user or assistive-technology user impact; risk of developer misuse is expert-judged, not observed at scale."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Evidence is commitment-stage and thin: Fluent UI V3 integration is intended, the polyfill has minimal dependents (1), and no verified production deployment, case study, or public usage number is available. Shipped only weeks before cutoff.",
+      "evidenceIds": [
+        "cs-record",
+        "polyfill",
+        "rfc-blog"
+      ],
+      "limitations": "Do not infer adoption success from shipment, press, or absent criticism; insufficient evidence to score."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "The headline risk. Shipped Chrome-only (Chrome/Edge/Chromium) in M150; Baseline is blocked because no second engine has implemented. Mozilla is Positive (#1348) but has announced no implementation. WebKit remains 'Needs position' (original venue + accessibility concerns; the cached availability_expectation says testability concerns were 'largely addressed' but there is no resolved positive position). TAG review is still pending. WHATWG spec is an open Working-Draft PR. Genuinely cross-venue incubated, but no second implementation or confirmed Baseline path.",
+      "evidenceIds": [
+        "cs-record",
+        "moz-1348",
+        "webkit-171",
+        "tag-1152",
+        "spec-pr",
+        "wpdx-limited",
+        "cr150-notes"
+      ],
+      "limitations": "wpt.fyi dashboard is JS-only and could not be read; cross-engine WPT conformance not independently confirmed. 'No signal' from WebKit is treated as risk, not neutrality."
+    },
+    "implementationQuality": {
+      "status": "supported",
+      "finding": "Spec is detailed and actively iterated (top-layer handling, key-conflict escape behaviour, scrolling interactions, default modifiers, role-inference precedence), WPT is referenced (cached wpt=true), and DevTools surfaces invalid focusgroup value combinations. The polyfill documents known divergences and limitations (no focusGroup property, reading-flow unsupported, visibility-change gaps).",
+      "evidenceIds": [
+        "spec-pr",
+        "explainer",
+        "polyfill",
+        "cs-record"
+      ],
+      "limitations": "Implementation quality is Chromium-centric; cross-engine conformance and regression coverage are not independently evidenced; polyfill notes the spec is 'still evolving.'"
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "External communication was accurate and transparent (RFC blog, release notes, beta blog match the Chrome-only shipped reality; availability_expectation honestly states Baseline depends on other implementations). However the internal evidence base for the ship decision is weak in public: the OT ran with no recorded risks, no feedback URL, and no published readout, and the cached record shows TAG/security/privacy reviews all Pending at ship. Intent threads are not machine-readable.",
+      "evidenceIds": [
+        "rfc-blog",
+        "cr150-notes",
+        "cs-record",
+        "intent-ship",
+        "intent-ot"
+      ],
+      "limitations": "Could not retrieve intent-thread contents (Google Groups); OT findings are not public, so the ship-decision evidence cannot be independently audited."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Public issue route and recurring design themes exist but no support-health dashboard, recurrence/resolution data, or post-ship incident record; too early to assess.",
+      "evidenceIds": [
+        "openui-995",
+        "aria-1947",
+        "rfc-blog"
+      ],
+      "limitations": "No support metrics; feature shipped weeks before cutoff."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, genuinely cross-venue-incubated accessibility primitive that responded to prior criticism by re-scoping, with accurate release communication and a positive Mozilla position. But it shipped Chrome-only with WebKit unresolved and TAG/security/privacy reviews Pending, no second implementation or confirmed Baseline path, an Origin Trial that left no public readout, adoption only at commitment stage, and unresolved expert concerns about developer misuse. Net: a credible start with material interop, evidence, and adoption risks still open.",
+      "evidenceIds": [
+        "cs-record",
+        "rfc-blog",
+        "moz-1348",
+        "webkit-171",
+        "tag-1152",
+        "spec-pr",
+        "cr150-notes",
+        "eggert",
+        "frenzel",
+        "polyfill"
+      ],
+      "limitations": "Overall is mixed, not success or failure; key dimensions (adoption, support, end-user impact) remain unscored for insufficient evidence."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs-record",
+      "url": "https://chromestatus.com/feature/5637601087193088",
+      "publisher": "Chrome Platform Status (cached record)",
+      "publishedOrObservedAt": "2026-06-26T16:58:58Z",
+      "retrievedAt": "2026-06-26T16:58:58Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, stages, OT ID/use counter, standards maturity, Mozilla/WebKit/web-dev views, availability/adoption expectations",
+        "Launch milestones (dev trial M146, OT M146-M149, ship M150), review statuses Pending"
+      ],
+      "limitations": "ChromeStatus UI is JS-rendered; the authoritative cached JSON (accurate_as_of 2026-06-26) was used. tag_review_status/security_review_status/privacy_review_status shown as Pending."
+    },
+    {
+      "id": "manifest",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Authoritative launch events for feature 5637601087193088: 146 dev trial, 146 origin trial, 150 enabled by default"
+      ],
+      "limitations": "Read-only inventory input; not modified."
+    },
+    {
+      "id": "rfc-blog",
+      "url": "https://developer.chrome.com/blog/focusgroup-rfc",
+      "publisher": "Chrome for Developers (Jacques Newman)",
+      "publishedOrObservedAt": "2026-03-05",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Problem framing (roving tabindex re-implemented by React/Angular CDK/Fluent UI), API overview, behavior tokens, accessibility/role inference, feature detection",
+        "Cross-browser framing (Microsoft via OpenUI with Google support), request for feedback"
+      ],
+      "limitations": "Vendor-authored launch communication; framed as a proposal still iterating."
+    },
+    {
+      "id": "explainer",
+      "url": "https://open-ui.org/components/scoped-focusgroup.explainer",
+      "publisher": "Open UI Community Group (Jacques Newman et al.)",
+      "publishedOrObservedAt": "2026-04-29",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Goals/non-goals, alternatives, supported behaviors and default modifiers, role mapping, shadow DOM, key conflicts, scrolling, reading-flow integration, privacy/security sections, open questions",
+        "Major differences from the original (broader) explainer: CSS and grid deferred, scoped to enumerated behaviors"
+      ],
+      "limitations": "Explainer is a proposal, not a ratified spec; 'open questions' section confirms unresolved items."
+    },
+    {
+      "id": "spec-pr",
+      "url": "https://github.com/whatwg/html/pull/11723",
+      "publisher": "WHATWG HTML (janewman)",
+      "publishedOrObservedAt": "2025-11-24",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec under development in a WHATWG Working Group; ready-for-review 2025-11-24; active iteration (nomemory, default modifiers, top-layer, key conflicts)",
+        "Companion ARIA PR for focusgroup role mapping"
+      ],
+      "limitations": "Open PR, not merged; Working-Draft maturity; content snapshot is the PR timeline, not the rendered spec."
+    },
+    {
+      "id": "tag-1152",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1152",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": "2025-09-18",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG CG early review of Scoped Focusgroup; status Open, 'Progress: pending external feedback'; focus areas API design/accessibility/web architecture pending; multi-stakeholder: Chromium prototyping, Mozilla and WebKit comments"
+      ],
+      "limitations": "Review is pending, not resolved; no TAG position statement yet."
+    },
+    {
+      "id": "moz-1348",
+      "url": "https://github.com/mozilla/standards-positions/issues/1348",
+      "publisher": "Mozilla (emilio)",
+      "publishedOrObservedAt": "2026-02-03",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position: Positive (label position:positive), venue WHATWG, references prior #631 and WebKit #171"
+      ],
+      "limitations": "Positive position only; no announced Firefox implementation plan."
+    },
+    {
+      "id": "webkit-171",
+      "url": "https://github.com/WebKit/standards-positions/issues/171",
+      "publisher": "WebKit (lukewarlow, hober, cookiecrook)",
+      "publishedOrObservedAt": "2023-04-15",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit issue Open, 'Needs position'; concerns:venue (should be WHATWG) and accessibility (cookiecrook on focus/selection decoupling and AT changes); references older OpenUI explainer and Mozilla #631"
+      ],
+      "limitations": "Issue predates the scoped rewrite; the cached availability_expectation states testability concerns were 'largely addressed' but WebKit has no resolved positive position."
+    },
+    {
+      "id": "polyfill",
+      "url": "https://www.npmjs.com/package/@microsoft/focusgroup-polyfill",
+      "publisher": "npm (@microsoft/focusgroup-polyfill)",
+      "publishedOrObservedAt": "2026-05-14",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Polyfill v1.5.0, last published ~2026-05; 1 npm dependent; documents spec-evolution divergence and limitations (no focusGroup property, no reading-flow, visibility-change gaps)"
+      ],
+      "limitations": "Dependent count is a weak adoption proxy; download numbers not captured live."
+    },
+    {
+      "id": "cr150-notes",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable 2026-06-30; Focusgroup ships (DOM and HTML section) for Android/ChromeOS/Linux/macOS/Windows; replaces hand-coded roving tabindex",
+        "No deprecations in 150"
+      ],
+      "limitations": "Vendor release notes; do not enumerate pending reviews or Chrome-only status prominently."
+    },
+    {
+      "id": "eggert",
+      "url": "https://yatil.net/blog/misconceptions-can-kill-accessibility-momentum",
+      "publisher": "Eric Eggert (yatil.net / Axess Lab)",
+      "publishedOrObservedAt": "2023-09-24",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent accessibility-expert critique: generalising arrow navigation risks over-eager misuse; prefers ARIA-role-gated default keyboard behaviour; dislikes tabindex=-1 making elements unreachable in non-supporting browsers; HTML+CSS conflict concern"
+      ],
+      "limitations": "Written against the earlier (pre-scoped) explainer; some concerns (CSS, tabindex=-1 reachability) are partly addressed by the scoped rewrite."
+    },
+    {
+      "id": "frenzel",
+      "url": "https://www.stevefrenzel.dev/posts/my-thoughts-on-the-focusgroup-attribute-proposal/",
+      "publisher": "Steve Frenzel",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Mixed-positive developer reaction to the scoped proposal ('super stoked', 'high hopes'); praises focusgroupstart, axis restriction, nested scopes",
+        "Concerns: menu vs navigation distinction, radiogroup vs fieldset, tabindex in radiogroup example, missing JAWS/NVDA feedback in chatbot pattern"
+      ],
+      "limitations": "Single independent developer blog; not representative of broader demand."
+    },
+    {
+      "id": "aria-1947",
+      "url": "https://github.com/w3c/aria/issues/1947",
+      "publisher": "W3C ARIA Working Group",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "ARIA WG consideration of focusgroup, including handling focusgroups on elements that aren't expected"
+      ],
+      "limitations": "Issue date and resolution state not captured in the search snippet; summary only."
+    },
+    {
+      "id": "openui-734",
+      "url": "https://github.com/openui/open-ui/issues/734",
+      "publisher": "Open UI Community Group",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Decision to move focusgroup specification to WHATWG (resolving venue concern)"
+      ],
+      "limitations": "Snippet only; full resolution date not captured."
+    },
+    {
+      "id": "openui-995",
+      "url": "https://github.com/openui/open-ui/issues/995",
+      "publisher": "Open UI Community Group",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Open design issue: interactions between focusgroup and native elements that have focusgroup-like built-in behaviour"
+      ],
+      "limitations": "Snippet only; open/closed status not captured."
+    },
+    {
+      "id": "apa-action",
+      "url": "https://www.w3.org/WAI/APA/track/actions/2326",
+      "publisher": "W3C WAI/APA Working Group",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "W3C APA group tracked an action to report on the Open UI focusgroup proposal"
+      ],
+      "limitations": "Action outcome/report content not retrieved."
+    },
+    {
+      "id": "tag-732",
+      "url": "https://github.com/w3ctag/design-reviews/issues/732",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Earlier TAG early design review of the original (broader) focusgroup proposal"
+      ],
+      "limitations": "Predates the scoped rewrite; snippet only."
+    },
+    {
+      "id": "wpdx-limited",
+      "url": "https://web-platform-dx.github.io/web-features-explorer/limited-availability/",
+      "publisher": "WebDX Community Group (web-features explorer)",
+      "publishedOrObservedAt": "2026-07",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Focusgroup appears under limited availability; Baseline blocked by lack of a second-engine implementation (Firefox noted as the blocking engine)"
+      ],
+      "limitations": "Explorer page is dynamic; the exact feature row was inferred from a search snippet, not a direct read."
+    },
+    {
+      "id": "intent-ship",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/DS0PR00MB2368D5081266F56956C672998B282%40DS0PR00MB2368.namprd00.prod.outlook.com",
+      "publisher": "blink-dev (Intent to Ship)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship thread exists for the M150 ship (stage 160)"
+      ],
+      "limitations": "Google Groups URL could not be read by the MCP reader (URL-format/JS-rendering failure); content not retrieved."
+    },
+    {
+      "id": "intent-ot",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/DS0PR00MB23684A74F74CB036E7C24BD58B9EA%40DS0PR00MB2368.namprd00.prod.outlook.com",
+      "publisher": "blink-dev (Intent to Experiment)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment thread exists for the M146 origin trial (stage 150)"
+      ],
+      "limitations": "Google Groups URL could not be read; content not retrieved. OT goals known only from the cached record summary."
+    },
+    {
+      "id": "wpt",
+      "url": "https://wpt.fyi/results/html/interaction/focus/focusgroup?label=experimental&label=master&aligned",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "A WPT focusgroup test directory exists; cached record confirms wpt=true"
+      ],
+      "limitations": "Dashboard is JS-only and returned no readable results; per-engine pass rates not captured."
+    }
+  ],
+  "successes": [
+    "Problem validity is strongly established and independently corroborated by framework practice across React, Angular CDK, and Fluent UI; the declarative one-attribute solution was welcomed by independent developers.",
+    "Genuine, multi-venue incubation (OpenUI, ARIA WG, W3C APA, W3C TAG, Mozilla, WebKit) with a comprehensive explainer including privacy/security/alternatives/open questions.",
+    "The team correctly responded to the earlier round's criticism by re-scoping (enumerated behavior tokens, deferred CSS and grid, move to a WHATWG PR), resolving the original WebKit 'concerns: venue' objection.",
+    "Release communication (RFC blog, Chrome 150 beta blog, release notes, LinkedIn) was accurate, multi-channel, and matched the Chrome-only shipped behaviour; no hype or overclaiming.",
+    "Mozilla delivered a Positive standards position (#1348) and a maintained polyfill plus interactive demos lowered the barrier to early evaluation."
+  ],
+  "failures": [
+    "Shipped Chrome-only in M150 while TAG, security, and privacy reviews were all still Pending, with no accepted-risk note recorded.",
+    "Origin Trial (M146-M149) left no public readout: no experiment_risks, no feedback_url, no hypotheses/metrics/participant denominator or findings - the ship-decision evidence is not independently auditable.",
+    "No second engine has implemented; Baseline is blocked and WebKit remains 'Needs position', so the feature launches with an unconfirmed cross-engine path for a new web-facing HTML attribute.",
+    "Adoption evidence is commitment-stage only (Fluent UI V3 'expected'); the polyfill has just 1 dependent and no verified production deployments, case studies, or public usage numbers exist.",
+    "Reference/docs gaps: no MDN or caniuse entry at launch; intent threads are not machine-readable."
+  ],
+  "counterfactuals": [
+    "Had the team published an OT readout (hypotheses, participant denominator, measured outcomes, contradictions), the M150 ship decision and any late spec refinements would be publicly defensible instead of unscored.",
+    "Had TAG/security/privacy reviews been resolved (or an explicit accepted-risk recorded) before M150 ship, the Chrome-only launch of a new web-facing attribute would carry materially less review risk.",
+    "Had WebKit's accessibility/venue position been formally updated to positive before ship, the Baseline path would be credible; instead the feature ships with no confirmed second implementation.",
+    "The earlier (2022-23) broad proposal would likely have stayed blocked on venue had the team not re-scoped to enumerated behavior tokens and moved incubation to WHATWG - the re-scope was load-bearing for the revival.",
+    "A production deployment or use-counter readout by ship would have converted adoption from unscored to evidence-backed; its absence leaves the strongest outcome dimension unknown."
+  ],
+  "skillImprovements": [
+    "Add a phase-05 (Experiment) eval gate: an Origin Trial may only be marked 'supported' when a readout (hypotheses, participant denominator, measured outcomes, limitations) is linked or explicitly marked missing; forbid marking experiment 'supported' on setup-status alone.",
+    "Add a wide-review/ship gate check that flags any feature shipping while tag_review_status, security_review_status, or privacy_review_status are 'Pending', requiring an explicit accepted-risk note before the release phase can be 'supported'.",
+    "Add an interop/Baseline regression eval for new web-facing attributes: require current Mozilla and WebKit position URLs with dates and a Baseline-path statement; treat 'No signal' as a flagged risk, never as neutral/positive.",
+    "Strengthen the adoption-evidence-ladder check to distinguish 'expected framework integration' from 'verified production deployment' and forbid promoting commitment to deployment without an attributable source.",
+    "Add a source-retrievability rule: capture Google Groups intent-thread content and JS-only dashboards (wpt.fyi, chromestatus.com) into the cached evidence or require a server-rendered fallback (e.g., chromestatuslite) before counting a phase as evidenced.",
+    "Add a misuse-risk lens for accessibility primitives: when independent a11y experts raise over-eager-misuse concerns, require a documented authoring-guidance/escape plan before scoring end-user impact as success."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Origin Trial readout: hypotheses, participant denominator, measured outcomes, and findings are not public (no experiment_risks, no origin_trial_feedback_url in the cached record; no published readout located).",
+      "Intent-to-Ship and Intent-to-Experiment thread contents could not be retrieved (Google Groups URLs failed the reader); ship rationale not independently auditable.",
+      "Usage data: kFocusgroup use counter exists but no public usage numbers, HTTP Archive / web-features adoption counts, or Chrome UX evidence located.",
+      "Verified production adoption: no case studies or confirmed deployments beyond Fluent UI V3 intent (commitment-stage).",
+      "Cross-engine WPT conformance: wpt.fyi dashboard is JS-only and returned no readable per-engine results.",
+      "Other-engine implementation: no Firefox or Safari implementation; Baseline blocked - confirmed indirectly, not via a direct web-features row read.",
+      "MDN/caniuse reference entries absent at launch."
+    ],
+    "reviewedAt": "2026-07-20T06:30:00Z"
+  }
+}

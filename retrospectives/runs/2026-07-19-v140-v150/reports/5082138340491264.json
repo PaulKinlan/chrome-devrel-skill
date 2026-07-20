@@ -1,0 +1,619 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5082138340491264,
+    "name": "Programmatic scroll promises",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5082138340491264",
+    "category": "JavaScript",
+    "blinkComponent": "Blink>Scroll",
+    "featureType": "Chromium catches up",
+    "ownerEmail": "mustaq@chromium.org",
+    "shippingMilestone": 150,
+    "platforms": [
+      "desktop",
+      "android",
+      "webview"
+    ],
+    "summary": "Makes Element/Window scroll methods (scroll, scrollTo, scrollBy, scrollIntoView) return Promises that resolve on scroll completion, with the resolved value indicating whether the scroll was interrupted."
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5082138340491264",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem is real, long-standing and recurring: developers cannot reliably know when a programmatic smooth-scroll has completed. The request dates to 2017 in CSSWG issue #1562, was formally resolved by the CSS WG in 2018 ('RESOLVED: add returning a promise to all scroll functions'), and has a Chromium tracking bug since 2018-08-08 (migrated from crbug 872341). The ChromeStatus entry, explainer and motivation articulate the same problem with concrete use cases (disable UI during scroll, highlight/focus after scroll, E2E test sequencing). Feature type is recorded as 'Chromium catches up' even though no engine had previously shipped it; this is a classification oddity rather than an intake defect.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S11"
+      ],
+      "limitations": "ChromeStatus record carries no feature_notes, measurement, adoption_expectation or availability_expectation; the intake documents the problem well but records no user-research or survey basis."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Standards-level incubation is solid: the design was debated and resolved in CSSWG (#1562, then the follow-up #12495), with developer support in the GitHub thread (multiple +1s and use cases: analytics after scroll, focus-after-scroll, parallax). The explainer states goals, non-goals and contrasts the scrollend-event alternative. However ecosystem/customer research is thin: no developer survey, no interview cohort, no adjacent-platform/native analysis, and the explainer's Stakeholder Feedback/Opposition section is 'TBD'. Demand is inferred from a standards thread plus later case-study evidence, not from a validated research instrument.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S5",
+        "S18"
+      ],
+      "limitations": "No documented user research, survey or representative-cohort evidence; 'why browser intervention' is asserted via the CSSWG resolution rather than independently validated."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A working implementation existed behind the runtime flag ProgrammaticScrollPromise (Element.idl June 2025, Window.idl July 2025) with a CodePen demo and WPT tests added February 2026. The implementation is substantial and includes deliberate code-health refactors and a dedicated scrollIntoView resolver. But there is no documented external developer trial, no friction log, no framework/server integration spike and no recruited cohort; prototype evidence is almost entirely internal CL history.",
+      "evidenceIds": [
+        "S11",
+        "S20",
+        "S23",
+        "S24",
+        "S26"
+      ],
+      "limitations": "No public developer-trial findings, integration evidence or representative-user testing; 'works behind a flag' is not the same as 'validated by representative developers'."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "The feature did not run a public developer trial or recruit a cohort. Rationale: it is a backward-compatible additive change (return type undefined->Promise with a never-reject design to preserve 'ignore the return value' callers), judged low-risk enough to ship via behind-flag implementation plus WPT rather than a public dev trial. 'Not-relevant' here means the phase was deliberately bypassed for a compat-safe addition; it is NOT an assertion that the design was untested (WPT and behind-flag builds were used).",
+      "evidenceIds": [
+        "S1",
+        "S9",
+        "S23",
+        "S24"
+      ],
+      "limitations": "Skipping a trial means early real-world feedback (which later surfaced a scrollIntoView correctness issue in stable) was not collected before launch."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Mixed but net-positive review state. WebKit formally supports (position: support label by 2026-04-09). A Mozilla engineer (emilio) reviewed and the spec PR #12355 was merged with Mozilla approval, but Mozilla's formal standards position is still open with no label ('No signal'). Web-developer signal is recorded as Positive via #1562. WPT coverage exists. Gaps: the TAG review (#1210, filed March 2026) is still 'Pending' with no TAG position, and the follow-up normative issue #12495 (how to mark completion vs interruption, and scrollIntoView multi-scroller interruption semantics) was still open and labeled 'Needs Edits'/'Needs Testcase' at ship time.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S3"
+      ],
+      "limitations": "'Support' position is not implementation; Mozilla 'No signal' is not neutral-positive; TAG review had not concluded; the normative detail other engines must implement was not yet final."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run. Rationale: the change is additive and backward-compatible (no behavior removal, no new permissions, no resource cost), so no field uncertainty was judged to require real-origin/user conditions. The Intent to Prototype lists no OT plan. 'Not-relevant' means an OT was not warranted for this compat-safe addition, not that real-origin behavior was validated.",
+      "evidenceIds": [
+        "S1",
+        "S9"
+      ],
+      "limitations": "Had an OT been used, the scrollIntoView multi-scroller resolution path could have been exercised on real sites before stable."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship posted 2026-03-31 received three LGTMs within a day (Alex Russell, Daniel Bratell, Dan Clark) by 2026-04-01. Spec PR merged, WPT coverage in place, Element/Window/scrollIntoView all implemented, Finch name set (ProgrammaticScrollPromise), rollout plan 'enabled for all users', breaking_change=false, enterprise_impact none. The enable CL landed on main and the team resolved a use-after-free (deferred promise resolution) before stable, including an M149-branch backport. Compat analysis is present and explicit (avoid rejection; one documented async-throw edge case).",
+      "evidenceIds": [
+        "S10",
+        "S11",
+        "S4",
+        "S20",
+        "S22",
+        "S24"
+      ],
+      "limitations": "Enablement assets were minimal at gate time (release-notes paragraph + CodePen); a milestone ambiguity (M149 backport vs ChromeStatus M150) was not reconciled in public materials."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped on schedule: Chrome 150 beta 2026-06-02, stable 2026-06-30, listed in the Chrome 150 release notes (DOM and HTML) with ChromeStatus and spec links. MDN per-method pages document the Promise return value and the 'interrupted' property, MDN browser-compat-data carries a Chrome 150 entry, and a caniuse page exists for the Window scroll promise subfeature. Default-enabled on desktop, Android and WebView (iOS null).",
+      "evidenceIds": [
+        "S12",
+        "S13",
+        "S14",
+        "S16",
+        "S17",
+        "S1"
+      ],
+      "limitations": "Communication was release-notes-level: no dedicated developer.chrome.com/web.dev deep-dive or official demo beyond the CodePen; caniuse extraction of exact version numbers was inconsistent across retrievals (Chrome 150 corroborated by four independent sources)."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Feature is only ~3 weeks past stable at the evidence cutoff, so durable adoption cannot be assessed. No public use-counter/usage data is available yet, and no framework, library or build-tool integration was found. The only substantive independent developer evidence is a July 2026 ICS MEDIA article that implements real use cases (table-of-contents highlight after scroll, guided tour, interruption handling) and a community MDN doc-report flagging the missing return-value documentation. No attributable production deployment evidence exists. Adoption must remain unknown; it must not be inferred from shipment or from one article.",
+      "evidenceIds": [
+        "S18",
+        "S15"
+      ],
+      "limitations": "No usage metrics, no framework integration, no partner/production case study with denominator; too early to score."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "The tracking bug is active and comprehensive and the team fixed a late UAF and built a dedicated scrollIntoView resolver (bug 399877341). However early external evidence shows quality friction: an independent developer reported in Chrome 150.0.7871.46 stable that scrollIntoView() resolves its Promise before scrolling has completed (the hardest multi-scroller case and the subject of the still-open spec issue #12495). Known edge cases include the async-throw regression for malformed scroll calls. No public support-issue dashboard or recurrence metrics are visible.",
+      "evidenceIds": [
+        "S11",
+        "S18",
+        "S21",
+        "S22",
+        "S23",
+        "S5"
+      ],
+      "limitations": "Support burden and recurrence are not yet measurable; one third-party report does not establish prevalence, but it confirms a real open correctness issue in the shipped version."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is an additive new capability, not a deprecation or removal: nothing is removed, no migration is required, and breaking_change is false with no enterprise impact. 'Not-relevant' means the phase does not apply to this launch; it is not used to evade scrutiny of the additive change.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "None material; the backward-compatible non-rejection design is what makes a deprecation phase inapplicable."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a real, recurring, multi-year developer problem (CSSWG-resolved in 2018) with a clean, ergonomic solution: `await element.scrollTo(...)` replaces fragile scrollend/setTimeout/IntersectionObserver workarounds that the ICS MEDIA case study confirms are error-prone (scrollend does not fire for no-op scrolls and fires per-scroller for scrollIntoView; setTimeout mistimes by distance). Use cases (disable UI during scroll, highlight/focus after scroll, router scroll-before-commit, E2E scroll-then-assert) are concrete and widely applicable.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S9",
+        "S18"
+      ],
+      "limitations": "No formal developer survey or user research underpins the demand; evidence is a standards thread plus one independent case study."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Benefit is indirect and developer-mediated: end users get more reliable, better-timed scroll-driven UX (highlights/focus land correctly, no setTimeout-induced jank) at no new permission, privacy or resource cost. The feature adds no end-user control. A gap is that the explainer carries no accessibility analysis even though smooth scrolling interacts with prefers-reduced-motion (under 'reduce', smooth scrolls become instant and the Promise resolves immediately); this interaction is unaudited and could matter for vestibular-sensitive users if developers rely on promise timing.",
+      "evidenceIds": [
+        "S2",
+        "S18",
+        "S14"
+      ],
+      "limitations": "No measured end-user impact; accessibility/reduced-motion angle was neither analyzed in the explainer nor tested publicly."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Too early to score: ~3 weeks past stable, no public usage data, no framework/library integration, no attributable production deployment. One independent developer article demonstrates experimentation. Per method, adoption must remain unscored rather than inferred from shipment, press sentiment, or the absence of criticism.",
+      "evidenceIds": [
+        "S18",
+        "S15"
+      ],
+      "limitations": "No usage metrics or production case studies with denominator exist at the cutoff."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards-aligned (CSSWG resolution, merged spec PR in cssom-view, Working Draft maturity) with positive vendor signals (WebKit support; Mozilla engineer approved the spec PR). WPT tests exist and are synced into Firefox's tree. BUT it shipped Chrome/Edge-only (150+) and is NOT Baseline: Firefox and Safari have not implemented it. The Firefox activity is test-only WPT sync (Bugzilla wpt-sync), not a feature implementation. The follow-up normative issue #12495 (completion-vs-interruption and scrollIntoView semantics) was still open ('Needs Edits') at ship, raising the risk that other engines implement divergent semantics. The 'Chromium catches up' feature-type label is misleading: Chrome is first, not catching up to another engine.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S7",
+        "S8",
+        "S12",
+        "S17",
+        "S25"
+      ],
+      "limitations": "'Support' position is not implementation; cross-engine behavioral interop is unproven because no second engine ships the feature."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Careful, compat-conscious core: non-rejection design preserves 'ignore the return value' callers, multiple code-health refactors, a dedicated scrollIntoView multi-scroller resolver, WPT coverage and three LGTMs. Against that: a use-after-free in promise resolution was caught and fixed only just before stable (and backported to the M149 branch), a known compat regression exists (malformed scroll calls now throw asynchronously rather than synchronously), and an independent developer reproduced a scrollIntoView premature-resolution bug in Chrome 150 stable. These are real late-stage defects in a shipped API.",
+      "evidenceIds": [
+        "S11",
+        "S21",
+        "S22",
+        "S23",
+        "S18"
+      ],
+      "limitations": "Prevalence of the scrollIntoView issue is unknown; memory-safety and correctness defects were addressed but indicate the scrollIntoView/multi-scroller path was under-exercised pre-ship."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Core narrative is coherent and consistent across ChromeStatus, explainer, Intent threads and spec. MDN/BCD/caniuse documentation landed at launch. However: the explainer is stale relative to the shipped API (it shows Promise<undefined>; the shipped value is an object with an 'interrupted' boolean) and has 'Stakeholder Feedback/Opposition: TBD' plus no security/privacy/accessibility sections; enablement is a release-notes paragraph plus a CodePen with no dedicated DevRel article; milestone ambiguity (M149 backport and third-party M149 citations vs ChromeStatus M150) was not reconciled publicly; and Mozilla's 'No signal' plus the open spec issue understate residual uncertainty in launch materials.",
+      "evidenceIds": [
+        "S2",
+        "S15",
+        "S18",
+        "S19",
+        "S5",
+        "S7",
+        "S13"
+      ],
+      "limitations": "No evidence of factually incorrect Chrome-authored claims, but the explainer drift and thin enablement lower communication quality for a newly-available, single-engine API."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Active maintenance via the tracking bug: the UAF was fixed (with branch backport) and the scrollIntoView path got a dedicated fix and tests. Early external friction is real but bounded (one independent report of scrollIntoView premature resolution in stable; one documented async-throw edge case). No public support dashboard or recurrence metrics yet, so burden cannot be quantified.",
+      "evidenceIds": [
+        "S11",
+        "S18",
+        "S21",
+        "S22",
+        "S23"
+      ],
+      "limitations": "Support health cannot be scored beyond 'issues exist and are being worked'; prevalence and resolution-time data are not public."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, standards-aligned, backward-compatible addition that shipped on schedule with MDN/caniuse docs and positive vendor signals. It is held to 'mixed' (not success) because: it is single-engine at launch (not Baseline, despite a misleading 'catches up' label); the spec's fulfillment-semantics detail was still open at ship; a late UAF and a residual scrollIntoView correctness bug reached stable; enablement/explainer quality is thin and partly stale; and adoption/usage cannot yet be assessed. Shipment, positive press and absence of loud criticism are not treated as success.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5",
+        "S11",
+        "S12",
+        "S18",
+        "S22"
+      ],
+      "limitations": "Overall reflects evidence at ~3 weeks post-stable; durable adoption and cross-engine interop remain unknown and would warrant a dated revision."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5082138340491264",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2026-06-08",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, Blink>Scroll component, finch name ProgrammaticScrollPromise, desktop/android/webview=150, iOS=null, breaking_change=false, enterprise_impact none, feature_type 'Chromium catches up', Mozilla No signal, WebKit Support, Web developers Positive, spec under development in WG, no origin trial/dev trial"
+      ],
+      "limitations": "accurate_as_of 2026-06-08; is_released=false and status 'Proposed' in the snapshot despite M150 ship, a known ChromeStatus staleness artifact."
+    },
+    {
+      "id": "S2",
+      "url": "https://github.com/explainers-by-googlers/promisify-scroll",
+      "publisher": "explainers-by-googlers (Google Blink Interactions Team)",
+      "publishedOrObservedAt": "2025-07-17",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Goals/non-goals/use cases, Promise-based design, non-rejection rationale, scrollend alternative rejected, CodePen sample"
+      ],
+      "limitations": "Explainer is stale vs shipped API: shows Promise<undefined> rather than the shipped {interrupted:boolean}; 'Stakeholder Feedback/Opposition: TBD'; no security/privacy/accessibility sections."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/w3c/csswg-drafts/issues/1562",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2018-05-22",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Original 2017 request, multi-year developer demand (analytics, focus-after-scroll, parallax), CSSWG resolution 'RESOLVED: add returning a promise to all scroll functions', Web-developer positive signal"
+      ],
+      "limitations": "Thread-level demand, not a validated survey; exact resolution date inferred from referenced comment id."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/csswg-drafts/pull/12355",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2025-11",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec change switching return types to Promise, merged; Mozilla (emilio) involvement/approval; evolved to dictionary value"
+      ],
+      "limitations": "PR evolved during review (undefined -> boolean -> dictionary); merged date approximate from commit references (Oct-Nov 2025)."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12495",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-03-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Follow-up normative open questions: completion-vs-interruption marking, same-scroller interruption scope, scrollIntoView multi-scroller semantics; labels 'Needs Edits'/'Needs Testcase (WPT)' as of 2026-03-16, i.e. still open at ship"
+      ],
+      "limitations": "Status is point-in-time; later resolution would warrant a dated revision."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1210",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": "2026-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG design-review request filed by CSSWG; references explainer, WPT, vendor issues; TAG review status Pending in ChromeStatus"
+      ],
+      "limitations": "No TAG position outcome found at cutoff; review requested by the WG rather than the feature team."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/mozilla/standards-positions/issues/1379",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": "2026-03-24",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla standards-position issue opened 2026-03-24, state open, no formal position label ('No signal'); references emilio as Mozillian input"
+      ],
+      "limitations": "No formal Mozilla position label; spec-PR approval by a Mozilla engineer is a separate, weaker signal than a position."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/WebKit/standards-positions/issues/639",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2026-04-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position label 'support' (created 2026-03-24, updated 2026-04-09); positive follow-up in CSSWG"
+      ],
+      "limitations": "'support' = conceptually good and worth prototyping; it is not a shipping commitment or implementation."
+    },
+    {
+      "id": "S9",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/CaXL0GJDxM4",
+      "publisher": "blink-dev (Google)",
+      "publishedOrObservedAt": "2025-06-10",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype 2025-06-10; motivation; Interop risk rationale; Gecko/WebKit 'No signal' at that time; Web developers Positive; no OT planned; tracking bug 41406914"
+      ],
+      "limitations": "Google Groups extraction can truncate; vendor signals are as of June 2025 (WebKit later moved to support)."
+    },
+    {
+      "id": "S10",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/tREfIy3hXh0",
+      "publisher": "blink-dev (Google)",
+      "publishedOrObservedAt": "2026-03-31",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship 2026-03-31; three LGTMs by 2026-04-01 (Alex Russell, Daniel Bratell, Dan Clark); WebKit Support, Mozilla No signal noted at ship"
+      ],
+      "limitations": "Google Groups extraction can truncate; thread also surfaced a mailing-list delivery complaint unrelated to the feature."
+    },
+    {
+      "id": "S11",
+      "url": "https://issues.chromium.org/41406914",
+      "publisher": "Chromium Issue Tracker (Google)",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug created 2018-08-08 (migrated from 872341), Status Fixed; full CL timeline: behind-flag Element.idl (2025-06-24) and Window.idl (2025-07-16), WPTs (2026-02-09), scrollBy/Window hookup (Feb-Mar 2026), dictionary resolution (2026-03-02), scrollIntoView resolver (2026-04-09), interruption exposure (2026-04-27), UAF fix (2026-05-06) + M149 backport (2026-05-07); async-throw regression noted in CL #17"
+      ],
+      "limitations": "Issue tracker extract is point-in-time and omits some private discussion; exact merge/branch mapping inferred."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable 2026-06-30; feature listed under DOM and HTML with ChromeStatus + spec links; default-enabled Android/ChromeOS/Linux/macOS/Windows"
+      ],
+      "limitations": "One-paragraph release-notes treatment; no dedicated deep-dive."
+    },
+    {
+      "id": "S13",
+      "url": "https://developer.chrome.com/blog/chrome-150-beta",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 beta 2026-06-02; beta-cycle timing"
+      ],
+      "limitations": "Beta blog; not feature-specific deep-dive."
+    },
+    {
+      "id": "S14",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo",
+      "publisher": "MDN Web Docs (Mozilla / community)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN documents Promise return value resolving to an object with 'interrupted' boolean for Element.scroll/scrollTo/scrollBy and Window equivalents; usage guidance tied to behavior:smooth"
+      ],
+      "limitations": "MDN pages are community-maintained and were updated around the Chrome 150 ship; no standalone landing page for the feature."
+    },
+    {
+      "id": "S15",
+      "url": "https://github.com/mdn/content/issues/43999",
+      "publisher": "MDN content (community)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Community report that return-value section omitted the Promise and requested a BCD subfeature; reporter cited 'Chrome/Edge 149' (milestone error)"
+      ],
+      "limitations": "Reporter's milestone claim (149) conflicts with authoritative M150 sources; issue date not captured."
+    },
+    {
+      "id": "S16",
+      "url": "https://github.com/mdn/browser-compat-data/commit/5395e1c984c63c034c7ded585034fa3231a3d3b7",
+      "publisher": "mdn/browser-compat-data",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "BCD commit 'Chrome 150 scroll methods return promises' adding the Promise subfeature"
+      ],
+      "limitations": "Commit timestamp not captured; reflects Chrome/Edge 150 only."
+    },
+    {
+      "id": "S17",
+      "url": "https://caniuse.com/mdn-api_window_scroll_returns_promise",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Dedicated caniuse page tracks the Promise-return subfeature; Chrome/Edge 150+ supported; Safari/Firefox not supported"
+      ],
+      "limitations": "Exact version numbers were extracted inconsistently across retrievals; Chrome 150 corroborated by S1/S12/S14/S16."
+    },
+    {
+      "id": "S18",
+      "url": "https://ics.media/en/entry/260702/",
+      "publisher": "ICS MEDIA",
+      "publishedOrObservedAt": "2026-07-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "Independent developer case study (guide tour, highlight-after-scroll, interruption handling via result.interrupted) replacing scrollend/setTimeout/IntersectionObserver; validates developer value; reports scrollIntoView() resolves its Promise before scrolling completes in Chrome 150.0.7871.46 / macOS 26.5.1 / MacBook Air M1 (2020); Chrome/Edge 150+ only as of July 2026"
+      ],
+      "limitations": "Single author/environment; prevalence of the scrollIntoView bug not established; one source."
+    },
+    {
+      "id": "S19",
+      "url": "https://byteiota.com/chrome-149-scroll-promise-css-gaps/",
+      "publisher": "byteiota",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Press coverage promoting the feature and use cases (router scroll, E2E tests, infinite scroll); cites Chrome 149 (erroneous milestone) and a resolved-value description that differs slightly from shipped {interrupted:boolean}"
+      ],
+      "limitations": "Milestone error (149 vs authoritative 150); partially repeats announcement framing; secondary, not independent primary evidence."
+    },
+    {
+      "id": "S20",
+      "url": "https://chromium.googlesource.com/chromium/src/+/50f3e3d0a9bc02aad8b8161dbdd59046991dd2c7",
+      "publisher": "Chromium source (Google)",
+      "publishedOrObservedAt": "2026-04",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "'Enable programmatic scroll promises' CL linking ChromeStatus and Intent to Ship; Fixed: 41406914"
+      ],
+      "limitations": "Enable-on-main CL; branch/milestone mapping inferred (M150 stable per S1/S12)."
+    },
+    {
+      "id": "S21",
+      "url": "https://chromium.googlesource.com/chromium/src/+/cd669ef9c5ed4ac818eb34b1dc59962bc2be947d",
+      "publisher": "Chromium source / WPT (Google)",
+      "publishedOrObservedAt": "2026-04-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "scrollIntoView promise-resolution CL (ActiveScrollTracker across multiple ScrollableAreas); Fixed bug 399877341; adds scrollIntoView WPT coverage incl. interruptions"
+      ],
+      "limitations": "Confirms scrollIntoView was the hard multi-scroller case requiring a dedicated fix; residual issue still reported in stable (S18)."
+    },
+    {
+      "id": "S22",
+      "url": "https://chromium.googlesource.com/chromium/src/+/7823183",
+      "publisher": "Chromium source (Google)",
+      "publishedOrObservedAt": "2026-05-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "UAF fix deferring promise resolution to a post-task (ProgrammaticScrollAnimator GC); M149-branch backport (refs/branch-heads/7827) on 2026-05-07"
+      ],
+      "limitations": "Existence of an M149 backport of this code contributed to public milestone ambiguity (S19/S15)."
+    },
+    {
+      "id": "S23",
+      "url": "https://chromium-review.googlesource.com/c/chromium/src/+/6318459",
+      "publisher": "Chromium Gerrit (Google)",
+      "publishedOrObservedAt": "2026-06-24",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Promisify element.idl behind flag ProgrammaticScrollPromise; documented exposed regression: malformed element.scroll*() no longer throws synchronously, returns a Promise that rejects asynchronously"
+      ],
+      "limitations": "Regression is an edge case; prevalence unknown."
+    },
+    {
+      "id": "S24",
+      "url": "https://chromium-review.googlesource.com/c/chromium/src/+/7552833",
+      "publisher": "Chromium Gerrit / WPT (Google)",
+      "publishedOrObservedAt": "2026-02-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT tests added (element/window scroll-promise tests; later scrollIntoView interruption tests via S21)"
+      ],
+      "limitations": "WPT results dashboard (wpt.fyi) not re-verified at cutoff."
+    },
+    {
+      "id": "S25",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2021518",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Mozilla wpt-sync of PR 58301 (window scroll promise tests) into mozilla-central, tracked fixed in firefox150 branch"
+      ],
+      "limitations": "This is a TEST-ONLY sync, NOT a Firefox feature implementation; must not be read as Firefox shipping the feature."
+    },
+    {
+      "id": "S26",
+      "url": "https://codepen.io/mustaqahmed/full/gbpmNOP",
+      "publisher": "CodePen (mustaqahmed)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Official sample/demo referenced by explainer and TAG review; demonstrates promise-based scroll"
+      ],
+      "limitations": "CodePen only; no richer official demo or dedicated DevRel article found."
+    },
+    {
+      "id": "S27",
+      "url": "https://webstatus.dev/?q=scroll%20methods%20return%20promise",
+      "publisher": "Web Platform Status",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "NOT USED for claims — recorded only to document an unreliable source"
+      ],
+      "limitations": "UNRELIABLE: reported Chrome/Edge/Firefox 130 and Safari 18, contradicting S1/S12/S14/S16/S17/S18; the feature is unmapped in the web-features registry (ChromeStatus web_feature 'Missing feature'), which causes webstatus.dev to misreport. Excluded from all findings."
+    }
+  ],
+  "successes": [
+    "Solved a real, multi-year, CSSWG-resolved developer problem (knowing when a smooth scroll completes) with a clean, ergonomic, awaitable API.",
+    "Backward-compatible by design: non-rejection of returned Promises preserves the large base of callers that ignore the return value.",
+    "Positive standards/vendor signals at ship: WebKit 'support', Mozilla spec-PR approval, merged cssom-view spec PR, WPT coverage.",
+    "Careful engineering on the hard parts: dedicated scrollIntoView multi-scroller resolver, and a late use-after-free caught and fixed (with branch backport) before broad exposure.",
+    "Documentation landed at launch: MDN per-method pages, BCD Chrome 150 entry, and a caniuse subfeature page; shipped on schedule (beta 2026-06-02, stable 2026-06-30)."
+  ],
+  "failures": [
+    "Shipped single-engine: Chrome/Edge only (150+); Firefox and Safari have not implemented, so the feature is NOT Baseline despite a misleading 'Chromium catches up' feature-type label.",
+    "Shipped with the spec's fulfillment-semantics detail still open: CSSWG #12495 (completion-vs-interruption marking and scrollIntoView multi-scroller interruption) was labeled 'Needs Edits'/'Needs Testcase' at ship, leaving normative ambiguity for other implementers.",
+    "A residual scrollIntoView correctness bug (Promise resolves before scroll completes) reached Chrome 150 stable and was independently reproduced by a developer.",
+    "A use-after-free in promise resolution and a synchronous-to-asynchronous throw compat regression indicate the scrollIntoView/multi-scroller path was under-exercised before ship.",
+    "Enablement and explainer quality are thin/partly stale: no dedicated DevRel article (release-notes paragraph + CodePen only), explainer still shows Promise<undefined> (shipped value is {interrupted:boolean}), and has no security/privacy/accessibility sections; public milestone ambiguity (M149 vs M150) was not reconciled."
+  ],
+  "counterfactuals": [
+    "If a small, deliberately-varied developer trial (or a real-origin exercise of scrollIntoView across nested scrollers) had preceded ship, the scrollIntoView premature-resolution bug reported in stable by ICS MEDIA would likely have been caught earlier.",
+    "If the follow-up spec issue #12495 (completion-vs-interruption and scrollIntoView semantics) had been fully resolved before ship, other engines would face lower implementation-divergence risk and might ship sooner, moving the feature toward Baseline faster.",
+    "If the explainer had carried security/privacy/accessibility sections and addressed the prefers-reduced-motion interaction (smooth->instant makes the Promise resolve immediately), the launch would have pre-empted an unaudited accessibility angle.",
+    "If a dedicated DevRel article plus an official demo (beyond CodePen) had shipped alongside the release notes, early developer understanding and credible adoption evidence would be stronger.",
+    "If milestone traceability had been enforced (reconciling the M149-branch backport and third-party M149 citations against ChromeStatus M150), the public confusion about which Chrome version first enabled the feature would not have occurred."
+  ],
+  "skillImprovements": [
+    "prepareToShip/release phase packets should require an explainer-vs-shipped-API reconciliation before launch; flag when an explainer shows a different resolved-value shape (here Promise<undefined> vs {interrupted:boolean}) or still says 'Stakeholder Feedback: TBD'.",
+    "wideReview module must distinguish a standards-position 'open/no-label' (Mozilla here) and a spec-PR approval from a formal position, and must never let WebKit 'support' + Mozilla spec-PR approval be reported as broad interop when no second engine has implemented.",
+    "Add an interop/Baseline rule: for features with no prior engine implementation, mark Baseline as Limited/Newly Available and do NOT inherit the base feature's Baseline status (the scroll-elements base feature is Widely Available; the Promise subfeature is not).",
+    "Add a regression-eval for additive return-type changes (undefined->Promise): surface the synchronous-to-asynchronous throw compat shift as a mandatory known-issue in launch comms and MDN.",
+    "Add a source-disambiguation eval: treat Mozilla/Firefox wpt-sync Bugzilla entries (test-only imports) as distinct from engine implementation, to avoid over-counting interoperability.",
+    "Release-comms asset threshold: any feature shipping to stable should have at least one dedicated DevRel article/official demo in addition to a release-notes paragraph; flag when only a CodePen + paragraph exist.",
+    "Add a milestone-traceability check to the release packet: when a stable-branch backport exists or third parties cite a milestone different from ChromeStatus, flag and reconcile before publishing release notes so I2S/ChromeStatus/release-notes agree.",
+    "Add an accessibility-lens prompt to the prototype/wide-review packets for any motion- or scroll-related API: explicitly analyze interaction with prefers-reduced-motion and document the result in the explainer."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Public usage/use-counter adoption data (feature ~3 weeks past stable; not yet available)",
+      "Framework/library/build-tool integration evidence (none found; likely too early)",
+      "Attributable production deployment case studies beyond one independent developer article",
+      "Other-engine (Firefox/Safari) implementation timing and whether they adopt the still-open #12495 semantics",
+      "TAG review outcome (#1210 was Pending at cutoff; no TAG position recorded)"
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

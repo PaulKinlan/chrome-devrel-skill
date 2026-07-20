@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5111997147512832,
+    "name": "CSS URL request modifiers",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5111997147512832",
+    "summary": "CSS url() functions accept optional request modifiers cross-origin(), integrity(), and referrer-policy() that control fetch behavior (CORS, SRI, referrer policy) for CSS-loaded resources.",
+    "spec": "https://drafts.csswg.org/css-values-5/#request-url-modifiers",
+    "blinkComponent": "Blink>CSS",
+    "featureType": "Chromium catches up",
+    "shippingMilestone": 150,
+    "safari": "Shipped cross-origin() and referrer-policy() in Safari 26.2 (2025-12-12); integrity() not shipped (behind flag)",
+    "firefox": "Not implemented (Bugzilla 2038424, NEW, unassigned, P3)",
+    "mozillaPosition": "No signal (standards-positions #1386, Needs proposed position)",
+    "starCount": 48
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5111997147512832",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2026-04-06 by jj@chromium.org) classifies the feature as 'Chromium catches up' (CSS), links css-values-5 spec 4.1.1, the Blink>CSS component, a tracking bug, and finch name CSSURLRequestModifiers. Motivation is stated as closing the gap between CSS and HTML resource loading; owner and devrel routing are set. Transition inputs are present.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4"
+      ],
+      "limitations": "'Initial public proposal' is 'No information provided' in the Intent to Prototype, so public incubation provenance is not captured."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The underlying problem is real and longstanding: a cross-origin/url modifier for CSS has been requested since at least csswg-drafts#1603 (2017) and #1481 (shapes CORS), and CSS resource loading lacked parity with HTML's crossorigin/integrity/referrerpolicy. However there is no documented developer-demand research, use-case interviews, or co-design; ChromeStatus records web_dev_views as 'No signals'. Motivation rests on a theoretical parity argument rather than measured demand.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s16"
+      ],
+      "limitations": "No evidence ledger of alternatives/adjacent-platform research or attributable developer demand."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A Chromium implementation exists behind finch CSSURLRequestModifiers, targeting all six Blink platforms (Intent to Ship: 'supported on all six Blink platforms? Yes'). The spec test list and WPT (css/css-values/urls) include parsing/serialization/computed/invalid tests plus network-level cross-origin, integrity, and referrer-policy .sub.html tests (with negative cases) across fonts, images, image-set, @import, and SVG filters. The cached AI test eval (2026-05-27) previously flagged missing network-fetch tests; the current spec test list shows such tests now exist.",
+      "evidenceIds": [
+        "s2",
+        "s17",
+        "s4"
+      ],
+      "limitations": "No public task-based samples/demos (sample_links empty) and no documented friction logs or framework-integration spikes."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No Chromium developer trial or origin trial was conducted (no 'In developer trial' event, devtrial_instructions null, origintrial false); the feature relied on Safari's prior shipment (Safari 26.2, 2025-12-12) and WPT for validation. Rationale for not-relevant: the developer-trials phase was not entered for this launch. This must NOT be read as the phase's questions (does the design solve realistic tasks; which problems appear in use) being unnecessary or answered - they were not addressed via any Chromium developer-feedback loop.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "No representative-developer feedback exists for the Chromium implementation; the absence is a process gap, not evidence of low risk."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Review surfaced a genuine, unresolved interop gap. In the Intent to Ship thread (2026-04-28/29) Dan Clark (Edge) noted Safari ships only cross-origin()+referrer-policy(), not integrity(), and asked for a WebKit position on integrity(); Yoav Weiss gave 'LGTM1 conditional on filing a non-blocking WebKit position on integrity()'; the owner replied 'not sure why it's not shipped'. A WebKit standards-position request (#656) was subsequently filed for integrity(). Mozilla's standards-position (#1386) remains 'Needs proposed position' (No signal). TAG review is 'Not applicable' (defensible for in-WG CSS). The spec itself is flagged 'early exploration phase, major breaking changes expected' with open normative issues csswg-drafts#12151 (duplicate modifier handling) and #13859 (modifier precedence).",
+      "evidenceIds": [
+        "s4",
+        "s7",
+        "s8",
+        "s9",
+        "s11",
+        "s12",
+        "s2",
+        "s14",
+        "s15"
+      ],
+      "limitations": "ChromeStatus records security_review_status and privacy_review_status as 'Pending' (as of 2026-06-09), so formal cross-functional review outcomes are not evidenced as complete."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run (no OT events, ot fields null, origintrial false). Rationale: a field experiment was treated as unnecessary for a parser/fetch-behavior CSS feature catching up to a Safari-shipped, WPT-covered capability; no field-condition hypothesis was stated. Not-relevant because the experiment phase was not entered - not because field risk was tested and found absent.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No real-origin compatibility, third-party-embedding, or production-fetch data was gathered."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship filed 2026-04-25; rollout 'ship enabled for all users' across all six Blink platforms behind finch CSSURLRequestModifiers; WPT linked. However the ship slipped one milestone (Intent estimated 149; final record/manifest = 150). Multiple Intent fields are blank: 'Initial public proposal', 'TAG review', 'Debuggability', 'Risks', and 'Anticipated spec changes' are all 'No information provided' despite the spec being explicitly unstable. Formal security/privacy reviews show 'Pending'.",
+      "evidenceIds": [
+        "s4",
+        "s1",
+        "s17",
+        "s2"
+      ],
+      "limitations": "The accepted-risk ledger is undocumented; no rollback/monitoring triggers or migration guidance captured."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Shipped enabled by default in M150 on desktop, Android, and WebView (manifest event; caniuse confirms Chrome 150 supported for cross-origin(), referrer-policy(), and integrity()). However DevRel/launch substance is thin: ChromeStatus doc_links and sample_links are empty, announcement_url is null, is_releasenotes_content_reviewed=false and is_releasenotes_publish_ready=false. The canonical MDN url() reference page (modified 2026-07-16) still describes <url-modifier> as 'not supported and not fully defined in the specification' - reference docs lag shipment. No web.dev article surfaced.",
+      "evidenceIds": [
+        "s1",
+        "s11",
+        "s12",
+        "s13"
+      ],
+      "limitations": "No launch narrative, samples, FAQ, or updated reference docs evidenced at ship."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early and no data. ChromeStatus links no use counter (webdx_usecounter_enum null, only a wpt_descr); web_dev_views 'No signals'. caniuse shows cross-origin()/integrity() supported from Chrome 150 and cross-origin() in Safari 26.2, but no adoption metrics. No framework/library integration or case studies found.",
+      "evidenceIds": [
+        "s1",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Feature is days/weeks old in Chrome; durable adoption cannot be scored."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support issues, known regressions, or migration friction evidence found; the Chromium tracking bug (issues.chromium.org/435625756) returned HTTP 500 and could not be inspected.",
+      "evidenceIds": [
+        "s20"
+      ],
+      "limitations": "Too early and the primary implementation/issue tracker was inaccessible, so support burden is unknown."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Additive CSS capability; unsupported url modifiers are ignored per the CSS grammar (resources still load), giving a natural progressive-enhancement fallback. No removal or migration path applies. Rationale: deprecation/removal is not applicable to a new additive feature with graceful degradation.",
+      "evidenceIds": [
+        "s2"
+      ],
+      "limitations": "None; feature is additive with built-in fallback."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Real but narrow value: closes a longstanding gap (csswg-drafts#1603, 2017) by giving authors inline control of CORS, SRI, and referrer policy for CSS-loaded images/fonts/imports/svg-filters, bringing CSS toward HTML resource-loading parity. integrity() for CSS resources was previously unachievable. However cross-origin/referrer-policy were partly reachable via Referrer-Policy headers and HTML crossorigin for some resources, and there is no demonstrated developer demand (web_dev 'No signals').",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s16"
+      ],
+      "limitations": "Value is author-facing and partly substitutable for 2/3 modifiers; no demand evidence."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Indirect and author-mediated: referrer-policy() reduces cross-origin Referer leakage and integrity() adds supply-chain protection for CSS-loaded subresources, with no identified accessibility, performance, or resource-cost regression. But there is no measured end-user benefit and no direct UX change.",
+      "evidenceIds": [
+        "s2",
+        "s1"
+      ],
+      "limitations": "Benefit depends on author adoption; no user-impact evidence collected."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No usage, partner, framework, or case-study evidence; the feature just shipped in Chrome and is months old in Safari with no public adoption metrics.",
+      "evidenceIds": [
+        "s1",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Cannot score; remains unknown per method (missing usage stays unknown, not inferred from shipment)."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "2/3 modifiers reach Chrome+Safari interop (cross-origin() and referrer-policy() in Chrome 150 and Safari 26.2+), but integrity() is Chrome-only - not in Safari through 26.5/TP (behind a flag) and not in Firefox at all (Bugzilla 2038424 NEW, unassigned, P3). Mozilla has no standards position (#1386 'Needs proposed position'). The normative spec is explicitly 'early exploration, major breaking changes expected' with open issues csswg-drafts#12151 (duplicate modifiers) and #13859 (precedence) that could force non-backward-compatible changes. The integrity() gap was raised during Intent-to-Ship review and acknowledged but not resolved before ship.",
+      "evidenceIds": [
+        "s11",
+        "s12",
+        "s9",
+        "s4",
+        "s8",
+        "s7",
+        "s10",
+        "s2",
+        "s14",
+        "s15"
+      ],
+      "limitations": "Only Chrome-family and Safari signals available; Baseline status not yet established; Firefox timeline unknown."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Chromium ships all six Blink platforms with comprehensive WPT coverage (parsing, serialization, computed, invalid, plus network-level cross-origin/integrity/referrer-policy tests across fonts/images/image-set/@import/SVG-filters with negative cases). The implementation needs no //chrome code and is finch-gated (CSSURLRequestModifiers) for rollback. However it is built against an explicitly unstable spec, the cached AI test eval (2026-05-27) previously flagged missing network-fetch tests (since added), and the tracking bug was inaccessible so regressions cannot be verified.",
+      "evidenceIds": [
+        "s2",
+        "s17",
+        "s4",
+        "s20"
+      ],
+      "limitations": "Cannot inspect Chromium bug/regression history; spec instability means behavior may shift."
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "Communication and evidence are thin and largely inherited. Intent threads leave Debuggability, Risks, Anticipated spec changes, TAG review, and Initial public proposal as 'No information provided'; motivation is a one-line parity argument. ChromeStatus has empty doc/sample links, no announcement, and release notes not content-reviewed; MDN's canonical url() page still says modifiers are 'not supported'. The one strong practice: the Intent-to-Ship review did surface the integrity() interop gap and triggered a WebKit position filing (#656).",
+      "evidenceIds": [
+        "s3",
+        "s4",
+        "s1",
+        "s13"
+      ],
+      "limitations": "No DevRel content; reference docs lag ship; accepted risks undocumented."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support-issue, regression, or friction evidence; Chromium tracking bug inaccessible (HTTP 500).",
+      "evidenceIds": [
+        "s20"
+      ],
+      "limitations": "Too early and primary tracker unavailable; support burden unknown."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Ships a genuinely useful, longstanding-requested CSS capability with solid Chromium implementation/tests, and 2/3 modifiers reach Chrome+Safari interop. But it ships (a) against an explicitly unstable 'early exploration' spec with open normative issues; (b) with integrity() Chrome-only (a known, review-surfaced, unresolved interop gap); (c) with Firefox at 0/3 and no Mozilla position; (d) with thin DevRel docs/samples and MDN not yet updated; and (e) with no Chromium developer trial and formal reviews showing 'Pending'. Overall is mixed - not a failure (real capability, good tests, partial interop) and not a success (Chrome-only sub-feature, unstable spec, weak launch evidence).",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4",
+        "s9",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Adoption and support cannot be scored; post-ship outcomes not yet observable."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5111997147512832",
+      "publisher": "Google Chrome Platform Status",
+      "publishedOrObservedAt": "2026-06-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record, motivation, spec link, stages, finch name, web_dev_views 'No signals', security/privacy review 'Pending', empty doc/sample links, ai_test_eval_report"
+      ],
+      "limitations": "Cached record accurate_as_of 2026-06-09; later edits not reflected."
+    },
+    {
+      "id": "s2",
+      "url": "https://drafts.csswg.org/css-values-5/#request-url-modifiers",
+      "publisher": "W3C CSS Working Group (Editor's Draft)",
+      "publishedOrObservedAt": "2026-07-17",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Defines cross-origin(), integrity(), referrer-policy() modifiers and URL request modifier steps; explicit 'early exploration phase, major breaking changes expected' banner; extensive WPT test list"
+      ],
+      "limitations": "Editor's Draft, not a published W3C Recommendation; unstable and may change."
+    },
+    {
+      "id": "s3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/sw9EeY2vA_w",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-04-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: motivation, Blink>CSS, 'Initial public proposal: No information provided', 'Goals for experimentation: None'"
+      ],
+      "limitations": "Structured fields only; no discussion replies captured."
+    },
+    {
+      "id": "s4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/EKkOr6M6A8g",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-04-25",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship: ship all users, all six Blink platforms, finch CSSURLRequestModifiers, WPT link, estimated milestones 149 (slipped to 150); Dan Clark flagged integrity() interop gap; Yoav Weiss LGTM1 conditional on filing non-blocking WebKit position on integrity(); owner 'not sure why it's not shipped'; blank Debuggability/Risks/Anticipated spec changes/TAG review fields"
+      ],
+      "limitations": "Later replies (Mike Taylor, Chris Harrelson) captured as presence only, not full content; LGTM tally not fully verified."
+    },
+    {
+      "id": "s5",
+      "url": "https://developer.apple.com/documentation/safari-release-notes/safari-26_2-release-notes",
+      "publisher": "Apple Developer",
+      "publishedOrObservedAt": "2025-12-12",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Safari 26.2 'Added support for cross-origin() and referrer-policy() CSS URL modifiers' (155625162); integrity() NOT listed"
+      ],
+      "limitations": "Reader returned page metadata; release-note line confirmed via Mozilla issue #1386 quote."
+    },
+    {
+      "id": "s6",
+      "url": "https://webkit.org/blog/17640/webkit-features-for-safari-26-2/",
+      "publisher": "WebKit / Apple",
+      "publishedOrObservedAt": "2025-12-12",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "WebKit announcement: Safari 26.2 adds cross-origin() and referrer-policy() CSS URL modifiers to control CORS and referrer behavior directly in CSS; no mention of integrity()"
+      ],
+      "limitations": "Vendor announcement; not independent third-party coverage."
+    },
+    {
+      "id": "s7",
+      "url": "https://github.com/mozilla/standards-positions/issues/1386",
+      "publisher": "Mozilla standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-04-08",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position request for Request URL Modifiers; project status 'Needs proposed position' (= No signal); references Bugzilla 2038424, web-features #3930, Safari 26.2 cross-origin/referrer-policy only"
+      ],
+      "limitations": "No Mozilla position yet; issue still open."
+    },
+    {
+      "id": "s8",
+      "url": "https://github.com/WebKit/standards-positions/issues/656",
+      "publisher": "WebKit standards-positions (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit standards-position request specifically for integrity() CSS URL request modifier, filed in response to the Intent-to-Ship review"
+      ],
+      "limitations": "Observed via search result summary; position outcome and exact date not captured."
+    },
+    {
+      "id": "s9",
+      "url": "https://github.com/web-platform-dx/web-features/issues/3930",
+      "publisher": "web-platform-dx/web-features (GitHub)",
+      "publishedOrObservedAt": "2026-04-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "web-features/Baseline feature-entry request: 'Safari/WebKit: Shipped (cross-origin and referrer-policy; integrity gated behind separate flag); Chromium: Shipping in M150; Firefox: Not implemented'"
+      ],
+      "limitations": "Feature-entry tracking issue; not a normative spec or compat-data source."
+    },
+    {
+      "id": "s10",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2038424",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2026-06-12",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox '[css-values] Implement url request modifiers': NEW, unassigned, P3, enhancement, dev-doc-needed; blocks 4 bugs, depends on 3 WPT bugs (filed by James Graham)"
+      ],
+      "limitations": "No assignee or target release; reflects low current priority."
+    },
+    {
+      "id": "s11",
+      "url": "https://caniuse.com/wf-url-cross-origin",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "cross-origin() for url(): Chrome 150 supported, Safari 26.2+ supported, Firefox not supported (through 155); Chrome for Android / Android 150 supported"
+      ],
+      "limitations": "Compat table observed at retrieval; may update."
+    },
+    {
+      "id": "s12",
+      "url": "https://caniuse.com/wf-url-integrity",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "integrity() for url(): Chrome 150 supported; Safari NOT supported (through 26.5/TP); Firefox not supported - i.e., integrity() is Chrome-family only at ship"
+      ],
+      "limitations": "Compat table observed at retrieval; may update."
+    },
+    {
+      "id": "s13",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/url_function",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026-07-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Canonical MDN url() reference still describes <url-modifier> as 'In the future... This is not supported and not fully defined in the specification' - reference docs lag Chrome 150 shipment"
+      ],
+      "limitations": "MDN page may be updated after observation."
+    },
+    {
+      "id": "s14",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12151",
+      "publisher": "W3C CSSWG drafts (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Open spec issue: spec does not define rejection of duplicate <request-url-modifier> while a WPT test requires it - normative ambiguity with interop risk"
+      ],
+      "limitations": "Observed via search; resolution status/date not captured."
+    },
+    {
+      "id": "s15",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13859",
+      "publisher": "W3C CSSWG drafts (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Open spec issue: precedence of URL request modifiers over the fetch-a-style-resource algorithm - unresolved normative question"
+      ],
+      "limitations": "Observed via search; resolution status/date not captured."
+    },
+    {
+      "id": "s16",
+      "url": "https://github.com/w3c/csswg-drafts/issues/1603",
+      "publisher": "W3C CSSWG drafts (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Historical (circa 2017) request to define crossorigin/preload/async URL modifiers for url() - demonstrates longstanding developer demand for cross-origin CSS url modifiers"
+      ],
+      "limitations": "Date inferred from search context; exact open/closed status not verified."
+    },
+    {
+      "id": "s17",
+      "url": "https://wpt.fyi/results/css/css-values/urls",
+      "publisher": "Web Platform Tests (wpt.fyi)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT location for css/css-values/urls containing the url-request-modifiers tests referenced by the spec"
+      ],
+      "limitations": "Per-test pass/fail matrix across engines not directly captured in this retrieval."
+    },
+    {
+      "id": "s18",
+      "url": "https://github.com/csstree/csstree/issues/197",
+      "publisher": "csstree (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Third-party CSS parser (csstree) tracking support for url() modifiers - evidence that authoring/tooling ecosystem needs to update to handle the syntax"
+      ],
+      "limitations": "Single tooling data point; not representative of framework adoption."
+    },
+    {
+      "id": "s20",
+      "url": "https://issues.chromium.org/issues/435625756",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Listed Chromium tracking bug for CSS URL request modifiers"
+      ],
+      "limitations": "Page returned HTTP 500 at retrieval; implementation/regression details and linked reviews could NOT be inspected."
+    }
+  ],
+  "successes": [
+    "cross-origin() and referrer-policy() reached Chrome (M150) plus Safari (26.2) interop with comprehensive cross-platform WPT coverage (parsing and network-level), validating the shared implementation.",
+    "The Intent-to-Ship review surfaced the integrity() interop gap (Dan Clark/Edge) and produced a conditional LGTM plus a filed WebKit standards-position request (#656) - effective cross-engine review hygiene.",
+    "Ships to all six Blink platforms behind a named finch (CSSURLRequestModifiers) with no //chrome code required, enabling clean rollback, alongside an extensive aligned WPT suite."
+  ],
+  "failures": [
+    "integrity() shipped Chrome-only despite a known, review-raised interop gap that was acknowledged but not resolved ('not sure why it's not shipped'); it remains absent from Safari through 26.5/TP and from Firefox entirely.",
+    "Shipped against an explicitly unstable spec (css-values-5 'early exploration, major breaking changes expected') with open normative issues (csswg-drafts#12151 duplicate modifiers, #13859 precedence) that risk non-backward-compatible changes after deployment.",
+    "Launch evidence/communication is thin: Intent risk/debuggability/spec-change fields blank; ChromeStatus doc/sample links empty; MDN canonical url() page still says modifiers 'not supported'; no web.dev article; release notes not content-reviewed; no Chromium developer trial; formal security/privacy reviews 'Pending'."
+  ],
+  "counterfactuals": [
+    "If Chrome had staged integrity() separately (shipping only cross-origin()+referrer-policy() to match Safari) or shipped it behind a flag, it would have avoided a Chrome-only sub-feature against an unstable spec; the conditional LGTM1 shows this was a live option.",
+    "If a Chromium developer trial or short origin trial had run, real-author interactions (with crossorigin HTML attributes, Referrer-Policy headers, Service Workers, and CSP) would have been tested before stable - currently unknown.",
+    "If csswg-drafts#12151 and #13859 had been resolved pre-ship, the risk of a normative change forcing a non-backward-compatible behavior change after deployment would be lower.",
+    "If DevRel had shipped MDN updates plus a web.dev article and samples at launch, developer discoverability and correct usage would be materially better than the current empty-links / 'not supported' state."
+  ],
+  "skillImprovements": [
+    "Add a wide-review/prepare-to-ship rule: for any multi-sub-feature capability where another engine has shipped only a subset, require an explicit per-sub-feature interop matrix and a documented ship-all-vs-stage decision before Intent to Ship; treat Chrome-only sub-features as launch-changing risk, not a footnote.",
+    "Add a 'spec maturity gate' to prepare-to-ship: when the normative spec carries an explicit instability banner ('early exploration / major breaking changes expected') AND has open normative issues, the transition packet must enumerate each open issue's compat risk and mitigation before ship.",
+    "Add a DevRel launch-completeness check to release: do not mark release complete when doc_links/sample_links are empty, the MDN canonical reference still describes the feature as unsupported, and is_releasenotes_content_reviewed=false - even for 'catch-up' features.",
+    "Add a rule that Mozilla 'No signal'/'Needs proposed position' plus an unassigned P3 Firefox implementation bug must appear in launch materials as an explicit interop limitation, never omitted.",
+    "Add a retrospective regression eval built on a 'catch-up' CSS feature that ships a Chrome-only sub-feature against an unstable spec with blank intent risk-fields, to verify reviewers score interoperability and evidence-and-communication as mixed/failure rather than success-from-shipment."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chromium tracking bug contents (issues.chromium.org/435625756 returned HTTP 500); implementation/regression history and any post-ship issues unverifiable.",
+      "Full Intent-to-Ship LGTM tally and Chrome API-owner approvals (later replies by Dan Clark, Mike Taylor, Chris Harrelson captured only as presence, not content).",
+      "Formal security and privacy review outcomes (ChromeStatus shows both 'Pending' as of 2026-06-09).",
+      "Post-ship usage / use-counter / adoption data (no use counter linked; feature just shipped).",
+      "Post-ship support issues and migration friction (too early; none found)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

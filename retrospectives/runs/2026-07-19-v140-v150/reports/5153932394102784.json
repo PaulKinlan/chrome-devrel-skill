@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5153932394102784,
+    "name": "named-feature() function for CSS @supports",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5153932394102784",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owner": "dbaron@chromium.org",
+    "finchName": "CSSSupportsNamedFeatureFunction",
+    "specUrl": "https://drafts.csswg.org/css-conditional-5/#typedef-supports-named-feature-fn",
+    "webFeature": "Missing feature",
+    "isOfficialWebFeature": false
+  },
+  "launchEvents": [
+    {
+      "eventId": "146:In developer trial (Behind a flag):5153932394102784",
+      "milestone": 146,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "150:Enabled by default:5153932394102784",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T21:35:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Well-classified new additive CSS feature-detection primitive (category CSS, Blink>CSS), owned by L. David Baron (Google), who is also a CSS-Conditional-5 co-editor. The ChromeStatus record is fully populated with explainer, spec, TAG/vendor-position links, tracking bug, WPT reference, motivation, and availability/adoption expectations. Mode (new feature), lifecycle stage, problem statement, and public evidence boundary are all unambiguous.",
+      "evidenceIds": [
+        "cs",
+        "explainer",
+        "spec"
+      ],
+      "limitations": "ChromeStatus star_count (59) is a tracking-star proxy, not demand evidence; web_feature is 'Missing feature' so no UseCounter enum is wired."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Multi-year, attributable developer demand underpins this. CSSWG issue #3559 (opened 2019-01-26 by rachelandrew, 53 upvotes) documents authors being unable to feature-detect contextual/partial CSS support (e.g. gap in flexbox). The CSSWG resolved on the named-feature() mechanism and the function name (Issue #9875, minutes 2024-07-17). Alternatives (a combinatorial 'with' syntax) were considered and rejected with stated rationale (infeasible millions of combinations). Ongoing demand for more named features (#13677 sticky-per-axis, #13678 anchor transforms) validates the design space.",
+      "evidenceIds": [
+        "csswg3559",
+        "csswg-minutes",
+        "explainer",
+        "csswg-demand"
+      ],
+      "limitations": "Full comment threads of #3559/#9875 were not read; demand is qualitative (reactions + issues), not quantified usage."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Explainer (Jan 2026) and a Working-Draft spec exist; implementation shipped behind a flag at M146. However ChromeStatus carries no prototype/demo/sample links (sample_links and doc_links empty, devtrial_instructions null) and no public integration or friction findings are visible. The design is intentionally simple (parse-time CSS feature detection), so limited prototype artefacts are partly proportionate, but no canonical runnable example was surfaced.",
+      "evidenceIds": [
+        "cs",
+        "explainer",
+        "spec"
+      ],
+      "limitations": "No public code sample/demo or friction report located; implementation-detail evidence limited."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial ran at M146 (desktop + Android, behind flag) per the manifest launch event and ChromeStatus stage 130. But devtrial_instructions is null and there is no public cohort, feedback instrument, attributable findings, or task-completion record. For a low-risk parse-time primitive a trial is lower-stakes, yet no attributable developer-trial evidence exists in the public record.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No trial recruitment, methodology, or feedback artefacts retrievable; possible the trial was light by design but this is unverified."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG review requested 2026-01-15, resolving 'satisfied with concerns' (ChromeStatus records tag_review_status 'Issues addressed'). Mozilla position is 'Positive'; WebKit is 'No signal' (honestly not converted to support). Positions are captured with dates. Known unresolved concern: some stakeholders still want a general combinatorial feature-detection mechanism. Caveat: in the cached record (2026-05-27, ~1 month before stable) security_review_status and privacy_review_status were both still 'Pending'; the explainer states no known privacy/security considerations, so this reads as a bookkeeping lag, but the formal gates were not marked complete.",
+      "evidenceIds": [
+        "tag",
+        "mozilla",
+        "webkit",
+        "cs",
+        "explainer"
+      ],
+      "limitations": "Mozilla/WebKit issue bodies/comments not retrievable (only description + nav chrome); positions confirmed via ChromeStatus and the Mozilla positions index. Security/privacy 'Pending' status may have resolved by stable but is unverified."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run (no OT stage data; manifest contains no Origin Trial event; origintrial=false). Rationale: this is a low-risk pure parse-time CSS feature-detection primitive with no new network, permissions, or state surface, and no field uncertainty an OT would resolve. The recorded availability/adoption uncertainties concern other-engine implementation and downstream feature uptake, not field behaviour. 'Not-relevant' here means an OT was not warranted, not that experimentation was skipped unexamined.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "N/A by design; absence of an OT is appropriate for this primitive."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Prototype (stage 120) and Intent to Ship (stage 160) threads exist per ChromeStatus with explicit msgid links, but their content could not be retrieved (Google Groups msgid URLs were rejected by the reader and are unverified). Security/privacy review were still 'Pending' at cache (2026-05-27). The spec shipped at Working-Draft maturity with two named features (anchor-position-follows-transforms, single-axis-scroll-container), having expanded from the 'single supported feature' stated in the cached motivation text - a minor staleness, not a defect. The feature shipped cleanly per the release notes.",
+      "evidenceIds": [
+        "cs",
+        "spec",
+        "relnotes"
+      ],
+      "limitations": "Intent-thread contents and the tracking bug (#353715317) unreadable; review-gate final states at stable unverified."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled-by-default in Chrome 150 stable (desktop, Android, WebView; stable date 2026-06-30). Release notes describe it accurately and link the tracking bug (#353715317) and spec. Independent coverage (Bramus!, Gigazine) corroborates the ship. Both launch events are retained (M146 dev trial, M150 ship). Note: the cached ChromeStatus (2026-05-27) still showed status 'Proposed'/is_released=false because it predates stable; the manifest plus release notes confirm the actual ship outcome.",
+      "evidenceIds": [
+        "relnotes",
+        "cs",
+        "gigazine",
+        "bramus"
+      ],
+      "limitations": "Release-notes description is brief (one paragraph); no dedicated launch article/blog located for this specific primitive."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early for usage/adoption telemetry (shipped 2026-06-30; no UseCounter, HTTP Archive, or production data accessible; star_count is a tracking-star proxy). Positive leading indicators exist: the mechanism is immediately a hard dependency for shipping single-axis scroll containers (named-feature(single-axis-scroll-container)) and there is ongoing community demand for additional named features. But there is no durable production adoption yet, so adoption cannot be scored.",
+      "evidenceIds": [
+        "bramus",
+        "csswg-demand",
+        "cs"
+      ],
+      "limitations": "No usage telemetry or attributable production-deployment evidence available in this window."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Feature is brand new; no public support issues, regressions, or troubleshooting evidence exists yet. Inherent support risk is low (parse-time, gracefully ignored by unsupported UAs via CSS parse rules). 'Unknown' denotes absence of evidence, not a claim of low burden.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No support-channel or issue-tracker data accessible for this primitive."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive CSS primitive; no removal, migration, reverse trial, or transition is involved. Rationale: deprecation/removal does not apply to this feature's lifecycle.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "N/A."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a real, long-standing, multi-year, well-evidenced developer problem - detecting contextual/partial CSS support that @supports' general mechanisms cannot express (CSSWG #3559 since 2019; 53 upvotes; ongoing demand #13677/#13678). It is immediately useful as the detection path for shipping other features (single-axis scroll containers), which is exactly its stated design intent.",
+      "evidenceIds": [
+        "csswg3559",
+        "csswg-demand",
+        "bramus",
+        "explainer"
+      ],
+      "limitations": "Demand is qualitative (issue reactions), not usage-quantified; benefit is realised only when authors adopt the primitive."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Impact is indirect by design: the primitive lets authors write better progressive-enhancement/fallbacks for OTHER features, improving user experience only when authors adopt it and the underlying features are used. No measurable end-user evidence exists; the benefit is a coherent theory, not a measured outcome, and is contingent on downstream adoption.",
+      "evidenceIds": [
+        "explainer",
+        "spec"
+      ],
+      "limitations": "No end-user measurement possible for a meta feature-detection primitive; theory of benefit is sound but unquantified."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Shipped 2026-06-30; no usage, telemetry, or production-adoption data is accessible. Positive leading indicators (hard dependency for single-axis scroll containers; ongoing community demand for more named features) exist but no durable adoption has occurred yet, so adoption cannot be scored as success.",
+      "evidenceIds": [
+        "bramus",
+        "csswg-demand"
+      ],
+      "limitations": "Too early; star_count is a tracking proxy, not adoption."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards trajectory is healthy - CSSWG-resolved mechanism/naming, a Working-Draft spec, Mozilla 'Positive', TAG 'satisfied with concerns'. But there is zero cross-engine implementation at ship: named-feature() is Chrome/Chromium-only, and the two named features it detects (anchor-position-follows-transforms, single-axis-scroll-container) are themselves Chrome-only behaviour changes. WebKit is 'No signal'. ChromeStatus availability_expectation candidly notes 'no concrete signs' of other engines implementing. Baseline is not achievable from a single engine.",
+      "evidenceIds": [
+        "tag",
+        "mozilla",
+        "webkit",
+        "spec",
+        "cs",
+        "csswg-minutes"
+      ],
+      "limitations": "Other-engine positions may move; current state is single-engine for both the primitive and the behaviours it detects."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Shipped cleanly in M150 with a WPT test (at-supports-named-feature-001.html; wpt=true) and no reported regressions in accessible evidence; it is a graceful no-op in unsupported UAs by CSS parse rules. Evidence gap: the tracking bug (#353715317) and Intent threads were unreadable, so implementation-detail, test pass-rate, and review-discussion evidence is partial.",
+      "evidenceIds": [
+        "cs",
+        "wpt",
+        "relnotes"
+      ],
+      "limitations": "WPT dashboard is JS-rendered (pass/fail breakdown not retrievable); tracking-bug and intent-thread detail unavailable."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Documentation is accurate, proportionate, and honest. Release notes match shipped reality; the explainer clearly states motivation, proposed approach, alternatives, and accessibility/i18n/privacy/security considerations; ChromeStatus availability/adoption expectations candidly acknowledge no cross-engine signals. Minor staleness (motivation said 'single feature'; shipped with two) is a lag, not an inaccuracy.",
+      "evidenceIds": [
+        "relnotes",
+        "explainer",
+        "cs",
+        "spec"
+      ],
+      "limitations": "No dedicated launch article/blog for this specific primitive; release-notes coverage is brief."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Brand new; no support-burden evidence exists. Inherently low risk (parse-time, gracefully ignored). Scored unknown rather than success because no support signal has had time to form.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No support data yet."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Strong on developer value, standards process, and communication: the feature does what it was designed to do and shipped cleanly with tests. Held back from success by Chrome-only interoperability (and the detected behaviours are also Chrome-only), unmeasurable end-user/adoption outcomes, and partial implementation-detail evidence. An honest, well-scoped launch of a genuinely useful but currently Chrome-scoped primitive.",
+      "evidenceIds": [
+        "cs",
+        "explainer",
+        "spec",
+        "tag",
+        "mozilla",
+        "webkit",
+        "csswg3559",
+        "relnotes",
+        "bramus"
+      ],
+      "limitations": "Outcome scoring is constrained by the recency of the ship and unreadable bug/intent evidence."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs",
+      "url": "https://chromestatus.com/feature/5153932394102784",
+      "publisher": "ChromeStatus",
+      "publishedOrObservedAt": "2026-05-27T19:17:13Z",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, owner (dbaron), category CSS/Blink>CSS, finch name CSSSupportsNamedFeatureFunction",
+        "Stages/milestones: dev trial M146 (desktop+android), enabled-by-default M150 (desktop+android+webview)",
+        "Review statuses: tag_review_status 'Issues addressed'; security/privacy 'Pending' (as of cache)",
+        "Engine positions: Mozilla 'Positive' (#1340), WebKit 'No signal' (#600)",
+        "Motivation (ship initially with single named feature anchor-position-follows-transforms), availability/adoption expectations",
+        "WPT flag true + wpt_descr; tracking bug https://issues.chromium.org/353715317; intent-thread msgid links"
+      ],
+      "limitations": "Cached accurate_as_of 2026-05-27 predates M150 stable, so shows is_released=false and status 'Proposed'; motivation text says a single named feature while two shipped; UseCounter enum absent (web_feature 'Missing feature')."
+    },
+    {
+      "id": "spec",
+      "url": "https://drafts.csswg.org/css-conditional-5/#typedef-supports-named-feature-fn",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Defines <supports-named-feature-fn> = named-feature(<ident>) syntax",
+        "Section 2.1.3 lists two named features: anchor-position-follows-transforms and single-axis-scroll-container",
+        "CSSWG note: intends to add named features rarely, only for real demand",
+        "WD maturity; editors include L. David Baron (Google), fantasai (Apple), Chris Lilley, Miriam Suzanne, Lea Verou"
+      ],
+      "limitations": "Editor's Draft/Working Draft; normative text may change."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/w3c/csswg-drafts/blob/main/css-conditional-5/named-feature-explainer.md",
+      "publisher": "w3c/csswg-drafts (L. David Baron)",
+      "publishedOrObservedAt": "2026-01",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Motivation and proposed approach for named-feature()",
+        "Alternatives considered: combinatorial 'with' syntax rejected as infeasible",
+        "Accessibility/i18n/privacy/security considerations (no new privacy/security surface)",
+        "Stakeholder feedback at explainer time: Chromium Positive, Gecko Unknown, WebKit Unknown"
+      ],
+      "limitations": "Authored by the feature proposer; stakeholder positions were 'Unknown' at explainer time and had evolved by launch."
+    },
+    {
+      "id": "tag",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1186",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": "2026-01-15T16:18:33Z",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review request: spec follows Web Platform Design Principles; includes Security/Privacy considerations",
+        "Primary contacts dbaron (Google) and astearns (WG co-chair); funded by Google",
+        "Unresolved concern: some still want a general combinatorial feature-detection mechanism",
+        "TAG resolution 'satisfied with concerns' (retrieved via TAG status search)"
+      ],
+      "limitations": "Issue body (request) retrieved directly; the 'satisfied with concerns' resolution and 'lots of concern' discussion captured via search snippets, not the full comment thread."
+    },
+    {
+      "id": "mozilla",
+      "url": "https://github.com/mozilla/standards-positions/issues/1340",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": "2026-01-15T16:06:35Z",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla standards position: Positive"
+      ],
+      "limitations": "Issue body/comments not retrievable (only nav chrome + description); position confirmed via ChromeStatus record and the Mozilla standards-positions index page snippet."
+    },
+    {
+      "id": "webkit",
+      "url": "https://github.com/WebKit/standards-positions/issues/600",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2026-01-15T16:06:22Z",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit standards position: No signal"
+      ],
+      "limitations": "Issue body/comments not retrievable (only nav chrome + description); position confirmed via ChromeStatus record."
+    },
+    {
+      "id": "csswg3559",
+      "url": "https://github.com/w3c/csswg-drafts/issues/3559",
+      "publisher": "w3c/csswg-drafts (rachelandrew)",
+      "publishedOrObservedAt": "2019-01-26T08:50:13Z",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Original developer demand (Jan 2019): inability to feature-detect contextual/partial CSS support such as gap in flexbox",
+        "53 upvotes + additional reactions indicating sustained multi-year demand",
+        "Labels Needs Design/Proposal + css-conditional-5 + Current Work"
+      ],
+      "limitations": "Only the issue body retrieved, not the full comment/resolution thread."
+    },
+    {
+      "id": "relnotes",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Confirms named-feature() shipped in Chrome 150 stable (stable date 2026-06-30)",
+        "Accurate one-paragraph description; links tracking bug #353715317, ChromeStatus entry, spec"
+      ],
+      "limitations": "Brief description only; no dedicated deep-dive article for this primitive."
+    },
+    {
+      "id": "bramus",
+      "url": "https://www.bram.us/2026/03/30/css-sticky-per-axis/",
+      "publisher": "Bram.us!_ (Bramus, web-dev educator)",
+      "publishedOrObservedAt": "2026-03-30",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "named-feature(single-axis-scroll-container) is the CSS detection mechanism enabling single-axis scroll containers",
+        "Author had filed a CSSWG issue requesting this detection; previously only detectable via JS",
+        "Detection available starting Chrome 150, paving the way to shipping single-axis scroll containers to stable",
+        "Independent educator confirming the mechanism's real utility as a downstream-feature dependency"
+      ],
+      "limitations": "Single independent educator source; retrieved via RSS feed (format artefacts)."
+    },
+    {
+      "id": "gigazine",
+      "url": "https://gigazine.net/gsc_news/en/20260701-google-chrome-150/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2026-07-01",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press corroborates Chrome 150 stable shipped named-feature() for CSS @supports"
+      ],
+      "limitations": "Secondary press; brief; corroborates rather than adds new evidence."
+    },
+    {
+      "id": "csswg-minutes",
+      "url": "https://lists.w3.org/Archives/Public/www-style/2024Jul/0006.html",
+      "publisher": "W3C CSS Working Group (minutes)",
+      "publishedOrObservedAt": "2024-07-17",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "community",
+      "supports": [
+        "CSSWG resolved on named-feature() as the function name (Issue #9875: choose names for keyword-based feature queries in @supports and the initial set)"
+      ],
+      "limitations": "Captured via a search snippet of the minutes, not the full archive page."
+    },
+    {
+      "id": "csswg-demand",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13677",
+      "publisher": "w3c/csswg-drafts",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Ongoing developer demand for additional named features (e.g. #13677 sticky-per-axis detection; #13678 anchor-position transforms)",
+        "Validates the mechanism's extensibility and continued author need"
+      ],
+      "limitations": "Captured via search snippets; exact issue dates not pinned; representative of a recurring request pattern."
+    },
+    {
+      "id": "wpt",
+      "url": "https://wpt.fyi/results/css/css-conditional/at-supports-named-feature-001.html",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T21:35:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "A WPT test exists for the feature (ChromeStatus wpt=true; wpt_descr points here)"
+      ],
+      "limitations": "Dashboard is JS-rendered; pass/fail breakdown per browser not retrievable; existence confirmed via ChromeStatus only."
+    }
+  ],
+  "successes": [
+    "Long-validated developer problem (since 2019) addressed with a deliberately minimal, extensible mechanism rather than an over-broad combinatorial API; alternatives were rejected with stated rationale.",
+    "Honest, accurate, and consistent communication: explainer, release notes, and ChromeStatus expectations agree; availability_expectation candidly states no concrete cross-engine signs.",
+    "The mechanism immediately proved its design intent: named-feature(single-axis-scroll-container) became the detection dependency for shipping single-axis scroll containers in the same release window, with independent educator coverage."
+  ],
+  "failures": [
+    "Interoperability is Chrome-only at ship, and the named features it detects are themselves Chrome-only behaviour changes, so the feature's real value is currently confined to Chromium-based browsers; WebKit gave 'No signal'.",
+    "Formal security and privacy review gates were still 'Pending' in the cached record ~1 month before stable (likely a bookkeeping lag for a no-new-surface primitive, but a process gap).",
+    "Developer-trial evidence (cohort, feedback, findings) is absent in public records despite an M146 dev trial."
+  ],
+  "counterfactuals": [
+    "If the team had shipped a single canonical runnable sample/demo (ChromeStatus sample_links and doc_links were empty), early adoption guidance and independent coverage would have had a clearer reference, reducing misuse risk in feature-detection conditionals.",
+    "If an Intent-to-Ship and review-status reconciliation had been completed and reflected in ChromeStatus before stable, the 'Pending' security/privacy flags and the 'Proposed'/is_released=false staleness would not have appeared in the authoritative record at launch.",
+    "Even with perfect execution, end-user and cross-engine impact would remain unmeasurable in this window, because both depend on authors adopting the primitive and on other engines implementing it - not on launch communications alone."
+  ],
+  "skillImprovements": [
+    "Add a phase-06 (prepare-to-ship) checklist item to reconcile ChromeStatus review-gate statuses (security/privacy/TAG) and the is_released/milestone fields against actual stable timing before publishing, so authoritative records are not stale at launch.",
+    "Add a prototype/developer-trial artefact requirement (at least one runnable sample plus a dev-trial instructions URL) even for 'small' CSS primitives, and explicitly record whether a dev trial produced attributable feedback or was skipped as proportionate.",
+    "Add an interoperability-outcome rule that flags when a feature-detection primitive and the features it detects are both single-engine at ship, so reports do not overstate Baseline readiness.",
+    "Add a 'meta/indirect-impact' outcome template so features whose value depends on downstream adoption receive honest unscored/mixed end-user and adoption scoring rather than being graded like directly user-facing features."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Prototype and Intent to Ship thread contents (Google Groups msgid URLs were rejected by the reader; unverified).",
+      "Chromium tracking bug #353715317 (issues.chromium.org returned repeated network errors).",
+      "WPT pass/fail breakdown per browser (dashboard is JS-rendered; only existence confirmed via ChromeStatus wpt=true).",
+      "Mozilla/WebKit issue bodies and comment threads (only description + nav chrome retrieved; positions confirmed via ChromeStatus and the Mozilla positions index).",
+      "Usage/adoption telemetry and production-adoption data (feature shipped 2026-06-30; no UseCounter/HTTP Archive/production data accessible in this window)."
+    ],
+    "reviewedAt": "2026-07-19T21:35:00Z"
+  }
+}

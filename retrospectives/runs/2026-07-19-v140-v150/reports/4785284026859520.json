@@ -1,0 +1,456 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4785284026859520,
+    "name": "Web Speech API: Unspoken Punctuation",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4785284026859520",
+    "summary": "Adds a boolean unspokenPunctuation attribute to SpeechRecognition; when true the recognition engine auto-infers punctuation from pauses/grammar/prosody. Default false for backward compatibility.",
+    "owner": "evliu@google.com (Evan Liu)",
+    "blinkComponent": "Blink>Speech",
+    "finchName": "WebSpeechUnspokenPunctuation",
+    "specMaturity": "Draft Community Group Report (live spec) vs Working draft (ChromeStatus)",
+    "desktopShipTarget": 151,
+    "requiresEmbedderSupport": true,
+    "platformScope": "Desktop Mac/Windows/Linux only; not Android/WebView/iOS"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:In developer trial (Behind a flag):4785284026859520",
+      "milestone": 150,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Well-formed intake. The ChromeStatus entry (created 2026-05-19 by evliu@google.com) names a concrete developer problem (raw unpunctuated transcripts force downstream NLP), a user benefit (natural continuous speech without dictating punctuation), target segments (dictation/transcription/conversational assistants), a single owner (Evan Liu, also spec editor), Blink component Blink>Speech, and a stated partner driver (Google Meet). Explainer, spec, intent-to-ship thread, tracking bug and sample all linked. Enterprise impact is negligible (1).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S10"
+      ],
+      "limitations": "Adoption expectation is scoped to a single internal partner (Google Meet within 12 months); no representative external developer-demand survey. Owner is concentrated in one engineer who is also the spec editor."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "The developer problem is real and recurring with independent corroboration: a 2018 StackOverflow question 'How to add punctuation to Web Speech API?' (4 upvotes, ~3k views) whose 2024 answer notes 'Microsoft Edge adds punctuations, Chrome doesn't'; a react-speech-recognition discussion that punctuation is 'hit-or-miss across the different speech APIs'. The explainer documents use cases, rejects the 'enable by default' alternative on backward-compatibility grounds, and cites industry precedent (Azure Speech, Google Cloud STT) that auto-punctuation is a configurable option rather than a forced default. This is a defensible, narrowly-scoped browser intervention.",
+      "evidenceIds": [
+        "S2",
+        "S8",
+        "S9",
+        "S1"
+      ],
+      "limitations": "Demand evidence is anecdotal/competitive-gap, not a representative survey; the only named adopter is an internal Google product. No evidence of seeking counterevidence (e.g., developers who prefer raw output only)."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A working prototype and demo exist (speech.evanliu.com 'Web Speech API Playground' exposes an Unspoken Punctuation toggle alongside on-device, quality and contextual-biasing options). The spec PR (#188) was merged: the unspokenPunctuation attribute is now normatively defined in the Web Speech API. The API surface is minimal (one boolean on an existing interface, default false), so framework/server integration friction is structurally low. The feature reached a flag-based developer trial.",
+      "evidenceIds": [
+        "S10",
+        "S3",
+        "S4",
+        "S1"
+      ],
+      "limitations": "Demo is owner-authored on a personal domain; no evidence of independent/third-party friction testing or compatibility spikes before the developer trial. Behavior is implementation-dependent (platform/OS speech engine)."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The captured launch event is a developer trial behind a flag in M150, and the feature has reached MDN/press visibility. However, there is no public evidence of a structured trial cohort: devtrial_instructions is null, there is no origin trial and no feedback-submission URL, and no attributable methodology, recruitment, representativeness, task-completion, or friction findings are published. The only observable external feedback channels are the public GitHub spec issues and the standards-position issues.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S11",
+        "S2"
+      ],
+      "limitations": "Cannot confirm who tried the feature, on which platforms/languages, or what they found; no published trial readout. Benefit/accuracy claims are therefore unvalidated by representative developer evidence."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Significant readiness/accuracy problems versus the ChromeStatus record. Mozilla is recorded as 'Positive' (ff_views=3) sourced from an informal comment by padenot on web-speech-api#187, but the FORMAL mozilla/standards-positions#1416 is Open with status 'Needs proposed position' (i.e., pending, not positive), and MDN BCD lists Firefox=No support. WebKit/standards-positions#678 is Open with no assignee/position (ChromeStatus 'No signal' is accurate). No TAG design review was requested (both vendor templates show 'TAG Design Review URL: No response'). The spec is a 'Draft Community Group Report' (21 May 2026) edited by the implementer, lower maturity than ChromeStatus's 'Working draft / Working Group' label implies. 'Web dev: Positive' is attributable to an internal partner (Google Meet). At this point the capability is single-engine.",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S7",
+        "S3",
+        "S1",
+        "S4"
+      ],
+      "limitations": "Could not retrieve the literal text of padenot's comment (#187) or the full standards-position deliberation; conclusion rests on issue state, labels and MDN BCD. Vendor positions may still move."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted or planned (origintrial=false; ot fields null). The launch path is flag-based developer trial (M150) -> beta (M151) -> intended stable, with no field experiment. This is a defensible structural choice for a minimal additive opt-in boolean attribute, but the phase is genuinely not part of this feature's path.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Because behavior is ML/implementation-dependent and language/accent sensitive, field evidence on real-world punctuation accuracy would have had genuine value; its absence is an untested risk rather than confirmation of safety."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An intent-to-ship thread exists (stage 160, desktop target 151). The API is minimal, MDN compatibility data is already published and accurate, a sample exists, and enterprise impact is negligible. However, as of the cached record (accurate_as_of 2026-06-25) security_review_status and privacy_review_status were both still 'Pending', the formal Mozilla position is unresolved, there is no TAG review, and doc_links is empty (MDN/MDN-BCD stand in for reference docs).",
+      "evidenceIds": [
+        "S1",
+        "S12",
+        "S7",
+        "S15"
+      ],
+      "limitations": "Full intent-thread content could not be retrieved (groups.google msgid URL was rejected by the reader); relied on ChromeStatus stage metadata plus the activity-page summary ('It simply adds a boolean attribute... It shifts the burden of adding punctuation'). Whether security/privacy reviews cleared before branch is unconfirmed from public evidence."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Release communication has begun for the pre-stable milestones: the M150 developer trial is the captured event, and Chrome 151 Beta includes the feature with accurate, positive press coverage (Digital Trends, 2026-07-04) and accurate MDN compat data. But the feature had NOT reached stable/general availability as of the record (is_released=false; browsers.chrome.status='Proposed' as of 2026-06-25). Coordinated stable launch, release notes, and post-launch monitoring are not yet observable.",
+      "evidenceIds": [
+        "S1",
+        "S11",
+        "S7",
+        "S2"
+      ],
+      "limitations": "Stable M151 timing and any GA comms/incidents are outside the available evidence window; is_releasenotes_publish_ready=false in the record."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No adoption evidence exists because the feature is pre-stable. No use counter/webdx bucket is allocated (webdx_usecounter_enum=null), so post-stable usage cannot be measured. The only adoption signal is the stated expectation that Google Meet use it within 12 months (interest/intent, not verified production deployment). No framework/library/tool integration evidence found.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Unknown is due to pre-stable state, not absence of relevance; revisit once M151 is stable and counters exist."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues, troubleshooting material, known regressions, or recurrence data exist yet (feature pre-stable). debuggability is recorded as 'None required'; the tracking bug 514764702 is the implementation bug (content not retrieved).",
+      "evidenceIds": [
+        "S1",
+        "S13"
+      ],
+      "limitations": "Pre-stable; support burden cannot be assessed. Revisit post-GA."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Phase 10 (deprecation/removal) does not apply: this is a brand-new, opt-in, additive boolean attribute (default false) being introduced, not a feature being restricted, replaced or removed. No removal, reverse trial, or migration is in scope.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Structurally inapplicable at this stage; not used to hide an untested dimension."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a real, multi-year, independently documented developer pain (raw unpunctuated Web Speech transcripts forcing client/server NLP) with a minimal, backward-compatible, opt-in API that follows established industry precedent (Azure, Google Cloud STT treat auto-punctuation as configurable). Default false protects existing apps; the alternative of enabling by default was explicitly rejected on compatibility grounds.",
+      "evidenceIds": [
+        "S2",
+        "S8",
+        "S9",
+        "S3",
+        "S1"
+      ],
+      "limitations": "Demand evidence is anecdotal/competitive-gap rather than representative; sole named adopter is internal (Google Meet)."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Plausible positive user impact (lower cognitive load, natural conversational dictation without saying 'comma'/'period'; accessibility/transcription benefit), but unverified by user research. Because punctuation/capitalization is implementation-dependent (platform speech engine) and the attribute defaults to false, end users only benefit where developers opt in, and accuracy/equity across accents, dialects and languages is not evidenced. Default-false also limits immediate user reach.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S1",
+        "S11"
+      ],
+      "limitations": "No user-study, accuracy, or cross-language/accent evaluation in public evidence; benefit is hypothetical pending real use."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Unscoreable at present: feature is pre-stable, no use counter bucket allocated, and no attributable third-party production deployment. Only Google Meet intent is recorded.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Too early to score; requires post-stable counters and partner verification."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Currently a single-engine capability: Chrome 151 and Edge 151 (both Chromium) only per MDN BCD; Firefox=No, Safari=No, Chrome Android=No. Not Baseline-eligible; spec is a CG draft edited by the implementer; no TAG review; formal Mozilla position pending (not the 'Positive' recorded in ChromeStatus) and WebKit has no signal. Mitigating signal: Mozilla informal comment is non-negative, suggesting a possible future path.",
+      "evidenceIds": [
+        "S7",
+        "S5",
+        "S6",
+        "S3",
+        "S1"
+      ],
+      "limitations": "Very early; vendor positions and implementations may change, but at the evidence cutoff there is no second-engine implementation and no resolved positive standards position."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The API is minimal, safe and backward-compatible and the spec was merged with normative text; WPT is flagged as in-scope. Counterpoints: the core behavior (probabilistic punctuation/capitalization) is implementation-dependent and not deterministically testable, so conformance coverage of the actual behavior is effectively unobservable; coverage is desktop-only (Mac/Win/Linux) with no Android/WebView/iOS; implementation requires embedder support; and ownership/spec-editing is concentrated in a single engineer.",
+      "evidenceIds": [
+        "S3",
+        "S2",
+        "S1",
+        "S7"
+      ],
+      "limitations": "No access to WPT specifics for this attribute; platform/quality behavior across OS speech engines unverified."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Explainer is clear and balanced (goals, non-goals, alternatives, backward-compat, i18n and capitalization caveats); MDN compat data and the Digital Trends article accurately reflect beta/experimental status; the adoption expectation is honestly scoped to one partner. Against this, the ChromeStatus record materially overstates Mozilla's position (recorded 'Positive' from an informal comment while the formal standards-position issue is still pending) and slightly overstates standards maturity ('Working draft / Working Group' vs the live 'Draft Community Group Report').",
+      "evidenceIds": [
+        "S2",
+        "S5",
+        "S7",
+        "S11",
+        "S1",
+        "S3"
+      ],
+      "limitations": "Could not retrieve the literal Mozilla comment or full intent-thread text to fully reconcile the 'Positive' classification."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support burden evidence yet (pre-stable); debuggability recorded as 'None required'.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Requires post-GA support data."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "An early-stage, well-motivated, minimal additive capability with a genuinely validated developer problem and a clean opt-in API, shipping Chrome-first (M150 dev trial; M151 beta; stable target M151). It is too early to verdict adoption, end-user impact or support. Principal risks: Chrome-only interop with no resolved positive standards position and no TAG review; a ChromeStatus record that overstates Mozilla's position; implementation-dependent ML behavior with no field/accuracy evidence; no Origin Trial or structured cohort feedback; pending security/privacy reviews at the time of the record; and single-owner concentration (owner is also spec editor).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S3",
+        "S11"
+      ],
+      "limitations": "Overall is provisional; a post-stable revision with counters, partner verification and resolved reviews is required before a firmer verdict."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/4785284026859520",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-06-25)",
+      "publishedOrObservedAt": "2026-06-25",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner, stages, intent-to-ship for M151, dev-trial M150, security/privacy review 'Pending', adoption expectation (Google Meet), finch name, no OT, no use counter, ff_views=3/safari_views=5/web_dev_views=2"
+      ],
+      "limitations": "Record can lag live state; some fields (intent_thread content, review outcomes) not inline."
+    },
+    {
+      "id": "S2",
+      "url": "https://github.com/WebAudio/web-speech-api/blob/main/explainers/unspoken-punctuation.md",
+      "publisher": "WebAudio/web-speech-api (GitHub)",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Goals, use cases, alternatives (enable-by-default rejected for backward compat), industry precedent (Azure/Google Cloud), default false, capitalization/i18n caveats"
+      ],
+      "limitations": "Author is also the feature owner/implementer."
+    },
+    {
+      "id": "S3",
+      "url": "https://webaudio.github.io/web-speech-api/",
+      "publisher": "W3C / WebAudio Community Group spec (Editor: Evan Liu, Google)",
+      "publishedOrObservedAt": "2026-05-21",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Normative unspokenPunctuation attribute text, default false; spec is 'Draft Community Group Report'; security/privacy section is generic; cluster of new on-device speech features (processLocally, phrases, quality enum)"
+      ],
+      "limitations": "CG draft, low formal maturity; security/privacy text not specific to this attribute."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/WebAudio/web-speech-api/issues/187",
+      "publisher": "WebAudio/web-speech-api (GitHub)",
+      "publishedOrObservedAt": "2026-05-14",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Original proposal by evanbliu, closed and linked to spec PR #188; issue referenced by ChromeStatus as basis for Mozilla 'Positive' (padenot comment)"
+      ],
+      "limitations": "Comment text (incl. padenot's) not rendered by reader; only issue body/state retrieved."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/mozilla/standards-positions/issues/1416",
+      "publisher": "mozilla/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-06-03",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Formal Mozilla review is Open with status 'Needs proposed position' (pending), assigned to padenot — i.e., NOT yet a positive position; contradicts ChromeStatus ff_views=3"
+      ],
+      "limitations": "Position may change; only issue state/labels retrieved, not deliberation."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/WebKit/standards-positions/issues/678",
+      "publisher": "WebKit/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-06-03",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit review Open with no assignee/labels/position; confirms 'No signal'; both vendor templates show no TAG review requested"
+      ],
+      "limitations": "Position may change."
+    },
+    {
+      "id": "S7",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition",
+      "publisher": "MDN Web Docs (Mozilla) / BCD",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "unspokenPunctuation: Experimental; Chrome 151 + Edge 151 Preview support; Firefox No; Safari No; Chrome Android No"
+      ],
+      "limitations": "BCD reflects current stable/beta state and updates over time."
+    },
+    {
+      "id": "S8",
+      "url": "https://stackoverflow.com/questions/48839314/how-to-add-punctuation-to-web-speech-api",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": "2018-02-17",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing developer pain with raw unpunctuated Web Speech output; 2024 answer notes 'Microsoft Edge adds punctuations, Chrome doesn't'; workarounds require server-side NLP"
+      ],
+      "limitations": "Anecdotal; small sample (4 upvotes, ~3k views)."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/JamesBrill/react-speech-recognition/discussions/87",
+      "publisher": "JamesBrill/react-speech-recognition (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent confirmation that punctuation is 'hit-or-miss across the different speech APIs' and Azure polyfill compared"
+      ],
+      "limitations": "Snippet from search result; full thread not retrieved."
+    },
+    {
+      "id": "S10",
+      "url": "https://speech.evanliu.com",
+      "publisher": "Evan Liu (personal; feature owner)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "Working playground exposing Unspoken Punctuation toggle alongside on-device, quality and contextual-biasing options"
+      ],
+      "limitations": "Owner-authored demo, not an independent case study."
+    },
+    {
+      "id": "S11",
+      "url": "https://www.digitaltrends.com/cool-tech/chrome-is-getting-better-at-understanding-the-breaks-and-punctations-you-never-say-out-loud/",
+      "publisher": "Digital Trends (Moinak Pal)",
+      "publishedOrObservedAt": "2026-07-04",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 151 Beta includes the feature; positive framing; notes experimental status and that developer adoption will determine reach"
+      ],
+      "limitations": "Single consumer-tech press item; restates Google's framing."
+    },
+    {
+      "id": "S12",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6a187a51.a860e6c2.3bc0d5.0425.GAE@google.com",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent-to-ship thread referenced by ChromeStatus stage 160; summary via activity page: 'It simply adds a boolean attribute... shifts the burden of adding punctuation'"
+      ],
+      "limitations": "Full thread content not directly retrieved (msgid URL rejected by reader); summary taken from ChromeStatus activity/gate snippet."
+    },
+    {
+      "id": "S13",
+      "url": "https://bugs.chromium.org/b/514764702",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking/implementation bug for the feature (Blink>Speech)"
+      ],
+      "limitations": "Bug content not retrieved; referenced from ChromeStatus record."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromestatus.com/feature/4785284026859520/activity",
+      "publisher": "Chrome Platform Status (Comments & Activity)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Intent-thread summary quote used to corroborate prepareToShip finding"
+      ],
+      "limitations": "JS-rendered; relied on search-indexed snippet."
+    },
+    {
+      "id": "S15",
+      "url": "https://github.com/openwebdocs/mdn-bcd-collector/blob/main/CHANGELOG.md",
+      "publisher": "openwebdocs/mdn-bcd-collector (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "api.SpeechRecognition.unspokenPunctuation added to browser-compat-data, tracking its introduction"
+      ],
+      "limitations": "Changelog entry only; no behavioral detail."
+    }
+  ],
+  "successes": [
+    "Genuinely validated, multi-year developer problem with independent corroboration (StackOverflow 2018, react-speech-recognition) and a clear competitive gap vs Edge/Azure",
+    "Minimal, backward-compatible, opt-in API (default false) following industry precedent; explicit rejection of the breaking 'enable by default' alternative",
+    "Spec merged with normative attribute text; working owner-authored demo; accurate MDN compat data and accurate (positive) beta press coverage (Digital Trends)",
+    "Honest scoping of the adoption expectation to a single named partner rather than broad claims"
+  ],
+  "failures": [
+    "ChromeStatus materially overstates Mozilla's position as 'Positive' from an informal comment while the formal mozilla/standards-positions#1416 is still pending (and Firefox shows No support in MDN BCD)",
+    "No TAG design review requested; spec is a low-maturity CG draft edited by the implementer",
+    "No Origin Trial and no public developer-trial cohort methodology/feedback, so the core behavior is unvalidated by representative evidence",
+    "No use counter/webdx bucket allocated, so post-stable adoption cannot be measured",
+    "Security and privacy reviews still 'Pending' in the cached record at intent-to-ship time",
+    "Cross-engine interop absent at launch: Chrome/Edge only; Firefox No, Safari No, not Baseline-eligible"
+  ],
+  "counterfactuals": [
+    "If a TAG review had been requested before intent-to-ship, the implementation-dependent punctuation/capitalization behavior (and any i18n, fingerprinting, or accuracy-equity implications) would likely have received formal scrutiny before stable",
+    "If the formal Mozilla position had been resolved rather than treating an informal comment as 'Positive', the interoperability path (and the ChromeStatus record) would be more defensible",
+    "If an Origin Trial or a structured, attributable developer cohort with feedback had been run, real-world punctuation accuracy across accents, dialects and languages would have surfaced before stable",
+    "If a use counter bucket had been allocated at dev-trial time, post-stable adoption would be measurable today (webdx_usecounter_enum is currently null)",
+    "If the single owner were not also the sole spec editor, an independent spec reviewer might have challenged the implementation-dependent, untestable normative behavior"
+  ],
+  "skillImprovements": [
+    "Phase 04 (wide review) rule: an informal comment on a spec issue must never be recorded as a formal vendor 'Positive' position; require resolving the actual standards-position repo state (Open/needs-position vs labeled position) and reconcile with MDN BCD before setting ff/safari views",
+    "Transition-packet check: TAG review status must be explicitly stated (requested, waived with justification, or absent) — never silently absent — before prepare-to-ship",
+    "Rule: when a feature's behavior is probabilistic/implementation-dependent (ML punctuation), require a field-evidence or accuracy-evaluation plan even for a 'minimal additive boolean' API, and a not-relevant experiment phase must carry the residual risk",
+    "Pre-ship check: security_review_status and privacy_review_status should not remain 'Pending' when intent-to-ship is filed; flag as a launch-readiness gap",
+    "Practice: allocate a UseCounter/webdx bucket at developer-trial time so post-stable adoption is measurable",
+    "Checklist item: flag owner-concentration risk (single owner also editing the spec) for bus-factor and editorial-bias review, and recommend a second spec reviewer",
+    "Evidence rule: prefer chromestatuslite.com server-rendered route or the WPT dashboard over JS-rendered chromestatus.com/activity when automated readers are used, to avoid empty retrieval"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-stable adoption/usage data (no use counter allocated; feature pre-stable as of record)",
+      "Attributable third-party production deployment (only internal Google Meet intent recorded)",
+      "Second-engine implementation or resolved positive standards position (Chrome/Edge only; Mozilla formal position pending; WebKit no signal; no TAG review)",
+      "Developer-trial cohort methodology, recruitment, representativeness, feedback themes and friction results (none public)",
+      "Real-world punctuation/capitalization accuracy and equity across accents, dialects and languages (no field evidence)",
+      "Confirmed security and privacy review outcomes (both 'Pending' in cached record)",
+      "Full intent-to-ship thread content and literal text of padenot's comment on web-speech-api#187 (URLs not retrievable via reader; relied on metadata and snippets)"
+    ],
+    "reviewedAt": "2026-07-20T07:00:00Z"
+  }
+}

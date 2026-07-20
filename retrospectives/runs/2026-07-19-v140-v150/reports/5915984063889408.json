@@ -1,0 +1,477 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5915984063889408,
+    "name": "DeviceOrientation Events permission request API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5915984063889408",
+    "webFeature": "device-orientation-events",
+    "blinkComponent": "Blink>Sensor>DeviceOrientation",
+    "ownerEmails": [
+      "tov@google.com"
+    ],
+    "creatorEmail": "raphael.kubo.da.costa@intel.com",
+    "category": "Device",
+    "finchName": "DeviceOrientationRequestPermission",
+    "specLink": "https://w3c.github.io/deviceorientation/",
+    "bugUrl": "https://bugs.chromium.org/p/chromium/issues/detail?id=947112",
+    "monorailIssue": "https://issues.chromium.org/40094424",
+    "relatedChromestatusEntry": "https://chromestatus.com/feature/5051845089689600"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:In developer trial (Behind a flag):5915984063889408",
+      "milestone": 150,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:40:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem and intervention layer are clearly diagnosed: silent, permissionless access to motion/orientation sensors enables fingerprinting and tracking. WebKit (cdumez) opened w3c/deviceorientation#57 (2018-12-13) explicitly to add a requestPermission() API, citing a quantified privacy problem. Browser-layer permission gating is plausibly the correct fix. Ownership moved from the original Intel engineer (Raphael Kubo da Costa, 2019) to a Google security researcher (Tom Van Goethem) for the 2026 revival.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s7"
+      ],
+      "limitations": "No public intake/one-page diagnosis artifact; the ChromeStatus record is the de facto intake."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Problem is real, important, and recurring, with strong independent research support. The solution shape (requestPermission() static methods on the event interfaces) has spec standing (merged via spec PR #68) and has shipped in WebKit/Safari since 2019. The alternative — a unified navigator.permissions.request() — never reached consensus (per Reilly Grant), so attaching permission to the event objects was the pragmatic path. Use cases (mobile games, VR/panorama, AR) are well established.",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s6",
+        "s7",
+        "s11"
+      ],
+      "limitations": "No public Chrome-side incubation/explainer; the explainer link in the record points to the spec section itself, not a Chrome explainer."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A first Chrome prototype was pursued in a 2022 Intent to Prototype (Raphael Kubo da Costa) with a sound no-op-first plan (add the API returning current permission, add use counters, evaluate gating later) — but it set no milestones and stalled, leaving a ~4-year gap. The 2026 revival reuses the same design and now has a running M150 dev-trial implementation with WPT coverage referenced. No public friction logs or prototype decision log exist.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s5"
+      ],
+      "limitations": "Implementation bug (crbug 947112) and Monorail issue 40094424 are auth-gated and could not be read; no public prototype/friction artifact; reason for the 2022 stall is undocumented."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial is live at M150 behind the DeviceOrientationRequestPermission finch/flag (desktop + Android). However, the trial has a structural limitation: because the default permission remains ALLOW, requestPermission() is effectively a no-op and the permission-prompt UX path is not exercised, so the trial cannot reveal the prompt/over-prompting behavior that motivated the API. No public cohort, feedback instrument, or trial findings are evidenced.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s5"
+      ],
+      "limitations": "No evidence of recruited cohort, representativeness, or published dev-trial readout; the no-op default sharply limits what the trial can learn."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Mixed. Positives: spec is mature (published W3C standard) and WebKit/Safari already shipped, so Chrome is closing an interop gap; API owners (Rick Byers, Mike Taylor) broadly endorsed matching WebKit. Concerns: TAG review is marked 'Not applicable' even though Alex Russell raised a substantive API-shape question (permission attached to event objects vs. a revived navigator.permissions.request()) and explicitly suggested the question belonged to the TAG; the recorded Mozilla signal 'In development' was disputed on-thread by API owner Mike Taylor ('I don't think a 7 year old bug w/ no activity counts as in development'); the actual Mozilla standards-position issue (#1428, opened 2026-06-29) remains 'Unscreened'; and web-develop signals are explicitly 'No signals'.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s6"
+      ],
+      "limitations": "Mozilla's formal position is unresolved as of cutoff; WebKit's position is only inferred from the 2019 ship and the cached 'Shipping on iOS' note, not a current dated statement."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted or planned for this milestone (origintrial=false; no OT stage). Because the M150 release ships no-op-by-default, no field experiment on the permission-prompt behavior is warranted yet. This is a genuine not-applicable at this phase, not an untested gap.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "If/when Chrome moves to ASK-by-default, an origin trial or staged enforcement will become relevant; that phase has not commenced."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was filed 2026-06-17 and approved by API owners (Chris Harrelson, Yoav Weiss) ~2026-07-15, just before cutoff, with DevTrial M150 and Ship M151 (desktop+Android). Spec and WPT are in place. However: security_review_status and privacy_review_status are both 'Pending' in the cached record; the design doc is not public (Yoav Weiss asked for it to be made public during review); two different design-doc IDs appear between the cached record and the intent thread; and the API-shape dissent raised during review was not routed to TAG.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "Approval-message bodies for the final LGTMs were partially truncated; formal security/privacy review artifacts are not public."
+    },
+    "release": {
+      "status": "unknown",
+      "finding": "The in-scope release event is the M150 dev trial. No Chrome DevRel blog, announcement, or coordinated dev-trial communication was found; the record's release-notes fields are explicitly not content-reviewed and not publish-ready (is_releasenotes_content_reviewed=false, is_releasenotes_publish_ready=false). MDN documents the static method. Given the documented iOS-13-era ecosystem breakage precedent, the absence of proactive comms around the eventual ASK-by-default transition is a forward-looking risk, though limited comms may be acceptable for a no-op dev trial.",
+      "evidenceIds": [
+        "s1",
+        "s9",
+        "s10",
+        "s14"
+      ],
+      "limitations": "No release-communication artifact found; cannot confirm internal launch-comms plan; the feature is not yet in stable so stable-release comms cannot exist yet."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Not scorable for Chrome: the feature is in dev trial and is no-op-by-default, so there is no stable adoption or usage to measure. The adoption expectation/plan is documented (sites with a valid sensor need, e.g. games, will call the API; Chrome will eventually move to ASK-by-default). The iOS 13 precedent is the strongest forward-looking signal: when Safari gated sensors by default, it forced widespread requestPermission() adoption across panorama tools (Pannellum, krpano, Garden Gnome Software), 3D/creative frameworks (Babylon.js, p5.js), and generated large volumes of developer Q&A.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s8",
+        "s9",
+        "s10"
+      ],
+      "limitations": "Zero Chrome usage/adoption data exists; the iOS precedent is a different engine and a different (gate-by-default) phase than Chrome's current no-op trial."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Not scorable for Chrome (not shipped to stable). Documented support risks exist for when gating activates: (a) w3c/deviceorientation#74 reports the requestPermission permission is stored per-session, which breaks shake-detection-style apps; (b) WebKit bug 221399 reports requestPermission is unavailable in cross-origin iframes even with feature policy (iOS 14) — a real interop/compat gap; (c) the iOS 13 permission change produced a large support burden across the ecosystem.",
+      "evidenceIds": [
+        "s9",
+        "s10",
+        "s12",
+        "s13"
+      ],
+      "limitations": "No Chrome support-volume data; iframe limitation may or may not apply to Chromium's implementation (unverified)."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "No deprecation or removal has commenced at M150: requestPermission() is an additive API and the default remains ALLOW. The longer-term plan to deprecate default access to window.ondevice{motion,orientation} and move to ASK-by-default is explicitly documented in both the 2022 and 2026 intents, but it is a future phase, not the current launch event.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s5"
+      ],
+      "limitations": "The eventual gating/deprecation is out of scope for this milestone; a separate review will be warranted when Chrome moves to ASK-by-default."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer value of a permission-gated sensor API is well-grounded: it gives legitimate sensor use cases (games, VR/panorama, AR) a cross-browser permission path and protects users from silent fingerprinting. However, web-develop demand was recorded as 'No signals' and the API ergonomics were contested on-thread (permission methods attached to event objects rather than a unified permission request), so developer value is real but partly asserted rather than evidenced.",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s6",
+        "s7",
+        "s11"
+      ],
+      "limitations": "No Chrome-specific developer research or attributable partner evidence; 'No signals' was not mitigated."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Intended end-user benefit (control over silent motion/orientation sensor access; fingerprinting mitigation) is strong and evidence-backed, but only materializes once Chrome moves to ASK-by-default. At M150 the feature has zero end-user impact (no-op by default). The iOS precedent shows prompt-based gating also introduces UX friction and per-session re-prompting, a real cost.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s7",
+        "s9",
+        "s12"
+      ],
+      "limitations": "Current milestone has no measurable end-user impact; net benefit depends on the not-yet-commenced ASK-by-default phase."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Feature not shipped to stable and no-op by default; no defensible Chrome adoption or usage data exists. Unscored rather than failed because absence of data is inherent to a dev trial of a no-op API, not evidence of failure.",
+      "evidenceIds": [
+        "s1",
+        "s4"
+      ],
+      "limitations": "Will require re-scoring after stable ship and after any ASK-by-default transition; use counters referenced in the 2022 intent were not located as readable data."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Positive: defined in a mature W3C standard and already shipped in WebKit/Safari since 2019, so Chrome reduces a multi-year engine divergence; WPT tests exist for both motion and orientation requestPermission. Negative: Mozilla's position is unresolved (recorded 'In development' is disputed; standards-position issue is 'Unscreened'); a WebKit interop gap exists (requestPermission unavailable in cross-origin iframes despite feature policy); and Baseline is not yet achievable (only one shipping engine historically, Chrome only in dev trial).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s6",
+        "s8",
+        "s13"
+      ],
+      "limitations": "WPT actual pass/fail could not be verified (dashboard is JS-rendered); Mozilla position may resolve after cutoff."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Spec definition is precise and normative (transient-activation requirement, permission-state resolution, precision caps), and WPT is referenced for both events. Concerns: the actual prompting path is not exercised at M150 (no-op default); security and privacy review statuses are 'Pending' at Intent to Ship; and a prior implementation attempt stalled for years, so implementation continuity/maturity is uncertain.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "limitations": "Implementation bugs are auth-gated; WPT results unverified; no public conformance/friction report."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The underlying security problem is rigorously evidenced (quantified press coverage plus academic research) and the intent thread is candid. But the evidence ledger and comms have real defects: the Mozilla 'In development' signal is inaccurate and was disputed in-thread; the design doc is non-public (and inconsistently linked); TAG review was declined despite an API-shape question; security/privacy reviews are pending; web-dev signals are absent; and there is no Chrome DevRel release artifact for the dev trial.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s7",
+        "s14"
+      ],
+      "limitations": "Some review artifacts are private; cannot fully reconstruct the internal launch-comms plan."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Not shipped to stable; no Chrome support volume or resolution data. Documented future support risks (per-session permission, cross-origin iframe gap, iOS-era breakage) are noted but unverified for Chromium. Unscored due to lack of post-ship evidence.",
+      "evidenceIds": [
+        "s1",
+        "s12",
+        "s13"
+      ],
+      "limitations": "Will require re-scoring after stable ship."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A legitimate, long-overdue privacy/security alignment with Safari parity, a mature spec, and a pragmatic phased (no-op-first) rollout that deliberately avoids the iOS-13-style breakage. But it is advancing against 'No signals' from web developers, a disputed/unresolved Mozilla position, pending security and privacy reviews, a non-public design doc, API-shape dissent that was not routed to TAG, and zero post-ship outcome evidence (dev trial only). A seven-year history with a stalled prior attempt and duplicate ChromeStatus entries reflects process friction. Strongest positives: problem validity, Safari parity, spec maturity; strongest concerns: review rigor, evidence accuracy, and communication.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4",
+        "s5",
+        "s7"
+      ],
+      "limitations": "Overall must not hide that adoption/support/end-user-impact are unscored because the feature is not yet shipped to stable."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5915984063889408",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2026-06-08",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, stages, planned DevTrial M150 / Ship M151 (desktop+Android), finch name DeviceOrientationRequestPermission, ff/safari/webdev views, security/privacy review 'Pending', TAG 'Not applicable', release notes not publish-ready, adoption plan (no-op first, later ASK-by-default)"
+      ],
+      "limitations": "Cached record (accurate_as_of 2026-06-08); ff 'In development' signal disputed by later intent-thread evidence; is_released=false."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/w3c/deviceorientation/issues/57",
+      "publisher": "W3C DeviceOrientation (GitHub)",
+      "publishedOrObservedAt": "2018-12-13",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Original 2018 API proposal by WebKit (Chris Dumez) to require permission for motion/orientation events",
+        "Security motivation citing sensor-exploitation research",
+        "Triggered spec PR #68"
+      ],
+      "limitations": "Issue body only; issue now closed; full comment thread beyond WebKit confirmation not captured."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/mozilla/standards-positions/issues/1428",
+      "publisher": "Mozilla standards positions (GitHub)",
+      "publishedOrObservedAt": "2026-06-29",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla standards-position request filed 2026-06-29 by Tom Van Goethem",
+        "Status 'Unscreened'/'Open' as of retrieval",
+        "References Bugzilla 1536382"
+      ],
+      "limitations": "No formal Mozilla decision yet; contradicts the cached ChromeStatus ff 'In development' signal."
+    },
+    {
+      "id": "s4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/ckd2rFmT3PA",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship filed 2026-06-17 by Tom Van Goethem",
+        "DevTrial M150 / Ship M151 (desktop+Android)",
+        "Mozilla 'In development' disputed by API owner Mike Taylor",
+        "Alex Russell API-shape dissent and TAG suggestion; Reilly Grant rationale (navigator.permissions.request never reached consensus)",
+        "Rick Byers +1 to match WebKit; Yoav Weiss flag that design doc is not public",
+        "Approved ~2026-07-15 by Chris Harrelson/Yoav Weiss"
+      ],
+      "limitations": "Final approval message bodies partially truncated; design doc not public."
+    },
+    {
+      "id": "s5",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/j7sGtCBGaxA",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2022-06-20",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Prior 2022 Intent to Prototype by Raphael Kubo da Costa (Intel)",
+        "No-op-first plan with use counters",
+        "Joe Medley pushback to clarify the deprecation intent of window.ondevice{motion,orientation}",
+        "Links older ChromeStatus feature 5051845089689600",
+        "No milestones set; effort stalled"
+      ],
+      "limitations": "Does not explain why the 2022 effort stalled."
+    },
+    {
+      "id": "s6",
+      "url": "https://w3c.github.io/deviceorientation/",
+      "publisher": "W3C (Devices and Sensors / Web Applications Working Groups)",
+      "publishedOrObservedAt": "2025-02-12",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Normative requestPermission() for DeviceOrientationEvent and DeviceMotionEvent",
+        "Section 7 requires express permission via requestPermission()",
+        "Precision caps (0.1 deg / deg/s / m/s^2) to mitigate fingerprinting",
+        "Changes log adds requestPermission(); SecureContext; Permissions API integration",
+        "Published standard (TR/orientation-event)"
+      ],
+      "limitations": "Editor's Draft revision read; Automation section marked 'at risk'."
+    },
+    {
+      "id": "s7",
+      "url": "https://www.wired.com/story/mobile-websites-can-tap-into-your-phones-sensors-without-asking/",
+      "publisher": "WIRED (Condé Nast)",
+      "publishedOrObservedAt": "2018-09-26",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Quantification of permissionless sensor access: 3,695 of top-100k sites tap mobile sensors (~1,200 for tracking; Wayfair/Priceline/Kayak named)",
+        "Cited by w3c#57 as the trigger",
+        "All major browsers allowed access without permission at the time"
+      ],
+      "limitations": "Single 2018 press source; named-site list is historical."
+    },
+    {
+      "id": "s8",
+      "url": "https://caniuse.com/deviceorientation",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Underlying DeviceOrientation/Motion events are universally supported across engines (hence high compat risk when gating)",
+        "Safari on iOS supported 17.0+"
+      ],
+      "limitations": "Tracks the events generally, not requestPermission support specifically; live page, no fixed observation date."
+    },
+    {
+      "id": "s9",
+      "url": "https://github.com/mpetroff/pannellum/issues/797",
+      "publisher": "Pannellum panorama viewer (GitHub)",
+      "publishedOrObservedAt": "2019",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "support",
+      "supports": [
+        "iOS 13 turned off default sensor access and offered no setting to re-enable",
+        "Required code changes to call requestPermission()",
+        "Representative of broad ecosystem breakage (also krpano, Garden Gnome Software, Babylon.js, p5.js per adjacent search results)"
+      ],
+      "limitations": "Single project issue; date approximate."
+    },
+    {
+      "id": "s10",
+      "url": "https://stackoverflow.com/questions/56514116/how-do-i-get-deviceorientationevent-and-devicemotionevent-to-work-on-safari",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": "2019",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Widespread developer friction: iOS 13 requires DeviceOrientationEvent.requestPermission()",
+        "Large volume of Q&A confirms the breakage was broad"
+      ],
+      "limitations": "Community Q&A, not an authoritative spec; date approximate."
+    },
+    {
+      "id": "s11",
+      "url": "https://www.ieee-security.org/TC/SPW2021/ConPro/papers/reitinger-conpro21.pdf",
+      "publisher": "IEEE (ConPro 2021 workshop)",
+      "publishedOrObservedAt": "2021",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Independent academic recommendation that sensors be guarded by permissions in Chrome and that browsers follow Tor/Safari's lead"
+      ],
+      "limitations": "Read via search snippet only; full PDF not retrieved."
+    },
+    {
+      "id": "s12",
+      "url": "https://github.com/w3c/deviceorientation/issues/74",
+      "publisher": "W3C DeviceOrientation (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Known limitation: requestPermission stores permission per session, making shake-event-detection apps impractical"
+      ],
+      "limitations": "Read via search snippet only; full thread and resolution not captured."
+    },
+    {
+      "id": "s13",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=221399",
+      "publisher": "WebKit bug tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Interop/compat gap: requestPermission not available in cross-origin iframes even with feature policy (iOS 14+)"
+      ],
+      "limitations": "Read via search snippet only; current status of the WebKit bug not verified."
+    },
+    {
+      "id": "s14",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent/requestPermission_static",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Reference documentation for the requestPermission() static method exists on MDN"
+      ],
+      "limitations": "Referenced via search result; full MDN content not re-read."
+    }
+  ],
+  "successes": [
+    "Security/privacy rationale is rigorously evidenced (quantified 2018 press coverage plus NDSS/PoPETS/IEEE research) rather than asserted.",
+    "Chrome is closing a multi-year engine divergence by aligning with a spec WebKit/Safari has shipped since 2019.",
+    "Phased no-op-first rollout deliberately avoids the iOS-13-style web breakage, informed directly by that precedent.",
+    "An API owner (Mike Taylor) candidly flagged the inaccurate Mozilla 'In development' signal during review rather than letting it stand.",
+    "Spec is precise and normative, including transient-activation and precision-cap mitigations for fingerprinting."
+  ],
+  "failures": [
+    "Approximately seven-year delay with a stalled 2022 prototype attempt and no public postmortem explaining the stall.",
+    "Duplicate/competing ChromeStatus entries (5915984063889408 and 5051845089689600) for the same underlying capability, complicating tracking.",
+    "Mozilla position recorded as 'In development' on the strength of a dormant 7-year-old bug; disputed on-thread and still 'Unscreened' at the real standards-position issue.",
+    "TAG review declined ('Not applicable') despite a substantive API-shape design question raised during the intent.",
+    "Design doc is non-public (flagged by Yoav Weiss) and is inconsistently linked between the cached record and the intent thread.",
+    "Security and privacy review statuses are 'Pending' at Intent to Ship.",
+    "No Chrome DevRel/release artifact for the dev trial; release notes explicitly not content-reviewed or publish-ready.",
+    "Web-develop signals recorded as 'No signals' without any mitigation or attributable research."
+  ],
+  "counterfactuals": [
+    "If the 2022 Intent to Prototype had set milestones and a follow-up owner, the API could have shipped ~4 years earlier, shortening the Chrome/Safari interop gap and the window of continued silent sensor access.",
+    "If a TAG review had been requested instead of 'Not applicable', the API-shape concern (permission on event objects vs a unified navigator.permissions.request()) could have been adjudicated before Chrome committed to the WebKit-compatible shape.",
+    "If the Mozilla position had been verified against a current primary source before Intent to Ship, the interop story would have been accurate rather than overstated as 'In development'.",
+    "If a Chrome DevRel announcement plus MDN/sample had launched with the dev trial, the ecosystem would be better prepared for the eventual ASK-by-default transition that broke sites on iOS 13.",
+    "If the design doc had been public, reviewers (and the ecosystem) could have evaluated the no-op-first vs ASK-by-default transition plan on its merits."
+  ],
+  "skillImprovements": [
+    "Phase 04 (wide review): add a rule to verify every browser standards-position against a current, dated primary source and to flag any position older than a threshold (e.g. 24 months) or derived from a dormant bug as stale/unknown — never infer 'in development' from a ChromeStatus field.",
+    "Phase 06 (prepare to ship): add a rule to flag or block Intent to Ship when security_review_status or privacy_review_status is 'Pending'.",
+    "Phase 04: add a rule that when any reviewer raises an API-design/shape question during an intent, a TAG-review decision (not 'Not applicable') is required unless the shape is verbatim mandated by a CR/REC spec.",
+    "Phase 00 (intake/classification): add a duplicate-detection step that searches for existing ChromeStatus entries for the same capability and reconciles or marks them superseded before creating a new one.",
+    "Phase 03/07: require a public release-communication artifact (blog/MDN/sample) for any capability with a known ecosystem-breakage precedent, even for a dev trial.",
+    "Phase 06: add an evidence-ledger reconciliation check so the design doc linked in ChromeStatus matches the design doc referenced in the intent thread.",
+    "Add a regression eval case: a long-dormant, revived, spec-mandated security feature with Safari parity, 'No signals' from web devs, and an unresolved 3rd-engine position — to test that the reviewer scores it mixed (not success from parity/shipment alone) and demands current position verification."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Feature is in dev trial (M150), not shipped to stable; adoption, end-user-impact, and support outcomes are inherently unscored at this milestone rather than fully evidenced.",
+      "WPT actual pass/fail results could not be verified (wpt.fyi dashboard is JS-rendered and returned no test data via the reader).",
+      "Implementation detail bugs (crbug 947112, Monorail 40094424) are auth-gated and unreadable.",
+      "Design doc(s) are non-public; content could not be assessed (two different doc IDs appear).",
+      "Mozilla standards position is 'Unscreened' as of cutoff; the 3rd-engine interop story is unresolved.",
+      "No public dev-trial cohort, feedback report, or Chrome release-communication artifact was found.",
+      "The older related ChromeStatus entry (5051845089689600) repeatedly returned HTTP 500 via the reader and could not be read directly (its 2022 Intent to Prototype thread stands in as proxy)."
+    ],
+    "reviewedAt": "2026-07-20T06:40:00Z"
+  }
+}

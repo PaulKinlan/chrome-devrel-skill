@@ -1,0 +1,495 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5176802466201600,
+    "name": "overscroll-behavior: chain",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5176802466201600",
+    "category": "CSS",
+    "blinkComponent": "Blink>Scroll",
+    "owner": "vmpstr@google.com",
+    "webFeature": "overscroll-behavior",
+    "finchName": "CSSOverscrollBehaviorChain",
+    "rolloutPlan": "Will ship enabled for all users",
+    "breakingChange": false,
+    "enterpriseImpact": "none",
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5176802466201600",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "CSS keyword value addition completing the 2x2 matrix of overscroll-behavior effects (scroll propagation x local border effect); the missing 4th combination 'chain' = propagation + no local effect. Concrete use case: side menus/drawers that should not bounce/stretch but still chain scroll to an ancestor. Owner vmpstr@ (Blink>Scroll); incubated in CSSWG (issue #13370 opened 2026-01-19). Mode correctly diagnosed as a standards-track CSS value, not a Chrome-only API.",
+      "evidenceIds": [
+        "chromestatus",
+        "csswg-13370",
+        "explainer"
+      ],
+      "limitations": "No end-user or stakeholder scan; the problem is framed entirely from a developer use case."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubated in the correct venue (CSSWG). Issue #13370 (2026-01-19) was placed on the CSSWG spring 2026 face-to-face agenda (Agenda+ FTF), resolved, and the spec edited via PR #13861; the name evolved from the author's suggested 'forward'/'continue' to the adopted 'chain'. The explainer states the one alternative considered (do nothing / browser default) and rejects it as low-cost; a live demo is provided.",
+      "evidenceIds": [
+        "csswg-13370",
+        "explainer",
+        "spec"
+      ],
+      "limitations": "No independent developer research or customer/partner evidence; TAG later noted the explainer 'assumes a lot of knowledge' and lacks accessibility/i18n sections."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implementation landed in Chromium (crbug 499018879; chromium-review 7832830, reviewed by flackr@). WPT PR #59792 (merged 2026-05-11) adds parsing tests (valid/invalid/computed) and behavioral tests across wheel, keyboard, and gesture inputs on both X and Y axes, plus code fixes so tests pass, and explicitly 'moves overscroll-behavior: chain to experimental'. Intent to Prototype was sent to blink-dev.",
+      "evidenceIds": [
+        "wpt-59792",
+        "intent-prototype",
+        "crbug"
+      ],
+      "limitations": "crbug body not retrievable (issues.chromium.org returned HTTP 500 on multiple attempts); no task-based friction logs or framework-integration evidence (low need for a single keyword value)."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "ChromeStatus carries a DevTrial stage (130 / intent_stage 2) but devtrial_instructions and flag_name are null, and no evidence of a structured developer-trial cohort, recruitment, or attributable feedback exists. The path appears to have been runtime-flag -> experimental (per WPT PR) -> ship without a published trial.",
+      "evidenceIds": [
+        "chromestatus",
+        "wpt-59792"
+      ],
+      "limitations": "Absence of evidence rather than evidence of absence; for a small additive value a formal trial may be disproportionate, but it is undocumented either way."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "CSSWG resolved (issue closed via spec PR; value normatively in the editors' draft). Mozilla standards-position #1406 is labeled 'position: positive'. TAG review #1228 was discussed across six meetings (2026-05-18 to 2026-07-06) and resolved 'satisfied with concerns' on 2026-07-16 with two material concerns: (1) the explainer is missing accessibility/i18n/impact sections, and (2) the name 'chain' is confusing vs 'auto' and may violate the CSS value-naming convention (values are usually adjectives). WebKit #661 remains Open with no position. Critically, the TAG's written resolution (2026-07-16) post-dates Chrome 150 stable (2026-06-30), so the value shipped before wide review formally closed and before the naming concern was delivered in writing.",
+      "evidenceIds": [
+        "tag-1228",
+        "tag-tracker",
+        "mozilla-1406",
+        "webkit-661",
+        "spec"
+      ],
+      "limitations": "Exact Mozilla position-close date unknown (ChromeStatus still showed 'No signal' as of 2026-06-15); TAG meeting notes are paraphrased summaries."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "An Origin Trial stage exists in ChromeStatus (150 / intent_stage 3) but every OT field is null - no trial was configured or run. For a low-risk additive keyword value completing an existing Baseline property, no field experiment is warranted: there is no compat risk and no privacy/security surface beyond the existing overscroll-behavior property (spec confirms 'no new abilities beyond preventDefault').",
+      "evidenceIds": [
+        "chromestatus",
+        "spec"
+      ],
+      "limitations": "not-relevant by rationale, not 'untested'."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was sent (confirmed). Rollout is enabled-by-default (finch CSSOverscrollBehaviorChain) on desktop/Android/WebView M150 (no iOS), with enterprise_impact none, breaking_change false, and activation/security/ergonomics risks recorded as 'None'. The spec includes 'chain'. Chrome release comms were prepared (beta blog, release notes). Gaps at ship: ChromeStatus still showed tag/security/privacy review 'Pending' and Mozilla 'No signal' as of accurate_as_of 2026-06-15 (stale vs Mozilla's actual 'positive' and the active TAG review); MDN was not yet updated with 'chain'; and the value shipped before the TAG review was resolved.",
+      "evidenceIds": [
+        "chromestatus",
+        "intent-ship",
+        "spec",
+        "chrome150-beta",
+        "mdn",
+        "tag-1228"
+      ],
+      "limitations": "Intent-to-Ship full body not retrievable (msgid URL rejected by the reader; confirmed via search snippet only)."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Chrome 150 was promoted to stable on 2026-06-30; 'overscroll-behavior: chain' shipped enabled-by-default on desktop/Android/WebView. It is covered in the Chrome 150 beta blog (2026-06-02) and the Chrome 150 release notes. The feature is live in stable as of the evidence cutoff (~3 weeks old).",
+      "evidenceIds": [
+        "chrome-releases",
+        "chromiumdash",
+        "chrome150-releasenotes",
+        "chrome150-beta"
+      ],
+      "limitations": "Only ~3 weeks post-stable; no post-ship telemetry, regression, or incident data is available yet."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Adoption of the 'chain' value is unknown (it has shipped for under one month). Context: the base overscroll-behavior property is Baseline / widely available across all engines since September 2022 and is well-documented and discussed (MDN, CSS-Tricks, Ahmad Shadeed, Ben Nadel, Stack Overflow questions, and a Figma feature request for scroll-chaining control), indicating a mature, understood property - but no Chrome use-counter or adoption data specific to the 'chain' keyword was found.",
+      "evidenceIds": [
+        "mdn",
+        "caniuse",
+        "ecosystem"
+      ],
+      "limitations": "No chain-specific usage metric was retrievable."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "The feature is too new for public support issues, known regressions, or community Q&A specific to 'chain' to have surfaced; there is no support-burden evidence in either direction.",
+      "evidenceIds": [],
+      "limitations": "No support evidence found; feature is <1 month in stable."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive CSS keyword value, not a restriction, replacement, or removal; no migration, detection tooling, removal timeline, or reverse trial applies.",
+      "evidenceIds": [],
+      "limitations": "not-relevant by rationale."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "A real, narrow, standards-aligned problem: it completes the 2x2 overscroll-behavior effect matrix (propagation x local effect) and unblocks drawer/menu UX plus the sibling 'Overscroll Gestures' feature (per the ChromeStatus web-dev note). Mozilla and the TAG both 'see the benefit for web authors'. However, the chosen name 'chain' was flagged by TAG as confusing relative to 'auto' and possibly non-conformant with the CSS value-naming convention, and the explainer is too thin to communicate the value/impact to unfamiliar reviewers. Net: value is real, naming/communication quality is mixed.",
+      "evidenceIds": [
+        "csswg-13370",
+        "tag-tracker",
+        "mozilla-1406",
+        "chromestatus",
+        "openui-overscroll"
+      ],
+      "limitations": "No direct developer-demand research; demand inferred from the use case and an adjacent feature."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "The effect is a subtle UX polish (suppress local bounce/affordance while preserving scroll chaining) on drawer/menu components; TAG noted a possible cognitive-accessibility benefit but also flagged RTL/i18n interaction as uncertain. No user research was performed (TAG recorded 'User research: N/A') and no end-user impact data exists.",
+      "evidenceIds": [
+        "tag-tracker",
+        "explainer"
+      ],
+      "limitations": "No measurable end-user impact evidence."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No chain-specific adoption is measurable at under one month in stable; only base-property adoption context exists.",
+      "evidenceIds": [
+        "mdn",
+        "ecosystem"
+      ],
+      "limitations": "Too new to assess."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Positive standards trajectory: 'chain' is normatively in the CSSWG editors' draft, Mozilla's position is 'positive', and the TAG is 'satisfied'. But as of the cutoff only Chromium ships 'chain' (WebKit has no position; it is not Baseline for 'chain'), the TAG review was not formally closed at ship time, and a naming concern remains open. MDN/caniuse are not yet updated to include 'chain'.",
+      "evidenceIds": [
+        "spec",
+        "mozilla-1406",
+        "tag-1228",
+        "webkit-661",
+        "mdn"
+      ],
+      "limitations": "Spec is an editors' draft (not yet CR); single-engine implementation."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Strong, specific implementation+test evidence: WPT PR #59792 (merged 2026-05-11) adds parsing tests (valid/invalid/computed) and behavioral tests across wheel, keyboard, and gesture inputs on both X and Y axes, with code fixes made so tests pass; the implementation was reviewed by flackr@; it is a low-risk additive change to an existing property.",
+      "evidenceIds": [
+        "wpt-59792",
+        "crbug"
+      ],
+      "limitations": "crbug body not retrievable (host HTTP 500); no post-ship regression/performance data yet."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Process evidence is coherent and Chrome-side release comms are good and on time (beta blog + release notes). But there are several accuracy/quality gaps: ChromeStatus review fields were stale at ship (Mozilla shown 'No signal' vs actual 'positive'; tag/security/privacy 'Pending' while the TAG actively reviewed); the explainer is too thin (TAG: missing accessibility/i18n); MDN was not updated with 'chain' at ship; and the value shipped before the TAG review was formally resolved.",
+      "evidenceIds": [
+        "chromestatus",
+        "chrome150-beta",
+        "chrome150-releasenotes",
+        "mdn",
+        "tag-tracker"
+      ],
+      "limitations": "Intent-to-Ship body not retrievable."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support evidence is available; the feature is under one month in stable.",
+      "evidenceIds": [],
+      "limitations": "Too new to assess."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A fast, low-risk, standards-blessed addition to a Baseline property with strong test coverage and positive Mozilla/TAG signals - but it cannot be scored a success: it shipped before its TAG review formally closed with an unresolved naming concern, ChromeStatus review fields were stale, MDN was not updated, and adoption/end-user-impact/support remain unknown because the value is under one month old. Known dimensions are mixed; post-ship outcome dimensions are unscored.",
+      "evidenceIds": [
+        "chromestatus",
+        "tag-tracker",
+        "spec",
+        "chrome-releases",
+        "wpt-59792"
+      ],
+      "limitations": "Overall is dominated by post-ship unknowns."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus",
+      "url": "https://chromestatus.com/feature/5176802466201600",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-06-15)",
+      "publishedOrObservedAt": "2026-06-15T14:01:40Z",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "feature record, stages, rollout plan, finch name, review-status fields, browser positions as recorded"
+      ],
+      "limitations": "Some fields stale vs live state (Mozilla shown 'No signal'; tag/security/privacy 'Pending') - cross-checked against live issues."
+    },
+    {
+      "id": "csswg-13370",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13370",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-01-19",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "incubation start (2026-01-19), use case, spring 2026 FTF agenda, resolution, name evolution"
+      ],
+      "limitations": "Reader returned the issue body but not the full comment thread."
+    },
+    {
+      "id": "explainer",
+      "url": "https://raw.githubusercontent.com/vmpstr/htmldemos/master/gestures/overscroll-behavior-chain.md",
+      "publisher": "vmpstr (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "problem statement, proposal, considered alternative, demo link"
+      ],
+      "limitations": "Explainer is short; TAG later flagged missing sections."
+    },
+    {
+      "id": "spec",
+      "url": "https://drafts.csswg.org/css-overscroll-1/",
+      "publisher": "W3C CSS Working Group (editors' draft)",
+      "publishedOrObservedAt": "2026-04-30",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "'chain' value normatively defined; grammar now [ contain | none | auto | chain ]{1,2}; security/privacy sections; base property support data"
+      ],
+      "limitations": "Editors' draft, not yet a Candidate Recommendation."
+    },
+    {
+      "id": "tag-1228",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1228",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": "2026-05-08",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review opened 2026-05-08; resolution 'satisfied with concerns'; review type 'later review'"
+      ],
+      "limitations": "Issue body only; comment text obtained via the tracker source."
+    },
+    {
+      "id": "tag-tracker",
+      "url": "https://tag-github-bot.w3.org/gh/w3ctag/design-reviews/1228",
+      "publisher": "W3C TAG (conversation archive)",
+      "publishedOrObservedAt": "2026-05-18",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "full TAG discussion 2026-05-18 to 2026-07-06; final comment 2026-07-16; naming concern vs 'auto'; missing explainer sections; OpenUI 'drawers' context; chronology that resolution post-dates ship"
+      ],
+      "limitations": "Meeting notes are paraphrased summaries, not verbatim."
+    },
+    {
+      "id": "mozilla-1406",
+      "url": "https://github.com/mozilla/standards-positions/issues/1406",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": "2026-05-08",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position label 'position: positive'; CSS reviewer emilio"
+      ],
+      "limitations": "Exact date the 'positive' label was applied/closed is not visible; ChromeStatus still showed 'No signal' as of 2026-06-15."
+    },
+    {
+      "id": "webkit-661",
+      "url": "https://github.com/WebKit/standards-positions/issues/661",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2026-05-08",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position issue is Open with no position label (no signal)"
+      ],
+      "limitations": "No WebKit implementation of 'chain' found."
+    },
+    {
+      "id": "wpt-59792",
+      "url": "https://github.com/web-platform-tests/wpt/pull/59792",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": "2026-05-11",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "merged 2026-05-11; adds parsing + wheel/keyboard/gesture behavior tests on both axes; code fixes; reviewed by flackr@; moves to experimental; references crbug 499018879"
+      ],
+      "limitations": "Bot-exported from Chromium; only the files-changed view was readable."
+    },
+    {
+      "id": "intent-prototype",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/hC2LUZ3XEBE/m/HVsxWKM7AgAJ",
+      "publisher": "Chromium blink-dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype exists; motivation; explainer/spec listed as 'No information provided'; goals for experimentation 'None'"
+      ],
+      "limitations": "Thread body is the OP only; replies/LGTMs not captured."
+    },
+    {
+      "id": "intent-ship",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6a0226c3.710a0220.3a767f.024f.GAE@google.com",
+      "publisher": "Chromium blink-dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship exists; summary matches 'new value to complete the set: chain: propagation, no local effect ... side menus'"
+      ],
+      "limitations": "msgid URL rejected by the reader; content confirmed only via search snippet, full body (LGTMs, exact review states) not retrieved."
+    },
+    {
+      "id": "chrome150-releasenotes",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "feature described in official Chrome 150 release notes as the 4th overscroll-behavior value"
+      ],
+      "limitations": "Snippet only."
+    },
+    {
+      "id": "chrome150-beta",
+      "url": "https://developer.chrome.com/blog/chrome-150-beta",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "feature announced in Chrome 150 beta blog"
+      ],
+      "limitations": "Snippet only."
+    },
+    {
+      "id": "mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2025-07-14",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "base property is Baseline/widely available since Sep 2022; MDN page last modified 2025-07-14 and does NOT yet document 'chain' (formal syntax still [ contain | none | auto ]{1,2})"
+      ],
+      "limitations": "MDN lag is a documentation gap, not a browser gap."
+    },
+    {
+      "id": "chrome-releases",
+      "url": "https://chromereleases.googleblog.com/2026/06/",
+      "publisher": "Chrome Releases (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 promoted to the stable channel on 2026-06-30"
+      ],
+      "limitations": "Snippet only."
+    },
+    {
+      "id": "chromiumdash",
+      "url": "https://chromiumdash.appspot.com/schedule",
+      "publisher": "Chromium Dash (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "M150 schedule (early stable 2026-07-15) confirming 150 is the current stable at cutoff"
+      ],
+      "limitations": "Dates approximate."
+    },
+    {
+      "id": "caniuse",
+      "url": "https://caniuse.com/?search=overscroll-behavior",
+      "publisher": "Can I Use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "base overscroll-behavior property support tables"
+      ],
+      "limitations": "Search-result summary only; 'chain' support table not deep-read."
+    },
+    {
+      "id": "openui-overscroll",
+      "url": "https://open-ui.org/components/overscroll-actions.explainer/",
+      "publisher": "OpenUI",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "larger declarative overscroll / 'drawers' system that TAG identified 'chain' as a standalone piece of (per TAG minutes)"
+      ],
+      "limitations": "Referenced via TAG minutes; not directly read in full."
+    },
+    {
+      "id": "crbug",
+      "url": "https://issues.chromium.org/issues/499018879",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "implementation tracker for the feature (referenced by WPT PR and ChromeStatus bug_url)"
+      ],
+      "limitations": "Body not retrievable - issues.chromium.org returned HTTP 500 on four read attempts; details unverified."
+    },
+    {
+      "id": "ecosystem",
+      "url": "https://ishadeed.com/article/prevent-scroll-chaining-overscroll-behavior/",
+      "publisher": "Ahmad Shadeed (representative of community coverage incl. CSS-Tricks, Ben Nadel, Stack Overflow, Figma forum)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "mature developer understanding and demand for overscroll-behavior / scroll-chaining control for the base property"
+      ],
+      "limitations": "Coverage concerns the base property, not the new 'chain' value."
+    }
+  ],
+  "successes": [
+    "Rapid, venue-correct CSSWG incubation: issue #13370 (2026-01-19) -> spring 2026 FTF resolution -> spec edited (PR #13861), with a concrete demo and an explicitly-considered alternative.",
+    "Comprehensive WPT coverage shipped alongside the implementation (parsing valid/invalid/computed + wheel/keyboard/gesture behavior on both axes), reviewed by flackr@ (PR #59792, merged 2026-05-11).",
+    "Low-risk, additive, non-breaking change to an already-Baseline property; clean enabled-by-default rollout (finch CSSOverscrollBehaviorChain) with no enterprise impact.",
+    "Positive Mozilla standards position; the TAG ultimately satisfied; timely Chrome 150 beta blog and release-notes coverage."
+  ],
+  "failures": [
+    "Shipped in Chrome 150 stable (2026-06-30) before the TAG review was formally resolved (2026-07-16); the TAG's substantive naming concern ('chain' vs 'auto' confusing; departs from the CSS value-naming convention) was not addressed before developers could depend on the keyword - and CSS value names are effectively permanent.",
+    "Explainer too thin: no accessibility, internationalization, or considered-impacts sections (TAG flagged this); the Intent-to-Prototype thread even listed 'No information provided' for explainer/spec.",
+    "ChromeStatus review/browser fields were stale and inaccurate at ship (Mozilla 'No signal' vs actual 'positive'; tag/security/privacy 'Pending' despite active review), understating interoperability support in launch materials.",
+    "MDN (canonical reference) and caniuse were not updated with 'chain' at ship, leaving the value discoverable only via Chrome's own channels.",
+    "No developer-trial cohort, friction evidence, or post-ship adoption/support measurement is in place (the latter is partly a function of age)."
+  ],
+  "counterfactuals": [
+    "Had the team waited for (or pre-emptively chased) the TAG's written resolution before the M150 branch, the 'chain' naming question could have been settled with CSSWG/TAG before the keyword became permanent, avoiding a hard-to-reverse rename risk.",
+    "Had ChromeStatus browser-position/review fields been reconciled against the live Mozilla/WebKit/TAG issues within ~2 weeks of ship, launch materials would not have under-stated Mozilla support ('positive' shown as 'No signal').",
+    "Had an MDN/caniuse PR been filed in the same milestone as ship, developer discovery of the new value would be materially better at launch.",
+    "A short task-based friction check (a drawer component on Android + desktop, including RTL) would have pre-answered the i18n/cognitive-accessibility questions the TAG raised and produced reusable evidence rather than 'N/A'."
+  ],
+  "skillImprovements": [
+    "Add a phase-04/06 hard-gate eval: for any new CSS keyword value, block the ship branch while its TAG review is open OR while value naming is contested; treat CSS value names as effectively immutable post-ship. Use overscroll-behavior: chain as the regression weak-case.",
+    "Add a release-readiness checklist item: reconcile ChromeStatus browser-position and review-status fields against the live Mozilla/WebKit/TAG issues within 14 days of ship; flag any 'Pending'/'No signal' that contradicts an actual resolved position.",
+    "Add a documentation-readiness gate for CSS value additions: require a filed/merged MDN and caniuse update in the same milestone as ship.",
+    "Add an explainer-quality regression eval enforcing accessibility, i18n, security, privacy, and alternatives sections (explicit 'none' allowed) per repeated TAG feedback; weak case = this feature's explainer.",
+    "Add a phase-02 prompt to generate a one-task friction log (including RTL and mobile) for even 'trivial' CSS additions, so user-impact questions have evidence rather than 'N/A'."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "crbug 499018879 body (issues.chromium.org returned HTTP 500 on multiple read attempts) - implementation/bug detail unverified.",
+      "Intent to Ship (blink-dev) full body - msgid URL rejected by the reader; existence/content confirmed only via a search snippet (LGTMs and exact review states at ship not captured).",
+      "Chrome use-counter / adoption metric for the 'chain' keyword specifically.",
+      "Post-ship regression, performance, and support telemetry (the feature is under one month in stable).",
+      "Exact date Mozilla applied/closed its 'position: positive' label, to pin interop-support timing relative to ship."
+    ],
+    "reviewedAt": "2026-07-20T06:00:00Z"
+  }
+}

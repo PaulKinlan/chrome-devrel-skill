@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6196591858941952,
+    "name": "Comma-separated Container Queries",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6196591858941952",
+    "feature_type": "Chromium catches up",
+    "category": "CSS",
+    "web_feature": "container-queries",
+    "spec_maturity": "Working draft",
+    "shipping_year": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):6196591858941952",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "150:Enabled by default:6196591858941952",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:15:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record created 2026-05-06 by futhark@chromium.org (Blink>CSS owner), classified feature_type 'Chromium catches up', with motivation explicitly 'Catching up with the specification and improve interoperability (covered by Interop 2026)'. A well-scoped CSS-5 parsing/matching delta with a clear owner, an explicit availability expectation ('covered by Interop 2026 tests and shipped in Firefox. Expect baseline within 12 months'), and a generic devrel owner (devrel-chromestatus-all). At M149/M150 the lifecycle stage and decision were unambiguous.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "No Chrome explainer (explainer_links empty); design originates in the W3C CSSWG, appropriate for a spec-compliance delta rather than a Chrome-originated proposal."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Design was incubated in the W3C CSS Working Group (css-conditional-5), whose editors include Google's L. David Baron and Apple's fantasai. The 30 June 2026 Working Draft already defines the @container grammar as <container-condition># (comma-separated, matching if ANY condition is true) and lists multiple-*-containers-comma-separated-queries tests, so no Chrome-specific incubation was needed.",
+      "evidenceIds": [
+        "spec",
+        "cs"
+      ],
+      "limitations": "initial_public_proposal_url and explainer_links are empty; incubation was standards-body, not Chrome-led, so there is no Chrome explainer to critique."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implementation tracked in Chromium issue 41491726 'Support comma-separated syntax for @container queries', gated behind flag enable-experimental-web-platform-features. The record lists 7 WPT tests (at-container parsing/serialization, comma-separated-invalidation, comma-separated-skip-invalid, container-rule-cssom, multiple-size/style-containers comma-separated). The prototype corresponds to a tested, spec-conformant parser/matching change rather than a speculative API.",
+      "evidenceIds": [
+        "crb",
+        "cs",
+        "wpt"
+      ],
+      "limitations": "Could not read the Chromium issue body (issues.chromium.org timed out under the reader); implementation timeline and review states are inferred from search snippets only."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "M149 'In developer trial (Behind a flag)' is present in the manifest and record (desktop/android first=149). However the record carries no devtrial_instructions, no sample_links, no doc_links, and no recruitment/feedback instrument - a lightweight, self-selecting, flag-based trial rather than a structured cohort. Knowable at the M149 event: spec WD existed, Firefox implementation was in progress, Interop 2026 had been announced (Feb 2026), and Safari was 'No signal'.",
+      "evidenceIds": [
+        "cs",
+        "wpt"
+      ],
+      "limitations": "No public cohort, task-completion, or feedback-findings evidence; the trial was flag-based with no documented DevRel onboarding kit."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "WebKit standards-positions #659 was opened 2026-05-07 by lilles; 'WebKittens: No response' -> Safari 'No signal'. Firefox is 'Shipped/Shipping' (fixed in Fx151, bug 2019254). TAG review is 'Not applicable'; security and privacy review were both 'Pending' as of accurate_as_of 2026-06-08. An Intent to Ship thread exists (blink-dev/c/d0vAGYKdr-c).",
+      "evidenceIds": [
+        "wk",
+        "ffb",
+        "i2s",
+        "cs"
+      ],
+      "limitations": "Intent-to-Ship body was not readable via the Z.AI reader (groups.google.com URL rejected), so exact reviewer LGTMs, objections, and risk discussion are unknown; security/privacy review states were still 'Pending' at the cached snapshot."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial configured (no OT stage; origintrial=false; the feature went flag -> default). For a standards-conformant CSS parser/matching delta with WPT coverage, an existing cross-engine implementation, and no field-only uncertainty, an OT would not resolve additional unknowns.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "Explicitly not applicable; not used to mean untested."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Ship landed/planned for M150 desktop+android+webview (iOS null). The record's debuggability note gated enablement on fixing crbug 507611251 ('will be fixed before enabling this feature') and documents an accepted devtools limitation: matched-container identification cannot disambiguate which comma-condition matched (needs a devtools protocol change). WPT multiple-*-comma-separated tests pass in Chrome 150.0.7854.0 (2026-05-23). Security/privacy reviews were still 'Pending'.",
+      "evidenceIds": [
+        "cs",
+        "wpt",
+        "crb"
+      ],
+      "limitations": "Could not verify crbug 507611251 resolution or final security/privacy review states (Chromium issue body unreadable)."
+    },
+    "release": {
+      "status": "mixed",
+      "finding": "Enabled by default in M150 (desktop/android/webview). Press coverage is a single CSS-Tricks 'Quick Hit #156' (2026-07-02): 'Chrome 150 implements comma-separated container queries ... following Firefox support.' No dedicated web.dev/Chrome devrel article, sample, or doc link is present in the record; the devrel owner is the generic devrel-chromestatus-all list.",
+      "evidenceIds": [
+        "cs",
+        "cstricks",
+        "mdn"
+      ],
+      "limitations": "A dedicated Chrome 150 release/devrel piece for this sub-feature was not found or confirmed; the CSS-Tricks body timed out, so its date/summary come from a search snippet."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Family context is strong: base container size queries are Baseline Widely Available (2025-08-14), ~19.23% of Chrome page loads, and State of CSS 2025 shows 41% used size queries, 7% style queries, <1% scroll-state. BUT the comma-separated syntax only just shipped in two engines (FF151, Chrome150) in 2026; comma-specific usage is not yet measurable and the feature is not yet Baseline (needs Safari + time).",
+      "evidenceIds": [
+        "wpdx",
+        "logrocket",
+        "wk"
+      ],
+      "limitations": "No comma-separated-specific usage/adoption signal exists yet; Safari 'No signal' blocks Baseline; family-level numbers are a proxy only."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Post-ship window is short; no reported compat breakage or incidents. Known minor gaps: devtools matched-container disambiguation (crbug 41491726 note) and the CSSContainerRule.conditions OM exposure deferred to a separate Firefox bug (2022827); the FF bug carries dev-doc-needed, indicating docs work outstanding.",
+      "evidenceIds": [
+        "crb",
+        "ffb",
+        "cs"
+      ],
+      "limitations": "No public support-volume or issue-recurrence data; too new to assess durable support burden."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Purely additive CSS authoring feature; nothing is deprecated or removed. tag_review_status 'Not applicable'.",
+      "evidenceIds": [
+        "cs"
+      ],
+      "limitations": "Not applicable."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Fills a documented authoring gap: comma-separated conditions let a rule match if ANY condition is true, enabling fallback queries for unsupported features (e.g. @container --name1 not-supported(--foo: bar), --name2 (width > 600px)) and OR-ing across multiple containers in a single rule - both shown in the WD and the MDN condition-list example. Spec-defined, WPT-covered, and already shipped in Firefox, so developer value is established independent of Chrome shipment.",
+      "evidenceIds": [
+        "spec",
+        "mdn",
+        "cs",
+        "ffb"
+      ],
+      "limitations": "Usage of the comma syntax specifically is not yet measurable."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Indirect only: an authoring ergonomics / progressive-enhancement feature with no direct user-facing surface. Credible indirect benefit (progressive-enhancement fallbacks; fewer JS/ResizeObserver hacks that cause layout shift and hurt LCP/UX per community analysis) but no measured end-user outcome, positive or negative, and no accessibility/performance regression identified (a11y is author responsibility, same as media queries).",
+      "evidenceIds": [
+        "spec",
+        "logrocket"
+      ],
+      "limitations": "No direct end-user impact evidence; the benefit is author-side and unmeasured."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "The comma-separated syntax shipped in only two engines in 2026; no comma-specific usage/adoption data exists yet. Family-level adoption (container size queries ~19.23% page loads, Baseline widely available) is strong context but is not evidence of adoption of this sub-feature.",
+      "evidenceIds": [
+        "wpdx",
+        "logrocket"
+      ],
+      "limitations": "Required comma-specific adoption evidence does not yet exist; cannot be scored."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Two of three engines shipping/shipped (Firefox Fx151, Chrome M150) with shared WPT tests (multiple-size/style-containers-comma-separated) passing in Chrome 150, and the feature sits in the Interop 2026 'container style queries' focus area co-signed by all engine vendors. However Safari/WebKit is 'No signal' (issue open, no response since 2026-05-07), the spec is still a Working Draft, and Chrome is a catch-up laggard (Firefox first). Baseline is therefore not yet reachable.",
+      "evidenceIds": [
+        "spec",
+        "ffb",
+        "wk",
+        "wpt",
+        "interopwk"
+      ],
+      "limitations": "Exact WPT interop-2026 pass-rate numbers were not parsed (client-rendered dashboard); the WebKit position may change."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Core parsing/matching is spec-conformant and WPT-covered (7 record tests plus spec-listed multiple-*-comma-separated tests; Chrome 150 passing). But accepted/reported gaps remain: devtools cannot identify which comma-condition matched (needs a devtools protocol change; crbug 507611251 was gated before enabling), and the CSSContainerRule.conditions OM exposure was deferred to a separate bug (Firefox 2022827). Security and privacy reviews were still 'Pending' at accurate_as_of.",
+      "evidenceIds": [
+        "cs",
+        "crb",
+        "ffb",
+        "wpt"
+      ],
+      "limitations": "Could not read crbug 507611251 resolution or final review states (Chromium issue body unreadable)."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The internal ChromeStatus record is thorough (summary, motivation, availability expectation, FF/Safari positions, WPT list, debuggability note, devrel owner). External enablement is thin: no dedicated devrel article/samples/docs in the record; only a CSS-Tricks 'Quick Hit' press line; MDN carries the new formal syntax and condition-list example but its prose is stale ('It is not possible to target multiple containers in a single container query') and the FF bug is tagged dev-doc-needed.",
+      "evidenceIds": [
+        "cs",
+        "mdn",
+        "cstricks",
+        "ffb"
+      ],
+      "limitations": "A dedicated web.dev/Chrome release piece was not confirmed; the intent-to-ship body was unreadable."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Short post-ship window; no reported breakage or incidents. Known minor follow-ups (devtools matched-container disambiguation; OM conditions exposure) are documented rather than hidden, and the MDN dev-doc-needed keyword flags remaining docs debt. Burden appears low but is unmeasured.",
+      "evidenceIds": [
+        "crb",
+        "ffb",
+        "cs"
+      ],
+      "limitations": "No public support-volume/recurrence data; too new for a durable read."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-scoped, low-risk 'Chromium catches up' interop delta that shipped on schedule (M149 flag -> M150 default) shortly after Firefox (Fx151), with WPT coverage and Interop 2026 backing. Real gaps remain: Safari 'No signal' (blocks Baseline), spec still a Working Draft, devtools/OM follow-ups, pending security/privacy reviews, thin external enablement/docs, and no comma-specific adoption measurement yet. Net: a competent, uneventful catch-up rather than a clear success.",
+      "evidenceIds": [
+        "cs",
+        "ffb",
+        "wk",
+        "spec",
+        "wpt"
+      ],
+      "limitations": "See outcome dimensions above; intent/crbug primary bodies were not retrievable by the reader."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs",
+      "url": "https://chromestatus.com/feature/6196591858941952",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-06-08T16:02:12Z",
+      "retrievedAt": "2026-07-20T06:10:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature 6196591858941952 record: name, summary, feature_type 'Chromium catches up', owner futhark@chromium.org, Blink>CSS, M149 dev trial and M150 enable-by-default stages, FF 'Shipped/Shipping', Safari 'No signal', WebDev 'No signals', spec link, 7 WPT tests, finch CommaSeparatedContainerQueries, flag enable-experimental-web-platform-features, debuggability/devtools limitation + crbug 507611251 gating, security/privacy review 'Pending', availability expectation baseline within 12 months."
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-06-08; later states (post-M150) not reflected."
+    },
+    {
+      "id": "spec",
+      "url": "https://drafts.csswg.org/css-conditional-5/#container-rule",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "CSS Conditional Rules Module Level 5, W3C Working Draft 30 June 2026; @container grammar is <container-condition>#; a query is true if ANY component <container-condition> is true; each condition selects its own query container; editors include L. David Baron (Google) and fantasai (Apple); lists multiple-size/style-containers-comma-separated-queries tests."
+      ],
+      "limitations": "Working Draft, not a Recommendation; subject to change."
+    },
+    {
+      "id": "crb",
+      "url": "https://issues.chromium.org/41491726",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chromium issue 41491726 title 'Support comma-separated syntax for @container queries'; 'Enable comma separated container queries for M150'; I2S thread link blink-dev/c/d0vAGYKdr-c; devtools/Selector() limitation for single query vs comma-separated list."
+      ],
+      "limitations": "Issue body could not be read (reader timed out on issues.chromium.org); all content from search snippets, not the full tracker."
+    },
+    {
+      "id": "i2s",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/d0vAGYKdr-c",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "An Intent to Ship: Comma-separated Container Queries thread exists; summary matches the ChromeStatus record ('The @container rule applies if at least one of the queries matches ... fallback queries for features which are not supported in all browsers')."
+      ],
+      "limitations": "Thread body not readable via the Z.AI reader (groups.google.com URL rejected); exact reviewers, LGTMs, objections, and risk discussion unknown."
+    },
+    {
+      "id": "ffb",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2019254",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2026-05-13",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug 2019254 'Parsing and matching support for multiple comma-separated conditions in @container rules', RESOLVED FIXED, status-firefox151=fixed, relnote-firefox 151+, added to final Fx151 release notes; implemented by alaskanemily; blocks interop-2026-container-style-queries; CSSContainerRule.conditions OM exposure deferred to separate bug 2022827; keyword dev-doc-needed."
+      ],
+      "limitations": "Doubles as Mozilla's position/implementation evidence; bugzilla page last updated 2026-05-13."
+    },
+    {
+      "id": "wk",
+      "url": "https://github.com/WebKit/standards-positions/issues/659",
+      "publisher": "WebKit / standards-positions",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit standards-positions issue #659 'Comma-separated @container queries' opened 2026-05-07 by lilles; 'WebKittens: No response'; labelled topic:css, venue: W3C CSS WG; states 'Shipped in Firefox / To be shipped in Chromium'; no WebKit position taken (No signal)."
+      ],
+      "limitations": "Open issue; WebKit may respond later. This is absence of a position, not opposition."
+    },
+    {
+      "id": "interopwk",
+      "url": "https://webkit.org/blog/17818/announcing-interop-2026/",
+      "publisher": "WebKit Blog",
+      "publishedOrObservedAt": "2026-02-12",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Interop 2026 announced 2026-02-12 by Google, Igalia, Microsoft, Mozilla and WebKit; 'Container style queries' is a 2026 focus area; all engine vendors co-signed the effort that includes comma-separated container query tests."
+      ],
+      "limitations": "Vendor announcement; describes the focus area, not this feature's specific score."
+    },
+    {
+      "id": "mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@container",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2025-07-27",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN @container reference includes the formal syntax @container <container-condition># and a 'Condition list' example combining size/style/scroll-state conditions; the browser-compatibility table did not render and the prose still states 'It is not possible to target multiple containers in a single container query', contradicting the new comma-separated capability."
+      ],
+      "limitations": "Page last modified 2025-07-27 (pre-dates Chrome/Firefox shipment); stale prose and dev-doc-needed indicate incomplete docs."
+    },
+    {
+      "id": "logrocket",
+      "url": "https://blog.logrocket.com/container-queries-2026/",
+      "publisher": "LogRocket Blog (Sebastian Weber)",
+      "publishedOrObservedAt": "2025-12-26",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent community analysis of container queries; State of CSS 2025 adoption data: 41% used container size queries, 7% used style queries, <1% used scroll-state queries, awareness of size queries up from 81% (2024) to 86% (2025); notes container collapse/containment gotchas and that container queries complement rather than replace media queries."
+      ],
+      "limitations": "Published 2025-12-26 (modified 2026-03-27), pre-dating the comma-separated ship; family-level data, not comma-specific; not Chrome-feature-specific."
+    },
+    {
+      "id": "cstricks",
+      "url": "https://css-tricks.com/quick-hit-156/",
+      "publisher": "CSS-Tricks (Daniel Schwarz)",
+      "publishedOrObservedAt": "2026-07-02",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "press",
+      "supports": [
+        "CSS-Tricks 'Quick Hit #156' (2026-07-02): 'Chrome 150 implements comma-separated container queries as well as support for light-dark(), following Firefox support.' Confirms M150 shipment and the Firefox-first framing."
+      ],
+      "limitations": "Article body timed out under the reader; title, date and summary are from a search snippet, not full text."
+    },
+    {
+      "id": "wpt",
+      "url": "https://wpt.fyi/results/css/css-conditional/container-queries/multiple-size-containers-comma-separated-queries.html",
+      "publisher": "WPT.fyi (web-platform-tests dashboard)",
+      "publishedOrObservedAt": "2026-05-23",
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT test multiple-size-containers-comma-separated-queries.html passing on Chrome 150.0.7854.0 (Linux 22.04) on 2026-05-23, evidencing a working Chrome 150 implementation before stable."
+      ],
+      "limitations": "Single test, single run; the dashboard is client-rendered so aggregate interop numbers were not parsed."
+    },
+    {
+      "id": "wpdx",
+      "url": "https://web-platform-dx.github.io/web-features-explorer/features/container-queries/",
+      "publisher": "Web Platform DX (web-features)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:12:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Base container size queries feature: Baseline Widely Available since 2025-08-14; ~19.23% of Chrome page loads; Chrome 105, Firefox 110, Safari 16 first shipped; spec css-conditional-5; included in Interop 2023; State of CSS 2025 references."
+      ],
+      "limitations": "Baseline 'widely available' and usage apply to the base container-queries feature, NOT the comma-separated delta (which is not yet Baseline); no separate comma-separated entry observed."
+    }
+  ],
+  "successes": [
+    "Clean 'catch-up' scoping: a spec-conformant delta owned by an established Blink CSS engineer (futhark), with explicit Interop 2026 motivation and an explicit baseline-within-12-months availability expectation (cs).",
+    "Cross-engine sequencing worked: Firefox shipped Fx151 first, Chrome followed M150, shared WPT tests were authored, and press correctly framed it as 'following Firefox support' (ffb, wpt, cstricks).",
+    "A devtools risk was surfaced up front and explicitly gated: the record required fixing crbug 507611251 'before enabling this feature' (cs).",
+    "On-schedule, low-ceremony flag -> default rollout across desktop/android/webview with no reported compat breakage (cs, support evidence)."
+  ],
+  "failures": [
+    "Safari/WebKit position was never obtained: standards-positions #659 sat with 'No response' from 2026-05-07 through the evidence cutoff, leaving a 2-of-3 engine state and blocking Baseline - despite the feature sitting in an Interop 2026 focus area that Safari co-signed (wk, interopwk).",
+    "External enablement was thin: no dedicated devrel article/samples/docs in the record; only a CSS-Tricks 'Quick Hit' press line; MDN prose is stale and self-contradictory and the FF bug is tagged dev-doc-needed (cs, mdn, cstricks, ffb).",
+    "Formal reviews were incomplete at accurate_as_of: security and privacy review both 'Pending'; tag_review 'Not applicable' (arguably fine for pure CSS parsing, but worth noting) (cs).",
+    "Known devtools/OM limitations shipped as accepted gaps rather than resolved: matched-container identification cannot disambiguate which comma-condition matched, and CSSContainerRule.conditions OM exposure was deferred to a separate bug (Firefox 2022827) (cs, crb, ffb)."
+  ],
+  "counterfactuals": [
+    "If a lightweight, earlier WebKit/Safari position request had been filed and pursued (the issue sat with 'No response'), the Baseline path would be de-risked and the 'catch-up' story more compelling; the Safari-co-signed Interop 2026 container-style-queries focus area was the natural lever to get an explicit WebKit position before Chrome shipped.",
+    "If a short web.dev/Chrome release note plus an MDN BCD entry and a non-contradictory example had been staged before M150, the dev-doc-needed gap and the stale MDN sentence ('not possible to target multiple containers in a single container query') would not have shipped alongside the feature, reducing early-adopter confusion.",
+    "If the devtools matched-container limitation and the OM conditions follow-up had been tracked as explicit ship-blockers or clearly documented known-issues at release, the support/iteration handoff would be cleaner.",
+    "If the run had pre-cached primary intent-thread and crbug content into the evidence store at build time (chromestatuslite or the ChromeStatus API), the retrospective would not depend on live fetch of groups.google.com/issues.chromium.org, which failed persistently under the automated reader, leaving the wide-review/prepare-to-ship transition packets under-evidenced."
+  ],
+  "skillImprovements": [
+    "Add a 'catch-up / interop feature' fast-path in the phase router: when feature_type is 'Chromium catches up' and the feature is in an Interop focus area, default-require (a) an explicit other-engine position-request log per engine with dates, (b) WPT interop-dashboard numbers captured to the evidence store, and (c) a web-features Baseline-status check; surface any engine 'no signal' as a Baseline-blocker risk in the prepare-to-ship transition packet.",
+    "Pre-cache primary intent-thread and crbug content (chromestatuslite / ChromeStatus API / crbug export) into the evidence directory at run-build time rather than relying on live Z.AI reader fetch of groups.google.com and issues.chromium.org, which are persistently hard for automated readers; mark each as a 'cached snapshot at <date>'.",
+    "Add a docs-readiness check to the prepare-to-ship/transition packet: MDN BCD entry and example present and not stale; a devrel article or release-note line scheduled; dev-doc-needed keyword absent. Flag self-contradictory prose (like MDN's 'not possible to target multiple containers') before ship.",
+    "Add a devtools/CSSOM-completeness check for CSS features: when a feature changes CSSOM (e.g. a new CSSContainerRule.conditions) or DevTools behavior (matched-container disambiguation), require either completion or an explicitly documented known-issue before default-enable.",
+    "Add a regression eval case for 'interop catch-up with one engine no-signal' so reports do not over-score interoperability as success when a major engine is absent, and so adoption is correctly marked unscored until comma-specific data exists."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship body (blink-dev/c/d0vAGYKdr-c) not readable via Z.AI reader (groups.google.com URL rejected) - exact reviewer LGTMs, objections, and risk discussion unknown.",
+      "Chromium issue 41491726 body not readable (issues.chromium.org timed out) - implementation timeline, review states, and crbug 507611251 resolution unverified beyond search snippets.",
+      "Exact WPT interop-2026 container-style-queries pass-rate numbers not parsed (the dashboard is client-rendered).",
+      "No comma-separated-specific usage/adoption data exists yet (feature shipped mid-2026 in only two engines); family-level data used as proxy.",
+      "A dedicated Chrome 150 devrel/release-note article for this sub-feature was not found or confirmed."
+    ],
+    "reviewedAt": "2026-07-20T06:15:00Z"
+  }
+}

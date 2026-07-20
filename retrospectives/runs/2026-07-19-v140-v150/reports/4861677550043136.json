@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4861677550043136,
+    "name": "Support 'path-length' as a CSS property.",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4861677550043136",
+    "shippingMilestone": 150,
+    "featureType": "Chromium catches up",
+    "blinkComponents": [
+      "Blink>SVG"
+    ],
+    "webFeature": "svg-path-length-css",
+    "owner": "viralipurbey@microsoft.com",
+    "specLink": "https://github.com/w3c/svgwg/pull/1073"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:4861677550043136",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2026-02-23 by Virali Purbey (Microsoft) classifies this as 'Chromium catches up' and states a concrete, narrowly-scoped developer problem: the SVG 'pathLength' presentation attribute cannot participate in the CSS cascade, specificity, animation, or transitions, unlike sibling geometry properties (r, cx, cy, x, y, d) already exposed as CSS. The problem is not new: the originating request (svgwg#773) was filed 2020-01-10 by Adam Argyle (Google) and was resolved in principle by the CSS WG (22 Jan 2020) and the SVG WG. ChromeStatus shows 88 stars and a 'Positive' Web Developers view (8 CrBug upvotes). Intake scope, owner, and component (Blink>SVG) are all clear.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s23"
+      ],
+      "limitations": "Star/upvote counts are interest signals, not validated demand; no proposal-specific developer survey or partner evidence is cited in the record."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Design was incubated in the SVG/CSS Working Groups over ~6 years. The chosen name 'path-length' (camelCase DOM 'pathLength') was agreed in svgwg#773 by Amelia Bellamy-Royds and Tab Atkins, deliberately mirroring the existing SVG-geometry-attribute-to-CSS-property pattern (r, cx, cy, d). The 2020 SVG WG minutes record Blink (fsoder) offering to implement and WebKit (nzimmermann) noting WebKit did not yet render the underlying pathLength attribute at all. svgwg#81/#383 (zero-value semantics, 'pathLength=0' treated as infinite scaling factor) were resolved and closed, and the implementation preserves that semantics.",
+      "evidenceIds": [
+        "s3",
+        "s2",
+        "s5",
+        "s24"
+      ],
+      "limitations": "The value-type question (<number> vs <length>) was raised but not finally resolved during incubation; Mozilla's standards-position review (#1363) later flagged the unitless-value concern, and the CSS WG only resolved it on 2026-05-20 (csswg#13901), after the Intent to Ship."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A complete prototype landed: Chromium CL 7607639 (Commit-Queue: Virali Purbey; reviewed by Sejal Anand and Divyansh Mangal, Microsoft, and Fredrik Söderquist/Opera) plus WPT PR #58280 (merged 2026-03-05, +244 lines across 14 files). WPT coverage spans parsing (valid/invalid/computed values), inheritance, CSS interpolation, SVG <animate> on pathLength, rendering/distance, CSS-overrides-attribute, path-length:0 handling, and a textPath display:none edge case. ChromeStatus documents debuggability via DevTools computed style and parse-time rejection of invalid values.",
+      "evidenceIds": [
+        "s8",
+        "s9",
+        "s1"
+      ],
+      "limitations": "No public performance/regression benchmark data was located; the Chromium tracking bug page (crbug 40670251) could not be rendered to inspect review/landing detail."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "No structured developer trial or origin trial is recorded (devtrial_instructions, ot_*, experiment_* fields are all null). The implementation is gated behind the experimental 'SvgPathLengthCssProperty' runtime flag, which technically allows developers to opt in, but there is no evidence of an organized dev-trial window, outreach, or collected developer feedback before the Intent to Ship.",
+      "evidenceIds": [
+        "s1",
+        "s10"
+      ],
+      "limitations": "Flag availability is not the same as a structured trial with feedback; absence of evidence of outreach is not proof none occurred."
+    },
+    "wideReview": {
+      "status": "mixed",
+      "finding": "TAG review, security review, and privacy review are all marked 'Not applicable' in the record, which is defensible for a CSS property that only re-exposes existing attribute behavior with no new surface. However, cross-engine review signals are weak or absent: Mozilla position #1363 = 'No signal' (Emilio raised a substantive unitless-value typing concern that proved prescient); WebKit position #621 = 'Closed Without a Position', and WebKit historically did not render the underlying pathLength attribute at all (2020 SVG WG minutes). Critically, the value type was NOT settled at Intent-to-Ship time: the CSS WG only resolved number->length on 2026-05-20 (csswg#13901), after the I2S, contradicting the I2S-time design.",
+      "evidenceIds": [
+        "s11",
+        "s12",
+        "s5",
+        "s4",
+        "s6"
+      ],
+      "limitations": "'No signal' must not be read as neutral/positive; the substantive Mozilla typing concern was effectively unresolved through the I2S."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial or runtime experiment stage was planned or conducted for this feature (feature_type 'Chromium catches up'; rollout_plan 'Will ship enabled for all users'; no OT fields populated). This is consistent with the feature only exposing existing pathLength behavior with no new capability and a Finch kill-switch (SvgPathLengthCssProperty) as the mitigation lever. Not-relevant is used here because no experiment phase was defined for this launch, not because testing was skipped.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "The experimental runtime flag effectively served as gating, which is distinct from a formal experiment with goals/risks/feedback."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship was posted to blink-dev with a full ChromeStatus record, a spec PR (svgwg#1073) that later merged (2026-04-23), comprehensive WPT, and a Finch kill-switch. However, the ship-readiness packet was undermined by an unresolved value-type question: in a RE: I2S reply the owner stated the value type would change number->length and that 'Implementation for changing the type of path-length will follow up in a separate feature,' meaning the I2S-time behavior was already known to be superseded before ship.",
+      "evidenceIds": [
+        "s6",
+        "s7",
+        "s2",
+        "s4",
+        "s10"
+      ],
+      "limitations": "The I2S thread's LGTM/approval count and exact dates could not be fully extracted; the gap between 'I2S approved for number' and 'spec now says length' is the material risk."
+    },
+    "release": {
+      "status": "mixed",
+      "finding": "The manifest records one launch event ('150:Enabled by default') and the official Chrome 150 release notes (stable 2026-06-30) list 'Support path-length as a CSS property' under CSS and UI. This is contradicted by implementation and collector evidence: Chromium CL 7870411 (the number->length change) states 'The feature remains behind the experimental SvgPathLengthCssProperty flag and is not shipped'; the MDN browser-compat-data reviewer (Elchi3) reported 'Not seeing this in testing or from the collector' and linked that same CL; and the cached ChromeStatus record (accurate_as_of 2026-06-08) still showed is_released=false and browsers.chrome.status='Proposed'. The most defensible reading is that, due to the mid-stream value-type reversal, the feature was held behind the experimental flag rather than shipping cleanly enabled-by-default in 150 with the now-superseded <number> syntax.",
+      "evidenceIds": [
+        "s13",
+        "s10",
+        "s15",
+        "s1",
+        "s22",
+        "s14"
+      ],
+      "limitations": "Neither the Chromium tracking bug (crbug 40670251) nor the Finch configuration could be directly rendered to confirm the flag's default state at 150 stable; the conflict between official release notes and implementation/collector evidence is itself a release-evidence defect that could not be fully resolved from public sources."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No usage or adoption evidence was located: webdx_usecounter_enum is null in the record, webstatus.dev feature page (svg-path-length-css) was referenced but no adoption/usage numbers were retrievable, and no case studies, framework/library integration, or production deployments were found. Star count (88) and CrBug upvotes (8) are interest, not adoption. Adoption cannot be inferred from the disputed ship state.",
+      "evidenceIds": [
+        "s1",
+        "s21",
+        "s3"
+      ],
+      "limitations": "Absence of public adoption data is expected given the feature's disputed/early ship state; this remains genuinely unknown, not negative."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support issues, regressions, or migration friction for the CSS property were found by the evidence cutoff (consistent with a feature not yet cleanly in production). The only support-adjacent artifact is MDN BCD PR #29906, which is itself blocked on confirming the ship state. The pending number->length value-type change creates a future migration/support surface for any author who adopted the <number> form behind the flag.",
+      "evidenceIds": [
+        "s15",
+        "s4",
+        "s10",
+        "s16"
+      ],
+      "limitations": "No production support baseline exists yet; future support burden is unmeasured."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new CSS property launch, not a deprecation, removal, or intervention. Existing attribute-only behavior is explicitly preserved when the feature is disabled, so there is no removal surface to review. Not-relevant is used because no deprecation/removal phase applies; it is not used to mean untested.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None; the feature does not deprecate the pathLength attribute."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The feature targets a real, long-documented authoring pain: CSS-driven SVG stroke-dash 'draw-on' animations and text-on-path effects today require JavaScript (getTotalLength()) workarounds precisely because pathLength cannot be set or animated from CSS. Independent community documentation (CSS-Tricks x2, Stefan Judis) describes this exact workaround and the manual path-length measurement problem, corroborating genuine developer value. Promoting pathLength to a CSS property aligns it with already-shipped geometry properties and enables cascade/animation participation.",
+      "evidenceIds": [
+        "s17",
+        "s18",
+        "s19",
+        "s3",
+        "s16"
+      ],
+      "limitations": "Value is problem-validity, not measured adoption; no attributable partner/ship commitment evidence."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "End-user impact is indirect (potential for smoother, JS-light SVG animations and reduced main-thread work) and not measurable from available evidence. No user-facing research, accessibility, or performance-on-device evidence was located. Per guidance, indirect and unmeasured user impact is left unscored rather than inferred.",
+      "evidenceIds": [
+        "s17",
+        "s18"
+      ],
+      "limitations": "No end-user or accessibility impact evidence; the property is developer-facing."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No usage data (use counters, HTTP Archive, webstatus.dev), case studies, framework/library integration, or verified production deployments exist by the evidence cutoff. The ship state itself is disputed (see release phase), so even a Chrome-only adoption baseline cannot be established. Adoption must not be inferred from the release-notes listing or from star/upvote counts.",
+      "evidenceIds": [
+        "s1",
+        "s21",
+        "s13",
+        "s10"
+      ],
+      "limitations": "Genuinely unknown; expected for a feature whose actual default-on ship is unconfirmed."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards/test foundation is solid: the spec merged into the SVG WG draft (svgwg#1073, then value-type correction svgwg#1118) with CSS WG + SVG WG consensus, and WPT coverage is comprehensive (s8). But practical interoperability is absent: this is a single-engine feature with no Firefox or WebKit implementation of the CSS property, Mozilla gave 'No signal' and WebKit 'Closed Without a Position', and WebKit historically does not even render the underlying pathLength attribute. Baseline (multi-engine) is not achievable as of the cutoff. The near-shipment of a <number> syntax that the CSSWG then reversed to <length> was a real interop hazard narrowly avoided.",
+      "evidenceIds": [
+        "s2",
+        "s4",
+        "s5",
+        "s11",
+        "s12",
+        "s8",
+        "s3"
+      ],
+      "limitations": "Firefox synced the WPT tests (bugzilla 2021220) but that is test import, not implementation; no public commitment to implement in Firefox/WebKit was found."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Strengths: follows the established SVG-geometry-property pattern; comprehensive WPT; cross-org review (Microsoft implementer, Microsoft + Opera reviewers, Google Blink landing); explicit preservation of pathLength=0 infinite-scaling semantics; Finch kill-switch. Weaknesses: the implementation targeted/shipped the <number> value type that the CSSWG subsequently reversed to <length> (resolved 2026-05-20, spec merged 2026-06-08) — a typing design error caught only after Mozilla flagged it during review and only after the I2S. The corrected implementation (CL 7870411) explicitly notes it is 'not shipped,' leaving the in-tree behavior momentarily divergent from the merged spec.",
+      "evidenceIds": [
+        "s8",
+        "s9",
+        "s10",
+        "s4",
+        "s5",
+        "s11",
+        "s1"
+      ],
+      "limitations": "No performance/regression benchmarks; review depth inside Chromium could not be fully inspected (crbug page not renderable)."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The ChromeStatus record and I2S are thorough and clear about motivation, scope, and risk. However, release communication is internally inconsistent: the official Chrome 150 release notes and the manifest list the feature as shipped/Enabled-by-default, while the implementation CL states it 'remains behind the experimental SvgPathLengthCssProperty flag and is not shipped,' the MDN collector cannot detect it, and ChromeStatus itself still reported is_released=false/status 'Proposed' as of 2026-06-08. The value-type reversal was communicated reactively (a RE: I2S reply) rather than resolved before the I2S. The net effect is an overstatement of ship state in official comms relative to implementation reality.",
+      "evidenceIds": [
+        "s13",
+        "s22",
+        "s10",
+        "s15",
+        "s1",
+        "s7",
+        "s14"
+      ],
+      "limitations": "Cannot fully reconcile notes-vs-implementation from public sources; this is itself the communication defect."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support issues, regressions, or known failures for the CSS property exist by the cutoff, consistent with a feature not yet cleanly in production. The number->length transition creates a latent migration/support surface. Left unscored because there is no production support baseline to assess.",
+      "evidenceIds": [
+        "s15",
+        "s4",
+        "s10"
+      ],
+      "limitations": "No support evidence yet; feature not verified in broad production use."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, narrowly-scoped, low-risk feature addressing a 6-year-old, independently documented authoring gap, with a merged spec and strong WPT. But it is not a clean success: it is single-engine with no positive cross-engine signal; its value type was reversed after the Intent to Ship; the corrected implementation is explicitly 'not shipped'; and official release communications overstate ship state relative to implementation and collector evidence. Material risks (cross-engine support, value-type migration, accurate ship reporting) remain open at the evidence cutoff.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4",
+        "s5",
+        "s10",
+        "s11",
+        "s12",
+        "s13",
+        "s15",
+        "s3"
+      ],
+      "limitations": "Overall is mixed and must not hide the contradicted release dimension or the unknown adoption/support dimensions."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/4861677550043136",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-02-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record, owner, milestones 150 desktop/android/webview, is_released=false as of 2026-06-08, status 'Proposed', Finch name SvgPathLengthCssProperty, web_dev 'Positive' (8 CrBug upvotes), Mozilla 'No signal', WebKit 'Closed Without a Position', WPT list, motivation"
+      ],
+      "limitations": "accurate_as_of 2026-06-08; status field lags actual ship state."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/w3c/svgwg/pull/1073",
+      "publisher": "W3C SVG Working Group (GitHub)",
+      "publishedOrObservedAt": "2026-04-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec PR adding path-length CSS property definition (Section 9.6.2), pathLength as presentation attribute; merged 2026-04-23 by karlcow; references CSS WG resolution 22 Jan 2020; addresses #773"
+      ],
+      "limitations": "Editor's draft; SVG 2 still under development."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/w3c/svgwg/issues/773",
+      "publisher": "W3C SVG Working Group (GitHub)",
+      "publishedOrObservedAt": "2020-01-10",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Original 2020 request (argyleink), WG discussion, naming 'path-length', fsoder Blink interest, WebKit not rendering pathLength attribute (2020 minutes), updated 2026-05-21"
+      ],
+      "limitations": "Older thread; early engine statements may have changed."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/w3c/svgwg/pull/1118",
+      "publisher": "W3C SVG Working Group (GitHub)",
+      "publishedOrObservedAt": "2026-06-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Post-I2S value-type change number->length per CSSWG resolution 2026-05-20; merged 2026-06-08; unitless attribute maps to px"
+      ],
+      "limitations": "Editor's draft."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13901",
+      "publisher": "W3C CSS Working Group (GitHub)",
+      "publishedOrObservedAt": "2026-05-20",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "CSSWG resolution (2026-05-20) that path-length grammar should be <length> not <number>, following standard SVG attribute->property pattern; Tab Atkins / kbabbitt / Virali agreement"
+      ],
+      "limitations": "Resolution date inferred from PR #1118 metadata."
+    },
+    {
+      "id": "s6",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/EinIemRMgoI/m/sAKT8ZfRAQAJ",
+      "publisher": "blink-dev (Google Groups) / mail-archive msg16462,16468",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship: scope, motivation, no new security surface, follows cx/cy/r/d pattern, Finch kill-switch, original <number> value type"
+      ],
+      "limitations": "Exact post date not extracted; approval count not confirmed."
+    },
+    {
+      "id": "s7",
+      "url": "https://www.mail-archive.com/blink-dev@chromium.org/msg16693.html",
+      "publisher": "blink-dev mail-archive (msg16693, msg16728)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "RE: I2S acknowledging value-type resolution from CSSWG+SVGWG and stating 'Implementation for changing the type of path-length will follow up in a separate feature'"
+      ],
+      "limitations": "Implies I2S-time behavior already superseded before ship."
+    },
+    {
+      "id": "s8",
+      "url": "https://github.com/web-platform-tests/wpt/pull/58280",
+      "publisher": "web-platform-tests (GitHub)",
+      "publishedOrObservedAt": "2026-03-05",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT PR merged 2026-03-05 (+244, 14 files): parsing, computed-style serialization, interpolation, style equality, presentation-attribute mapping, textPath display:none case"
+      ],
+      "limitations": "Tests are .tentative; renamed/updated by later number->length CL."
+    },
+    {
+      "id": "s9",
+      "url": "https://chromium-review.googlesource.com/c/chromium/src/+/7607639",
+      "publisher": "Chromium Gerrit (referenced via WPT PR #58280 footer)",
+      "publishedOrObservedAt": "2026-03-05",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Initial Chromium implementation CL; Commit-Queue Virali Purbey; reviewed by Sejal Anand & Divyansh Mangal (Microsoft); Cr-Commit-Position refs/heads/main@{#1594485}"
+      ],
+      "limitations": "CL page content not directly rendered; metadata from WPT PR footer."
+    },
+    {
+      "id": "s10",
+      "url": "https://chromium-review.googlesource.com/c/chromium/src/+/7870411",
+      "publisher": "Chromium Gerrit / Firefox commit 6277043 (WPT PR 61020)",
+      "publishedOrObservedAt": "2026-06",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "number->length implementation CL; reviewed by Fredrik Söderquist (Opera); explicit statement 'The feature remains behind the experimental SvgPathLengthCssProperty flag and is not shipped'; value stored as Length with zoom handling"
+      ],
+      "limitations": "CL page not directly renderable; commit message quoted via Firefox mirror; exact land date approximate."
+    },
+    {
+      "id": "s11",
+      "url": "https://github.com/mozilla/standards-positions/issues/1363",
+      "publisher": "Mozilla standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position 'No signal'; Emilio raised substantive unitless-length typing concern; owner explained it as 'none | <number>'"
+      ],
+      "limitations": "No formal Mozilla position taken; concern later vindicated by CSSWG."
+    },
+    {
+      "id": "s12",
+      "url": "https://github.com/WebKit/standards-positions/issues/621",
+      "publisher": "WebKit standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit 'Closed Without a Position'; WebKit historically did not render pathLength attribute (2020 SVG WG minutes)"
+      ],
+      "limitations": "Position reflects no commitment to implement."
+    },
+    {
+      "id": "s13",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Official Chrome 150 release notes (stable 2026-06-30) list 'Support path-length as a CSS property' under CSS and UI with tracking bug 40670251 and spec PR #1073"
+      ],
+      "limitations": "Listing implies shipped-enabled, which conflicts with implementation CL s10 and collector s15."
+    },
+    {
+      "id": "s14",
+      "url": "https://chromestatuslite.com/?version=150",
+      "publisher": "ChromeStatusLite (community)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 150 roster counts: Enabled (26), Origin Trial (4), Behind a flag (6); indicates path-length's bucket is ambiguous between enabled and behind-a-flag"
+      ],
+      "limitations": "Third-party aggregator; exact bucket for path-length not confirmed from this source alone."
+    },
+    {
+      "id": "s15",
+      "url": "https://github.com/mdn/browser-compat-data/pull/29906",
+      "publisher": "MDN browser-compat-data (GitHub)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "support",
+      "supports": [
+        "BCD PR to add path-length for Chrome 150; reviewer Elchi3: 'Not seeing this in testing or from the collector'; linked CL 7870411 noting feature remains behind experimental flag"
+      ],
+      "limitations": "Collector lag cannot be fully excluded, but combined with s10 strongly indicates non-default-on ship."
+    },
+    {
+      "id": "s16",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/pathLength",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "pathLength attribute semantics, ratio scaling, animatable=yes, applies to path/circle/ellipse/line/polyline/polygon/rect"
+      ],
+      "limitations": "Documents the attribute, not the new CSS property's ship state."
+    },
+    {
+      "id": "s17",
+      "url": "https://css-tricks.com/svg-line-animation-works/",
+      "publisher": "CSS-Tricks",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Documents JS getTotalLength() workaround for stroke-dash 'draw-on' animations, corroborating developer pain"
+      ],
+      "limitations": "Attribute-era article; predates the CSS property."
+    },
+    {
+      "id": "s18",
+      "url": "https://css-tricks.com/a-trick-that-makes-drawing-svg-lines-way-easier/",
+      "publisher": "CSS-Tricks",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Documents pathLength attribute as the CSS-animation-enabling trick and historical Safari gaps"
+      ],
+      "limitations": "Attribute-era article."
+    },
+    {
+      "id": "s19",
+      "url": "https://www.stefanjudis.com/today-i-learned/pathlength-makes-makes-svg-path-animations-easier-to-manage/",
+      "publisher": "Stefan Judis Web Development",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Documents manual path-length measurement pain and pathLength attribute as the mitigation"
+      ],
+      "limitations": "Attribute-era article."
+    },
+    {
+      "id": "s20",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2021220",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox wpt-sync of PR #58280 (tests) marked fixed for firefox150"
+      ],
+      "limitations": "Test import only; not evidence Firefox implements the CSS property."
+    },
+    {
+      "id": "s21",
+      "url": "https://webstatus.dev/features/svg-path-length-css",
+      "publisher": "Web Platform Status (webstatus.dev)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Feature tracked as svg-path-length-css; referenced from I2S"
+      ],
+      "limitations": "No usage/adoption numbers were retrievable; Baseline not established (single-engine)."
+    },
+    {
+      "id": "s22",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-150",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "New in Chrome 150 blog confirms Chrome 150 stable rolling out 2026-06-30"
+      ],
+      "limitations": "Blog snippet did not specifically mention path-length; used only to confirm milestone timing."
+    },
+    {
+      "id": "s23",
+      "url": "https://issues.chromium.org/issues/40670251",
+      "publisher": "Chromium Issue Tracker (Monorail)",
+      "publishedOrObservedAt": "2026-02-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug for the feature (referenced from ChromeStatus and release notes)"
+      ],
+      "limitations": "Page is JavaScript-rendered and could not be directly read; details inferred from ChromeStatus record."
+    },
+    {
+      "id": "s24",
+      "url": "https://github.com/w3c/svgwg/issues/81",
+      "publisher": "W3C SVG Working Group (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "pathLength=0 zero-value semantics resolved (treated as infinite scaling factor), as cited in the ChromeStatus interop risk section"
+      ],
+      "limitations": "Representative of the zero-value discussion (with svgwg#383); not re-fetched in full."
+    }
+  ],
+  "successes": [
+    "Genuine, independently documented developer problem (6-year-old request; CSS-Tricks, Stefan Judis) addressed with a low-risk, pattern-consistent design.",
+    "Spec merged into the SVG WG draft (svgwg#1073) with CSS WG + SVG WG consensus and a clear value-type correction (svgwg#1118).",
+    "Comprehensive WPT coverage landed early (parsing, computed style, interpolation, presentation-attribute mapping, path-length:0, textPath display:none), with explicit preservation of the pathLength=0 infinite-scaling semantics.",
+    "Healthy cross-org Chromium contribution (Microsoft implementer; Microsoft + Opera reviewers) with a Finch kill-switch (SvgPathLengthCssProperty) as mitigation.",
+    "Narrow scope (no new security/privacy surface; TAG/security/privacy reviews reasonably Not applicable)."
+  ],
+  "failures": [
+    "Value-type design error: the feature targeted/shipped the <number> value type that the CSS WG subsequently reversed to <length> (csswg#13901, 2026-05-20; spec PR svgwg#1118 merged 2026-06-08). The corrected implementation (CL 7870411) is explicitly 'not shipped,' leaving in-tree behavior divergent from the merged spec.",
+    "Release-evidence inconsistency: official Chrome 150 release notes (2026-06-30) and the manifest list the feature as shipped/Enabled-by-default, while the implementation CL states it 'remains behind the experimental SvgPathLengthCssProperty flag and is not shipped,' the MDN collector cannot detect it, and ChromeStatus still reported is_released=false/status 'Proposed' as of 2026-06-08.",
+    "No positive cross-engine signal: Mozilla 'No signal' (with a prescient typing concern) and WebKit 'Closed Without a Position'; WebKit historically does not even render the underlying pathLength attribute. Baseline (multi-engine) is not achievable.",
+    "The value-type question was unresolved at Intent-to-Ship time despite being raised in review; it was handled reactively (a RE: I2S reply) rather than as a pre-I2S wide-review blocker."
+  ],
+  "counterfactuals": [
+    "If the CSSWG value-type question (<number> vs <length>) had been resolved before the Intent to Ship (it resolved 2026-05-20, after the I2S), the correct <length> syntax could have shipped in Chrome 150 and the mid-flight reimplementation and re-gating behind the experimental flag would have been avoided.",
+    "If wide review had treated Mozilla's unitless-value comment (#1363) as a blocking typing question instead of recording Mozilla as a neutral 'No signal,' the value type would likely have been settled pre-I2S.",
+    "If the release-notes/ChromeStatus pipeline cross-checked the actual Finch flag default and the implementation CL's own ship-state statement before publishing 'Enabled by default,' the inaccurate ship claim and the MDN collector mismatch would have been prevented.",
+    "If an origin trial or structured developer trial had been run, real adoption and cross-engine interop signals would exist instead of none.",
+    "If the retrospective had access to the rendered tracking bug (crbug 40670251) and Finch config, the disputed 150 ship state could be definitively resolved rather than left mixed."
+  ],
+  "skillImprovements": [
+    "Add a pre-I2S wide-review check for any new CSS property: 'Has the value type / data model been confirmed against CSSWG, and were typing concerns raised by any standards-position reviewer fully resolved?' Treat an unresolved typing question as a wide-review blocker, never as a neutral 'No signal.'",
+    "Add a release-evidence rule for retrospectives: do not score a launch 'Enabled by default' from ChromeStatus metadata or release-notes listings alone; cross-check the Finch flag default and the implementation CL's own ship-state statement, and flag release-notes-vs-implementation-vs-MDN-collector mismatches as a release-communication defect.",
+    "For 'Chromium catches up' CSS/SVG geometry properties, add an interoperability check confirming whether the underlying behavior is actually rendered in WebKit and Firefox before claiming catch-up (here WebKit did not render pathLength), and require a Baseline path statement.",
+    "Add a counterfactual prompt for late spec changes: 'Did any WG resolution land between I2S and ship that changes the shipped behavior? If so, was ship deferred or does the shipped implementation now diverge from the merged spec?' (cf. csswg#13901 / svgwg#1118).",
+    "Record the Chromium tracking bug (Monorail) and Gerrit CLs as required primary fetches even when JS-rendered, with a fallback (mobile/API mirror) so ship-state can be confirmed without ambiguity."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Definitive confirmation of whether path-length was enabled-by-default in Chrome 150 stable or remained behind the experimental SvgPathLengthCssProperty flag: official release notes say shipped, while implementation CL 7870411 and the MDN collector say not shipped; the Chromium tracking bug (crbug 40670251) and Finch config could not be rendered to confirm the flag default.",
+      "Usage/adoption data (use counters / webstatus.dev / HTTP Archive) — not available; webdx_usecounter_enum is null.",
+      "Other-engine implementation status for the CSS property in Firefox and WebKit, and whether the underlying pathLength attribute renders in current WebKit.",
+      "Case studies, framework/library integration, or verified production deployments — none found.",
+      "Post-ship support issues and regressions — none exist yet because the feature is not cleanly confirmed in broad production.",
+      "Exact Intent-to-Ship date and blink-dev approval/LGTM count could not be extracted."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

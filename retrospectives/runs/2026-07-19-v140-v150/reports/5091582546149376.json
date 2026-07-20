@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5091582546149376,
+    "name": "WebRTC Diagnostic Logging API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5091582546149376",
+    "category": "Realtime / Communication",
+    "blinkComponents": [
+      "Blink>WebRTC"
+    ],
+    "owner": "guidou@google.com",
+    "editors": [
+      "agpalak@google.com",
+      "guidou@google.com",
+      "hta@google.com",
+      "guidou@chromium.org"
+    ],
+    "created": "2025-08-20",
+    "updated": "2026-06-25",
+    "accurateAsOf": "2026-04-13",
+    "finchName": "RTCDiagnosticLogging",
+    "requiresEmbedderSupport": true,
+    "platforms": "Desktop only (Android/iOS/Webview null at OT)",
+    "shippingYear": 2026,
+    "standardsMaturity": "WICG incubation",
+    "webFeature": "",
+    "isReleased": false,
+    "statusText": "Proposed"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Origin trial:5091582546149376",
+      "milestone": 150,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "A real, recurring developer problem with a clear owner. The originating request (w3c/webrtc-extensions#124, opened 2022-11-04 by @bdrtc) states WebRTC getStats is insufficient for production debugging and that there is no way to enable WebRTC native logs in mobile browsers to analyze online/compatibility issues. ChromeStatus frames the same motivation (complex connectivity/quality issues hard to reproduce locally; help fix UA bugs). Owner is guidou@google.com (Guido Urdaneta) with hta (Harald Alvestrand) and agpalak as editors; requires_embedder_support=true is correctly flagged because the API needs browser-process log storage/upload. Feature created 2025-08-20. browser-layer intervention is plausibly correct (the capability genuinely requires embedder/log handling a JS library cannot provide).",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-w3c124",
+        "S-explainer"
+      ],
+      "limitations": "ChromeStatus star_count is only 17 (weak interest signal, not demand). The cached record does not state the decision owner for the next transition or an explicit intake artifact."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "A WICG incubation venue exists (repo + explainer + spec + security/privacy questionnaire; WICG tracking page lists 'WebRTC Diagnostic Logging'). The explainer defines goals/non-goals/alternatives and the spec (published 2026-03-09) and questionnaire are coherent. However, the stakeholder evidence base is extremely narrow: the explainer's Stakeholder Feedback lists only Google (implementor, positive) and ByteDance (positive) — and ByteDance is the SAME party that opened the originating 2022 request, so it is not independent demand. No evidence of broad ecosystem/customer research, no contradictory-evidence search, and the adjacent-platform/alternatives analysis is thin given substantial prior art: Chrome already shipped 'WebRTC Logging APIs' in 2016 and exposes chrome://webrtc-internals diagnostic/event recording plus the WebRtcEventLogCollectionAllowed enterprise policy; Firefox already provides about:webrtc and MOZ_LOG/webrtc_trace (engine-controlled, not app-triggered). A notable incubation gap: the original pain point explicitly cited MOBILE browser fragmentation, yet the OT is desktop-only (android/ios/webview all null; all_platforms_descr='Supported on desktop platforms'), so the stated job is only partially addressed.",
+      "evidenceIds": [
+        "S-explainer",
+        "S-spec",
+        "S-questionnaire",
+        "S-wicg-tracking",
+        "S-w3c124",
+        "S-2016-cs",
+        "S-policy-eventlog",
+        "S-webrtcinternals-bug",
+        "S-ff-about-webrtc",
+        "S-so-ff-logs"
+      ],
+      "limitations": "No access to WICG repo issue/discussion list (reader errored), so breadth of incubation debate is unknown. No date on the explainer/questionnaire; spec metadata shows 2026-03-09."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An Intent to Prototype stage and a tracking bug (crbug 481412281, referenced as Tracking bug in Chrome 150 release notes) exist, indicating prototype work occurred. But the public evidence of prototype validation is thin: sample_links and doc_links are both empty arrays, devtrial_instructions is null, and no friction logs, integration spikes, or compatibility matrix are surfaced in the record. No public demo/sample routes are referenced. The spec/questionnaire show the API shape (navigator.rtc startDiagnosticLogging/finishDiagnosticLogging/cancelDiagnosticLogging; RTCDiagnosticLoggingOptions with allowUpload + metadata capped at 5 keys/100 chars) is concrete, but task-based prototype evidence is not visible.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-spec",
+        "S-c150-releasenotes",
+        "S-crbug"
+      ],
+      "limitations": "The crbug detail page could not be retrieved (reader timed out repeatedly); only the bug URL is confirmed via the release notes. No retrievable prototype artifacts."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No flag-based developer trial was used for this feature. The authoritative launch-event manifest contains only the M150 Origin Trial; there is no 'In developer trial (Behind a flag)' event. devtrial_instructions is null and the stages skip directly from Intent to Prototype to Intent to Experiment. Marked not-relevant (rationale: the phase was not instantiated for this feature), NOT 'untested' — testing is instead being attempted via the Origin Trial.",
+      "evidenceIds": [
+        "S-manifest",
+        "S-chromestatus"
+      ],
+      "limitations": "If a private/internal dev trial occurred it is not represented in the public record."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Mixed. Positive: security_review_status and privacy_review_status are both 'Issues addressed' (3), and a thorough self-assessment security/privacy questionnaire exists (explicit consent, logs never exposed to the web, first-party only, no logging in incognito, best-effort/no-error semantics, BFCache/disconnect handling). Negative/concerning: tag_review_status is 'Pending' (1) — TAG review not complete; ff_views=5 and safari_views=5 ('No signal') — no other-engine engagement at all; web_dev_views=4 ('No signals'). Standards maturity is WICG incubation only (val 3), web_feature is empty (no Baseline/web-features entry). The 'Stakeholder Feedback' is again just Google + ByteDance. No Mozilla standards-positions entry was found for this spec. 'No signal' must not be treated as neutral/positive: there is no second implementer and no path to interoperability/Baseline yet.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-questionnaire",
+        "S-explainer",
+        "S-spec",
+        "S-mozilla-positions-search"
+      ],
+      "limitations": "Could not confirm an explicit Mozilla/WebKit position page (consistent with ChromeStatus 'No signal'); absence of a public position is not equivalent to objection."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "An Intent to Experiment is on file (stage 150) with an intent_thread_url and well-articulated experiment_goals ('Allowing enterprises to collect diagnostic data about WebRTC in order to assist in debugging online problems; Collaborate with UA vendors to fix UA WebRTC bugs') and experiment_risks ('The sites using it will lose the ability to trigger the collection of diagnostic logs via API'). The Origin Trial is live: desktop_first=150, desktop_last=155, and Chrome 150 stable shipped 2026-06-30, so at the 2026-07-20 cutoff the OT is roughly three weeks into a six-milestone window. Chrome 150 release notes announce the OT accurately and name the gating enterprise policy (WebRtcDiagnosticLogCollectionAllowedForOrigins). However, no participant denominator, activation/usage numbers, interim readout, or origin_trial_feedback_url exist yet — the experiment is set up but has produced no measured evidence, so the transition packet is incomplete.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-intent-thread",
+        "S-c150-releasenotes",
+        "S-policy-gpedit"
+      ],
+      "limitations": "The blink-dev intent-thread body could not be retrieved (groups.google.com msgid URL rejected/404 on the short form; goals/risks taken from the cached record fields). No OT results data yet."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "A ship stage (160, intent_stage 5) exists with desktop_first=156 and rollout_plan='Will ship enabled for all users', but the feature is still status 'Proposed' and is_released=false; tag review is still Pending and the OT has barely begun. Pre-ship artifacts (final conformance/friction, finalized docs/samples, enterprise notice beyond first_enterprise_notification_milestone=140) are not yet visible. It is too early to assess ship readiness.",
+      "evidenceIds": [
+        "S-chromestatus"
+      ],
+      "limitations": "No ship-date evidence; no retrievable final-review artifacts."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "For the OT milestone, release communication happened and is accurate: the Chrome 150 release notes include a dedicated 'WebRTC Diagnostic Logging API' Origin Trial entry that matches the spec/motivation and correctly states the enterprise-policy gating and the opt-in/upload model. Claims do not outrun the implementation (best-effort, desktop OT only). Gaps: there is no standalone article/video/sample/demo and no DevRel-in-a-box pack (doc_links and sample_links are empty); release-notes depth is a single paragraph. is_releasenotes_content_reviewed=false and is_releasenotes_publish_ready=false in the record.",
+      "evidenceIds": [
+        "S-c150-releasenotes",
+        "S-chromestatus"
+      ],
+      "limitations": "No social/press/Q&A materials observed; no localization/accessibility assets referenced."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No defensible adoption evidence exists. The OT started with Chrome 150 stable (2026-06-30) and is ~3 weeks old at cutoff; there are no usage/use-counter buckets (webdx_usecounter_enum null), no framework/library/tool integration, no case studies, and no production commitments beyond the ByteDance interest. The mature WebRTC-debugging ecosystem (webrtc-internals, test.webrtc.org, Genesys/Twilio/Cisco vendor diagnostic apps, VLprojects/webrtc-issue-detector) is independent prior tooling, not adoption of this API.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-c150-releasenotes",
+        "S-vl-detector",
+        "S-discusswebrtc-psa"
+      ],
+      "limitations": "Inherent to an early OT; absence of evidence is not evidence of failure. Cannot score."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support-issue taxonomy, public troubleshooting content, or known-issues material exists yet for this specific API. The broader WebRTC-debugging support ecosystem is well established but predates and is independent of this feature. Too early and no public support signal to assess.",
+      "evidenceIds": [
+        "S-chromestatus"
+      ],
+      "limitations": "OT just began; no support data."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new-feature launch (Origin Trial), not a deprecation/removal. breaking_change=false; is_enterprise_feature=false; there is no deprecation/removal event in the manifest. Not-relevant with rationale (not applicable to this feature's current lifecycle), not 'untested'.",
+      "evidenceIds": [
+        "S-manifest",
+        "S-chromestatus"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The underlying developer problem is real and recurring (production WebRTC debugging, especially where native logs are inaccessible), attested by the 2022 originating request and the large independent vendor-tooling ecosystem. But the chosen API shape is narrow and its value is partly speculative: it is best-effort, the application receives only a UUID and can never learn whether logging/upload occurred, log format and contents are UA implementation details, and the upload benefit depends on UA vendors actually consuming the logs — and only Google (the UA) is committed. The originating mobile-debugging pain is not addressed by this desktop-only OT, undercutting the stated job-to-be-done for the very requester who raised it.",
+      "evidenceIds": [
+        "S-w3c124",
+        "S-explainer",
+        "S-spec",
+        "S-chromestatus"
+      ],
+      "limitations": "No measured developer outcomes yet (OT just started)."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No measurable end-user impact evidence exists; the feature is mid-OT and not shipped. Design intent is user-controlled (explicit authorization required; no logging in incognito; logs stored locally and never exposed to the web), which is a positive control posture, but there is no data on real user authorization rates, friction, or benefit.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-questionnaire",
+        "S-spec"
+      ],
+      "limitations": "No field data; cannot score user impact."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption data, framework integration, or production case studies. OT ~3 weeks old and desktop-only. webdx_usecounter_enum null (no use-counter bucket).",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-c150-releasenotes"
+      ],
+      "limitations": "Inherent to early OT stage."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Interoperability/Baseline posture is weak and the negative side dominates: ff_views and safari_views are both 'No signal'; tag_review_status is 'Pending'; standards maturity is WICG incubation only; web_feature is empty (no Baseline/web-features entry); only one non-Google stakeholder (ByteDance) is on record. There is no second implementer and no stated path to Baseline. Mitigating factors (why not outright failure): the design is deliberately implementation-detail-heavy (log format/contents/upload mechanism are UA details, surface is minimal — a UUID), which lowers—but does not remove—ossification risk, and no engine has objected (silence is not support). Other engines already have their own non-API mechanisms (Firefox about:webrtc/MOZ_LOG), so a divergent Chrome API risks fragmenting the debugging story across browsers.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-explainer",
+        "S-spec",
+        "S-ff-about-webrtc",
+        "S-so-ff-logs",
+        "S-mozilla-positions-search"
+      ],
+      "limitations": "No explicit Mozilla/WebKit position located; cannot rule out a future position. Early stage."
+    },
+    "implementationQuality": {
+      "status": "unscored",
+      "finding": "Cannot assess runtime/field implementation quality (not shipped; OT just started). Positive readiness signals exist: security_review_status and privacy_review_status are 'Issues addressed', requires_embedder_support is correctly set, and a detailed self-assessment questionnaire covers consent, incognito, BFCache, and disconnect. But no conformance/WPT evidence (wpt null), no regression data, and no field stability data are available.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-questionnaire"
+      ],
+      "limitations": "wpt field null; no retrievable crbug detail; no field data."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The primary artifacts are internally consistent and accurate: ChromeStatus motivation, the explainer, the spec (2026-03-09), and the questionnaire align, and the Chrome 150 release-notes OT entry correctly states the enterprise-policy gating and upload model without overclaiming (it is marked Origin Trial, not shipped). Weaknesses: doc_links and sample_links are empty (no reference docs, samples, or demos), is_releasenotes_content_reviewed=false / is_releasenotes_publish_ready=false, and the 'Stakeholder Feedback' overstates breadth (only Google + ByteDance, and ByteDance is the original requester). tag_review_status 'Pending' is an open evidence gap heading toward ship.",
+      "evidenceIds": [
+        "S-c150-releasenotes",
+        "S-chromestatus",
+        "S-explainer",
+        "S-spec",
+        "S-questionnaire"
+      ],
+      "limitations": "Could not retrieve the crbug or the blink-dev intent-thread body to cross-check claims; limited to cached fields."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support evidence yet (OT just began; no public troubleshooting/issues for this API).",
+      "evidenceIds": [
+        "S-chromestatus"
+      ],
+      "limitations": "Inherent to early stage."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-formed Origin Trial for a genuine problem, with accurate, non-overclaiming release communication and completed security/privacy reviews. However, it is too early to judge adoption, end-user impact, or field quality (all unscored), and the interoperability posture is weak with a single non-Google stakeholder, a Pending TAG review, no other-engine signal, no Baseline path, and a desktop-only scope that does not serve the mobile-debugging pain that originated the request. Overall the launch is competent but under-evidenced on outcomes and thin on ecosystem/standards traction."
+    }
+  },
+  "sources": [
+    {
+      "id": "S-chromestatus",
+      "url": "https://chromestatus.com/feature/5091582546149376",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2026-04-13",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: motivation, owner guidou, Blink>WebRTC, finch RTCDiagnosticLogging, requires_embedder_support, security/privacy review 'Issues addressed', tag review Pending, FF/Safari 'No signal', webdev 'No signals', WICG incubation, desktop OT 150-155, planned ship 156, status Proposed, is_released false, enterprise notification M140, first_enterprise_notification_milestone 140, star_count 17, empty doc/sample links, wpt null, webdx_usecounter_enum null"
+      ],
+      "limitations": "chromestatus.com page is JS-rendered; values taken from the authoritative cached record (accurate_as_of 2026-04-13) plus search snippets."
+    },
+    {
+      "id": "S-manifest",
+      "url": "https://chromestatus.com/feature/5091582546149376",
+      "publisher": "Run manifest (immutable input)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Single launch event: 150:Origin trial:5091582546149376 (milestone 150, category 'Origin trial')"
+      ],
+      "limitations": "Manifest is the authoritative launch-event inventory; only the OT event exists for this feature."
+    },
+    {
+      "id": "S-explainer",
+      "url": "https://raw.githubusercontent.com/WICG/webrtc-diagnostic-logging/main/explainer.md",
+      "publisher": "WICG / Guido Urdaneta (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Goals/non-goals/alternatives; API shape (start/finish/cancelDiagnosticLogging, allowUpload, metadata); privacy/security framing (explicit user auth, 5 keys/100 chars cap); Stakeholder Feedback = Google positive + ByteDance positive (link to w3c/webrtc-extensions#124)"
+      ],
+      "limitations": "No commit/publish date retrieved; ByteDance positivity and the originating issue are not independent."
+    },
+    {
+      "id": "S-spec",
+      "url": "https://wicg.github.io/webrtc-diagnostic-logging/",
+      "publisher": "WICG",
+      "publishedOrObservedAt": "2026-03-09",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec text: navigator.rtc, RTC interface, RTCDiagnosticLoggingOptions, best-effort semantics, SecureContext only, metadata limits, UUID-only exposure; canonical redirects to github.com/guidou/webrtc-diagnostic-logging"
+      ],
+      "limitations": "WICG incubation (maturity 3), not standards-track; Bikeshed-generated."
+    },
+    {
+      "id": "S-questionnaire",
+      "url": "https://raw.githubusercontent.com/WICG/webrtc-diagnostic-logging/main/questionnaire.md",
+      "publisher": "WICG / Guido Urdaneta (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Self-assessment: only a random UUID exposed; no PII; explicit user consent; local file storage; first-party only; no logging in incognito; BFCache/disconnect ends logging; no errors defined (best-effort); no AT detection"
+      ],
+      "limitations": "Self-authored security/privacy questionnaire, not third-party review."
+    },
+    {
+      "id": "S-w3c124",
+      "url": "https://github.com/w3c/webrtc-extensions/issues/124",
+      "publisher": "W3C WebRTC Working Group (GitHub)",
+      "publishedOrObservedAt": "2022-11-04",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Originating developer need (opened by @bdrtc/ByteDance 2022-11-04): getStats insufficient for online debugging; no way to enable WebRTC native logs in browsers, especially fragmented MOBILE browsers; request for a log callback/log-level config"
+      ],
+      "limitations": "Issue body only (comments not retrieved); same author as the positive stakeholder in the explainer."
+    },
+    {
+      "id": "S-wicg-tracking",
+      "url": "https://wicg.github.io/tracking.html",
+      "publisher": "WICG",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "WICG incubation venue: 'WebRTC Diagnostic Logging WebRTC' listed in WICG tracking; repo relocated to WICG/webrtc-diagnostic-logging"
+      ],
+      "limitations": "Tracking page, not a spec."
+    },
+    {
+      "id": "S-c150-releasenotes",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable 2026-06-30; 'WebRTC Diagnostic Logging API' listed under Origin trials; accurate description (opt-in diagnostic logging, WebRTC activity, local debugging/bug filing, optional OOB upload to browser vendor, app gets ID for bug reports); names gating enterprise policy WebRtcDiagnosticLogCollectionAllowedForOrigins; Tracking bug #481412281"
+      ],
+      "limitations": "Single-paragraph entry; no standalone article/sample."
+    },
+    {
+      "id": "S-policy-gpedit",
+      "url": "https://gpedit.tplant.com.au/en-us/policy/brave/WebRtcDiagnosticLogCollectionAllowedForOrigins/",
+      "publisher": "tplant.com.au (Group Policy reference; mirrors Chromium/Brave policy)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Enterprise policy WebRtcDiagnosticLogCollectionAllowedForOrigins exists and enables WebRTC diagnostic log collection for specific origins (origin-based matching); reused by third-party browsers (Brave)"
+      ],
+      "limitations": "Third-party policy mirror; full page not retrieved (reader timed out); confirmed via search snippet."
+    },
+    {
+      "id": "S-policy-eventlog",
+      "url": "https://chromeenterprise.google/policies/web-rtc-event-log-collection-allowed/",
+      "publisher": "Chrome Enterprise (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Prior-art enterprise policy WebRtcEventLogCollectionAllowed already lets Chrome collect WebRTC event logs from Google services (e.g. Hangouts Meet) and upload to Google — demonstrates the upload/collection pattern predates this API"
+      ],
+      "limitations": "Full page not retrieved (reader timed out); confirmed via search snippet."
+    },
+    {
+      "id": "S-2016-cs",
+      "url": "https://2016-01-12-dot-cr-status.appspot.com/feature/5091582546149376",
+      "publisher": "ChromeStatus (2016 snapshot)",
+      "publishedOrObservedAt": "2016-01-12",
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Prior art: the same feature ID previously held 'WebRTC Logging APIs' (2016) with diagnostic+event logging, OOB upload to browser provider, enterprise policies WebRtcTextLogCollectionAllowed / WebRtcTextLogCollectionAllowedPerOrigin — establishes long lineage and that the new feature adds a programmatic navigator.rtc API + a new origin-scoped policy"
+      ],
+      "limitations": "2016-era snapshot page is JS-rendered; confirmed via search snippets (two independent results)."
+    },
+    {
+      "id": "S-webrtcinternals-bug",
+      "url": "https://issues.chromium.org/issues/40109190",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Prior art: chrome://webrtc-internals 'Enable diagnostic packet and event recording' generates WebRTC event logs — the existing in-browser diagnostic mechanism this API extends/mirrors programmatically"
+      ],
+      "limitations": "Issue detail not retrieved; confirmed via search snippet."
+    },
+    {
+      "id": "S-discusswebrtc-psa",
+      "url": "https://groups.google.com/g/discuss-webrtc/c/KD5db4rqg5g",
+      "publisher": "discuss-webrtc (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Prior Chrome WebRTC event-log wire-format work ('PSA: New format for WebRTC event logs in Chrome') — established WebRTC event-log ecosystem predating this API"
+      ],
+      "limitations": "Snippet only."
+    },
+    {
+      "id": "S-vl-detector",
+      "url": "https://github.com/VLprojects/webrtc-issue-detector",
+      "publisher": "VLprojects (community)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Existing workaround/library: analyzes RTCPeerConnection.getStats() in real time to flag WebRTC issues — evidence the getStats-based debugging path is a live, library-maintained alternative"
+      ],
+      "limitations": "Not adoption of this API; a workaround/reference."
+    },
+    {
+      "id": "S-ff-about-webrtc",
+      "url": "https://firefox-source-docs.mozilla.org/contributing/debugging/debugging_webrtc_calls.html",
+      "publisher": "Mozilla (Firefox source docs)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Adjacent-engine mechanism: Firefox exposes about:webrtc + 'Enable WebRTC Log Preset' and MOZ_LOG modules (engine/UI controlled), NOT a web-exposed JS API — relevant to interop/fragmentation risk of a Chrome-only navigator.rtc API"
+      ],
+      "limitations": "Engine docs, not a formal standards position."
+    },
+    {
+      "id": "S-so-ff-logs",
+      "url": "https://stackoverflow.com/questions/74399155/how-do-i-see-internal-webrtc-logs-in-firefox",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Confirms Firefox uses startup MOZ_LOG flags (webrtc_trace) rather than any web API to obtain WebRTC internal logs — underscores cross-browser divergence"
+      ],
+      "limitations": "Community Q&A; single thread."
+    },
+    {
+      "id": "S-mozilla-positions-search",
+      "url": "https://mozilla.github.io/standards-positions/",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "No entry located for WICG WebRTC Diagnostic Logging in Mozilla's standards-positions registry (domain-filtered searches returned no position) — consistent with ChromeStatus ff_views 'No signal'"
+      ],
+      "limitations": "Absence of a public position is not equivalent to objection; only a search, not an exhaustive registry read."
+    },
+    {
+      "id": "S-intent-thread",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/6a3a6980.3af95f39.2b348.0333.GAE%40google.com",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment thread exists for stage 150; experiment_goals (enterprise diagnostic collection; collaborate with UA vendors to fix bugs) and experiment_risks (sites lose API-triggered logging) taken from the cached record"
+      ],
+      "limitations": "Thread body NOT retrieved — the msgid URL was rejected by the reader and the short form returned 'conversation cannot be found'. Goals/risks sourced from the cached ChromeStatus fields, not the email body."
+    },
+    {
+      "id": "S-crbug",
+      "url": "https://https://bugs.chromium.org/p/chromium/issues/detail?id=481412281",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug 481412281 (Blink>WebRTC) referenced as the launch tracking bug in Chrome 150 release notes; new-crbug URL cc's guidou@google.com"
+      ],
+      "limitations": "Detail page NOT retrieved (reader timed out repeatedly); existence/identity confirmed via release notes and cached record only."
+    }
+  ],
+  "successes": [
+    "Clear, accurate, non-overclaiming Origin Trial announcement in the Chrome 150 release notes that correctly states the enterprise-policy gating and upload model.",
+    "Completed security and privacy reviews ('Issues addressed') backed by a thorough self-assessment questionnaire covering consent, incognito no-op, first-party-only, BFCache/disconnect, and best-effort/no-error semantics.",
+    "Well-scoped API surface (UUID-only exposure, capped metadata, SecureContext, never exposes logs to the web) that minimizes fingerprinting/leakage risk.",
+    "A real, longstanding developer pain (production WebRTC debugging) with a clear owner and a coherent WICG incubation venue (explainer + spec + questionnaire).",
+    "Enterprise policy WebRtcDiagnosticLogCollectionAllowedForOrigins is already documented and reused by third-party browsers (Brave), giving the OT a concrete consent/gating mechanism."
+  ],
+  "failures": [
+    "Interoperability/Baseline posture is weak: no FF/Safari signal, TAG review still Pending, WICG incubation only, no Baseline/web-features entry, and only one non-Google stakeholder (ByteDance, who is also the original requester — not independent).",
+    "Scope mismatch with the originating need: the 2022 request explicitly cited MOBILE browser fragmentation, but the OT is desktop-only (Android/iOS/Webview null), so the job that motivated the feature is only partially served.",
+    "Thin developer-enablement artifacts for an active Origin Trial: doc_links and sample_links are empty, is_releasenotes_content_reviewed/publish_ready are false, and there is no standalone article/sample/demo.",
+    "Several authoritative primary sources could not be retrieved at cutoff (blink-dev Intent to Experiment body; crbug 481412281 detail; WICG repo issue/discussion list), leaving claims partly dependent on cached ChromeStatus fields."
+  ],
+  "counterfactuals": [
+    "If incubation had run an explicit adjacent-engine/alternatives analysis (Firefox about:webrtc + MOZ_LOG, Chrome's 2016 WebRTC Logging APIs, webrtc-internals event recording, WebRtcEventLogCollectionAllowed policy, vendor getStats() tools), the team could have justified — or redesigned — a Chrome-only navigator.rtc API before committing to a shape that risks fragmenting the cross-browser debugging story.",
+    "If the Origin Trial had launched on Android (or at least stated an Android plan) alongside desktop, it would directly test the mobile-debugging job that originated the request, instead of leaving the core motivating scenario unaddressed.",
+    "If a second non-Google stakeholder beyond ByteDance had been recruited to the OT with attributable task-completion evidence, the developerValue and adoption dimensions would be scoreable instead of unscored.",
+    "If TAG review had been completed (not Pending) and an explicit Mozilla/WebKit position sought before the OT, the wideReview transition packet would not carry a material unknown into the experiment.",
+    "If a tracking-bug readout and an interim OT results template (participant denominator, activation, upload-success rate, bug-report linkage) had been published, the experiment phase would already have measured rather than only hypothesized."
+  ],
+  "skillImprovements": [
+    "Add a phase-05 (experiment) rule requiring an explicit, dated participant-denominator and interim-readout template in the ChromeStatus record before an Origin Trial is counted 'supported'; absence should downgrade to 'partial' with a named missing-evidence item.",
+    "Add an incubation checklist item that forces an adjacent-engine/alternatives matrix (named browsers + their existing mechanisms + existing Chrome policies + vendor tools) and a justification for why a new programmatic API is preferable to extending an existing capability; flag when only the original requester is the sole external supporter.",
+    "Add a scope-vs-origin check: when an Origin Trial platform set excludes the platform named in the originating issue (here: mobile), require an explicit rationale or roadmap entry before the OT is launched.",
+    "Treat 'TAG review Pending' and 'ff/safari No signal' as blocking unknowns in the wideReview transition packet (not neutral), and require a Baseline/web-features plan before prepare-to-ship.",
+    "Add a source-retrievability fallback: when groups.google.com msgid URLs and bugs.chromium.org detail pages fail the reader, automatically try the server-rendered chromestatuslite.com route and the search-snippet form, and record the failed primary URL as a named missing-evidence item rather than silently degrading.",
+    "Add a counterfactual prompt to the retrospective method: 'Which platform/segment that motivated this feature is NOT covered by the current launch, and what is the plan to close that gap?'"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Blink-dev Intent to Experiment thread body (groups.google.com msgid URL rejected by reader; goals/risks sourced only from cached ChromeStatus fields).",
+      "Chromium tracking bug 481412281 detail page (reader timed out repeatedly; identity confirmed via release notes only).",
+      "WICG/webrtc-diagnostic-logging repository issue/discussion list (reader errored); breadth of incubation debate unknown.",
+      "Origin Trial participant denominator, activation/usage, upload-success rate, and interim readout (OT ~3 weeks old at cutoff; too early).",
+      "Adoption, end-user impact, field implementation quality, and support data (feature not shipped; cannot be scored yet).",
+      "Explicit Mozilla and WebKit standards positions (none located; consistent with 'No signal' but absence != objection).",
+      "TAG review outcome (status 'Pending' at cutoff)."
+    ],
+    "reviewedAt": "2026-07-20T07:30:00Z"
+  }
+}

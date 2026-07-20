@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5118840377835520,
+    "name": "Speculative load measurement",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5118840377835520",
+    "blinkComponents": [
+      "Blink>PerformanceAPIs"
+    ],
+    "owners": [
+      "yoavweiss@chromium.org",
+      "barrypollard@google.com"
+    ],
+    "shippingYear": 2026,
+    "isReleased": false,
+    "currentPhase": "Origin Trial (desktop, Chrome 150-155)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Origin trial:5118840377835520",
+      "milestone": 150,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "Classified as a new feature under Blink>PerformanceAPIs and incubated in WICG (proposal #264 opened 2026-02-04 by yoavweiss). ChromeStatus entry is complete with motivation, explainer link, bug, and owners (yoavweiss + barrypollard). Mode/target layer (a performance measurement API) is appropriate. No public target-segment map, usage inventory, or highest-risk-assumption list in the record.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "Intake artifacts (segment map, risk-assumption inventory) are not present in the public ChromeStatus record."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "A real, well-articulated developer problem: developers using speculative loading cannot tell whether preloads/prefetches/prerenders were used, so cannot weigh performance gains against wasted bandwidth and server load. Explainer documents goals, non-goals, and three considered alternatives (PerformanceObserver, dismissal-event exposure, Reporting API) with reasons. Parent Speculation Rules API has broad adoption, validating latent demand. However the incubation evidence ledger is thin and owner-driven: WICG repo has only 5 stars, 4 open issues (2 from external developers), and no published surveys, interviews, or segment research.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s11",
+        "s14"
+      ],
+      "limitations": "No representative, methods-documented developer research (survey/interview) was found in public sources."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An implementation exists and powers the active OT (chromium trial name SpeculationMeasurement; UseCounter bucket 5897 / kSpeculationMeasurement). API shape is documented with an example, and Intent to Prototype is recorded (ChromeStatus stage 130). However doc_links and sample_links are empty, and no public task-based samples, friction logs, or explainer-vs-implementation divergence records exist.",
+      "evidenceIds": [
+        "s1",
+        "s2"
+      ],
+      "limitations": "No public friction-log, integration-spike, or framework/server compatibility evidence for the prototype."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "No explicit behind-a-flag developer trial is recorded; the feature moved from WICG incubation directly to an Origin Trial. Nonetheless the WICG repo actively solicits developer feedback (issue #8, opened 2026-03-11) and received substantive external feedback (#14 CDN/preconnect pain from krzksz; #15 ecommerce lead-time from ErikWitt).",
+      "evidenceIds": [
+        "s4",
+        "s5",
+        "s7",
+        "s8"
+      ],
+      "limitations": "No structured cohort, recruitment, task-completion tracking, or methodology; feedback is ad-hoc GitHub issues rather than a deliberate developer trial."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "The weakest dimension at OT registration. tag_review_status, security_review_status, and privacy_review_status are all 'Pending' in ChromeStatus; Firefox and Safari are both 'No signal' and webdev 'No signals'; standards maturity is 'Unknown' with no spec_link. For an OT that exposes per-user navigation and preload-usage data this is a material privacy and interoperability risk. The parent Speculation Rules API has Mozilla (#620) and WebKit (#54) positions and is an Interop 2025 focus-area proposal, but this measurement API has no other-engine engagement.",
+      "evidenceIds": [
+        "s1",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Only public ChromeStatus review fields are visible; private review activity cannot be confirmed or ruled out. 'No signal' must not be read as neutral or positive."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "OT is properly configured and active: Intent to Experiment sent 2026-05-19, received 'LGTM to experiment M150-M155' (desktop); third-party OT support enabled; OT id 2748884622556266497; documentation and feedback URLs set; owner barrypollard, requester yoavweiss; registered on the Chrome Origin Trials listing. However the public experiment protocol (hypotheses, metrics, denominators, decision thresholds, privacy handling) is not stated, and the OT description uses a different API name ('performance.speculations') than the explainer ('performance.getSpeculations()'). No interim findings are published yet (OT in early weeks, Chrome 150 ~mid-2026).",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s9",
+        "s10"
+      ],
+      "limitations": "Experiment design/protocol and any interim readouts are not public; OT is too recent for results."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "Not yet entered. The feature is in Origin Trial (ChromeStatus status 'Proposed', is_released false); default availability is not intended or reached.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Applies only once an Intent to Ship is pursued; no prepare-to-ship work exists yet."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "No default-availability or beta release event exists for this feature; the only launch event is the Origin Trial at milestone 150. Feature is not shipped by default.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Release communication phase does not apply until default shipment."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "The OT only just began (Chrome 150, mid-2026); no public usage, UseCounter telemetry, or production case study of the measurement API (getSpeculations) exists. Broad adoption of the parent Speculation Rules API (WordPress core, Ray-Ban, Shopify case studies) validates latent demand but is not adoption of THIS measurement surface.",
+      "evidenceIds": [
+        "s1",
+        "s14"
+      ],
+      "limitations": "No OT participant count, activation telemetry, or production deployment of the measurement API is public."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "Feedback is routed to a public GitHub repo with owner engagement (yoavweiss/barrypollard) and four logged issues, including the owner opening design-gap issues (#11). But there is no published FAQ, troubleshooting pack, or support-health dashboard, and issue volume is small.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "Support load is not yet representative; no recurrence/severity taxonomy or resolution-time data."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New feature in WICG incubation/OT; nothing to deprecate or remove.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Deprecation/removal does not apply to a newly introduced API."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real and externally validated: production ecommerce (#15) and CDN-fronted (#14) developers need to measure speculation effectiveness and wasted bandwidth, and the parent feature is widely deployed. The API covers preloads plus speculation-rule navigational prefetches/prerenders and exposes actionable metadata (as, crossorigin, tags, eagerness, earlyhint). But material developer needs are uncovered at OT start: a start-time timestamp to measure lead time (#15), preconnect/dns-prefetch measurement (#14), and the cost of prerender_until_script assets (#11, owner-opened and unresolved).",
+      "evidenceIds": [
+        "s2",
+        "s6",
+        "s7",
+        "s8",
+        "s14"
+      ],
+      "limitations": "No measured developer outcome data yet; feature is OT-stage."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Indirect end-user benefit only: better-tuned speculation could speed navigations and reduce wasted bandwidth/server load. No accessibility, privacy, or end-user-control evidence and no measured end-user impact at OT stage.",
+      "evidenceIds": [
+        "s2"
+      ],
+      "limitations": "No end-user outcome evidence available for a measurement/observability API in early OT."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No public adoption or usage data for getSpeculations; OT is in its early weeks (Chrome 150, mid-2026).",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Usage/adoption of this specific API is unknown; cannot be inferred from parent-feature adoption."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Chrome-only OT. Firefox and Safari both 'No signal'; no Mozilla or WebKit position on this measurement API was found; tag review pending; WICG-only incubation. This creates a concrete risk of a Chrome-only observability surface even though the parent Speculation Rules API already has cross-engine positions and is an Interop 2025 focus area.",
+      "evidenceIds": [
+        "s1",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Other-engine positions could emerge later; the current public state is no signal."
+    },
+    "implementationQuality": {
+      "status": "unscored",
+      "finding": "An implementation exists and runs in OT (registered chromium trial, UseCounter bucket 5897). No public WPT results, regression data, or compatibility evidence for this API were found.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No public test/quality evidence; not scoreable."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "ChromeStatus motivation and summary are consistent with the explainer, which documents goals/non-goals/alternatives well, and an LGTM to experiment was obtained. But three API names coexist (getSpeculations() in the ChromeStatus summary and explainer; 'performance.speculations' in the OT registration description; trial name SpeculationMeasurement); tag/security/privacy reviews are all 'Pending' at OT registration; and doc_links and sample_links are empty.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s9",
+        "s10"
+      ],
+      "limitations": "No public-facing reference docs, samples, or FAQ exist yet for the measurement API."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "A public GitHub feedback channel with active owner response and genuine external developer engagement exists. But volume is low, there is no published FAQ/troubleshooting, and three of the four open issues are unresolved feature/coverage gaps rather than support resolutions.",
+      "evidenceIds": [
+        "s4",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "Too early for support load to be representative; no resolution-time or recurrence data."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, properly-configured Origin Trial for a real developer problem, with genuine external developer engagement. However it is early-stage with thin independent research, no other-engine signal, pending formal reviews, known API coverage gaps, and an API-naming inconsistency. Outcomes are not yet measurable.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4",
+        "s8",
+        "s9",
+        "s11"
+      ],
+      "limitations": "Overall outcome cannot be judged beyond OT setup quality until usage, interop, and field results exist."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5118840377835520",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-02-04; updated 2026-06-05)",
+      "publishedOrObservedAt": "2026-06-05",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, stages, OT configuration (id, M150-155 desktop, 3rd-party, UseCounter bucket 5897), review statuses (tag/security/privacy Pending), browser signals (FF/Safari No signal), motivation, explainer/bug links"
+      ],
+      "limitations": "Cached snapshot; field is_released=false and status 'Proposed'. Does not capture private review activity or OT telemetry."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/WICG/speculative_load_measurement/blob/main/README.md",
+      "publisher": "WICG/speculative_load_measurement (yoavweiss, tunetheweb)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "API design (performance.getSpeculations()), goals/non-goals, use cases, considered alternatives, security/privacy considerations, example"
+      ],
+      "limitations": "Explainer, not a standards spec; spec_link is null in ChromeStatus. No version/revision date captured from the rendered page."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/WICG/proposals/issues/264",
+      "publisher": "WICG/proposals",
+      "publishedOrObservedAt": "2026-02-04",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Initial public proposal, opened 2026-02-04 by yoavweiss, labeled repo_adopted, original pagehide-attribute API shape"
+      ],
+      "limitations": "Issue body only; comment thread not rendered by reader."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/WICG/speculative_load_measurement/issues",
+      "publisher": "WICG/speculative_load_measurement",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "4 open issues, 0 PRs, 5 stars, 1 fork; issue titles/dates and openers"
+      ],
+      "limitations": "Repo-level metrics only; no PRs indicate no external code contributions."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/WICG/speculative_load_measurement/issues/8",
+      "publisher": "WICG/speculative_load_measurement (yoavweiss)",
+      "publishedOrObservedAt": "2026-03-11",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Owner opened a standing developer-feedback invitation on 2026-03-11"
+      ],
+      "limitations": "Body rendered; inline comments not captured by reader."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/WICG/speculative_load_measurement/issues/11",
+      "publisher": "WICG/speculative_load_measurement (yoavweiss)",
+      "publishedOrObservedAt": "2026-04-15",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Owner-acknowledged design gap: assets loaded by experimental prerender_until_script cannot be measured unless the page is activated"
+      ],
+      "limitations": "Open and unresolved at retrieval; no resolution captured."
+    },
+    {
+      "id": "s7",
+      "url": "https://github.com/WICG/speculative_load_measurement/issues/14",
+      "publisher": "WICG/speculative_load_measurement (krzksz)",
+      "publishedOrObservedAt": "2026-06-17",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "External production developer request to measure preconnects/dns-prefetch; describes real Cloudflare Early-Hints A/B-testing pain"
+      ],
+      "limitations": "Single developer account; not representative on its own."
+    },
+    {
+      "id": "s8",
+      "url": "https://github.com/WICG/speculative_load_measurement/issues/15",
+      "publisher": "WICG/speculative_load_measurement (ErikWitt)",
+      "publishedOrObservedAt": "2026-07-15",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "External ecommerce developer request for a start-time/lead-time metric; provides concrete 500ms-3s target and precision/recall reasoning"
+      ],
+      "limitations": "Single developer account; qualitative."
+    },
+    {
+      "id": "s9",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/CAOmohSKBXF5hKYn9Lp6AvyEnESrBSvruyCVcHVcJae-56dcYNQ@mail.gmail.com",
+      "publisher": "blink-dev (Yoav Weiss @Shopify)",
+      "publishedOrObservedAt": "2026-05-19",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment: Speculative load measurement, sent 2026-05-19; 'LGTM to experiment M150-M155'"
+      ],
+      "limitations": "Retrieved via search snippet only; the msgid URL was rejected by the reader, so full thread body and all reviewers were not read."
+    },
+    {
+      "id": "s10",
+      "url": "https://developer.chrome.com/origintrials/",
+      "publisher": "Chrome for Developers (Origin Trials)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "OT 'Speculative Load measurement' is registered; description text 'performance.speculations will provide information on pending and used preloads...'"
+      ],
+      "limitations": "JS-rendered listing; full page not read (only search snippet). Confirms naming discrepancy vs explainer."
+    },
+    {
+      "id": "s11",
+      "url": "https://github.com/web-platform-tests/interop/issues/754",
+      "publisher": "web-platform-tests/interop",
+      "publishedOrObservedAt": "2024-09-25",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Parent Speculation Rules API was an Interop 2025 focus-area proposal; references Mozilla #620 and WebKit #54 positions and notes prerender adoption lower than expected"
+      ],
+      "limitations": "Concerns the parent feature, not this measurement API; comment detail not rendered."
+    },
+    {
+      "id": "s12",
+      "url": "https://github.com/mozilla/standards-positions/issues/620",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position exists for the parent Speculation Rules navigational prefetching/prerendering"
+      ],
+      "limitations": "Search snippet only; parent feature. No Mozilla position found for this measurement API specifically."
+    },
+    {
+      "id": "s13",
+      "url": "https://developer.chrome.com/docs/devtools/application/debugging-speculation-rules",
+      "publisher": "Chrome DevTools documentation",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Debuggability tooling (Speculative loads panel) exists for the parent Speculation Rules API"
+      ],
+      "limitations": "Search snippet only; parent-feature tooling, not this measurement API."
+    },
+    {
+      "id": "s14",
+      "url": "https://www.corewebvitals.io/pagespeed/prerender-until-script-speculation-rule",
+      "publisher": "corewebvitals.io",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "Parent-feature production outcomes: Ray-Ban 43% mobile LCP improvement via prerender; Shopify prefetch rollout"
+      ],
+      "limitations": "Search snippet only; parent-feature adoption used as problem-validation proxy, not adoption of getSpeculations."
+    },
+    {
+      "id": "s15",
+      "url": "https://blog.logrocket.com/speculation-rules-api-web-speed-test/",
+      "publisher": "LogRocket Blog",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent testing of parent Speculation Rules API effect on page speed (prerender ~47% reduction in one test)"
+      ],
+      "limitations": "Search snippet only; parent feature; single-test methodology."
+    }
+  ],
+  "successes": [
+    "Real, externally-validated developer problem: production ecommerce (#15) and CDN/Early-Hints (#14) developers need to measure speculation effectiveness and wasted bandwidth.",
+    "Clean explainer with explicit goals, non-goals, and three considered alternatives with reasons; the API shape evolved from a pagehide attribute to performance.getSpeculations() in response to incubation feedback.",
+    "Properly configured Origin Trial with third-party support, documentation and feedback URLs, and a documented 'LGTM to experiment M150-M155'.",
+    "Active, owner-engaged public feedback channel producing substantive external feature requests (#14, #15)."
+  ],
+  "failures": [
+    "No Mozilla or WebKit signal on the measurement API, and tag/security/privacy reviews all 'Pending' at OT registration — interoperability and privacy-review gaps for an OT exposing per-user navigation and preload-usage data.",
+    "API-naming inconsistency: explainer/ChromeStatus summary say performance.getSpeculations(), the OT registration description says 'performance.speculations', and the trial name is SpeculationMeasurement.",
+    "Material developer needs uncovered at OT start: lead-time/start-time (#15), preconnect/dns-prefetch measurement (#14), and prerender_until_script asset cost (#11, owner-opened and unresolved).",
+    "Empty doc_links/sample_links and no public experiment protocol (hypotheses, metrics, denominators, decision thresholds)."
+  ],
+  "counterfactuals": [
+    "A pre-OT friction log run with production speculation users (ecommerce and CDN/Early-Hints deployments) would likely have surfaced the lead-time (#15), preconnect (#14), and prerender_until_script asset-cost (#11) gaps before field exposure, narrowing the OT's redesign surface.",
+    "Enforcing one canonical API surface name across the ChromeStatus summary, the OT registration, the explainer, and the use counter before registration would have reduced fragmented feedback and analytics integration.",
+    "A privacy review preceding OT registration would have given participants and reviewers a clearer data-minimization story for an API that exposes per-user navigation/preload usage.",
+    "Mozilla/WebKit outreach during WICG incubation (the parent feature already has their positions) would have lowered the risk of this becoming a Chrome-only observability API."
+  ],
+  "skillImprovements": [
+    "Add a phase-05 (experiment) transition-packet rule requiring a single canonical API surface name across the ChromeStatus summary, OT display name/description, explainer, and UseCounter; treat any discrepancy as a blocker before OT registration.",
+    "Add a pre-OT friction-log requirement for observability/measurement APIs that exercises production speculation users across ecommerce and CDN/Early-Hints deployments to surface coverage gaps before field exposure.",
+    "Require that any new performance/observability API exposing per-user navigation/usage data carry a documented privacy-review status (and ideally completion) before OT registration, rather than 'Pending'.",
+    "Strengthen phase-04 (wide review) to require documented Mozilla/WebKit outreach for new WICG performance/observability APIs and to render 'No signal' explicitly as an OT risk in the transition packet, never as neutral/positive.",
+    "Add a regression eval that verifies an OT states its hypotheses, metrics, denominators, and decision thresholds publicly before it opens."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Prototype thread body (msgid URL rejected by the Z.AI reader; only existence and stage confirmed via ChromeStatus; not directly retrieved).",
+      "Chromium tracking bug 481590676 contents (reader timed out; not retrieved).",
+      "Public usage/UseCounter telemetry or OT participant/activation data for getSpeculations (none published; OT in early weeks).",
+      "Mozilla/WebKit standards position on the measurement API specifically (none found; consistent with ChromeStatus 'No signal').",
+      "tag/security/privacy review outcomes (all 'Pending' in ChromeStatus at retrieval).",
+      "Public experiment protocol and interim Origin Trial findings (not published).",
+      "Framework/library integration of getSpeculations (none found; OT-stage).",
+      "Chrome Origin Trials listing full content and inline comments on the WICG issues (JS-rendered/not captured by reader)."
+    ],
+    "reviewedAt": "2026-07-20T07:00:00Z"
+  }
+}
