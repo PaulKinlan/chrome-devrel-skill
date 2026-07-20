@@ -13,8 +13,10 @@ mkdir -p "$RUN_ROOT/reports" "$RUN_ROOT/worker/logs" "$RUN_ROOT/worker/status" "
 
 # The default MCP config is generated per run and contains endpoints plus an env-var
 # reference only—never credentials. Set MCP_CONFIG to use a team-managed config instead.
+MCP_CONFIG_GENERATED=0
 if [ -z "${MCP_CONFIG:-}" ]; then
-  MCP_CONFIG="$RUN_ROOT/worker/tmp/zai-retrospective-mcp.json"
+  MCP_CONFIG="$(mktemp "$RUN_ROOT/worker/tmp/zai-retrospective-mcp.XXXXXX")"
+  MCP_CONFIG_GENERATED=1
   cat > "$MCP_CONFIG" <<'JSON'
 {
   "mcpServers": {
@@ -53,7 +55,11 @@ if [ -z "${ZAI_API_KEY:-}" ] || [ ! -s "$MCP_CONFIG" ] || [ ! -s "$MCP_ADAPTER" 
   echo "Z.AI MCP search is not configured; set ZAI_API_KEY and install pi-mcp-adapter (or set MCP_ADAPTER/MCP_CONFIG)" >&2
   exit 3
 fi
-trap 'unset ZAI_API_KEY' EXIT
+cleanup() {
+  unset ZAI_API_KEY
+  if [ "$MCP_CONFIG_GENERATED" -eq 1 ]; then rm -f "$MCP_CONFIG"; fi
+}
+trap cleanup EXIT
 
 if [ "$#" -eq 0 ]; then
   echo "usage: $0 FEATURE_ID..." >&2
