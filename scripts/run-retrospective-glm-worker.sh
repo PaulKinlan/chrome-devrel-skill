@@ -84,9 +84,15 @@ for id in "$@"; do
     continue
   fi
   detail="$RUN_ROOT/evidence/chromestatus/features/$id.json"
+  metrics="$RUN_ROOT/evidence/metrics/features/$id.json"
   if [ ! -s "$detail" ]; then
     write_status "$id" blocked 0 "missing ChromeStatus detail"
     echo "[$id] blocked: no detail" >&2
+    continue
+  fi
+  if [ ! -s "$metrics" ]; then
+    write_status "$id" blocked 0 "missing Chrome usage-metrics evidence; run collect-retrospective-metrics.mjs"
+    echo "[$id] blocked: no metrics evidence" >&2
     continue
   fi
 
@@ -102,6 +108,7 @@ Research one evidence-based Chrome feature launch retrospective.
 
 Feature ID: $id
 Authoritative cached ChromeStatus detail: $detail
+Cached Chrome usage/adoption metrics evidence: $metrics
 Feature/event manifest: $RUN_ROOT/manifest.features.jsonl
 Report schema: $ROOT/retrospectives/report.schema.json
 Method: $ROOT/modules/launch-retrospective.md
@@ -109,7 +116,10 @@ Lifecycle phase modules: $ROOT/phases/
 Evidence cutoff: current UTC time; distinguish what was knowable at each launch event from later outcomes.
 
 Requirements:
-- Read the cached record first. For a server-rendered ChromeStatus view, read https://chromestatuslite.com/feature/$id through the Z.AI Web Reader MCP; use the browser against chromestatus.com when browser-only evidence is needed. Then follow direct explainer/spec/intent/review/docs/sample/bug links.
+- Read the cached ChromeStatus record AND cached usage-metrics evidence first. The metrics evidence maps applicable legacy HTML/JS UseCounters, WebDX/WebFeature counters, CSS counters, and origin-trial counters to full public timelines and launch-relative checkpoints. Cite the exact ChromeStatus timeline URLs as usage sources.
+- Treat a counter as the share of measured Chrome HTTP/HTTPS page loads on which it fired, not unique developers, sites, users, successful tasks, satisfaction, or end-user benefit. Preserve the evidence file's exact/family/property/trial scope and limitations; do not attribute a broad WebDX family counter solely to this launch.
+- If mappingStatus is no-public-counter-mapped, inspect the feature's measurement field and research Chromium counter names/mappings before leaving adoption unscored. State "no mapped public counter found" rather than "no adoption data exists". Custom/internal-only counters remain unavailable with evidence.
+- For a server-rendered ChromeStatus view, read https://chromestatuslite.com/feature/$id through the Z.AI Web Reader MCP; use the browser against chromestatus.com when browser-only evidence is needed. Then follow direct explainer/spec/intent/review/docs/sample/bug links.
 - Treat the run manifest, cached evidence, schema, method, and phase modules as immutable read-only inputs. Never rewrite, reformat, regenerate, or modify them. Return the report only through stdout.
 - For all general search, use ONLY the Z.AI MCP proxy: connect to server "zai-web-search" and call "webSearchPrime"; use server "zai-web-reader" and tool "webReader" when full page content is needed. Do NOT call pi-web-access/web_search.
 - Keep Z.AI searches bounded and varied. If a search/read call fails, continue with direct URLs and mark missing evidence; never abort or invent.

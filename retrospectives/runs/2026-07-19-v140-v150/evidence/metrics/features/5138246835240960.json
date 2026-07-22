@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "featureId": 5138246835240960,
+  "featureName": "Selective Permissions Intervention",
+  "collectedAt": "2026-07-22T18:06:58.512Z",
+  "launchEvents": [
+    {
+      "eventId": "146:Enabled by default:5138246835240960",
+      "milestone": 146,
+      "category": "Enabled by default",
+      "date": "2026-03-10"
+    }
+  ],
+  "mappingStatus": "exact-counter",
+  "chromeStatusFields": {
+    "webFeature": "3755",
+    "webdxUseCounterEnum": null,
+    "measurement": "There are custom use counters (to display per-permission data) that are  not publicly available. There are public use counters that will be removed as they show all calls to the API from ad script and not just those that would be intervened upon.",
+    "originTrialCounters": []
+  },
+  "metrics": [
+    {
+      "type": "css",
+      "bucketId": 4,
+      "scope": "exact",
+      "confidence": "declared-name",
+      "evidence": [
+        "Public css counter display is named verbatim in the ChromeStatus measurement field"
+      ],
+      "propertyName": "display",
+      "latestSnapshot": {
+        "bucket_id": 4,
+        "date": "2026-07-20",
+        "day_percentage": 0.93101818,
+        "property_name": "display"
+      },
+      "timelineUrl": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=4",
+      "timelineEvidencePath": "evidence/metrics/timelines/css-4.json",
+      "timelineSha256": "0f17e8df876cf94e10a204bbe96dadb338cd02abc80cc5e08a793a2b0c036806",
+      "summary": {
+        "points": 4410,
+        "firstObservedPositive": {
+          "bucket_id": 4,
+          "date": "2013-08-08",
+          "day_percentage": 0.91,
+          "property_name": "display"
+        },
+        "latest": {
+          "bucket_id": 4,
+          "date": "2026-07-21",
+          "day_percentage": 0.93089886,
+          "property_name": "display"
+        },
+        "peak": {
+          "bucket_id": 4,
+          "date": "2018-08-09",
+          "day_percentage": 1.54482638,
+          "property_name": "display"
+        },
+        "launchCheckpoints": [
+          {
+            "milestone": 146,
+            "category": "Enabled by default",
+            "stableDate": "2026-03-10",
+            "atStable": {
+              "bucket_id": 4,
+              "date": "2026-03-10",
+              "day_percentage": 0.92771419,
+              "property_name": "display"
+            },
+            "day30": {
+              "bucket_id": 4,
+              "date": "2026-04-09",
+              "day_percentage": 0.9257727,
+              "property_name": "display"
+            },
+            "day90": {
+              "bucket_id": 4,
+              "date": "2026-06-08",
+              "day_percentage": 0.93204732,
+              "property_name": "display"
+            },
+            "day180": null
+          }
+        ]
+      }
+    }
+  ],
+  "interpretation": {
+    "numerator": "Chrome page loads on which the counter fired at least once",
+    "denominator": "Measured Chrome HTTP/HTTPS page loads across official channels and platforms",
+    "notEquivalentTo": [
+      "unique developers",
+      "unique sites",
+      "unique users",
+      "successful task completion",
+      "developer satisfaction",
+      "end-user benefit"
+    ],
+    "cautions": [
+      "A WebDX family counter may cover more behavior than this individual ChromeStatus launch.",
+      "Counter instrumentation may include detection or probing depending on the counter implementation.",
+      "UMA data reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented.",
+      "Zero, missing, or delayed points are not proof of zero real-world use."
+    ]
+  },
+  "sourceUrls": {
+    "currentFeature": "https://chromestatus.com/metrics/feature/popularity",
+    "currentWebFeature": "https://chromestatus.com/metrics/webfeature/popularity",
+    "currentCss": "https://chromestatus.com/metrics/css/popularity",
+    "useCounterDocumentation": "https://chromium.googlesource.com/chromium/src/+/main/docs/use_counter_wiki.md",
+    "mappings": "https://github.com/web-platform-dx/web-features-mappings/blob/b824850cd209f6b8903eeb6fcdbe8ae9462dfb92/mappings/chrome-use-counters.json"
+  }
+}

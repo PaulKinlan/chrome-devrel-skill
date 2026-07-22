@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "featureId": 5123349239955456,
+  "featureName": "PWA origin migration",
+  "collectedAt": "2026-07-22T18:06:48.882Z",
+  "launchEvents": [
+    {
+      "eventId": "147:In developer trial (Behind a flag):5123349239955456",
+      "milestone": 147,
+      "category": "In developer trial (Behind a flag)",
+      "date": "2026-04-07"
+    },
+    {
+      "eventId": "150:Enabled by default:5123349239955456",
+      "milestone": 150,
+      "category": "Enabled by default",
+      "date": "2026-06-30"
+    }
+  ],
+  "mappingStatus": "exact-counter",
+  "chromeStatusFields": {
+    "webFeature": "manifest",
+    "webdxUseCounterEnum": null,
+    "measurement": "We will measure both the presence of these new manifest fields in manifests, as well as activation of the migration by users.",
+    "originTrialCounters": []
+  },
+  "metrics": [
+    {
+      "type": "webfeature",
+      "bucketId": 302,
+      "scope": "exact",
+      "confidence": "declared-family",
+      "evidence": [
+        "web-features-mappings chrome-use-counters for manifest",
+        "ChromeStatus web_feature manifest exactly normalizes to webfeature counter Manifest",
+        "Public webfeature counter Manifest is named verbatim in the ChromeStatus measurement field"
+      ],
+      "propertyName": "Manifest",
+      "latestSnapshot": {
+        "bucket_id": 302,
+        "date": "2026-07-20",
+        "day_percentage": 0.21650422,
+        "property_name": "Manifest"
+      },
+      "timelineUrl": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=302",
+      "timelineEvidencePath": "evidence/metrics/timelines/webfeature-302.json",
+      "timelineSha256": "ab7e8da3688495c6296ad953308f5f0209e2715ce22a2ef290dff590f4c890ab",
+      "summary": {
+        "points": 508,
+        "firstObservedPositive": {
+          "bucket_id": 302,
+          "date": "2025-02-27",
+          "day_percentage": 0.000049,
+          "property_name": "Manifest"
+        },
+        "latest": {
+          "bucket_id": 302,
+          "date": "2026-07-20",
+          "day_percentage": 0.21650422,
+          "property_name": "Manifest"
+        },
+        "peak": {
+          "bucket_id": 302,
+          "date": "2025-03-31",
+          "day_percentage": 0.229893,
+          "property_name": "Manifest"
+        },
+        "launchCheckpoints": [
+          {
+            "milestone": 147,
+            "category": "In developer trial (Behind a flag)",
+            "stableDate": "2026-04-07",
+            "atStable": {
+              "bucket_id": 302,
+              "date": "2026-04-07",
+              "day_percentage": 0.22176519,
+              "property_name": "Manifest"
+            },
+            "day30": {
+              "bucket_id": 302,
+              "date": "2026-05-07",
+              "day_percentage": 0.22017692,
+              "property_name": "Manifest"
+            },
+            "day90": {
+              "bucket_id": 302,
+              "date": "2026-07-06",
+              "day_percentage": 0.21613213,
+              "property_name": "Manifest"
+            },
+            "day180": null
+          },
+          {
+            "milestone": 150,
+            "category": "Enabled by default",
+            "stableDate": "2026-06-30",
+            "atStable": {
+              "bucket_id": 302,
+              "date": "2026-06-30",
+              "day_percentage": 0.21465578,
+              "property_name": "Manifest"
+            },
+            "day30": null,
+            "day90": null,
+            "day180": null
+          }
+        ]
+      }
+    }
+  ],
+  "interpretation": {
+    "numerator": "Chrome page loads on which the counter fired at least once",
+    "denominator": "Measured Chrome HTTP/HTTPS page loads across official channels and platforms",
+    "notEquivalentTo": [
+      "unique developers",
+      "unique sites",
+      "unique users",
+      "successful task completion",
+      "developer satisfaction",
+      "end-user benefit"
+    ],
+    "cautions": [
+      "A WebDX family counter may cover more behavior than this individual ChromeStatus launch.",
+      "Counter instrumentation may include detection or probing depending on the counter implementation.",
+      "UMA data reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented.",
+      "Zero, missing, or delayed points are not proof of zero real-world use."
+    ]
+  },
+  "sourceUrls": {
+    "currentFeature": "https://chromestatus.com/metrics/feature/popularity",
+    "currentWebFeature": "https://chromestatus.com/metrics/webfeature/popularity",
+    "currentCss": "https://chromestatus.com/metrics/css/popularity",
+    "useCounterDocumentation": "https://chromium.googlesource.com/chromium/src/+/main/docs/use_counter_wiki.md",
+    "mappings": "https://github.com/web-platform-dx/web-features-mappings/blob/b824850cd209f6b8903eeb6fcdbe8ae9462dfb92/mappings/chrome-use-counters.json"
+  }
+}

@@ -18,6 +18,15 @@ const featureText = await readFile(join(root, "manifest.features.jsonl"), "utf8"
 const events = parseJsonl(eventText);
 const features = parseJsonl(featureText);
 const errors = [];
+let metricsManifest = null;
+try {
+  metricsManifest = JSON.parse(await readFile(join(root, "evidence/metrics/manifest.json"), "utf8"));
+  if (metricsManifest.denominator?.features !== features.length || metricsManifest.features?.length !== features.length) {
+    errors.push("usage-metrics evidence denominator mismatch");
+  }
+} catch (error) {
+  errors.push(`missing usage-metrics evidence manifest: ${error.message}`);
+}
 if (events.length !== run.denominator.launchEvents) errors.push(`event denominator mismatch: ${events.length}`);
 if (features.length !== run.denominator.uniqueFeatures) errors.push(`feature denominator mismatch: ${features.length}`);
 if (sha(eventText) !== run.checksums.eventsSha256) errors.push("event manifest checksum mismatch");
@@ -32,6 +41,13 @@ for (const feature of features) {
     await access(join(root, feature.detailEvidencePath));
   } catch {
     errors.push(`missing ChromeStatus detail: ${feature.featureId}`);
+  }
+  try {
+    const metricsRow = metricsManifest?.features?.find((item) => item.featureId === feature.featureId);
+    if (!metricsRow) throw new Error("missing manifest row");
+    await access(join(root, metricsRow.path));
+  } catch (error) {
+    errors.push(`missing usage-metrics evidence: ${feature.featureId} (${error.message})`);
   }
   try {
     const report = JSON.parse(await readFile(join(root, feature.reportPath), "utf8"));

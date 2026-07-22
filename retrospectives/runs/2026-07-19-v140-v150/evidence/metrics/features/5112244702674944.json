@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "featureId": 5112244702674944,
+  "featureName": "meta name=\"text-scale\"",
+  "collectedAt": "2026-07-22T18:06:48.868Z",
+  "launchEvents": [
+    {
+      "eventId": "146:Enabled by default:5112244702674944",
+      "milestone": 146,
+      "category": "Enabled by default",
+      "date": "2026-03-10"
+    }
+  ],
+  "mappingStatus": "exact-counter",
+  "chromeStatusFields": {
+    "webFeature": "Missing feature",
+    "webdxUseCounterEnum": null,
+    "measurement": "Added WebDX UseCounter in https://chromium-review.googlesource.com/c/chromium/src/+/7267330",
+    "originTrialCounters": []
+  },
+  "metrics": [
+    {
+      "type": "css",
+      "bucketId": 667,
+      "scope": "exact",
+      "confidence": "declared-name",
+      "evidence": [
+        "Public css counter source is named verbatim in the ChromeStatus measurement field"
+      ],
+      "propertyName": "source",
+      "latestSnapshot": {
+        "bucket_id": 667,
+        "date": "2025-10-21",
+        "day_percentage": 0,
+        "property_name": "source"
+      },
+      "timelineUrl": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=667",
+      "timelineEvidencePath": "evidence/metrics/timelines/css-667.json",
+      "timelineSha256": "28bc650748928e85da075f2bf73b43fce6ccefcfa87477f7730729699c6b6932",
+      "summary": {
+        "points": 267,
+        "firstObservedPositive": {
+          "bucket_id": 667,
+          "date": "2021-11-04",
+          "day_percentage": 1e-8,
+          "property_name": "source"
+        },
+        "latest": {
+          "bucket_id": 667,
+          "date": "2025-10-21",
+          "day_percentage": 0,
+          "property_name": "source"
+        },
+        "peak": {
+          "bucket_id": 667,
+          "date": "2022-02-20",
+          "day_percentage": 4e-8,
+          "property_name": "source"
+        },
+        "launchCheckpoints": [
+          {
+            "milestone": 146,
+            "category": "Enabled by default",
+            "stableDate": "2026-03-10",
+            "atStable": null,
+            "day30": null,
+            "day90": null,
+            "day180": null
+          }
+        ]
+      }
+    }
+  ],
+  "interpretation": {
+    "numerator": "Chrome page loads on which the counter fired at least once",
+    "denominator": "Measured Chrome HTTP/HTTPS page loads across official channels and platforms",
+    "notEquivalentTo": [
+      "unique developers",
+      "unique sites",
+      "unique users",
+      "successful task completion",
+      "developer satisfaction",
+      "end-user benefit"
+    ],
+    "cautions": [
+      "A WebDX family counter may cover more behavior than this individual ChromeStatus launch.",
+      "Counter instrumentation may include detection or probing depending on the counter implementation.",
+      "UMA data reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented.",
+      "Zero, missing, or delayed points are not proof of zero real-world use."
+    ]
+  },
+  "sourceUrls": {
+    "currentFeature": "https://chromestatus.com/metrics/feature/popularity",
+    "currentWebFeature": "https://chromestatus.com/metrics/webfeature/popularity",
+    "currentCss": "https://chromestatus.com/metrics/css/popularity",
+    "useCounterDocumentation": "https://chromium.googlesource.com/chromium/src/+/main/docs/use_counter_wiki.md",
+    "mappings": "https://github.com/web-platform-dx/web-features-mappings/blob/b824850cd209f6b8903eeb6fcdbe8ae9462dfb92/mappings/chrome-use-counters.json"
+  }
+}

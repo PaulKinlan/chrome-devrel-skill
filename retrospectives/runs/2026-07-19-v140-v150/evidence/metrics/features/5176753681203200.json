@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "featureId": 5176753681203200,
+  "featureName": "Refine border-radius shadow edge computation for high border-radius",
+  "collectedAt": "2026-07-22T18:07:09.648Z",
+  "launchEvents": [
+    {
+      "eventId": "145:Enabled by default:5176753681203200",
+      "milestone": 145,
+      "category": "Enabled by default",
+      "date": "2026-02-10"
+    }
+  ],
+  "mappingStatus": "web-feature-family-counter",
+  "chromeStatusFields": {
+    "webFeature": "border-radius",
+    "webdxUseCounterEnum": null,
+    "measurement": null,
+    "originTrialCounters": []
+  },
+  "metrics": [
+    {
+      "type": "css",
+      "bucketId": 53,
+      "scope": "property-family",
+      "confidence": "name-matched-family",
+      "evidence": [
+        "ChromeStatus web_feature border-radius exactly normalizes to css counter border-radius"
+      ],
+      "propertyName": "border-radius",
+      "latestSnapshot": {
+        "bucket_id": 53,
+        "date": "2026-07-20",
+        "day_percentage": 0.85615142,
+        "property_name": "border-radius"
+      },
+      "timelineUrl": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=53",
+      "timelineEvidencePath": "evidence/metrics/timelines/css-53.json",
+      "timelineSha256": "273dd892aef8cea5b57dc7d8d5b213296699cd506c50c297544cdd49265435a0",
+      "summary": {
+        "points": 4410,
+        "firstObservedPositive": {
+          "bucket_id": 53,
+          "date": "2013-08-08",
+          "day_percentage": 0.67,
+          "property_name": "border-radius"
+        },
+        "latest": {
+          "bucket_id": 53,
+          "date": "2026-07-21",
+          "day_percentage": 0.85677759,
+          "property_name": "border-radius"
+        },
+        "peak": {
+          "bucket_id": 53,
+          "date": "2013-09-15",
+          "day_percentage": 3.49259082,
+          "property_name": "border-radius"
+        },
+        "launchCheckpoints": [
+          {
+            "milestone": 145,
+            "category": "Enabled by default",
+            "stableDate": "2026-02-10",
+            "atStable": {
+              "bucket_id": 53,
+              "date": "2026-02-10",
+              "day_percentage": 0.86161542,
+              "property_name": "border-radius"
+            },
+            "day30": {
+              "bucket_id": 53,
+              "date": "2026-03-12",
+              "day_percentage": 0.86210979,
+              "property_name": "border-radius"
+            },
+            "day90": {
+              "bucket_id": 53,
+              "date": "2026-05-11",
+              "day_percentage": 0.8639277,
+              "property_name": "border-radius"
+            },
+            "day180": null
+          }
+        ]
+      }
+    }
+  ],
+  "interpretation": {
+    "numerator": "Chrome page loads on which the counter fired at least once",
+    "denominator": "Measured Chrome HTTP/HTTPS page loads across official channels and platforms",
+    "notEquivalentTo": [
+      "unique developers",
+      "unique sites",
+      "unique users",
+      "successful task completion",
+      "developer satisfaction",
+      "end-user benefit"
+    ],
+    "cautions": [
+      "A WebDX family counter may cover more behavior than this individual ChromeStatus launch.",
+      "Counter instrumentation may include detection or probing depending on the counter implementation.",
+      "UMA data reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented.",
+      "Zero, missing, or delayed points are not proof of zero real-world use."
+    ]
+  },
+  "sourceUrls": {
+    "currentFeature": "https://chromestatus.com/metrics/feature/popularity",
+    "currentWebFeature": "https://chromestatus.com/metrics/webfeature/popularity",
+    "currentCss": "https://chromestatus.com/metrics/css/popularity",
+    "useCounterDocumentation": "https://chromium.googlesource.com/chromium/src/+/main/docs/use_counter_wiki.md",
+    "mappings": "https://github.com/web-platform-dx/web-features-mappings/blob/b824850cd209f6b8903eeb6fcdbe8ae9462dfb92/mappings/chrome-use-counters.json"
+  }
+}

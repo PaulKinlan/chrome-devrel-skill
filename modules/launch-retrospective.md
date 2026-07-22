@@ -20,13 +20,16 @@ For each feature collect, where relevant:
 2. Explainer/spec/design documents and revision history
 3. Intent, TAG, Mozilla/WebKit and other standards/review threads
 4. Implementation, tests, bugs, regressions and platform support
-5. Docs, samples, demos, release communications and claims
-6. Usage data (for example Chrome use counters where linked), Web Platform Dashboard/web-features/HTTP Archive/BigQuery or other defensible sources
-7. Framework/library/tool integration and package/code evidence
-8. Developer/customer/partner trials, production use and case studies
-9. Support issues, migration/friction and known failures
-10. Critical and positive ecosystem/press/community coverage with source-selection limits
-11. User impact, accessibility, privacy, security, resource and competition evidence
+5. Chrome usage telemetry: legacy HTML/JS UseCounters, WebDX/WebFeature counters, CSS counters, origin-trial counters, and feature-specific UMA/UKM plans. Cache the public ChromeStatus timelines and counter mapping rather than relying only on links found by search.
+6. Docs, samples, demos, release communications and claims
+7. Other usage data: Web Platform Dashboard/web-features/HTTP Archive/BigQuery or other defensible sources
+8. Framework/library/tool integration and package/code evidence
+9. Developer/customer/partner trials, production use and case studies
+10. Support issues, migration/friction and known failures
+11. Critical and positive ecosystem/press/community coverage with source-selection limits
+12. User impact, accessibility, privacy, security, resource and competition evidence
+
+ChromeStatus metrics report the share of measured Chrome HTTP/HTTPS page loads on which a counter fired. Record whether the mapping is exact, a broader WebDX family/property, origin-trial-only, ambiguous, custom/internal-only, or absent. Do not translate that percentage into unique developers, sites, users, successful tasks, satisfaction, or end-user benefit. A missing mapping means “no mapped public counter found,” not “no adoption data exists.”
 
 Distinguish independent evidence from sources that repeat one underlying announcement.
 
