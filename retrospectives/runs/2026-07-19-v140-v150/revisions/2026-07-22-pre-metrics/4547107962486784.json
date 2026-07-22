@@ -118,14 +118,13 @@
       "limitations": "No evidence of a coordinated launch plan, demo, or speaker-notes pack; MDN has a formal-syntax entry but no feature-page treatment was confirmed."
     },
     "adoption": {
-      "status": "partial",
-      "finding": "Chrome usage telemetry is now cached for this feature (collected 2026-07-22, after the report's 2026-07-19 evidence cutoff) as an exact WebDX counter: WebDXFeature::kFlexWrapBalance, public webfeature counter FlexWrapBalance (bucket_id 438; mappingStatus exact-counter, scope exact and confidence exact — not a broader WebDX family/property or origin-trial counter). On the latest observed day (2026-07-20) the counter fired on day_percentage 0.00000583 of measured Chrome HTTP/HTTPS page loads. The 49-point daily series first went positive 2026-06-05 (0.000001), rose to a peak of 0.00000737 on 2026-07-08, and has since eased to 0.00000583 (2026-07-20). Launch-relative checkpoints: M149 dev-trial (stable 2026-06-02) at-stable 0 (2026-06-03), day-30 0.000004 (2026-07-02); M150 enabled-by-default (stable 2026-06-30) at-stable 0.000003 (2026-06-30), with day-30/90/180 not yet reached. This share is of measured page loads on which the counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. The record has no predeclared adoption target or plan (adoption_expectation/adoption_plan null), so this low, nascent level is described, not judged success or failure.",
+      "status": "unknown",
+      "finding": "No adoption or usage evidence exists at cutoff. Chrome 150 shipped only 12 days before the evidence cutoff, and the WebDXFeature::kFlexWrapBalance use counter (added 2026-05-15) has no published measurement yet. adoption_expectation and adoption_plan are null in the record. Adoption cannot be inferred from shipment.",
       "evidenceIds": [
         "S1",
-        "S9",
-        "S24"
+        "S9"
       ],
-      "limitations": "Exact counter yields a defensible usage share, but only ~7 weeks after the M150 stable and the trend is shallow; no unique-site / HTTP Archive / BigQuery breakdown, no production case-study, no retention, no task-success or end-user-benefit measurement, and no predeclared target to interpret the level. M150 day-30/90/180 checkpoints are pending."
+      "limitations": "Too recent for any defensible usage/adoption number; no HTTP Archive / BigQuery / WebDX dashboard data available."
     },
     "support": {
       "status": "unknown",
@@ -154,30 +153,27 @@
         "S4",
         "S16",
         "S19",
-        "S21",
-        "S24"
+        "S21"
       ],
-      "limitations": "Realized value depends on adoption, which is now measured at a low, nascent level (latest day_percentage 0.00000583 on 2026-07-20) but unscored (no predeclared target); the column-scope gap remains a known scope decision, not a defect."
+      "limitations": "Realized value depends on adoption, which is unmeasured; the column-scope gap is a known scope decision, not a defect."
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "Mechanism is sound and low-risk: more visually balanced layouts reduce jarring whitespace and awkward lone-item stretching, improving perceived polish, with no privacy/security/resource exposure and a safe fallback (unbalanced wrap). But impact is indirect (opt-in by developers) and its end-user outcomes remain unmeasured at cutoff; no accessibility, performance-regression, or low-end-device evidence (positive or negative) was found.",
+      "finding": "Mechanism is sound and low-risk: more visually balanced layouts reduce jarring whitespace and awkward lone-item stretching, improving perceived polish, with no privacy/security/resource exposure and a safe fallback (unbalanced wrap). But impact is indirect (opt-in by developers) and entirely unmeasured at cutoff; no accessibility, performance-regression, or low-end-device evidence (positive or negative) was found.",
       "evidenceIds": [
         "S2",
-        "S14",
-        "S24"
+        "S14"
       ],
-      "limitations": "No measured end-user outcome; end-user benefit is gated on developer adoption, which is now measured at a low, nascent level (latest day_percentage 0.00000583) but unscored."
+      "limitations": "No measured end-user outcome; end-user benefit is gated on developer adoption, which is unknown."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Remains unscored. Exact Chrome usage telemetry is now available (WebDXFeature::kFlexWrapBalance, bucket_id 438, scope exact): the counter fired on day_percentage 0.00000583 of measured Chrome HTTP/HTTPS page loads on 2026-07-20 (peak 0.00000737 on 2026-07-08; first positive 0.000001 on 2026-06-05; M150 at-stable 0.000003 on 2026-06-30; M149 day-30 0.000004 on 2026-07-02). The level is low and the post-launch trend is shallow. Because the record declares no adoption target (adoption_expectation/adoption_plan null) and there is no corroborating unique-site, production, retention, task-success, or end-user-benefit evidence, this measured level/trend is described but is not used as a substitute for an absent threshold — it is cited neither as success nor as failure. The values are the share of measured page loads where the counter fired, not unique developers/sites/users/satisfaction/benefit. M150 day-90/day-180 checkpoints are not yet available.",
+      "finding": "Unscored: no usage, telemetry, framework/tool integration, or production case-study evidence exists at cutoff because the feature shipped 12 days ago. The measurement instrumentation exists (WebDXFeature::kFlexWrapBalance) but has produced no published data.",
       "evidenceIds": [
         "S1",
-        "S9",
-        "S24"
+        "S9"
       ],
-      "limitations": "Unscored due to the absence of a predeclared target and of production/retention/unique-site corroboration — not due to absent telemetry (which now exists). Revisit when M150 day-90/day-180 land and if a target or production evidence emerges."
+      "limitations": "Cannot be scored from shipment; revisit at +1/+3/+6 milestones."
     },
     "interoperability": {
       "status": "mixed",
@@ -224,7 +220,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-justified, standards-track, cleanly-shipped, well-tested solution to a genuine long-standing developer problem, executed by an experienced owner with CSSWG consensus and no TAG objection. It is held to 'mixed' rather than success because: (1) it is Chrome-only at launch with no Mozilla/WebKit signal (Baseline limited); (2) a documented use case (column balancing) is unfulfilled (flex-line-count deferred); (3) adoption is now measured but at a low, nascent level (latest day_percentage 0.00000583 on 2026-07-20) with no predeclared target or production/retention corroboration, so the adoption outcome remains unscored, and end-user impact and support are still unmeasured; and (4) DevRel communication was light (flagship blog omitted it, no article/demo, internal-only cited demand signal). Not a failure (strong problem/solution/standards/tests; low measured usage is not, by itself, failure without a target); not a success (interop incomplete, scope partial, adoption uncorroborated/unscored, comms thin).",
+      "finding": "A well-justified, standards-track, cleanly-shipped, well-tested solution to a genuine long-standing developer problem, executed by an experienced owner with CSSWG consensus and no TAG objection. It is held to 'mixed' rather than success because: (1) it is Chrome-only at launch with no Mozilla/WebKit signal (Baseline limited); (2) a documented use case (column balancing) is unfulfilled (flex-line-count deferred); (3) adoption, end-user impact, and support are unmeasured (too early); and (4) DevRel communication was light (flagship blog omitted it, no article/demo, internal-only cited demand signal). Not a failure (strong problem/solution/standards/tests); not a success (interop incomplete, scope partial, outcomes unproven, comms thin).",
       "evidenceIds": [
         "S1",
         "S3",
@@ -233,10 +229,9 @@
         "S8",
         "S9",
         "S12",
-        "S21",
-        "S24"
+        "S21"
       ],
-      "limitations": "Overall remains mixed: adoption is now measured (low, nascent, unscored) but interop is still Chrome-only and end-user/support outcomes are unmeasured."
+      "limitations": "Overall will remain mixed until interop and adoption evidence mature."
     }
   },
   "sources": [
@@ -515,21 +510,6 @@
         "Official CSSWG resolution log for the balance keyword and clamping"
       ],
       "limitations": "IRC log summary."
-    },
-    {
-      "id": "S24",
-      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=438",
-      "publisher": "Chrome Platform Status — WebDX/WebFeature usage timeline (bucket_id 438, FlexWrapBalance)",
-      "publishedOrObservedAt": "2026-07-20",
-      "retrievedAt": "2026-07-22T18:06:14Z",
-      "sourceType": "usage",
-      "supports": [
-        "Exact-scope usage counter (WebDXFeature::kFlexWrapBalance / public webfeature FlexWrapBalance, bucket_id 438) maps 1:1 to this ChromeStatus feature (mappingStatus exact-counter; the counter is named verbatim in the ChromeStatus measurement field, so this is exact feature adoption, not a broader WebDX/property family or origin-trial counter)",
-        "Timeline of 49 daily points: first positive 2026-06-05 (day_percentage 0.000001), peak 2026-07-08 (0.00000737), latest 2026-07-20 (0.00000583)",
-        "Launch-relative checkpoints: M149 dev-trial at-stable (2026-06-03) day_percentage 0 and day-30 (2026-07-02) 0.000004; M150 enabled-by-default at-stable (2026-06-30) 0.000003; M150 day-30/90/180 not yet available",
-        "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once (numerator: page loads where the counter fired; denominator: measured Chrome HTTP/HTTPS page loads across official channels and platforms)"
-      ],
-      "limitations": "Share-of-page-loads, not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; UMA reflects participating Chrome clients and the dominant milestone (enterprise/opt-out may be underrepresented); counter may include detection/probing depending on implementation; zero/missing/delayed points are not proof of zero real-world use; only ~7 weeks of post-M150-stable data and M150 day-30/90/180 pending. Cached snapshot SHA-256 3aa997880e85a1c6bafa7ccf63ada3e539ca34fbad1a022fd69b1ebdbaace366."
     }
   ],
   "successes": [
@@ -550,7 +530,7 @@
     "If a dedicated MDN feature page, DevRel article, or interactive Glitch demo had shipped with the stable (populating the empty doc/sample links), correct-usage guidance and adoption would be stronger than relying on the explainer and third-party posts.",
     "If Mozilla/WebKit had been engaged to a formal position before ship, Baseline could advance sooner; the Chrome-only window is the primary production-adoption friction.",
     "If the demand signal had been sourced from non-vendor developers (the genuinely independent CSSWG reactions and Odland/Argyle wishlists), the evidence would be less circular than citing an internal DevRel post.",
-    "The WebDXFeature use counter now has early readouts (M149 day-30 day_percentage 0.000004 on 2026-07-02; M150 at-stable 0.000003 on 2026-06-30; latest 0.00000583 on 2026-07-20), so adoption is no longer unknown at the +1 milestone—but because no adoption target was predeclared the low level still cannot be judged success/failure, and day-90/day-180 readouts remain pending; a scheduled, target-anchored readout would let the measured level be interpreted rather than merely reported."
+    "If the WebDXFeature use counter had a scheduled +1/+3/+6-milestone readout, adoption could be judged rather than left unknown at ship."
   ],
   "skillImprovements": [
     "Add a release-phase check that flags when a shipped feature with strong independent demand is omitted from the milestone's flagship 'New in Chrome' highlight blog, requiring an explicit decision/rationale.",
@@ -558,18 +538,18 @@
     "Add a dimension rule: when an explainer documents a use case dependent on a companion property, the retrospective must explicitly test whether that use case is solvable at the shipped milestone (here flex-line-count vs column balancing).",
     "Add an evidence-quality rule: the 'Web developers' ChromeStatus signal must not count an internal vendor/DevRel post as the primary independent signal; require at least one attributable non-vendor developer source and cross-check against issue-reaction counts.",
     "Add an interop/Baseline tracking step in the adoption phase that records other-engine standards-position status and implementation-bug status with dates at every milestone refresh (Mozilla #1405, WebKit #660).",
-    "Add a post-launch monitoring hook for progressive-enhancement CSS features: schedule a WebDXFeature use-counter check at +1, +3, and +6 milestones so adoption is not unscoreable indefinitely—the +1 readout is now captured for this feature (M149 day-30 0.000004, latest 0.00000583), confirming the mechanism; the hook should additionally require a predeclared adoption target so each checkpoint's level can be interpreted rather than merely reported."
+    "Add a post-launch monitoring hook for progressive-enhancement CSS features: schedule a WebDXFeature use-counter check at +1, +3, and +6 milestones so adoption is not unscoreable indefinitely."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Chrome usage telemetry is now cached (exact WebDXFeature::kFlexWrapBalance counter, bucket_id 438; latest day_percentage 0.00000583 on 2026-07-20). Remaining adoption gaps: no unique-site / HTTP Archive / BigQuery breakdown, no production case-study, no retention, no task-success or end-user-benefit measurement, no predeclared adoption target to interpret the level, and M150 day-30/90/180 checkpoints not yet reached (latest available are M149 day-30 and M150 at-stable).",
+      "Adoption/usage data: WebDXFeature::kFlexWrapBalance counter exists but no published measurement at cutoff (feature shipped 12 days ago).",
       "End-user impact: no measured outcome (accessibility, performance, low-end-device) at cutoff.",
       "Support/friction: no issues, regressions, or recurrence data at cutoff (too early).",
       "Live cross-browser WPT pass rates: wpt.fyi dashboard is JS-rendered and pass rates were not retrieved.",
       "Post-launch community/press reaction beyond two items: too early for saturation.",
       "Other-engine implementation progress beyond 'No signal': Mozilla bug 2013454 / WebKit bug 314423 status not deeply retrieved."
     ],
-    "reviewedAt": "2026-07-22T18:06:14Z"
+    "reviewedAt": "2026-07-19T00:00:00Z"
   }
 }
