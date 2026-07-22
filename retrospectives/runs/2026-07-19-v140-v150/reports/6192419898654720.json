@@ -1,0 +1,481 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6192419898654720,
+    "name": "Deprecate special font size rules for H1 within some elements",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6192419898654720",
+    "category": "CSS",
+    "featureType": "Feature removal",
+    "blinkComponents": [
+      "Blink>CSS"
+    ],
+    "ownerEmails": [
+      "masonf@chromium.org"
+    ],
+    "creatorEmail": "masonfreed@google.com",
+    "bugUrl": "https://issues.chromium.org/issues/394111284",
+    "specLink": "https://github.com/whatwg/html/pull/11102",
+    "summary": "Removes the user-agent stylesheet rules that visually demote the font-size and margin of <h1> nested inside <article>, <aside>, <nav>, or <section> (so a nested h1 no longer 'looks like' an h2/h3...). Motivation is accessibility: the demotion was never reflected in the accessibility tree, so the visual heading level and the semantic heading level diverged. After removal, nested <h1> renders at full h1 size, nudging authors to use explicit <h2>/<h3> and define their own font-size/margin."
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Deprecated:6192419898654720",
+      "milestone": 140,
+      "category": "Deprecated"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Correctly classified as a Feature removal / deprecation of legacy UA stylesheet behavior tied to the (already-removed, 2022) HTML outline algorithm. The problem statement is concrete and accessibility-grounded: nested <h1> font-size was visually demoted to look like h2/h3 while the accessibility tree reported it as h1, producing a real semantic/visual mismatch. Owner (masonf@chromium.org), tracking bug, spec PR, and the upstream WHATWG issue (#7867, opened 2022-04-28 by zcorpan/Simon Pieters) are all present. Blink>CSS component; enterprise first-notification milestone 135 recorded.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "ChromeStatus cached record accurate_as_of 2025-08-18; later stage/intent URL corrections not reflected in that snapshot."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation was standards-driven and primarily Mozilla-led, not Chrome-led: the WHATWG outline algorithm was dropped from the HTML spec in 2022, the UA-style removal was raised as issue #7867 in April 2022, and Mozilla authored the spec PR (#11102, 2025-03-05) plus two compat analyses (Mar 2024 and Jan 2025). The accessibility rationale is well-articulated. However, there is no attributable developer-demand evidence and ChromeStatus records 'Web developers: No signals'; the change is an implementer/standards cleanup rather than a developer-requested capability.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S7",
+        "S15"
+      ],
+      "limitations": "Mozilla's January 2025 compat-analysis comment (S15) could not be retrieved in full via the reader; its content is known only through the ChromeStatus interop_risks summary and the Chromium I2S paraphrase ('HTTP archive research showing only minor impact')."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Chromium implementation existed behind a runtime flag/kill-switch and was owned by masonf (Mason Freed). The stage record shows intent_stage 3 (implement) and the eventual landing commit (e5c699f, 2025-07-23) 'Disable special H1 behavior by default' with the kill-switch flag SpecialRulesForNestedH1Elements explicitly retained 'as a kill switch in case of problems'. WPT tests were authored (web-platform-tests/wpt#51673) and the I2S declares the feature 'fully tested by web-platform-tests: Yes'.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S8",
+        "S12"
+      ],
+      "limitations": "Exact WPT pass rates were not retrievable (the wpt.fyi dashboard is a JS app that returned no data via the reader); the Chromium tracking bug (S11) requires sign-in."
+    },
+    "developerTrials": {
+      "status": "supported",
+      "finding": "Chrome's developer surfacing began at M136 via DevTools console deprecation warnings for affected <h1> elements (stage record: DevTrial desktop/android first = 136). This was reinforced by the Lighthouse rule H1UserAgentFontSizeInSection (added ~March 2025), which lowers Lighthouse Best-Practices scores, and by a cross-browser MDN blog post (2025-04-11) giving migration guidance. This is a passive, broad-reach surfacing (warnings + auditing tooling) rather than a gated opt-in trial, which fits a low-severity removal.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S8"
+      ],
+      "limitations": "No formal DevTrial cohort or attributable developer-feedback ledger; reach is inferred from the warning/Lighthouse rollout, not measured adoption."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Engine signals are broadly positive and independently sourced: Firefox 'Shipped/Shipping' (drove the change, shipped to stable at 100% for FF139 and FF140 before Chrome M140); Safari 'Positive' via a GitHub comment; the spec PR (#11102) was approved by annevk and mfreed7 and merged 2025-07-19 after domenic applied a new 'ship-then-align' bar; Ladybird (LibWeb) also removed the UA styles (2025-07-11). TAG review was recorded 'Not applicable'. HOWEVER the recorded 'Web developers: No signals' was never updated despite the MDN/Simon-Willison/Lighthouse communication, and the WHATWG thread itself reveals caution: annevk and domenic debated the risk of standardizing ahead of a real ship, which produced a new WHATWG 'Risky changes' working-mode policy (whatwg/sg#253) that this case effectively originated.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S5",
+        "S7",
+        "S14"
+      ],
+      "limitations": "Safari's signal is explicitly 'just a github comment, not a standards position'; no attributable Web-developer/framework position was captured."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "Chrome ran NO Origin Trial and used no Finch (I2S: 'Non-finch justification: None'; rollout 'Will ship enabled for all users'). Chrome deliberately relied on (a) Mozilla's monitored Nimbus field rollout (5%->100% across FF138 Beta/Release and FF139/140, with explicit regression monitoring) and (b) its own M136 console warnings + Lighthouse surfacing, rather than a first-party Chrome field experiment. Marked not-relevant only in the sense that a Chrome OT was intentionally not used; it does NOT mean the behavior went untested in the field - Mozilla's monitored rollout (see wideReview/prepareToShip evidence) served as the field experiment of record.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "limitations": "The field evidence is second-hand for Chromium's engine: Firefox's compatibility telemetry does not directly measure Blink's rendering population, though the UA rules being removed are spec-identical across engines."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship posted 2025-07-10 (Mason Freed) targeting M140 removal, with the actual shipping I2S thread (owM01CWwoes) receiving LGTM1 from Rick Byers (2025-07-11, explicitly endorsing low severity / high mitigability and requiring a kill switch), plus LGTMs from Domenic Denicola (2025-07-13) and Chris Harrelson (2025-07-14). Mason confirmed reliance on Mozilla's HTTP Archive analysis ('only minor impact') and field result ('they've shipped it and heard crickets'), and landed the kill-switch flag SpecialRulesForNestedH1Elements. Spec PR merged 2025-07-19; code landed 2025-07-23. Rollout plan: enabled for all users; WPT declared fully tested.",
+      "evidenceIds": [
+        "S4",
+        "S8",
+        "S1"
+      ],
+      "limitations": "The cached ChromeStatus ship-stage intent_thread_url points to a different (CAM=NeD...) thread than the actual shipping I2S (owM01CWwoes) - a documentation inconsistency. No first-party Chrome compat telemetry was presented; the ship case leans on Mozilla's data."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 140 (Early Stable 2025-08-27, broad Stable 2025-09-02) on desktop, Android, and WebView. Communication was coordinated and accurate: the MDN blog (2025-04-11, Simon Pieters) gave cross-browser timelines and migration CSS; Chrome's M136 console warnings + Lighthouse H1UserAgentFontSizeInSection pre-warned developers; the deprecation is listed in the Chrome 140 developer release notes and covered by independent press (Gigazine) and community amplification (Simon Willison).",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S9",
+        "S10",
+        "S13"
+      ],
+      "limitations": "No Chrome-authored feature article/blog specific to this deprecation was found (communication was largely MDN + Lighthouse + release-notes entry)."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Because this is a removal, 'adoption' = sites/CSS-resets moving to explicit font-size/margin for <h1>. Evidence is thin and anecdotal: the spec PR references a developer removing 'redundant h1 reset styles' from a WordPress theme (2025-09-15) and a base-CSS-stylesheet update (2025-09-26), and MDN/Lighthouse guidance exists. There is no measured adoption funnel (awareness/audit/fix/production) and ChromeStatus records 'Web developers: No signals'.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S1"
+      ],
+      "limitations": "No defensible adoption denominator or HTTP Archive fix-rate measurement was retrieved; observed commits are self-selected and not representative."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "Strong absence-of-breakage signal but no explicit post-shipment monitoring report: Firefox's monitored rollout reported 'no reported regressions' and 'calling success' (2025-05-20); Chrome's owner stated 'heard crickets' at I2S time (2025-07-10); a targeted search for the kill-switch flag (SpecialRulesForNestedH1Elements) and post-Chrome-140 webcompat regressions surfaced no public reports of activation or rollback. Rick Byers' pre-ship framing (worst case: text slightly larger; fix = add explicit CSS) appears to have held.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S1"
+      ],
+      "limitations": "Absence of public breakage reports is not proof of zero issues; the Chromium tracking bug (S11) and any internal Chrome webcompat dashboards are not publicly retrievable (sign-in/JS-gated), so post-M140 support health could not be independently verified."
+    },
+    "deprecation": {
+      "status": "supported",
+      "finding": "This feature IS the deprecation/removal. Detection tooling (DevTools M136 warning + Lighthouse H1UserAgentFontSizeInSection), migration guidance (MDN: specify font-size and margin; use :where(h1) for zero specificity; update CSS resets; audit with Lighthouse), enterprise first-notification milestone (135), and a documented kill switch are all in place and aligned with the (already-merged) spec change. The removal is proportionate to the low-severity, high-mitigability nature established at I2S.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S8",
+        "S4"
+      ],
+      "limitations": "No enterprise-specific breakage data and no explicit reverse-trial criteria were found; the kill switch is documented but its post-ship state is not publicly queryable."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Genuine accessibility value (removes a visual/semantic heading-level mismatch; aligns UA rendering with the accessibility tree and the already-removed outline algorithm) and clear interop value. But the change is implementer/standards-driven cleanup with no attributable developer demand ('Web developers: No signals'), and it transfers a small migration cost onto authors (must add explicit font-size/margin or update resets). Net direction is positive; the demand evidence is weak and the author cost is real but trivial.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "limitations": "No developer-survey or representative feedback data; value claim rests on the accessibility rationale and standards alignment rather than measured developer benefit."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Positive for end users who rely on consistent heading semantics (screen-reader users get headings that match visual structure once authors fix markup); the accessibility-tree correctness improves regardless of author action because the misleading visual demotion is gone. Negative/neutral: on sites that relied on the UA demotion and have not yet added explicit CSS, affected headings render slightly larger - a low-severity cosmetic transient. Rick Byers explicitly scoped the worst case as 'some text is just a bit bigger' with high ease of mitigation.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S8"
+      ],
+      "limitations": "No measurement of how many end users saw visual regressions, or for how long, was retrieved; impact is reasoned from severity framing, not telemetry."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption data (awareness, audit, fix, production) exists in the retrieved evidence. Only anecdotal developer commits and the existence of MDN/Lighthouse guidance were found. ChromeStatus records 'Web developers: No signals'. Cannot score adoption as success or failure without a denominator.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S1"
+      ],
+      "limitations": "HTTP Archive fix-rate / Lighthouse-rule adoption metrics were not retrieved; scored unscored rather than inferred."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "The strongest dimension. Firefox drove and shipped to stable at 100% for two releases (FF139, FF140) before Chrome M140; Safari signaled 'Positive'; Ladybird (LibWeb) also removed the styles; the WHATWG spec PR (#11102) merged 2025-07-19 after a deliberate 'ship-then-align-standard' decision; WPT tests were authored and shared. This is a textbook multi-engine alignment with Chrome following rather than leading.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S5",
+        "S7",
+        "S14"
+      ],
+      "limitations": "Exact WPT pass counts per engine not retrieved; Safari position is an informal GitHub comment, not a formal standards position."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Implementation landed cleanly: a retained kill switch (SpecialRulesForNestedH1Elements, commit e5c699f), authored WPT tests (web-platform-tests/wpt#51673), spec-aligned removal, no public reports of regression or rollback, and a low-severity behavior change. The change is small, well-scoped, and reversible.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S8",
+        "S12"
+      ],
+      "limitations": "Exact WPT pass rate and the precise UseCounter (metric 4272) value were not retrievable via the available readers (browser/JS-gated); the Chromium tracking bug status is sign-in-gated."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Communication was coordinated, accurate, and ahead of removal: a cross-browser MDN blog (2025-04-11) with explicit timelines and migration CSS, Chrome M136 console deprecation warnings, the Lighthouse H1UserAgentFontSizeInSection rule, listing in the Chrome 140 release notes, plus independent press (Gigazine) and community amplification (Simon Willison). Claims in the I2S matched the linked evidence (Mozilla rollout, spec PR).",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S9",
+        "S10",
+        "S8"
+      ],
+      "limitations": "Two communication-record weaknesses: (1) ChromeStatus 'Web developers: No signals' was never updated despite broad developer-facing communication; (2) the cached ChromeStatus ship-stage intent_thread_url points to a superseded thread, not the actual shipping I2S (owM01CWwoes)."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Evidence leans strongly positive for low support burden: Firefox's monitored rollout reported zero regressions and declared success; Chrome's owner reported 'heard crickets'; no public reports of kill-switch activation or post-M140 webcompat rollback were found; pre-ship severity was correctly scoped as low. However, no explicit post-Chrome-140 support-health or monitoring report was retrieved, and the public Chromium bug is sign-in-gated, so support outcome is partly inferred from absence of reports.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S1"
+      ],
+      "limitations": "Absence of public breakage reports is not proof of zero support load; internal Chrome webcompat telemetry and the tracking-bug comment history are not publicly accessible."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-executed, interoperable, low-severity standards cleanup that followed Firefox's monitored rollout and shipped with detection tooling, migration guidance, and a kill switch. Strong on interoperability, implementation quality, and communication; weaker on attributable developer value/demand and on independently verifiable post-shipment support/telemetry. Overall is mixed rather than success because developerValue and endUserImpact carry real (if small) costs and weak demand evidence, adoption is unscored, and support rests partly on absence-of-reports rather than retrieved monitoring data.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "limitations": "Overall is bounded by the same gaps as the mixed/unscored dimensions (Mozilla analysis numbers, UseCounter value, WPT pass rate, post-M140 monitoring)."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6192419898654720",
+      "publisher": "Chrome Platform Status (cached record evidence/chromestatus/features/6192419898654720.json)",
+      "publishedOrObservedAt": "2025-08-18",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata: CSS, Feature removal, Blink>CSS, owner masonf@chromium.org, tracking bug 394111284",
+        "Motivation (a11y mismatch), interop_compat_risks (UseCounter 'relatively high' but Mozilla analysis says impact smaller)",
+        "Stages: DevTrial M136 desktop/android; Ship M140 desktop/android/webview; stage_type 410 intent to prototype",
+        "Browser positions: Firefox Shipped/Shipping, Safari Positive (informal), Web developers No signals",
+        "Spec link PR #11102; WPT descr; use-counter metric 4272; enterprise first-notification M135; breaking_change=false; rollout 'enabled for all users'"
+      ],
+      "limitations": "accurate_as_of 2025-08-18 snapshot; ship-stage intent_thread_url points to a superseded CAM=NeD... thread rather than the actual shipping I2S (S8)."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/6192419898654720",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, Status 'Deprecated (Chrome 140)', Firefox Shipped/Shipping, Safari Positive, Web developers No signals, spec PR #11102, tracking bug."
+      ],
+      "limitations": "Lite view; does not expose stages/use-counter/enterprise fields."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/whatwg/html/issues/7867",
+      "publisher": "WHATWG HTML (issue by zcorpan/Simon Pieters)",
+      "publishedOrObservedAt": "2022-04-28",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Incubation origin (2022); exact UA stylesheet rules proposed for removal (x = :is(article,aside,nav,section)); link to spec rendering section."
+      ],
+      "limitations": "Reader returned the issue header/body but not the full comment timeline; comment bodies referenced via S4/S7/S15."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/whatwg/html/pull/11102",
+      "publisher": "WHATWG HTML (PR by zcorpan)",
+      "publishedOrObservedAt": "2025-07-19",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Full timeline: opened 2025-03-05; approved by annevk and mfreed7; 'needs tests'/'needs compat analysis' labels then resolved",
+        "'Risky changes' debate (annevk/domenic/mfreed7/AtkinsSJ) culminating in whatwg/sg#253 working-mode policy",
+        "domenic merged 2025-07-19 after 'Firefox shipped to stable for 2 releases at 100%' bar met",
+        "Chromium commit e5c699f 'Disable special H1 behavior by default' (2025-07-23) with kill switch + I2S link",
+        "Ladybird LibWeb removal (2025-07-11); WPT web-platform-tests/wpt#51673; MDN content#39582; developer CSS-reset/theme updates (2025-09)"
+      ],
+      "limitations": "Some reviewer comments marked hidden/resolved/abuse (one @kytans comment hidden as abuse 2025-04-11) - content not visible."
+    },
+    {
+      "id": "S5",
+      "url": "https://developer.mozilla.org/en-US/blog/h1-element-styles/",
+      "publisher": "MDN Web Docs / Mozilla (Simon Pieters)",
+      "publishedOrObservedAt": "2025-04-11",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Cross-browser timeline: outline algorithm removed from spec 2022; UA rules now being removed",
+        "Firefox: 50% FF138 Beta from 2025-03-31, 100% Beta from 2025-04-14, 5%/10% FF138 stable then ship all platforms FF140; console warning since FF136 (bug 1937568)",
+        "Chrome: deprecation warnings since M136, lowers Lighthouse Best Practices (issue 394111284); Lighthouse rule H1UserAgentFontSizeInSection added ~March",
+        "Safari tracking bug 292765; migration guidance (explicit font-size/margin, :where(h1), update resets)"
+      ],
+      "limitations": "Single author (Simon Pieters, also the spec/PR author and Mozilla driver) - not an independent source from S4/S7, but independently published on MDN."
+    },
+    {
+      "id": "S6",
+      "url": "https://simonwillison.net/2025/Apr/11/default-styles-for-h1/",
+      "publisher": "Simon Willison's Weblog",
+      "publishedOrObservedAt": "2025-04-11",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent developer amplification; characterizes the change as rare cross-browser UA-stylesheet cleanup; endorses MDN migration advice; notes Firefox ramp 5%->50% with full rollout FF140 June 2025 and Chrome deprecation warnings + Safari expected to follow."
+      ],
+      "limitations": "Link-blog summary that primarily points to S5; limited independent analysis."
+    },
+    {
+      "id": "S7",
+      "url": "https://groups.google.com/a/mozilla.org/g/dev-platform/c/CzG_pVa7pws",
+      "publisher": "Mozilla dev-platform (Simon Pieters, Intent to unship)",
+      "publishedOrObservedAt": "2025-03-24",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Firefox staged Nimbus rollout plan: 50% FF138 Beta (2025-03-31), then 100% Beta, then 5%/10% Release, then 100% and ride trains for FF140",
+        "Pref false in Nightly since March 2024 with 'only one web compat issue reported (the site was fixed)'",
+        "Update 2025-04-14: 'No reported regressions so far'; reduced release rollout to 10%",
+        "Update 2025-05-20: rolled out on 138 release (5%/10%) 'with no reported regressions. I'm calling success'; plan 100% on 139 desktop, ride trains for 140",
+        "Compat analysis links (Mar 2024 + Jan 2025); Gecko bug 1885509"
+      ],
+      "limitations": "Mozilla's own assessment of its rollout; Chrome relied on this second-hand for Blink."
+    },
+    {
+      "id": "S8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/owM01CWwoes/m/uktPI2RDCAAJ",
+      "publisher": "Chromium blink-dev (Mason Freed, Intent to Ship)",
+      "publishedOrObservedAt": "2025-07-10",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "I2S to remove in M140; DevTrial M136; Ship M140 desktop/android/webview; WPT fully tested; non-Finch; kill switch added",
+        "Rick Byers LGTM1 (2025-07-11): low severity ('worst case some text is just a bit bigger'), high ease of mitigation, concern about enterprise/LOB UI regression, requires kill switch",
+        "Mason: 'leaning heavily on Mozilla's work - they did some http archive research (showing only minor impact) and they've shipped it and heard crickets'; kill-switch name SpecialRulesForNestedH1Elements",
+        "Additional LGTMs: Domenic Denicola (2025-07-13), Chris Harrelson (2025-07-14)"
+      ],
+      "limitations": "Some later LGTM replies rendered without body text; thread is the actual shipping I2S and differs from the URL stored in the cached ChromeStatus record (S1)."
+    },
+    {
+      "id": "S9",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (release notes)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "The deprecation 'Deprecate special font size rules for H1 within some elements' is listed under Chrome 140."
+      ],
+      "limitations": "Release-notes entry only; no separate Chrome feature article for this deprecation was found."
+    },
+    {
+      "id": "S10",
+      "url": "https://gigazine.net/gsc_news/en/20250903-google-chrome-140/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2025-09-03",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press coverage of Chrome 140 listing the H1 special-font-size deprecation/removal."
+      ],
+      "limitations": "Press summary repeating the ChromeStatus/MDN information; limited independent analysis."
+    },
+    {
+      "id": "S11",
+      "url": "https://issues.chromium.org/issues/394111284",
+      "publisher": "Chromium issue tracker (buganizer)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug referenced by ChromeStatus, the I2S, and the landing commit (Fixed: 394111284)."
+      ],
+      "limitations": "Page requires sign-in; full status, comment history, and any post-ship webcompat notes could not be retrieved via the reader."
+    },
+    {
+      "id": "S12",
+      "url": "https://wpt.fyi/results/html/rendering/non-replaced-elements/sections-and-headings",
+      "publisher": "web-platform-tests dashboard",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Test suite location for the affected rendering behavior; tests authored in web-platform-tests/wpt#51673 (per S4)."
+      ],
+      "limitations": "JS-rendered dashboard returned no data via the reader; per-engine pass counts not retrieved."
+    },
+    {
+      "id": "S13",
+      "url": "https://www.askvg.com/google-chrome-140-and-later-versions-changelog/",
+      "publisher": "AskVG changelog (citing Chrome Releases)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 Early Stable 2025-08-27, Stable 2025-09-02 (cross-checked with Chrome Releases blog and Enterprise release notes 'Chrome 140: August 27, 2025')."
+      ],
+      "limitations": "Third-party changelog; release-date precision reconciled across multiple sources."
+    },
+    {
+      "id": "S14",
+      "url": "https://github.com/whatwg/sg/pull/253",
+      "publisher": "WHATWG SG (domenic)",
+      "publishedOrObservedAt": "2025-05-23",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "New 'Risky changes' section added to the WHATWG working mode, generalizing the bar debated in PR #11102 (align the standard only after one browser has actually shipped the new behavior)."
+      ],
+      "limitations": "Referenced via the PR #11102 timeline (S4); PR body not read in full."
+    },
+    {
+      "id": "S15",
+      "url": "https://github.com/whatwg/html/issues/7867#issuecomment-2595987424",
+      "publisher": "WHATWG HTML issue #7867 comment (zcorpan/Simon Pieters, Mozilla compat analysis)",
+      "publishedOrObservedAt": "2025-01",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Per ChromeStatus (S1) interop_compat_risks and the Chromium I2S (S8): Mozilla's HTTP Archive analysis concluded the real impact is smaller than the UseCounter (metric 4272) suggests."
+      ],
+      "limitations": "Comment body could not be retrieved via the Z.AI reader or GitHub API (reader returned navigation chrome only; API fetch failed). Exact numbers/percentages are NOT independently verified; known only through the ChromeStatus and I2S paraphrases."
+    }
+  ],
+  "successes": [
+    "Genuine cross-engine interoperability: Firefox drove and shipped to 100% stable first, Safari signaled positive, Ladybird followed, the WHATWG spec PR merged after a deliberate ship-then-align decision, and shared WPT tests exist. Chrome followed rather than led, which is the healthier pattern for the web.",
+    "Correctly scoped as low-severity / high-mitigability and shipped with a retained kill switch (SpecialRulesForNestedH1Elements); no public reports of regression, rollback, or kill-switch activation surfaced through the evidence cutoff.",
+    "Coordinated, early developer surfacing: Chrome M136 console deprecation warnings + the Lighthouse H1UserAgentFontSizeInSection rule + the cross-browser MDN blog (2025-04-11) gave authors detection tooling and migration guidance ahead of the M140 removal.",
+    "Process byproduct: the WHATWG discussion of this very change produced a new 'Risky changes' working-mode policy (whatwg/sg#253), generalizing a disciplined bar for standardizing risky removals."
+  ],
+  "failures": [
+    "Chrome performed no first-party field experiment or compatibility telemetry; the entire ship case leaned on Mozilla's Nimbus rollout and HTTP Archive analysis (second-hand for Blink). Reasonable given low severity, but a transferred risk that is not visible in Chrome's own evidence.",
+    "ChromeStatus 'Web developers: No signals' was never updated despite broad MDN/Lighthouse/Simon-Willison communication, leaving the public signal record understating actual developer awareness.",
+    "Documentation inconsistency: the cached ChromeStatus ship-stage intent_thread_url points to a superseded (CAM=NeD...) thread rather than the actual shipping I2S (owM01CWwoes).",
+    "Impact data remained prose-only in the public record ('relatively high' UseCounter; 'minor impact' from Mozilla) without machine-checkable numbers; the exact UseCounter value, Mozilla HTTP Archive figures, and WPT pass rates could not be retrieved via public readers."
+  ],
+  "counterfactuals": [
+    "Without Firefox shipping to 100% stable for two releases first, Chrome would almost certainly not have removed the rules in M140: Mason explicitly stated he wanted to wait until Firefox shipped at 100% for at least a milestone, and domenic applied exactly that bar before merging the spec. The deprecation's timing was downstream of Mozilla's field evidence.",
+    "If Chrome had run its own staged rollout or short Origin Trial instead of relying solely on Firefox's experiment plus console warnings, it would have held first-party compat data for Blink's population and reduced the second-hand-evidence risk - at the cost of additional process for a change correctly judged low-severity.",
+    "If the ChromeStatus web-developer signal had been proactively refreshed after the MDN blog and Lighthouse rollout, the public readiness record would more accurately reflect developer awareness instead of the stale 'No signals'.",
+    "If detection tooling (the M136 warning + Lighthouse rule) had not preceded the removal, the low observed breakage might have been worse; the pre-warn/audit-first sequencing appears to have materially de-risked the ship."
+  ],
+  "skillImprovements": [
+    "Add a deprecation/removal transition-packet rule: when one engine has run a monitored field rollout, capture that engine's rollout funnel (e.g. 5%->100%), regression count, and explicit decision-to-ship as first-class evidence, while labeling it second-hand for the shipping engine and flagging the unmeasured transfer risk.",
+    "Add a pre-ship ChromeStatus reconciliation check: verify that the stored intent_thread_url matches the actual shipping I2S thread, and that browser-position fields (especially 'Web developers') are refreshed against current communication/coverage before ship.",
+    "Add a deprecation-phase 'kill switch' verification artifact: record the flag/Finch name, confirm it is queryable, and (where public) note whether it was activated post-shipment - rather than relying on absence-of-reports as proof of low support burden.",
+    "Require numeric impact evidence (UseCounter value, HTTP Archive fix/impact figures, WPT pass rate) or an explicit 'browser-only / unretrieved' marker in transition packets, instead of allowing prose-only claims ('relatively high', 'minor impact') to carry the risk assessment.",
+    "Add a regression eval pair (strong + weak deprecation case) using this feature as the strong/low-risk exemplar, to calibrate when reliance on another engine's field evidence plus low-severity framing is defensible versus when it masks a gap."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Mozilla January 2025 compat-analysis comment body (whatwg/html#7867 comment 2595987424): exact HTTP Archive impact numbers/percentages not retrievable via Z.AI reader or GitHub API; known only through ChromeStatus and I2S paraphrases.",
+      "Exact UseCounter value (chromestatus.com metric 4272): browser-only; not retrievable via available readers.",
+      "WPT per-engine pass counts (wpt.fyi sections-and-headings): JS dashboard returned no data via reader.",
+      "Chromium tracking bug 394111284 full status/comment history: sign-in-gated; post-ship webcompat notes not retrievable.",
+      "Explicit post-Chrome-140 (Sep 2025 - Jul 2026) support-health / monitoring report and any kill-switch activation: no public report surfaced; absence of reports used only as a directional, non-conclusive signal.",
+      "Attributable Web-developer / framework position: ChromeStatus records 'No signals' and no independent developer-survey or framework-impact evidence was retrieved."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

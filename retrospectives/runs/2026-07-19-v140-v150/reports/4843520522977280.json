@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4843520522977280,
+    "name": "Permissions policy for Device Attributes API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4843520522977280",
+    "blinkComponent": "Blink>Managed",
+    "category": "Device",
+    "owner": "pchodur@google.com",
+    "specMentor": "reillyg@chromium.org",
+    "finchName": "DeviceAttributesPermissionPolicy",
+    "platformScope": "Managed ChromeOS only (policy-installed kiosk web apps and policy-installed Isolated Web Apps)",
+    "originalApiShippedMilestone": 117
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:In developer trial (Behind a flag):4843520522977280",
+      "milestone": 140,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "141:Enabled by default:4843520522977280",
+      "milestone": 141,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T13:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear classification as an incremental change to the existing Device Attributes API (Blink>Managed), ChromeStatus entry created 2025-04-10 by pchodur@google.com. Problem statement, constituency (managed ChromeOS admins + kiosk/IWA developers), and non-OSS dependency (admin policy) were all identified up front; availability was explicitly bounded to ChromeOS.",
+      "evidenceIds": [
+        "cs",
+        "explainer",
+        "intent-proto"
+      ],
+      "limitations": "Intake artifacts are inferred from the ChromeStatus record and intents; no separate one-page intake/stakeholder map is public."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "A public explainer and venue exist (WICG/WebApiDevice) and the change inherits the underlying API's prior 2021-2023 incubation (WICG/proposals#14, TAG design-reviews#606). However, for this specific change there is no evidence of new demand research, customer/partner validation, or an adversarial 'why not' analysis; the motivation is asserted rather than evidenced.",
+      "evidenceIds": [
+        "explainer",
+        "orig-intent",
+        "intent-proto"
+      ],
+      "limitations": "Incremental enterprise changes may have relied on internal admin/customer feedback that is not public; absence of public research is not proof of none."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype was posted and implementation landed in Chromium 137 ('Add device-attributes Permissions Policy'). The design meaningfully iterated: the prototype summary proposed 'in Isolated Web Apps, the requirement for admin policy is removed,' but by ship this became 'enabled by default for supported scenarios' with admin control retained via content settings/policies. No public prototype friction logs, samples, partner spikes, or decision log accompany that evolution; spec was 'None' at prototype stage (explainer stood in).",
+      "evidenceIds": [
+        "intent-proto",
+        "impl137",
+        "intent-ship",
+        "explainer"
+      ],
+      "limitations": "Prototype-stage evidence beyond the intent and the implementation landing is not publicly visible; the prototype-to-ship design shift is reconstructed by comparing the two intents."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A Chrome 140 dev trial was announced via 'Ready for Developer Testing' (2025-08-08), and spec-mentor review improved the record (Reilly Grant pushed back on template 'None' answers; owner corrected TAG rationale, interop risk, WebView risk, debuggability). But the record carries no devtrial instructions (null), no chrome://flags flag name ('None'), no recruited cohort, no feedback instrument, and no published findings — i.e. a milestone marker rather than an evidenced trial.",
+      "evidenceIds": [
+        "intent-dt",
+        "cs"
+      ],
+      "limitations": "Managed-ChromeOS-only scope makes a public dev-trial cohort intrinsically hard to recruit; the absence of a public cohort does not prove no internal testing occurred."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Cross-engine positions are all 'No signal' (Gecko/WebKit/Web developers), which is the expected and appropriate state for a ChromeOS-managed-only capability, and TAG review is marked 'Not applicable' (TAG declined the original API; this is incremental). Spec-mentor review was substantive. However, security_review_status and privacy_review_status both read 'Pending' in the ChromeStatus record with no documented resolution for this change, and there is no WPT coverage.",
+      "evidenceIds": [
+        "cs",
+        "intent-dt",
+        "intent-ship",
+        "orig-intent"
+      ],
+      "limitations": "The 'Pending' review statuses may reflect ChromeStatus field lag rather than genuinely unresolved gates; internal review state is not publicly verifiable."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted. The ChromeStatus OT/extend-OT stages (stage_type 140/150) carry no trial id, goals, or participants. This is appropriate, not a gap: the feature is admin-gated on managed ChromeOS with a fully controlled audience and low field uncertainty, so an OT would not resolve additional questions that a flag/build test or admin pilot could not.",
+      "evidenceIds": [
+        "cs",
+        "intent-ship"
+      ],
+      "limitations": "Not-relevant reflects that a public Origin Trial is the wrong instrument here; it does not mean the change was untested internally."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship was complete and coherent: rollout plan ('Will ship enabled for all users'), enterprise pre-notification at milestone 139, availability/adoption expectations, non-OSS dependency (admin policy), anticipated spec change (WICG/WebApiDevice#27), and milestones (140 dev trial, 141 ship). Three enterprise policies (DeviceAttributesAllowedForOrigins / BlockedForOrigins / DefaultDeviceAttributesSetting) and the published spec were aligned with the explainer.",
+      "evidenceIds": [
+        "intent-ship",
+        "policy-default",
+        "policy-allowed",
+        "spec"
+      ],
+      "limitations": "No public launch/tracking bug is linked in ChromeStatus for this change (launch_bug_url/bug_url null); the original 2023 feature had bugs 1132865/1217848."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 141 stable (2025-09-30), correctly listed under a dedicated 'Managed ChromeOS only' heading in the Chrome for Developers release notes, with corresponding coverage in the Chrome Enterprise and Education release notes and live enterprise policy documentation. Communication was accurately scoped with no cross-engine overclaiming.",
+      "evidenceIds": [
+        "rn141",
+        "ent-rn",
+        "policy-default",
+        "policy-allowed"
+      ],
+      "limitations": "No standalone DevRel article/video/demo was found; communication is release-notes- and policy-doc-based, proportionate to the narrow scope."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "~9.5 months post-ship, no attributable adoption evidence was found: no case studies, no framework/tool integration, no public production-use signals, and searches for navigator.managed usage returned only policy docs or irrelevant results. The headline adoption expectation (VDI clients on ChromeOS migrating ChromeApps->IWAs/PWAs within 12 months) remains an unverified claim.",
+      "evidenceIds": [
+        "intent-ship",
+        "cs"
+      ],
+      "limitations": "Managed/ChromeOS-only deployments are private and usage data is not public, so absence of public adoption evidence is not evidence of failure; the dimension is structurally hard to observe."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues, bugs, regressions, or friction reports were found for this feature. The enterprise release notes direct affected users to 'file a Chromium bug.' For a managed-only capability, support volume routes through private enterprise channels and is unobservable here.",
+      "evidenceIds": [
+        "ent-rn",
+        "rn141"
+      ],
+      "limitations": "Cannot assess support burden or issue resolution from public sources."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is an enablement/configurability change, not a deprecation or removal, so the deprecation/removal workflow does not apply. The only deprecation-adjacent aspect is that force-installed PWA access via WebAppInstallForceList ended at v140 in favor of force-installed IWAs (IsolatedWebAppInstallForceList) + kiosk; the team assessed this migration impact as nil ('no known IWAs using the API'), and it is not a removal with a warning/reverse-trial path.",
+      "evidenceIds": [
+        "policy-allowed",
+        "intent-ship"
+      ],
+      "limitations": "Not-relevant denotes the deprecation phase is the wrong lens, not that migration impact was validated with a denominator."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The intended value is coherent and partly realized as a capability: it makes the Device Attributes API usable with less per-origin configuration (enabled by default for force-installed IWAs/kiosks) while preserving admin control via content settings and three policies. The value thesis is documented and the artifact shipped. But there is no attributable evidence of developers actually realizing value — no testimonials, case studies, or production use — and the underlying demand evidence (WICG/proposals#14) predates and concerns the original API, not this change.",
+      "evidenceIds": [
+        "explainer",
+        "spec",
+        "policy-default",
+        "policy-allowed",
+        "rn141",
+        "orig-intent"
+      ],
+      "limitations": "Realized developer value cannot be inferred from shipment or documentation alone; no proposal-specific demand evidence was found."
+    },
+    "endUserImpact": {
+      "status": "not-relevant",
+      "finding": "Direct end-user impact is not the relevant lens: the feature is admin-mediated on managed ChromeOS, and only force-installed IWAs/kiosks can reach the API. Device users neither choose nor directly experience this change. The latent user-privacy consideration (device identifiers usable for tracking) is handled structurally by admin gating and the spec's privacy section, which explicitly makes unmanaged exposure a non-goal; the original TAG concern about pervasive employee monitoring was addressed at the underlying-API level in 2023.",
+      "evidenceIds": [
+        "spec",
+        "orig-intent",
+        "policy-default"
+      ],
+      "limitations": "Not-relevant reflects that end users are not the decision-making constituency here; it does not mean user-privacy impact was empirically measured."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Adoption is unevidenced either way. No public usage, partner, framework, or case-study signals exist ~9.5 months after the Chrome 141 ship; the 12-month VDI-client adoption claim is unverified. Per the scoring rules, success is not inferred from shipment, and absence of public adoption is not inferable as failure for a managed-only feature.",
+      "evidenceIds": [
+        "intent-ship",
+        "rn141"
+      ],
+      "limitations": "Adoption of managed/ChromeOS-only features is largely private and not measurable from public sources."
+    },
+    "interoperability": {
+      "status": "not-relevant",
+      "finding": "Cross-engine interoperability and Baseline are explicitly out of scope by design: the API is ChromeOS-only 'for the foreseeable future,' FF/Safari/Web-dev 'No signal' is the expected and appropriate state, and the 'device-attributes' permissions-policy token is a Chrome-only extension with no WPT and no path to other engines. Mozilla/WebKit were neutral/mixed on the underlying API precisely because management is not a cross-browser concept.",
+      "evidenceIds": [
+        "cs",
+        "intent-ship",
+        "orig-intent",
+        "spec"
+      ],
+      "limitations": "Not-relevant denotes interop/Baseline is structurally inapplicable, not that interop risk was unexamined."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Observable implementation signals are sound: the change landed in Chromium 137, shipped on schedule (140 dev trial -> 141 stable), the published spec reflects the design, three policies are documented and consistent, and no regressions or bugs were reported. Weaker signals: not WPT-tested (explicitly 'No'), no public launch/tracking bug linked, and security_review_status/privacy_review_status read 'Pending' in the ChromeStatus record with no documented resolution for this change.",
+      "evidenceIds": [
+        "impl137",
+        "rn141",
+        "spec",
+        "policy-default",
+        "policy-allowed",
+        "cs"
+      ],
+      "limitations": "Internal review/test state is not publicly verifiable; the 'Pending' statuses may be ChromeStatus field lag."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication content was accurate and well-scoped: the Chrome 141 release notes used a dedicated 'Managed ChromeOS only' heading, enterprise release notes covered it, policy docs are clear and consistent with the explainer/spec, and there was no cross-engine or capability overclaiming. However, the authoritative ChromeStatus record was materially stale: as of the 2026-01-13 cache the top-level status read 'Proposed' and is_released was false ~3.5+ months after the feature actually shipped and appeared in release notes — a single-source-of-truth defect.",
+      "evidenceIds": [
+        "rn141",
+        "ent-rn",
+        "policy-default",
+        "policy-allowed",
+        "cs",
+        "cs-lite"
+      ],
+      "limitations": "The status-field lag is likely a ChromeStatus data-entry artifact, but it undermines treating ChromeStatus status enums as authoritative for shipment state."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support, friction, or issue evidence exists. Enterprise release notes route users to 'file a Chromium bug,' and managed-only support flows privately. There is no defensible basis to score support burden or quality either way.",
+      "evidenceIds": [
+        "ent-rn",
+        "rn141"
+      ],
+      "limitations": "Private enterprise support channels are unobservable."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A competent, low-risk, narrowly-scoped incremental enterprise change: clean on-schedule shipment, accurate bounded communication, a constructive design iteration that preserved admin control, and a coherent three-policy story. It is not a success: realized developer value, adoption, and support are unevidenced (not failed), the developer-trials phase was a milestone marker rather than an evidenced trial, public review-state fields are incomplete, and the ChromeStatus authoritative status lagged reality. No failures or harms are evidenced either; the mixed rating reflects thin, partly stale outcome evidence rather than product problems.",
+      "evidenceIds": [
+        "rn141",
+        "ent-rn",
+        "spec",
+        "policy-default",
+        "policy-allowed",
+        "intent-ship",
+        "cs"
+      ],
+      "limitations": "Overall is constrained by the managed-only scope that makes most outcome dimensions publicly unobservable."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs",
+      "url": "https://chromestatus.com/feature/4843520522977280",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record, owner pchodur@google.com, Blink>Managed, stages (proto/devtrial/ship), desktop_first 140 devtrial / 141 ship, enterprise notice M139, finch DeviceAttributesPermissionPolicy, FF/Safari/Web-dev No signal, security/privacy Pending, is_released false/status Proposed as of cache"
+      ],
+      "limitations": "Cached snapshot at evidence/chromestatus/features/4843520522977280.json (accurate_as_of 2026-01-13). Top-level status ('Proposed') and is_released (false) are stale relative to actual Chrome 141 shipment."
+    },
+    {
+      "id": "cs-lite",
+      "url": "https://chromestatuslite.com/feature/4843520522977280",
+      "publisher": "Chrome Platform Status (chromestatuslite)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered ChromeStatus summary, motivation, standards/signals (FF/Safari No signal, Web devs No signals), explainer link"
+      ],
+      "limitations": "Lite view omits stage/review metadata present in the cached record."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/WICG/WebApiDevice/blob/main/DeviceAttributesPermissionsPolicyExplainer.md",
+      "publisher": "WICG / GitHub",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer proposing device-attributes as policy-controlled + powerful feature, Permissions-Policy header/manifest usage, admin-gated model, ChromeOS-only intent"
+      ],
+      "limitations": "Same URL is used as both explainer and spec_link in ChromeStatus; no standalone normative spec at prototype stage."
+    },
+    {
+      "id": "spec",
+      "url": "https://wicg.github.io/WebApiDevice/device_attributes",
+      "publisher": "WICG (Bikeshed spec)",
+      "publishedOrObservedAt": "2025-08-13",
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Published spec defines 'device-attributes' powerful feature (2.3) and policy-controlled feature (2.4), NavigatorManagedData interface, security/privacy considerations, managed-only non-goal for unmanaged exposure"
+      ],
+      "limitations": "publishedTime 2025-08-13 from page metadata; reflects PR WICG/WebApiDevice#27 content but the PR itself was not directly retrievable."
+    },
+    {
+      "id": "intent-proto",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/XimUtR87WAQ",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype; original prototype design 'in Isolated Web Apps, the requirement for admin policy is removed'; spec None; no milestones at prototype stage"
+      ],
+      "limitations": "Exact post date not captured; referenced on/before 2025-06 (mozaic Monthly Platform 202506)."
+    },
+    {
+      "id": "intent-dt",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/O0sTtPbIJzY",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2025-08-08",
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Ready for Developer Testing (Chrome 140); spec-mentor (Reilly Grant) pushed back on template None answers; owner corrected TAG-not-applicable rationale, interop risk, WebView risk, debuggability; flag name None"
+      ],
+      "limitations": "No cohort, feedback instrument, or findings attached to the dev trial."
+    },
+    {
+      "id": "intent-ship",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/BkBh748H-rE",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship; rollout 'Will ship enabled for all users'; availability ChromeOS-only; adoption expectation (VDI clients, 12 months); adoption plan (Admin Console kiosk setting -> Content Settings; IWA support); non-OSS admin-policy dependency; anticipated spec change PR #27; milestones 140 devtrial / 141 ship"
+      ],
+      "limitations": "Exact post date not captured; dated between 2025-08-08 and 2025-09-30."
+    },
+    {
+      "id": "rn141",
+      "url": "https://developer.chrome.com/release-notes/141",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2025-09-30",
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 141 stable release date 2025-09-30; feature listed under 'Managed ChromeOS only' -> 'Permissions Policy for Device Attributes API' with the two new policies"
+      ],
+      "limitations": "Release-notes summary; does not include adoption or usage data."
+    },
+    {
+      "id": "ent-rn",
+      "url": "https://support.google.com/chrome/a/answer/10314655",
+      "publisher": "Chrome Enterprise and Education (Support)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Enterprise release notes include a 'Permissions policy for Device Attributes API' entry directing users to file a Chromium bug"
+      ],
+      "limitations": "Confirmed via search snippet; full page (heavy nav chrome) not parsed in detail."
+    },
+    {
+      "id": "impl137",
+      "url": "https://www.gitclear.com/open_repos/chromium/chromium/release/137.0.7115.0",
+      "publisher": "GitClear (Chromium release mirror)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chromium 137.0.7115.0 release includes 'Add device-attributes Permissions Policy'"
+      ],
+      "limitations": "Third-party mirror of Chromium release notes; no commit hash or CL captured."
+    },
+    {
+      "id": "policy-default",
+      "url": "https://chromeenterprise.google/intl/en_ca/policies/default-device-attributes-setting/",
+      "publisher": "Chrome Enterprise",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "DefaultDeviceAttributesSetting policy: controls whether force-installed IWAs/kiosk apps access the API by default (1/unset allow, 2 block); references wicg.github.io spec"
+      ],
+      "limitations": "Live policy doc; no version-introduction date shown on page."
+    },
+    {
+      "id": "policy-allowed",
+      "url": "https://chromeenterprise.google/intl/en_us/policies/device-attributes-allowed-for-origins/",
+      "publisher": "Chrome Enterprise",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "DeviceAttributesAllowedForOrigins policy; IWAs via IsolatedWebAppInstallForceList (since v125) or kiosk; force-installed PWAs via WebAppInstallForceList only before v140 — evidencing the PWA->IWA migration shift"
+      ],
+      "limitations": "Live policy doc; per-version annotations taken from page description."
+    },
+    {
+      "id": "orig-intent",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/y4rzN_7RWA4",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2023-07-04",
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Original 'Read Chrome device attributes' shipped Chrome 117; TAG design-reviews#606 (declined to endorse, pervasive-monitoring concern); Mozilla standards-positions#815 neutral; WebKit standards-positions#198 mixed; WICG/proposals#14 positive (ChromeApps->PWA migration); 3 LGTMs (Harrelson, Bratell, Weiss)"
+      ],
+      "limitations": "Background context for the underlying API; not specific to the 2025 permissions-policy change."
+    },
+    {
+      "id": "iwa",
+      "url": "https://chromeos.dev/en/web/isolated-web-apps",
+      "publisher": "ChromeOS.dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "IWA high-trust model context; permissions_policy manifest field mechanism; admin force-install via Admin console — the deployment target for this feature"
+      ],
+      "limitations": "General IWA documentation, not feature-specific."
+    }
+  ],
+  "successes": [
+    "On-schedule shipment (Chrome 140 dev trial -> Chrome 141 stable, 2025-09-30) with accurate, well-scoped communication across developer and enterprise channels and a dedicated 'Managed ChromeOS only' release-notes heading.",
+    "Constructive design iteration from the prototype ('remove admin-policy requirement for IWAs') to the shipped model ('enabled by default for supported scenarios, admin-gated via content settings and three policies'), which preserved administrator control.",
+    "Strong spec-mentor review hygiene: the dev-trial intent's template gaps were caught and corrected before ship, improving TAG rationale, interop/WebView risk, and debuggability fields.",
+    "A coherent enterprise-policy story: DeviceAttributesAllowedForOrigins, DeviceAttributesBlockedForOrigins, and DefaultDeviceAttributesSetting are published and consistent with the explainer and published spec."
+  ],
+  "failures": [
+    "The authoritative ChromeStatus status/is_released fields were stale/inaccurate for 3.5+ months after shipment: 'Proposed' and is_released=false in the 2026-01-13 cache versus a 2025-09-30 ship in release notes.",
+    "The developer-trials phase carried no devtrial instructions, no chrome://flags flag name, no cohort, no feedback instrument, and no published findings — a milestone marker rather than an evidenced trial.",
+    "No attributable adoption or support evidence ~9.5 months post-ship; the headline VDI-client-within-12-months adoption claim remains unverified.",
+    "Public review-state incompleteness: security_review_status and privacy_review_status read 'Pending' with no documented resolution for this change, and there is no WPT coverage or public launch/tracking bug."
+  ],
+  "counterfactuals": [
+    "If the team had published devtrial instructions plus a sample force-installed IWA exercising navigator.managed during the Chrome 140 dev trial, they could have gathered attributable developer feedback instead of shipping to an audience with 'no known IWAs using the API.'",
+    "If ChromeStatus status/is_released had been updated at shipment, the authoritative record would have matched the release notes, avoiding the single-source-of-truth defect observed in the cached snapshot.",
+    "If the prototype-to-ship design shift (admin-policy removal -> admin-gated enable-by-default) had been captured in a public decision log, the rationale for preserving admin control would be auditable rather than reconstructable from two intents.",
+    "For a managed-only feature, recording even one confirmed enterprise/ISV validation (e.g., a VDI client committing to migrate) before ship would have converted the 12-month adoption expectation into testable evidence."
+  ],
+  "skillImprovements": [
+    "Add a phase rule for incremental changes: require an explicit 'prior-feature evidence inheritance' note stating which prior reviews/positions carry over and which must be re-run, so 'TAG not applicable' and 'security/privacy Pending' are interpreted consistently rather than as gaps.",
+    "Add a retrospective cross-check: when ChromeStatus top-level status/is_released contradicts release-notes or enterprise-policy-doc shipment evidence, treat the release notes + policy docs as corroborating shipment signals and flag the ChromeStatus field as stale.",
+    "Add guidance for managed/enterprise-scoped features defining what defensible adoption/support evidence looks like (enterprise release-note adoption callouts, ISV case studies, policy usage) versus general-web adoption, so these dimensions are not defaulted to 'unknown' without a bounded, source-family-appropriate search.",
+    "Add a developer-trials requirement: a dev trial with no flag name, no instructions, and no cohort/feedback plan must be flagged as a documentation gap even for managed-only features.",
+    "Add an evidence-family note: third-party Chromium release mirrors (e.g., GitClear) are acceptable implementation-landing evidence when ChromeStatus lacks tracking/launch bug links."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Public adoption/usage signals (case studies, framework/tool integration, VDI-client production use) — none found; managed-only deployments are private.",
+      "Public support/friction/issue data — none found; routed through private enterprise channels.",
+      "Final security and privacy review state for this incremental change — ChromeStatus shows 'Pending' with no resolution documented.",
+      "Direct retrieval of the cited spec change WICG/WebApiDevice#27 — two retrieval attempts failed; content inferred from the published spec which already reflects the change.",
+      "Exact post dates for the Intent to Prototype and Intent to Ship threads (reconstructed within milestone windows)."
+    ],
+    "reviewedAt": "2026-07-22T13:00:00Z"
+  }
+}

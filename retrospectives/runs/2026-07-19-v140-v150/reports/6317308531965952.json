@@ -1,0 +1,499 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6317308531965952,
+    "name": "Mirroring of RTL MathML operators",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6317308531965952",
+    "featureType": "Chromium catches up",
+    "blinkComponents": [
+      "Blink>MathML"
+    ],
+    "owners": [
+      "eri@igalia.com",
+      "fwang@igalia.com"
+    ],
+    "webFeature": "mathml",
+    "finchName": "MathMLOperatorRTLMirroring",
+    "specLink": "https://w3c.github.io/mathml-core/#layout-of-operators"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:In developer trial (Behind a flag):6317308531965952",
+      "milestone": 140,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "144:Enabled by default:6317308531965952",
+      "milestone": 144,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Mode and stage are clear: an additive Blink>MathML rendering-correctness feature ('Chromium catches up' to Firefox), owned by Igalia (eri@igalia.com / fwang@igalia.com), tracked under chromium bug 40120782. The problem is well-scoped: Arabic mathematical notation rendered with dir=\"rtl\" needs operators mirrored at both character level (Unicode Bidi_Mirrored) and glyph level (OpenType rtlm), because naive reflection of asymmetrical glyphs such as the clockwise contour integral changes their meaning. The work is situated inside Igalia's Sovereign Tech Fund / Interop 2025 MathML commission, which explains the cross-engine coordination rather than organic Chrome prioritization.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S15",
+        "S19"
+      ],
+      "limitations": "No validated developer demand: 'Web developers: No signals' at every stage. The problem is framed from a standards/implementation-correctness standpoint, not from attributable author/partner demand."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Use cases are narrow but legitimate and the design space was constrained by prior art: Firefox already had a working implementation (shape the character in RTL mode and extract the glyph), WebKit had character-level mirroring but flipped glyphs as a fallback. The MathML Core spec gap (no defined mirroring for largeop/stretchy operators and the radical symbol) was tracked in w3c/mathml-core issue #67; Frédéric Wang (a MathML Core spec co-editor) wrote a visual explainer proposing a minimal spec amendment to the 'layout of operators' steps.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S6",
+        "S15"
+      ],
+      "limitations": "Incubation was almost entirely implementer/spec-editor driven (Igalia + W3C Math WG); no attributable partner, customer, or framework-author co-design evidence exists."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implementation leveraged existing primitives: HarfBuzz (the shaping library used by Chromium and Firefox) already supported the rtlm feature, and Chromium already did RTL layout and character-level mirroring for text. Two new web-platform-tests were added (character-level and glyph-level mirroring), and the implementer's explainer provides visual failure/success/fix comparisons.",
+      "evidenceIds": [
+        "S3",
+        "S12",
+        "S13",
+        "S15"
+      ],
+      "limitations": "Prototype validation is essentially WPT + the implementer's own visual explainer; no external friction log or framework/server integration spike was published."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "DevTrial on desktop and Android shipped in M140, announced 2025-10-14 ('Ready for Developer Testing'). There was one substantive exchange: Chromium contributor PhistucK asked how mirroring is decided, requested demos, and questioned dir=\"rtl\" inheritance/Hebrew behavior; Frédéric Wang answered in detail (UA sheet forces direction:ltr on <math>, so explicit dir=\"rtl\" is required; Hebrew math stays LTR), with failure/success screenshots. However, the 'Goals for experimentation' field was empty, there was no recruited cohort, no feedback instrument, and 'Web developers: No signals'.",
+      "evidenceIds": [
+        "S1",
+        "S8"
+      ],
+      "limitations": "No structured developer cohort, methodology, task-completion, or attributable external trial evidence. Participation was a single Chromium-internal question. For a niche, additive, fully-WPT-tested correctness feature this is defensible, but the developer-trials transition packet (cohort, friction, attributable signals) was effectively not exercised."
+    },
+    "wideReview": {
+      "status": "mixed",
+      "finding": "Standards/interop review was strong: the spec amendment (PR #277) was reviewed and merged into the MathML Core editor's draft by fred-wang, and Mozilla/Apple/Google reviewers are acknowledged. Gecko was already 'Shipped/Shipping' and WebKit 'In development' (rtlm for the HarfBuzz ports). TAG review was marked 'Not applicable' (small normative amendment). However, the Chrome-internal formal review bits were not requested: on 2025-11-04 API owner Mike Taylor had to ask the team to 'request reviews for the Privacy, Security, Enterprise, Debuggability, and Testing bits' in the chromestatus entry, and the cached record (accurate_as_of 2026-01-05, eight days before ship) still showed security_review_status and privacy_review_status as 'Pending'.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S9",
+        "S15"
+      ],
+      "limitations": "The standards/interoperability review is well evidenced; the Chrome security/privacy/enterprise/debuggability/testing review resolution approaching ship is NOT verifiable from accessible sources (chromestatus still 'Pending' on 2026-01-05; the Chromium tracking bug requires sign-in)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run; the feature went flag (M140 dev trial) straight to enabled-by-default ship (M144). This is defensible for an additive, fully-WPT-tested rendering-correctness change that matches an already-shipped Firefox implementation and carries no new permissions, network, or storage surface; there was no field uncertainty an OT would have resolved. The experiment phase is recorded as not-relevant rather than untested.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S9"
+      ],
+      "limitations": "The skip was a de-facto absence (the 'Goals for experimentation' field was blank) rather than an explicitly documented decision."
+    },
+    "prepareToShip": {
+      "status": "mixed",
+      "finding": "Intent to Ship posted 2025-10-31; rollout plan 'ship enabled for all users' across all six Blink platforms (desktop/Android/WebView/iOS = 144), Finch name MathMLOperatorRTLMirroring. Three API-owner LGTMs were given on 2025-11-05 (Chris Harrelson/Blink TL, Yoav Weiss, Philip Jägenstedt). MDN was updated. But the ship thread left Interoperability & Compatibility, WebView application risks, and Debuggability as 'No information provided', and the formal review bits remained incomplete/pending (see wideReview).",
+      "evidenceIds": [
+        "S1",
+        "S9",
+        "S14"
+      ],
+      "limitations": "The evidence/claim ledger at ship was thin in several mandatory fields, and the review-bits gap means prepare-to-ship cannot be rated clean."
+    },
+    "release": {
+      "status": "success",
+      "finding": "Shipped enabled-by-default in Chrome 144 stable on 2026-01-13 (desktop/Android/iOS/WebView), explicitly listed in the Chrome 144 developer release notes ('Mirroring of RTL MathML operators'). Firefox enabled it by default in Firefox 146 on 2025-12-09. MDN's MathML dir attribute page documents the mirroring/stretching behavior and the XITS-font requirement. No stepped rollout, no incidents or regressions surfaced in available sources.",
+      "evidenceIds": [
+        "S11",
+        "S14",
+        "S17",
+        "S18"
+      ],
+      "limitations": "No dedicated DevRel launch artifact (article/video) was found for this specific feature beyond the explainer, MDN update, and the conflores blog; devrel_emails is the generic devrel-chromestatus-all alias."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption evidence exists. The feature ships enabled-by-default but only activates when an author sets dir=\"rtl\" on math AND uses a math font carrying the rtlm feature (e.g. XITS); webdx_usecounter_enum is null in the record (no dedicated use counter for this sub-behavior), 'Web developers: No signals' throughout, and no partner/case-study evidence. General MathML momentum exists (Wikipedia transitioning to native MathML) but is not specific to RTL mirroring. Adoption cannot be scored from absence of signals.",
+      "evidenceIds": [
+        "S1",
+        "S9",
+        "S15"
+      ],
+      "limitations": "No usage data, no attributable production deployment, no partner evidence. 'Enabled by default' must not be read as adoption given the narrow activation surface."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support/friction, regression, or known-issue evidence was located in available sources. The Chromium tracking bug (40120782) is sign-in-gated and its post-ship state could not be inspected; Mozilla Bugzilla bugs (945183, 1994172) repeatedly timed out for the reader (their outcomes are corroborated by release notes). The feature is additive and low-risk, but support burden is genuinely unevidenced.",
+      "evidenceIds": [],
+      "limitations": "No support-forum, crbug, or telemetry evidence retrieved; cannot assess."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new additive rendering capability that corrects mirroring for RTL math operators; no existing API, behavior, or compatibility path is being deprecated or removed (breaking_change=false, enterprise_impact minimal).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None; the phase does not apply and this is not used to mean untested."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is legitimate and the fix is correct and standards-aligned: incorrect mirroring of asymmetrical glyphs changes mathematical meaning. But value is narrow and unevidenced as demand: it is a correctness/interoperability improvement whose primary beneficiaries are the small population of Arabic-math authors and overall web-platform interop health, not validated by developer pull. 'No signals' is consistent at every stage.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S15"
+      ],
+      "limitations": "No demand measurement; value is inferred from problem legitimacy and interop benefit, not from attributable developer evidence."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Real but conditional benefit: correct Arabic mathematical notation in RTL, and avoidance of meaning-inverting errors (clockwise contour integral becoming counterclockwise). However the benefit only manifests when authors opt into dir=\"rtl\" and ship a rtlm-capable math font, and default Android lacks a bundled math font, so many users still see poor general math rendering.",
+      "evidenceIds": [
+        "S3",
+        "S15"
+      ],
+      "limitations": "No measured user-impact data; benefit is conditional on author opt-in and font availability."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption evidence: no use counter, no partner/case-study, 'Web developers: No signals', and activation requires dir=\"rtl\" + a rtlm font. Scored unscored, not success-from-shipment.",
+      "evidenceIds": [
+        "S1",
+        "S9"
+      ],
+      "limitations": "Absence of signals is not evidence of success or failure."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "The standout dimension and the clear motivation for the launch. Chrome 144 (2026-01-13) and Firefox 146 (2025-12-09) both ship the behavior; WebKit has character-level mirroring and glyph-level (rtlm) is in progress (WebKit bug 130840, HarfBuzz ports). The MathML Core spec was amended via PR #277 (merged 2025-07-18) to add a directionality-aware 'get a glyph' algorithm; two WPT tests were added; HarfBuzz already supported rtlm. This is a genuinely cross-engine, Sovereign-Tech-Fund/Interop-2025-coordinated outcome rather than a Chrome-only ship, consistent with feature_type 'Chromium catches up'.",
+      "evidenceIds": [
+        "S5",
+        "S11",
+        "S15",
+        "S16",
+        "S17"
+      ],
+      "limitations": "WebKit glyph-level mirroring was still in progress at the evidence cutoff, so full three-engine parity (and thus Baseline-wide availability) is not yet achieved. The wpt.fyi cross-engine pass/fail matrix could not be retrieved directly (JS-rendered dashboard)."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "WPT-covered (the record states 'fully tested by web-platform-tests'); leverages existing HarfBuzz rtlm support and Chromium's existing RTL layout; the amended 'get a glyph' algorithm defines explicit fallback/failure cases; all six Blink platforms targeted. Real-world quality depends on a math font with rtlm (XITS) which is not universally available, so without an author-supplied font the mirrored rendering may not appear.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5",
+        "S12",
+        "S13",
+        "S15"
+      ],
+      "limitations": "No independent conformance/friction log retrieved; font-availability dependency is an unmeasured quality caveat."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "High-quality implementer-driven artifacts where they exist: a visual explainer with failure/success comparisons, an updated MDN dir page (2025-12-02), a detailed conflores interop blog with a cross-engine status matrix (2025-11-27), and a substantive dev-trial Q&A. Offset by a thin Intent-to-Ship evidence ledger ('No information provided' for Interop/Compatibility, WebView risks, Debuggability) and the unrequested/incomplete formal review bits at ship.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S9",
+        "S14",
+        "S15"
+      ],
+      "limitations": "No dedicated DevRel launch content; review-process evidence is incomplete."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support/friction or regression evidence located; primary tracking bugs inaccessible to automated retrieval. Cannot be scored.",
+      "evidenceIds": [],
+      "limitations": "Support dimension unevidenced; not inferable from low-risk profile."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A strong interoperability success (Chrome+Firefox shipped near-simultaneously against an amended spec with WPT coverage, part of funded Interop 2025 work) implementing a correct, well-scoped fix to a real (if narrow) RTL-math correctness problem, with good implementer-driven communication. Offset by: no validated developer demand, no adoption/usage evidence, incomplete Chrome formal review process at ship (privacy/security/enterprise/debuggability/testing bits not requested and pending approaching ship), a thin ship evidence ledger, and conditional/narrow end-user activation. The mixed dimensions (demand, adoption, review process, support) are not hidden by the interop success.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S9",
+        "S11",
+        "S15",
+        "S17"
+      ],
+      "limitations": "Overall reflects the weighted mix above; adoption and support remain genuinely unevidenced."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/chromestatus/features/6317308531965952.json",
+      "publisher": "Chrome Platform Status (cached record)",
+      "publishedOrObservedAt": "2026-01-05",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, stages, milestones (dev trial 140, ship 144 all platforms), finch name, spec link, FF/Safari/WebDev signals, security/privacy review status Pending, accurate_as_of 2026-01-05"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-01-05; status was 'Proposed' and is_released=false at that time, 8 days before the actual 2026-01-13 ship."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/6317308531965952",
+      "publisher": "Chrome Platform Status (chromestatuslite)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered feature view: summary, motivation, FF Shipped/Shipping, Safari In development, Web developers No signals, spec and sample links"
+      ],
+      "limitations": "Live view; mirrors the cached record."
+    },
+    {
+      "id": "S3",
+      "url": "https://people.igalia.com/fwang/mathml-operator-mirroring-explainer.html",
+      "publisher": "Igalia (Frédéric Wang)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Explainer: character-level (Unicode Bidi_Mirrored) vs glyph-level (rtlm) mirroring, MathML operator stretching/largeop cases, clockwise contour integral meaning-preservation rationale, references w3c/mathml-core issue #67 and PR #277"
+      ],
+      "limitations": "Author is a feature owner and MathML Core spec co-editor; no publication date on page."
+    },
+    {
+      "id": "S4",
+      "url": "https://w3c.github.io/mathml-core/#layout-of-operators",
+      "publisher": "W3C (Math Working Group)",
+      "publishedOrObservedAt": "2026-07-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "MathML Core Editor's Draft 03 July 2026, layout of operators section; editors David Carlisle and Frédéric Wang (Igalia)"
+      ],
+      "limitations": "Editor's Draft, not a stable Recommendation; large document, layout-of-operators detail read in part."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3c/mathml-core/pull/277",
+      "publisher": "W3C / GitHub (w3c/mathml-core)",
+      "publishedOrObservedAt": "2025-07-18",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "PR #277 'Add support for character-level and glyph-level mirroring of RTL operators' authored by icesfont, merged by fred-wang on 2025-07-18; amends 'get a glyph' algorithm to take directionality dir and prefer rtlm variant then Bidi_Mirrored codepoint; also amends radical glyph"
+      ],
+      "limitations": "PR metadata and diff retrieved; review conversation (28 comments) not fully extracted."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/w3c/mathml-core/issues/67",
+      "publisher": "W3C / GitHub (w3c/mathml-core)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Issue #67 '\"rtlm\" OpenType feature for RTL mirroring' tracks the spec gap that PR #277 closes; need for glyph-level (rtlm) and character-level (Unicode) mirroring to obtain the glyph 'corresponding to c'"
+      ],
+      "limitations": "Full page repeatedly timed out for the reader; content taken from search snippet only."
+    },
+    {
+      "id": "S7",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/iU0jQWJZCEM",
+      "publisher": "Chromium blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-07-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: Blink>MathML, TAG Not applicable, Gecko 'No signal' (working impl), WebKit 'No signal' (char-level only, flips for glyph), Web developers No signals, fully WPT-tested, tracking bug 40120782"
+      ],
+      "limitations": "Exact thread date inferred from ChromeStatus created date and msgid; positions later evolved (see S8/S9)."
+    },
+    {
+      "id": "S8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/IpmWeJSPR0g",
+      "publisher": "Chromium blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-10-14",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Ready for Developer Testing 2025-10-14: DevTrial desktop+Android M140, Finch MathMLOperatorRTLMirroring, Gecko Shipped/Shipping, WebKit In development, Q&A from PhistucK answered by Frédéric Wang (dir=rtl required, Hebrew stays LTR, failure/success screenshots)"
+      ],
+      "limitations": "Goals-for-experimentation field blank; no external cohort/feedback."
+    },
+    {
+      "id": "S9",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/HA83RzJZKdE",
+      "publisher": "Chromium blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-10-31",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship 2025-10-31: ship 144 all platforms, dev trial 140, ship-enabled-for-all-users, Mike Taylor 2025-11-04 request for Privacy/Security/Enterprise/Debuggability/Testing review bits, LGTMs 2025-11-05 (Chris Harrelson, Yoav Weiss, Philip Jägenstedt), several fields 'No information provided'"
+      ],
+      "limitations": "Some reply bodies (e.g. Chris Harrelson) not fully extracted; LGTM intent inferred from visible LGTM2/LGTM3 markers."
+    },
+    {
+      "id": "S10",
+      "url": "https://groups.google.com/a/mozilla.org/g/dev-platform/c/xAISbH3xg1g",
+      "publisher": "Mozilla dev-platform (Google Groups)",
+      "publishedOrObservedAt": "2025-10-14",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Mozilla Intent to ship 2025-10-14: enable mathml.rtl_operator_mirroring.enabled by default, bugs 945183 and 1994172, WPT test paths, notes Blink shipped in 140 under flag and planning intent to ship, WebKit work in progress"
+      ],
+      "limitations": "Firefox enablement milestone (146) corroborated via S11."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/146",
+      "publisher": "MDN / Mozilla",
+      "publishedOrObservedAt": "2025-12-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Firefox 146 (released 2025-12-09) release notes: 'MathML Operator mirroring in right-to-left (RTL) modes and stretching now work properly when used in combination' (bug 1994172)"
+      ],
+      "limitations": "Page content confirmed via search snippet; full page not separately fetched."
+    },
+    {
+      "id": "S12",
+      "url": "https://raw.githubusercontent.com/web-platform-tests/wpt/master/mathml/presentation-markup/operators/character-level-mirroring.html",
+      "publisher": "web-platform-tests (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT test exists; assert 'Operators should be mirrored when using RTL text direction'"
+      ],
+      "limitations": "Test source retrieved; wpt.fyi pass/fail per-engine matrix not retrieved."
+    },
+    {
+      "id": "S13",
+      "url": "https://raw.githubusercontent.com/web-platform-tests/wpt/master/mathml/presentation-markup/radicals/glyph-level-mirroring.html",
+      "publisher": "web-platform-tests (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT test exists; assert 'Radicals should be mirrored when using RTL text direction'; references spec radicals section"
+      ],
+      "limitations": "Test source retrieved; wpt.fyi pass/fail per-engine matrix not retrieved."
+    },
+    {
+      "id": "S14",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/MathML/Reference/Global_attributes/dir",
+      "publisher": "MDN",
+      "publishedOrObservedAt": "2025-12-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN MathML dir attribute page documents character-level (Bidi_Mirrored) and glyph-level (rtlm) mirroring/stretching, Chrome 144 / Edge 144 support, XITS font requirement; last modified 2025-12-02"
+      ],
+      "limitations": "Browser-compatibility table detail partially from search snippet."
+    },
+    {
+      "id": "S15",
+      "url": "https://conflor.es/blog/2025-11-27-interop-and-mathml/",
+      "publisher": "conflores (Igalia web platform team)",
+      "publishedOrObservedAt": "2025-11-27",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Cross-engine interop writeup: no engine had glyph-level mirroring so all implemented it; HarfBuzz already supported rtlm; Chromium+Firefox stable, WebKit in progress; status matrix (Chromium/Firefox glyph-level new, Firefox char-level fixed from reflection to BiDi pair, WebKit glyph-level in progress); Sovereign Tech Fund / Interop context; Wikipedia moving to native MathML; thanks Mozilla/Apple/Google reviewers and W3C Math WG"
+      ],
+      "limitations": "Author 'eri'/conflores is the feature owner (eri@igalia.com / icesfont); implementer-authored, not fully independent."
+    },
+    {
+      "id": "S16",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=130840",
+      "publisher": "WebKit Bugzilla (Apple)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit tracking bug 'Add Support for Glyph-level mirroring': need rtlm substitution for MathML operators without character-level mirroring; references Blink/Gecko+XITS behavior"
+      ],
+      "limitations": "Bug summary/description retrieved; comment history, resolution status, and current state not retrieved."
+    },
+    {
+      "id": "S17",
+      "url": "https://developer.chrome.com/release-notes/144",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 144 developer release notes list 'Mirroring of RTL MathML operators' as shipped; Chrome 144 stable date 2026-01-13"
+      ],
+      "limitations": "Page detail confirmed via search snippet."
+    },
+    {
+      "id": "S18",
+      "url": "https://chromereleases.googleblog.com/2026/01/stable-channel-update-for-desktop_13.html",
+      "publisher": "Chrome Releases blog (Google)",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 144 promoted to stable channel for Windows/Mac/Linux on 2026-01-13"
+      ],
+      "limitations": "Feature-level detail not in the generic stable-update post; confirms the milestone ship date."
+    },
+    {
+      "id": "S19",
+      "url": "https://www.igalia.com/2025/07/14/Igalia,-Interop-and-the-Sovereign-Tech-Fund.html",
+      "publisher": "Igalia",
+      "publishedOrObservedAt": "2025-07-14",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Igalia commissioned by Sovereign Tech Fund for Interop 2025 implementation/interoperability work including MathML"
+      ],
+      "limitations": "Summary via search snippet; positions the launch within a funded cross-engine program."
+    }
+  ],
+  "successes": [
+    "Genuine cross-engine interoperability, not a Chrome-only ship: Chrome 144 (2026-01-13) and Firefox 146 (2025-12-09) shipped near-simultaneously, the MathML Core spec was amended (PR #277, merged 2025-07-18), two WPT tests were added, and WebKit is in progress — a textbook interop outcome for a 'Chromium catches up' feature.",
+    "Correct, well-scoped fix to a real correctness bug: naive reflection of asymmetrical glyphs (e.g. clockwise contour integral) would invert mathematical meaning; the directionality-aware 'get a glyph' algorithm with explicit rtlm-then-Bidi_Mirrored-then-fallback ordering resolves it precisely.",
+    "Minimal new surface by reusing existing primitives: HarfBuzz rtlm support, Unicode Bidi_Mirrored, and Chromium's existing MathML RTL layout, lowering risk and implementation cost.",
+    "Strong implementer-driven communication artifacts: a visual explainer with failure/success comparisons, an updated MDN dir page, a detailed conflores interop blog with a cross-engine status matrix, and a substantive dev-trial Q&A.",
+    "Funded, spec-editor-led coordination (Sovereign Tech Fund / Interop 2025; Frédéric Wang is a MathML Core co-editor) produced alignment across Mozilla, Apple, and Google reviewers and the W3C Math Working Group."
+  ],
+  "failures": [
+    "Chrome formal review-process gap: the Privacy, Security, Enterprise, Debuggability, and Testing review bits were never requested in the chromestatus entry at Intent to Ship; API owner Mike Taylor had to prompt for them on 2025-11-04, and the cached record (accurate_as_of 2026-01-05) still showed security_review_status and privacy_review_status 'Pending' eight days before the 2026-01-13 ship.",
+    "Thin Intent-to-Ship evidence ledger: Interoperability & Compatibility, WebView application risks, and Debuggability were all left as 'No information provided' in the ship thread.",
+    "No validated developer demand or adoption measurement: 'Web developers: No signals' at prototype, dev-trial, and ship; no dedicated use counter (webdx_usecounter_enum null), no partner evidence, no case study.",
+    "Developer-trials transition packet (cohort, methodology, task completion, attributable external signals) was effectively not exercised; participation reduced to a single Chromium-internal question."
+  ],
+  "counterfactuals": [
+    "Absent Sovereign Tech Fund / Interop 2025 funding and a MathML Core spec co-editor (Frédéric Wang) inside Igalia driving it, this feature likely would not have shipped with the same cross-engine coordination; the interop outcome is heavily attributable to funded, spec-editor-led work rather than organic Chrome prioritization or demonstrated developer demand.",
+    "If the review bits had been requested at Intent to Ship, the security/privacy 'Pending' status approaching ship could have been avoided — a process gap independent of the feature's technical merit.",
+    "If WebKit had shipped glyph-level mirroring concurrently, full three-engine parity (and Baseline-wide availability) would already hold; as of the cutoff WebKit remains the laggard, so the interop story is materially incomplete.",
+    "If a structured developer cohort or OT had been run, the persistent 'Web developers: No signals' might have been replaced with attributable Arabic-math author feedback — though for an additive, WPT-covered, Firefox-matching correctness fix it probably would not have changed the ship decision.",
+    "Had adoption been instrumented against the true activation surface (dir=rtl math + rtlm-capable font), 'No signals' could have been interpreted correctly instead of being ambiguous between no-demand and no-measurement."
+  ],
+  "skillImprovements": [
+    "Add a prepareToShip / launch-retrospective checkpoint that fails the phase to 'partial' when Privacy/Security/Enterprise/Debuggability/Testing review bits are not 'Requested' or not 'Completed' at Intent to Ship and remain pending within N weeks of the target ship date; require an explicit owner and resolution date before counting the phase complete. Directly targets the Mike-Taylor-had-to-ask pattern observed here.",
+    "Add a rule for 'Chromium catches up' + fully-WPT-tested + additive rendering features: require an explicitly documented 'why no Origin Trial' rationale (or a recorded not-relevant decision) instead of leaving 'Goals for experimentation' blank, so the experiment-phase skip is a decision, not an absence.",
+    "Add an evidence-source handling rule for retrospective jobs: treat Mozilla Bugzilla and Chromium Buganizer (issues.chromium.org) as frequently inaccessible to automated readers (sign-in walls, timeouts); require the job to record the attempted URL plus the failure mode and fall back to corroborating evidence (release notes, intent threads) rather than blocking or inventing.",
+    "Add an adoption-evidence expectation for enabled-by-default sub-behaviors: even when there is no separate use counter, capture the activation conditions (here: dir=rtl + rtlm-capable math font) and the nearest usage proxy, and require the retrospective to interpret 'No signals' against that true activation surface rather than treating absence as neutral.",
+    "Add a counterfactual-coverage rule: record funding/initiative context (e.g. Sovereign Tech Fund / Interop 2025) and spec-editor involvement as material explanatory variables for cross-engine interop outcomes, so retrospectives distinguish funded coordinated work from organic single-engine launches and do not over-credit the shipping engine.",
+    "Add a launch-evidence-ledger lint: flag Intent-to-Ship threads where mandatory fields (Interoperability/Compatibility, WebView application risks, Debuggability) are 'No information provided', so the prepareToShip packet is completed before LGTM."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chromium tracking bug 40120782 current state, regressions, and post-ship fixes: sign-in-gated (issues.chromium.org) and not retrievable by the reader.",
+      "Mozilla Bugzilla bugs 945183 and 1994172 full comment/resolution history: repeatedly timed out; outcomes corroborated only via Firefox 146 release notes (S11) and intent threads.",
+      "wpt.fyi cross-engine pass/fail matrix for the two mirroring tests: dashboard is JavaScript-rendered and returned no usable content; per-engine conformance not directly verified.",
+      "w3c/mathml-core issue #67 full text and resolution: page timed out; only a search snippet was captured.",
+      "Post-ship adoption/usage evidence: no use counter, no partner/case-study, no attributable production-deployment evidence found; adoption dimension scored unscored.",
+      "Post-ship support/friction evidence: no public support-forum, crbug, or telemetry evidence located; support dimension scored unscored.",
+      "Exact resolution date of the Chrome security/privacy/enterprise/debuggability/testing review bits relative to the 2026-01-13 ship: not verifiable from accessible sources (cached record still 'Pending' on 2026-01-05)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

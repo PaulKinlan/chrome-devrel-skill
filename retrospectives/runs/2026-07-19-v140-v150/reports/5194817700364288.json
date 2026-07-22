@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5194817700364288,
+    "name": "Optional browser optimization for Service Workers (ServiceWorkerAutoPreload)",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5194817700364288",
+    "flagName": "service-worker-auto-preload",
+    "finchName": "ServiceWorkerAutoPreload",
+    "blinkComponents": [
+      "Blink>ServiceWorker"
+    ],
+    "ownerEmails": [
+      "sisidovski@chromium.org"
+    ],
+    "specMentors": [
+      "domenic@chromium.org"
+    ],
+    "creatorEmail": "sisidovski@chromium.org",
+    "category": "Service Worker",
+    "standardsMaturity": "Incubation (spec change is a draft PR, not merged)",
+    "trackingBug": "https://crbug.com/40278676"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5194817700364288",
+      "milestone": 140,
+      "category": "Enabled by default"
+    },
+    {
+      "eventId": "140:Stepped rollout:5194817700364288",
+      "milestone": 140,
+      "category": "Stepped rollout"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T15:15:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem was clearly articulated and quantified before incubation: ServiceWorker fetch handlers sit on the navigation critical path and bootstrapping an unstarted worker can cost up to hundreds of milliseconds. The WICG proposal (Jun 2024) and TPAC 2024 deck give concrete denominators: ServiceWorker is involved in ~15% of page loads; ~30% of SWs are not running at navigation (~50% for cross-origin); SW bootstrap cost on Android is 3ms p50 / 70ms p75 / 436ms p95 and on Windows 1ms p50 / 27ms p75 / 350ms p95; fetch-handler fallback rate is 46% (Android) / 13% (Windows). Browser intervention is plausibly the right layer because the cost is the browser's own bootstrap, not developer code. Proponent is the Chrome loading team (Shunya Shishido / sisidovski, Keita Suzuki), funded by Google, with Domenic as spec mentor.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s3-explainer",
+        "s4-proposal155",
+        "s11-tpac2024"
+      ],
+      "limitations": "Developer-demand evidence is generic ('We heard from developers and partners') with no attributable partner or survey; ChromeStatus records web-dev views as 'No signals'."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Use cases, alternatives, and a narrow intervention were documented before prototyping. The explainer explicitly evaluates and rejects BestEffortServiceWorker (race-based, produced inconsistent responses), Auto preload for subresources (OOM/memory risk), and positions the design relative to the existing Navigation Preload API (which requires code changes and has low adoption). The chosen design preserves fetch-handler result consistency by resolving the parallel network request through fetch(event.request) and falling back safely. Public incubation moved from WICG/proposals#155 into a dedicated WICG repo.",
+      "evidenceIds": [
+        "s3-explainer",
+        "s4-proposal155",
+        "s5-specpr"
+      ],
+      "limitations": "Stakeholder Feedback section is anecdotal; no published developer research, surveys, or co-design cohort. Adjacent platforms (native/mini-app) were not analyzed."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation exists behind the `service-worker-auto-preload` flag / `ServiceWorkerAutoPreload` Finch feature from at least M126 (dev-trial stage desktop/android_first=126). The explainer describes how the parallel request is consumed and discarded, redirect handling, and the eligibility heuristic (high fallback rate + SW not running). A DevTools-visibility plan is tracked in crbug 344912796. However, there are no WPT tests and the team states the feature is 'not testable on the WPT infrastructure' because it is heuristic-only with no API surface — a documented but real testability gap.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s3-explainer",
+        "s11-tpac2024"
+      ],
+      "limitations": "The tracking bug and DevTools bug require Buganizer sign-in and could not be read, so implementation/regression evidence and DevTools completion state are unverified."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A flag-based developer-trial stage exists (M126+) but ChromeStatus carries no devtrial instructions, sample links, cohort, or findings. Because the feature has no API surface, no formal developer trial with representative participants appears to have been run; the later Finch experiment on Stable substituted for developer-facing feedback. This is defensible given the design but means no developer-cohort friction evidence exists pre-ship.",
+      "evidenceIds": [
+        "s1-chromestatus"
+      ],
+      "limitations": "No public developer-trial kit, feedback themes, or participant denominator was found. Whether any developers trialled the flag is unknown."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Multi-implementer and TAG engagement was initiated but is incomplete at ship. Mozilla posted a Positive position (issue #1036, team DOM, assigned asutherland, closed). WebKit's standards-positions issue #359 remains OPEN with no official position label ('No signal'); an unofficial reviewer comment (per the cached record) said the approach 'seems inline with what WebKit is implementing' and approved the spec PR, but that is not an official WebKit position. The first TAG review (#963) was closed 'Resolution: too early'; a second TAG review (#1108) was opened Jun 2025 and the cached record shows tag_review_status still 'Pending'. Security review status and privacy review status are both 'Pending' in the cached record as of the evidence cutoff. The spec is a draft PR (incubation), not merged.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s6-mozilla1036",
+        "s7-webkit359",
+        "s8-tag963",
+        "s9-tag1108",
+        "s5-specpr"
+      ],
+      "limitations": "The actual reviewer-comment text on Mozilla/WebKit/TAG threads was not retrievable via the reader (GitHub renders comments client-side); positions are taken from issue labels and the cached ChromeStatus record. The Intent to Prototype/Ship Google Groups threads timed out and could not be read."
+    },
+    "experiment": {
+      "status": "supported",
+      "finding": "A justified field experiment was run. The Intent to Experiment deliberately used a 1%-Stable Finch rather than an Origin Trial because the feature is heuristic-only with no API/token surface. The experiment ran ~1 month on Stable starting at Chrome 131 with two arms: (1) ServiceWorkerAutoPreload with no criteria (upper bound), and (2) enabled only when the SW was not running at navigation. Both arms showed positive movement on multiple loading metrics on Android (e.g. LCP on SW-controlled pages); arm (2) achieved ~80% of arm (1)'s improvement. The TPAC 2024 deck independently corroborated Beta-channel LCP improvements. The known cost (extra observable server requests) and mitigation (eligibility heuristics) were stated up front.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s10-issue3",
+        "s11-tpac2024",
+        "s15-intentexperiment"
+      ],
+      "limitations": "Public experiment reporting is Android-only; desktop magnitudes were not published. Results are reported in relative terms ('multiple metrics', '~80%') rather than absolute effect sizes with confidence intervals; denominators, gating thresholds, and per-segment breakouts are not published."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship (stage 160) targeted desktop/android/webview M140. Safeguards converged: eligibility heuristics (high fallback rate + SW-not-running), stepped rollout, an explicit enterprise policy (ServiceWorkerAutoPreloadEnabled, first enterprise notification M139), and a documented opt-out via the Static Routing API. The spec change is written as an optional ('a user agent may...') optimization so other engines are not forced to implement it. However, formal TAG/security/privacy reviews were still Pending at ship and the spec PR was unmerged, so the ship packet rested on experiment evidence plusMozilla-positive/WebKit-informal signals rather than completed cross-functional review.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s3-explainer",
+        "s5-specpr",
+        "s12-policypage"
+      ],
+      "limitations": "Intent to Ship Google Groups thread unreadable (timed out); exact ship rationale and accepted-risk list could not be read from primary source."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Shipped enabled-by-default with stepped rollout at Chrome 140 (Early Stable 2025-08-27, Stable 2025-09-02), desktop/android/webview. The enterprise policy became available at M140 and is documented as a temporary measure to be removed at M154. Microsoft Edge (Chromium) documents the identical policy from Edge 140+. The feature is absent from the Chrome 140 developer release notes (developer.chrome.com/release-notes/140): the Service worker section lists SharedWorker controller inheritance and ServiceWorkerStaticRouterTimingInfo but omits ServiceWorkerAutoPreload, and no web.dev / New in Chrome article was found. Additionally the ChromeStatus `browsers.chrome.status` text renders 'In developer trial (Behind a flag)' at M140, inconsistent with the launch-event categories 'Enabled by default' + 'Stepped rollout' — a source-data inconsistency.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s2-chromestatuslite",
+        "s12-policypage",
+        "s13-edgepolicy",
+        "s14-m140releasenotes"
+      ],
+      "limitations": "No developer-facing announcement, FAQ, or opt-out guidance was located. The ChromeStatus status-display inconsistency could not be resolved from public data."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No defensible adoption evidence exists in public sources. The feature has no MDN page, no Caniuse entry, and no Baseline status (consistent with the spec being an unmerged draft PR). Because it is automatic and heuristic-gated with no API to integrate, framework/library integration is not applicable and there are no attributable case studies or production-deployment signals beyond Chrome's own experiment. Adoption cannot be inferred from shipment or from the absence of criticism.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s5-specpr"
+      ],
+      "limitations": "No usage counter, HTTP Archive, or partner evidence was found; none may exist for an auto/heuristic optimization, so this remains unknown rather than negative."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues, friction reports, or regression tickets specific to ServiceWorkerAutoPreload were found in search or in the readable sources. The duplicate-request risk is acknowledged in the design (eligibility heuristics + Static Routing API opt-out) rather than evidenced as resolved post-ship. DevTools debuggability is tracked in crbug 344912796 but its status could not be verified.",
+      "evidenceIds": [
+        "s3-explainer",
+        "s1-chromestatus"
+      ],
+      "limitations": "The tracking bug (crbug 40278676) and DevTools bug require Buganizer sign-in; no support telemetry or issue taxonomy is public. Absence of found reports is not evidence of no problems."
+    },
+    "deprecation": {
+      "status": "partial",
+      "finding": "The feature itself is not deprecated. The only deprecation event in scope is the enterprise policy: ChromeStatus carries a stage-1061 removal of ServiceWorkerAutoPreloadEnabled at M154, and the Chrome Enterprise policy page states it 'is a temporary measure to control the feature and will be removed in M154.' The removal is planned and communicated; post-removal impact/migration outcome is not yet evidenced.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s12-policypage"
+      ],
+      "limitations": "Whether M154 has shipped by the evidence cutoff and whether the removal proceeded without friction is unverified."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer problem is real and well-quantified (SW bootstrap latency on the navigation critical path), and the design genuinely removes the need for code changes that Navigation Preload required. But the value proposition is browser-internal and heuristic-gated: developers cannot observe or control the optimization directly (no API), opt-out requires adopting the Static Routing API, and web-develop demand was recorded as 'No signals' with no attributable partner evidence. Positive developer value is plausible but not independently evidenced.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s3-explainer",
+        "s11-tpac2024"
+      ],
+      "limitations": "No survey, interview, or partner evidence measuring developer-perceived value."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "End-user benefit is supported by the experiment: positive movement on LCP and other loading metrics on Android for SW-controlled pages, with the realistic heuristic (SW-not-running) capturing ~80% of the maximum-impact arm. Enterprise admins retain control via policy. However, publicly reported user-impact evidence is Android-only and reported in relative terms; desktop end-user impact, low-end-device behaviour, and absolute effect sizes are not published.",
+      "evidenceIds": [
+        "s10-issue3",
+        "s11-tpac2024",
+        "s12-policypage"
+      ],
+      "limitations": "No CrUX/Chrome UX Report confirmation, no desktop numbers, no accessibility/battery/bandwidth impact assessment in public sources."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption evidence (MDN/caniuse/Baseline absent; no case studies; no framework/tool integration applicable). Adoption is effectively unmeasurable for an auto/heuristic feature and is not inferred from shipment.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s5-specpr"
+      ],
+      "limitations": "No public usage metric exists or was found."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "The interop path is reasonable but not achieved. Mozilla is Positive; WebKit is unofficially supportive but has no official position (issue still open); the spec change is a draft PR written as an optional ('may') optimization, not merged; the second TAG review is still Pending; and formal security and privacy reviews are Pending at ship. Chromium-derived Edge ships parity (140+). The feature is not Baseline and is Chrome-only in practice today.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s6-mozilla1036",
+        "s7-webkit359",
+        "s8-tag963",
+        "s9-tag1108",
+        "s5-specpr",
+        "s13-edgepolicy"
+      ],
+      "limitations": "Reviewer-reasoning text on standards threads was not retrievable; positions taken from labels and cached record."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Implementation shipped with layered safeguards (heuristics, stepped rollout, enterprise policy, opt-out). The spec change cleanly reuses the Static Routing API race-response mechanism and preserves response consistency and Navigation Preload precedence. Gaps: no WPT tests (justified by heuristic-only design but a real coverage gap), security/privacy reviews Pending at ship, and regression/compat evidence could not be verified because the tracking bug is behind Buganizer sign-in.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s5-specpr",
+        "s3-explainer"
+      ],
+      "limitations": "Implementation/regression detail and DevTools-debuggability completion unverified; bug not publicly readable."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Internal experiment evidence is strong and honestly reported (Issue #3, TPAC 2024 deck, ChromeStatus). External communication is weak for a shipped feature: ServiceWorkerAutoPreload is omitted from the Chrome 140 developer release notes; no web.dev/DevRel article or New-in-Chrome mention was found; the ChromeStatus status text is internally inconsistent ('In developer trial' vs the enabled-by-default launch events); and experiment results are published only for Android and in relative terms.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s2-chromestatuslite",
+        "s10-issue3",
+        "s11-tpac2024",
+        "s14-m140releasenotes"
+      ],
+      "limitations": "A non-public DevRel-in-a-box pack or internal launch brief may exist but was not findable in public sources."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support evidence (issues, telemetry, known-issues doc) was found. The duplicate-request risk is designed-around, not evidenced as resolved post-ship.",
+      "evidenceIds": [
+        "s3-explainer",
+        "s1-chromestatus"
+      ],
+      "limitations": "Support channels/telemetry are not public; absence of found reports is not evidence of low burden."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A sound, well-quantified problem addressed by a conservative design (response consistency preserved, optional spec language, eligibility heuristics, enterprise policy, opt-out) with a positive Android Finch experiment. It is not a clear success: web-develop demand is unevidenced ('No signals'), the spec is an unmerged draft PR, TAG/security/privacy reviews are Pending at ship, WebKit has no official position, user-impact evidence is Android-only and relative, there is no defensible adoption evidence, and developer communication for the M140 ship was minimal (absent from release notes, inconsistent ChromeStatus status text). Not a failure either: no compatibility breakage or credible criticism surfaced.",
+      "evidenceIds": [
+        "s1-chromestatus",
+        "s3-explainer",
+        "s5-specpr",
+        "s6-mozilla1036",
+        "s7-webkit359",
+        "s9-tag1108",
+        "s10-issue3",
+        "s11-tpac2024",
+        "s14-m140releasenotes"
+      ],
+      "limitations": "Primary intent threads and the tracking bug were not readable; reviewer reasoning and post-ship telemetry are gaps."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1-chromestatus",
+      "url": "https://chromestatus.com/feature/5194817700364288",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-01-05; updated 2026-07-15)",
+      "publishedOrObservedAt": "2026-07-15",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, stages, launch events M140 enabled-by-default + stepped rollout, enterprise policy M140 available / M154 removed, Mozilla Positive, WebKit No signal, TAG/security/privacy Pending, no WPT, no devtrial instructions, spec draft PR incubation"
+      ],
+      "limitations": "Status text renders 'In developer trial (Behind a flag)' at M140, inconsistent with the enabled-by-default launch events."
+    },
+    {
+      "id": "s2-chromestatuslite",
+      "url": "https://chromestatuslite.com/feature/5194817700364288",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, motivation, Mozilla Positive, Safari 'No signal' with note on informal WebKit support, web-dev 'No signals', explainer/spec/tracking-bug links"
+      ],
+      "limitations": "Same underlying record as s1; status text shows 'In developer trial (Behind a flag) (Chrome 140)'."
+    },
+    {
+      "id": "s3-explainer",
+      "url": "https://github.com/WICG/service-worker-auto-preload",
+      "publisher": "WICG / Chrome loading team",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Problem framing (~15% of page loads), mechanism (parallel network request consumed via fetch(event.request)), fallback handling, eligibility criteria, opt-out via Static Routing API, alternatives (BestEffortServiceWorker, subresource preload), difference from Navigation Preload API, server-cost risk"
+      ],
+      "limitations": "Stakeholder Feedback section is anecdotal with no attributable partners; no revision dates captured."
+    },
+    {
+      "id": "s4-proposal155",
+      "url": "https://github.com/WICG/proposals/issues/155",
+      "publisher": "WICG/proposals (sisidovski)",
+      "publishedOrObservedAt": "2024-06-04",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Initial public proposal date and framing; cross-links to Mozilla/WebKit/TAG threads and the later spec PR"
+      ],
+      "limitations": "Comment thread not rendered by reader; only issue body captured."
+    },
+    {
+      "id": "s5-specpr",
+      "url": "https://github.com/w3c/ServiceWorker/pull/1756",
+      "publisher": "w3c/ServiceWorker (draft PR)",
+      "publishedOrObservedAt": "2025-06",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec change to Handle Fetch: adds an optional 'a user agent may speculatively dispatch a network request in parallel' step using a race-response, gated on Navigation Preload being disabled and matched-router-source not being fetch-event; resolves preloadResponse with undefined so existing event.preloadResponse semantics are preserved"
+      ],
+      "limitations": "PR is unmerged (incubation); review/merge status and reviewer comments not captured."
+    },
+    {
+      "id": "s6-mozilla1036",
+      "url": "https://github.com/mozilla/standards-positions/issues/1036",
+      "publisher": "Mozilla standards-positions (sisidovski opened; asutherland assigned)",
+      "publishedOrObservedAt": "2024-06-05",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position = Positive (label position:positive, team DOM); issue closed"
+      ],
+      "limitations": "Reviewer reasoning text not captured; only the position label and assignment confirmed."
+    },
+    {
+      "id": "s7-webkit359",
+      "url": "https://github.com/WebKit/standards-positions/issues/359",
+      "publisher": "WebKit standards-positions (sisidovski opened)",
+      "publishedOrObservedAt": "2024-06-05",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit issue still OPEN with no official position label ('No signal'); topic: service workers"
+      ],
+      "limitations": "Per the cached ChromeStatus record, an unofficial reviewer comment indicated the approach 'seems inline with what WebKit is implementing' and a reviewer approved the spec PR, but that is not an official WebKit position and the comment itself could not be re-read (permalink timed out)."
+    },
+    {
+      "id": "s8-tag963",
+      "url": "https://github.com/w3ctag/design-reviews/issues/963",
+      "publisher": "W3C TAG design-reviews (sisidovski opened; torgo, ylafon assigned)",
+      "publishedOrObservedAt": "2024-06-05",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "First TAG review closed with label 'Resolution: too early' (milestone 2024-06-24-week); no substantive TAG position at that time"
+      ],
+      "limitations": "Closing comment text not captured."
+    },
+    {
+      "id": "s9-tag1108",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1108",
+      "publisher": "W3C TAG design-reviews (sisidovski opened)",
+      "publishedOrObservedAt": "2025-06-10",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Second TAG review request opened Jun 2025 citing browser interest, draft spec change, WICG transfer; cached ChromeStatus shows tag_review_status still 'Pending'"
+      ],
+      "limitations": "TAG reviewer comments and resolution not captured; status remains Pending per cached record."
+    },
+    {
+      "id": "s10-issue3",
+      "url": "https://github.com/WICG/service-worker-auto-preload/issues/3",
+      "publisher": "WICG/service-worker-auto-preload (sisidovski)",
+      "publishedOrObservedAt": "2025-03-03",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Finch experiment since Chrome 131 (~1 month on Stable), two arms (no-criteria upper bound vs SW-not-running); both showed positive loading-metric movement on Android (e.g. LCP on SW-controlled pages); SW-not-running arm achieved ~80% of the no-criteria arm; intent to standardize as an optional optimization; links spec PR w3c/ServiceWorker#1756"
+      ],
+      "limitations": "Android-only; relative not absolute magnitudes; no confidence intervals, denominators, or desktop data published."
+    },
+    {
+      "id": "s11-tpac2024",
+      "url": "https://www.w3.org/2024/Talks/TPAC/breakouts/sw-for-performance.pdf",
+      "publisher": "Shunya Shishido & Keita Suzuki (Chrome loading team), TPAC 2024 breakout",
+      "publishedOrObservedAt": "2024-09",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Quantified SW bootstrap cost (Android 3/70/436ms p50/p75/p95; Windows 1/27/350ms), ~30% SW not running (~50% cross-origin), fallback rates (Android 46%, Windows 13%), Beta-channel experiment showed LCP/load-metric improvements, eligibility criteria (~98% fallback), Static Routing API opt-out and 1.5% page-load adoption as of Sep 2024"
+      ],
+      "limitations": "Slide-deck figures; the LCP chart on the 'LCP on ServiceWorker controlled page' slide was not machine-readable in detail."
+    },
+    {
+      "id": "s12-policypage",
+      "url": "https://chromeenterprise.google/policies/service-worker-auto-preload-enabled/",
+      "publisher": "Chrome Enterprise policy reference",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Enterprise policy ServiceWorkerAutoPreloadEnabled controls the feature; Enabled/unset = on, Disabled = off; explicitly 'a temporary measure to control the feature and will be removed in M154'"
+      ],
+      "limitations": "No publication date on the policy page."
+    },
+    {
+      "id": "s13-edgepolicy",
+      "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/serviceworkerautopreloadenabled",
+      "publisher": "Microsoft Edge (Chromium) deploy docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Edge documents the identical policy from version >=140 on Windows/macOS/Android — Chromium-engine parity"
+      ],
+      "limitations": "Edge is Chromium-derived, so this confirms engine parity rather than independent implementation intent."
+    },
+    {
+      "id": "s14-m140releasenotes",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers release notes (last updated 2025-09-02)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 Stable date 2025-09-02; the Service worker section lists SharedWorker controller inheritance and ServiceWorkerStaticRouterTimingInfo but does NOT mention ServiceWorkerAutoPreload — a developer-communication gap"
+      ],
+      "limitations": "Only the public release-notes page was checked; a separate non-public launch brief may exist."
+    },
+    {
+      "id": "s15-intentexperiment",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/AkA4s1_R8H4",
+      "publisher": "blink-dev (Intent to Experiment)",
+      "publishedOrObservedAt": "2024",
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Cached-record experiment goals/risks: Finch on 1% Stable instead of OT because heuristic-only/no API; risk = increased server-side cost"
+      ],
+      "limitations": "Thread body timed out on read; goals/risks taken from the cached ChromeStatus stage 150 record, not the live thread."
+    },
+    {
+      "id": "s16-trackingbug",
+      "url": "https://crbug.com/40278676",
+      "publisher": "Chromium Buganizer",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking-bug URL from ChromeStatus; existence only"
+      ],
+      "limitations": "Bug page requires sign-in and could not be read; no implementation, regression, or DevTools-debuggability evidence obtainable from it."
+    }
+  ],
+  "successes": [
+    "Problem was rigorously quantified before incubation (TPAC 2024 deck with bootstrap-cost percentiles, not-running rates, and fallback rates).",
+    "Design choice preserved response consistency and Navigation Preload precedence, avoiding the correctness traps of the rejected BestEffortServiceWorker race approach.",
+    "Spec change is written as an optional ('may') optimization, lowering the interop bar and not forcing other engines.",
+    "A justified experiment design (two arms, explicit upper-bound vs realistic heuristic) with a pre-stated plan to ship only the heuristic-gated behaviour.",
+    "Layered rollout safeguards: eligibility heuristics, stepped rollout, temporary enterprise policy, and a Static Routing API opt-out.",
+    "Mozilla Positive position and informal WebKit reviewer approval of the spec PR.",
+    "Honest public experiment reporting (Issue #3) including the negative framing of server-side cost."
+  ],
+  "failures": [
+    "ServiceWorkerAutoPreload is absent from the Chrome 140 developer release notes despite shipping enabled-by-default there — weak developer communication for an observable network-behaviour change.",
+    "ChromeStatus status text is inconsistent ('In developer trial (Behind a flag)' at M140 vs enabled-by-default + stepped-rollout launch events), creating an ambiguous public record.",
+    "No developer trial was actually run (null devtrial instructions, no cohort/findings); heuristic-only design substituted a Stable Finch for developer-facing feedback.",
+    "Formal TAG (#1108), security, and privacy reviews were still Pending when the feature shipped in M140.",
+    "The spec change (w3c/ServiceWorker#1756) remained an unmerged draft PR at ship, so the feature is not standards-track/Baseline.",
+    "WebKit has no official standards position (issue #359 still open); informal reviewer support was treated in the cached record as near-support, which risks overstating interop.",
+    "Public experiment evidence is Android-only and reported in relative terms; desktop impact and absolute effect sizes were not published.",
+    "No WPT coverage and the team asserts the feature is not testable on WPT — a durable conformance/testability gap.",
+    "Web-develop demand recorded as 'No signals'; no attributable partner or survey evidence of demand."
+  ],
+  "counterfactuals": [
+    "If the M140 developer release notes had included a ServiceWorkerAutoPreload entry explaining the heuristic, the duplicate-request possibility, and the Static Routing API opt-out, server-side teams could have diagnosed unexpected extra requests without escalating to support.",
+    "If the experiment result (Issue #3) had also published desktop magnitudes and absolute effect sizes with confidence intervals, the ship rationale and end-user-impact claim would be defensible across platforms rather than Android-only.",
+    "If a formal developer cohort had trialled the flag with observed friction logs (instead of only a Stable Finch), pre-ship evidence would include developer-perceived value and opt-out usability, which are currently unknown.",
+    "If the spec PR had been merged and the second TAG review plus security/privacy reviews had resolved before ship, the interop story (and Baseline eligibility) would be materially stronger.",
+    "If the ChromeStatus status-display text had been reconciled with the launch events, the public record would not imply the feature is still only behind a flag at M140.",
+    "If the feature's standards-position tracking distinguished WebKit's informal reviewer comment from an official position, the cached record would not risk overstating cross-engine support."
+  ],
+  "skillImprovements": [
+    "Add a retrospective rule: heuristic-only / no-API features that change observable network behaviour still require a developer-facing release-notes entry (problem, heuristic, possible extra requests, opt-out) — 'no API surface' is not a communication exemption.",
+    "Add a prepare-to-ship transition-packet check: reconcile the ChromeStatus status-display text against the manifest launch-event categories before scoring the release phase; flag inconsistencies as evidence-quality findings.",
+    "Add a dimension prompt: when the only public experiment evidence is single-platform (e.g. Android-only) and reported in relative magnitudes, score endUserImpact/developerValue as partial or mixed, never success, and name the missing platform explicitly.",
+    "Add a wide-review rule: distinguish informal reviewer comments from official engine positions; do not let a single reviewer approval of a spec PR substitute for a vendor's official standards-position label, and carry the distinction into the cached record.",
+    "Add a phase check for 'no API surface' features: require a documented developer-trial substitute (how feedback is gathered) and a testability plan beyond 'not testable on WPT', since heuristic behaviour still needs regression coverage.",
+    "Add a ship-gate reminder: features shipping with TAG/security/privacy review status 'Pending' must record the accepted-risk rationale explicitly in the prepare-to-ship packet, sourced from the Intent to Ship thread.",
+    "Add a research-resilience note: treat Buganizer sign-in walls and Google-Groups timeouts as expected blockers; capture intent-thread goals/risks from the cached ChromeStatus stage fields and mark the live thread as unread rather than aborting."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship (stage 160) and Intent to Experiment (stage 150) Google Groups threads timed out on read; ship rationale, accepted risks, and LGTMs not captured from primary source.",
+      "Tracking bug crbug 40278676 requires Buganizer sign-in; implementation detail, regression/compat evidence, and DevTools-debuggability (crbug 344912796) status unverified.",
+      "Second TAG review (#1108) reviewer comments and resolution not captured; tag_review_status remains Pending per cached record.",
+      "Mozilla/WebKit/TAG reviewer-reasoning comment text not retrievable (GitHub renders comments client-side); positions taken from labels and cached record only.",
+      "WebKit's informal 'seems inline' reviewer comment permalink (WICG/proposals#155 comment 2873318636) timed out; relied on the cached ChromeStatus note.",
+      "No public adoption/usage evidence exists (no MDN/caniuse/Baseline; auto/heuristic feature); adoption remains unscored rather than evidenced.",
+      "No public post-ship support telemetry or known-issues evidence; support remains unscored.",
+      "Desktop experiment magnitudes and absolute effect sizes were not published; only Android relative results are available."
+    ],
+    "reviewedAt": "2026-07-22T15:15:00Z"
+  }
+}

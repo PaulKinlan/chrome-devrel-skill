@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5221379619946496,
+    "name": "Support font-variation-settings descriptor in @font-face rule",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5221379619946496",
+    "blinkComponent": "Blink>Fonts",
+    "ownerEmail": "sejalanand@microsoft.com",
+    "contributorOrg": "Microsoft",
+    "featureType": "Chromium catches up",
+    "specLink": "https://www.w3.org/TR/css-fonts-4/#font-rend-desc",
+    "finchName": "FontVariationSettingsDescriptor",
+    "shippingYear": 2025,
+    "starCount": 53
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5221379619946496",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Validated, multi-year developer problem with a clear job: declare font variation values once at the @font-face source instead of repeating font-variation-settings per element, and inspect them in DevTools. The feature was filed (2025-06-23) as a 'Chromium catches up' item owned by a Microsoft contributor. Browser intervention is plainly the right layer: it is an already-specced CSS descriptor that Firefox has shipped since 2018. ChromeStatus records 53 stars and 'Positive' web-developor signal citing 30+ affected users across three Chromium bugs (40398871, 41427637, 40145134).",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-crbug-demand",
+        "src-firefox-bug"
+      ],
+      "limitations": "Intake artifact/one-pager was not produced (no explainer_links, no doc_links, no sample_links on the record); problem was inferred from bug demand and Firefox parity rather than a written use-case brief."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "For a catch-up descriptor already defined in CSS Fonts Level 4 and shipped by Firefox seven years earlier, light incubation is appropriate. The use cases are concrete and narrow (consistency, less duplication, DevTools visibility) and the design is fixed by the existing spec string syntax; no open API-shape decisions were apparent. The CSSWG spec text was stable enough that Firefox referenced the same drafts.csswg.org anchor in 2018.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-spec",
+        "src-firefox-bug"
+      ],
+      "limitations": "No public explainer or incubation ledger exists; incubation quality is inferred from spec maturity and Firefox's prior implementation rather than a Chrome-side design record."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A Blink>Fonts implementation by a Microsoft contributor exists, gated by the FontVariationSettingsDescriptor finch flag, with four dedicated Web Platform Tests (font-variation-settings-descriptor-01/02/03.html and font-variation-settings-serialization-002.html) referenced from the record. The string-based syntax matches CSS Fonts L4 and Firefox; invalid/unrecognized tags are ignored per spec.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-wpt",
+        "src-spec"
+      ],
+      "limitations": "Prototype/friction-log artifacts are not on the record; implementation evidence is indirect (component, finch name, WPT links) rather than a cited design doc. WPT pass/fail across engines could not be read (JS-rendered dashboard)."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial or origin trial was conducted; the feature went directly to default-on at M140. Rationale: this is a low-risk, spec-defined, string-syntax catch-up descriptor with a seven-year-old Firefox reference implementation, so it does not present the field-only uncertainties that justify a trial. Going straight to ship is a defensible process choice for this class of change. Not-relevant is used to mean the phase was intentionally and reasonably skipped, not that it was untested.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-firefox-bug",
+        "src-spec"
+      ],
+      "limitations": "Skipped phases mean no behind-a-flag cohort feedback was gathered before ship; for this risk profile that is acceptable, but it leaves no independent developer-trial evidence in the record."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Mixed. The spec is reasonably mature (CSS Fonts L4) and Firefox already ships, which lowers risk. However, material wide-review gaps existed at ship: (1) Safari gives 'No signal' — the WebKit standards-position request (issue #525) was opened only 2025-07-08, ~7 weeks before stable, and drew no WebKittens response; (2) WebKit Bug 215605 (open since 2020) still carries the FIXME 'Implement Step 6: the font-variation-settings descriptor inside @font-face', so Safari does not implement the descriptor; (3) ChromeStatus records security_review_status and privacy_review_status both as 'Pending' and tag_review_status as 'Not applicable'. The descriptor therefore shipped while one major engine had neither a position nor an implementation.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-webkit-position",
+        "src-webkit-bug",
+        "src-mdn",
+        "src-spec"
+      ],
+      "limitations": "The actual TAG/standards review correspondence was not retrievable; 'No signal' for Safari is an absence of position, not evidence of opposition. Security/privacy 'Pending' is the cached state (accurate as of 2025-09-25) and may have resolved later."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial was run, consistent with a low-risk catch-up CSS descriptor for which there was no field-only uncertainty to resolve. Not-relevant denotes an intentional, defensible skip rather than an untested gap.",
+      "evidenceIds": [
+        "src-chromestatus-cache"
+      ],
+      "limitations": "No experiment goals/metrics exist because none were needed for this risk class; no field evidence was therefore generated."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship was filed (the record carries a blink-dev intent_thread_url dated to early July 2025 from the message id) and the feature shipped on plan: finch name set, rollout_plan = 'Will ship enabled for all users', default-on across desktop/Android/iOS/Webview at M140. Chrome 140 stable (2025-09-02) confirms the ship. However, the public LGTM/review content of the intent thread could not be independently retrieved, and the cached record still showed security/privacy review as 'Pending' at ship, so the prepare-to-ship packet cannot be fully validated from public evidence.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-release-notes"
+      ],
+      "limitations": "The Google Groups intent URL failed to fetch (URL encoding rejected by reader), so LGTM count and any objections are unverified; Buganizer tracking bug 40398871 requires sign-in and its body was unreadable."
+    },
+    "release": {
+      "status": "success",
+      "finding": "Clean, on-time release communication. The descriptor shipped in Chrome 140 stable on 2025-09-02 across all platforms, is documented in the official Chrome 140 release notes with an @font-face code sample and the tracking bug, and is covered by MDN with syntax/examples. An independent press recap (GIGAZINE, 2025-09-03) also lists it among shipped CSS features.",
+      "evidenceIds": [
+        "src-release-notes",
+        "src-mdn",
+        "src-gigazine",
+        "src-chromestatus-cache"
+      ],
+      "limitations": "Release notes are an official/promotional source; they do not speak to interop or post-ship outcomes. No dedicated New-in-Chrome video segment or DevRel article specific to this descriptor was found."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No usage or adoption evidence is available. The record exposes no use-counter bucket (webdx_usecounter_enum is null), no adoption_expectation/adoption_plan, and no case studies or framework-integration evidence were found in research. The descriptor is too new and too niche to infer adoption from shipment.",
+      "evidenceIds": [
+        "src-chromestatus-cache"
+      ],
+      "limitations": "Absence of evidence is not evidence of absence; Chrome use counters for this descriptor, if any, were not exposed in the record or retrievable. HTTP Archive/BigQuery adoption data was not collected."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No post-ship support, regression, or known-issues evidence was found. The long-standing demand bugs (40398871 and duplicates) are the pre-ship signal; their resolution status could not be verified because the Chromium tracker requires sign-in. No console/runtime failure reports specific to the M140 ship surfaced in search.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-crbug-demand"
+      ],
+      "limitations": "Support burden is genuinely unmeasured here, not assessed as low; the Buganizer sign-in wall blocked direct verification of bug resolution and any new issues."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a newly added capability, not a removal or restriction; the deprecation/removal phase does not apply. No usage is being removed, no migration or reverse trial is needed, and no end users lose existing behavior.",
+      "evidenceIds": [
+        "src-chromestatus-cache"
+      ],
+      "limitations": "None; phase is genuinely out of scope for a new feature."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The feature addresses a real, validated, multi-year developer pain (30+ affected users, bugs open since the Chrome 65 era, 53 stars, Firefox parity) and removes verbose per-element repetition. But the full developer benefit is not cross-browser: until Safari ships, authors still must keep per-element font-variation-settings fallbacks for Safari, so the 'declare once at the source' value is only partially realizable in production.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-crbug-demand",
+        "src-firefox-bug",
+        "src-webkit-bug",
+        "src-mdn"
+      ],
+      "limitations": "No survey or attributable partner trial evidence; developer value is inferred from bug demand and the cross-engine gap rather than measured demand."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "This is a developer-facing typographic authoring feature with indirect, unmeasured end-user effect (potentially more consistent/performant variable-font rendering). No accessibility, privacy, performance, resource, or user-control evidence was found, and none was claimed in the record.",
+      "evidenceIds": [
+        "src-chromestatus-cache"
+      ],
+      "limitations": "Not scored because no end-user-impact evidence exists; unscored is distinct from 'no impact'."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No usage data, framework/library integration, case study, or attributable production deployment was found. The descriptor is new (M140) and its use counter is not exposed, so adoption cannot be established from available evidence.",
+      "evidenceIds": [
+        "src-chromestatus-cache"
+      ],
+      "limitations": "Adoption remains unknown rather than low; no HTTP Archive, BigQuery, or partner evidence was collected."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Two of three engines: Firefox shipped the descriptor in Firefox 60 (2018), so Chrome is correctly catching up and now matches Firefox with dedicated WPT tests. But Safari/WebKit does not implement it (WebKit Bug 215605 FIXME still present, standards-position #525 with no response), and as of MDN (2026-04-20) the descriptor is explicitly 'not Baseline because it does not work in some of the most widely-used browsers'. Baseline is therefore not achieved.",
+      "evidenceIds": [
+        "src-firefox-bug",
+        "src-webkit-bug",
+        "src-webkit-position",
+        "src-mdn",
+        "src-wpt"
+      ],
+      "limitations": "Exact current Safari ship status (e.g., Safari 26/TP) could not be confirmed from a primary version-numbered source; MDN's Apr 2026 'not Baseline' banner is the strongest recent signal. WPT cross-engine pass/fail was not extractable."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Spec-compliant string-based syntax, invalid/unrecognized tags ignored per CSS Fonts L4, behavior aligned with the long-standing Firefox implementation, and four dedicated WPT tests (including serialization). No regressions or correctness complaints surfaced in research. The change is a contained, low-risk addition to Blink>Fonts.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-spec",
+        "src-wpt",
+        "src-firefox-bug"
+      ],
+      "limitations": "Implementation-quality judgment rests on spec/test/parity evidence rather than a full friction or conformance run; no post-ship bug review was possible (tracker sign-in)."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Solid public artifacts exist (ChromeStatus record, official M140 release notes with sample, MDN docs). But the evidence record has concrete weaknesses: ChromeStatus labels spec maturity as 'Published standard' while CSS Fonts Level 4 is actually a W3C Working Draft; security and privacy review are both 'Pending' in the cached record; the entry carries no explainer, doc, or sample links; and the Intent to Ship LGTMs/discussion are not independently verifiable. These overstate the standards/review grounding at ship.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-spec",
+        "src-release-notes",
+        "src-mdn"
+      ],
+      "limitations": "Communication artifacts beyond release notes/MDN (DevRel article, demo) were not found; the spec-maturity and review-status discrepancies are drawn from the cached ChromeStatus snapshot (accurate as of 2025-09-25)."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No post-ship support-burden, recurrence, or issue-resolution evidence is available; the Chromium tracker sign-in wall prevented verifying resolution of the originating demand bugs or any new issues.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-crbug-demand"
+      ],
+      "limitations": "Support outcome is unmeasured, not assessed as good or bad."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A successful, low-risk catch-up that closes a genuine seven-year interoperability gap with Firefox, backed by validated developer demand, spec-compliant implementation with WPT tests, and clean release communication. The overall result is mixed rather than a clear success because it shipped without Safari interoperability (not Baseline ~10 months later), with wide-review/process gaps (no WebKit position, pending security/privacy review, overstated spec maturity, thin artifact set), and with usage/support outcomes still unmeasured.",
+      "evidenceIds": [
+        "src-chromestatus-cache",
+        "src-firefox-bug",
+        "src-webkit-bug",
+        "src-webkit-position",
+        "src-mdn",
+        "src-release-notes",
+        "src-spec",
+        "src-wpt"
+      ],
+      "limitations": "Overall is a synthesis of mixed dimensions; it does not rest on adoption/usage (which are unknown) or press sentiment."
+    }
+  },
+  "sources": [
+    {
+      "id": "src-chromestatus-cache",
+      "url": "https://chromestatus.com/feature/5221379619946496",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2025-09-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner sejalanand@microsoft.com (Microsoft), feature_type 'Chromium catches up', Blink>Fonts",
+        "M140 default-on across desktop/android/ios/webview; no origin trial or developer trial; rollout_plan 'Will ship enabled for all users'; finch name FontVariationSettingsDescriptor",
+        "Spec link and four WPT test links; tag_review_status 'Not applicable'; security/privacy review 'Pending'",
+        "Browser signals: Firefox Shipped/Shipping, Safari 'No signal', Web developers 'Positive' citing 30+ users across crbugs 40398871/41427637/40145134; star_count 53",
+        "Intent-to-ship thread URL present; tracking bug 40398871"
+      ],
+      "limitations": "Cache snapshot accurate_as_of 2025-09-25; fields such as is_released=false and review statuses may have changed since. Tracking-bug body not publicly readable (sign-in). Spec-maturity field ('Published standard') conflicts with the actual Working Draft status of CSS Fonts 4."
+    },
+    {
+      "id": "src-chromestatus-lite",
+      "url": "https://chromestatuslite.com/feature/5221379619946496",
+      "publisher": "Chrome Platform Status (Google) / chromestatuslite",
+      "publishedOrObservedAt": "2025-09-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered confirmation of summary, motivation, signals (Firefox shipping, Safari no signal, web-dev positive with 30+ users and 3 crbugs), spec link, tracking bug"
+      ],
+      "limitations": "Same underlying data as the cache; lite view shows status 'Proposed' (intent stage) rather than the M140 release, so it does not by itself prove shipment."
+    },
+    {
+      "id": "src-spec",
+      "url": "https://www.w3.org/TR/css-fonts-4/#font-rend-desc",
+      "publisher": "W3C CSS Working Group (Editor: Chris Lilley)",
+      "publishedOrObservedAt": "2026-04-22",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "The @font-face font-feature-settings and font-variation-settings descriptors are defined in CSS Fonts Module Level 4 (section 4.6 'font-rend-desc'), standardizing descriptor-level variation settings"
+      ],
+      "limitations": "The retrieved TR document is explicitly a W3C Working Draft ('may be updated, replaced or obsoleted'), which contradicts ChromeStatus's 'Published standard' maturity (val 5). Descriptor text has been stable across WD revisions since ~2018."
+    },
+    {
+      "id": "src-firefox-bug",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1435984",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2018-02-28",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox implemented the @font-face font-variation-settings descriptor; RESOLVED FIXED; target milestone mozilla60 (Firefox 60, released 2018-03-13)",
+        "Confirms Chrome's 'catch up' framing: Firefox shipped the descriptor roughly seven years before Chrome M140"
+      ],
+      "limitations": "Comments note the descriptor initially landed behind the font-variations.enabled pref, so exact version-gating nuances exist; this does not change that Firefox shipped years before Chrome."
+    },
+    {
+      "id": "src-webkit-position",
+      "url": "https://github.com/WebKit/standards-positions/issues/525",
+      "publisher": "WebKit/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2025-07-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit standards-position request opened 2025-07-08 (only ~7 weeks before Chrome 140 stable); WebKittens gave 'No response' (no formal position)",
+        "A September 2025 comment notes 'The tests for font-variation-settings do have some WebKit failures,' indicating WebKit work in progress but not shipping; links WebKit Bug 215605"
+      ],
+      "limitations": "Issue remains open with no formal position; the reader did not render the full comment thread, so the precise current WebKit intent/version is approximate."
+    },
+    {
+      "id": "src-webkit-bug",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=215605",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2020-08-18",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit does NOT apply font-variation-settings from @font-face; source contains FIXME 'Implement Step 6: the font-variation-settings descriptor inside @font-face'",
+        "Confirms Safari lacks the descriptor and is the origin of the interop/Baseline gap"
+      ],
+      "limitations": "The retrieved view did not show a RESOLVED status; current resolution/shipping status (e.g., Safari 26/TP) was not confirmed from a primary versioned source."
+    },
+    {
+      "id": "src-mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@font-face/font-variation-settings",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Descriptor is documented with syntax, formal definition, and an @font-face example",
+        "Banner states 'Limited availability — This feature is not Baseline because it does not work in some of the most widely-used browsers' as of 2026-04-20, ~7 months after Chrome M140 ship, confirming not Baseline / Safari gap"
+      ],
+      "limitations": "The browser-compatibility table is JS-rendered and did not yield per-version numbers in the retrieved text; exact Safari version support could not be read here."
+    },
+    {
+      "id": "src-wpt",
+      "url": "https://wpt.fyi/results/css/css-fonts/font-variation-settings-descriptor-01.html?label=experimental&label=master&aligned",
+      "publisher": "web-platform-tests dashboard (wpt.fyi)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Existence of dedicated WPT tests for the descriptor (font-variation-settings-descriptor-01/02/03.html and font-variation-settings-serialization-002.html per the ChromeStatus record), indicating the feature is independently testable"
+      ],
+      "limitations": "wpt.fyi is JavaScript-rendered; the reader returned an empty dashboard body, so cross-engine pass/fail breakdown for Chrome/Firefox/Safari could not be extracted."
+    },
+    {
+      "id": "src-release-notes",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 stable release date 2025-09-02; the font-variation-settings @font-face descriptor is listed under CSS with description and an @font-face code sample and tracking bug 40398871",
+        "Confirms official, on-time release communication of the ship"
+      ],
+      "limitations": "Official/promotional source; does not address interoperability, usage, or post-ship outcomes."
+    },
+    {
+      "id": "src-gigazine",
+      "url": "https://gigazine.net/gsc_news/en/20250903-google-chrome-140/",
+      "publisher": "GIGAZINE",
+      "publishedOrObservedAt": "2025-09-03",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press recap confirming Chrome 140 stable and listing the @font-face font-variation-settings descriptor among the shipped CSS features"
+      ],
+      "limitations": "Secondary source repeating the official release notes; provides no independent technical assessment."
+    },
+    {
+      "id": "src-crbug-demand",
+      "url": "https://issues.chromium.org/issues/40145134",
+      "publisher": "Chromium issue tracker (Google)",
+      "publishedOrObservedAt": "2018",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Long-standing developer demand: 'CSS: font-variation-settings from @font-face not applied'; one of the duplicates (with 40398871 and 41427637) behind the ChromeStatus '30+ users affected' claim; references Chrome 65, i.e. demand since ~2018"
+      ],
+      "limitations": "Bug body requires sign-in and only a summary was visible via search; exact affected-user counts and current resolution status were not verified directly."
+    },
+    {
+      "id": "src-caniuse",
+      "url": "https://caniuse.com/font-variation-settings",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Context that the font-variation-settings PROPERTY is widely supported (Chrome 66+, Firefox 62+, Safari 11+), which isolates the shipped feature's gap to the @font-face DESCRIPTOR specifically rather than variable fonts generally"
+      ],
+      "limitations": "This caniuse entry tracks the property, NOT the @font-face descriptor; it must not be read as descriptor support. No separate caniuse entry for the descriptor was retrieved."
+    }
+  ],
+  "successes": [
+    "Closes a genuine, multi-year (since ~Chrome 65, 2018) interoperability gap versus Firefox, addressing validated developer demand (30+ affected users across crbugs 40398871/41427637/40145134, 53 stars, StackOverflow reports).",
+    "Spec-compliant, low-risk string-syntax implementation aligned with Firefox, with four dedicated WPT tests (including serialization); appropriately skipped developer trial and origin trial for a catch-up descriptor of this risk class.",
+    "Clean, on-time release: shipped default-on across desktop/Android/iOS/Webview in Chrome 140 stable (2025-09-02), documented in the official release notes with a code sample and covered by MDN.",
+    "Cross-vendor contribution: a Microsoft engineer implemented the change in Blink>Fonts, a healthy pattern for shared web-platform plumbing."
+  ],
+  "failures": [
+    "Shipped without Safari interoperability: WebKit Bug 215605 (FIXME 'Implement Step 6') remained open and WebKit gave no standards position, so the descriptor is not Baseline even ~10 months after Chrome ship (MDN, 2026-04-20). Developers must still keep per-element fallbacks for Safari, undercutting the 'declare once' value proposition.",
+    "Wide-review timing/coverage gap: the WebKit standards-position request was opened only 2025-07-08 (~7 weeks before stable) and received no WebKittens response; ChromeStatus records Safari as 'No signal' yet the feature shipped anyway.",
+    "Process/record weaknesses at ship: security and privacy review both 'Pending' in the cached record; spec maturity overstated as 'Published standard' when CSS Fonts Level 4 is a Working Draft; no explainer, doc, or sample links attached to the ChromeStatus entry.",
+    "Intent-to-Ship evidence (LGTMs and any objections) is not independently verifiable from public sources, and the originating/tracking Chromium bugs require sign-in, limiting external validation."
+  ],
+  "counterfactuals": [
+    "Earlier WebKit engagement (the underlying WebKit bug dates to 2020) could have enabled a coordinated or near-simultaneous ship, making the descriptor Baseline-eligible at launch and removing the need for dual authoring — the single highest-leverage missed opportunity.",
+    "A 'prepare to ship' packet that surfaced the 'Pending' security/privacy review and corrected the spec-maturity overstatement (WD vs 'Published standard') before launch would have prevented the record from implying stronger standards/review grounding than existed.",
+    "Because Firefox shipped a reference implementation in 2018 and the spec text was stable, Chrome could plausibly have shipped years earlier; the seven-year gap suggests the feature was unfunded until a Microsoft contributor picked it up, not that it was technically blocked.",
+    "Shipping an explicit explainer/sample contrasting the old per-element workaround with the new @font-face descriptor (plus Safari fallback guidance) would have made the value proposition and progressive-enhancement story clearer at launch, since the record carried none."
+  ],
+  "skillImprovements": [
+    "Add a 'catch-up feature' fast-path that still mandates (a) confirming at least one other engine has shipped or committed and (b) recording every other-engine position with dates, so 'Chromium catches up' never masks a still-missing-major-engine situation (as happened here with Safari).",
+    "Add a retrospective check that flags ChromeStatus spec-maturity overstatement (e.g., a Working Draft labeled 'Published standard') and 'Pending' security/privacy review at ship as explicit evidence-quality findings.",
+    "Add a phase rule: for low-risk catch-up CSS descriptors, developer trial/origin trial may be skipped, but a final artifact set (explainer or rationale, sample, and fallback guidance) should still be required rather than left empty.",
+    "Make the wide-review packet require a dated other-engine position attempt with a minimum lead time before stable, and treat 'No signal' as a recorded risk rather than a neutral entry.",
+    "Add research guidance (and a known-limitations list) for blink-dev Google Groups msgid URLs and Buganizer sign-in-walled crbugs, so retros mark them as standard missing-evidence items instead of silently dropping them.",
+    "For CSS catch-ups, require a one-line Baseline/other-engine status assertion (with source and date) in the release artifact so the not-yet-Baseline reality is communicated alongside the ship."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent-to-Ship thread content, LGTMs, and any objections: the Google Groups msgid URL was rejected by the reader (URL encoding), so the actual review discussion is unverified.",
+      "Tracking Chromium bug 40398871 and its duplicates (41427637, 40145134) require Buganizer sign-in; bodies, affected-user counts, and resolution status could not be read directly.",
+      "Post-ship usage/adoption: no use-counter bucket exposed (webdx_usecounter_enum null), no HTTP Archive/BigQuery or case-study evidence collected.",
+      "Support/recurrence outcome: no post-ship issue data; tracker sign-in blocked verification of originating-bug resolution or new regressions.",
+      "Precise current Safari ship status (e.g., whether Safari 26 / Safari TP enabled the descriptor): MDN (2026-04-20) says 'not Baseline' and WebKit Bug 215605 showed no RESOLVED status, but no primary version-numbered confirmation was retrieved.",
+      "WPT cross-engine pass/fail: wpt.fyi is JavaScript-rendered and returned an empty body via the reader; per-browser results could not be extracted."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

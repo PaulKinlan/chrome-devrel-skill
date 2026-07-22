@@ -1,0 +1,499 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4552801607483392,
+    "name": "highlightsFromPoint API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4552801607483392",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "webFeature": "highlight",
+    "shippedMilestone": 140,
+    "specLink": "https://drafts.csswg.org/css-highlight-api-1/#interactions",
+    "owners": [
+      "stephanie.zhang@microsoft.com",
+      "ffiori@microsoft.com",
+      "Leo.Lee@microsoft.com"
+    ],
+    "fundedBy": "Microsoft",
+    "isOfficialWebFeature": true
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:4552801607483392",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear, well-scoped developer problem: interacting with CSS Custom Highlights (click/hover on spellcheck squiggles, collaborative-editing selections, find-on-page, annotations) is only possible today via cumbersome, slow hit-testing workarounds that loop over CSS.highlights, every range, and every DOMRect (and cannot see into shadow DOM without breaking encapsulation). The feature is a Microsoft-authored, Blink>CSS, CSSWG-venue additive method on HighlightRegistry; ChromeStatus motivation and the MSEdge explainer describe the same problem and the status quo cost. Browser intervention is plausible at the right layer because the workaround requires UA-internal hit-test information the page reconstructs expensively in JS.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Demand evidence is developer-discussion + illustrative spellcheck 'customer problem example', not an attributable customer/partner commitment or survey. TAG review explicitly records 'User research: N/A'."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Genuine multi-year incubation in CSSWG. Issue #7513 (Jul 2022) originally explored dispatching pointer events to highlights (Approaches A/B/AB) and identified real web-compat problems (PointerEvent.target can only be an element). The MSEdge explainer re-framed the solution as a synchronous highlightsFromPoint() hit-test, documented use cases, non-goals, and three rejected alternatives (event-based, promise-based, adding to DocumentOrShadowRoot), and resolved the shadow-DOM encapsulation question (#7766) via an options.shadowRoots parameter modelled on caretPositionFromPoint()/getHTML(). Mozilla and WebKit position requests were filed Sep 2024.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S6",
+        "S7",
+        "S9"
+      ],
+      "limitations": "The 'customer problem' is an illustrative spellcheck example rather than a named production user; no recorded interviews or partner co-design."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A Chromium implementation exists in Blink>CSS behind feature status (tracking bug 365046212), with web-platform-tests authored for both the light-DOM and shadow-DOM cases (HighlightRegistry-highlightsFromPoint.html and shadow-dom/HighlightRegistry-highlightsFromPoint.html) and a Chromium review (6074351) adding tests referenced in the TAG request. The implementer is Microsoft (Fernando Fiori).",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S15"
+      ],
+      "limitations": "No public task-based friction log or framework-integration spike was published. At Intent-to-Ship time the WPT were 'currently failing in wpt.fyi because the feature still has the status test in code' though passing in Chromium CI."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial (behind flag) and no Origin Trial were conducted; the feature went Intent to Prototype straight to Intent to Ship. This is a defensible choice for a small, consensus, additive, no-compat-risk API, but it means there is no representative external-cohort trial evidence in the record.",
+      "evidenceIds": [
+        "S1",
+        "S15"
+      ],
+      "limitations": "Not-relevant is used because a formal DT/OT was not part of this launch path, not because interaction behavior was tested externally. The interaction semantics (obscured highlights, sub-range identification) instead surfaced as late feedback inside the Intent-to-Ship thread."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG review was requested (design-reviews #1043, 2025-01-22) with status 'Issues addressed'; Mozilla recorded 'Positive' (#1068, closed position:positive); CSSWG consensus was cited; and the merged spec ED lists multi-vendor editors including Apple (Megan Gardner). However, at Intent-to-Ship time Gecko and WebKit were both recorded as 'No signal'; the WebKit standards-position issue (#394) was retrieved still open without a visible formal position label, so ChromeStatus's recorded WebKit 'Support' is not corroborated by a resolved position issue or a shipped implementation. Critically, substantive API-design objections (returning only non-obscured highlights diverging from elementsFromPoint; the missing hit Range; synchronous layout-forcing) surfaced as late feedback inside the ship thread rather than as closed pre-ship CSSWG decisions, and the spec itself states the exact hit-testing details are out of scope.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S15"
+      ],
+      "limitations": "The obscured-highlight semantics was filed to CSSWG mid-thread; hit-test specifics are explicitly deferred in the spec; WebKit 'Support' vs open issue #394 is an unresolved discrepancy in the public record."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial. The intent record claims no field uncertainty that required real-origin/user evidence (new additive API, no compat risk, all_platforms, no enterprise impact). No experiment goals/risks/extension are recorded.",
+      "evidenceIds": [
+        "S1",
+        "S15"
+      ],
+      "limitations": "Not-relevant because an OT was not the chosen path and no field hypothesis was stated; this does not mean real-world integration was exercised before ship."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was filed 2025-02-14 and the design genuinely changed in response to review: after CSSWG discussion the return type was extended to HighlightHitResult{highlight,ranges} (2025-07-08), the explainer was expanded to address problem-framing and alternatives, and three LGTMs were given (Harrelson, Bratell, Levin, 2025-07-09) for Chrome 140 on desktop/android/webview (finch 'HighlightsFromPoint'). Weaknesses: ChromeStatus records security_review_status and privacy_review_status as 'Pending' despite shipment, while the TAG and I2S self-assess security/privacy as 'N/A'/'no new risks' rather than a closed formal review; the synchronous layout-forcing concern was acknowledged but explicitly deferred; and WPT were failing on wpt.fyi at I2S time due to status gating.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S15"
+      ],
+      "limitations": "Formal security/privacy review completion cannot be confirmed from the public record (ChromeStatus shows Pending); the 'no security implications' position is a self-assessment in the TAG/I2S, not an independently closed review."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled-by-default in Chrome 140 (desktop, android, webview) and Edge 140, with coherent enablement: a Microsoft Edge launch blog (2025-09-25) with a live demo and MDN links, Chrome for Developers Chrome 140 release notes describing the API, and a published MDN reference page (HighlightRegistry.highlightsFromPoint) with a runnable example. Rollout is aligned across the Chromium platforms and iOS is correctly N/A.",
+      "evidenceIds": [
+        "S1",
+        "S12",
+        "S13",
+        "S14"
+      ],
+      "limitations": "Launch communication is predominantly Microsoft-authored (Edge blog); no independent Chrome DevRel article focused specifically on highlightsFromPoint was found. The MDN browser-compatibility table was not fully rendered by the reader."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Strong second-engine adoption: Firefox shipped highlightsFromPoint in Firefox 150 (Bugzilla 1917991 RESOLVED FIXED, release-noted; Firefox even helped drive the ranges() API change), and ecosystem education exists (MDN, CSS-Tricks, LogRocket, master.dev, a Reddit r/css syntax-highlighting post). However, there is no public Chrome use-counter or usage link (webdx_usecounter_enum is null), no attributable production case study for highlightsFromPoint itself, and the base Custom Highlight API only recently reached cross-engine Baseline (2025), so the addressable installed base was just emerging at ship.",
+      "evidenceIds": [
+        "S1",
+        "S10",
+        "S11",
+        "S17"
+      ],
+      "limitations": "Site/production adoption is unmeasurable from public evidence; the community signals found are largely about the base Custom Highlight API rather than highlightsFromPoint specifically."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "No major Chrome regressions surfaced in public search; the Firefox implementation had some test backout/reland churn (Highlight.cpp bustage) that was resolved, and WPT changes were upstreamed. Open design questions remain active CSSWG topics (obscured-highlight semantics, hit-test specifics, ::highlight::hover / a possible HighlightPointerEvent type per #7512, and whether highlightsFromPoint should also return the specific hit Range).",
+      "evidenceIds": [
+        "S8",
+        "S10",
+        "S15"
+      ],
+      "limitations": "No public support-issue taxonomy or recurrence data; support burden is not measurable from available evidence."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive API, not a deprecation, restriction, or removal; there is no migration, reverse trial, or removal timeline to assess.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not-relevant because the feature is additive; this is not used to mean the removal path was tested."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer problem is real and the API demonstrably simplifies the cumbersome manual hit-testing workaround (the explainer shows before/after code and a self-reported ~4x click-handling speedup), with a sound rationale for choosing synchronous hit-testing over spec-complex event-based approaches. But several developer-facing gaps surfaced as late feedback: the 'return only non-obscured highlights' behavior was non-obvious and diverges from elementsFromPoint; the API initially omitted the specific hit Range (added mid-process); identifying a sub-range still requires caretPositionFromPoint(); and synchronous layout-forcing is an acknowledged ergonomic hazard that was deferred rather than solved.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S15"
+      ],
+      "limitations": "Performance claim is the authors' own microbenchmark, not independently reproduced; no attributable production developer validated the ergonomics in a trial."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "End-user impact is indirect only: the API enables interactive highlight UX (spellcheck suggestion popups, collaborative-editing tooltips/hover info, clickable find-on-page results, annotation navigation). No end-user measurement, accessibility-outcome data, or user-research exists (TAG records 'User research: N/A'), and the audience is niche (text-editing / collaboration apps).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5"
+      ],
+      "limitations": "Cannot score end-user impact from available evidence; no user research or outcome measurement was performed or published."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Engine adoption is positive (Chrome/Edge 140, Firefox 150) and education content exists, but there is no public usage metric for sites/developers (no Chrome use counter linked; webdx_usecounter_enum null) and no attributable production deployment of highlightsFromPoint. Per method, missing usage/adoption evidence remains unscored rather than inferred from engine ship or tutorial volume.",
+      "evidenceIds": [
+        "S1",
+        "S10",
+        "S11",
+        "S17"
+      ],
+      "limitations": "Adoption is unmeasurable from public evidence; only engine-level and educational signals exist."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Mixed. Strong: the method is merged into the CSS Highlight API spec ED with multi-vendor editors (Microsoft, Bloomberg, Apple); Mozilla position is Positive; Firefox shipped it in 150; and WPT cover light-DOM and shadow-DOM. Weak: Safari has not shipped highlightsFromPoint (Baseline is blocked by Safari per the web-platform-dx explorer); at ship both Gecko and WebKit were 'No signal' per the I2S; the WebKit standards-position is not corroborated as resolved; and the spec explicitly leaves the exact hit-testing details out of scope, which is an acknowledged interop risk.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S10",
+        "S11",
+        "S15"
+      ],
+      "limitations": "WebKit 'Support' in ChromeStatus is not corroborated by issue #394 state or a shipped implementation; Safari 26 brings up the base Custom Highlight API but highlightsFromPoint's Safari timeline is unconfirmed."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The Chromium implementation shipped across desktop/android/webview with WPT, and the Firefox implementation landed (with some backout/reland churn that was fixed). However, the API shape had to be revised during the Intent-to-Ship process (HighlightHitResult.ranges added) indicating the initial shape was not fully validated before ship; ChromeStatus leaves security_review_status and privacy_review_status as 'Pending' despite shipment; and the synchronous layout-forcing behavior was acknowledged but not addressed for this API.",
+      "evidenceIds": [
+        "S1",
+        "S10",
+        "S15"
+      ],
+      "limitations": "Cannot confirm formal security/privacy review completion (ChromeStatus Pending); no public regression/conformance dashboard beyond WPT links."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Launch communication is coherent and multi-channel (Edge blog with demo + MDN, Chrome 140 release notes, MDN reference, transparent blink-dev I2S thread). But the explainer was initially criticized as an 'IDL anti-pattern' that did not outline the developer problem (later fixed); the TAG marked user research and security/privacy self-review as 'N/A'; ChromeStatus security/privacy reviews are 'Pending'; the WebKit 'Support' claim is not corroborated by an open/resolved issue or implementation; and the ~4x performance claim is the authors' own microbenchmark, not independently reproduced.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S13",
+        "S15"
+      ],
+      "limitations": "Several 'no risk' claims are self-assessments rather than closed independent reviews; performance and adoption claims lack independent corroboration."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support-issue data or recurrence metrics are available; some Firefox implementation churn was resolved and no major Chrome regression was found in public search. There is insufficient evidence to score support burden or resolution quality.",
+      "evidenceIds": [
+        "S10",
+        "S15"
+      ],
+      "limitations": "No public support channel, issue taxonomy, or telemetry; cannot score."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-incubated, genuinely useful, low-risk additive API that shipped cleanly in Chrome/Edge 140 and gained a second engine (Firefox 150) with a transparent, self-correcting intent process. It does not qualify as an unqualified success: no developer trial/origin trial was run for an interaction API; the API shape changed late during I2S; synchronous layout-forcing and hit-test-semantics risks were acknowledged but deferred; Safari has not shipped it (Baseline blocked); ChromeStatus security/privacy reviews remain 'Pending'; and production adoption is unmeasurable. Several dimensions are unscored due to missing public evidence, so the overall cannot be raised above mixed.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S10",
+        "S11",
+        "S15"
+      ],
+      "limitations": "Overall is deliberately conservative per the method: success is not inferred from shipment, engine adoption, press sentiment, or absent criticism."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/4552801607483392",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2025-08-07)",
+      "publishedOrObservedAt": "2025-08-07T17:43:21Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, owners (Microsoft), category CSS/Blink>CSS, single launch event (140 enabled by default) on desktop/android/webview",
+        "Mozilla Positive, WebKit Support (claimed), Web developers Positive, TAG 'Issues addressed'",
+        "Spec + explainer + bug + WPT links, finch 'HighlightsFromPoint', no origin trial, all_platforms, webdx_usecounter_enum null",
+        "security_review_status and privacy_review_status 'Pending' despite ship"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2025-08-07; later outcomes (e.g., Firefox 150 ship) not reflected. WebKit 'Support' not corroborated by underlying issue state."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/4552801607483392",
+      "publisher": "chromestatuslite.com (server-rendered ChromeStatus view)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, standards signals (Firefox Positive, Safari Support, Web developers Positive-CSSWG), spec and explainer links, tracking bug"
+      ],
+      "limitations": "Server-rendered view; less complete than the cached JSON record."
+    },
+    {
+      "id": "S3",
+      "url": "https://raw.githubusercontent.com/MicrosoftEdge/MSEdgeExplainers/main/highlight/HighlightsFromPointsExplainer.md",
+      "publisher": "Microsoft Edge (MSEdgeExplainers) - Stephanie Zhang, Fernando Fiori",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Customer problem (cumbersome manual hit-testing workaround over CSS.highlights/ranges/DOMRects, no shadow-DOM visibility)",
+        "Proposed highlightsFromPoint() on HighlightRegistry returning HighlightHitResult with shadowRoots option",
+        "Three rejected alternatives (event-based, promise-based, DocumentOrShadowRoot) with stated trade-offs",
+        "Self-reported ~4.1x (on highlight) / ~3.8x (off highlight) click-handling speedup; 'introduces no new security risks'"
+      ],
+      "limitations": "Performance figures are the authors' own microbenchmark on a stress test, not independently reproduced; 'no security risks' is a self-assessment."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/csswg-drafts/issues/7513",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2022-07-19T00:01:46Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Original incubation: dispatching pointer events to highlights (Approaches A/B/AB) with identified web-compat problems (PointerEvent.target can only be an element)",
+        "Design evolution from event-based to hit-testing; web-developer/CSSWG positive signal cited by ChromeStatus"
+      ],
+      "limitations": "Reader captured the opening issue body and not the full comment thread; consensus resolution details inferred from explainer + I2S rather than read inline."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1043",
+      "publisher": "W3C TAG (design-reviews) - filed by Fernando Fiori, Microsoft",
+      "publishedOrObservedAt": "2025-01-22T18:10:07Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "TAG review requested 2025-01-22; ChromeStatus records status 'Issues addressed'",
+        "Self-assessed 'Security and Privacy self-review: N/A', 'User research: N/A', 'Major unresolved issues: None', funded by Microsoft, implementer Fernando Fiori",
+        "References CSSWG spec PR #11507 and WPT in progress (Chromium review 6074351)"
+      ],
+      "limitations": "'N/A' security/privacy/user-research are self-assessments, not closed independent reviews; reader did not capture TAG members' comments."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1068",
+      "publisher": "Mozilla standards-positions (stephanieyzhang; assigned emilio, jjaschke)",
+      "publishedOrObservedAt": "2024-09-10T22:56:58Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position request filed 2024-09-10; label position:positive; issue closed",
+        "Links Firefox Bugzilla 1917991 and the related shadow-DOM issue #7766"
+      ],
+      "limitations": "Reader captured labels/state but not the reasoning comments; 'position:positive' preceded the Firefox implementation."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/394",
+      "publisher": "WebKit standards-positions (stephanieyzhang)",
+      "publishedOrObservedAt": "2024-09-10T23:20:14Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit review requested 2024-09-10; issue retrieved Open; no visible formal position label in the rendered view",
+        "Discrepancy with ChromeStatus 'Support' claim; no shipped WebKit implementation"
+      ],
+      "limitations": "Reader did not capture comment-level position; the actual WebKit position may have been communicated in comments not rendered. ChromeStatus 'Support' is therefore unconfirmed from this source."
+    },
+    {
+      "id": "S8",
+      "url": "https://drafts.csswg.org/css-highlight-api-1/",
+      "publisher": "W3C CSSWG (CSS Custom Highlight API Module Level 1, Editor's Draft 2026-01-09)",
+      "publishedOrObservedAt": "2026-01-09T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "highlightsFromPoint merged into the spec (section 6) with full algorithm; HighlightHitResult{highlight,ranges} and HighlightsFromPointOptions{shadowRoots}",
+        "Multi-vendor editors: Dan Clark & Fernando Fiori (Microsoft), Florian Rivoal (Bloomberg), Megan Gardner (Apple) - Apple editorship is an interop signal",
+        "Spec note: exact hit-testing/highlightsFromPoint details are out of scope (interop risk acknowledged); Section 7 Event Handling still TBD",
+        "Changes section attributes the addition to Issue 7513"
+      ],
+      "limitations": "Editor's Draft (working draft maturity), not a published Recommendation; hit-test semantics explicitly deferred."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/w3c/csswg-drafts/issues/7766",
+      "publisher": "W3C CSS Working Group (csswg-drafts) - dandclark",
+      "publishedOrObservedAt": "2022-09-19T16:51:13Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Shadow-DOM exposure design question; resolved toward the options.shadowRoots approach modelled on getHTML()/caretPositionFromPoint()",
+        "Issue closed (Needs Edits) feeding the final shadowRoots option"
+      ],
+      "limitations": "Reader captured the opening proposal and state, not the full resolution comments."
+    },
+    {
+      "id": "S10",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1917991",
+      "publisher": "Mozilla Bugzilla (Core :: DOM: Core & HTML; reporter stephanie.zhang, assignee jjaschke, reviewer emilio)",
+      "publishedOrObservedAt": "2026-03-25T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox implementation RESOLVED FIXED for firefox150; added to Firefox 150 release notes (desktop + Android)",
+        "Implementation landed in parts; one backout/reland for Highlight.cpp bustage then fixed; WPT changes upstreamed (wpt PR 58209)"
+      ],
+      "limitations": "Relative dates in Bugzilla are approximate; exact Firefox 150 ship date reconciled from version metadata (~April 2026)."
+    },
+    {
+      "id": "S11",
+      "url": "https://web-platform-dx.github.io/web-features-explorer/limited-availability/",
+      "publisher": "web-platform-dx web-features explorer; caniuse.com",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "highlightsFromPoint available in Chrome/Edge 140 and Firefox 150/151(Android)",
+        "Baseline availability 'blocked since April 2026 by Safari' - Safari has not shipped, so Baseline not yet reached"
+      ],
+      "limitations": "caniuse support table did not fully render in the reader; Safari highlightsFromPoint timeline unconfirmed."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/HighlightRegistry/highlightsFromPoint",
+      "publisher": "MDN Web Docs (MozDevNet)",
+      "publishedOrObservedAt": "2026-04-17T04:07:32Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Reference documentation exists with a runnable example covering creation and highlightsFromPoint() query",
+        "Compatibility data references Chrome 140 / Edge full support"
+      ],
+      "limitations": "Browser-compatibility table was not fully rendered by the reader; Safari/Firefox version cells not captured inline."
+    },
+    {
+      "id": "S13",
+      "url": "https://blogs.windows.com/msedgedev/2025/09/25/unlock-text-editing-use-cases-with-highlightsfrompoint/",
+      "publisher": "Microsoft Edge Blog (Taylore Givens, Patrick Brosset, Fernando Fiori)",
+      "publishedOrObservedAt": "2025-09-25T16:01:19Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Primary launch communication: highlightsFromPoint available in Edge 140 and other Chromium browsers",
+        "Use cases (spellcheck, collaborative editing, tooltips, contextual menus, search); live demo and MDN link; positions it among the *FromPoint API family"
+      ],
+      "limitations": "Vendor-authored launch post; not independent press."
+    },
+    {
+      "id": "S14",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 release notes list highlightsFromPoint API as shipping with a description of detecting highlights at a point"
+      ],
+      "limitations": "Only the snippet was retrieved; full release-notes detail not read."
+    },
+    {
+      "id": "S15",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/8OpfR1m_zjU",
+      "publisher": "blink-dev (Fernando Fiori, Microsoft; reviewers Stephen Chenney, Robert Flack, Alex Russell, Domenic Denicola, Chris Harrelson, Daniel Bratell, Vladimir Levin)",
+      "publishedOrObservedAt": "2025-07-09T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship filed 2025-02-14; at I2S Gecko and WebKit recorded 'No signal', Web developers Positive, TAG 'Issues addressed'",
+        "Substantive late design feedback: Flack (obscured-highlight semantics unclear vs elementsFromPoint; proposed unified hitTest), Chenney (return the specific hit Range), Russell (explainer-as-IDL anti-pattern; synchronous layout-forcing hazard), Denicola (milestone inconsistency; 'late-breaking feedback muddles the situation')",
+        "API changed mid-process (ranges added to HighlightHitResult, 2025-07-08) after CSSWG discussion; milestone moved 134->135->140",
+        "3 LGTMs (Harrelson, Bratell, Levin) 2025-07-09; no flag/OT; WPT passing in Chromium CI but failing wpt.fyi due to status gating"
+      ],
+      "limitations": "Thread is the ship-review record, not a substitute for the closed security/privacy review whose ChromeStatus state is 'Pending'."
+    },
+    {
+      "id": "S16",
+      "url": "https://niek.github.io/chrome-features/",
+      "publisher": "chrome-features (community tracker)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Independent tracker lists 'HighlightsFromPoint' as shipped"
+      ],
+      "limitations": "Community tracker; minor corroboration only."
+    },
+    {
+      "id": "S17",
+      "url": "https://www.reddit.com/r/css/comments/1onfq5u/highperformance_syntax_highlighting_with_css/",
+      "publisher": "Community (r/css, css-tricks, LogRocket, master.dev, StackOverflow)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Ecosystem interest and education in the CSS Custom Highlight API (syntax highlighting, tutorials, Q&A)"
+      ],
+      "limitations": "Signals are largely about the base Custom Highlight API, not highlightsFromPoint specifically; no attributable production deployment of highlightsFromPoint."
+    }
+  ],
+  "successes": [
+    "Real, well-scoped developer problem with documented before/after simplification of a genuinely cumbersome hit-testing workaround and a defensible performance rationale; the simpler synchronous hit-testing design was chosen over spec-complex event-based approaches with clearly reasoned trade-offs.",
+    "Genuine multi-stakeholder incubation (CSSWG #7513/#7766, Mozilla positive, TAG 'issues addressed') and the method is merged into the CSS Highlight API spec ED with multi-vendor editors including Apple.",
+    "The Intent-to-Ship process self-corrected: late design feedback from Google and Microsoft engineers was taken seriously, the API was changed (ranges added) before LGTM, and unresolved semantics (obscured highlights) were filed to CSSWG rather than silently shipped.",
+    "A second engine (Firefox 150) shipped relatively quickly and even helped drive the API change; WPT were upstreamed.",
+    "Coherent launch enablement (Edge blog + live demo + MDN reference + Chrome 140 release notes) with aligned desktop/android/webview rollout."
+  ],
+  "failures": [
+    "No developer trial or origin trial was run for an interaction/hit-test API; the obscured-highlight semantics, the missing hit Range, and sub-range-identification friction surfaced as late Intent-to-Ship feedback from Googlers rather than from a representative external cohort.",
+    "ChromeStatus leaves security_review_status and privacy_review_status as 'Pending' at/after ship; the 'no security implications' position is a self-assessment in the TAG/Intent ('N/A') rather than an independently closed review - a documentation/process gap.",
+    "The synchronous layout-forcing hazard (raised by Alex Russell) was acknowledged but explicitly deferred rather than resolved for this API.",
+    "The spec still leaves the exact hit-testing details out of scope and Section 7 (Event Handling) remains TBD - an interop risk acknowledged in the spec itself.",
+    "WebKit 'Support' recorded in ChromeStatus is not corroborated by a resolved standards-position issue or a shipped implementation; Safari blocks Baseline (per web-platform-dx).",
+    "No public usage measurement exists (use-counter enum null); production adoption of highlightsFromPoint specifically is unmeasurable."
+  ],
+  "counterfactuals": [
+    "If a short behind-flag developer trial or a focused friction log with a representative editor/collaboration framework (e.g., CodeMirror, Monaco, or a Docs-like editor) had been run before Intent-to-Ship, the obscured-highlight semantics, the missing-Range gap, and the sub-range identification friction would likely have surfaced and been addressed in the explainer/spec before the ship thread - reducing late I2S churn and the post-I2S 'file a CSSWG issue for obscured highlights' work.",
+    "If the explainer had led with the developer problem and an integration example rather than IDL, the 'explainer is an anti-pattern' and 'this amount of discussion muddles the situation' concerns would likely have been pre-empted, shortening the ~5-month intent cycle.",
+    "If the ChromeStatus security/privacy gates had been formally closed (or the 'Pending' state explicitly justified) before ship, the public record would not imply an unreviewed shippable surface even for a low-risk API.",
+    "A Chrome-authored DevRel article (in addition to the Microsoft Edge blog) might have broadened developer awareness beyond the Chromium/Edge audience, though content alone would not have changed the Safari/Baseline outcome."
+  ],
+  "skillImprovements": [
+    "Add a phase-03/06 checkpoint for any pointer/hit-test/interaction API: require either (a) a behind-flag developer trial with at least one representative editor/collaboration-framework friction log, or (b) an explicit documented rationale for skipping it. 'Small additive API' is necessary but not sufficient when interaction semantics are involved.",
+    "Add a launch-readiness rule: ChromeStatus security_review_status and privacy_review_status must be non-'Pending' (or the gap explicitly justified) before 'prepare to ship' is reported as supported; treat a self-assessed 'N/A' in the TAG/Intent as partial, not as a closed review.",
+    "Add an explainer-quality gate for Intent threads: explainers must lead with the developer problem and an integration example before IDL; flag 'explainer is mostly IDL' as a pre-Intent fix (operationalizes Russell's feedback).",
+    "Add a standards-position corroboration rule: a ChromeStatus browser 'view' (e.g., WebKit 'Support') must be corroborated by the underlying standards-position issue state and/or a shipped implementation before it is reported as support in launch materials; otherwise report it as proposed/unconfirmed.",
+    "Add a measurement-planning prompt for niche additive APIs: when no use counter, Baseline path, or adoption instrument exists, explicitly mark adoption unscored and define the signal that would later move it (e.g., web-features Baseline, second/third-engine ship, framework integration).",
+    "Add an interop-risk rehearsal item: when a spec explicitly defers semantics (e.g., 'hit testing out of scope'), surface this as a tracked interop risk in the wide-review and prepare-to-ship packets rather than burying it in a spec note."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "No public Chrome use-counter/usage data (webdx_usecounter_enum null); site/production adoption of highlightsFromPoint is unmeasurable.",
+      "No attributable production case study for highlightsFromPoint; available community signals are largely about the base Custom Highlight API.",
+      "ChromeStatus security_review_status and privacy_review_status are 'Pending' despite ship; formal security/privacy review completion cannot be confirmed from the public record.",
+      "WebKit standards-position issue #394 comment-level position was not captured by the reader; ChromeStatus 'Support' is unconfirmed; Safari has not shipped highlightsFromPoint and blocks Baseline.",
+      "Safari 26 base Custom Highlight API status and whether/when highlightsFromPoint will follow in WebKit is unconfirmed.",
+      "WPT.fyi result pages timed out and were not read directly; pass/fail by engine not captured inline (Chromium CI passing and Firefox WPT upstreaming corroborated indirectly)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

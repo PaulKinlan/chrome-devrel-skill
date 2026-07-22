@@ -1,0 +1,473 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6309742380318720,
+    "name": "ServiceWorkerStaticRouterTimingInfo",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6309742380318720",
+    "category": "Service Worker",
+    "featureType": "New or changed feature",
+    "owners": [
+      "suzukikeita@chromium.org",
+      "yyanagisawa@chromium.org"
+    ],
+    "editors": [
+      "sisidovski@chromium.org",
+      "chikamune@chromium.org",
+      "denomoto@chromium.org"
+    ],
+    "specMentor": "domenic@chromium.org"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:6309742380318720",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T15:50:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem, scope, owners, and source inventory were well established. The feature adds ServiceWorker Static Routing API timing/source fields (workerRouterEvaluationStart, workerCacheLookupStart, matched/final router source) to Resource/Navigation Timing so developers can measure router-evaluation and cache-lookup latency and confirm which source served a request. The gap was first raised in WICG issue #19 (2024-01-15) and the resource-timing spec issue #389 (2024-05-16); ChromeStatus was created 2024-04-30 with clear owners, editors, a spec mentor, bug crbug/41496865, explainer, and initial proposal links. Browser intervention is plausibly the right layer because the data only the browser has (router evaluation timing) cannot be derived from JS.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s5"
+      ],
+      "limitations": "No documented end-user or developer-demand research at intake; 'Debuggability: None' and empty devtrial/sample/doc fields on the record."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation occurred in WICG with a written explainer and a legitimate, narrow observability problem. Mozilla returned a Positive position (venue: W3C CG, assigned asutherland). However WebKit returned No signal and remains open with no labels/assignees; the TAG review states no user studies were conducted specifically for this feature and that demand evidence is anecdotal partner feedback about logging/debugging difficulty; ChromeStatus records Web developers as 'No signals'. Counterevidence (low/absent demand) was not rebutted by representative developer research.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "No survey, interview, or usage evidence supporting proposal-specific demand; WebKit silence must not be read as neutral/positive."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype was filed (Blink>ServiceWorker, finch name ServiceWorkerStaticRouterTimingInfo), design is additive ('only adds new fields... will not modify any existing fields' => no compatibility risk), and a WPT CL was in flight. But at prototype time Gecko/WebKit/Web developers were all 'No signal', TAG was 'Pending', and the explainer itself flagged workerRouterEvaluationStart as 'under discussion, and will not be included in the initial spec change' — i.e., the field set was not yet settled at prototype, yet workerRouterEvaluationStart later shipped (design/implementation drift from the explainer).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s12",
+        "s14"
+      ],
+      "limitations": "Exact Intent-to-Prototype date not captured from the thread; whether a representative-cohort prototype friction log was run is not evidenced."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "No evidence of a separate flag-based developer-trial phase with a recruited cohort, findings, or friction report. The record has no devtrial_instructions and no developer-trial launch event; the feature moved directly from prototype to an Origin Trial. Treated as not evidenced rather than not applicable.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "A developer trial may have occurred informally but no public artifact, cohort, or findings were found."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Broad review was initiated: TAG review #958 (ChromeStatus tag_review_status 'Issues addressed'), Mozilla #1031 (Positive, closed), WebKit #354 (No signal), and spec PRs opened against ServiceWorker (#1769), resource-timing (#415), and fetch (#1832). But at the record cutoff security_review_status and privacy_review_status were both still 'Pending', the standards maturity is 'Incubation' (W3C Community Group, api_spec=false), and resource-timing #415 / fetch #1832 were not yet merged (fetch awaiting other-vendor signal). The prepare-to-ship review packet is therefore incomplete.",
+      "evidenceIds": [
+        "s1",
+        "s6",
+        "s7",
+        "s8",
+        "s5"
+      ],
+      "limitations": "Could not independently verify merge state of #415/#1832/#1769 at cutoff (reads failed); review-resolution comments on the TAG issue were not captured."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "A justified Origin Trial ran: desktop/android/webview first 131, last 136, with third-party support, a use counter (kV8PerformanceResourceTiming_WorkerRouterEvaluationStart_AttributeGetter), feedback routed to GitHub #19 and a Google Doc, and stated goals to 'gather data on whether this provides enough information on debuggability.' The trial was then extended (stage 151, created 2025-05-07, desktop_last 139). However the extension's own rationale states the team 'haven't got enough feedback from partners yet as some minor issues had blocked partner OT participation' — i.e., the OT's primary goal (validate debuggability value with real partner data) was not demonstrably achieved in its original window, and the extension exists to retry gathering that evidence. Registrations/activation numbers and any interim readout were not found in public sources.",
+      "evidenceIds": [
+        "s1",
+        "s12",
+        "s13"
+      ],
+      "limitations": "OT feedback Google Doc content not accessible; no public participant denominator, activation, or interim/final readout located."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was filed (stage 160, desktop/android first 140), rollout_plan is 'Will ship enabled for all users', enterprise_impact=1, breaking_change=false, and the feature shipped GA at Chrome 140 (desktop+android; WebView null). But security and privacy reviews were still 'Pending', specs were still incubating/pending, and the record carries no doc_links, sample_links, docs, or samples — so the ship packet lacks finalized docs, samples, and closed cross-functional reviews.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s12"
+      ],
+      "limitations": "Whether security/privacy reviews were closed between the record's accurate_as_of (2025-07-21) and the Chrome 140 ship could not be confirmed from public sources."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "The feature reached default availability at Chrome 140 and the ChromeStatus/ChromestatusLite records are internally consistent. However release communication for this sub-feature is thin: the developer.chrome.com article that exists covers the parent Static Routing API (Chrome 123, last updated 2024-03-18) and predates/does not document the timing fields; MDN's PerformanceResourceTiming page (updated 2026-04-04) does not list workerRouterEvaluationStart, workerCacheLookupStart, workerMatchedRouterSource, or workerFinalRouterSource; and the record has no samples. The only timing-info-specific developer awareness signal found was a single tweet (@tunetheweb) noting the Chrome 131 OT.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s9",
+        "s11",
+        "s13"
+      ],
+      "limitations": "No dedicated GA article, reference-doc page, or sample confirmed for the timing fields; cannot rule out documentation published in channels not retrieved."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No defensible adoption evidence was found: no usage/use-counter data, no Workbox or framework integration of the timing fields, no case studies, and no attributable production deployments. Searches for the new attributes surfaced only the ChromeStatus page, the parent-API articles, and the awareness tweet. Per the rules, shipment and absence of criticism are not read as adoption success.",
+      "evidenceIds": [
+        "s1",
+        "s9",
+        "s13",
+        "s15"
+      ],
+      "limitations": "Passive observability fields and low parent-API adoption make low usage expected; absence of evidence is not evidence of non-adoption. No usage denominator available."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support-issue taxonomy, recurrence data, or known-issues material was found for the timing fields. The configured support routes are GitHub issue #19 and an OT feedback Google Doc; the OT extension reason references unspecified 'minor issues' that blocked partner participation, indicating some integration friction during the trial, but no severity/repro/owner data is public.",
+      "evidenceIds": [
+        "s1",
+        "s12"
+      ],
+      "limitations": "Private OT feedback and any internal support tickets are not publicly visible."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new, additive, non-breaking capability (feature_type 'New or changed feature', breaking_change=false, enterprise_impact=1). No deprecation, removal, reverse trial, or migration is involved. Used 'not-relevant' with rationale, not to mean untested.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The feature addresses a genuine, narrowly-scoped observability gap that only the browser can fill (router-evaluation/cache-lookup timing and source attribution for the Static Routing API), with a clean additive design. But there is no proposal-specific developer-demand research (Web developers 'No signals'; TAG notes only anecdotal partner feedback), and the value is contingent on adoption of the still-low-adoption parent Static Routing API.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s6",
+        "s12"
+      ],
+      "limitations": "No user/developer research validated the value hypothesis; OT did not gather sufficient partner data to confirm it."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No measurable direct end-user impact: the API is developer-facing observability, non-breaking, with enterprise_impact=1. Any end-user benefit (via developers acting on the timing data) is indirect and unmeasured.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No end-user/perf-outcome data exists; indirect effects are plausible but unevidenced."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Insufficient evidence to score durable adoption: no usage data, framework integration, case studies, or production deployments were found, and the OT extension reason explicitly states partner feedback was insufficient and partner participation was blocked by minor issues. Cannot infer success or failure from shipment or from absence of criticism.",
+      "evidenceIds": [
+        "s1",
+        "s13",
+        "s15"
+      ],
+      "limitations": "Feature shipped recently relative to cutoff; passive fields; no usage denominator."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Chrome-only at shipment (Chrome 140 desktop+android). Mozilla position is Positive (a genuine positive signal) and the design is additive/low-risk, but there is no other-engine implementation: WebKit gave No signal and its position issue remains open with no labels; specs are still incubating in a W3C Community Group with resource-timing #415 and fetch #1832 not yet merged (fetch awaiting other-vendor signal). Not Baseline-eligible as a single-engine feature.",
+      "evidenceIds": [
+        "s1",
+        "s7",
+        "s8",
+        "s5"
+      ],
+      "limitations": "Could not independently confirm current merge state of the spec PRs at cutoff."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Good fundamentals: additive (no compat risk), WPT coverage added (static-router-resource-timing.https.html), a use counter, and a long, careful OT with an extension. Weaknesses: the OT extension was driven by 'minor issues [that] had blocked partner OT participation' (implementation friction surfacing late), and security/privacy reviews were still 'Pending' at the record cutoff.",
+      "evidenceIds": [
+        "s1",
+        "s12",
+        "s14"
+      ],
+      "limitations": "No access to internal regression/bug data; Pending review outcomes not confirmed."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The ChromeStatus record and WICG explainer are clear and internally consistent, and standards-position requests were filed. But communication/documentation for the sub-feature is weak: no dedicated developer.chrome.com article (the existing one covers the parent API and predates the timing fields), MDN omits all four new fields at cutoff, and the record has no docs or samples. The explainer also lags implementation (workerRouterEvaluationStart marked 'will not be included in the initial spec change' yet it shipped).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s9",
+        "s11"
+      ],
+      "limitations": "Cannot rule out docs published in channels not retrieved; MDN may be updated after its observed revision."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support-burden, recurrence, or resolution-time data; support routes exist (GitHub #19, OT Doc) but their contents are not public. Only signal is the OT-extension note about minor issues blocking partners.",
+      "evidenceIds": [
+        "s1",
+        "s12"
+      ],
+      "limitations": "Private support data not visible."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, low-risk observability enhancement with positive Mozilla signal, WPT coverage, and a diligent multi-milestone OT — but it shipped Chrome-only with pending specs, pending security/privacy reviews, no dedicated docs/MDN/samples, design/explainer drift on workerRouterEvaluationStart, and an OT that did not gather sufficient partner evidence against its own stated goal. Success cannot be inferred from shipment, and material outcome evidence (adoption, usage, reviews) is missing, so the launch is mixed rather than successful.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s6",
+        "s7",
+        "s8",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Overall is deliberately not 'success' because multiple dimensions are mixed/unscored and key evidence is missing."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/chromestatus/features/6309742380318720.json",
+      "publisher": "Chrome Platform Status (cached authoritative record)",
+      "publishedOrObservedAt": "2025-07-21T14:01:36Z",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners/editors/spec mentor",
+        "Stage timeline: OT 131-136, extension to 139, Intent to Ship desktop/android first 140",
+        "OT id, third-party support, use counter kV8PerformanceResourceTiming_WorkerRouterEvaluationStart_AttributeGetter",
+        "Experiment goals and extension rationale (insufficient partner feedback)",
+        "Security/privacy review 'Pending'; tag_review_status 'Issues addressed'; standards maturity 'Incubation'",
+        "Anticipated spec changes: SW #1769 merged; resource-timing #415 and fetch #1832 pending",
+        "FF Positive, Safari No signal, WebDev No signals; doc_links/sample_links empty"
+      ],
+      "limitations": "accurate_as_of 2025-07-21; some fields (review statuses, spec PR state) may have changed after this date."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/6309742380318720",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Status 'Origin trial (Chrome 140)'; summary; Standards & signals: Firefox Positive, Safari No signal, Web developers No signals; tracking bug crbug/41496865; explainer link"
+      ],
+      "limitations": "Lite view does not expose stage/intent/OT detail; 'Status' label lags the GA ship captured in the manifest."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/WICG/service-worker-static-routing-api/blob/main/resource-timing-api.md",
+      "publisher": "WICG (authors: Keita Suzuki @quasi-mod, Yoshisato Yanagisawa @yoshisatoyanagisawa)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Proposed fields: workerRouterEvaluationStart, workerCacheLookupStart, workerMatchedRouterSource, workerFinalRouterSource",
+        "workerRouterEvaluationStart marked 'currently under discussion, and will not be included in the initial spec change' (design drift vs shipped implementation)",
+        "Security/privacy inherit from Resource Timing API (high-resolution timers, fingerprinting; mitigated by same-origin + Timing-Allow-Origin)",
+        "deliveryType 'cache-storage' proposal for Cache API results"
+      ],
+      "limitations": "Explainer has no publication date; reconciles with neither the shipped field set nor the spec PRs."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/WICG/service-worker-static-routing-api/issues/19",
+      "publisher": "WICG/service-worker-static-routing-api",
+      "publishedOrObservedAt": "2024-01-15",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Origin of the timingInfo gap: static routing changes the handle-fetch flow so timingInfo must be redefined; needs SW spec update and WPTs",
+        "Opened by sisidovski 2024-01-15"
+      ],
+      "limitations": "Issue body only; comment thread/resolution not captured."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/w3c/resource-timing/issues/389",
+      "publisher": "w3c/resource-timing",
+      "publishedOrObservedAt": "2024-05-16",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec-level request to add SW static routing timing/source fields to Resource Timing",
+        "Parent Static Routing API merged into SW spec via w3c/ServiceWorker#1701",
+        "Issue still Open at cutoff"
+      ],
+      "limitations": "Comment thread and linked PR resolution not captured; PR #415 merge state not independently verified."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/w3ctag/design-reviews/issues/958",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": "2024-05-28",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review requested 2024-05-28 by @quasi-mod; org Google Chrome; intended standardization venue Web Performance WG / Service Workers WG",
+        "'No user studies specifically on this feature'; demand evidence is anecdotal partner feedback about logging/debugging difficulty",
+        "ChromeStatus records tag_review_status 'Issues addressed'"
+      ],
+      "limitations": "Only the opening request text was captured; TAG resolution comments not retrieved."
+    },
+    {
+      "id": "s7",
+      "url": "https://github.com/mozilla/standards-positions/issues/1031",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2024-05-28",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position: Positive; label 'venue: W3C CG' (concerns: venue); assigned asutherland; issue Closed"
+      ],
+      "limitations": "Mozilla Positive is a position, not an implementation/shipping commitment."
+    },
+    {
+      "id": "s8",
+      "url": "https://github.com/WebKit/standards-positions/issues/354",
+      "publisher": "WebKit (standards-positions)",
+      "publishedOrObservedAt": "2024-05-28",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit: No response / No signal; issue still Open; no labels, no assignees"
+      ],
+      "limitations": "'No signal' must not be read as neutral or positive."
+    },
+    {
+      "id": "s9",
+      "url": "https://developer.chrome.com/blog/service-worker-static-routing",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2024-03-18",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Documents the parent Static Routing API (Chrome 123 GA; OT since Chrome 116), NOT the timing-info sub-feature",
+        "Confirms a devrel-communication gap for the timing fields"
+      ],
+      "limitations": "Article last updated 2024-03-18, predating the timing-info OT (Chrome 131) and ship (Chrome 140)."
+    },
+    {
+      "id": "s10",
+      "url": "https://developer.chrome.com/blog/service-worker-static-routing-api-origin-trial",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Parent Static Routing API OT began Chrome 116 (timeline context for the timing sub-feature)"
+      ],
+      "limitations": "Observed via search snippet; full article not read at cutoff."
+    },
+    {
+      "id": "s11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-04-04",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN PerformanceResourceTiming instance-properties list does NOT include workerRouterEvaluationStart, workerCacheLookupStart, workerMatchedRouterSource, or workerFinalRouterSource",
+        "Lists deliveryType (which the explainer proposes needs a 'cache-storage' value)"
+      ],
+      "limitations": "MDN may be updated after the observed revision; browser-compatibility table cells were not individually parsed."
+    },
+    {
+      "id": "s12",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/_967Rs7QJRo",
+      "publisher": "blink-dev (Intent to Prototype)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: Blink>ServiceWorker; finch ServiceWorkerStaticRouterTimingInfo; initial public proposal resource-timing#389",
+        "'Only adds new fields... will not modify any existing fields' (no compat risk)",
+        "At prototype: Gecko/WebKit/Web developers all 'No signal'; TAG 'Pending'",
+        "WPT CL in flight; tracking bug crbug/41496865"
+      ],
+      "limitations": "Thread is the Intent to Prototype; exact post date and LGTM/review comments not captured; the ChromeStatus msgid intent URLs for Experiment/Extension/Ship were not separately readable."
+    },
+    {
+      "id": "s13",
+      "url": "https://x.com/tunetheweb/status/1864362456207806467",
+      "publisher": "@tunetheweb (Barry Pollard)",
+      "publishedOrObservedAt": "2024-12",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer-awareness signal: OT from Chrome 131 adding Navigation and Resource Timing for the Static Routing API"
+      ],
+      "limitations": "Single social post; not a measure of adoption or demand."
+    },
+    {
+      "id": "s14",
+      "url": "https://wpt.fyi/results/service-workers/service-worker/tentative/static-router/static-router-resource-timing.https.html?label=experimental&label=master&aligned",
+      "publisher": "web-platform-tests (wpt.fyi)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "A WPT test file exists for static-router resource timing (per ChromeStatus wpt_descr)"
+      ],
+      "limitations": "URL taken from the ChromeStatus record; current pass/fail state across engines not independently read at cutoff."
+    },
+    {
+      "id": "s15",
+      "url": "https://zai-web-search (adoption/framework queries, 2026-07-22)",
+      "publisher": "Z.AI Web Search aggregate",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T15:50:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "No production adoption, case study, or Workbox/framework integration of the timing fields found across multiple varied queries",
+        "Only timing-info-specific results were ChromeStatus, the parent-API articles, MDN workerStart, and the awareness tweet"
+      ],
+      "limitations": "Negative-evidence from search; search coverage is not exhaustive and may miss non-English/private sources."
+    }
+  ],
+  "successes": [
+    "Clear problem scoping and ownership with an additive, low-compatibility-risk design that only the browser can fulfill (router-evaluation timing is not derivable from JavaScript).",
+    "Thorough, early standards engagement: WICG explainer, resource-timing spec issue #389, TAG review #958, Mozilla (Positive) and WebKit position requests, and spec PRs opened across ServiceWorker, resource-timing, and fetch.",
+    "A diligent, long-running Origin Trial (131-136) with third-party support, a use counter, feedback channels, and a reasoned extension to 139 rather than shipping on schedule without evidence.",
+    "WPT coverage added alongside implementation, supporting future interoperability."
+  ],
+  "failures": [
+    "The OT did not achieve its own stated goal — the extension rationale admits 'we haven't got enough feedback from partners yet as some minor issues had blocked partner OT participation,' so debuggability value was not validated with real partner data before the extension.",
+    "Documentation and communication gap for the sub-feature: no dedicated developer.chrome.com article, MDN omits all four new fields at cutoff, and the ChromeStatus record has no docs or samples; the parent-API article does not substitute.",
+    "Security and privacy reviews were still 'Pending' at the record cutoff, leaving the prepare-to-ship/wide-review packet incomplete.",
+    "Specs remain incubating/pending (resource-timing #415, fetch #1832) and the feature shipped Chrome-only with no other-engine implementation.",
+    "Design/explainer drift: the explainer states workerRouterEvaluationStart 'will not be included in the initial spec change,' yet it shipped — the explainer and spec lag the implementation."
+  ],
+  "counterfactuals": [
+    "If the OT feedback instrument, token/header setup, and a representative partner onboarding dry-run had been validated before OT start, the 'minor issues [that] blocked partner OT participation' could have been caught earlier, avoiding the extension and producing real partner evidence by ship.",
+    "If security and privacy reviews had been closed before Intent to Ship, the prepare-to-ship packet and public record would be unambiguous instead of showing 'Pending' at cutoff.",
+    "If a timing-info-specific MDN entry, a devrel article/section, and at least one runnable sample had shipped alongside GA (as the parent Static Routing API received for Chrome 123), discoverability and adoption would likely be higher.",
+    "If the explainer/spec had been reconciled to the implemented field set (including workerRouterEvaluationStart) before ship, the design drift would be resolved and third-party reviewers would not see conflicting scope.",
+    "If Mozilla's Positive position had been converted into an implementation signal (or if WebKit had been re-engaged after its No signal), the interoperability story at ship would be materially stronger."
+  ],
+  "skillImprovements": [
+    "Phase 05 (Experiment) transition packet: add a pre-OT readiness check — 'Were the feedback instrument, token/header setup, and a representative partner onboarding dry-run validated?' with a stop/redesign condition if no partner can complete onboarding. Add the static-routing-timing OT as a regression case for insufficient partner feedback.",
+    "Phase 06 (Prepare to ship): add a gate — 'Are security and privacy review statuses non-Pending before Intent to Ship?' Treat any Pending review as an explicitly accepted risk recorded in the ship brief, never as silence.",
+    "Phase 07 (Release): for additive timing/observability APIs, require a dedicated MDN entry, a devrel article or explicit section, and at least one runnable sample before GA; a parent-feature article must not count as sub-feature documentation. Add a docs-coverage regression check (MDN + developer.chrome.com reference) keyed off the ChromeStatus doc_links/sample_links fields being non-empty.",
+    "Add a reconciliation rule: whenever a shipped field set diverges from the explainer (e.g., workerRouterEvaluationStart), require the explainer/spec to be updated and the divergence recorded before ship.",
+    "Phase 08 (Adoption): for observability features, require a documented pre-ship plan to monitor use-counter growth and at least one attributable partner evaluation before adoption can be scored; absence of usage data must keep adoption 'unscored.'",
+    "Retrospective method: when the only launch event captured for a feature is the GA ship but an OT/extension history exists in the cached record, surface the OT/extension as experiment-phase evidence even when outside the run's milestone window."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "OT feedback Google Doc content and any participant denominator/activation/interim readout (access-restricted; not public).",
+      "Independent verification of spec PR merge states at cutoff: resource-timing #415, fetch #1832, ServiceWorker #1769 (direct reads failed/timed out).",
+      "Security and privacy review outcomes (record shows 'Pending' as of 2025-07-21; later state unconfirmed).",
+      "Use-counter / usage data and any attributable production adoption or case studies (none found).",
+      "The crbug/41496865 tracking-bug body and any regression/bug history (page read failed).",
+      "Comment/resolution threads on TAG #958, Mozilla #1031, and WebKit #354 beyond the opening posts.",
+      "Exact dates and LGTM records for the Intent to Experiment, Extension, and Intent to Ship threads (msgid URLs not separately readable)."
+    ],
+    "reviewedAt": "2026-07-22T15:50:00Z"
+  }
+}

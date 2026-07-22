@@ -1,0 +1,461 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5110990717321216,
+    "name": "Incoming Call Notifications",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5110990717321216",
+    "summary": "Extends the Notifications API so installed PWAs can send incoming-call notifications with call-styled action buttons, a ringtone, and (where the platform allows) elevated priority.",
+    "featureType": "Chromium catches up",
+    "category": "Miscellaneous",
+    "blinkComponent": "UI>Notifications",
+    "specLink": "https://notifications.spec.whatwg.org",
+    "standardsMaturity": "Incubation (Community Group)",
+    "owners": [
+      "gabrielbrito@microsoft.com",
+      "stevebe@microsoft.com",
+      "luigonza@microsoft.com",
+      "limzh@microsoft.com"
+    ],
+    "otOwnerEmail": "ajayrahatekar@google.com",
+    "isReleasedFlag": true,
+    "accurateAsOf": "2025-08-25T18:14:49Z"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Origin trial:5110990717321216",
+      "milestone": 140,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T14:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear, well-scoped problem: VoIP PWAs cannot make incoming-call notifications distinguishable from ordinary notifications (no colored buttons, no ringtone, no elevated priority), forcing native-app duplication or in-app-only call UIs. Microsoft-owned, classified 'Chromium catches up'. ChromeStatus record, explainer, tracking bug and intent links are all present and consistent on the problem statement.",
+      "evidenceIds": [
+        "cs-record",
+        "explainer",
+        "intent-proto"
+      ],
+      "limitations": "Motivation relies on a category claim (Teams/Meet/Zoom) rather than attributable partner demand; no documented end-user or accessibility research underpins the intake."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation venue (WHATWG notifications) opened Aug 2022 with goals, non-goals and a thoughtful alternatives analysis (fully-custom colors, in-tab ringtone, CallNotification subclass, new permission type). However the WHATWG issue carries a 'needs implementer interest' label that remained 3+ years later, no Gecko/WebKit position was ever obtained, and the only substantive incubation-era developer voice was a single individual (Michaela Merz). Cross-implementer co-design did not occur.",
+      "evidenceIds": [
+        "whatwg-183",
+        "moz-707",
+        "webkit-89",
+        "explainer",
+        "intent-proto"
+      ],
+      "limitations": "No recorded interviews, survey, or framework/library outreach during 2022-2024; incubation evidence is proposal + one developer, not a validated segment map."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype (Nov 2022) was approved: Chrome notifications OWNERS (Peter Beverloo, +Rayan Kanso, Peter Conn) were supportive and a Chromium implementation was built. But the original milestone estimate was M111 versus an actual OT start at M140 (off by ~29 versions / 3+ years), and at prototype time Mike West (Chrome security/privacy) and Thomas Nguyen explicitly warned the abuse model was underestimated and mitigations immature — issues that were not closed at this phase.",
+      "evidenceIds": [
+        "intent-proto",
+        "cs-record"
+      ],
+      "limitations": "No prototype friction log or framework/server integration evidence is public; the prototype was Windows-only, which was not disclosed as a limitation in the 2022 intent."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer-trial/prototype was announced via the Microsoft Edge blog (Feb 4, 2025, Patrick Brosset) behind --enable-features=IncomingCallNotifications on Windows, with a runnable demo and step-by-step instructions. This is a reasonable dev-trial kit for a single platform, but no cohort recruitment, task-completion metrics, geography/framework/device-class representativeness, or published feedback themes accompanied it.",
+      "evidenceIds": [
+        "edge-blog",
+        "demo",
+        "cs-record"
+      ],
+      "limitations": "Windows-only; no documented cohort or methodology; trial feedback was routed only to a GitHub issues queue with no published synthesis."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Wide review is materially weak. TAG review is marked 'Not applicable' (API owner Domenic questioned this); the entry claims 'No interop and compat risk' which Domenic called 'unlikely, especially given that there are no signals from other vendors'; Firefox ('No signal', issue still Unscreened) and Safari ('No signal', 'Needs position') have given no position since Nov 2022; and both security_review_status and privacy_review_status were still 'Pending' as of Aug 2025 — nearly three years after Mike West's abuse flag.",
+      "evidenceIds": [
+        "intent-exp",
+        "cs-record",
+        "moz-707",
+        "webkit-89"
+      ],
+      "limitations": "TAG review reasoning for 'N/A' is not explained in the record; the pending review statuses do not show whether review was requested-and-stalled or never fully initiated."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "Origin Trial approved (Intent to Experiment, Jun 2025) for M139-M141 and actually launched at M140 (announced Aug 5, 2025), running through M146 — an extension from a planned 3 milestones to 7. Explicit goals existed (developer ergonomics, action-button scenarios, general usage) and at least one strong attributable signal appeared (Matias Lopez, a B2B VoIP provider, requesting participation and giving concrete API/platform feedback). But no public readout, registration-vs-activation denominators, interim findings, or rationale for the milestone extension were published.",
+      "evidenceIds": [
+        "intent-exp",
+        "cs-record"
+      ],
+      "limitations": "Registrations may be conflated with use; the Windows-only scope limits generalizable signal; Chrome security (Vincent Scheib) engaged on the OT thread on Jul 11, 2025 but the comment content could not be retrieved."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "A 'Prepare to ship' stage (intent_stage 5) exists in the record but is empty — no Intent to Ship thread, no rollout milestone, no Finch configuration. As of the cutoff no public 'Intent to Ship' for this feature could be found, and both security and privacy reviews remain 'Pending', which is consistent with the feature not having reached ship-readiness.",
+      "evidenceIds": [
+        "cs-record",
+        "intent-exp"
+      ],
+      "limitations": "Ship-readiness may have progressed in non-public channels after the cached record's accurate_as_of (2025-08-25); a 2026 'Intent to Ship' search returned no results but absence of evidence is not proof of absence."
+    },
+    "release": {
+      "status": "unknown",
+      "finding": "No default-on release is evidenced. The record's is_released:true reflects OT/flag availability (Chrome/Edge 140+), not default availability: there is no rollout milestone, no Intent to Ship, and the active stage is still the Origin Trial. A targeted 2026 search for default availability, MDN/caniuse coverage found none.",
+      "evidenceIds": [
+        "cs-record",
+        "webfeatures-3466",
+        "intent-exp"
+      ],
+      "limitations": "is_released is ambiguous and must not be read as default availability; the most recent independent observation (web-features, Oct 2025) still describes it as 'an origin trial, I think?'."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No attributable production adoption evidence exists for the API itself. Named targets in the explainer (Teams, Meet, Zoom) show no public integration; the only concrete trial intent is Matias Lopez's stated interest to participate during M139-M141. Adjacent community posts (Reddit r/PWA, StackOverflow) confirm the underlying problem is felt but discuss workarounds, not this API.",
+      "evidenceIds": [
+        "intent-exp",
+        "explainer",
+        "wpacando"
+      ],
+      "limitations": "No production case study, framework/library integration, or usage data; absence of adoption cannot be scored as failure without denominators, so it remains unknown."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support-issue taxonomy, known-issues material, or recurring-friction evidence was found. Feedback was routed to the MSEdgeExplainers issues queue and the OT thread; no public support health dashboard exists.",
+      "evidenceIds": [
+        "cs-record",
+        "explainer"
+      ],
+      "limitations": "The MSEdgeExplainers feedback issues and the Chromium implementation issue (40246169) could not be loaded during retrieval, so individual feedback items are unverified."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new, additive capability that has not shipped by default and is not being deprecated or removed. No reverse trial, migration, or removal plan is in scope.",
+      "evidenceIds": [
+        "cs-record"
+      ],
+      "limitations": "Included only to satisfy the phase inventory; not a tested dimension."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real and recurring for the VoIP-PWA segment and the proposed solution is minimal and ergonomic (a single opt-in scenario value). Demand evidence is genuine but narrow and anecdotal (two vocal developers, plus category-level community frustration) rather than systematic; the audience is restricted to installed PWAs, and the value proposition presumes reliable delivery that other developers (Merz) argued the platform does not yet guarantee.",
+      "evidenceIds": [
+        "explainer",
+        "intent-proto",
+        "intent-exp",
+        "wpacando"
+      ],
+      "limitations": "No survey, no attributable partner commitment, no measured task improvement."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Intended end-user benefit (recognizing and answering calls faster) is plausible and is the explicit motivation, but no end-user impact evidence — missed-call reduction, answer-rate, accessibility, or user-control data — was produced or found. The trial was Windows-only behind registration.",
+      "evidenceIds": [
+        "explainer",
+        "cs-record"
+      ],
+      "limitations": "No usability study, accessibility evaluation, or user-control/DND evidence; impact remains a hypothesis."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "After an Origin Trial extended to seven milestones, there is no evidence of production adoption by any named VoIP provider, and the feature had not reached default availability by the cutoff. This is at best unproven adoption; scored unscored (not failure) because registration/activation denominators and post-OT outcomes are not public.",
+      "evidenceIds": [
+        "intent-exp",
+        "webfeatures-3466",
+        "cs-record"
+      ],
+      "limitations": "Adoption funnel (awareness/evaluation/trial/production) is entirely unmeasured publicly."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Interoperability is the weakest dimension and has not improved over the feature's life: single-engine (Chromium/Edge), Windows-only, with 'No signal' from Firefox (issue Unscreened) and Safari ('Needs position') unchanged since Nov 2022; the WHATWG incubation issue still carries 'needs implementer interest'; WPT coverage is false; and the feature is not in Baseline — the web-features entry (Oct 2025) was opened speculatively ('I don't actually know a lot about this') and is still open.",
+      "evidenceIds": [
+        "moz-707",
+        "webkit-89",
+        "whatwg-183",
+        "webfeatures-3466",
+        "cs-record",
+        "intent-proto"
+      ],
+      "limitations": "Other-engine silence is dated to the standards-position issues; positions could have moved privately, but no public signal of movement exists."
+    },
+    "implementationQuality": {
+      "status": "unscored",
+      "finding": "A working implementation exists (OT ran on Chrome and Edge 140-146) and a runnable sample is published, but quality cannot be assessed: there are no web-platform-tests (wpt:false), no spec text in WHATWG, no public bug/regression/friction evidence, and the Windows-only scope leaves macOS/Linux/Android/iOS quality unknown.",
+      "evidenceIds": [
+        "cs-record",
+        "demo",
+        "intent-exp",
+        "intent-proto"
+      ],
+      "limitations": "The Chromium implementation tracker (issue 40246169) failed to load during retrieval, so implementation status, bug count and regression evidence are unverified."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication assets are good in places — a thorough explainer with alternatives, a clear blog post, a demo, and consistent intent threads. But evidence hygiene is poor: the API owner flagged five ChromeStatus accuracy errors at OT approval (TAG 'N/A' unjustified, 'no interop risk' implausible, missing required Finch flag, missing OT milestones, email-vs-entry inconsistencies); the original milestone estimate (M111) was off by three years; security/privacy reviews stayed 'Pending'; and is_released:true is misleading.",
+      "evidenceIds": [
+        "intent-exp",
+        "intent-proto",
+        "explainer",
+        "edge-blog",
+        "cs-record"
+      ],
+      "limitations": "Some flagged discrepancies (e.g., Finch flag, OT milestones) may have been corrected after the cached accurate_as_of; not independently re-verified."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support evidence (issue volume, resolution time, recurring themes, regression coverage) was found. Feedback channels exist (MSEdgeExplainers issues, OT thread) but produced no published support artifact.",
+      "evidenceIds": [
+        "cs-record",
+        "explainer"
+      ],
+      "limitations": "Support queues are not publicly indexed here; cannot be scored."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, cleanly-designed, genuinely collaborative Microsoft-Chromium capability addressing a real but niche problem, which reached a long Windows-only Origin Trial but, as of the cutoff, had not shipped by default, attracted no other-engine interest, remained in WHATWG incubation with unresolved 'Pending' security/privacy reviews first flagged in 2022, and produced no defensible adoption or end-user-impact evidence. Overall mixed: sound premise and competent trial execution, undermined by an unresolved abuse-mitigation/security path, no interop movement, and thin outcome evidence.",
+      "evidenceIds": [
+        "cs-record",
+        "intent-proto",
+        "intent-exp",
+        "moz-707",
+        "webkit-89",
+        "webfeatures-3466",
+        "whatwg-183"
+      ],
+      "limitations": "Overall mixes a still-in-flight feature; later default-shipment could change several dimensions, but cannot be assumed."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs-record",
+      "url": "https://chromestatus.com/feature/5110990717321216",
+      "publisher": "Chrome Platform Status (Chromium)",
+      "publishedOrObservedAt": "2025-08-25T18:14:49Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "lifecycle stages and ownership",
+        "Origin Trial M140-M146 Windows-only",
+        "security/privacy review 'Pending'",
+        "Firefox/Safari/Web-dev 'No signal'",
+        "no rollout milestone",
+        "is_released:true (ambiguous)",
+        "use counter bucket 373"
+      ],
+      "limitations": "accurate_as_of is 2025-08-25; fields may have changed since; is_released does not imply default availability."
+    },
+    {
+      "id": "cs-lite",
+      "url": "https://chromestatuslite.com/feature/5110990717321216",
+      "publisher": "chromestatuslite.com",
+      "publishedOrObservedAt": "2026-07-22T14:30:00Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "server-rendered confirmation of summary, status 'In developer trial (Behind a flag)', spec/explainer/sample links, no vendor signals"
+      ],
+      "limitations": "Subset of cached fields; no stage/timeline detail."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/Notifications/notifications_actions_customization.md",
+      "publisher": "MicrosoftEdge (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "API design (NotificationScenario enum, scenario:'incoming-call')",
+        "goals/non-goals",
+        "alternatives analysis",
+        "PWA-only extension scope",
+        "abuse-mitigation rationale (user can disable/uninstall)"
+      ],
+      "limitations": "Living document without revision dates; spec target is WHATWG but no spec text was actually merged there."
+    },
+    {
+      "id": "edge-blog",
+      "url": "https://blogs.windows.com/msedgedev/2025/02/04/request-for-feedback-incoming-call-notifications-api/",
+      "publisher": "Microsoft Edge Blog",
+      "publishedOrObservedAt": "2025-02-04T17:14:06Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "developer-trial/prototype announcement behind --enable-features=IncomingCallNotifications",
+        "Windows-only sample",
+        "author Patrick Brosset",
+        "request for feedback"
+      ],
+      "limitations": "Vendor announcement; framed as proposal/prototype, not shipped capability."
+    },
+    {
+      "id": "intent-proto",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/PtHemJah2Qc",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2022-11-15T21:12:52Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype with estimated milestone M111",
+        "Chrome notifications OWNERS support (Peter Beverloo)",
+        "Mike West security/abuse risk flag",
+        "Thomas Nguyen agreement mitigations immature",
+        "single developer support (Michaela Merz)",
+        "Rick Byers suggestion of reduced-capability Chrome UX",
+        "wpt:false at proposal time"
+      ],
+      "limitations": "Thread captures positions through Dec 2022 only; later design changes not reflected."
+    },
+    {
+      "id": "intent-exp",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/-axY-ZsIw44",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-06-16T16:55:23Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment planned M139-M141",
+        "API owner Domenic LGTM plus five ChromeStatus correction requests",
+        "Windows-only OT scope",
+        "Matias Lopez demand + detailed technical feedback",
+        "Vincent Scheib (Chrome security) engagement",
+        "Limin Zhu announcement of OT at Chrome/Edge 140 (Aug 5, 2025)"
+      ],
+      "limitations": "Vincent Scheib's security comment body did not render and could not be retrieved; thread may continue beyond last visible message."
+    },
+    {
+      "id": "moz-707",
+      "url": "https://github.com/mozilla/standards-positions/issues/707",
+      "publisher": "mozilla/standards-positions",
+      "publishedOrObservedAt": "2022-11-16T05:00:44Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position 'No signal' / project status 'Unscreened' as of retrieval",
+        "request opened Nov 2022, still unscreened"
+      ],
+      "limitations": "Status as of retrieval date only; Mozilla may have updated position privately."
+    },
+    {
+      "id": "webkit-89",
+      "url": "https://github.com/WebKit/standards-positions/issues/89",
+      "publisher": "WebKit/standards-positions",
+      "publishedOrObservedAt": "2022-11-16T05:04:07Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position 'Needs position' (no signal) as of retrieval",
+        "assigned to beidson/marcoscaceres, in review backlog",
+        "labels: from Microsoft, topic app-like capabilities, topic webrtc"
+      ],
+      "limitations": "Status as of retrieval date only; 'Needs position' is not a final position."
+    },
+    {
+      "id": "whatwg-183",
+      "url": "https://github.com/whatwg/notifications/issues/183",
+      "publisher": "whatwg/notifications",
+      "publishedOrObservedAt": "2022-08-09T20:28:14Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "incubation venue WHATWG notifications",
+        "opened Aug 2022",
+        "labels: addition/proposal, 'needs implementer interest' still present at retrieval"
+      ],
+      "limitations": "Issue body is minimal; no resolution or spec PR linked."
+    },
+    {
+      "id": "webfeatures-3466",
+      "url": "https://github.com/web-platform-dx/web-features/issues/3466",
+      "publisher": "web-platform-dx/web-features",
+      "publishedOrObservedAt": "2025-10-16T12:52:32Z",
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "feature not in Baseline",
+        "discovered via Chromium use counters (#3399)",
+        "author states 'origin trial, I think?' and 'I don't actually know a lot about this'",
+        "still open feature-entry request"
+      ],
+      "limitations": "Editorial tracking issue, not a vendor position; reflects ecosystem visibility gap."
+    },
+    {
+      "id": "demo",
+      "url": "https://microsoftedge.github.io/Demos/incoming-call-notifications",
+      "publisher": "MicrosoftEdge/Demos",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "runnable sample exists (request permission / standard notification / incoming-call notification)"
+      ],
+      "limitations": "Minimal demo; no framework integration or fallback demonstration."
+    },
+    {
+      "id": "wpacando",
+      "url": "https://https://whatpwacando.today/incoming-call-notifications/",
+      "publisher": "whatpwacando.today",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "feature listed in community PWA-capability catalog, described as useful for WebRTC messaging apps"
+      ],
+      "limitations": "Aggregator listing, not adoption; no attribution to production use."
+    },
+    {
+      "id": "crbug-40246169",
+      "url": "https://issues.chromium.org/issues/40246169",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "implementation tracked (per search snippet): extend Notifications API for 'incoming-call' notifications with customized buttons, ringtone and increased priority"
+      ],
+      "limitations": "Page failed to load (500/timeout) during retrieval; only search snippet available, so status, owner, milestone and bug detail are unverified."
+    }
+  ],
+  "successes": [
+    "Clean, minimal API surface: a single opt-in scenario value ('incoming-call') on the existing Notifications API, rather than a heavier new interface, with thoughtful rejection of alternatives (custom colors, in-tab ringtone, CallNotification subclass, new permission).",
+    "Genuine Microsoft-Chromium collaboration: Chrome notifications OWNERS (Peter Beverloo, Rayan Kanso, Peter Conn) endorsed prototyping, the implementation landed in shared Chromium, and the Origin Trial ran on both Chrome and Edge from M140.",
+    "A real, articulated developer problem that produced at least one strong attributable demand signal: a B2B VoIP provider (Matias Lopez) stated the API would let them drop a native app and gave concrete, expert technical feedback.",
+    "Reasonable developer-trial kit at the Feb 2025 milestone: runnable Windows demo, flag instructions, and an open feedback channel."
+  ],
+  "failures": [
+    "Milestone estimate at Intent to Prototype was M111; the Origin Trial actually began at M140 — roughly three years and 29 versions late, with no revised plan communicated.",
+    "No other-engine movement in 3.5+ years: Firefox 'Unscreened', Safari 'Needs position', and the WHATWG incubation issue still labelled 'needs implementer interest'. The feature is single-engine and Windows-only.",
+    "Security/abuse risk raised by Mike West and Thomas Nguyen in Nov 2022 was not closed: both security_review_status and privacy_review_status remained 'Pending' as of Aug 2025, which appears to gate default shipping.",
+    "Evidence/metadata hygiene at OT approval: the API owner had to flag five ChromeStatus errors (unjustified TAG 'N/A', implausible 'no interop risk', missing required Finch flag, missing OT milestones, email-vs-entry inconsistencies).",
+    "Origin Trial extended from a planned 3 milestones (M139-M141) to 7 (M140-M146) with no public readout, registration/activation denominators, or published rationale — the classic 'registrations reported as use' risk left unchecked.",
+    "No web-platform-tests (wpt:false), no WHATWG spec text, and not in Baseline: the feature cannot be independently verified and has near-zero ecosystem visibility (the web-features entry was opened speculatively in Oct 2025)."
+  ],
+  "counterfactuals": [
+    "If the team had answered Mike West's Nov 2022 abuse-mitigation ask with a concrete, reviewed abuse/quota/permission model instead of the explainer's 'the user can uninstall the PWA' fallback, security and privacy reviews likely would not still be 'Pending' in 2025, shortening the path to default availability.",
+    "If a Mozilla and/or WebKit position had been actively pursued and obtained during the 2022-2024 incubation gap, the feature would not be framed as Chrome-only/Windows-only, and VoIP providers would face less adoption risk.",
+    "If Rick Byers' Dec 2022 suggestion had been adopted — ship a reduced Chrome UX (no ringtone, basic buttons) first while Edge pursued the full UX — Chrome could have delivered a safer subset to stable far earlier.",
+    "If the Origin Trial had published interim usage/feedback readouts with denominators, the 3-to-7 milestone extension would be evidence-based rather than opaque, and adoption could be assessed instead of guessed.",
+    "If an attributable production partner (e.g., Teams, Meet, or Zoom) had committed to trial, developer value and end-user impact would be defensible rather than unscored."
+  ],
+  "skillImprovements": [
+    "Add a prepare-to-ship transition rule: treat 'Pending' security/privacy review as a red, launch-blocking dimension, and forbid treating OT/flag availability as evidence that reviews passed; never let is_released:true be read as default availability.",
+    "Add a wide-review aging rule: when Gecko/WebKit positions are 'No signal' for more than 12 months, escalate cross-engine engagement as the primary bottleneck before allowing an Origin Trial extension; 'No signal' is never neutral or positive.",
+    "Add a ChromeStatus metadata-audit gate to the OT/Intent-to-Ship transition packet: reconcile TAG-review status, interop-risk claim, Finch flag, OT milestones, and email-vs-entry consistency before API-owner submission; treat API-owner correction requests as a recorded quality defect.",
+    "Add an Origin Trial evidence requirement: at every milestone extension, require a public readout (registration count, activation/use, feedback themes, denominators, limitations); disallow silent extension and disallow registrations-as-adoption reporting.",
+    "Add a 'visibility/Baseline' rule: require a web-features/Baseline entry plan and a WPT strategy at prototype or ship-prep; features discoverable only via use counters with no published explainer-to-Baseline path are flagged as high ecosystem-visibility risk.",
+    "Add an estimate-discipline rule: when a prototype milestone estimate slips by more than ~6 versions, require a written re-estimate and cause note in the ChromeStatus entry rather than letting the stale estimate persist."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Content of Vincent Scheib's (Chrome security) comment on the Intent to Experiment thread (rendered empty); needed to assess post-2022 security-review substance.",
+      "Chromium implementation tracker issue 40246169 failed to load (500/timeout); implementation status, owner, bug/regression evidence unverified.",
+      "Origin Trial registration counts, activation/use denominators, and any interim or final OT readout — not public.",
+      "MSEdgeExplainers feedback-issues content (the OT feedback submission target) was not retrieved, so individual developer feedback is unverified beyond the blink-dev thread.",
+      "Any post-cached-record (after 2025-08-25) movement on security/privacy review, Intent to Ship, or default availability could not be confirmed; a 2026 search found none but absence of evidence is not definitive."
+    ],
+    "reviewedAt": "2026-07-22T14:30:00Z"
+  }
+}

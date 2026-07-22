@@ -1,0 +1,380 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5154752085884928,
+    "name": "View Transitions: Inherit more animation properties",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5154752085884928",
+    "category": "CSS",
+    "featureType": "New or changed feature",
+    "owner": "vmpstr@google.com (Vladimir Levin)",
+    "blinkComponent": "Blink>ViewTransitions>SPA",
+    "specLink": "https://www.w3.org/TR/css-view-transitions-2",
+    "wptLink": "https://github.com/web-platform-tests/wpt/blob/master/css/css-view-transitions/style-inheritance.html",
+    "finchName": "ViewTransitionInheritAnimationProperties",
+    "trackingBug": "https://issues.chromium.org/427741151",
+    "shippingMilestone": 140,
+    "stableDate": "2025-09-02",
+    "precedentFeatureId": 5424291457531904,
+    "precedentFeatureName": "View transition pseudos inherit animation-delay"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5154752085884928",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T14:40:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Genuine, attributable developer demand, not invented. Bramus filed CSSWG issue #11546 (2025-01-20) after hitting the problem in a real project: without animation-*: inherit on the ::view-transition-image-pair/old/new pseudos, the default cross-fade ran at a different timing curve than ::view-transition-group, desyncing animations, forcing a manual `animation-timing-function: inherit` snippet. The request was to extend the existing VT UA-stylesheet inheritance (which already covered animation-duration/fill-mode/delay) to animation-timing-function, -iteration-count, -direction and -play-state.",
+      "evidenceIds": [
+        "s3",
+        "s1"
+      ],
+      "limitations": "Single high-signal author; no broader demand survey."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Correct venue (CSSWG) and minimal design consistent with the existing VT UA-stylesheet inheritance pattern. Builds directly on the resolved precedent #9817 / feature 5424291457531904 (animation-delay inheritance, which shipped in Firefox), so the design space was already settled.",
+      "evidenceIds": [
+        "s3",
+        "s11",
+        "s1"
+      ],
+      "limitations": "Exact CSSWG resolution text not retrieved (comment fetch failed); resolution existence is multiply-confirmed."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Working implementations exist. WebKit landed the change (commit 034ea2b, reviewed by Anne van Kesteren) modifying Source/WebCore/css/viewTransitions.css to add the four `inherit` declarations; Chrome implemented it behind Finch flag ViewTransitionInheritAnimationProperties; WPT style-inheritance.html asserts all seven animation longhands inherit through the pseudo tree.",
+      "evidenceIds": [
+        "s6",
+        "s7",
+        "s5",
+        "s1"
+      ],
+      "limitations": "Chrome-side CL not directly inspected (tracking bug 427741151 was unreadable)."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No separate flag-based developer trial was conducted (no flag_name; finch_name only) or warranted for a UA-stylesheet interop change whose only observable effect is view-transition animation-timing synchronization. Validation came from the shared WPT test and cross-engine implementation parity, not a developer trial. This is a relevance judgment, not a claim that a trial was run and passed.",
+      "evidenceIds": [
+        "s1",
+        "s5"
+      ],
+      "limitations": "Relevance judgment; coverage routed through WPT/cross-engine parity rather than a dev trial."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "A CSSWG resolution exists and is referenced by both the ChromeStatus entry and the WebKit implementation (comment #3005503138; the issue was on the CSSWG April 2025 agenda and is now closed, redirected to #12498). Safari: Shipped/Shipping (bug 296174). Firefox: No signal filed, but no concerns raised and the analogous animation-delay feature already shipped in Firefox.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s6",
+        "s7"
+      ],
+      "limitations": "Exact resolution text not retrieved; no official Firefox position; tag_review_status recorded as 'Not applicable'."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial (origintrial: false; all OT fields null). Appropriate for a UA-stylesheet interop fix, which does not require an origin trial.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Relevance judgment."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship filed (stage_type 160, intent_stage 5; intent_thread_url present); Finch flag ViewTransitionInheritAnimationProperties set; rollout plan 'Will ship enabled for all users'; desktop/android/webview first milestone = 140.",
+      "evidenceIds": [
+        "s1",
+        "s9"
+      ],
+      "limitations": "Intent thread body and LGTM count could not be read (groups.google.com URL rejected by the Z.AI reader); security_review_status and privacy_review_status were 'Pending' in the 2025-07-21 snapshot, though the feature subsequently shipped in 140, so those reviews presumably completed but are not confirmed."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled by default in Chrome 140 (desktop, android, webview). Chrome 140 reached Early Stable 2025-08-27 and Stable 2025-09-02. The official Chrome blog documents the behavior precisely, including the updated UA stylesheet, and states the pseudo-elements 'inheriting more properties shipped in Chrome 140.'",
+      "evidenceIds": [
+        "s8",
+        "s1"
+      ],
+      "limitations": "No standalone announcement, sample, or doc link in the ChromeStatus record; release communication was folded into a broader October 2025 view-transitions summary post."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No use counter or adoption metric exists for a UA-stylesheet behavior change, so adoption of the new behavior cannot be measured. The wider View Transitions ecosystem is healthy (React core <ViewTransition>, same-document VT nearing Baseline Newly available in Firefox 144), but that is not adoption of this specific change.",
+      "evidenceIds": [
+        "s8"
+      ],
+      "limitations": "No defensible adoption signal by design; removal of the manual animation-*: inherit boilerplate is unmeasured."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No regressions, bug reports, or support issues specifically about this change were found within the evidence window. The Chromium tracking bug 427741151 could not be read to confirm post-ship status.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Absence of found issues is not evidence of a low support burden; the tracking bug was unreadable."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a behavior-additive CSS feature, not a deprecation or removal; no deprecation lifecycle applies.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Relevance judgment."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Directly removes a real, attributable developer pain (desynced view-transition animations; manual animation-*: inherit boilerplate) with a minimal, ergonomic UA-stylesheet change: setting timing on ::view-transition-group now keeps the cross-fade of old/new pseudos in sync automatically.",
+      "evidenceIds": [
+        "s3",
+        "s8"
+      ],
+      "limitations": "Small-scope value; no survey of how widely developers hit the problem."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Plausible small positive (more consistent, in-sync transition motion when developers customize group timing) with no accessibility/security/privacy harm surfaced: the VT pseudo tree is not exposed to the accessibility tree per spec, and this change only alters which animation longhands inherit. Impact is logical, not measured, and marginal for a UA-stylesheet change.",
+      "evidenceIds": [
+        "s4",
+        "s3"
+      ],
+      "limitations": "No measured end-user evidence; benefit is plausible but not empirical."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Not measurable for a UA-stylesheet behavior change (no use counter exists by design).",
+      "evidenceIds": [],
+      "limitations": "No adoption signal exists by design."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "Strongest dimension. The css-view-transitions-1 UA stylesheet now contains the exact rule inheriting all seven longhands; WPT style-inheritance.html covers them; WebKit implemented the change and its expected.txt flipped FAIL to PASS; Safari is Shipped/Shipping; Chrome shipped 140. Firefox has no official signal but raised no concerns and the analogous feature already shipped there, with same-document VT nearing Baseline.",
+      "evidenceIds": [
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "s1",
+        "s8"
+      ],
+      "limitations": "No official Firefox position; exact per-engine version matrices not confirmed."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Minimal, well-scoped change (a few UA-stylesheet lines), a reviewed WebKit implementation, extended WPT coverage, and no regressions found.",
+      "evidenceIds": [
+        "s6",
+        "s5",
+        "s7"
+      ],
+      "limitations": "Chrome-side CL not inspected directly."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Official release communication is accurate and precise (the Chrome blog documents the behavior, the milestone, and the UA snippet correctly). But the ChromeStatus record is sparse for a shipped feature: no motivation text, no docs/samples, security/privacy review 'Pending' in the snapshot, Firefox 'No signal', tag review 'Not applicable', and the Intent to Ship body could not be read to verify LGTMs.",
+      "evidenceIds": [
+        "s8",
+        "s1",
+        "s9"
+      ],
+      "limitations": "Intent thread and tracking bug were unreadable via the Z.AI reader."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No evidence of support burden either way in the window; no regressions or issues found and the tracking bug is unreadable.",
+      "evidenceIds": [],
+      "limitations": "Insufficient evidence to score."
+    },
+    "overall": {
+      "status": "success",
+      "finding": "A textbook small CSS interop fix that achieved its core goals - eliminating a real developer pain and converging on an interoperable behavior - with spec + WPT + two engines shipping near-simultaneously and no reported failures. Success is grounded in outcome evidence (interoperability, developer value, implementation quality), not shipment alone; adoption, support and end-user-impact remain unmeasured and are reported as such.",
+      "evidenceIds": [
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "Small-scope change; several process sources were unreadable."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5154752085884928",
+      "publisher": "Chrome Platform Status (cached record evidence/chromestatus/features/5154752085884928.json)",
+      "publishedOrObservedAt": "2025-07-21",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner (vmpstr@google.com), category CSS, six lifecycle stages, intent_thread_url (stage 160/intent_stage 5), finch_name ViewTransitionInheritAnimationProperties, spec and WPT links, tracking bug 427741151, Safari Shipped/Shipping, Firefox No signal, desktop/android/webview first = 140"
+      ],
+      "limitations": "accurate_as_of 2025-07-21; is_released=false in snapshot (pre-ship); security/privacy review Pending in snapshot."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5154752085884928",
+      "publisher": "Chrome Platform Status (chromestatuslite server-rendered view)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, spec link, Safari Shipped/Shipping, Firefox No signal with rationale, tracking bug"
+      ],
+      "limitations": "Same underlying data as the cached record."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/w3c/csswg-drafts/issues/11546",
+      "publisher": "W3C CSS Working Group (csswg-drafts issue tracker)",
+      "publishedOrObservedAt": "2025-01-20",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Original developer motivation and pain (Bramus, from a real project), proposed UA-stylesheet rule, references precedent #9817, on CSSWG April 2025 agenda, resolved/closed (redirected to #12498)"
+      ],
+      "limitations": "Reader did not render comment #3005503138 (the resolution text); only the issue body was captured."
+    },
+    {
+      "id": "s4",
+      "url": "https://drafts.csswg.org/css-view-transitions-1/",
+      "publisher": "W3C CSS Working Group (Editor's Draft)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Section 5 UA Stylesheet now lists animation-timing-function/iteration-count/direction/play-state as inherit on ::view-transition-image-pair/old/new; explanatory summary states timing set on ::view-transition-group dictates timing of all descendants"
+      ],
+      "limitations": "Editor's Draft (living document); TR css-view-transitions-2 is the linked maturity URL but the UA rule lives in Level 1."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/web-platform-tests/wpt/blob/master/css/css-view-transitions/style-inheritance.html",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Test asserts animation-duration/delay/timing-function/iteration-count/direction/play-state and fill-mode all inherit through the group/image-pair/old/new pseudo tree"
+      ],
+      "limitations": "Shows test assertions, not per-engine pass/fail history."
+    },
+    {
+      "id": "s6",
+      "url": "https://commits.webkit.org/297581@main",
+      "publisher": "WebKit (commit 034ea2b)",
+      "publishedOrObservedAt": "2025-07-18",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit implementation in Source/WebCore/css/viewTransitions.css adding the four inherit declarations, reviewed by Anne van Kesteren, based on CSSWG resolution; WPT style-inheritance-expected.txt changed from FAIL to PASS"
+      ],
+      "limitations": "WebKit only; lands in a Safari release."
+    },
+    {
+      "id": "s7",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=296174",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2025-07-18",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit status RESOLVED FIXED; PR #48234; lists the same four properties; bug 294984 marked duplicate"
+      ],
+      "limitations": "Bug metadata only."
+    },
+    {
+      "id": "s8",
+      "url": "https://developer.chrome.com/blog/view-transitions-in-2025",
+      "publisher": "Chrome for Developers (Bramus)",
+      "publishedOrObservedAt": "2025-10-08",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Confirms pseudo-elements inheriting more animation properties shipped in Chrome 140; documents the updated UA stylesheet; broader VT context (React core <ViewTransition>, same-document VT nearing Baseline Newly available via Firefox 144)"
+      ],
+      "limitations": "Post-hoc October 2025 summary, not a launch-day announcement."
+    },
+    {
+      "id": "s9",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/687e706c.170a0220.3a5a9a.0069.GAE%40google.com",
+      "publisher": "chromium.org blink-dev",
+      "publishedOrObservedAt": "2025-07-21",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Existence of an Intent to Ship thread (from cached record stage 160 + URL)"
+      ],
+      "limitations": "COULD NOT READ the body or LGTMs: the groups.google.com URL was rejected by the Z.AI reader ('Correct URL Format') and timed out; this is a known-unreachable source family."
+    },
+    {
+      "id": "s10",
+      "url": "https://issues.chromium.org/427741151",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Existence of the feature tracking bug (from cached record)"
+      ],
+      "limitations": "COULD NOT READ: repeated reader timeouts; status/details unknown."
+    },
+    {
+      "id": "s11",
+      "url": "https://chromestatus.com/feature/5424291457531904",
+      "publisher": "Chrome Platform Status (precedent feature)",
+      "publishedOrObservedAt": "2025-07-21",
+      "retrievedAt": "2026-07-22T14:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Directly analogous animation-delay inheritance feature cited as the template; per the cached record it shipped in Firefox, de-risking the follow-on"
+      ],
+      "limitations": "Separate feature; not independently deep-read in this report."
+    }
+  ],
+  "successes": [
+    "Rooted in real, attributable developer demand (CSSWG #11546 from an actual project) rather than invented need.",
+    "Followed a proven template (precedent animation-delay feature 5424291457531904), reducing design risk.",
+    "Converged on a CSSWG resolution and spec edit, then validated with a shared WPT test that all engines run (WebKit FAIL to PASS).",
+    "Near-simultaneous Chrome 140 and WebKit shipping with matching UA-stylesheet rules produced genuine interoperability, not a Chrome-only behavior.",
+    "Accurate, precise official release communication in the 2025 view-transitions blog post."
+  ],
+  "failures": [
+    "ChromeStatus record is thin for a shipped feature: no motivation text, no docs/samples, security/privacy review Pending in the snapshot, tag review 'Not applicable', no web-dev signals.",
+    "No standalone launch announcement; the feature was folded into a later (October 2025) summary post, so launch-time discoverability was low.",
+    "No official Firefox standards signal was filed (mitigated by the analogous feature already shipping in Firefox, but still a gap in the record)."
+  ],
+  "counterfactuals": [
+    "Had Chrome shipped the UA-stylesheet change unilaterally without the CSSWG resolution/spec edit, it would have created a UA-stylesheet interop gap requiring developers to keep the manual animation-*: inherit fallback for other engines; resolving in CSSWG first let Chrome and Safari ship the same behavior concurrently.",
+    "Without the shared WPT test covering all seven longhands, WebKit's initial FAIL on animation-timing-function might have shipped a partial implementation; the shared test caught it (FAIL to PASS).",
+    "If the team had treated 'Firefox: No signal' as a blocker, a low-risk interop fix would have been delayed despite a directly analogous feature already shipping in Firefox and no concerns being raised.",
+    "If no reviewer (Anne van Kesteren) had scrutinized the WebKit UA-stylesheet diff, the property grouping could have diverged from Chrome/spec; the small reviewed diff kept the implementations byte-equivalent in intent."
+  ],
+  "skillImprovements": [
+    "Add a phase-collapsing heuristic for small CSS/UA-stylesheet interop fixes that follow an already-resolved template: auto-mark developer-trial and origin-trial phases not-relevant (with rationale) and stop them from dragging completion toward partial.",
+    "Add an optional precedentFeatureId field and a 'follow-on to shipped feature' fast path that reuses the prior feature's intent/spec/WPT scaffolding lineage.",
+    "Record known-unreachable source families (groups.google.com blink-dev intent threads fail the Z.AI reader's URL validation; bugs.chromium.org/issuetracker times out) and route them to the browser step instead of marking reports blocked; the skill currently permits the browser only for chromestatus.com - extend that allowance to blink-dev intent threads and the Chromium issue tracker.",
+    "Add a rule that down-weights a missing Firefox 'signal' when (a) a CSSWG resolution exists and (b) a directly analogous feature already shipped in Firefox, to avoid over-penalizing low-risk interop fixes.",
+    "Encourage a one-line motivation and a docs/sample link even on tiny features, so the ChromeStatus record is not the weak link in an otherwise clean launch.",
+    "Add a regression eval case based on this feature: a tiny UA-stylesheet interop fix should score success on interoperability/developerValue/implementationQuality, unscored on adoption/end-user-impact, and partial on completion due to unreadable process sources - not blocked."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship thread body and LGTM count (groups.google.com URL rejected by the Z.AI reader; not retrieved).",
+      "Exact CSSWG resolution text (comment #3005503138 / issue #12498; comment fetch returned no reader data, though the resolution's existence is multiply-confirmed by the ChromeStatus entry and the WebKit commit).",
+      "Chromium tracking bug 427741151 details/status (repeated reader timeouts).",
+      "Adoption/usage data (no use counter exists for a UA-stylesheet behavior change; not retrievable by design).",
+      "MDN documentation of this specific inheritance behavior (pseudo-element pages exist but the specific rule was not confirmed).",
+      "Post-ship regressions/support issues (none found, but absence of findings is not evidence of none)."
+    ],
+    "reviewedAt": "2026-07-22T14:40:00Z"
+  }
+}

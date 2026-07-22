@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5185442420621312,
+    "name": "CSS counter() and counters() in alt text of 'content' property",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5185442420621312",
+    "webFeature": "alt-text-generated-content",
+    "specLink": "https://drafts.csswg.org/css-content/#content-property",
+    "trackingBug": "https://issues.chromium.org/issues/417488055",
+    "flagName": "CSSAltCounter",
+    "blinkComponents": [
+      "Blink>CSS"
+    ],
+    "owner": "sakhapov@chromium.org",
+    "category": "CSS",
+    "rolloutPlan": "Will ship enabled for all users",
+    "platformsShipped": {
+      "desktop": 140,
+      "android": 140,
+      "webview": 140,
+      "ios": null
+    },
+    "standardsMaturity": "Editor's Draft (css-content-3), W3C CSS Working Group; feature marked 'at risk'"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5185442420621312",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clear, narrow intake. The ChromeStatus entry (created 2025-06-16 by sakhapov@chromium.org, same day as the Intent to Ship) frames a concrete accessibility problem: CSS-generated pseudo-elements (notably ::scroll-marker carousel dots) need meaningful, ideally per-item, accessible names, but a static 'content: ... / \"...\"' alt text gives every generated marker the same name. counter()/counters() in the alt-text slot would let each marker carry a unique name. Mode = new CSS feature; component Blink>CSS; declared owner = sakhapov@chromium.org; devrel = generic devrel-chromestatus-all alias. The motivation explicitly ties the feature to the Carousel/scroll-marker work that shipped in Chrome 135. all_platforms=true, breaking_change=false, enterprise_impact low.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "The intake problem statement is sound but rests almost entirely on one dependent feature (::scroll-marker carousels); no independent developer demand was cited at intake."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation happened in the CSSWG (w3c/csswg-drafts#10387, opened 2024-06-03 by emilio/Mozilla). The discussion established that the feature is non-trivial to implement (counter use nodes evaluated during layout-tree construction), that no implementation supported it, and that the use case only became compelling with carousel primitives (danielsakhapov, 2024-07-12). fantasai resolved to keep it 'at risk' (2024-06-25). Critically, the accessibility specialists in that thread were cautious, not enthusiastic: aleventhal (2024-07-15) noted the accessibility tree already exposes 'position in set'/'set size' and warned 'we need to test' whether tab controls announce item numbers, else 'you will hear the item # twice'; scottaohara (2024-07-15) agreed such numeration 'should not be appended to accessible names, since this will just add unnecessary verbosity'. This contested a11y value was not closed before ship. The Intent to Ship later summarized this as 'a11y people support it', which oversimplifies a cautious, conditionally-skeptical thread.",
+      "evidenceIds": [
+        "S4",
+        "S3"
+      ],
+      "limitations": "The thread remained Open/Agenda+ with no recorded WG resolution that the feature should ship; 'at risk' was retained. No follow-up screen-reader test of the verbosity concern is visible in the public record."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implemented in Blink behind runtime flag CSSAltCounter; the prototype stage records desktop_first/android_first = milestone 138, i.e. available behind a flag roughly two milestones before ship. The author directly answered the API owner's performance question: for Blink there are no performance issues because counter-value calculation happens at the same time as for other counters. WPT coverage was declared (content-counter-valid.html, accname/name/comp_name_from_content.html, comp_name_from_content_alt_counter_invalidation.html) and wpt=true.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5"
+      ],
+      "limitations": "Actual WPT pass/fail and cross-browser interop numbers could not be read from wpt.fyi (JS-rendered dashboard). The chromium tracking bug (417488055) could not be read directly for implementation/regression detail (JS-only tracker)."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "A flag (CSSAltCounter) existed from ~M138, but there is no evidence of any recruited developer-trial cohort, task-based feedback, AT-user testing, or published findings. ChromeStatus devtrial_instructions is null; no announcement_url; no devtrial feedback artifacts were found in primary sources or independent search.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Absence of evidence is not proof of absence, but no public developer-trial signal exists for a feature whose accessibility value is contested and would most credibly be validated by assistive-technology users."
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Wide review did not produce positive signals. On the ChromeStatus record as of 2025-08-25: tag_review_status=Pending, security_review_status=Pending, privacy_review_status=Pending. Browser signals: Firefox='No signal' (mozilla/standards-positions#1253, opened 2025-06-16, assigned emilio, project status 'Needs proposed position'); Safari='No signal' (WebKit/standards-positions#515, opened 2025-06-16, no assignee); Web developers='No signals'. The author confirmed in the Intent thread that no web-dev signals exist ('the real use case ... appeared only with Carousel primitives introduction, I don't know of any signals from web devs'). The standards venue is a W3C CSS WG Editor's Draft that explicitly states 'This is a very rough draft, and is not ready for implementation.' Per the methodology, none of this silence is support; the feature shipped with effectively no other-engine or web-developer endorsement.",
+      "evidenceIds": [
+        "S1",
+        "S6",
+        "S7",
+        "S3",
+        "S5"
+      ],
+      "limitations": "The Mozilla/WebKit issues were filed only ~2.5 months before M140 stable and neither engine has issued a position; absence is not opposition, but it is also not Baseline-eligible."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run. All OT fields are null/false (origintrial=false); the feature went directly flag->ship. This is marked not-relevant because no field experiment was conducted, not because field evidence was unneeded. Note as a counterfactual: an OT or AT-user study could have tested the contested accessibility value (verbosity / position-in-set duplication) and the developer-ergonomics fallback requirement under real conditions before wide ship.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "Not-relevant reflects that the phase was skipped, not that it was assessed and deemed unnecessary; the methodology forbids using not-relevant to mean untested."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (blink-dev Ec36bxU5lok) obtained three LGTMs (Harrelson, Weiss, Bratell) on 2025-07-02. The review surfaced the most material developer-ergonomics risk: Yoav Weiss's LGTM2 was explicitly CONDITIONAL on (1) removing the 'at risk' label and (2) 'Including an example in the spec and relevant documentation about *how* developers are supposed to use this', specifically the required fallback pattern because 'the presence of counter() breaks the content: property (as it's invalid syntax in non-supporting browsers)', so devs must emit a preceding content: declaration without counter(). Tab Atkins later clarified that 'at risk' is a W3C term of art and should not gate shipping. The performance concern was resolved. The weakness is execution of condition (2) in developer-facing channels (see release).",
+      "evidenceIds": [
+        "S3",
+        "S1"
+      ],
+      "limitations": "The conditional LGTM requirement on documentation was only partially met by ship time; spec-vs-release-notes divergence is assessed under release."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Shipped enabled-by-default in Chrome 140 stable (2025-09-02) on desktop, Android, and WebView (iOS null), consistent with rollout_plan='Will ship enabled for all users'. The Chrome 140 release notes cover the feature in a single sentence ('This feature adds the ability to use counter() and counters() in the alt text of the content property. This provides more meaningful information to improve accessibility.') and, critically, OMIT the developer-fallback pattern that LGTM2 was explicitly conditioned on. The css-content spec (Editor's Draft, 2026-01-09) DOES now include the fallback guidance and example ('To correctly use <counter> in alt text in unsupported browsers one should specify content property twice...'), but this is a later draft and not what a developer reads at release time. The 2025-09-29 'Make accessible carousels' blog lists 'Support for counters in alt text, which landed in Chrome 140' as a community-feedback fix but also does not show the fallback pattern. Press coverage (gigazine) repeated the counter() example without the fallback. The ChromeStatus spec-maturity field is also mislabeled ('Specification being incubated in a Community Group') when css-content-3 is a W3C CSS Working Group Editor's Draft.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S5",
+        "S12",
+        "S1"
+      ],
+      "limitations": "Could not confirm whether the spec fallback note existed at ship time (2025-09-02) or was added afterward; the only readable draft is dated 2026-01-09."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Adoption is effectively Chrome/Edge-only and no production-adoption evidence exists. Caniuse (mdn-css_properties_content_alt_text_counters) shows: Chrome partial 140-149, supported 150; Edge partial 140+; Firefox NOT supported (through 153); Safari NOT supported (through 26.5); Safari iOS NOT supported; Samsung NOT supported. The feature is not Baseline. Its sole motivating use case (::scroll-marker carousels) is itself Chrome-only and, per an independent accessibility engineer, 'highly experimental and ... not yet ready for production'. No framework/library integration, package, or attributable case study was found; the only consumer is the Chrome CSS Carousel gallery examples.",
+      "evidenceIds": [
+        "S11",
+        "S10",
+        "S9"
+      ],
+      "limitations": "No use-counter/HTTP Archive adoption data is available for this niche feature; the dependency on Chrome-only scroll-markers caps the realistic adoption ceiling regardless."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues, recurring questions, or regressions attributable specifically to counter()/counters() in content alt text were found in primary sources or search. The feature is too new and too niche for visible support burden. The chromium tracking bug (417488055) could not be read for implementation/regression history.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Absence of found support issues is not evidence of zero support burden; the tracker and WPT dashboards were not directly readable."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable. This is a new shipping feature, not a deprecation, restriction, removal, or reverse-trial intervention. There is no affected legacy usage to migrate, no replacement guidance, and no removal timeline to assess.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "None; not-relevant by category."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Genuine but narrow value. The feature fixes a real accessibility gap Sara Soueidan documented: CSS-generated scroll-marker dots given a static 'content: \"\" / \"Carousel item marker\"' alt text all share the SAME accessible name, so a screen-reader user cannot tell markers apart; counter() lets each marker carry a unique name. That is a credible, if narrow, developer/a11y win. The value is constrained by three facts: (1) it is single-engine (Chrome/Edge), (2) its only use case depends on ::scroll-marker carousels which are themselves Chrome-only and experimental, and (3) the accessibility value was contested by a11y specialists who warned that appending counter numeration to accessible names risks duplicating the already-announced 'position in set' and adding verbosity.",
+      "evidenceIds": [
+        "S10",
+        "S4",
+        "S11"
+      ],
+      "limitations": "No web-developer demand signal exists (author acknowledged this), so developer value is inferred from the problem/solution fit rather than from expressed developer need."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Intended positive impact for assistive-technology users (unique, meaningful marker names) is plausible, but it is contested and unvalidated. In the CSSWG thread, aleventhal warned screen readers may already announce 'x of y' for the relevant controls so 'you will hear the item # twice', and scottaohara warned numeration 'should not be appended to accessible names, since this will just add unnecessary verbosity'. Independent testing of the broader carousel widget (Soueidan, with VoiceOver on macOS) found the scroll-marker/tabs semantics broken in multiple ways regardless of names. No AT-user study validating the net benefit of counter()-in-alt-text was run before ship. Net end-user impact is therefore uncertain rather than clearly positive.",
+      "evidenceIds": [
+        "S4",
+        "S10"
+      ],
+      "limitations": "No published screen-reader test isolates the effect of counter()-in-alt-text from the surrounding (broken) scroll-marker semantics; the a11ysupport.io test suite covers generic content alt text, not this specific counter variant."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption data. The feature is Chrome/Edge-only with no Firefox/Safari/Samsung support, not Baseline, and its primary consumer (CSS carousels) is experimental and Chrome-only. No production deployment, framework/library integration, or attributable case study was found. Per methodology, missing usage/adoption evidence is unknown rather than zero.",
+      "evidenceIds": [
+        "S11",
+        "S10"
+      ],
+      "limitations": "No use-counter or HTTP Archive figures are available; the feature is too new/niche for measurable adoption."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Clear interop gap. Single-implementation (Chrome/Edge only); Firefox 'No signal'/not supported (through 153); Safari 'No signal'/not supported (through 26.5); not Baseline. The standards artifact is a W3C CSS WG Editor's Draft that states it is 'not ready for implementation', and the feature is explicitly 'at risk' in that draft precisely because of single-implementation status. The feature that motivated it (::scroll-marker) is also Chrome-only. This is not a case where Chrome shipped ahead of an imminent consensus; there is no other-engine movement at all.",
+      "evidenceIds": [
+        "S11",
+        "S6",
+        "S7",
+        "S5",
+        "S4"
+      ],
+      "limitations": "Other-engine absence is current; positions could change, but as of the evidence cutoff there is no movement."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Implementation appears sound within Blink: the author addressed the raised performance concern credibly (counter values computed alongside existing counter computation), WPT tests were added, all_platforms=true was met (desktop/Android/WebView at M140), and no regressions or bugs specific to this feature surfaced in public sources. The qualifier is partial because real-world validation is absent, WPT interop numbers were not directly readable, and the chromium tracking bug could not be inspected for implementation history.",
+      "evidenceIds": [
+        "S3",
+        "S1",
+        "S5"
+      ],
+      "limitations": "wpt.fyi pass/fail and the chromium bug tracker were not directly readable (JS-rendered); implementation-quality conclusion is based on author claims + declared test coverage rather than independent verification."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Mixed accuracy and completeness. Strengths: the Intent thread was candid that no web-developer signals exist and that the use case emerged only with carousel primitives. Weaknesses: (1) the assertion 'a11y people support it' oversimplified a CSSWG thread in which a11y specialists were cautious/skeptical about verbosity and position-in-set duplication; (2) the developer-facing release notes (and the accessible-carousel blog, and press) omitted the fallback content: pattern that LGTM2 was explicitly conditioned on, even though the spec eventually documented it; (3) ChromeStatus mislabels standards maturity as 'Community Group incubation' for a W3C CSS WG Editor's Draft, and leaves tag/security/privacy reviews as Pending while showing the feature shipped.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S9",
+        "S5",
+        "S1",
+        "S12"
+      ],
+      "limitations": "Cannot confirm whether the spec fallback note existed at ship time; only a later (2026-01-09) draft was readable."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No evidence of support burden, recurring issues, or resolutions attributable to this feature. Too new/niche for visible support signal. Scored unscored rather than success because absence of found issues is not evidence of good supportability.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Support trackers/changelogs were not directly readable; no independent support signal exists."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A narrow, technically clean accessibility fix that shipped correctly within Blink but launched as a single-implementation CSS feature with no other-engine signal (not Baseline), no web-developer demand evidence, an accessibility value that contested a11y specialists did not validate, and developer-facing communication that omitted the fallback-pattern guidance the LGTM was explicitly conditioned on. Its entire rationale depends on another Chrome-only, still-experimental feature (::scroll-marker carousels) that an independent accessibility engineer judged 'not ready for production'. Reasonable engineering; weak launch evidence and interop posture.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S11"
+      ],
+      "limitations": "Overall mixed reflects weighted dimension outcomes; it is not promoted to success on the basis of shipment or the existence of a plausible use case."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5185442420621312",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2025-08-25 09:07:03 UTC)",
+      "publishedOrObservedAt": "2025-08-25T09:07:03Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature id/name/motivation, owner sakhapov@chromium.org, flag CSSAltCounter, Blink>CSS",
+        "Stages: prototype stage desktop_first/android_first=138; ship stage desktop/android/webview=140, ios=null",
+        "Signals: Firefox No signal, Safari No signal, Web developers No signals; tag/security/privacy review Pending",
+        "Spec link, WPT links, all_platforms=true, rollout_plan=ship-enabled-for-all, breaking_change=false"
+      ],
+      "limitations": "Snapshot dated 2025-08-25; ChromeStatus fields (e.g. spec maturity 'Community Group incubation', review statuses Pending) may lag actual state at the 2025-09-02 ship date."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5185442420621312",
+      "publisher": "Chrome Platform Status (chromestatuslite server-rendered view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered public ChromeStatus summary matching cached record: status Proposed, summary, motivation, spec URL, tracking bug, No-signal browser/webdev signals"
+      ],
+      "limitations": "Lite view shows fewer fields than the full record; used to corroborate the public-facing state."
+    },
+    {
+      "id": "S3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/Ec36bxU5lok",
+      "publisher": "blink-dev (chromium.org) Intent to Ship thread",
+      "publishedOrObservedAt": "2025-06-16T10:44:09Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship filed 2025-06-16 by Daniil Sakhapov",
+        "API owner Vladimir Levin (2025-06-24) questioned performance and the lack of web-developer signals",
+        "Author reply (2025-06-25): no Blink performance issues; 'the real use case ... appeared only with Carousel primitives introduction, I don't know of any signals from web devs, but a11y people support it'",
+        "LGTM1 Chris Harrelson, LGTM2 Yoav Weiss (conditional on removing at-risk label AND documenting the fallback content: pattern), LGTM3 Daniel Bratell (2025-07-02)",
+        "Tab Atkins (2025-07-08): 'at risk' is a W3C term of art and 'We should not be gating shipping approval on this'"
+      ],
+      "limitations": "Google Groups thread rendering truncated; the final author reply (2025-07-21) was partially visible. Does not include the internal review-bug/approval state."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/csswg-drafts/issues/10387",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2024-06-03T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "emilio (Mozilla, 2024-06-03): no implementation supports it; non-trivial complexity (counter use nodes during layout-tree construction); questions the use case",
+        "dandclark (Microsoft, 2024-06-03): given complexity it should be dropped absent a strong use case and signals browsers will implement",
+        "fantasai (2024-06-25): keep it 'at risk'",
+        "danielsakhapov (2024-07-12): use case is Carousel/::scroll-marker accessibility",
+        "flackr (2024-07-12): scroll-markers as tabs should get a generated accessible name; counters would let authors add more meaning",
+        "aleventhal (2024-07-15): accessibility tree already exposes position-in-set/set-size; need to test whether tab controls announce item numbers else 'you will hear the item # twice'",
+        "scottaohara (2024-07-15): 'such numeration should not be appended to accessible names, since this will just add unnecessary verbosity'",
+        "Issue remains Open/Agenda+; no resolution that it should ship"
+      ],
+      "limitations": "Thread is the primary standards-venue discussion; no later WG resolution capturing the a11y concern was found in this issue."
+    },
+    {
+      "id": "S5",
+      "url": "https://drafts.csswg.org/css-content/#content-property",
+      "publisher": "W3C CSS Working Group (CSS Generated Content Module Level 3, Editor's Draft)",
+      "publishedOrObservedAt": "2026-01-09T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "content property value grammar accepts '/ [ <string> | <counter> | <attr()> ]+' as alt text",
+        "Spec states 'This is a very rough draft, and is not ready for implementation'",
+        "Spec now documents the fallback pattern: specify content twice, first without counter in alt text, then with, because counter() in alt text is invalid in unsupported browsers",
+        "Section 1.2 Alternative Text for Accessibility and the Accessibility of Generated Content section (1.1) are the normative anchors"
+      ],
+      "limitations": "Read draft is dated 2026-01-09, after the 2025-09-02 ship; cannot confirm the fallback note existed at ship time. The 'at risk' status of this sub-feature is set by WG resolution (#10387), not visible inline in this draft."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1253",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2025-06-16T14:34:50Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position: 'No signal'; issue assigned to emilio; project status 'Needs proposed position'",
+        "Filed by danielsakhapov referencing the css-content spec and csswg-drafts#10387"
+      ],
+      "limitations": "No Mozilla position has been issued beyond 'No signal'; absence is not endorsement or opposition."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/515",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2025-06-16T14:34:49Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position: 'No signal'; no assignee; labeled topic:css, venue:W3C CSS WG",
+        "Filed by danielsakhapov referencing the css-content spec and csswg-drafts#10387"
+      ],
+      "limitations": "No WebKit position has been issued beyond 'No signal'; absence is not endorsement or opposition."
+    },
+    {
+      "id": "S8",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Chrome 140 release notes)",
+      "publishedOrObservedAt": "2025-09-02T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 stable release date 2025-09-02",
+        "Feature shipped enabled by default; one-sentence description: 'This feature adds the ability to use counter() and counters() in the alt text of the content property. This provides more meaningful information to improve accessibility.'",
+        "Release notes do NOT include the fallback content: pattern or any developer-usage example"
+      ],
+      "limitations": "Release notes are developer-facing but high-level; they reference the tracking bug and ChromeStatus rather than documenting usage."
+    },
+    {
+      "id": "S9",
+      "url": "https://developer.chrome.com/blog/accessible-carousel",
+      "publisher": "Chrome for Developers (blog: Make accessible carousels, Robert Flack / Penny McLachlan / Lucas Radaelli)",
+      "publishedOrObservedAt": "2025-09-29T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "CSS carousels (CSS Overflow Module Level 5) shipped in Chrome 135; counter-in-alt-text 'landed in Chrome 140' is listed as one of several community-feedback-driven fixes",
+        "Blog does NOT show the counter()-in-alt-text syntax or the fallback pattern; it focuses on interactivity/ARIA",
+        "Blog acknowledges 'no UI can be guaranteed to be accessible out of the box' and tells developers to verify against their Baseline target",
+        "Notes planned scroll-marker-group type support will 'automatically take care of applying appropriate roles and semantics'"
+      ],
+      "limitations": "Published 2025-09-29, after ship; presents the feature positively without the contested a11y nuance."
+    },
+    {
+      "id": "S10",
+      "url": "https://www.sarasoueidan.com/blog/css-carousels-accessibility/",
+      "publisher": "Sara Soueidan (independent accessibility engineer)",
+      "publishedOrObservedAt": "2025-05-06T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent, evidence-based critique: CSS carousels are 'highly experimental and ... not yet ready for production' with 'major accessibility issues'",
+        "Documents the exact gap this feature targets: scroll-marker dots given a static 'content: \"\" / \"Carousel item marker\"' alt text all share the SAME accessible name, so users cannot tell markers apart; each marker needs a unique name",
+        "Demonstrates (with VoiceOver) broader scroll-marker/tabs semantics are broken: single-selectable tablist with multiple visible items, no tabpanels, wrong list numeration, selected-state not updated, disabled buttons still focusable",
+        "Updated 2025-08-19; the static-alt-text shared-name problem is precisely what counter()-in-alt-text is meant to solve"
+      ],
+      "limitations": "Article primarily critiques the scroll-marker/carousel feature as a whole; the counter()-in-alt-text sub-feature is the intended partial remedy for one of several issues she lists. Not formal feedback to the implementing team."
+    },
+    {
+      "id": "S11",
+      "url": "https://caniuse.com/mdn-css_properties_content_alt_text_counters",
+      "publisher": "Can I use (mdn-css_properties_content_alt_text_counters)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Chrome: not supported 4-139; partial 140-149; supported 150",
+        "Edge: not supported 12-139; partial 140+",
+        "Firefox: not supported (through 153)",
+        "Safari / Safari iOS: not supported (through 26.5); TP unknown",
+        "Samsung Internet: not supported; Chrome for Android partial 147",
+        "Single-implementation / not Baseline"
+      ],
+      "limitations": "caniuse 'partial' vs 'supported' classification for 140-149 vs 150 is not explained in-page; treat as Chrome/Edge-only with no Gecko/WebKit support."
+    },
+    {
+      "id": "S12",
+      "url": "https://gigazine.net/gsc_news/en/20250903-google-chrome-140/",
+      "publisher": "GIGAZINE (press)",
+      "publishedOrObservedAt": "2025-09-03T08:25:00+09:00",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent (non-Google) press coverage of Chrome 140 (2025-09-03) lists the counter()/counters()-in-alt-text feature",
+        "Coverage is neutral/descriptive and, like the official notes, does NOT show the fallback content: pattern; it shows a plain counter() example"
+      ],
+      "limitations": "Single press item; restates the feature without critical analysis or interop framing."
+    },
+    {
+      "id": "S13",
+      "url": "https://issues.chromium.org/issues/417488055",
+      "publisher": "Chromium issue tracker (tracking bug 417488055)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Referenced by ChromeStatus and release notes as the tracking bug for the feature"
+      ],
+      "limitations": "Could not be read (JS-only tracker); implementation/regression history not directly verified. Marked as attempted-but-unreadable evidence."
+    }
+  ],
+  "successes": [
+    "The Intent-to-Ship thread was candid that no web-developer signals exist and that the motivating use case emerged only with carousel primitives, rather than inflating demand.",
+    "The author proactively and credibly answered the API owner's performance concern (counter values computed alongside existing counter computation, no extra Blink cost).",
+    "The feature correctly targets a real, documented accessibility gap: CSS-generated scroll-marker dots sharing one static alt-text accessible name (Soueidan), for which unique per-item names via counter() is a plausible remedy.",
+    "The LGTM process (Yoav Weiss) identified the key developer-ergonomics risk that counter() in alt text is invalid syntax in non-supporting browsers, requiring a preceding fallback content: declaration.",
+    "The feature shipped consistently across desktop/Android/WebView at a single milestone (140) with declared WPT coverage and no public regressions."
+  ],
+  "failures": [
+    "Shipped as a single-implementation CSS feature with no Firefox or Safari signal and no Baseline eligibility, against a spec that is a W3C CSS WG Editor's Draft explicitly 'not ready for implementation' and kept 'at risk' for single-implementation status.",
+    "The Intent-to-Ship claim 'a11y people support it' oversimplified a CSSWG thread in which accessibility specialists (aleventhal, scottaohara) were cautious/skeptical about verbosity and duplication of position-in-set information, and that concern was never closed.",
+    "Developer-facing release communication (Chrome 140 release notes, the accessible-carousel blog, and press coverage) omitted the fallback content: pattern that LGTM2 was explicitly conditioned on; only the later spec draft documented it.",
+    "The feature launched as a dependency of another Chrome-only, still-experimental feature (::scroll-marker carousels) that an independent accessibility engineer judged 'not ready for production', so its real-world value is gated on unproven upstream adoption.",
+    "ChromeStatus mislabeled standards maturity as 'Community Group incubation' for a W3C CSS WG Editor's Draft and left tag/security/privacy reviews as Pending while the feature shipped.",
+    "No Origin Trial or assistive-technology user study was run to validate the contested accessibility value before wide ship."
+  ],
+  "counterfactuals": [
+    "If an Origin Trial or an AT-user developer-trial cohort had been run, the contested accessibility value (verbosity / position-in-set duplication raised by aleventhal and scottaohara) could have been measured against real screen readers before wide ship, instead of relying on the author's 'a11y people support it' assertion.",
+    "If Mozilla/WebKit positions had been actively sought earlier than ~2.5 months before M140 stable (both issues were filed 2025-06-16), the single-implementation interop risk would have been represented as a concrete position rather than 'No signal' at ship time.",
+    "If the developer-facing release notes/blog had included the fallback content: pattern (as LGTM2 conditioned on), early adopters would have been less likely to ship a content: declaration that is invalid (and silently ignored) in Firefox/Safari, reducing Chrome-only breakage.",
+    "If the feature had been sequenced behind the planned scroll-marker-group type support (which the Chrome team's own accessible-carousel blog says will 'automatically take care of applying appropriate roles and semantics'), the accessibility value and timing would have been clearer and the contested semantics less of a liability.",
+    "If the a11y specialists' verbosity concern (issue #10387) had been explicitly resolved or documented as an accepted risk in the Intent thread, the 'a11y people support it' framing would not have misrepresented the evidence."
+  ],
+  "skillImprovements": [
+    "Add a wide-review phase rule: 'No signal' from Mozilla/WebKit and 'Pending' TAG/security/privacy reviews must be surfaced as launch-changing risks, never as neutral/positive, and the ship brief must explicitly state the accepted single-implementation risk and its Baseline implications.",
+    "Add a release-comms gate: when any LGTM is explicitly conditional on documentation, the milestone cannot be marked complete until the required guidance appears in developer-facing channels (release notes/blog/MDN), not only in the spec.",
+    "Add an evidence-accuracy check: summary claims such as 'a11y people support it' must cite the specific reviewers and their exact words; conditional or skeptical support must not be reported as support.",
+    "Add a dependency-maturity rule: for features whose only use case is another Chrome-only/experimental feature, the ship brief must state that dependency and its production-readiness, and adoption expectations must be discounted accordingly.",
+    "Add a spec-maturity validation step: ChromeStatus spec-venue/maturity fields (Community Group vs W3C WG; Editor's Draft vs CR; 'at risk' status) must be reconciled against the actual spec before ship and corrected when wrong.",
+    "Add a regression eval case for the 'Chrome-only a11y-CSS dependency feature' archetype (single-implementation + no web-dev signal + contested a11y value + missing fallback docs) so future retrospectives flag the same combination."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chromium tracking bug 417488055 (JS-only tracker) could not be read for implementation/regression history and review-bug/approval state.",
+      "WPT pass/fail and cross-engine interop numbers could not be read from wpt.fyi (JS-rendered dashboard); implementation-quality conclusion rests on author claims and declared test coverage rather than independent verification.",
+      "No use-counter / HTTP Archive / BigQuery adoption data is available; the feature is too new and niche for measurable adoption, so adoption is unscored rather than measured.",
+      "Whether the spec fallback note existed at ship time (2025-09-02) could not be confirmed; only a later (2026-01-09) Editor's Draft was readable.",
+      "No published assistive-technology test isolates the effect of counter()-in-alt-text from the surrounding (broken) scroll-marker semantics; the net end-user benefit remains unvalidated."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

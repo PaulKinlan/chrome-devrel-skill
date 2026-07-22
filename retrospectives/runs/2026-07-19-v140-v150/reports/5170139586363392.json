@@ -1,0 +1,476 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5170139586363392,
+    "name": "Http cookie prefix",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5170139586363392",
+    "owner": "yoavweiss@chromium.org",
+    "blinkComponents": [
+      "Internals>Network>Cookies"
+    ],
+    "shippingYear": 2025,
+    "finchNames": [
+      "PrefixCookieHttp",
+      "PrefixCookieHostHttp"
+    ],
+    "category": "Miscellaneous",
+    "shippedPrefixes": "__Http- and __Host-Http- (stable 140 after back-merge of the __HostHttp- -> __Host-Http- rename)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5170139586363392",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T15:10:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus feature 5170139586363392 was created 2025-06-19 by Yoav Weiss with a clear, well-scoped motivation: HttpOnly only prevents a cookie from being READ on the client, but an XSS/extension/buggy commit can still SET a similarly-named cookie from script; the __Http- / __Host-Http- name prefixes give server operators a guarantee the cookie arrived only via a Set-Cookie header. Tracking bug 426096760 (Internals>Network>Cookies) and the initial public proposal (httpwg/http-extensions#3110) were both recorded. star_count=67 indicates moderate internal/community interest.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s8"
+      ],
+      "limitations": "The Chromium tracking bug body could not be retrieved (reader returned HTTP 500), so intake-stage discussion, sub-issues, and dependency graph were not inspected."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Work happened in the IETF HTTP WG. It began as an individual draft (draft-httponlyprefix-weiss-http, Weiss & Metzger, latest revision 2025-04-09, now expired) introducing __HttpOnly/__HostHttpOnly, was integrated into the cookie layering processing model via PR #3110 ('As discussed at IETF 122'), and has since been absorbed into the WG draft draft-ietf-httpbis-layered-cookies (van Kesteren/Apple & Hofmann/Google; -01 last updated 2025-11-18), which explicitly obsoletes RFC 6265 and 6265bis and normatively defines the __Http- (4.1.3.3) and __Host-Http- (4.1.3.4) prefixes. The prefix naming was NOT stable during incubation: it moved __HttpOnly -> __Http- and __HostHttp- -> __Host-Http- (see prepareToShip).",
+      "evidenceIds": [
+        "s3",
+        "s4",
+        "s5",
+        "s8"
+      ],
+      "limitations": "The individual draft is marked Expired & archived; the authoritative text now lives only in the layered-cookies WG draft and PRs #3110/#3156, not yet an RFC."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implementation landed in Chromium behind two Finch flags (PrefixCookieHttp, PrefixCookieHostHttp). WPT coverage exists for both prefixes (__Http.https.html and __HostHttp.https.html, listed in the intent). The Cookie Store API was updated in parallel (whatwg/cookiestore#262). Yoav confirmed on 2025-06-30 'the PR has landed, and the feature is now enabled by default.' Behavior on script-set prefixed cookies: document.cookie silently fails (observable only by cookie absence server-side); CookieStore API rejects the promise.",
+      "evidenceIds": [
+        "s8",
+        "s3",
+        "s1"
+      ],
+      "limitations": "Tracking bug 426096760 body was not retrievable, so prototype-stage regressions, perf data, and code-review objections were not inspected."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial or origin trial was run (devtrial_instructions=null, flag_name=null, all origin-trial fields null; manifest shows only one launch event, 'Enabled by default' in 140). For a backward-compatible cookie-prefix the absence is defensible -- prefixed cookies are accepted unchanged by non-supporting UAs, so there is no breakage to gate -- but it also means no early external developer feedback was gathered before stable.",
+      "evidenceIds": [
+        "s1",
+        "s8"
+      ],
+      "limitations": "A short dev trial could have surfaced the deployment-ergonomics issue (later driving the __HostHttp- rename) before beta."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Multi-engine engagement was strong and positive: Mozilla standards-positions #1256 = Positive; WebKit/standards-positions #518 = Support (clarified: 'support is limited to the __Http- and __HostHttp- prefixes and not any possible future expansions'); IETF HTTP WG mailing list webdev signal = Positive; TAG review explicitly 'Not applicable' (TAG does not typically review HTTP features). WebKit, Mozilla and Chrome engineers coordinated the later rename on the #cookies matrix channel. However, two material gaps remain: (1) ChromeStatus shows security_review_status and privacy_review_status BOTH still 'Pending' as of accurate_as_of 2025-08-25, i.e. AFTER the M140 stable ship; (2) the LGTM-condition 'spec work landing before shipping' was recorded but the formal review fields were never closed on the record.",
+      "evidenceIds": [
+        "s1",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "Cannot confirm from public evidence whether the security/privacy reviews were actually completed off-record or genuinely open at ship time; the ChromeStatus field is the only observable signal."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial or deprecation trial (all OT fields null; origintrial=false). Consistent with a non-breaking, additive security prefix: there is no site behavior to opt into or be exempted from, and non-supporting browsers simply accept the prefixed cookie. The chosen mitigation for unknown compat risk was a Finch kill-switch rather than a trial.",
+      "evidenceIds": [
+        "s1",
+        "s8"
+      ],
+      "limitations": "None material; an OT would not have been the right instrument here."
+    },
+    "prepareToShip": {
+      "status": "mixed",
+      "finding": "Intent to Implement and Ship filed 2025-06-19; three LGTMs (Mike Taylor, Vladimir Levin, Chris Harrelson) on 2025-06-25, ALL 'conditioned on the spec work landing before shipping anything.' Rollout plan 'Will ship enabled for all users' on desktop/Android/WebView in 140 (not iOS). Enabled-by-default landed ~2025-06-30. BUT the packet was inaccurate and incomplete on spec stability: 'Anticipated spec changes: None' was filed even though the __HostHttp spelling was explicitly still unsettled in the same intent ('ongoing discussions about the exact spelling'). On 2025-08-11 (during 140 beta) Yoav reopened the thread proposing __HostHttp- -> __Host-Http- for deployment ergonomics (progressive enhancement in non-supporting browsers), filed spec PR #3156 + WPT, and on 2025-08-25 confirmed 'the rename landed and was back-merged into 140. No flags required. Mozilla similarly renamed their implementation.' Compat safety was asserted on thin grounds ('I don't have any metrics'; relied on a GitHub regex search returning only the WPT), mitigated by the Finch kill-switch.",
+      "evidenceIds": [
+        "s8",
+        "s3",
+        "s1"
+      ],
+      "limitations": "The back-merge/redesign happened during beta and was caught before stable -- good recovery, but it shows the prepare-to-ship packet under-stated a known-open naming question."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled-by-default in Chrome 140 stable (2025-09-02) for Android, ChromeOS, Linux, macOS, Windows, and WebView; not iOS. Chrome 140 beta was 2025-08-06. The shipped prefixes are __Http- and __Host-Http- (rename back-merged before stable). The feature is documented in the Chrome 140 release notes (though those notes still use the older __Http/__HostHttp spelling). Independent press covered it (Risky Bulletin 2025-09-05; ppc.land 2025-08-10; Gigazine). Firefox shipped the same feature in Firefox 142 stable on 2025-08-19 (i.e. before Chrome stable), per Bugzilla 1974979 cited by ppc.land and confirmed by Risky Bulletin.",
+      "evidenceIds": [
+        "s9",
+        "s8",
+        "s10",
+        "s14"
+      ],
+      "limitations": "Chrome 140 release notes and the ChromeStatus summary retained the pre-rename __Http/__HostHttp wording, creating a documentation-vs-implementation naming drift at release time."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No usage or adoption evidence exists. web_feature='Missing feature' (no UseCounter), webdx_usecounter_enum=null, so there is no Chrome telemetry to measure adoption; no HTTP Archive/Baseline/BigQuery data was found. No framework/library (Express, Django, Rails, language cookie libs) was found to auto-emit __Http-/__Host-Http- cookies. Risky Bulletin (citing ERNW) describes cookie prefixes generally as 'a lesser-known browser security feature that is rarely used by web developers,' and the April 2025 insinuator.net deep-dive on cookie prefixes did not mention the new __Http- variants at all. The rename rationale ('while talking to folks about deploying this') is the only signal of real deployment interest. Per method, missing adoption evidence must remain unknown, not be inferred as failure.",
+      "evidenceIds": [
+        "s1",
+        "s10",
+        "s13"
+      ],
+      "limitations": "Adoption is genuinely unmeasured; absence of a use counter means it cannot be resolved without new instrumentation."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public evidence of support burden, site-compat incidents, regressions, or migration friction. The feature is backward-compatible (prefixed cookies are accepted by non-supporting UAs) and gated by a Finch kill-switch (PrefixCookieHttp/PrefixCookieHostHttp), so low support load is plausible, but unconfirmed. Could not read tracking bug 426096760 to inspect filed issues.",
+      "evidenceIds": [
+        "s1",
+        "s8"
+      ],
+      "limitations": "No support tracker, crbug content, or partner-issue evidence retrieved; remains unknown rather than confirmed-clean."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive security feature, not a deprecation or removal; there is no removal timeline, enterprise impact is low (enterprise_impact=1, breaking_change=false), and no deprecation trial. The deprecation phase does not apply.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real and the solution is sound and standards-aligned: HttpOnly protects reading but not setting, so an XSS can inject a shadow cookie; the __Http- prefix lets a server trust that a cookie came only from a Set-Cookie header. Multi-engine agreement (Mozilla Positive, WebKit Support, Firefox shipped) and the established __Secure-/__Host- precedent lower design risk. Value realization, however, depends on server-side adoption, which is unmeasured, and a deployment-ergonomics defect (the __HostHttp- naming) was only discovered post-intent 'while talking to folks about deploying this.'",
+      "evidenceIds": [
+        "s1",
+        "s6",
+        "s7",
+        "s8",
+        "s10"
+      ],
+      "limitations": "No adoption telemetry to confirm developers are actually using the prefixes in production."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Indirect security benefit only (defense-in-depth against session cookie injection/tampering via XSS or malicious extensions). No user-visible UI, no measurable end-user impact or breakage evidence was found. Cannot score positive or negative user impact from absent evidence.",
+      "evidenceIds": [
+        "s1",
+        "s10"
+      ],
+      "limitations": "No user-impact, accessibility, or telemetry data; outcome remains unscored per method."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No use counter, no framework/library integration, no case studies, no partner trials, and press describes the prefix family as rarely used. There is no defensible adoption signal in either direction. Must remain unscored, not inferred from shipment or press sentiment.",
+      "evidenceIds": [
+        "s1",
+        "s10",
+        "s13"
+      ],
+      "limitations": "Absence of a UseCounter/webdx enum means adoption is currently unmeasurable from public data."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Strong but incomplete. Two engines confirmed shipping: Chrome 140 (2025-09-02) and Firefox 142 (2025-08-19, Bugzilla 1974979); Mozilla coordinated the rename. Shared WPT coverage exists. WebKit's position is 'Support' and WebKit engineers agreed the rename on the #cookies channel, but no confirmed Safari/WebKit ship or release-note entry was found. The specification is a Working Group draft (draft-ietf-httpbis-layered-cookies-01, obsoletes RFC6265/6265bis), not yet an RFC, and the prefix naming changed (__HostHttp- -> __Host-Http-) during the cycle.",
+      "evidenceIds": [
+        "s8",
+        "s4",
+        "s10",
+        "s14",
+        "s7"
+      ],
+      "limitations": "Safari shipping status unconfirmed; no landed WebKit patch or Safari release note retrieved. Not yet Baseline-eligible given draft maturity."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Positive: WPT tests for both prefixes, dual Finch flags providing a kill-switch, clean back-merge of the rename into 140 before stable, and coordinated cross-engine rename (Mozilla followed). Concerns: compat safety was argued with no metrics (only a GitHub regex search) and reliance on the Finch switch; ChromeStatus security_review_status and privacy_review_status were still 'Pending' at ship; the implementation also needed a follow-up to 'apply the prefix rules to cookies already in their stores when they are upgraded.' Tracking-bug body unreadable, so regressions could not be inspected.",
+      "evidenceIds": [
+        "s8",
+        "s1",
+        "s3"
+      ],
+      "limitations": "Could not inspect crbug 426096760 for resolved regressions or perf; formal review completion unconfirmed."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Chrome communicated via the intent thread and Chrome 140 release notes, and independent press covered it accurately (Risky Bulletin). But several gaps: (1) naming drift -- ChromeStatus summary AND the Chrome 140 release notes still say __Http/__HostHttp while the shipped/spec/MDN form is __Http-/__Host-Http-; (2) Firefox shipped silently -- the MDN Firefox 142 developer release notes contain no mention of the prefix (corroborating Risky Bulletin's 'not listed in the official release notes'); (3) MDN Set-Cookie documentation was not updated to cover the new prefixes until ~2026-06-15, roughly 9 months after feature creation; (4) the specialist security community was largely unaware pre-launch (the April 2025 insinuator.net cookie-prefix article did not mention __Http-).",
+      "evidenceIds": [
+        "s9",
+        "s1",
+        "s11",
+        "s12",
+        "s10",
+        "s13"
+      ],
+      "limitations": "Communication quality is inferred from doc/publication timestamps and naming consistency, not from a measured developer-awareness study."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support-burden, issue-volume, or migration-friction evidence retrieved. Backward-compatible design and a Finch kill-switch make low burden plausible, but it is unconfirmed. Remains unscored rather than assumed-successful.",
+      "evidenceIds": [
+        "s1",
+        "s8"
+      ],
+      "limitations": "No support tracker data available."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, backward-compatible security primitive that shipped cleanly in Chrome 140 with multi-engine agreement (Mozilla Positive, WebKit Support, Firefox shipped within weeks) and good process recovery (the __HostHttp- -> __Host-Http- rename was caught in beta and back-merged). However, several dimensions are mixed or unscored and must not be hidden: formal security/privacy reviews were 'Pending' at ship, the prepare-to-ship packet mis-stated spec stability ('Anticipated spec changes: None'), naming is inconsistent across ChromeStatus/release-notes vs spec/MDN, Firefox shipped without release-note coverage, MDN lagged ~9 months, Safari shipping is unconfirmed, the spec is still a draft, and there is no adoption telemetry. Net: sound launch with real evidence-and-process weaknesses."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5170139586363392",
+      "publisher": "Chrome Platform Status (cached record at evidence/chromestatus/features/5170139586363392.json)",
+      "publishedOrObservedAt": "2025-08-25",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata: owner yoavweiss, Internals>Network>Cookies, finch PrefixCookieHttp/PrefixCookieHostHttp, desktop/android/webview=140, ios=null, rollout 'Will ship enabled for all users', breaking_change=false, enterprise_impact=1",
+        "Signals: Mozilla Positive (#1256), WebKit Support (#518), webdev Positive (ietf-http-wg), TAG Not applicable",
+        "security_review_status=Pending and privacy_review_status=Pending at accurate_as_of 2025-08-25",
+        "web_feature=Missing feature (no UseCounter)",
+        "Motivation/summary text"
+      ],
+      "limitations": "Record accurate_as_of 2025-08-25; still uses pre-rename __Http/__HostHttp summary wording."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5170139586363392",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, motivation, Proposed status, and standards signals (Mozilla Positive, Safari Support, web developers Positive) independently of the cached JSON"
+      ],
+      "limitations": "Live render; mirrors ChromeStatus data, not an independent source."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/httpwg/http-extensions/pull/3110",
+      "publisher": "httpwg/http-extensions (IETF HTTP WG, GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec PR 'Cookie layering - Http prefix' integrating the prefix into the cookie layering processing model; discussed at IETF 122",
+        "Defines __Http- (Secure+HttpOnly) and __HostHttp- prefixes, Host-prefix-compatible / Http-prefix-compatible predicates, store-algorithm rejection rules",
+        "Links WPT (chromium-review 6638647) and Cookie Store API PR whatwg/cookiestore#262"
+      ],
+      "limitations": "PR file diff retrieved; conversation/comments and merge date not fully captured. The combined-prefix naming later changed via PR #3156."
+    },
+    {
+      "id": "s4",
+      "url": "https://datatracker.ietf.org/doc/draft-ietf-httpbis-layered-cookies/",
+      "publisher": "IETF Datatracker (httpbis WG)",
+      "publishedOrObservedAt": "2025-11-18",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "WG draft draft-ietf-httpbis-layered-cookies-01 (van Kesteren/Apple, Hofmann/Google) obsoletes RFC6265 and 6265bis",
+        "Normative sections 4.1.3.3 (__Http-) and 4.1.3.4 (__Host-Http-) defining the shipped prefix names and semantics",
+        "Intended status Proposed Standard; IESG state I-D Exists (not yet RFC) as of -01"
+      ],
+      "limitations": "Draft, not RFC; subject to change. Retrieved -01 (Nov 2025); later revisions may exist."
+    },
+    {
+      "id": "s5",
+      "url": "https://datatracker.ietf.org/doc/draft-httponlyprefix-weiss-http/",
+      "publisher": "IETF Datatracker (individual submission)",
+      "publishedOrObservedAt": "2025-04-09",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Precursor individual draft (Weiss & Metzger) originally proposing __HttpOnly / __HostHttpOnly prefixes",
+        "Now Expired & archived (no formal IETF standing), superseded by the WG layered-cookies draft",
+        "Establishes incubation provenance and the naming evolution __HttpOnly->__Http-"
+      ],
+      "limitations": "Expired individual I-D; the authoritative normative text moved to the WG draft."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1256",
+      "publisher": "mozilla/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2025-06-19",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position label: Positive (topic: HTTP)",
+        "Cross-references httpwg/http-extensions#3110 and the __HostHttp vs __Host_Http naming discussion (#3111)",
+        "Filed by yoavweiss 2025-06-19"
+      ],
+      "limitations": "Project status 'Position is proposed'; no long-form Mozilla rationale comment captured in the extracted body."
+    },
+    {
+      "id": "s7",
+      "url": "https://github.com/WebKit/standards-positions/issues/518",
+      "publisher": "WebKit/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2025-06-19",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position label: Support (topic: http; venue: IETF HTTP WG)",
+        "Clarification in thread: 'support is limited to the __Http- and __HostHttp- prefixes and not any possible future expansions'",
+        "Filed by yoavweiss 2025-06-19; cross-references mozilla #1256"
+      ],
+      "limitations": "Standards position only; does NOT confirm Safari/WebKit shipping. Label 'from: other' (not WebKit-authored)."
+    },
+    {
+      "id": "s8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/WsXlDO6oO2E/m/w9c5qr_wAQAJ",
+      "publisher": "blink-dev (Google Groups) - Intent to Implement and Ship: Http cookie prefix",
+      "publishedOrObservedAt": "2025-06-19",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent filed 2025-06-19 by Yoav Weiss; explicitly notes __HostHttp spelling still unsettled; TAG 'Not applicable'",
+        "3 LGTMs 2025-06-25 (Mike Taylor, Vladimir Levin, Chris Harrelson) ALL 'conditioned on the spec work landing before shipping'",
+        "Compat evidence: 'I don't have any metrics' -- relied on GitHub regex search (PhistucK suggestion) showing only WPT usages; Finch kill-switch as mitigation",
+        "Enabled-by-default ~2025-06-30 ('PR has landed, feature now enabled by default')",
+        "Rename proposal 2025-08-11: __HostHttp- -> __Host-Http- for deployment ergonomics (progressive enhancement); coordinated with WebKit/Mozilla/Chrome on #cookies; spec PR #3156",
+        "2025-08-25: 'rename landed and was back-merged into 140. No flags required. Mozilla similarly renamed their implementation'",
+        "Script-set behavior: document.cookie silently fails; CookieStore API rejects the promise",
+        "'Anticipated spec changes: None' despite the open naming question"
+      ],
+      "limitations": "Thread spans 2025-06-19 to 2025-08-25; some reply threading is hard to attribute precisely. Does not include the off-record #cookies matrix discussion."
+    },
+    {
+      "id": "s9",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chrome 140 stable release date 2025-09-02; applies to Android, ChromeOS, Linux, macOS, Windows",
+        "Documents 'Http cookie prefix' with tracking bug 426096760 and the __Http/__HostHttp prefixes (older naming)",
+        "Confirms the feature shipped in 140"
+      ],
+      "limitations": "Release-note text uses the pre-rename __Http/__HostHttp wording, not the shipped __Http-/__Host-Http- form."
+    },
+    {
+      "id": "s10",
+      "url": "https://news.risky.biz/risky-bulletin-chrome-140-comes-with-new-hardened-cookies/",
+      "publisher": "Risky Bulletin (Catalin Cimpanu / Risky Business)",
+      "publishedOrObservedAt": "2025-09-05",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent security-press confirmation the prefixes are live in Chrome 140",
+        "States prefixes also shipped with Firefox 142 the prior month, citing a Bugzilla entry, though 'not listed in the official release notes'",
+        "Accurately frames the threat model (cookie prefixes distinct from headers; designed so servers detect client-side tampering) and notes prefixes are 'rarely used by web developers' (citing ERNW)"
+      ],
+      "limitations": "Single author newsletter; the specific Firefox Bugzilla number is not printed in the retrieved text (ppc.land cites 1974979)."
+    },
+    {
+      "id": "s11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026-06-15",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN Set-Cookie page documents the __Http- and __Host-Http- prefixes with correct (post-rename) naming and semantics",
+        "Warning that browsers without prefix support will always accept prefixed cookies (so assurances are not universal)",
+        "Page last modified 2026-06-15, ~9 months after feature creation and ~9 months after Chrome 140 stable"
+      ],
+      "limitations": "MDN update post-dates the launch by many months; documents final naming, not the launch-time naming."
+    },
+    {
+      "id": "s12",
+      "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/142",
+      "publisher": "MDN Web Docs (Mozilla) - Firefox 142 release notes for developers",
+      "publishedOrObservedAt": "2025-08-19",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Firefox 142 released 2025-08-19",
+        "The full developer release notes contain NO mention of the __Http- / __Host-Http- cookie prefix -- corroborating Risky Bulletin's claim that Firefox shipped it without listing it in official release notes"
+      ],
+      "limitations": "Absence-of-mention evidence; does not itself prove Firefox shipped the feature (that rests on s10/s14)."
+    },
+    {
+      "id": "s13",
+      "url": "https://insinuator.net/2025/04/cookie-prefixes-the-lesser-known-cookie-security-feature/",
+      "publisher": "insinuator.net (Florian Bausch / ERNW-affiliated)",
+      "publishedOrObservedAt": "2025-04-08",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent, detailed pre-launch security write-up on cookie prefixes (April 2025)",
+        "Covers only __Secure- and __Host-; does NOT mention the new __Http- / __HostHttp- prefixes -- signalling low awareness in the specialist security community before Chrome shipped",
+        "Frames prefixes as a 'lesser-known' / under-used feature"
+      ],
+      "limitations": "One community blog; not a usage metric, but a reasonable awareness signal."
+    },
+    {
+      "id": "s14",
+      "url": "https://ppc.land/chrome-140-introduces-http-cookie-prefix-to-combat-client-side-security-threats/",
+      "publisher": "PPC Land (Luis Rijo)",
+      "publishedOrObservedAt": "2025-08-10",
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 beta released 2025-08-06 with __Http / __HostHttp prefixes",
+        "States Firefox landed support in July 2025 via Mozilla Bugzilla entry 1974979 (cross-browser coordination)",
+        "Describes __Http (Secure+HttpOnly) and __HostHttp (adds Path=/, no Domain) semantics"
+      ],
+      "limitations": "Secondary/trade press; its embedded 'timeline' contains some inaccurate dates (e.g. a 'June 2024 HTTP WG merge' claim) that should not be relied upon; the Bugzilla number is useful but unverified by direct retrieval."
+    },
+    {
+      "id": "s15",
+      "url": "https://issues.chromium.org/issues/426096760",
+      "publisher": "Chromium issue tracker (Monorail)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:10:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug URL recorded on ChromeStatus and in the intent thread (component Internals>Network>Cookies)"
+      ],
+      "limitations": "Body NOT retrievable -- the Z.AI reader returned HTTP 500 on issues.chromium.org. Implementation timeline, regressions, linked CLs, and resolved issues were NOT inspected; cited only for provenance."
+    }
+  ],
+  "successes": [
+    "Backward-compatible, well-scoped security primitive that fills a genuine gap (HttpOnly blocks reading but not setting of cookies); built on the established __Secure-/__Host- prefix pattern, keeping design risk low.",
+    "Genuine multi-engine alignment: Mozilla Positive, WebKit Support, and Firefox shipped the same feature in Fx142 (2025-08-19) within weeks of Chrome -- with Mozilla coordinating the rename too.",
+    "Good process recovery under pressure: the deployment-ergonomics-driven __HostHttp- -> __Host-Http- rename was proposed during 140 beta, coordinated across WebKit/Mozilla/Chrome on the #cookies channel, and back-merged into 140 before stable, with no kill-switch needed.",
+    "Clean intent-to-ship governance: 3 LGTMs, all explicitly conditioned on the spec landing first; WPT coverage for both prefixes; dual Finch flags as a compat kill-switch.",
+    "Honest, accurate independent press (Risky Bulletin) that correctly explained the threat model and cross-browser status."
+  ],
+  "failures": [
+    "Formal reviews incomplete at ship: ChromeStatus security_review_status and privacy_review_status were both still 'Pending' as of accurate_as_of 2025-08-25, after the M140 stable release.",
+    "The prepare-to-ship packet was inaccurate on spec stability: 'Anticipated spec changes: None' was filed even though the same intent explicitly flagged the __HostHttp spelling as unsettled -- a known-open naming question was under-reported.",
+    "Compat safety was argued without metrics ('I don't have any metrics'), relying on a GitHub regex search and the Finch kill-switch rather than measured prevalence of __Http-prefixed cookies in the wild.",
+    "Naming drift at release: the ChromeStatus summary and the Chrome 140 release notes still use the pre-rename __Http/__HostHttp wording, while the shipped and spec/MDN form is __Http-/__Host-Http-, confusing developers about the exact prefix string.",
+    "Ecosystem documentation lagged: MDN did not document the new prefixes until ~2026-06-15 (~9 months after feature creation), and the specialist security community was largely unaware pre-launch (the April 2025 insinuator.net cookie-prefix article omitted the new prefixes entirely).",
+    "Firefox shipped silently: the MDN Firefox 142 developer release notes contain no mention of the prefix (confirmed by full read), matching Risky Bulletin's observation that it was 'not listed in the official release notes.'",
+    "No adoption telemetry: web_feature is 'Missing feature' with no UseCounter, so adoption cannot be measured or tracked."
+  ],
+  "counterfactuals": [
+    "If the security and privacy review fields had been closed (or explicitly waived with rationale) before the M140 ship milestone, the wideReview packet would have been defensible at launch instead of showing 'Pending' post-ship.",
+    "If the prepare-to-ship 'Anticipated spec changes' field had honestly captured the open __HostHttp naming question (it was already flagged in the intent body), reviewers could have pressured an earlier resolution and avoided a mid-beta rename and back-merge.",
+    "If the __Host-Http- deployment-ergonomics rationale (progressive enhancement in non-supporting browsers) had been workshopped with server/framework authors during incubation rather than discovered 'while talking to folks about deploying this,' the final naming would likely have shipped first.",
+    "If MDN had been updated at launch and Firefox had listed the feature in its release notes, developer discoverability would have been materially higher; the insinuator.net omission signals the feature was effectively invisible to much of the security community when it shipped.",
+    "If a UseCounter / webdx enum had been added, adoption could be tracked; without it, the launch cannot be evaluated on its actual security-impact outcome.",
+    "A small, opt-in developer trial or an explicit call for deployment feedback (none was run) could have surfaced the naming and in-store-upgrade migration issues earlier."
+  ],
+  "skillImprovements": [
+    "Add a phase-module rule: for security/correctness features, treat ChromeStatus security_review_status / privacy_review_status == 'Pending' at the shipping milestone as a release-phase blocker or explicit partial flag, not a silent pass.",
+    "Add a documentation-readiness gate to the release phase: require MDN coverage AND at least one cross-browser release-note entry (or a documented, intentional gap) before marking release complete; flag silent ships like Firefox 142.",
+    "Add an 'identifier pinning' check: whenever a feature defines exposed identifiers (cookie prefixes, header names, attribute names, finch names), require the shipped identifier to match spec/explainer/MDN exactly and emit a finding on any drift (e.g. __HostHttp vs __Host-Http-).",
+    "Strengthen the prepareToShip packet rule: 'Anticipated spec changes' must not be 'None' when the intent body itself flags an open design question; require reviewers to reconcile the two fields.",
+    "Add an adoption-measurement prompt: for every new web-platform feature, capture whether a UseCounter / webdx enum exists; if not, mark adoption 'unscored' at launch and request an instrumentation plan so the outcome is measurable on the next cycle.",
+    "Add independent security-community sources (ERNW/insinuator, Risky Bulletin, relevant OWASP/MDN security notes) to the evidence-family checklist for security features -- they often surface the 'rarely used / under-documented' adoption signal that official docs miss.",
+    "Add a 'compat evidence' expectation: Finch kill-switch availability is a mitigation, not compat evidence; the wideReview/prepareToShip packet should request metrics or a documented prevalence search (and treat GitHub-code-search caveats explicitly)."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chromium tracking bug 426096760 body not retrievable (reader returned HTTP 500); implementation timeline, regressions, linked CLs, and resolved issues not inspected.",
+      "Mozilla Bugzilla entry 1974979 (Firefox implementation) not directly retrieved; Firefox Fx142 shipment relies on Risky Bulletin and ppc.land citing the entry.",
+      "Safari/WebKit shipping status unconfirmed: a supportive standards position (#518) and matrix-channel coordination are recorded, but no landed WebKit patch or Safari release-note entry was found.",
+      "No usage/adoption telemetry exists (web_feature 'Missing feature', no UseCounter); adoption cannot be resolved from public data and remains unscored.",
+      "Direct read of the layered-cookies spec rename discussion (httpwg/http-extensions#3156) and the latest draft revision beyond -01 was not performed; normative text confirmed only at -01 (2025-11-18)."
+    ],
+    "reviewedAt": "2026-07-22T15:10:00Z"
+  }
+}

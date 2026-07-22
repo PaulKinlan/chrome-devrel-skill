@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5143135809961984,
+    "name": "View Transition finished promise timing change",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5143135809961984",
+    "blinkComponents": [
+      "Blink>ViewTransitions>SPA"
+    ],
+    "webFeature": "view-transitions",
+    "featureType": "No developer-visible change",
+    "finchName": "ViewTransitionAsyncFinished",
+    "shippingYear": 2025
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5143135809961984",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T13:47:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The problem was concretely defined and reproducible: the ViewTransition `finished` promise resolved inside the rendering lifecycle, so the visual frame that removes the view-transition pseudo-tree was produced before script ran, causing a flicker when developers transferred styles (e.g. box-shadow) from the group pseudo to the final element at finish. The intake carried a runnable demo and a precise spec-pointer (css-view-transitions-1 'Handle Transition Frame', step 4). The owner (vmpstr@google.com) and Blink component (Blink>ViewTransitions>SPA) were clear from the ChromeStatus record and tracking bug.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S10"
+      ],
+      "limitations": "No formal ChromeStatus motivation/explainer fields were populated (motivation, explainer_links, doc_links, sample_links all empty in the cached record); the problem was captured almost entirely in the CSSWG issue and demo rather than a structured intake brief."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubation was narrow and proportionate for a behavior fix to an already-shipped API. The proposal identified the narrowest intervention (move cleanup to a separate task after the rendering lifecycle, resolving `finished` while the pseudo-tree still exists) and acknowledged an existing developer workaround (listening to the first Animation object's finish promise, which runs outside the rendering loop). emilio (Mozilla) confirmed on the same day that Firefox's implementation already behaves the target way, and nt1m/mattwoodrow (WebKit) agreed, so the design was cross-engine-validated before any code change.",
+      "evidenceIds": [
+        "S3",
+        "S4"
+      ],
+      "limitations": "No separate public explainer document exists; incubation was carried in the CSSWG issue thread rather than a dedicated explainer with goals/non-goals/alternatives, which is acceptable for a fix of this size but means there is no standalone artifact."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation was tracked in Chromium bug 430018991 (Type Task, P2, Fixed) and landed as code change 6735828 titled 'VT: Change the finished promise timing to be asynchronous', introducing a 'pending-done' phase that defers cleanup to a task while resolving `finished` first. WPT coverage was described as 'being added in the implementation'. A genuine, unresolved prototype question persisted: how to reliably test that the cleanup is deferred rather than merely absent, which the implementer raised in-thread; noamr suggested scheduling a higher-priority task and checking cleanup/finished hadn't run yet, but the author noted difficulty testing it from script.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S4"
+      ],
+      "limitations": "I could not retrieve the full Gerrit review (page is JS-rendered) to confirm exact test files added or review objections; the implementer's own uncertainty about testability of the new timing is a real prototype-phase weakness."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "This is a 'No developer-visible change' behavior fix to an existing API with no new opt-in surface. It shipped directly to stable without a behind-a-flag developer trial or origin trial (the ChromeStatus stages show only prototype/implement/ship intent stages; no dev-trial or OT stage; flag_name is null, origintrial false). A developer trial is not the gating mechanism for this class of change.",
+      "evidenceIds": [
+        "S1",
+        "S7"
+      ],
+      "limitations": "Not-relevant reflects the launch mechanism, not 'untested'; the equivalent validation happened through the CSSWG thread and WPT, not a cohort trial."
+    },
+    "wideReview": {
+      "status": "success",
+      "finding": "Wide review was strong and fast. Firefox (emilio, collaborator) and WebKit (nt1m, member; mattwoodrow) both gave positive agreement within hours of the Jul 3, 2025 proposal. The CSSWG chair (astearns) issued the proposed auto-accept resolution on Jul 7 and it was formally 'RESOLVED: Change view transition finished promise timing to avoid flicker' on Jul 14, 2025 with no objections. Tag review is marked 'Not applicable' in the record, consistent with a Level-1 spec fix already in CR-track review. nt1m explicitly asked for the spec edit to enable Safari implementation.",
+      "evidenceIds": [
+        "S1",
+        "S4"
+      ],
+      "limitations": "The FF/Safari signals are labeled 'Not an official signal, but agreement to the change' in ChromeStatus — they are individual engineer agreements, not formal vendor position statements, though the CSSWG resolution itself is authoritative."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial or field experiment was run, and none was warranted: this is a deterministic rendering-lifecycle timing fix with no privacy/security/perf trade-off needing real-origin measurement, and there is no new gated capability to trial. The record shows origintrial=false and no experiment goals/risks.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not-relevant by design; there was no hypothesis requiring field conditions."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "The change shipped enabled by default in Chrome 140 (stable Sep 2, 2025) on desktop, Android, and WebView (iOS null, consistent with a Blink-only change). Implementation landed (bug Fixed). However, two prepare-to-ship signals were weak: (1) the cached ChromeStatus record showed security_review_status and privacy_review_status as 'Pending' as of 2025-07-16 (pre-ship; presumably completed before ship but not reflected), and (2) the Chrome 140 release-notes entry for this feature has NO Spec link, unlike every peer feature in the same release notes.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S7"
+      ],
+      "limitations": "I cannot confirm final security/privacy review completion (the cached record predates ship); the missing spec link in release notes is a documentation-handoff gap."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Release communication was accurate and evidence-backed. The Chrome 140 release notes describe the change precisely and link the tracking bug; the Oct 8, 2025 'What's new in view transitions (2025 update)' blog explains the rationale and ships a Chrome 139 recording showing the pre-fix glitch, which is unusually honest before/after evidence. The shipped behavior matches the described behavior.",
+      "evidenceIds": [
+        "S7",
+        "S8"
+      ],
+      "limitations": "The cached ChromeStatus record still showed status 'Proposed' / is_released:false (accurate_as_of 2025-07-16, before ship), so the authoritative source-of-truth record was stale relative to the actual launch; MDN's ViewTransition.finished page does not mention the timing change."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "There is no adoption funnel for this change: it is an automatic behavior change to the existing View Transitions API with no feature-detection, opt-in, or new API surface for developers to adopt. The adjacent 2025 adoption context (same-document VT approaching Baseline Newly available; React core <ViewTransition> moving to canary) raises the profile of any VT behavior change but is not adoption of this specific timing fix.",
+      "evidenceIds": [
+        "S1",
+        "S8"
+      ],
+      "limitations": "Not-relevant because there is nothing to opt into; production impact is instead captured under implementationQuality/support via the reported regression."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "A post-ship regression was reported directly on the tracking bug: 'when I'm on Chrome v140 (that has this change), removed items seem to reappear for a frame then disappear. This is reproducible.' This is a new transient visual glitch introduced by the cleanup deferral for the removal pattern (distinct from the shadow-transfer pattern the fix targeted), so support has a real, attributable issue even though the original flicker was fixed.",
+      "evidenceIds": [
+        "S9",
+        "S5"
+      ],
+      "limitations": "Buganizer comment threads are not retrievable via the web reader, so I could not confirm the regression's severity, owner response, fix status, or whether a follow-up CL addressed it. This is a material support-dimension gap."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is not a deprecation or removal; no API is being restricted, replaced, or removed. The deprecation phase does not apply.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The change removes a real, reproducible developer papercut: the `finished` callback running one frame too late forced developers to use an Animation.finish()-based workaround to transfer styles without flicker. The fix lets developers do that work directly in `finished.then(...)` while the pseudo-tree is still present. Developer-value is well-evidenced by the motivating demo, the workaround it eliminates, and the official blog framing.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S10"
+      ],
+      "limitations": "Magnitude is modest (a sub-frame timing fix), and no independent developer testimonial or survey measures how many sites were affected."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "End users gain smoother end-of-transition visuals for the styles-transfer pattern (less flicker), but the same cleanup deferral produced a new transient glitch — removed items reappearing for one frame on Chrome 140 — which is a directly user-visible regression for the removal pattern. Net end-user impact is therefore mixed rather than purely positive.",
+      "evidenceIds": [
+        "S8",
+        "S9"
+      ],
+      "limitations": "No telemetry or user-impact measurement was found; the regression's population impact is unknown."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "Not scorable as adoption: there is no opt-in, feature flag, or new API surface; the behavior applies automatically wherever View Transitions run. Measuring 'adoption' would conflate with general View Transitions usage, which is not attributable to this fix.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No usage counter exists for this change; the relevant production-impact signal is the post-ship regression, scored under support/implementationQuality."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Cross-engine intent was clearly positive (Firefox and WebKit agreement Jul 3; CSSWG RESOLVED Jul 14, 2025), and emilio indicated Firefox already behaves the target way, lowering interop risk. Against that: Chrome shipped (Sep 2, 2025) only ~7 weeks after the resolution and before the normative spec text edit appears finalized — the CSSWG issue is still labeled 'Needs Edits' / Open and linked to #12957, which I could not confirm as merged; and I found no confirmation that Safari shipped the matching change (nt1m requested the spec edit to implement, then deferred on Oct 2). So interoperability is agreed in principle but not yet demonstrated across engines.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S7"
+      ],
+      "limitations": "Could not retrieve #12957 (GitHub reader/API errors) to confirm whether the css-view-transitions-1 algorithm text now contains the 'pending-done' phase; Safari ship status unconfirmed. These are material interop gaps."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Implementation landed cleanly (bug Fixed; CL 'VT: Change the finished promise timing to be asynchronous'; WPT added) and demonstrably fixed the targeted flicker (blog's Chrome 139 vs 140 evidence). But the same mechanism introduced a confirmed regression — removed elements reappear for a frame on Chrome 140 — indicating the cleanup-deferral was validated primarily against the motivating add/transfer pattern and not against removal/exit-transition patterns. The author also flagged in-thread difficulty writing a reliable test for the deferred-cleanup behavior.",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S8",
+        "S9",
+        "S4"
+      ],
+      "limitations": "Cannot inspect Gerrit review comments or the regression's fix CL; net quality judgment is therefore mixed-with-gap rather than conclusive."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication quality was high where it existed: the release-notes entry and the Oct 2025 blog are accurate, specific, and include honest before/after visual evidence, and the ChromeStatus summary is clear. Gaps: the release-notes entry omits any Spec link (every peer feature in Chrome 140 notes has one); MDN's ViewTransition.finished page was not updated to reflect the timing change; and the cached ChromeStatus record showed stale 'Proposed'/is_released:false status as of the pre-ship capture.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S8",
+        "S11"
+      ],
+      "limitations": "Stale ChromeStatus status is partly an artifact of the capture date; MDN update status is a single-page spot check."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "A real, attributable regression was filed on the tracking bug for Chrome 140 (elements reappear for a frame), so support is not clean. I could not confirm whether/how it was resolved, triaged, or fixed, because the Buganizer comment thread is not retrievable via the available reader.",
+      "evidenceIds": [
+        "S9",
+        "S5"
+      ],
+      "limitations": "Resolution status, severity, and any follow-up CL are unknown — a material support-dimension gap."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Overall this is a well-motivated, well-reviewed, cleanly-communicated fix to a genuine developer papercut, backed by same-day Firefox/WebKit agreement and a formal CSSWG resolution, that shipped on schedule in Chrome 140. It is not an unqualified success: Chrome shipped ahead of the finalized spec text edit, a post-ship regression (removed elements reappearing for a frame) shows the change was validated mainly against its motivating pattern, and cross-engine implementation (notably Safari) and the regression's resolution remain unconfirmed. Net: mixed, leaning positive on intent and communication, with real implementation/interop caveats.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5",
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "limitations": "Three material unknowns prevent a 'success' or 'complete' verdict: (1) spec text edit merge status (#12957), (2) Safari implementation status, (3) regression resolution status on bug 430018991."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/chromestatus/features/5143135809961984.json",
+      "publisher": "Chrome Platform Status (cached run evidence)",
+      "publishedOrObservedAt": "2025-07-16",
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata: name, summary, category JavaScript, feature_type 'No developer-visible change', finch_name ViewTransitionAsyncFinished, web_feature view-transitions",
+        "Ship targets: Chrome 140 desktop/android/webview, iOS null; rollout_plan 'Will ship enabled for all users'",
+        "Standards signals: Firefox Positive (unofficial), Safari Positive (unofficial), Web developers 'No signals'; tag_review_status 'Not applicable'",
+        "Security/privacy review 'Pending' as of accurate_as_of 2025-07-16; status 'Proposed'; is_released false (pre-ship capture)",
+        "Tracking bug https://issues.chromium.org/430018991; wpt 'Test is being added in the implementation'",
+        "Intent stages present: prototype(1), implement(2), ship(5); no dev-trial or OT stage; origintrial=false"
+      ],
+      "limitations": "Snapshot accurate_as_of 2025-07-16, before the Sep 2 2025 ship, so status/review fields are stale relative to the actual launch."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5143135809961984",
+      "publisher": "Chrome Platform Status (chromestatuslite server-rendered view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms Category JavaScript, Type 'No developer-visible change', Status 'Proposed (Chrome Proposed)', Intent stage None",
+        "Confirms Firefox Positive (unofficial), Safari Positive (unofficial), Web developers 'No signals', tracking bug 430018991"
+      ],
+      "limitations": "Lite view does not expose rollout milestones/review fields beyond the summary; consistent with cached record S1."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12442",
+      "publisher": "W3C CSS Working Group (csswg-drafts issue #12442)",
+      "publishedOrObservedAt": "2025-07-03",
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Problem definition: finished promise resolves inside rendering lifecycle so a frame without the pseudo-tree is shown before script runs, causing flicker when transferring styles",
+        "Proposal: move Handle Transition Frame step 4 (cleanup) to run after Update the Rendering; mark 'pending done', resolve finished, schedule a task to finalize",
+        "Runnable demo of the flicker (Chrome and Safari) and the Animation.finish() workaround",
+        "Issue labels 'Needs Edits', 'css-view-transitions-1', 'View Transitions; Bugs only'; status Open; linked to #12957"
+      ],
+      "limitations": "GitHub issue body only; comment details captured separately in S4."
+    },
+    {
+      "id": "S4",
+      "url": "https://api.github.com/repos/w3c/csswg-drafts/issues/12442/comments",
+      "publisher": "W3C CSS Working Group (issue #12442 comment thread via GitHub API)",
+      "publishedOrObservedAt": "2025-07-03",
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "2025-07-03 emilio (Mozilla): 'Firefox's implementation also behaves the same and I think that solution is reasonable' (Firefox signal)",
+        "2025-07-03 nt1m (Apple/WebKit, MEMBER): 'Seems ok to me, will let @mattwoodrow double check' (Safari signal); mattwoodrow: 'Sounds fine to me too!'",
+        "2025-07-07 astearns proposed auto-accept resolution; 2025-07-14 astearns: 'RESOLVED: Change view transition finished promise timing to avoid flicker'",
+        "2025-07-18 nt1m: 'Could you help edit this into the spec? It would help move forward with implementation on my side' (Safari implementation intent)",
+        "2025-08 ongoing design discussion of two implementation options and the 'pending-done' phase; difficulty testing deferred cleanup",
+        "2025-10-02 nt1m: defers to whatever spec edits are made, cc emilio"
+      ],
+      "limitations": "Thread retrieved via API up to the 2025-10-02 comment; later comments (if any) not captured due to output truncation."
+    },
+    {
+      "id": "S5",
+      "url": "https://issues.chromium.org/430018991",
+      "publisher": "Chromium Issue Tracker (bug 430018991)",
+      "publishedOrObservedAt": "2025-07-07",
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Title 'View Transition: change finished promise timing'; based on CSSWG issue #12442",
+        "Status Fixed; Type Task; Priority P2; Reporter and Assignee vmpstr@google.com",
+        "Code Change 6735828 (Chromium); last edited 2025-07-07"
+      ],
+      "limitations": "Buganizer renders comments via JS; the full comment/regression thread is not retrievable via the web reader (see S9 for a search-sourced snippet)."
+    },
+    {
+      "id": "S6",
+      "url": "https://chromium-review.googlesource.com/c/chromium/src/+/6735828",
+      "publisher": "Chromium Gerrit Code Review (CL 6735828)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "CL title: 'VT: Change the finished promise timing to be asynchronous' (confirms the implementation approach)"
+      ],
+      "limitations": "Gerrit page is JS-rendered; diff, reviewers, and inline comments could not be extracted."
+    },
+    {
+      "id": "S7",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Chrome 140 Release Notes)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Stable release date: September 2, 2025 (Android, ChromeOS, Linux, macOS, Windows)",
+        "Feature 'View transition finished promise timing change' listed under JavaScript, with tracking bug #430018991",
+        "Entry has NO Spec link, unlike every other peer feature listed in the same release notes"
+      ],
+      "limitations": "Last updated 2025-09-02 UTC; does not state rollout fraction or any caveats."
+    },
+    {
+      "id": "S8",
+      "url": "https://developer.chrome.com/blog/view-transitions-in-2025",
+      "publisher": "Chrome for Developers (blog by Bramus)",
+      "publishedOrObservedAt": "2025-10-08",
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Section 'The execution of the finished promise callback no longer waits for a frame': explains the flicker and the async-cleanup fix",
+        "States 'This timing change shipped in Chrome 140'",
+        "Honest before/after evidence: a Chrome 139 recording showing the shadow-add glitch",
+        "Adjacent context: same-document VT approaching Baseline Newly available (Firefox 144, Oct 14 2025); React core <ViewTransition> moved to canary"
+      ],
+      "limitations": "Blog is post-ship (Oct 8 2025) and promotional in tone; does not mention the post-ship regression."
+    },
+    {
+      "id": "S9",
+      "url": "https://issues.chromium.org/430018991",
+      "publisher": "Chromium Issue Tracker (bug 430018991 comment, via search index)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Post-ship regression report: 'Noticed that when I'm on Chrome v140 (that has this change), removed items seem to reappear for a frame then disappear. This is reproducible.'"
+      ],
+      "limitations": "Only a search-indexed snippet; full comment, author, date, severity, and resolution status are unknown because the Buganizer comment thread is not retrievable via the web reader."
+    },
+    {
+      "id": "S10",
+      "url": "https://vmpstr.github.io/htmldemos/vt/flicker.html",
+      "publisher": "vmpstr (feature owner) personal demo",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Runnable demonstration of the finished-promise flicker and the Animation.finish() workaround toggle (as described in S3 and S8)"
+      ],
+      "limitations": "Interactive JS demo; the reader extracted only the 'workaround' toggle label; behavior is described via S3/S8 rather than directly observed."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/ViewTransition/finished",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:47:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN ViewTransition.finished describes the promise generically ('fulfills once the transition animation is finished') with no note about the Chrome 140 timing/cleanup-deferral change"
+      ],
+      "limitations": "Single-page spot check; does not rule out updates elsewhere in MDN's View Transitions material."
+    }
+  ],
+  "successes": [
+    "Genuine, reproducible developer papercut (end-of-transition flicker requiring an Animation.finish() workaround) correctly scoped and fixed with the narrowest viable intervention (defer cleanup to a task; resolve finished first).",
+    "Exceptionally fast and positive wide review: Firefox and WebKit agreement within hours (2025-07-03) and a formal CSSWG RESOLVED on 2025-07-14 with zero objections.",
+    "Honest, evidence-backed release communication: the Oct 2025 blog ships a Chrome 139 recording of the pre-fix glitch alongside the fix description.",
+    "Implementation landed and shipped on schedule in Chrome 140 (Sep 2, 2025) with WPT added alongside the change."
+  ],
+  "failures": [
+    "Post-ship regression: on Chrome v140 (with this change) 'removed items seem to reappear for a frame then disappear' — a new transient glitch for the removal/exit-transition pattern, distinct from the add/transfer pattern the fix targeted (S9).",
+    "Validated primarily against the motivating pattern: the author's demo and the blog cover only the box-shadow-transfer case; the removal case that regressed was evidently not a primary test target.",
+    "Shipped ahead of finalized spec text: the CSSWG issue is still labeled 'Needs Edits'/Open and linked to #12957 (merge unconfirmed); the Chrome 140 release-notes entry has no Spec link, unlike peer features (S3, S7).",
+    "Testability weakness flagged in-thread: the implementer could not reliably script-test that cleanup is deferred (rather than merely absent) (S4).",
+    "Documentation gaps: MDN's ViewTransition.finished page does not mention the timing change (S11); cached ChromeStatus status was stale ('Proposed', is_released:false) at capture."
+  ],
+  "counterfactuals": [
+    "If the prototype/prepare-to-ship validation had explicitly tested the removal/exit-transition pattern (elements removed during the transition) in addition to the motivating shadow-transfer pattern, the 'items reappear for a frame' regression would plausibly have been caught before Chrome 140 stable.",
+    "If Chrome had waited for the css-view-transitions-1 normative text edit (issue #12957) to merge before shipping, the interoperability ambiguity (and the missing Spec link in release notes) would have been reduced; the trade-off would have delayed a developer-visible fix by an unknown number of milestones, against already-positive cross-engine signals.",
+    "If the testability-of-deferred-cleanup problem (raised in-thread) had been solved with a higher-priority-task probe (as noamr suggested) before ship, WPT could have locked in the new ordering and caught regressions like S9 automatically.",
+    "If the release-notes/MDN handoff had required a spec-resolution link and a timing-change note for behavior-change features, the documentation dimension would be clean instead of mixed."
+  ],
+  "skillImprovements": [
+    "Add a phase-02 (prototype) and phase-06 (prepare-to-ship) regression-test rule for behavior changes to existing APIs: explicitly exercise the inverse/removal pattern (elements removed or exiting during the transition), not only the motivating add/transfer pattern in the owner's demo. Encode this as a friction-log/conformance checklist item.",
+    "Treat 'No developer-visible change' / behavior-fix features with a distinct retrospective template: no dev-trial, OT, or adoption funnel (mark those phases not-relevant by construction), but MANDATE (a) regression testing of existing API usage patterns, (b) a docs/MDN timing-change note, and (c) a spec-resolution link in release notes.",
+    "Add a phase-04/06 interop gate: before scoring interoperability 'supported', confirm the normative spec text edit is merged (or explicitly accept and document 'shipping ahead of spec text') and capture at least one other engine's shipped-status, not merely an in-thread agreement. Silence or 'Needs Edits' must not become 'supported'.",
+    "Add a Buganiter/Chromium comment-retrieval fallback to the evidence toolchain (e.g., the issue-tracker API or a browser step) so support/regression threads on chromium bugs are first-class evidence instead of search-snippet-only (S9), which currently forces 'partial' support scoring.",
+    "Add a release-notes conformance check: every shipped feature entry should link Spec (or the standards issue/resolution) and MDN, including behavior-change entries that lack a new API surface."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Full Buganizer comment thread for bug 430018991, including the post-ship 'items reappear for a frame' regression's author, date, severity, and resolution/fix-CL status — not retrievable via the web reader; only a search-indexed snippet was available. This materially limits the support and implementationQuality scores.",
+      "Whether the css-view-transitions-1 normative spec text edit (GitHub issue #12957 / the 'pending-done' algorithm) is merged; the CSSWG issue is still labeled 'Needs Edits'/Open and #12957 could not be retrieved (GitHub reader and API errors). This limits the interoperability and standards-maturity assessment.",
+      "Whether Safari/WebKit shipped the matching finished-promise timing change; nt1m requested the spec edit to implement (2025-07-18) but deferred on 2025-10-02, and no WebKit shipping evidence was found via bounded search.",
+      "Gerrit review details for CL 6735828 (exact test files, reviewer objections) — page is JS-rendered and not extractable."
+    ],
+    "reviewedAt": "2026-07-22T13:47:00Z"
+  }
+}

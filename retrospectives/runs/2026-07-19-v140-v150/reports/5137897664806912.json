@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5137897664806912,
+    "name": "SharedWorker script inherit controller for blob script URL",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5137897664806912",
+    "featureType": "Chromium catches up",
+    "category": "Service Worker",
+    "blinkComponent": "Blink>Workers",
+    "owner": "yyanagisawa@google.com",
+    "finchName": "SharedWorkerBlobURLFix",
+    "enterprisePolicy": "SharedWorkerBlobURLFixEnabled",
+    "specLink": "https://w3c.github.io/ServiceWorker/#control-and-use-worker-client",
+    "trackingBug": "https://crbug.com/324939068",
+    "shippingMilestone": 140,
+    "platforms": [
+      "desktop",
+      "android",
+      "webview"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5137897664806912",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T13:35:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Well-scoped spec-alignment task classified as 'Chromium catches up'. The problem is precisely identified: per the Service Worker spec worker-client case, workers created from blob URLs must inherit the controlling service worker, but Chromium only did this for dedicated workers, not shared workers. Tracked as Chromium issue 324939068 (created 2024-02-13, Blink>Workers). No browser-intervention-validity question because the fix aligns to an existing published standard.",
+      "evidenceIds": [
+        "S1",
+        "S8"
+      ],
+      "limitations": "No documented end-user or developer-problem validation beyond spec-correctness; the ChromeStatus record carries no initial_public_proposal or explainer."
+    },
+    "incubation": {
+      "status": "not-relevant",
+      "finding": "Not applicable as a distinct phase: this is a conformance fix to an existing final-form standard (Service Worker Recommendation/Living Standard), not a new capability requiring use-case incubation. ChromeStatus explainer_links is empty and the I2S explicitly states 'Explainer: None'; TAG review is marked 'Not applicable'.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Rationale: a catch-up fix to a published standard; the 'spec' is the existing Worker client case, so there was no open design/use-case incubation to replay. This does not mean untested."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A prototype existed: the core change 'Make a SharedWorker blob URL inherits the parent controller' landed behind the SharedWorkerBlobURLFix Finch flag on 2024-02-21 (CL 5307317), with a WPT added the same day (CL 5312920) and UMA on 2024-02-27 (CL 5321375). However the prototype's most direct verification was blocked by a separate, still-unimplemented API: navigator.serviceWorker inside a SharedWorker (crbug 40364838), so the headline 'sharedworker should inherit service worker controller' WPT could not pass in Chromium.",
+      "evidenceIds": [
+        "S8",
+        "S1",
+        "S10"
+      ],
+      "limitations": "crbug 40364838 could not be loaded directly (reader/network errors); its still-open status is inferred from the still-failing WPT subtest (S9) and the w3c spec issue (S10)."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The flag existed and was testable, but there is no evidence of a recruited external developer-trial cohort, task-based feedback instrument, or DevRel trial kit. The 'trial' de facto consisted of blink-dev API-owner review plus Chromium telemetry, not a structured developer trial. ChromeStatus labels the status 'In developer trial (Behind a flag)' at M140, but the manifest launch event and the issue tracker show it shipped enabled-by-default in M140 (ChromeStatus UI status appears stale vs the flag-flip CL).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S8"
+      ],
+      "limitations": "No cohort/recruitment report, feedback themes, or trial artifacts exist; this is a niche fix where a recruited developer trial was not run."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Limited wide review, consistent with a conformance fix. TAG review: 'Not applicable'. Mozilla: a standards-position request (issue #1113) was filed 2024-11-19 and remained in 'Needs proposed position' state at retrieval — no formal Gecko signal. WebKit: 'Shipped/Shipping' and Safari passes the WPT (9/9). Web developers: 'No signals'. Firefox still fails the relevant WPT subtests.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S9"
+      ],
+      "limitations": "Mozilla has issued no position ~20 months after the request; no attributable web-developer feedback was found; TAG review was skipped (deemed N/A)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted. Compat uncertainty was addressed via Chromium telemetry (UseCounter/UMA) plus an enterprise escape-hatch policy rather than a field experiment. An API owner (Domenic Denicola) recommended a reverse-OT/deprecation trial as an escape hatch in Nov 2024, but only the enterprise policy was implemented.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S7"
+      ],
+      "limitations": "Rationale: no Origin Trial was justified or run because the team resolved compat uncertainty through measured telemetry and an enterprise escape hatch rather than field conditions; this is not 'untested'. The recommended reverse-OT was not implemented and no reason for dropping it is documented."
+    },
+    "prepareToShip": {
+      "status": "mixed",
+      "finding": "Thorough, evidence-driven prepare-to-ship that took ~9 months. Intent to Ship posted 2024-11-14 (estimated M133); Domenic flagged a high compat concern after the owner reported 10-40% of SharedWorker script URLs are blob URLs. This triggered multiple metric-instrumentation rounds (CL 6049677, 6347337, 6458031), a 28-day telemetry readout (2025-07-15: ServiceWorker.SharedWorker.ResourceFetch.FromBlob 100% false on desktop; GetClient/AddNonWindowClient.SharedWorkerScript.IsBlob 100% false), and 3 API-owner LGTMs (Alex Russell LGTM1 2025-04-14; Domenic LGTM2 2025-07-15; Mike Taylor LGTM3 2025-07-16). Negatives: the feature slipped from an intended end-of-2024 ship and was briefly deprioritized (owner invited takeover), and the recommended reverse-OT was not done.",
+      "evidenceIds": [
+        "S3",
+        "S8"
+      ],
+      "limitations": "Estimated milestones slid repeatedly (PSA M124 -> I2S M133 -> shipped M140); no written experiment-vs-ship decision brief beyond the blink-dev thread."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled-by-default. CL 6761674 'Enable kSharedWorkerBlobURLFix feature by default' landed 2025-07-17; issue marked Fixed 2025-08-06 ('flag has been flipped and it goes through the branch cut'); Chrome 140 stable 2025-09-02 (early stable 2025-08-27) on desktop/android/webview. An enterprise escape-hatch policy (SharedWorkerBlobURLFixEnabled) is documented for both Chrome and Edge. Communication was limited to ChromeStatus + enterprise-policy docs.",
+      "evidenceIds": [
+        "S8",
+        "S1",
+        "S7",
+        "S6",
+        "S11"
+      ],
+      "limitations": "No DevRel article/demo/FAQ (ChromeStatus is_releasenotes_content_reviewed=false); no explainer; no coordinated release-comms assets beyond the status entry and policy pages."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Not an API to adopt — a behavior change. Pre-ship 28-day telemetry predicted negligible observable change; ~10 months post-ship, no breakage reports, framework/library integrations, or case studies were found (and none are expected for a niche spec-alignment path). Edge (Chromium-based) inherits the same behavior and ships the same policy.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S9",
+        "S6"
+      ],
+      "limitations": "No public post-ship adoption/usage monitoring dashboard; 'no breakage' is absence-of-evidence from search, not measured monitoring."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "No support issues, migration friction, or known failures found via search. The enterprise policy provides a documented (temporary) escape hatch. The principal support-adjacent gap is the separate, tracked crbug 40364838 (navigator.serviceWorker in SharedWorker), which keeps the headline 'inherit controller' WPT subtest failing in Chrome/Edge after ship.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S6",
+        "S7",
+        "S10"
+      ],
+      "limitations": "No public support-issue dataset; no documented support owner or runbook."
+    },
+    "deprecation": {
+      "status": "partial",
+      "finding": "The only thing being deprecated is the legacy (non-spec) Chromium behavior. The escape hatch is the SharedWorkerBlobURLFixEnabled enterprise policy, which both Chrome and Edge describe as temporary and slated for future removal. No reverse-OT, no formal deprecation timeline, and no removal milestone for the policy or legacy behavior is documented.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S1"
+      ],
+      "limitations": "No documented policy-removal milestone; no deprecation notice beyond the enterprise release notes."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Removes a Chromium-only deviation from the Service Worker spec (dedicated workers inherited the controller; shared workers did not), eliminating a Chromium-specific workaround for developers using blob-URL SharedWorkers under service-worker control. However, ChromeStatus records 'Web developers: No signals', no attributable developer demand was found, and pre-ship telemetry showed the affected observable is negligible in practice — so real-world developer benefit is real-but-small and unmeasured.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S8"
+      ],
+      "limitations": "No attributable developer-demand or benefit measurement; benefit is argued from spec-correctness, not from developer evidence."
+    },
+    "endUserImpact": {
+      "status": "not-relevant",
+      "finding": "No end-user-facing impact. This is an internal correctness fix to a rare worker-script-loading code path with no UI/UX, performance, resource, or accessibility implication for end users, and telemetry indicated no observable behavior change.",
+      "evidenceIds": [
+        "S3",
+        "S8"
+      ],
+      "limitations": "Rationale: not a user-facing capability; there is no end-user surface to measure. Not used to mean untested."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Not an adoptable API. The behavior change shipped without measurable breakage. Pre-ship 28-day telemetry (2025-07): ServiceWorker.SharedWorker.ResourceFetch.FromBlob was 100% false on desktop (Win/mac/Linux); ServiceWorker.GetClient.SharedWorkerScript.IsBlob and ServiceWorker.AddNonWindowClient.SharedWorkerScript.IsBlob were 100% false. No framework/library integration or case studies exist (none expected).",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S9"
+      ],
+      "limitations": "No post-ship adoption/usage monitoring; absence of breakage from search is not measured monitoring."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Mixed. Safari already conforms (9/9 on the WPT file; passes both sharedworker subtests). Post-ship WPT (2026-07-21): Chrome & Edge now PASS 'Same-origin blob URL sharedworker should intercept fetch()' (the behavior change works and interoperates with Safari) but still FAIL 'Same-origin blob URL sharedworker should inherit service worker controller' due to the separate, unimplemented navigator.serviceWorker in SharedWorker (crbug 807720/40364838). Firefox still FAILS both sharedworker subtests (not implemented) and Mozilla has issued no formal position. Edge inherits the behavior via the same Chromium change + policy. Baseline/other-engine progress: Safari aligned, Firefox not.",
+      "evidenceIds": [
+        "S9",
+        "S5",
+        "S6",
+        "S10"
+      ],
+      "limitations": "The headline verification subtest still fails in Chromium for a separate reason; Firefox remains non-interoperable; only one WPT snapshot observed."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The fix itself is small and correct (inherits an existing controller) and shipped with WPT, UMA, UseCounter, an enterprise policy, and thorough pre-ship compat measurement earning 3 LGTMs. Negatives: (a) the Finch flag and enterprise policy were briefly out of sync — a Microsoft engineer found (2025-02-27) the policy was enabled-by-default while the kSharedWorkerBlobURLFix flag was disabled, leaving the fix inert; (b) the feature slipped ~9 months (intended end-2024, shipped M140/2025-09) and was briefly deprioritized; (c) the first UseCounter (5203) appeared broken/zero, forcing re-instrumentation; (d) the headline 'inherit controller' WPT subtest still does not pass in Chromium due to a separate long-standing gap.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S3",
+        "S10"
+      ],
+      "limitations": "No post-ship regression/conformance dashboard beyond the WPT snapshot; crbug 40364838 current status inferred, not directly loaded."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Strong engineering evidence base: two blink-dev threads (PSA + I2S), full issue-tracker history, published 28-day telemetry results, a Mozilla standards-position request, and Chrome + Edge enterprise-policy docs. Communication accuracy is good — compat risk (10-40%), the enterprise escape hatch, and the separate crbug 40364838 limitation were all disclosed in the I2S. Gaps: no DevRel article/demo/FAQ (is_releasenotes_content_reviewed=false), no explainer (N/A), no TAG review (N/A), and Mozilla's position is unresolved.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S7",
+        "S8"
+      ],
+      "limitations": "Limited external-facing comms assets; ChromeStatus UI status ('In developer trial') appears stale vs the shipped state."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "No support issues, migration friction, or breakage reports found ~10 months post-ship. The enterprise policy provides a documented (temporary) escape hatch. The main support-adjacent gap is the separate tracked crbug 40364838 (navigator.serviceWorker in SharedWorker) that keeps the headline WPT subtest failing, leaving a state where the behavior works but its most direct test still fails.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S6",
+        "S7",
+        "S10"
+      ],
+      "limitations": "No public support-issue dataset; no documented support owner or runbook."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-executed, evidence-driven spec-alignment fix that shipped safely (no measured breakage; interoperable with Safari on the behavioral observable; enterprise escape hatch in place) after substantial pre-ship compat diligence. Rated mixed rather than a clear success because: developer demand/benefit is unmeasured (no signals); Firefox remains non-interoperable with no Mozilla position; the headline WPT verification subtest still fails in Chromium due to a separate unimplemented API; the feature slipped ~9 months with a flag/policy sync lapse; and there were no DevRel release comms.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11"
+      ],
+      "limitations": "Aggregated from the per-dimension limitations above; overall does not hide the mixed dimensions."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5137897664806912",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2025-08-18",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Authoritative cached ChromeStatus record for the feature: Chromium catches up, Blink>Workers, SharedWorkerBlobURLFix finch, M140 desktop/android/webview, Safari Shipped/Shipping, Firefox No signal, Web developers No signals, enterprise policy SharedWorkerBlobURLFixEnabled, spec link, WPT description noting crbug 40364838.",
+        "Active stage desktop_first/android_first/webview_first = 140; first_enterprise_notification_milestone = 125."
+      ],
+      "limitations": "Read from the immutable cached snapshot at evidence/chromestatus/features/5137897664806912.json (accurate_as_of 2025-08-18; record last updated 2026-04-22). ChromeStatus UI 'status' field shows 'In developer trial (Behind a flag)' at M140, which appears stale relative to the shipped (enabled-by-default) state confirmed in S8."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5137897664806912",
+      "publisher": "Chrome Platform Status lite (Google)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered view corroborates the cached record: Chromium catches up, spec link, Firefox No signal, Safari Shipped/Shipping, Web developers No signals, tracking bug crbug.com/324939068, enterprise policy SharedWorkerBlobURLFixEnabled."
+      ],
+      "limitations": "Lite view carries fewer fields than the full cached record; used to corroborate, not replace S1."
+    },
+    {
+      "id": "S3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/9XqHRVPy710",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2024-11-14",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship (posted 2024-11-14, estimated M133): no explainer, TAG N/A, compat risk from legacy Chromium, enterprise policy added.",
+        "Domenic Denicola asked for page-load impact metrics and a Gecko signal; recommended UKM/HTTP-Archive top-N analysis plus a reverse-OT/deprecation trial escape hatch.",
+        "Owner reported 10-40% of SharedWorker script URLs are blob URLs depending on platform; filed Mozilla position (S5).",
+        "Metric CLs (6049677, 6347337, 6458031); 28-day telemetry readout 2025-07-15: ServiceWorker.SharedWorker.ResourceFetch.FromBlob 100% false on desktop, GetClient/AddNonWindowClient.SharedWorkerScript.IsBlob 100% false.",
+        "3 LGTMs: Alex Russell LGTM1 (2025-04-14), Domenic Denicola LGTM2 (2025-07-15), Mike Taylor LGTM3 (2025-07-16). UseCounter 5203 (SharedWorkerScriptUnderServiceWorkerControlIsBlob) referenced by Daniel Bratell as appearing to show no usage."
+      ],
+      "limitations": "Thread is the full I2S discussion spanning 2024-11-14 to 2025-07-16; some nested quoting is verbose. Metric page chromestatus.com/metrics/feature/timeline/popularity/5203 is JS-rendered and could not be read numerically."
+    },
+    {
+      "id": "S4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/hClP93e4MLk",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2024-03-04",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Earlier Web-Facing Change PSA (2024-03-04, estimated M124). Yoav Weiss suggested sending an I2S to evaluate compat risk. Owner withdrew the PSA (2024-03-06) because blob-URL usage for SharedWorker scripts is not negligibly small, citing crbug 40364838 (navigator.serviceWorker not implemented for SharedWorker)."
+      ],
+      "limitations": "Only two substantive messages; the PSA path was abandoned in favor of a later I2S (S3)."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/mozilla/standards-positions/issues/1113",
+      "publisher": "mozilla/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2024-11-19",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Request for Mozilla position opened 2024-11-19 by the feature owner. Firefox fails the relevant WPT. WebKit observed to align (passes the WPT). Project status 'Needs proposed position' at retrieval — no formal Gecko position issued."
+      ],
+      "limitations": "Only the issue body was readable; assignee asutherland had not posted a position as of retrieval (~20 months later)."
+    },
+    {
+      "id": "S6",
+      "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/sharedworkerbloburlfixenabled",
+      "publisher": "Microsoft Learn (Microsoft Edge policy docs)",
+      "publishedOrObservedAt": "2026-05-20",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Microsoft Edge documents the equivalent SharedWorkerBlobURLFixEnabled policy (supported Windows/mac/Android >= Edge 134; iOS not supported). Enabled/unset = inherit controller (spec-aligned); Disabled = legacy behavior. Described as temporary, to be removed in a future update.",
+        "Evidence Edge (Chromium-based) ships the same behavior and escape hatch."
+      ],
+      "limitations": "ms.date metadata 2026-05-20; does not state the Edge version in which the behavior itself first shipped, only the policy's supported-from version."
+    },
+    {
+      "id": "S7",
+      "url": "https://chromeenterprise.google/policies/shared-worker-blob-url-fix-enabled/",
+      "publisher": "Chrome Enterprise (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Chrome enterprise policy SharedWorkerBlobURLFixEnabled: enabled/unset = Chrome inherits the controller for SharedWorker blob URLs (spec-aligned); disabled = legacy behavior. Intended to be temporary and removed in the future. First enterprise notification milestone 125 (per S1)."
+      ],
+      "limitations": "No visible publication date; no documented removal milestone."
+    },
+    {
+      "id": "S8",
+      "url": "https://issues.chromium.org/issues/324939068",
+      "publisher": "Chromium Issue Tracker (Google)",
+      "publishedOrObservedAt": "2025-08-06",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Full implementation timeline: issue created 2024-02-13; core change landed 2024-02-21 (CL 5307317); WPT added 2024-02-21 (CL 5312920, noting crbug 40364838); UMA added 2024-02-27 (CL 5321375); enterprise policy introduced 2024-11-07 (CL 5992890); UKM CL 6049677.",
+        "2025-02-27: Microsoft engineer flagged that the policy was enabled-by-default while kSharedWorkerBlobURLFix Finch flag was disabled (fix inert); owner confirmed and noted the feature had slipped/been deprioritized.",
+        "Metric CLs 6347337 (2025-03-13) and 6458031 (2025-04-16/17).",
+        "CL 6761674 'Enable kSharedWorkerBlobURLFix feature by default' landed 2025-07-17; marked Fixed 2025-08-06 ('flag has been flipped and it goes through the branch cut'). Status Fixed, Priority P2, Blink>Workers.",
+        "Reviewer/approvers include Hiroki Nakagawa, Shunya Shishido, Minoru Chikamune."
+      ],
+      "limitations": "Read via headless browser snapshot; some comment bodies truncated. crbug 40364838 (referenced repeatedly) could not be loaded directly and its open/fixed status is inferred from the still-failing WPT subtest (S9) and w3c issue (S10)."
+    },
+    {
+      "id": "S9",
+      "url": "https://wpt.fyi/results/service-workers/service-worker/local-url-inherit-controller.https.html?label=master&label=experimental&aligned",
+      "publisher": "web-platform-tests dashboard (wpt.fyi)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Latest master experimental runs (2026-07-21): Chrome 152 & Edge 152 PASS 'Same-origin blob URL sharedworker should intercept fetch()' but FAIL 'Same-origin blob URL sharedworker should inherit service worker controller' (navigator.serviceWorker undefined -> 'Cannot read properties of undefined (reading controller)'; test points to crbug.com/807720).",
+        "Firefox 155 FAILS both sharedworker subtests. Safari 247 preview PASSES all 9/9.",
+        "Subtest totals: Chrome 4/9, Edge 4/9, Firefox 7/9, Safari 9/9."
+      ],
+      "limitations": "Single aligned snapshot; pre-existing Chromium failures on other subtests in this file (iframe/worker blob inherit via navigator.serviceWorker) are unrelated to this feature but depress the totals."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/w3c/ServiceWorker/issues/1552",
+      "publisher": "w3c/ServiceWorker (GitHub)",
+      "publishedOrObservedAt": "2020-11-03",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Long-standing, still-open spec issue: navigator.serviceWorker is missing in workers across browsers (Chrome, Edge, Firefox), which is the underlying gap (crbug 40364838) that prevents the 'inherit controller' WPT subtest from passing in Chromium even after this fix."
+      ],
+      "limitations": "Old issue (2020); only the issue body was readable; confirms the gap exists but not its precise current resolution per engine."
+    },
+    {
+      "id": "S11",
+      "url": "https://chromereleases.googleblog.com/2025/09/stable-channel-update-for-desktop.html",
+      "publisher": "Chrome Releases (Google)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T13:35:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 promoted to the Stable channel for desktop on 2025-09-02 (early stable 2025-08-27 per Chrome Enterprise release notes). Establishes the M140 stable date for the 'Enabled by default' launch event."
+      ],
+      "limitations": "The stable-channel post does not mention this specific low-profile fix; date-only evidence."
+    }
+  ],
+  "successes": [
+    "Spec alignment achieved on the behavioral observable: post-ship WPT (2026-07-21) confirms Chrome and Edge now PASS 'Same-origin blob URL sharedworker should intercept fetch()', interoperating with Safari.",
+    "Rigorous, evidence-driven compat diligence: instead of shipping the withdrawn PSA, the team added UseCounter/UMA, ran a 28-day telemetry aggregation, manually inspected ~50 top sites, and earned 3 API-owner LGTMs before enabling by default — and the telemetry correctly predicted the post-ship outcome (negligible observable change, no measurable breakage).",
+    "Enterprise escape hatch (SharedWorkerBlobURLFixEnabled) shipped concurrently and is documented for both Chrome and Edge, giving managed environments a way to preserve legacy behavior.",
+    "Honest disclosure: the I2S and the issue tracker explicitly flagged the 10-40% blob-URL compat risk, the enterprise escape hatch, and the separate crbug 40364838 limitation that keeps the headline WPT subtest from passing."
+  ],
+  "failures": [
+    "The feature slipped ~9 months from its intended end-of-2024 ship and was briefly deprioritized (the owner publicly invited someone to take over), leaving the Finch flag disabled while the enterprise policy was enabled-by-default — a flag/policy sync lapse spotted by a Microsoft engineer on 2025-02-27.",
+    "The first UseCounter (5203, SharedWorkerScriptUnderServiceWorkerControlIsBlob) appeared broken/zero, forcing re-instrumentation (CLs 6347337, 6458031) and a multi-month delay.",
+    "The headline WPT subtest 'Same-origin blob URL sharedworker should inherit service worker controller' still FAILS in Chrome/Edge post-ship due to the separate, long-standing navigator.serviceWorker-in-SharedWorker gap (crbug 40364838/807720; w3c #1552) — the most direct verification of the fix remains failing.",
+    "The reverse-OT/deprecation-trial escape hatch recommended by an API owner (Domenic Denicola) was not implemented; only the enterprise policy was provided, which does not help unmanaged sites.",
+    "No DevRel release comms (article/demo/FAQ), no MDN/Browser-compat-data update evidence, and Mozilla's standards position remains unresolved ~20 months after it was requested; Firefox still fails both sharedworker subtests."
+  ],
+  "counterfactuals": [
+    "If the team had implemented the recommended reverse-OT (deprecation trial) alongside the enterprise policy, unmanaged sites depending on legacy behavior would have had an in-page escape hatch rather than only managed-policy control — though telemetry ultimately showed the risk was negligible.",
+    "If the initial UseCounter had captured only the behavior-changing population (clients.match/matchAll lookups of blob-URL SharedWorkers; SW-controlled resource fetches from blob-URL SharedWorkers) instead of the broad 'SharedWorker created under SW control' precondition, the multi-month 'use count looks broken' detour could have been avoided.",
+    "If navigator.serviceWorker in SharedWorker (crbug 40364838) had been implemented first, the headline WPT subtest would pass today and the fix would be directly verifiable post-ship; shipping this fix first leaves a confusing state where the behavior works but its most direct test still fails.",
+    "If the Finch flag had been enabled-by-default when the enterprise policy was enabled-by-default (Feb 2025), the policy would have actually functioned earlier; the lapse left the policy effectively inert for ~5 months."
+  ],
+  "skillImprovements": [
+    "Add a prepare-to-ship checklist item for behavior-change fixes gated by both a Finch flag and an enterprise policy: require an explicit assertion that flag and policy defaults are consistent before declaring 'enabled'. The Microsoft-engineer flag on 2025-02-27 is a textbook catch the launch owner missed.",
+    "Add a measurement-design rule for behavior-change compat risk: define the counter to capture only the behavior-changing population (e.g., SW-controlled fetches from blob-URL SharedWorkers), not the broad precondition; include a 'manually verify the counter fires on a known-positive test page' step before relying on it (the broken UseCounter 5203 is the cautionary example).",
+    "Add a ship-readiness eval that distinguishes 'shipped enabled by default' from 'the headline WPT subtest passes'; a fix that ships while its most direct WPT verification still fails (for a separate reason) must carry an explicit, linked limitation in the launch record.",
+    "Add a 'catch-up conformance' track template that legitimately skips incubation/developer-trial where N/A, but still requires: (a) other-engine conformance evidence (WPT per engine), (b) a Mozilla/WebKit position or an explicit 'no signal' with a follow-up owner and date, and (c) a documented reverse-OT-vs-enterprise-policy escape-hatch decision.",
+    "Define a release-comms minimum for even low-profile fixes — at least a ChromeStatus note plus an MDN/Browser-compat-data update; this launch has no evidence of either beyond ChromeStatus and the enterprise-policy page.",
+    "Add a data-quality check that reconciles the ChromeStatus UI 'status' field with the actual flag/shipped state (here 'In developer trial (Behind a flag)' at M140 vs the shipped enabled-by-default reality) so the launch record does not contradict itself."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "No attributable web-developer demand, partner trial, or case-study evidence (ChromeStatus records 'No signals'; none found in search). Expected for a niche spec-alignment fix, but leaves developer-value and adoption unscored-as-success.",
+      "No public post-ship monitoring dashboard or breakage telemetry beyond the pre-ship 28-day aggregation (2025-07) and a single WPT snapshot (2026-07-21); 'no breakage' is absence-of-evidence from search, not measured monitoring.",
+      "Mozilla standards position remains 'Needs proposed position' ~20 months after the request (no formal Gecko signal). crbug 40364838 (navigator.serviceWorker in SharedWorker) could not be loaded directly; its current status is inferred from references and the still-failing WPT subtest.",
+      "No DevRel release-comms assets (article/demo/FAQ) or MDN/Browser-compat-data update found; ChromeStatus is_releasenotes_content_reviewed=false. No documented removal milestone for the temporary enterprise policy."
+    ],
+    "reviewedAt": "2026-07-22T13:35:00Z"
+  }
+}

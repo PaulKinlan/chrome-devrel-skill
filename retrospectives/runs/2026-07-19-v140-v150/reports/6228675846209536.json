@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6228675846209536,
+    "name": "Crash Reporting key-value API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6228675846209536",
+    "blinkComponent": "Blink>ReportingObserver",
+    "owners": [
+      "dom@chromium.org",
+      "jamescscott@google.com"
+    ],
+    "category": "Miscellaneous",
+    "specMaturity": "Incubation (WICG Community Group)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Origin trial:6228675846209536",
+      "milestone": 140,
+      "category": "Origin trial"
+    },
+    {
+      "eventId": "145:Enabled by default:6228675846209536",
+      "milestone": 145,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T15:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The feature was filed from a concrete, attributable developer need: WICG/crash-reporting#15 (opened 2024-06-10 by a Google partner engineer) noted that the existing Crash Reporting API only carries load-time context and that dynamically-loaded 'app shell' apps cannot attach client state near the time of crash. The ChromeStatus entry (created 2025-05-07 by dom@chromium.org) restates a real, well-scoped debugging problem. The target audience is explicitly narrow: 'a very small number of large partners with uniquely complicated, memory-intensive web applications.' Browser/platform intervention is plausible because the data must survive a renderer-process crash, which only the user agent can guarantee.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S4"
+      ],
+      "limitations": "The originating demand is dominated by a single first-party (Google) partner; no broad, independent developer demand is evidenced at intake."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation is in WICG with a public explainer covering motivation, a documented alternative (continuously streaming app state via Web Sockets and inferring abrupt termination), a design proposal (CrashReportContext with initialize/set/delete), and a partial security/privacy self-review. However, the explainer leaves multiple questions explicitly open (storage limits/eviction policy 'TBD'; BFCache 2.18 'TODO'; disconnected-document 2.19 'TODO'; error semantics 2.20 'TODO'; Security/Privacy sections 2.16 'TODO: Not yet'). No broad ecosystem/customer research, framework fit, or counterevidence search is evidenced beyond the one partner.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S1"
+      ],
+      "limitations": "No evidence of representative developer research, counterevidence search, or non-Google partner co-design; several core design questions were unresolved leaving incubation."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An implementation exists (tracking bug 400432195, Blink>ReportingObserver) and an Intent to Prototype was posted 2025-07-14. But that intent was materially thin: Specification='None', TAG review='None'/'Pending', Interoperability/Compatibility='None', Gecko='No signal', WebKit='No signal', Web developers='No signals', WPT='No', Debuggability='None', Estimated milestones='No milestones specified'. The design still carried open ergonomic/semantic questions when prototyping began.",
+      "evidenceIds": [
+        "S6",
+        "S1",
+        "S4"
+      ],
+      "limitations": "The prototype intent recorded zero external signals; we cannot confirm task-based friction testing, framework/server integration spikes, or accessibility/performance pre-review from public evidence."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "A developer-trial stage exists in ChromeStatus (stage_type 130) but devtrial_instructions is null, no 'In developer trial' launch event appears for this feature in the run manifest, and no public developer-trial cohort, task completion, or friction evidence was found. The only external validation channel was the single-partner Origin Trial. Marked unknown (not 'not-relevant') because absence of evidence is not evidence of adequacy.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No public dev-trial artifacts, cohorts, or feedback were located; we cannot assert the design was exercised by representative developers behind a flag before the OT."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "A TAG CG early review (w3ctag/design-reviews#1129) was filed 2025-08-01 and closed 2025-08-28 as 'Resolution: validated', but with substantive open asks: rename CrashReportStorage->CrashReportContext (adopted), define storage limits/eviction more clearly, complete the security/privacy questionnaire, add fetchLater() as a considered alternative, and resolve which documents can add context in multi-iframe/micro-frontend cases ('seems quite critical'). TAG said it 'welcome[s] another review once the proposal is more polished.' Other-engine positions are absent or withheld: Mozilla #1271 is open/'Unscreened' and WebKit #528 is open/'blocked' (ChromeStatus classifies Safari as 'Negative' based on broader crash-reporting-infra concerns). Per the 2026-02-13 ChromeStatus snapshot, security_review_status and privacy_review_status were both 'Pending'.",
+      "evidenceIds": [
+        "S10",
+        "S8",
+        "S9",
+        "S1",
+        "S16"
+      ],
+      "limitations": "ChromeStatus tag_review_status reads 'Issues addressed', but the TAG review itself left design questions open and invited a follow-up review; no second TAG review is evidenced before ship. Formal security/privacy review state is recorded as 'Pending' at the ~ship snapshot."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "An Origin Trial ran M140->M145 (desktop/android/webview; OT id 1304355042077179905; finch 'CrashReportingStorageAPI'), received 'LGTM to experiment' (Chris Harrelson, 2025-08-01). The explicit, pre-stated goal was narrow and partner-internal: 'work with our internal partner to test out whether this API is enough to help them track down and avoid a few high-profile crashes... meaningfully reduce their renderer process crash rate'; experiment_risks was 'No particular risks.' The trial was extended once (stage 151, requested 2025-10-08) with the reason 'Our partners were late to implementing their end of using the feature, so we'd like to extend the OT to give more time for data collection and usage.' No origin_trial_feedback_url, no public readout, and no quantitative crash-rate result is evidenced, so the trial's own success criterion is unproven and the extension implies the first window underdelivered.",
+      "evidenceIds": [
+        "S7",
+        "S1",
+        "S10"
+      ],
+      "limitations": "No public OT registration counts, activation/use, partner task outcomes, or measured crash-rate reduction. The single partner was reportedly late to implement, so even qualitative trial evidence is thin."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship stage targets M145 desktop/android/webview with rollout_plan 'Will ship enabled for all users', enterprise_impact low, breaking_change false. However, at the 2026-02-13 ChromeStatus snapshot (≈ship date) security_review_status and privacy_review_status were still 'Pending'; the spec remains an unmerged-then-newly-merged WICG PR (#37) on top of another WICG-incubation base API; the public web-facing interface was renamed CrashReportStorage->CrashReportContext (and remove()->delete()) in WPT/Chromium only in Jan 2026, i.e., after the OT began and just before ship; and there is no other-engine support or Baseline path.",
+      "evidenceIds": [
+        "S1",
+        "S17",
+        "S10",
+        "S9",
+        "S8"
+      ],
+      "limitations": "The Intent to Ship thread body was not directly retrieved (the groups.google.com msgid URL was rejected by the automated reader); conclusions rest on the cached ship-stage data and the consistent thin-intent pattern. Use-counter/telemetry and rollback-trigger evidence is not public."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Release communication exists: Chrome 145 release notes (developer.chrome.com, stable 2026-02-10) list 'Crash Reporting key-value API' with description, tracking bug, ChromeStatus entry, and spec link, and an MDN CrashReportContext reference page was published 2026-05-04. But coverage is thin and partially mis-categorized (the feature appears under 'JavaScript', not Reporting/Debuggability), the canonical Reporting API reference doc (developer.chrome.com/docs/capabilities/web-apis/reporting-api, last updated 2021-10-19) does NOT mention window.crashReport/CrashReportContext at all, and the only public demo (canhas.report/crash) covers the base Reporting-Endpoints infrastructure, not the new key-value API. No dedicated article, sample, or FAQ for the new API was found.",
+      "evidenceIds": [
+        "S13",
+        "S11",
+        "S14",
+        "S15"
+      ],
+      "limitations": "No evidence of a coordinated launch pack (video, deck, GDE/partner enablement, social) for this specific feature; localization/enterprise notice not confirmed."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "The stated adoption expectation is deliberately narrow ('very small number of large partners... within 12 months'). No public usage data was retrievable: the Chrome use counter (bucket 380, WebDXFeature::kCrashReportStorageAPIInitialize) is not publicly exposed; webstatus.dev lists the feature ('reporting-crashes-storage') as Chrome-available/Safari-unavailable but yields no numeric adoption; no framework/library integration, attributable production deployment, or case study was found. The only adoption signal is the single first-party partner, which was reportedly late to implement during the OT.",
+      "evidenceIds": [
+        "S1",
+        "S12",
+        "S7"
+      ],
+      "limitations": "Per the method, missing adoption evidence is scored unknown, not inferred from shipment or absence of criticism. No defensible production-adoption denominator exists."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support-issue evidence, known-issues material, or issue dashboard was located. Debuggability is acknowledged as a future gap: the ChromeStatus debuggability field notes DevTools integration is 'considering... in the first half of 2026', and WPT coverage is inherently limited because WPT cannot crash specific renderer processes. The mid-trial interface rename (CrashReportStorage->CrashReportContext) is a latent support/confusion risk for any partner who integrated against the earlier name.",
+      "evidenceIds": [
+        "S1",
+        "S17",
+        "S7"
+      ],
+      "limitations": "Support burden, recurrence, and resolution-time data are not public; we cannot score this dimension."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new feature launch, not a deprecation, removal, or reverse trial. There is no removal path, migration, or affected long-tail denominator in scope at this stage.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "Used 'not-relevant' only because the phase does not apply to a new-feature launch, not to mean the feature is untested."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real, recurring, and well-articulated (attaching survivable app-state breadcrumbs to crash reports to debug renderer crashes), and a credible first-party partner wants it. But the value is narrow (single-partner-driven, deliberately tiny audience) and the shipped surface still carries open ergonomic/semantic questions (write-only/no getter, undefined eviction, unresolved multi-iframe scoping, incomplete security/privacy sections) flagged by TAG.",
+      "evidenceIds": [
+        "S5",
+        "S4",
+        "S10",
+        "S1"
+      ],
+      "limitations": "No independent (non-Google) developer-value evidence; no measured debugging-cycle improvement."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "End-user benefit is only indirect and hypothetical (more stable sites if developers debug and fix crashes faster). No measured user-facing stability improvement, latency, data-loss, or accessibility impact is evidenced. The feature also introduces a developer-only debugging channel whose abuse/exploit-refinement vector is acknowledged in the explainer.",
+      "evidenceIds": [
+        "S4",
+        "S1"
+      ],
+      "limitations": "No defensible end-user-impact evidence; not inferred from shipment or developer enthusiasm."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No public production-adoption evidence: no usage numbers, no attributable non-Google deployment, no framework/library integration, no case study. The only signal is the single first-party partner, who was late to implement during the OT.",
+      "evidenceIds": [
+        "S1",
+        "S12",
+        "S7"
+      ],
+      "limitations": "Chrome use-counter bucket 380 is not publicly accessible; webstatus.dev confirms Chrome-only availability but not usage volume."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "At evidence cutoff the feature is Chromium-only (Chrome + Edge). The base Crash Reporting API it extends is itself un-adopted by Safari/Firefox (the Reporting API doc lists Crash reports as Chrome/Edge only). Mozilla #1271 is open/'Unscreened' (informally positive on the broader infra); WebKit #528 is open/'blocked' (ChromeStatus classifies Safari 'Negative'). No Baseline status; the spec is WICG incubation layered on WICG incubation. No other-engine implementation or committed interop path is evidenced ~5 months after ship.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S14",
+        "S12",
+        "S1"
+      ],
+      "limitations": "Mozilla's informal positivity and 'under consideration' soften 'failure' toward 'mixed', but the material outcome (zero non-Chromium implementations, one engine blocked) is an interoperability failure at cutoff."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The implementation shipped across the declared platforms (desktop, android, webview; iOS null) with no reported regressions, and the team was responsive to review (TAG-driven rename CrashReportStorage->CrashReportContext and community-driven remove()->delete()/create()->initialize() landed in WPT/Chromium). But WPT coverage is structurally limited (cannot crash a renderer in WPT), and the public interface was renamed during the OT window (Jan 2026), indicating the surface was not stable when partners first integrated.",
+      "evidenceIds": [
+        "S17",
+        "S16",
+        "S1",
+        "S7"
+      ],
+      "limitations": "No public conformance/friction report, regression list, or performance/resource measurements; cannot independently verify quality beyond the rename history."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication exists but is thin and partially inaccurate to the shipped surface: release-notes mention + post-ship MDN page are present, but the canonical Reporting API reference doc was not updated, no dedicated demo/sample exists for the new API, the ChromeStatus record still showed security/privacy 'Pending' at ship, and the intent threads were missing populated goals/milestones/signals (the 'Goals for experimentation' field was blank in the generated intent-to-experiment email). Naming churn (Storage->Context) is not reflected in the ChromeStatus OT display/finch name.",
+      "evidenceIds": [
+        "S13",
+        "S11",
+        "S14",
+        "S7",
+        "S1",
+        "S17"
+      ],
+      "limitations": "Internal review artifacts and the intent-to-ship body were not retrievable; communication completeness beyond public artifacts is unverified."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support-issue evidence, known-issues material, or DevTools-integration confirmation (planned H1 2026 per ChromeStatus) was located. Cannot score support burden or issue resolution.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Support telemetry and issue trackers are not public."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Overall: mixed. Genuine, well-scoped developer problem with an engaged first-party partner, a responsive design loop (TAG/community feedback incorporated), a conservative trial-first rollout, on-time M145 shipment, and post-ship MDN coverage. Set against: an unproven single-partner Origin Trial extended because the partner was late (its stated crash-rate-reduction success criterion is unevidenced), Chromium-only interoperability with WebKit blocked and Mozilla unscreened (built on an un-adopted base API), formal security/privacy reviews still 'Pending' at ship, open design questions (eviction, multi-iframe scoping, incomplete security/privacy), a mid-trial interface rename, thin external demand evidence, and an incomplete documentation/demo set (canonical reference doc not updated). Not a clean success; several dimensions remain unknown rather than demonstrated.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S10",
+        "S8",
+        "S9",
+        "S13",
+        "S14",
+        "S17"
+      ],
+      "limitations": "Overall deliberately does not mask the unknown adoption/end-user-impact/support dimensions. A higher confidence overall would require public usage, partner outcome, and completed formal reviews."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/chromestatus/features/6228675846209536.json",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-02-13)",
+      "publishedOrObservedAt": "2026-02-13T20:14:11Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "stages",
+        "OT id/goals/risks/extension reason",
+        "review statuses Pending",
+        "owners",
+        "ship milestones 145",
+        "interop positions",
+        "use counter bucket 380",
+        "devTools plan H1 2026"
+      ],
+      "limitations": "is_released=false and status='Proposed' in the snapshot lag the actual M145 ship; review-status fields may lag real state."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/6228675846209536",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-02-13T20:14:11Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "summary",
+        "motivation",
+        "Firefox Under consideration",
+        "Safari Negative",
+        "Web developers Positive",
+        "tracking bug"
+      ],
+      "limitations": "Lite view mirrors the cached record; no additional fields."
+    },
+    {
+      "id": "S3",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest (2026-07-19-v140-v150)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "authoritative launchEvents: 140 Origin trial; 145 Enabled by default",
+        "report path"
+      ],
+      "limitations": "Manifest defines the two retained launch events; the OT extension (stage 151) is a stage, not a separate manifest launch event."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/WICG/crash-reporting/blob/gh-pages/crashReport-explainer.md",
+      "publisher": "WICG / crash-reporting (Dominic Farolino)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "motivation",
+        "CrashReportContext IDL (initialize/set/delete)",
+        "write-only/no-getter rationale",
+        "Document-bound scoping",
+        "alternatives considered",
+        "open TODOs: eviction TBD, BFCache/disconnected/errors TODO, Security/Privacy sections TODO",
+        "exploit-refinement security note"
+      ],
+      "limitations": "Living document; exact commit date not captured. Open TODOs reflect state at retrieval, not necessarily at ship."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/WICG/crash-reporting/issues/15",
+      "publisher": "WICG / crash-reporting (nicholaschen)",
+      "publishedOrObservedAt": "2024-06-10T18:44:04Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "original problem statement",
+        "app-shell/dynamic-load gap",
+        "closed by spec PR #37"
+      ],
+      "limitations": "Single originating issue; does not quantify breadth of demand."
+    },
+    {
+      "id": "S6",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/F3JDegZ9Ukw/m/kms5ePCaCQAJ",
+      "publisher": "blink-dev (Intent to Prototype, posted via ChromeStatus for dom@chromium.org)",
+      "publishedOrObservedAt": "2025-07-14T18:06:08Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Specification=None",
+        "TAG review None/Pending",
+        "Gecko/WebKit/Web-dev No signal",
+        "WPT No",
+        "Debuggability None",
+        "no milestones"
+      ],
+      "limitations": "Only the original message was read; any in-thread replies beyond the first post were not captured for this thread."
+    },
+    {
+      "id": "S7",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/fujoqyfUhrc/m/FS3W4ejGAgAJ",
+      "publisher": "blink-dev (Intent to Experiment thread: Chromestatus, Domenic Denicola, Dominic Farolino, Chris Harrelson)",
+      "publishedOrObservedAt": "2025-07-30T19:28:22Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "blank 'Goals for experimentation' (chromium-dashboard bug)",
+        "Domenic design issues #38/#39",
+        "TAG review filed (#1129)",
+        "explicit single-internal-partner goal and crash-rate-reduction criterion",
+        "'number of partners directly interested... is limited'",
+        "Chris Harrelson 'LGTM to experiment'",
+        "M140 OT goal"
+      ],
+      "limitations": "Thread read through the LGTM reply; later messages (if any) not captured."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/mozilla/standards-positions/issues/1271",
+      "publisher": "Mozilla standards-positions (opened by domfarolino)",
+      "publishedOrObservedAt": "2025-07-14T13:31:38Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "status Open",
+        "project 'standards-positions review' Status 'Unscreened'",
+        "no Mozilla position issued"
+      ],
+      "limitations": "ChromeStatus records Mozilla as 'Under consideration' with informal positive feedback on the broader infra; the primary issue itself shows no formal Mozilla position."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/WebKit/standards-positions/issues/528",
+      "publisher": "WebKit standards-positions (opened by domfarolino)",
+      "publishedOrObservedAt": "2025-07-14T13:35:38Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "status Open",
+        "labels 'blocked' and 'from: Google'",
+        "no WebKit response"
+      ],
+      "limitations": "ChromeStatus classifies Safari as 'Negative' based on broader crash-reporting-infra concerns; the primary issue itself is 'blocked'/unresponded rather than a formal Negative."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1129",
+      "publisher": "W3C TAG design-reviews (domfarolino; reviewers christianliebel, yoavweiss)",
+      "publishedOrObservedAt": "2025-08-28",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "CG early review closed 'Resolution: validated'",
+        "rename request CrashReportStorage->CrashReportContext",
+        "storage limits/eviction undefined",
+        "incomplete security/privacy questionnaire",
+        "fetchLater() alternative ask",
+        "multi-iframe scoping 'unanswered... quite critical'",
+        "'welcome another review once more polished'"
+      ],
+      "limitations": "An early ('validated') review, not a final sign-off; no evidence of a second TAG review before ship."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/CrashReportContext",
+      "publisher": "MDN Web Docs (MozDevNet)",
+      "publishedOrObservedAt": "2026-05-04T02:41:10Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "CrashReportContext reference (initialize/set/delete)",
+        "window.crashReport usage examples",
+        "published post-ship"
+      ],
+      "limitations": "Browser-compatibility table content was sparse in the retrieved page; spec link points to WICG draft."
+    },
+    {
+      "id": "S12",
+      "url": "https://github.com/web-platform-dx/web-features/issues/3468",
+      "publisher": "web-platform-dx/web-features (ddbeck)",
+      "publishedOrObservedAt": "2025-10-16T13:39:33Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "feature discovered via Chromium use counters",
+        "closed by PR #3816 (reporting-crashes-storage entry landed)",
+        "Chrome 145 / Mozilla #1271 / WebKit #528 references"
+      ],
+      "limitations": "webstatus.dev page is JS-rendered and returned only a shell; numeric usage/Baseline status not captured beyond Chrome-available/Safari-unavailable."
+    },
+    {
+      "id": "S13",
+      "url": "https://developer.chrome.com/release-notes/145",
+      "publisher": "Chrome for Developers (Chrome 145 release notes)",
+      "publishedOrObservedAt": "2026-02-10",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "feature listed in M145 release notes (under 'JavaScript')",
+        "stable date 2026-02-10",
+        "tracking bug 400432195 + ChromeStatus + spec links"
+      ],
+      "limitations": "Brief mention among ~30 features; no dedicated article/demo linked."
+    },
+    {
+      "id": "S14",
+      "url": "https://developer.chrome.com/docs/capabilities/web-apis/reporting-api",
+      "publisher": "Chrome for Developers (Reporting API guide, Maud Nalpas)",
+      "publishedOrObservedAt": "2021-10-19",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "canonical Reporting API doc last updated 2021-10-19",
+        "no mention of window.crashReport/CrashReportContext",
+        "Crash report type support table: Chrome/Edge only (Safari/Firefox No)"
+      ],
+      "limitations": "Doc may have been updated after retrieval snapshot metadata; content read at retrieval shows no crashReport coverage."
+    },
+    {
+      "id": "S15",
+      "url": "https://canhas.report/crash",
+      "publisher": "canhas.report (Thomas Steiner) Reporting API demos",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "public demo exists for base crash reporting via Reporting-Endpoints + chrome://crash",
+        "demo does NOT cover the window.crashReport key-value API"
+      ],
+      "limitations": "Demo targets the base infrastructure, not the new storage API."
+    },
+    {
+      "id": "S16",
+      "url": "https://github.com/WICG/crash-reporting/issues/38",
+      "publisher": "WICG / crash-reporting (domenic; #38 and #39)",
+      "publishedOrObservedAt": "2025-07-31T02:23:30Z",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "#38 naming set()/remove() (closed, delete() adopted)",
+        "#39 create()->initialize() (closed, adopted)",
+        "minor ergonomic design churn pre-OT"
+      ],
+      "limitations": "Both closed/resolved; represent minor naming feedback, not blocking objections."
+    },
+    {
+      "id": "S17",
+      "url": "https://github.com/web-platform-tests/wpt/pull/57117",
+      "publisher": "web-platform-tests / Chromium (Dominic Farolino; reviewers dcheng, mmenke, nasko)",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "rename CrashReportStorage->CrashReportContext and remove()->delete() per TAG #1129 and community #38",
+        "landed Jan 2026 (after OT start, before M145 ship)",
+        "Chromium CL 7422847 merged"
+      ],
+      "limitations": "Rename event confirmed via commit history on the TAG issue; full PR diff not independently retrieved."
+    },
+    {
+      "id": "S18",
+      "url": "https://github.com/WICG/crash-reporting/pull/37",
+      "publisher": "WICG / crash-reporting (Dominic Farolino) - spec PR 'Introduce the CrashReportContext interface'",
+      "publishedOrObservedAt": "2026-02-02",
+      "retrievedAt": "2026-07-22T15:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "specification source for the feature",
+        "merged (CrashReportContext interface)"
+      ],
+      "limitations": "PR body/diff NOT directly retrieved: the Z.AI web reader returned repeated 500 network errors for this URL. Existence, title, and merge are corroborated by S10 (TAG review references and Feb-2 merge mention), S11 (MDN spec link), S4 (explainer), and S16/#15 (closed-by #37)."
+    }
+  ],
+  "successes": [
+    "Clear, well-scoped developer problem with a concrete originating issue (#15) and an engaged first-party partner.",
+    "Responsive design loop: TAG feedback (rename CrashReportStorage->CrashReportContext) and community feedback (#38 set()/delete(), #39 initialize()) were incorporated and landed in WPT/Chromium (S10, S16, S17).",
+    "Conservative, trial-first rollout posture (single-partner Origin Trial at M140, low enterprise impact, no breaking change) before default-on at M145.",
+    "On-time shipment at M145 across desktop/android/webview; post-ship MDN reference page and a web-features entry both landed (S13, S11, S12)."
+  ],
+  "failures": [
+    "The Origin Trial did not produce public evidence of its own stated success criterion (single-partner renderer crash-rate reduction); it was extended because the sole partner was late to implement (S1, S7).",
+    "Interoperability: shipped Chromium-only with WebKit blocked and Mozilla unscreened, no Baseline, built on an un-adopted base API (S8, S9, S12, S14).",
+    "Formal security_review_status and privacy_review_status were still 'Pending' at the 2026-02-13 ChromeStatus snapshot, ~ship date (S1).",
+    "Documentation gap: the canonical Reporting API reference doc (last updated 2021) does not cover window.crashReport, and no dedicated demo/sample for the new key-value API exists (S14, S15).",
+    "Thin launch evidence ledger: intent threads lacked populated goals/milestones/signals, no origin_trial_feedback_url, no public usage/adoption/case-study evidence (S6, S7, S1)."
+  ],
+  "counterfactuals": [
+    "If a real multi-partner/broad developer-demand study (rather than a single internal partner) had been run before the OT, the thin demand picture and the 'partner was late' outcome could have surfaced earlier - enabling either a more representative trial cohort or a decision to keep incubating.",
+    "If the OT had pre-registered quantitative thresholds (e.g., partner crash-rate reduction %, task-completion) and a publication plan (origin_trial_feedback_url), the M145 extension would have carried evidence instead of 'give more time for data'.",
+    "If the API name (CrashReportStorage->CrashReportContext) and the open design questions (eviction, multi-iframe scoping, write-only semantics) had been resolved before the M140 branch, partners would not have integrated against a renamed surface mid-trial.",
+    "If security/privacy review had been completed (not 'Pending') before ship, the launch could claim formal review rather than leaving it open at the ship snapshot.",
+    "If Mozilla/WebKit positions had been advanced - or the launch had been framed explicitly as a Chrome-only experiment on an un-adopted base API - the interoperability/Baseline gap would not read as an afterthought."
+  ],
+  "skillImprovements": [
+    "Phase 05 (experiment): add a regression check requiring an origin_trial_feedback_url and pre-registered success thresholds before approving any OT extension; treat 'partners were late to implementing their end' as evidence that the experiment's success criterion is unmet, not merely inconvenient.",
+    "Phase 04 (wide review): treat 'TAG closed as validated (early) with open questions' + 'welcome another review once more polished' as NOT equivalent to tag_review_status 'Issues addressed'; require a second review or an explicit close-out before default-on.",
+    "Add a rule: when a feature is layered on another un-adopted/incubating base API, score interoperability against the base's adoption too, and require the ship brief to state the Chrome-only period explicitly.",
+    "Phase 06 (prepare to ship): gate default-on on non-'Pending' formal security/privacy review status (or an explicitly accepted, documented risk), surfaced in the readiness matrix.",
+    "Release/docs completeness check: require the canonical reference doc (not only release notes + MDN) to cover the new surface, and require at least one runnable demo/sample of the new API; flag when only the base infrastructure has a demo.",
+    "Naming-stability alert: if the public web-facing interface name changes after an OT starts, require partner migration notes and synchronize the ChromeStatus display/finch name to avoid divergence.",
+    "Adoption-evidence rule for 'very small number of large partners' features: require at least one attributable production deployment (not OT registration/intent) before scoring adoption success; otherwise mark unscored.",
+    "Add an automated-reader fallback for groups.google.com msgid URLs (rejected by the Z.AI reader's URL validator) so intent threads do not require a full browser session to retrieve."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Spec PR #37 body/diff: Z.AI web reader returned repeated 500 errors; design confirmed only indirectly via explainer, MDN, TAG review, and naming commits (S18).",
+      "Intent to Ship (blink-dev 69723029) and Intent to Extend OT (68e67fd8) thread bodies: groups.google.com msgid URLs are rejected by the automated reader; only the cached ship-stage data and the experiment-extension reason were available.",
+      "Public adoption/usage data: Chrome use counter bucket 380 (WebDXFeature::kCrashReportStorageAPIInitialize) is not publicly exposed; webstatus.dev is JS-rendered and yielded no numeric usage.",
+      "Mozilla base position mozilla/standards-positions#288 (overall Crash Reporting infrastructure): retrieval timed out; Mozilla's stance inferred only from #1271 and ChromeStatus notes.",
+      "Quantitative Origin Trial outcome (partner crash-rate reduction, registration/activation counts): no origin_trial_feedback_url and no public readout found.",
+      "Post-ship support burden, issue recurrence, and DevTools-integration status: not public.",
+      "Formal security/privacy review final state: recorded 'Pending' at the 2026-02-13 snapshot; current state not confirmed."
+    ],
+    "reviewedAt": "2026-07-22T15:30:00Z"
+  }
+}

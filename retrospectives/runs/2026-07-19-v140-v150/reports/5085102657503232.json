@@ -1,0 +1,480 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5085102657503232,
+    "name": "Clipboardchange event",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5085102657503232",
+    "summary": "Event on navigator.clipboard that fires when the system clipboard changes, exposing only available MIME types (not contents) to let web apps react without polling. Proposed by the Microsoft Edge team.",
+    "blinkComponent": "Blink>DataTransfer",
+    "webFeature": "clipboardchange",
+    "owners": [
+      "roraja@microsoft.com",
+      "ragoulik@microsoft.com",
+      "daniec@chromium.org"
+    ],
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Origin trial:5085102657503232",
+      "milestone": 140,
+      "category": "Origin trial"
+    },
+    {
+      "eventId": "144:Enabled by default:5085102657503232",
+      "milestone": 144,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2024-08-14 by the Microsoft Edge team (roraja) under Blink>DataTransfer with a clear, scoped problem statement: detecting clipboard changes today requires inefficient polling of navigator.clipboard.read(), which is infeasible on Firefox/Safari because they gate clipboard reads behind user gestures. Tracking bug 41442253, search tags, and motivation are populated. Intake correctly diagnosed a genuine web-platform gap and identified target segments (remote-desktop clients, rich web editors).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Named 'users' (Excel Online, Chrome Remote Desktop) are asserted as interest in the motivation field, not attributable commitments; the entry's motivation cites a personal GitHub gist and a Stack Overflow question rather than customer evidence."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Public incubation via WICG proposal #186 (opened 2024-11-19) and a structured MSEdge explainer with two concrete scenarios (rich-editor paste-format buttons; remote-desktop clipboard sync), an alternatives analysis (transient-activation gating; a DataTransfer-based signature), and platform/OS-clipboard API appendix. Demand signals are interest-grade only: 84 ChromeStatus stars, 34+ crbug upvotes, a Stack Overflow question, and a Maccy issue referenced in the record. No surveyed cohort, customer ledger, or attributable partner commitment is in the public record; counter-evidence (FF/Safari gesture model) was acknowledged but not resolved at incubation.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "limitations": "No published developer-research methodology, segment map, or attributable co-design partners; broad category interest is used as a proxy for proposal-specific demand."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A Chromium prototype existed (the TAG request links prototype code) and a tentative WPT test (async-navigator-clipboard-change-event.tentative.https.html) plus a sample app (clipboard-change-event-example-app.html) were created; Intent to Prototype was posted ~Nov 2024. However the prototype-era example handlers read the full clipboard contents inside the event (flagged by TAG/jyasskin on 2025-01-13), so the prototype design materially differed from the final types-only design. No public friction log, framework-integration spike, or mobile/desktop conformance report exists.",
+      "evidenceIds": [
+        "S5",
+        "S3",
+        "S14"
+      ],
+      "limitations": "No public friction report or compatibility matrix; prototype-vs-shipped divergence means prototype evidence cannot validate the shipped ergonomics."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The devtrial_instructions field and DevRel blog (2025-09-23) provide a runnable path: about://flags 'ClipboardChangeEvent', a live demo with GitHub source, a feature-detection snippet ('onclipboardchange' in navigator.clipboard), and a feedback route (W3C clipboard-apis repo). The blog explicitly frames the event as a progressive enhancement with polling fallback. However no cohort, recruitment plan, task-completion data, or published findings exist; participation was self-selected.",
+      "evidenceIds": [
+        "S11",
+        "S1"
+      ],
+      "limitations": "No published trial findings, representativeness report, or attributable feedback themes; the devtrial artifact is a single blog post."
+    },
+    "wideReview": {
+      "status": "mixed",
+      "finding": "TAG review #1017 was requested early (2024-11-22, ~14 months before ship) — strong practice. TAG (jyasskin 2025-01-08; torgo 2025-01-27) was initially concerned about clipboard exposure and the incentive to be incompatible with FF/Safari; the design was revised to types-only + no-permission (ragoulik 2025-03-12) and TAG closed SATISFIED (2025-04-03) while adding a sticky-activation requirement. Mozilla position #1115 is 'No signal', and Mozilla engineer smaug opened #228 (2024-09-27, still open) to REMOVE the event and replace it with a promise-returning method; roraja asked to close #228 on 2025-10-23 but received no Mozilla agreement. WebKit standards-positions #429 has zero comments. The merged spec PR #239 body self-attests an 'Editing WG resolution' with WebKit/Chromium/Gecko 'not objecting', which is not reconcilable with Mozilla's open removal issue and WebKit's silence.",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10"
+      ],
+      "limitations": "The claimed Editing WG resolution could not be independently verified; 'No signal' plus an open Mozilla objection is materially worse than neutral and should not be read as non-opposition."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "An Origin Trial ran in Chrome and Edge M140-M142 (2025-09-02 to 2025-12-02), trial ID 137922738588221441, non-critical, third-party support false, with use counter kClipboardChangeEventAddListener (bucket 5586). The Intent to Experiment states clear goals (validate design, track engagement metrics, ergonomics, adoption patterns) and experiment risks as 'None'. No public interim/final readout, participant denominator, or measured results exist; origin_trial_feedback_url is null in the cached record.",
+      "evidenceIds": [
+        "S1",
+        "S14",
+        "S11"
+      ],
+      "limitations": "No published OT results, participant count, or activation-vs-use data; the OT goals (engagement metrics, adoption patterns) were never reported back publicly."
+    },
+    "prepareToShip": {
+      "status": "mixed",
+      "finding": "Stage 160 (intent_stage 5) Intent to Ship was posted with desktop/android first = 144 and rollout plan 'Will ship enabled for all users'; DevRel blog, release notes, and spec PR were prepared. However the cached record accurate_as_of 2025-12-01 (about 6 weeks before the 2026-01-13 ship) still shows security_review_status='Pending' AND privacy_review_status='Pending' — formal review gates not closed at the last pre-ship snapshot. The OT intent had planned ship at M142; actual ship was M144 (a 2-milestone slip). The Intent-to-Ship Google Groups thread content could not be retrieved (msgid URL is JS-rendered and timed out), so API-owner LGTM conditions are unverifiable.",
+      "evidenceIds": [
+        "S1",
+        "S11",
+        "S10",
+        "S14"
+      ],
+      "limitations": "Ship-intent detail, API-owner approvals/conditions, and confirmation that security/privacy reviews were completed before default-on shipment were not retrievable."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Chrome 144 stable shipped the clipboardchange event on 2026-01-13, confirmed by the Chrome 144 release notes (Tracking bug #41442253), the Chrome Releases blog (stable channel update for desktop, 2026-01-13), webstatus.dev ('Available since 2026-01-13'), and a gigazine listing. The DevRel blog (2025-09-23, Raja + Brosset) is an accurate, well-sourced artifact set (explainer, spec, ChromeStatus, W3C PR, demo, source) with honest platform caveats and a progressive-enhancement framing. The feature is oddly categorized under 'JavaScript' in the release notes rather than with clipboard APIs.",
+      "evidenceIds": [
+        "S12",
+        "S11",
+        "S13",
+        "S15",
+        "S16"
+      ],
+      "limitations": "No MDN or caniuse confirmation retrieved; the release-notes entry is terse and the Chrome Releases blog page was only located via search summary, not read in full."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No defensible adoption evidence was retrieved: no use-counter/telemetry figures, no production case studies, no framework/library integration, and no attributable deployments. adoption_expectation and adoption_plan are null in the cached record. The kClipboardChangeEventAddListener counter exists but no public usage figure was located. The only demand signals remain interest-grade (stars, upvotes, questions).",
+      "evidenceIds": [
+        "S1",
+        "S11"
+      ],
+      "limitations": "Genuine evidence gap; webstatus.dev and WPT usage dashboards were JS-rendered/timed out and yielded no numeric usage."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "The feedback route is the W3C clipboard-apis repo (per the blog and ot_feedback_submission_url). Debuggability is described (Sources breakpoints; a 'Clipboard' section in Event Listener Breakpoints). However doc_links and sample_links are empty in the cached record, resources.docs/samples are empty, and no support-issue taxonomy, known-issues material, or recurrence data was located.",
+      "evidenceIds": [
+        "S1",
+        "S11"
+      ],
+      "limitations": "Genuine gap; no public troubleshooting/known-issues material or support-volume signal retrieved."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New additive event, not a removal; no deprecation path applies at this stage. Rationale: the feature is an opt-in progressive enhancement with a documented polling fallback, and no existing API is removed or restricted.",
+      "evidenceIds": [
+        "S1",
+        "S11"
+      ],
+      "limitations": "Not applicable now; would become relevant only if the open standards disagreement (spec #228) led to an API-shape change or removal."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The underlying problem is real and recurring (clipboard polling is inefficient and infeasible on Firefox/Safari). The rich-editor paste-format scenario is well served by the types-only design. However the headline remote-desktop clipboard-sync scenario is necessary-but-not-sufficient for clipboardchange alone: it still requires gesture-free clipboard read(), which is the actual blocker (confirmed by garykac's TAG comment that read-without-gesture is why Chrome has a permission). No attributable committed customers exist.",
+      "evidenceIds": [
+        "S3",
+        "S5"
+      ],
+      "limitations": "Value is argued from use cases, not measured demand or committed partners."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "The design is intended to be privacy-preserving (types only, no contents; focus + sticky-activation gating; custom MIME types excluded to prevent fingerprinting). TAG nonetheless flagged residual risk when users copy data from specialized applications exposing unusual clipboard types. No end-user impact, UX study, or accessibility evidence exists.",
+      "evidenceIds": [
+        "S5",
+        "S3"
+      ],
+      "limitations": "No user-impact data; assessment reflects design intent, not measured outcome."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption evidence of any kind was retrieved (no usage numbers, case studies, framework/tool integration, or attributable production use).",
+      "evidenceIds": [
+        "S1",
+        "S11"
+      ],
+      "limitations": "Genuine evidence gap; the feature is recent (shipped 2026-01-13) but no early-adoption signal was located."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Single-engine outcome: only Chrome (+ Edge/Chromium) ship clipboardchange. Firefox is 'No signal' with an OPEN issue (#228) from a Mozilla engineer proposing to REMOVE the event and replace it with a promise-returning method that was never agreed or closed. WebKit standards-positions #429 has zero engagement. TAG closed satisfied but added a sticky-activation requirement and explicitly warned the event creates an incentive to be incompatible with Firefox and Safari. The merged spec PR's self-attested 'Gecko not objecting' is contradicted by the open Mozilla removal issue. Baseline is not achievable.",
+      "evidenceIds": [
+        "S8",
+        "S6",
+        "S7",
+        "S5",
+        "S10"
+      ],
+      "limitations": "Could not verify the claimed Editing WG resolution; no Firefox/Safari implementation signals exist."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "A tentative WPT test exists and debuggability is provided. The Intent to Experiment acknowledged WPT flakiness on wpt.fyi infra ('runs fine in Chromium CQ; Edge failures probably flag-disabled'). Shipped desktop + Android (M144); iOS is null. Cross-browser WPT pass rates could not be retrieved (the WPT page/API is JS-rendered and returned only the dashboard shell).",
+      "evidenceIds": [
+        "S14",
+        "S1",
+        "S17"
+      ],
+      "limitations": "No cross-browser pass-rate data; iOS/WebView status is inconsistent between the cached snapshot and the OT config."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The DevRel blog is accurate, well-sourced, and honest about limitations and the polling fallback (strength). But three integrity problems exist: (1) ChromeStatus security_review_status and privacy_review_status were both 'Pending' at the 2025-12-01 snapshot, ~6 weeks before default-on shipment of a clipboard surface; (2) the merged spec PR #239 claims 'Gecko not objecting' while Mozilla's removal issue (#228) is open; (3) the TAG request asserted 'Excel Online and remote-desktop clients have shown interest' without attributable commitment.",
+      "evidenceIds": [
+        "S11",
+        "S1",
+        "S10",
+        "S8",
+        "S5"
+      ],
+      "limitations": "Whether the security/privacy reviews were completed before ship could not be confirmed."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support evidence retrieved (no issue taxonomy, known-issues docs, or recurrence data); doc_links/sample_links are empty in the cached record.",
+      "evidenceIds": [
+        "S1",
+        "S11"
+      ],
+      "limitations": "Genuine gap; too early and no public support signal located."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A competently executed Chrome/Edge launch of a feature that addresses a real problem: early TAG review drove a genuine privacy improvement (types-only, no permission), DevRel comms were accurate and honest, and the progressive-enhancement framing limits web-compat harm. However it shipped single-engine against active Mozilla opposition (an open issue to remove the event) and zero WebKit engagement, with formal security/privacy reviews still 'Pending' at the last pre-ship snapshot and no public adoption, usage, or OT-readout evidence. The headline remote-desktop use case remains unserved by the event alone."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5085102657503232",
+      "publisher": "Chrome Platform Status (ChromeStatus)",
+      "publishedOrObservedAt": "2025-12-01",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, stages, OT config (id 137922738588221441, use counter kClipboardChangeEventAddListener/bucket 5586), desktop/android=144, iOS=null, tag_review_status 'Issues addressed', security_review_status 'Pending', privacy_review_status 'Pending', ff/safari 'No signal', webdev 'Positive' (34+ upvotes), is_released=false at snapshot"
+      ],
+      "limitations": "Local cached snapshot at evidence/chromestatus/features/5085102657503232.json; accurate_as_of 2025-12-01 predates the M144 ship, so status shows 'In development'."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5085102657503232",
+      "publisher": "Chrome Platform Status (chromestatuslite)",
+      "publishedOrObservedAt": "2025-12-01",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered summary, motivation, standards/signals (FF/Safari No signal, Webdev Positive), tracking bug"
+      ],
+      "limitations": "Lite view; less detail than the full record."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/ClipboardAPI/ClipboardChangeEvent/clipboard-change-event-explainer.md",
+      "publisher": "Microsoft Edge (MSEdgeExplainers)",
+      "publishedOrObservedAt": "2025-03-12",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Final types-only design: ClipboardChangeEvent{types}; no permission required; focus + sticky-activation gating; coalescing while unfocused; custom types excluded; scenarios (rich-editor paste formats, remote-desktop sync); alternatives considered; OS clipboard APIs (Windows yes, macOS poll, others TBD)"
+      ],
+      "limitations": "Living document; the retrieved revision is post-TAG-revision (types-only). Earlier revisions exposed more."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/WICG/proposals/issues/186",
+      "publisher": "WICG",
+      "publishedOrObservedAt": "2024-11-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Public incubation venue and date; intro only, no substantive community discussion in the issue body"
+      ],
+      "limitations": "Issue body is an intro stub; no comments/reactions captured by the reader."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1017",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": "2025-04-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG requested 2024-11-22; initial concern (jyasskin 2025-01-08) about clipboard exposure; design revised to types-only (ragoulik 2025-03-12); closed SATISFIED 2025-04-03 (torgo) with added sticky-activation requirement and warning that clipboardchange creates an incentive to be incompatible with FF/Safari; garykac defense of remote-desktop read-without-gesture need; asserted 'Excel Online/remote-desktop interest'"
+      ],
+      "limitations": "Comments retrieved via GitHub API; reaction counts and some nuance may be incomplete."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1115",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2025-10-23",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Position 'No signal'; smaug (Mozilla collaborator) 2024-11-26 pointing to removal issue #228; miketaylr 2025-10-23 referencing Blink-Dev thread; no formal Mozilla position set"
+      ],
+      "limitations": "Issue still open; no final Mozilla position value beyond 'No signal'."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/429",
+      "publisher": "WebKit (standards-positions)",
+      "publishedOrObservedAt": "2024-11-20",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position 'No signal'; zero comments — no engagement at all"
+      ],
+      "limitations": "No WebKit reasoning available."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/w3c/clipboard-apis/issues/228",
+      "publisher": "W3C (clipboard-apis)",
+      "publishedOrObservedAt": "2025-10-23",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "smaug 2024-09-27 proposes REMOVING clipboardchange and replacing with a promise method (clipboard.checkCurrentClipboardTypes()), citing FF/Safari gesture-model mismatch; jyasskin 2024-12-12 agrees event is more privacy-invasive than no-event; roraja 2025-10-23 asks to close if no concerns; issue STILL OPEN with no Mozilla agreement"
+      ],
+      "limitations": "Open issue; resolution pending."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/w3c/clipboard-apis/issues/225",
+      "publisher": "W3C (clipboard-apis)",
+      "publishedOrObservedAt": "2024-09-20",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "ragoulik proposal for transient-activation focus requirement (5s grace); still open"
+      ],
+      "limitations": "Open issue; design point superseded by sticky-activation in final design."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/w3c/clipboard-apis/pull/239",
+      "publisher": "W3C (clipboard-apis)",
+      "publishedOrObservedAt": "2025-11-24",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "PR 'Add comprehensive clipboardchange event API specification' opened 2025-06-23 by roraja, MERGED 2025-11-24 by johanneswilm; PR body self-attests 'Editing WG resolution... WebKit/Chromium/Gecko not objecting'; 27 review comments; requested reviewers annevk + smaug---- (Mozilla)"
+      ],
+      "limitations": "The claimed multi-implementer non-objection is contradicted by Mozilla's open removal issue (#228); review-comment bodies not retrieved."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.chrome.com/blog/clipboardchange",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2025-09-23",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "OT blog by Rohan Raja + Patrick Brosset; OT in Chrome+Edge M140-142 (2025-09-02 to 2025-12-02); types-only design; no permission prompts; focus-aware; demo + GitHub source; feature-detection snippet; explicit progressive-enhancement/polling-fallback framing; feedback via W3C clipboard-apis repo"
+      ],
+      "limitations": "Authored by the proposing team + DevRel; not independent."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.chrome.com/release-notes/144",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 144 stable 2026-01-13; clipboardchange listed (Tracking bug #41442253); platforms Android/ChromeOS/Linux/macOS/Windows"
+      ],
+      "limitations": "Terse entry; categorized under 'JavaScript' rather than clipboard."
+    },
+    {
+      "id": "S13",
+      "url": "https://gigazine.net/gsc_news/en/20260114-google-chrome-144/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2026-01-14",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press listing 'Support for clipboardchange event' among Chrome 144 updates"
+      ],
+      "limitations": "Incidental feature listing; no independent analysis, praise, or criticism."
+    },
+    {
+      "id": "S14",
+      "url": "https://https://groups.google.com/a/chromium.org/g/blink-dev/c/JQb0t_esk1k/m/WnqkGA2pCQAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment: OT goals (validate design, engagement metrics, ergonomics, adoption patterns); experiment risks 'None'; WPT flakiness acknowledged; planned ship M142 (vs actual M144); all six Blink platforms yes"
+      ],
+      "limitations": "Many intent-template fields rendered blank; the Intent-to-Ship thread (msgid 68f89056...) could not be retrieved (timed out, JS-rendered)."
+    },
+    {
+      "id": "S15",
+      "url": "https://webstatus.dev/features/clipboardchange",
+      "publisher": "Web Platform Status (webstatus.dev)",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "clipboardchange 'Available since 2026-01-13' in Chrome/Chrome Android"
+      ],
+      "limitations": "Full page JS-rendered and timed out; only the search-result snippet was captured; no numeric usage percentage retrieved."
+    },
+    {
+      "id": "S16",
+      "url": "https://chromereleases.googleblog.com/2026/01/stable-channel-update-for-desktop_13.html",
+      "publisher": "Chrome Releases (Google)",
+      "publishedOrObservedAt": "2026-01-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 144 promoted to stable 2026-01-13 (desktop)"
+      ],
+      "limitations": "Located via search-result summary only; full page not read."
+    },
+    {
+      "id": "S17",
+      "url": "https://wpt.fyi/results/clipboard-apis/async-navigator-clipboard-change-event.tentative.https.html",
+      "publisher": "web-platform-tests (wpt.fyi)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Test file exists (tentative); OT intent notes flakiness on wpt.fyi infra"
+      ],
+      "limitations": "Pass rates not retrieved — page and API endpoints are JS-rendered and returned only the dashboard shell."
+    },
+    {
+      "id": "S18",
+      "url": "https://issues.chromium.org/issues/41442253",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug referenced across ChromeStatus, release notes, and intents"
+      ],
+      "limitations": "Content requires auth/JS and was not retrieved; upvote count (34+) taken from the ChromeStatus webdev-notes field, not verified against the bug directly."
+    }
+  ],
+  "successes": [
+    "Early TAG review (requested 2024-11-22, ~14 months pre-ship) was the correct practice and drove a real privacy improvement: the design moved from exposing clipboard contents in example handlers to a types-only event with focus + sticky-activation gating and custom-type exclusion.",
+    "The DevRel blog (2025-09-23) was accurate, well-sourced (explainer, spec, ChromeStatus, W3C PR, demo, source), and honestly framed the feature as progressive enhancement with a polling fallback — limiting web-compat harm while Chrome-only.",
+    "The types-only, no-permission design genuinely reduces risk relative to a contents-exposing event and gives a plausible interoperability story (works without the Chromium clipboard-read permission model), which is what persuaded TAG to close satisfied.",
+    "A non-critical Origin Trial with a use counter (kClipboardChangeEventAddListener) gave a safe activation path across Chrome and Edge (M140-142) before default-on."
+  ],
+  "failures": [
+    "Single-engine ship against active standards opposition: Mozilla's smaug opened #228 to REMOVE the event and replace it with a promise method, and that issue remained open and unanswered through ship; WebKit engaged not at all. The feature is Chrome/Edge-only with no Baseline path.",
+    "Formal security and privacy reviews were still 'Pending' on ChromeStatus at the 2025-12-01 snapshot, ~6 weeks before default-on shipment of a clipboard surface — a material review-gate gap for a privacy-sensitive feature.",
+    "The merged spec PR #239 self-attests an 'Editing WG resolution' with WebKit/Chromium/Gecko 'not objecting', which is contradicted by Mozilla's open removal issue and WebKit's silence — an evidence-integrity problem in the standardization record.",
+    "No Origin Trial readout, participant denominator, or measured engagement was ever published, despite the OT goals explicitly including 'track engagement metrics' and 'developer adoption patterns'.",
+    "The headline remote-desktop clipboard-sync use case is not actually solved by clipboardchange alone (it still needs gesture-free clipboard read), so the feature's flagship motivation is only partially addressed."
+  ],
+  "counterfactuals": [
+    "If an attributable partner (a named remote-desktop vendor, or Excel/Google Sheets engineering) had publicly committed during incubation, the developer-value and adoption dimensions would be defensible instead of unknown; the record only asserts 'interest'.",
+    "If TAG review had been requested late (near ship) rather than 14 months early, the original contents-exposing design might have shipped, creating a real privacy regression — early wide review was load-bearing here.",
+    "If a prepare-to-ship transition packet had required non-'Pending' security/privacy review status, the 2026-01 ship would have been gated until those gates closed, removing the current ambiguity.",
+    "If the wide-review matrix had required an actual Mozilla standards-position value (rather than treating 'No signal' plus an open removal issue as non-opposition), the 'Gecko not objecting' claim in the spec PR could not have been made, and the interoperability risk would have been surfaced explicitly before ship.",
+    "If the OT results (engagement metrics, adoption patterns) had been published as promised, adoption could be scored today instead of remaining unknown."
+  ],
+  "skillImprovements": [
+    "Add a prepare-to-ship transition-packet check that blocks 'complete' when security_review_status or privacy_review_status is 'Pending' on ChromeStatus for any feature touching a sensitive surface (clipboard, camera, microphone, identity).",
+    "Add a wide-review rule that a Mozilla/WebKit position of 'No signal' combined with an open issue in the relevant spec repo authored by that vendor's engineer must be scored as active opposition, not neutral, and must not be represented as 'not objecting' in launch or spec materials.",
+    "Add an incubation/prototype evidence requirement that demand be evidenced by attributable partner commitment or measured research, not stars/upvotes/Stack-Overflow questions, before an Origin Trial is justified.",
+    "Add an experiment-phase rule that any OT whose goals include 'track engagement metrics' or 'adoption patterns' must publish a readout (participant denominator, activation, qualitative results) before ship, or the ship transition is marked partial.",
+    "Add a regression eval case built from clipboardchange: a privacy-sensitive additive API that ships single-engine with satisfied-TAG-but-open-Mozilla-removal-issue and 'Pending' security/privacy review — to test that the skill scores interoperability as failure and evidenceAndCommunication as mixed rather than inferring success from shipment.",
+    "Add a launch-comms check that the release-notes category and ChromeStatus category match the API surface (clipboardchange was filed under 'Miscellaneous' on ChromeStatus and 'JavaScript' in release notes), to improve discoverability."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent-to-Ship (blink-dev) thread content and API-owner LGTM conditions — Google Groups msgid URL is JS-rendered and timed out.",
+      "Chrome UseCounter/telemetry usage figures for kClipboardChangeEventAddListener — no public number retrieved; webstatus.dev full page timed out.",
+      "Origin Trial readout / participant denominator / measured engagement — never published.",
+      "Cross-browser WPT pass rates for the tentative test — wpt.fyi page and API are JS-rendered and returned only the dashboard shell.",
+      "Confirmation that security_review_status and privacy_review_status were completed before the 2026-01-13 default-on ship (both 'Pending' at the 2025-12-01 snapshot).",
+      "Production case studies, framework/library integration, or attributable deployments — none located.",
+      "The claimed Editing WG resolution and the 27 review comments on spec PR #239 — review-comment bodies not retrieved.",
+      "Chromium tracking bug 41442253 content (requires auth/JS) — not retrieved; upvote count taken indirectly from ChromeStatus."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

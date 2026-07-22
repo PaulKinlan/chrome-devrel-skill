@@ -1,0 +1,588 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5109852273377280,
+    "name": "Element-scoped view transitions",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5109852273377280",
+    "webFeature": "view-transitions-element-scoped",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owners": [
+      "skobes@chromium.org",
+      "kevers@chromium.org"
+    ],
+    "editors": [
+      "vmpstr@chromium.org",
+      "nrosenthal@chromium.org",
+      "bramus@chromium.org",
+      "flackr@chromium.org"
+    ],
+    "specUrl": "https://drafts.csswg.org/css-view-transitions-2",
+    "explainerUrl": "https://github.com/WICG/view-transitions/blob/main/scoped-transitions.md",
+    "finchName": "ScopedViewTransitions",
+    "flagName": "enable-experimental-web-platform-features"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:In developer trial (Behind a flag):5109852273377280",
+      "milestone": 140,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "147:Enabled by default:5109852273377280",
+      "milestone": 147,
+      "category": "Enabled by default"
+    },
+    {
+      "eventId": "147:Stepped rollout:5109852273377280",
+      "milestone": 147,
+      "category": "Stepped rollout"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record is complete and internally consistent: new CSS feature, Blink>CSS, owners skobes/kevers with a four-engineer editor set (vmpstr, nrosenthal, bramus, flackr), tracking bug 394052227, spec in css-view-transitions-2, and a clear problem statement (document-level VT sacrifices composability). The feature summary, motivation, explainer, and measurement plan are all linked. Initial public proposal is CSS WG issue #9890 (opened 2024-02-01).",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-chromestatuslite",
+        "s-csswg-9890"
+      ],
+      "limitations": "Cached ChromeStatus 'accurate_as_of' is 2026-03-09 and still marks is_released:false despite the feature shipping in Chrome 147 stable (~2026-03-25 early / 2026-04-07 full); the cached snapshot predates stable release."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "A real, repeatedly-articulated developer problem: document-scoped VT breaks composability and z-index (overlays like popovers/tooltips get flattened under the transition layer, forcing a 'whack-a-mole' of view-transition-name). The original CSS WG issue (#9890, opened by a Chrome engineer) frames it as 'a common feature request', and an authoritative author voice (Jake Archibald, the original VT author) independently confirms the z-index/whack-a-mole pain in the I2P thread. ChromeStatus records 'Web developers: Positive' citing a 'VT missing features' survey ranking scoping as a top request.",
+      "evidenceIds": [
+        "s-csswg-9890",
+        "s-i2p",
+        "s-explainer",
+        "s-chromestatus-cached"
+      ],
+      "limitations": "The 'top feature request' survey used as the primary demand signal has no publicly auditable methods, sample frame, or question wording; it may measure broad category interest rather than this specific API shape. No recorded interviews or counterevidence ('why not') search is published."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype posted 2025-02-11; explainer is thorough (motivation, pseudo-tree, algorithm, constraints, alternatives including shadow-DOM and iframe scoping, prior work) and was presented at BlinkOn 20 (Apr 2025). However, at I2P time every signal was 'None/No signal' (TAG pending, Gecko no signal, WebKit no signal, Web developers 'No signals', WPT 'No'). No public prototype friction logs, framework-integration spikes, or task-based samples beyond API-unit demos are documented.",
+      "evidenceIds": [
+        "s-i2p",
+        "s-explainer",
+        "s-blinkon20"
+      ],
+      "limitations": "Prototype-stage evidence is Google-authored only; independent integration/friction evidence and the learning questions that drove the prototype are not public."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "Developer trial ran behind the 'Experimental Web Platform Features' flag from Chrome 140, announced 2025-09-10 (Chrome blog) and promoted by a Chrome DevRel engineer (Bramus, 2025-09-24), with an explicit 'feedback wanted' call routed to CSS WG #9890 and a Chromium bug path. This is a genuine, public, active trial. Gaps: no published cohort, recruitment, representativeness, task-completion, or feedback readout; 'known issues' are referenced but not summarized into a structured report; participation is uncharacterized.",
+      "evidenceIds": [
+        "s-devtrial-blog",
+        "s-bramus-blog",
+        "s-chromestatus-cached",
+        "s-explainer"
+      ],
+      "limitations": "Trial methodology and outcomes are not public, so attributable developer evidence cannot be separated from self-selected enthusiasts. The dev trial's effect on the final design is inferable only from the later launch blog's 'what changed' list."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Mixed picture. TAG review (#1188, requested 2026-01-30) reached 'Issues addressed'. CSS WG engagement is active across multiple issues (#9890, #13123 containment naming, #12323 skip semantics, #13420 nested groups). But: the originating CSS WG issue #9890 is still 'Open' with labels 'Needs Design / Proposal' and 'Needs Edits' at the evidence cutoff, i.e. the spec is not finalized. Both other engines filed NO signal: Mozilla #1352 is 'Unscreened' and WebKit #611 has 'No response' (both opened 2026-02-04, only ~7 weeks before stable). The containment API was renamed twice during review.",
+      "evidenceIds": [
+        "s-tag-1188",
+        "s-csswg-9890",
+        "s-csswg-13123",
+        "s-mozilla-1352",
+        "s-webkit-611",
+        "s-explainer"
+      ],
+      "limitations": "'No signal' from Mozilla/WebKit is not neutral; it is a concrete interoperability risk. Position issues were opened very late, compressing the wide-review window before ship. Full CSS WG #9890 resolution comments were not retrieved (the issue page shows labels/status only)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run. ChromeStatus OT stages (140/150) carry no milestone, token, or goals; origintrial=false. The path was developer trial (flag, M140) directly to ship (M147). This is defensible for a low-risk new CSS capability with no deprecation or cross-origin implications, but means no field-origin evidence exists for the design questions that an OT would resolve.",
+      "evidenceIds": [
+        "s-chromestatus-cached"
+      ],
+      "limitations": "Marked not-relevant because no field experiment was mounted; this does not mean the design uncertainties (self-participation defaults, naming, nested groups) were validated under real-origin conditions."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Ship artifacts converged: Finch 'ScopedViewTransitions', rollout 'default-enabled on trunk' across desktop/android/webview, Intent to Ship posted (stage 160), and a coordinated launch set (blog + guide + demos) prepared. However the public API surface was unstable into the ship milestone: the containment property went 'contain: view-transition' (pre-Chrome 146) -> 'view-transition-scope: auto' (pre-Chrome 147.0.7717.0) -> 'view-transition-scope: all', with the naming issue #13123 only opened 2025-11-19 and resolved late. The spec issue #9890 remained 'Open/Needs Edits' at ship.",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-csswg-13123",
+        "s-explainer",
+        "s-launch-blog"
+      ],
+      "limitations": "The Intent to Ship thread (Google Groups message-id URL) could not be retrieved by the reader, so the explicit ship rationale, LGTMs, and accepted-risk list are not directly confirmed from primary text; they are inferred from the launch blog and ChromeStatus."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Coordinated, accurate release: Chrome 147 launch blog (2026-03-27) plus a full docs guide (2026-03-27) with multiple interactive demos, a 'Re-imagine the web with Scoped View Transitions' campaign video, a Google I/O short, inclusion in web.dev's 'New to the web platform in March', and 20+ localized doc variants. Claims matched actual rollout: CanIUse confirms Chrome/Edge 147+, Chrome-for-Android/Android-browser 150. The launch blog transparently documented the design changes made during the trial (self-participation defaults, nested view-transition groups, auto-clipping, auto contain:layout + view-transition-scope:all).",
+      "evidenceIds": [
+        "s-launch-blog",
+        "s-chrome-docs",
+        "s-webdev-roundup",
+        "s-releasenotes-147",
+        "s-chromereleases",
+        "s-caniuse"
+      ],
+      "limitations": "No enterprise/admin-specific guidance (reasonable for a non-breaking CSS feature). Chrome 147 stable date is reported inconsistently across sources (Enterprise notes: 2026-03-25 early; Releases blog: 2026-04-07 desktop full stable)."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Nascent and Chrome-only. Chrome use counter 'ViewTransitionsElementScoped' (metric 281) rose from ~0.000017% (Apr 2025, pre-flag noise) to 0.000000% May-Nov 2025, then 0.000256% (Jan 2026), 0.154% (Mar 2026, first stable month), peaking 0.358% (May 2026), settling ~0.27% (Jun-Jul 2026) of Chrome page loads. CanIUse: supported only in Chromium-derived browsers (Chrome/Edge 147+, Opera 131+, Chrome Android 150); NOT in Firefox (<=155) or Safari (<=26.5/TP). Community enthusiasm exists (samwho 'I'm salivating'; Jake Archibald 'excited about this API' though with a public caveat). No independent attributable production case studies were found; all demos are Chrome-authored.",
+      "evidenceIds": [
+        "s-usage-281",
+        "s-caniuse",
+        "s-samwho",
+        "s-jake-x",
+        "s-launch-blog"
+      ],
+      "limitations": "Feature is only ~4 months past full stable at the evidence cutoff, so durable adoption cannot yet be judged. No framework/library integration evidence and no third-party production deployments were located. The use-counter measures 'used at least once per page load', not meaningful production use."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "DevTools supports inspecting the transition pseudo-tree and pausing/scrubbing animations from the Animations tab, with parity for document- and element-scoped transitions (per ChromeStatus debuggability field). Known limitations are documented in the explainer: scrollbar-padding overlap in auto-nested self-participating scroller scopes (crbug 475236700), nested-group behavior (#13420), and self-participation/scroller-scope edge cases. No evidence of significant regressions or a notable support burden was found, but the feature is too new for a real support trend.",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-explainer",
+        "s-chrome-docs"
+      ],
+      "limitations": "The Chromium bug tracker (394052227) was not deeply inspected for open-issue volume/severity; no public support-issue taxonomy or recurrence dashboard exists. Support outcome is effectively too-early-to-judge."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Greenfield feature: no existing API is deprecated or removed (breaking_change=false; webview_risks='None'; activation_risks='None'). Scoped VT is same-document only and does not affect cross-document (MPA) transitions. No removal, migration, or reverse-trial path applies.",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-explainer"
+      ],
+      "limitations": "Not-relevant because there is nothing to deprecate; this is not a substitute for tracking future spec/API churn (e.g. the containment rename) that could affect early adopters."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a genuine, repeatedly-articulated developer problem (VT composability, concurrent transitions, ancestor clip/transform respect, partial-render pause, and z-index layering of non-participating overlays). The four benefits are concrete and the problem is corroborated by independent authoritative authors (Jake Archibald's whack-a-mole account; samwho's enthusiasm). Strongly developer-positive on the merits.",
+      "evidenceIds": [
+        "s-csswg-9890",
+        "s-i2p",
+        "s-explainer",
+        "s-samwho",
+        "s-chrome-docs"
+      ],
+      "limitations": "Developer-value evidence is largely qualitative and Chrome-team-adjacent; the unaudited 'top feature request' survey is the main quantitative demand claim."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "This is primarily a developer-ergonomics and composability capability. End-user benefit is indirect (smoother, correctly-layered, non-blocking transitions; pages stay interactive during subtree transitions). No end-user research, accessibility user-testing, or measured user-experience metric (e.g. reduced jank, task success) was found, so end-user impact is not evidenced.",
+      "evidenceIds": [
+        "s-explainer",
+        "s-chrome-docs"
+      ],
+      "limitations": "No user-impact evidence exists to score; do not infer user benefit from developer enthusiasm. Accessibility of scoped transitions specifically is not separately tested in public sources."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Measurable but tiny and single-engine: ~0.27% of Chrome page loads (Jul 2026), rising from ~0.15% at first stable month (Mar 2026) and a 0.36% peak (May 2026). Positive directional traction on Chrome is offset by Chromium-only availability, no independent production case studies, and no framework/library integration evidence at the cutoff.",
+      "evidenceIds": [
+        "s-usage-281",
+        "s-caniuse",
+        "s-launch-blog"
+      ],
+      "limitations": "Too early (4 months post-stable) to judge durable adoption; the use-counter is a weak proxy for production use. Not scored 'success' because shipment and a low usage counter are insufficient per method."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "At the cutoff this is a one-engine-family feature. Positive groundwork: WG-track spec (css-view-transitions-2, Working Draft), TAG 'Issues addressed', a WPT directory (css/css-view-transitions/scoped), and active multi-issue CSS WG discussion. Negative reality: only Chrome/Edge/Chromium ship (147+); Firefox is 'No signal/Unscreened' and Safari 'No response/No signal'; the originating spec issue #9890 is still 'Open/Needs Edits'; and the containment property was renamed twice. Baseline 'widely available' is not achievable with one engine.",
+      "evidenceIds": [
+        "s-caniuse",
+        "s-mozilla-1352",
+        "s-webkit-611",
+        "s-csswg-9890",
+        "s-csswg-13123",
+        "s-tag-1188",
+        "s-chromestatus-cached"
+      ],
+      "limitations": "Other-engine silence may resolve later (the feature is young), but at the evidence cutoff there is no positive implementation or position signal from either Gecko or WebKit. 'No signal' must not be read as support."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Solid tooling and testability: DevTools pseudo-tree inspection + animation scrubbing parity, a dedicated WPT directory, no compat risk (new API), and all-platforms Blink support. Offsetting issues: documented edge-case limitations (scrollbar-padding overlap crbug 475236700; nested-group behavior #13420; self-participating scroller quirks) and an implementation that moved ahead of a finalized spec with a public API name that churned twice near ship.",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-explainer",
+        "s-chrome-docs"
+      ],
+      "limitations": "No independent conformance/interop dashboards were retrieved (wpt.fyi not read); defect density and regression history inside the Chromium tracker were not inspected."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Communication was transparent, coordinated, and accurate across phases: a dev-trial blog that explicitly listed known issues and asked specific design questions; a launch blog that publicly documented the design changes made in response (self-participation defaults, nested groups, auto-clipping, auto-applied contain:layout/view-transition-scope:all); claims matched actual rollout (Chrome 147+); and ChromeStatus openly disclosed 'No signal' from Firefox/Safari rather than hiding it.",
+      "evidenceIds": [
+        "s-devtrial-blog",
+        "s-launch-blog",
+        "s-chrome-docs",
+        "s-chromestatuslite",
+        "s-bramus-blog"
+      ],
+      "limitations": "The 'Web developers: Positive - top feature request' survey claim is unauditable. The late containment-property rename caused doc/sample churn that is only retroactively explained. A general accessibility critique of Google's platform process (Roselli) exists but is not feature-specific."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Tooling for developers is in place (DevTools parity), and known limitations are documented, but there is no public evidence of support-burden trends, issue-resolution times, or recurrence for scoped transitions specifically. The feature is too new to score a support outcome.",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-explainer"
+      ],
+      "limitations": "No support-issue taxonomy or dashboard is public; Chromium tracker not deeply inspected."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-executed launch of a genuinely wanted, well-communicated developer capability, undercut at the evidence cutoff by single-engine availability (both other engines 'no signal'), an unresolved spec issue (#9890 'Open/Needs Edits'), late public-API naming churn, and nascent adoption (~0.27% of Chrome page loads, no independent production deployments). Strong on developer value, communication, and tooling; weak on interoperability and durable adoption.",
+      "evidenceIds": [
+        "s-chromestatus-cached",
+        "s-launch-blog",
+        "s-caniuse",
+        "s-usage-281",
+        "s-mozilla-1352",
+        "s-webkit-611",
+        "s-csswg-9890",
+        "s-csswg-13123"
+      ],
+      "limitations": "Overall is deliberately mixed to avoid masking the interop/adoption gaps; the picture should be re-scored once other-engine positions resolve and post-stable adoption matures."
+    }
+  },
+  "sources": [
+    {
+      "id": "s-chromestatus-cached",
+      "url": "https://chromestatus.com/feature/5109852273377280",
+      "publisher": "Chrome Platform Status (cached record at evidence/chromestatus/features/5109852273377280.json)",
+      "publishedOrObservedAt": "2026-03-09T12:28:11Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners/editors, stages, rollout milestones (dev trial M140; ship M147 desktop/android/webview), Finch ScopedViewTransitions, no Origin Trial, no compat risk, DevTools debuggability, Mozilla/WebKit 'No signal', web-dev 'Positive'",
+        "is_released:false at 2026-03-09 snapshot"
+      ],
+      "limitations": "Cache accurate_as_of 2026-03-09, predating Chrome 147 stable; is_released flag stale relative to actual ship."
+    },
+    {
+      "id": "s-chromestatuslite",
+      "url": "https://chromestatuslite.com/feature/5109852273377280",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, motivation, spec, Firefox/Safari 'No signal', web-dev 'Positive - top feature request', tracking bug, docs/samples links"
+      ],
+      "limitations": "Lite view carries subset of full record; status shows 'In development' due to snapshot timing."
+    },
+    {
+      "id": "s-explainer",
+      "url": "https://github.com/WICG/view-transitions/blob/main/scoped-transitions.md",
+      "publisher": "WICG/view-transitions (skobes, vmpstr)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "API element.startViewTransition(); four motivation benefits; constraints; tag containment; self-participating scopes; transitionRoot; 'Chrome 147 has shipped'; containment property renamed twice (contain:view-transition -> view-transition-scope:auto -> view-transition-scope:all); known limitation crbug 475236700; BlinkOn 20 prior work"
+      ],
+      "limitations": "Living document; 'Chrome 147 has shipped' assertion and property history reflect post-ship state."
+    },
+    {
+      "id": "s-spec",
+      "url": "https://drafts.csswg.org/css-view-transitions-2",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Specification under development in a Working Group; maturity 'Working draft' (per ChromeStatus)"
+      ],
+      "limitations": "Draft; not retrieved line-by-line in this pass; normative text lags implementation."
+    },
+    {
+      "id": "s-csswg-9890",
+      "url": "https://github.com/w3c/csswg-drafts/issues/9890",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2024-02-01T19:33:06Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Initial public proposal (opened 2024-02-01 by khushalsagar); 'common feature request'; assignees noamr/tabatkins; at cutoff still 'Open' with labels 'Needs Design / Proposal' and 'Needs Edits'"
+      ],
+      "limitations": "Only issue header/labels retrieved, not the full comment thread (incl. the cited web-dev-positive comment 1927179371); 'Open/Needs Edits' status is itself a finding."
+    },
+    {
+      "id": "s-i2p",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/AGligmIYZfM",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2025-02-11T14:54:13Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype posted 2025-02-11 by skobes/kevers; at prototype: TAG 'Pending', Gecko/WebKit 'No signal', Web developers 'No signals', WPT 'No'; Jake Archibald (2025-02-12) corroborates z-index whack-a-mole pain"
+      ],
+      "limitations": "Thread content truncated; later LGTM/iteration comments not captured."
+    },
+    {
+      "id": "s-csswg-13123",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13123",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2025-11-19T21:21:44Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Containment-API naming debate opened 2025-11-19 by skobes-chromium; options contain:view-transition vs view-transition-scope; issue closed via #13619; documents late API-name churn before ship"
+      ],
+      "limitations": "Closing resolution text (#13619) not retrieved; inferred from explainer history note (final name view-transition-scope: all)."
+    },
+    {
+      "id": "s-tag-1188",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1188",
+      "publisher": "W3C Technical Architecture Group",
+      "publishedOrObservedAt": "2026-01-30T19:38:08Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review requested 2026-01-30; authors skobes-chromium/vmpstr (Google, CSSWG); references Mozilla #1352 and WebKit #611; ChromeStatus tag_review_status 'Issues addressed'"
+      ],
+      "limitations": "Only the review-request body retrieved, not TAG's full response comments; 'Issues addressed' per ChromeStatus."
+    },
+    {
+      "id": "s-mozilla-1352",
+      "url": "https://github.com/mozilla/standards-positions/issues/1352",
+      "publisher": "Mozilla standards positions",
+      "publishedOrObservedAt": "2026-02-04T20:38:09Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position issue opened 2026-02-04; project status 'Unscreened'; ChromeStatus records Mozilla 'No signal'"
+      ],
+      "limitations": "Issue header only; no Mozilla position comment posted at cutoff."
+    },
+    {
+      "id": "s-webkit-611",
+      "url": "https://github.com/WebKit/standards-positions/issues/611",
+      "publisher": "WebKit standards positions",
+      "publishedOrObservedAt": "2026-02-04T20:38:23Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position issue opened 2026-02-04; 'No response' from WebKittens; ChromeStatus records Safari 'No signal'"
+      ],
+      "limitations": "Issue header only; no WebKit position posted at cutoff."
+    },
+    {
+      "id": "s-devtrial-blog",
+      "url": "https://developer.chrome.com/blog/scoped-view-transitions-feedback",
+      "publisher": "Chrome for Developers (Bramus)",
+      "publishedOrObservedAt": "2025-09-10T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Developer trial announced for Chrome 140 behind 'Experimental Web Platform features' flag; specific feedback questions (API shape, self-participating scopes); routes feedback to CSS WG #9890 and Chromium bugs; demo provided"
+      ],
+      "limitations": "Google-authored; no participation counts or methodology."
+    },
+    {
+      "id": "s-bramus-blog",
+      "url": "https://www.bram.us/2025/09/24/ready-for-developer-testing-scoped-view-transitions/",
+      "publisher": "Bram.us (Bramus, Chrome DevRel)",
+      "publishedOrObservedAt": "2025-09-24T21:36:02Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "DevRel promotion of the Chrome 140 dev trial; explains concurrent transitions and layering benefits; links a known-issues list"
+      ],
+      "limitations": "Chrome DevRel-authored; pingback to a general Google-accessibility critique (Roselli) is not feature-specific."
+    },
+    {
+      "id": "s-launch-blog",
+      "url": "https://developer.chrome.com/blog/element-scoped-view-transitions",
+      "publisher": "Chrome for Developers (Bramus)",
+      "publishedOrObservedAt": "2026-03-27T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 147 ship announcement (2026-03-27); transparently documents design changes made since dev trial (self-participation default, nested view-transition groups, auto clip, auto contain:layout + view-transition-scope:all); demos (shuffle lists, Patagonia trip)"
+      ],
+      "limitations": "Google-authored; no adoption/partner metrics cited."
+    },
+    {
+      "id": "s-chrome-docs",
+      "url": "https://developer.chrome.com/docs/css-ui/view-transitions/element-scoped-view-transitions",
+      "publisher": "Chrome for Developers (Bramus)",
+      "publishedOrObservedAt": "2026-03-27T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Reference guide (2026-03-27) with pseudo-tree diagrams, concurrent/nested transition demos, view-transition-scope containment explanation; 20+ localized variants"
+      ],
+      "limitations": "Google-authored; guide reflects final (post-rename) API."
+    },
+    {
+      "id": "s-caniuse",
+      "url": "https://caniuse.com/wf-view-transitions-element-scoped",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Supported: Chrome/Edge 147-150, Chrome for Android 150, Android Browser 150, Opera 131+; NOT supported: Firefox (<=155), Safari/Safari iOS (<=26.5/TP), Firefox for Android 152"
+      ],
+      "limitations": "Aggregated support data; reflects cutoff snapshot only."
+    },
+    {
+      "id": "s-usage-281",
+      "url": "https://chromestatus.com/metrics/webfeature/timeline/popularity/281",
+      "publisher": "Chrome Platform Status (use counter ViewTransitionsElementScoped, metric 281)",
+      "publishedOrObservedAt": "2026-07-01T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Monthly avg % page loads: ~0.000017% Apr 2025; 0.000000% May-Nov 2025; 0.000256% Jan 2026; 0.154% Mar 2026; 0.266% Apr 2026; 0.358% May 2026 (peak); 0.278% Jun 2026; 0.273% Jul 2026; HTTP Archive/BigQuery query provided"
+      ],
+      "limitations": "Browser-only source (retrieved via DevTools). Measures 'used at least once per page load' across all Chrome channels/platforms, not meaningful production use; values at <0.4% are noisy."
+    },
+    {
+      "id": "s-roselli",
+      "url": "https://adrianroselli.com/2025/05/my-request-to-google-on-accessibility.html",
+      "publisher": "Adrian Roselli",
+      "publishedOrObservedAt": "2025-05-22T08:31:40-04:00",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Broad accessibility-practitioner critique of Google's web-platform release process (toasts, carousels); references a Coyier quote that view transitions may need scoping; updated through 2026-03-27"
+      ],
+      "limitations": "NOT a feature-specific accessibility critique of element-scoped view transitions; cited only as ecosystem context on Google's accessibility process reputation."
+    },
+    {
+      "id": "s-samwho",
+      "url": "https://bsky.app/profile/samwho.dev/post/3mf52aozscc24",
+      "publisher": "Bluesky (samwho.dev)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent developer enthusiasm: 'I'm salivating.' (per ChromeStatus 'other' signal)"
+      ],
+      "limitations": "Date and full thread context not retrieved; single anecdotal positive signal."
+    },
+    {
+      "id": "s-jake-x",
+      "url": "https://x.com/jaffathecake/status/1996546886002778264",
+      "publisher": "X/Twitter (Jake Archibald, jaffathecake)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Nuanced community take: 'I'm excited about this API, but I think it's a bit dishonest to ...' (truncated) - enthusiasm with a public caveat"
+      ],
+      "limitations": "Full post text not retrieved; caveat context unknown; date unknown."
+    },
+    {
+      "id": "s-blinkon20",
+      "url": "https://www.youtube.com/watch?v=bSG7uZ1hY-8",
+      "publisher": "BlinkOn talks (YouTube)",
+      "publishedOrObservedAt": "2025-04-01T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "'Scoped View Transitions' presented at BlinkOn 20 (April 2025) - public technical presentation during prototype phase"
+      ],
+      "limitations": "Video content not transcribed; exact date approximate."
+    },
+    {
+      "id": "s-webdev-roundup",
+      "url": "https://web.dev/blog/web-platform-03-2026",
+      "publisher": "web.dev",
+      "publishedOrObservedAt": "2026-03-31T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Element-scoped view transitions included in 'New to the web platform in March 2026', corroborating the Chrome 147 March ship window"
+      ],
+      "limitations": "Google-authored roundup; phrasing about Safari 26.4 in the same snippet is ambiguous and conflicts with CanIUse (treated as Chrome ship, not Safari)."
+    },
+    {
+      "id": "s-releasenotes-147",
+      "url": "https://developer.chrome.com/release-notes/147",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-04-07T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 147 stable release date 2026-04-07 (per release notes)"
+      ],
+      "limitations": "Snippet only; full release-notes entry not retrieved."
+    },
+    {
+      "id": "s-chromereleases",
+      "url": "https://chromereleases.googleblog.com/2026/04/stable-channel-update-for-desktop.html",
+      "publisher": "Chrome Releases blog",
+      "publishedOrObservedAt": "2026-04-07T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 147 promoted to stable desktop channel 2026-04-07"
+      ],
+      "limitations": "Snippet only; Chrome Enterprise notes separately cite an earlier 2026-03-25 early-stable date."
+    },
+    {
+      "id": "s-crbug-394052227",
+      "url": "https://issues.chromium.org/issues/394052227",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Implementation tracking bug for the feature (per ChromeStatus)"
+      ],
+      "limitations": "Not directly retrieved (browser-only, large tracker); open-issue volume/severity not inspected. Known limitations are instead sourced from the explainer (e.g. crbug 475236700)."
+    }
+  ],
+  "successes": [
+    "Identified and addressed a genuine, repeatedly-articulated developer pain (VT composability, the z-index 'whack-a-mole', and loss of page interactivity), corroborated by authoritative independent authors (Jake Archibald, samwho).",
+    "Transparent, phased communication: the dev-trial blog listed known issues and specific design questions; the launch blog publicly documented the design changes made in response (self-participation defaults, nested view-transition groups, auto-clipping, auto-applied contain:layout + view-transition-scope:all).",
+    "Strong developer ergonomics: DevTools pseudo-tree inspection + animation scrubbing parity with document VT, plus a dedicated WPT directory (css/css-view-transitions/scoped).",
+    "Achieved TAG 'Issues addressed' and sustained active, multi-issue CSS WG engagement (#9890, #13123, #12323, #13420).",
+    "Honest disclosure of other-engine 'No signal' in ChromeStatus rather than hiding the Chrome-only reality."
+  ],
+  "failures": [
+    "Shipped as a single-engine-family feature (Chrome/Edge/Chromium 147+) while the originating CSS WG issue #9890 remained 'Open/Needs Design/Proposal/Needs Edits' - implementation moved ahead of a finalized spec.",
+    "Public API surface was unstable into the ship milestone: the containment property was renamed twice (contain:view-transition -> view-transition-scope:auto -> view-transition-scope:all), with the naming issue (#13123) only opened 2025-11-19 and resolved late, churning early-adopter docs/samples.",
+    "No Origin Trial and no published developer-trial cohort, methodology, task-completion, or feedback readout; the 'we are looking for feedback' signal was never converted into attributable evidence.",
+    "Nascent adoption (~0.27% of Chrome page loads ~4 months post-stable) with no attributable independent production case studies; all demos are Chrome-authored.",
+    "The primary demand signal ('Web developers: Positive - top feature request') relies on a survey whose methods/sample are not publicly auditable."
+  ],
+  "counterfactuals": [
+    "If an Origin Trial with a published protocol and feedback readout had been run, the late containment-naming churn (#13123) and the self-participation defaults could plausibly have been resolved earlier, and the ship rationale would rest on field evidence rather than a flag-only trial.",
+    "If Mozilla/WebKit position requests had been filed earlier than 2026-02-04 (~7 weeks before stable), the Chrome-only interop reality could have been surfaced and either addressed or disclosed far earlier in the lifecycle, instead of compressing the wide-review window against ship.",
+    "If the containment-property name had been settled at incubation rather than changed twice during the dev trial, early-adopter docs/samples and the CSS WG spec edits would not have churned against the M147 ship milestone.",
+    "Publishing a developer-trial feedback readout (who tried what, task completion, friction themes, contradictions) would have turned 'feedback wanted' into attributable evidence and strengthened adoption messaging.",
+    "Treating 'No signal' from both other engines as a launch-changing interop risk (rather than a neutral state) might have justified either a narrower rollout or an explicit, named interop plan in the launch brief."
+  ],
+  "skillImprovements": [
+    "Add a phase-04/06 gate question: 'Is the originating standards issue resolved/closed before I2S?' Flag shipping while the spec issue is still 'Open/Needs Edits' as an explicit accepted-risk with a named owner.",
+    "Add an interop/Baseline gate prompt: 'Have both non-Chromium engine positions been filed and read at least one full milestone before I2S?' Require that 'No signal' be treated as a concrete (not neutral) interop risk disclosed in launch materials.",
+    "Add a 'late API rename' detector in prepare-to-ship: if the public method name or CSS property name changed within two milestones of ship, require a doc/sample migration checklist and a compatibility note for early adopters.",
+    "Make a developer-trials feedback readout (cohort, methodology, task completion, themes, contradictions) a required transition-packet artifact, not just a 'feedback wanted' blog post.",
+    "Add an adoption-evidence ladder eval: distinguish use-counter % (nascent/Chrome-only) from attributable production deployments and case studies; prohibit scoring adoption 'success' from a use counter alone.",
+    "Add a survey-audit reminder: before citing 'top feature request' as the demand signal, require the survey's methods/sample/limitations to be linked; if unavailable, label it as a claim, not evidence."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship thread (Google Groups message-id URL rejected by reader) - ship rationale, LGTMs, and accepted-risk list not directly confirmed from primary text.",
+      "Full CSS WG #9890 resolution/comment thread (incl. the cited web-dev-positive comment 1927179371 and any WG resolutions) - only issue header/labels retrieved.",
+      "No independent attributable production case studies or framework/library integration evidence located (feature is ~4 months past stable; all demos are Chrome-authored).",
+      "Chromium bug tracker (394052227) not deeply inspected for open-issue volume/severity/regressions; support burden trend unknown.",
+      "TAG #1188 response comments (beyond the review request and 'Issues addressed' status) and the #13123 closing resolution text (#13619) not retrieved.",
+      "Jake Archibald X caveat and samwho Bluesky date/full context not retrieved."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

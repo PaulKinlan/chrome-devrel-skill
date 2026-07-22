@@ -1,0 +1,433 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6396991665602560,
+    "name": "ReadableStreamBYOBReader Min Option",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6396991665602560",
+    "blinkComponents": [
+      "Blink>Network>StreamsAPI"
+    ],
+    "featureType": "Chromium catches up",
+    "specUrl": "https://streams.spec.whatwg.org/#byob-reader-read",
+    "finchName": "ReadableStreamBYOBReaderReadMinOption",
+    "owners": [
+      "snehagarwal@microsoft.com",
+      "stevebe@microsoft.com"
+    ],
+    "specMentors": [
+      "stevebe@microsoft.com",
+      "ricea@chromium.org"
+    ]
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:6396991665602560",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T16:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The developer problem is real, recurring and concretely evidenced: ReadableStreamBYOBReader.read(view) does not guarantee how many elements are written before resolving, so performance-sensitive parsers/decoders cannot rely on a minimum fill. ricea (Chromium Streams owner) stated in 2021 that 'some people expect read() to work this way already' and that the proposal 'clearly fixes an ergonomic problem.' A filed Chromium bug (383158935, Dec 2024) shows an external developer hitting exactly this — BYOB reads returning fewer bytes than the view near a 2MiB boundary, noting 'Works in Firefox as expected.' Cloudflare Workers docs independently report plain read() 'typically fills only 1% of the provided buffer.' Cross-language precedent exists (Java readFully, Rust read_exact). Feature correctly classified 'Chromium catches up': the WHATWG spec was already merged (Nov 2023) and Firefox already shipped (134) when Chrome 140 shipped.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-pr1145",
+        "s-crbug383158935",
+        "s-cfworkers"
+      ],
+      "limitations": "No survey/quantified demand evidence; demand is inferred from bug reports, maintainer statements, and cross-language precedent rather than a measured developer-research instrument."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Strong, multi-year public incubation in WHATWG/streams (PR #1145, opened Jul 2021, merged Nov 13 2023). The API shape was openly bikeshedded over ~2 years — readFully(view) -> fill(view) -> read(view,{atLeast}) -> read(view,{min}) — and the generalized 'min' form was chosen for flexibility. At least two browser implementers expressed interest at spec time (Chrome/ricea, Safari/annevk), plus non-browser implementers (Deno/lucacasonato, Node.js). domenic and ricea approved the spec text. Tests written alongside (WPT #29723).",
+      "evidenceIds": [
+        "s-pr1145",
+        "s-spec",
+        "s-mozbug"
+      ],
+      "limitations": "Safari's spec-time interest (annevk) did not translate into implementation (see wideReview/interoperability) — a gap between incubation signal and outcome."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A spec/reference implementation and comprehensive WPT tests (#29723) were produced and reviewed as part of the WHATWG PR. However, Chrome had no separate Blink developer-trial/flag prototype for this feature: ChromeStatus shows flag_name 'N/A', devtrial_instructions null, no origin trial. ricea noted in Aug 2021 that Blink implementation was 'stuck behind #1123 and other things that are higher priority,' explaining why Chrome shipped ~2 years after the spec merge.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-pr1145",
+        "s-mozbug"
+      ],
+      "limitations": "No Blink-specific prototype/friction-log artifacts were found; evidence of an in-Blink prototype behind a flag is absent because there was none (the feature went straight to ship as an additive catch-up)."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "Not relevant because this is an additive, opt-in, backward-compatible option on an already-shipped interface with no behavioral change for callers that do not use it (ChromeStatus: breaking_change=false, enterprise_impact=1, no flag, no origin trial). No developer trial was conducted or warranted. 'Not-relevant' is used per the method's explicit instruction (with rationale), not to mean untested.",
+      "evidenceIds": [
+        "s-chromestatus"
+      ],
+      "limitations": "If interop/edge-case behavior had been uncertain, a flag trial could have been warranted; the additive design made it unnecessary."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Spec-side wide review was thorough: WHATWG living-standard text, multi-reviewer approval (domenic, ricea, saschanaz), Firefox position Positive with implementation shipped in 134, WPT tests merged. ChromeStatus honestly reported Safari as 'No signal' (val 5) and did not inflate it to support; tag_review/security/privacy review status were marked 'Not applicable,' which is defensible for an additive read option. The material gap is the third engine: WebKit bug 264731 (filed Nov 2023) remained NEW with no patches/resolution at retrieval, so the feature is 2/3 browser engines. A second, smaller review gap: a major non-browser runtime (Cloudflare Workers) ships a non-standard readAtLeast(minElements, view) rather than the standardized read(view,{min}).",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-pr1145",
+        "s-mozbug",
+        "s-webkitbug",
+        "s-cfworkers"
+      ],
+      "limitations": "TAG review record not separately located (tag_review_status 'Not applicable' on ChromeStatus). No evidence of an explicit Safari standards-position request/response beyond the open WebKit bug."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "Not relevant: no origin trial or field experiment was run or needed. The feature is additive and opt-in, the spec was already a published living standard, and another engine had already shipped it; there was no field uncertainty requiring real-origin evidence. ChromeStatus confirms origintrial=false, no experiment goals/risks.",
+      "evidenceIds": [
+        "s-chromestatus"
+      ],
+      "limitations": "If real-origin behavior (e.g., interactions with ReadableByteStreamTee, service-worker fetch bodies, autoAllocateChunkSize) had been uncertain, an OT could have been justified; the low-risk profile made it unnecessary."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "A ship path is evidenced: ChromeStatus intent_stage 5 with an intent-to-ship thread URL (groups.google.com blink-dev message), finch name ReadableStreamBYOBReaderReadMinOption, rollout_plan 'Will ship enabled for all users', wpt=true, desktop/android/webview first=140 (iOS null), spec mentor ricea@chromium.org. Microsoft ownership (snehagarwal, stevebe) with Chromium spec mentorship is a healthy cross-org model. Gaps: the intent-thread content (LGTM count, review states) could not be retrieved directly; ChromeStatus doc_links and sample_links are empty arrays (no dedicated samples/docs linked); is_releasenotes_content_reviewed=false and is_releasenotes_publish_ready=false at cache time (2025-07-22) even though the feature shipped in 140.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-chrome140rn"
+      ],
+      "limitations": "Intent-to-ship thread body not directly retrievable (URL rejected by reader); reliance on ChromeStatus metadata for intent-stage/review claims. The 'Proposed'/is_released=false state in the cache predates the Sep 2025 stable ship."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Clean release communication. Chrome 140 stable shipped September 2, 2025. The feature is documented in the official Chrome 140 release notes (developer.chrome.com) under 'Web APIs > ReadableStreamBYOBReader min option' with a description, tracking bug (#40942083), ChromeStatus link, and spec link. MDN reference docs are complete (published 2025-11-03) including an interactive live example, TypeError/RangeError semantics for the min argument, and a Baseline indicator. The spec's own introductory example was updated to recommend the min option over a manual read loop.",
+      "evidenceIds": [
+        "s-chrome140rn",
+        "s-mdn",
+        "s-spec",
+        "s-chromereleases"
+      ],
+      "limitations": "No dedicated DevRel article/blog/sample for this specific feature was found (it is one bullet among many in the release notes); ChromeStatus sample_links empty. For a small catch-up feature this is proportionate, but it limits discoverability of the performance rationale."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Mixed ecosystem uptake with real gaps. Positive: Node.js implemented the standardized API (nodejs/node#50888 merged); Deno expressed interest (denoland/deno#20849); Bun has an open support request (oven-sh/bun#7091). Concerning: Cloudflare Workers — a runtime that depends heavily on Streams and that publicly documented the '1% fill' pain — implements a NON-STANDARD readAtLeast(minElements, view) instead of the standardized read(view,{min}), creating a real ecosystem API divergence that the Chrome launch materials did not address. No production case studies or usage metrics (Chrome use counters, HTTP Archive, BigQuery) for the standardized min option were located.",
+      "evidenceIds": [
+        "s-pr1145",
+        "s-cfworkers",
+        "s-mdn"
+      ],
+      "limitations": "No quantitative adoption/usage data found; absence of public case studies is typical for a low-level Streams primitive but means adoption cannot be scored as successful. Node.js/Deno/Bun evidence comes from GitHub issues/PRs referenced in the spec PR, not from a current direct re-read of each runtime's docs."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "The feature directly resolved a concrete reported support issue (chromium 383158935, BYOB returning fewer bytes than the view, Fixed, targeted milestone 133). Firefox's implementation had one transient build failure (unsigned-comparison -Werror) that was backed out and re-landed the same cycle. No post-Chrome-140 regressions, recurring support themes, or compat breakage were found in the available evidence. The observation window since Chrome stable (Sep 2025) is ~10 months.",
+      "evidenceIds": [
+        "s-crbug383158935",
+        "s-mozbug",
+        "s-chrome140rn"
+      ],
+      "limitations": "Short post-ship observation window and no access to internal Chromium support/crash telemetry; 'no regressions found' is not proof of zero regressions."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not relevant: this is a new additive capability, not a deprecation, removal, or behavior change. No existing API is restricted or removed; callers that ignore min see unchanged behavior.",
+      "evidenceIds": [
+        "s-chromestatus"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a real, recurring, attributable developer problem: BYOB reads resolving with fewer elements than the view, forcing manual fill loops and surprising developers (some 'expect read() to work this way already'). Validated by a filed external bug (383158935), Cloudflare's '1% fill' finding, and cross-language readFully/read_exact precedent. The standardized min option is strictly more flexible than the fill() shorthand considered earlier.",
+      "evidenceIds": [
+        "s-pr1145",
+        "s-crbug383158935",
+        "s-cfworkers",
+        "s-chromestatus"
+      ],
+      "limitations": "Value is ergonomic/performance; no measured before/after performance outcome in production."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No end-user-facing evidence. This is a developer-facing low-level Streams primitive; any end-user benefit (fewer round-trips, better streaming-parser throughput, lower latency for byte-stream consumers) is plausible but unmeasured and not asserted. Per the method, success is not inferred from shipment or absence of criticism.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-cfworkers"
+      ],
+      "limitations": "No end-user/perceived-performance measurement found."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Node.js shipped the standardized API; Deno interested; Bun requested. Against that, no production case studies or usage metrics exist for the standardized min option, and Cloudflare Workers — the runtime that most publicly suffered the underlying problem — ships a divergent non-standard readAtLeast(minElements, view). Chrome-only period is already closed (Firefox shipped first), but the standardized shape is not yet uniformly adopted across JS runtimes.",
+      "evidenceIds": [
+        "s-pr1145",
+        "s-cfworkers",
+        "s-mdn"
+      ],
+      "limitations": "No quantitative adoption data; runtime-support evidence partly via referenced GitHub issues rather than current direct re-read."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Spec is a published WHATWG living standard; WPT tests exist (#29723) and pass in shipping engines; Firefox (134) and Chrome (140) both ship the standardized read(view,{min}). Two material interop gaps remain: (1) Safari/WebKit has not implemented — bug 264731 is still NEW with no patches ~2.5 years after the spec merged; (2) Cloudflare Workers uses a non-standard readAtLeast(minElements, view) signature, so the standardized shape is not interoperable across all JS runtimes that expose BYOB readers.",
+      "evidenceIds": [
+        "s-spec",
+        "s-mozbug",
+        "s-webkitbug",
+        "s-cfworkers",
+        "s-chromestatus"
+      ],
+      "limitations": "MDN reports Baseline 2026 'newly available' since March 2026 for the read() page, but this could not be reconciled with primary ship dates (Firefox Jan 2025, Chrome Sep 2025) and an still-unimplemented Safari; the Baseline date is treated as a secondary, unexplained indicator."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "High-quality, low-risk implementation path: spec/reference implementation reviewed and approved by multiple WHATWG collaborators; comprehensive WPT coverage; Firefox landed cleanly after one transient build-failure back-and-reland; Chrome shipped in 140 as a backward-compatible additive option with no flag/OT complexity. No post-ship regressions or compat breakage found.",
+      "evidenceIds": [
+        "s-pr1145",
+        "s-mozbug",
+        "s-chrome140rn",
+        "s-chromestatus"
+      ],
+      "limitations": "~10-month post-ship observation window; no access to internal stability/crash telemetry."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "ChromeStatus signals were reported honestly and accurately (Safari 'No signal' not inflated; Firefox Positive with version 134; Web-dev Positive with cited bug URLs; breaking_change=false). Release notes and MDN documentation are complete and correct. Weaknesses: ChromeStatus doc_links and sample_links are empty; is_releasenotes_content_reviewed/publish_ready were false at cache time despite shipping; the cached record showed status 'Proposed'/is_released=false while desktop_first=140 (cache predates stable); and MDN's Baseline 'March 2026' date is unreconciled with the actual ship dates, creating a minor developer-facing data-quality confusion.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-chrome140rn",
+        "s-mdn"
+      ],
+      "limitations": "Intent-to-ship thread content not directly retrieved. Baseline date discrepancy unresolved."
+    },
+    "support": {
+      "status": "success",
+      "finding": "The feature resolved the concrete reported support issue (383158935, Fixed). No evidence of recurring support burden, regressions, or compat tickets post-ship. Low support footprint is consistent with an additive, opt-in, backward-compatible option.",
+      "evidenceIds": [
+        "s-crbug383158935",
+        "s-chrome140rn"
+      ],
+      "limitations": "Short observation window; no internal support-volume data."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-executed, low-risk 'Chromium catches up' of an already-standardized, already-Firefox-shipped additive Streams option, with a strong developer-value and standards story and a clean Chrome 140 ship. It is not an unqualified success because interoperability is incomplete (Safari unimplemented; Cloudflare runtime divergence), adoption evidence is thin (no production case studies/metrics; the runtime that most suffered the problem uses a non-standard shape), end-user impact is unmeasured, and several enablement/data-quality gaps exist (empty ChromeStatus samples/docs, unreconciled Baseline date, unretrieved intent thread). Overall leans positive but is fairly scored mixed.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-pr1145",
+        "s-mozbug",
+        "s-webkitbug",
+        "s-cfworkers",
+        "s-chrome140rn",
+        "s-mdn",
+        "s-crbug383158935"
+      ],
+      "limitations": "Overall is a synthesis of mixed dimensions; it does not hide the mixed interoperability/adoption/evidence dimensions."
+    }
+  },
+  "sources": [
+    {
+      "id": "s-chromestatus",
+      "url": "https://chromestatus.com/feature/6396991665602560",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2025-07-22)",
+      "publishedOrObservedAt": "2025-07-22T04:14:49Z",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners (Microsoft: snehagarwal, stevebe; spec mentor ricea@chromium.org), feature_type 'Chromium catches up', finch name, single launch event Chrome 140 Enabled-by-default (desktop/android/webview, iOS null)",
+        "Standards signals: Firefox Positive shipped in 134; Safari 'No signal' (val 5); Web developers Positive citing crbug 40942083 and 383158935",
+        "No flag, no origin trial, breaking_change=false, enterprise_impact=1; spec link; intent_thread_url present (intent_stage 5); doc_links/sample_links empty; is_releasenotes_content_reviewed=false at cache"
+      ],
+      "limitations": "Cache accurate_as_of 2025-07-22, ~6 weeks before Chrome 140 stable; status 'Proposed'/is_released=false in the cache predates the Sep 2025 ship."
+    },
+    {
+      "id": "s-cslite",
+      "url": "https://chromestatuslite.com/feature/6396991665602560",
+      "publisher": "chromestatuslite.com (server-rendered ChromeStatus mirror)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Corroborates the cached ChromeStatus record's summary, motivation, standards signals, tracking bug, and spec link in stable server-rendered HTML."
+      ],
+      "limitations": "Server-rendered snapshot; reflects the same 'Proposed' status as the cache."
+    },
+    {
+      "id": "s-spec",
+      "url": "https://streams.spec.whatwg.org/#byob-reader-read",
+      "publisher": "WHATWG Streams Standard (Living Standard)",
+      "publishedOrObservedAt": "2026-05-18",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Published living standard (maturity: published standard) containing the byob-reader-read algorithm with the min option",
+        "Section 4.1 introductory example now recommends read(view,{min}) over a manual read loop: 'the min option of read() provides an easier and more direct way to read an exact number of bytes'"
+      ],
+      "limitations": "Living standard is continuously updated; the retrieved text is the 2026-05-18 snapshot."
+    },
+    {
+      "id": "s-pr1145",
+      "url": "https://github.com/whatwg/streams/pull/1145",
+      "publisher": "whatwg/streams (GitHub)",
+      "publishedOrObservedAt": "2023-11-13",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Multi-year design history (opened Jul 2021, merged Nov 13 2023): readFully -> fill -> read(view,{atLeast}) -> read(view,{min}); generalized 'min' chosen for flexibility",
+        "Multi-implementer interest at spec time: Chrome (ricea: 'clearly fixes an ergonomic problem; some people expect read() to work this way already'), Safari (annevk); non-browser: Deno (lucacasonato), Node.js",
+        "Approved by domenic and ricea; WPT tests in web-platform-tests/wpt#29723",
+        "Implementation bugs filed: Chrome crbug 1501771 (legacy), Firefox bugzilla 1864406, WebKit bug 264731, Node.js nodejs/node#50706, Deno denoland/deno#20849",
+        "Node.js standardized implementation merged (nodejs/node#50888); Bun support request open (oven-sh/bun#7091)",
+        "ricea (Aug 2021): Blink implementation 'stuck behind #1123 and other things that are higher priority'"
+      ],
+      "limitations": "Some linked runtime issues (Deno, Bun, Node.js) were observed via references in this PR rather than a current direct re-read of each runtime's docs."
+    },
+    {
+      "id": "s-mozbug",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1864406",
+      "publisher": "Mozilla Bugzilla (Core :: DOM: Streams)",
+      "publishedOrObservedAt": "2024-10-30",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox position Positive; implementation by evilpies (Tom S), reviewed by saschanaz/webidl/smaug",
+        "Shipped in Firefox 134 (status-firefox134=fixed); one transient Linux build failure (-Werror=type-limits on unsigned>=0) backed out and re-landed same cycle",
+        "MDN docs tracked (dev-doc-complete; mdn/content#36921); references whatwg/streams#1145"
+      ],
+      "limitations": "Bugzilla page metadata 'Last updated 2024-12-02'; page-render context indicated Firefox ~136/nightly 138 at retrieval. Firefox 134 release date ~Jan 7 2025."
+    },
+    {
+      "id": "s-webkitbug",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=264731",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2023-11-20",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Safari/WebKit has NOT implemented: bug status NEW since reported 2023-11-13 by Mattias Buelens; only a Radar import comment (2023-11-20, rdar://118646139); no patches, no resolution ~2.5 years later",
+        "Confirms ChromeStatus 'No signal' for Safari is accurate and that the feature is 2/3 browser engines"
+      ],
+      "limitations": "Open bug status is strong evidence of non-implementation but is not an official Safari shipping statement; Safari could ship without closing this specific bug (no evidence found that it has)."
+    },
+    {
+      "id": "s-chrome140rn",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (official release notes)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 stable release date September 2, 2025",
+        "Feature documented under 'Web APIs > ReadableStreamBYOBReader min option' with description, tracking bug #40942083, ChromeStatus link, and spec link",
+        "Confirms ship in 140 for Android, ChromeOS, Linux, macOS, Windows"
+      ],
+      "limitations": "Feature is one of many release-notes bullets; no dedicated DevRel article/sample linked."
+    },
+    {
+      "id": "s-mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBReader/read",
+      "publisher": "MDN Web Docs (MozDevNet)",
+      "publishedOrObservedAt": "2025-11-03",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Complete reference for read(view) / read(view, options) including the options.min argument, semantics, TypeError/RangeError exceptions, and an interactive live example reading a minimum of 101 elements",
+        "Baseline indicator on the page: 'Baseline 2026 * Newly available. Since March 2026 ... Some parts of this feature may have varying levels of support'",
+        "Available in Web Workers"
+      ],
+      "limitations": "The Baseline 'March 2026 newly available' date could not be reconciled with primary ship dates (Firefox 134 ~Jan 2025, Chrome 140 Sep 2025); treated as an unexplained secondary indicator."
+    },
+    {
+      "id": "s-cfworkers",
+      "url": "https://developers.cloudflare.com/workers/runtime-apis/streams/readablestreambyobreader/",
+      "publisher": "Cloudflare Workers documentation",
+      "publishedOrObservedAt": "2026-05-01",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "Independent validation of the developer problem: 'read provides no control over the minimum number of bytes ... In practice, the Workers team has found that read typically fills only 1% of the provided buffer'",
+        "ECOSYSTEM DIVERGENCE: Cloudflare Workers implements a NON-STANDARD readAtLeast(minElements, bufferArrayBufferView) rather than the standardized read(view, {min}); documented as 'a non-standard extension to the Streams API'"
+      ],
+      "limitations": "Single runtime's documented position; readAtLeast vs standardized min divergence not addressed in Chrome/MDN launch materials located."
+    },
+    {
+      "id": "s-crbug383158935",
+      "url": "https://issues.chromium.org/issues/383158935",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2024-12-10",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Concrete, attributable external developer demand: reported 2024-12-10 by a TU Chemnitz developer — BYOB read() returning a chunk smaller than the provided view near a 2MiB boundary; explicitly noted 'Works in Firefox as expected'",
+        "Status Fixed; Priority P2, Severity S2; Found In Chrome 131/132/133; Targeted milestone 133; assigned to snehagarwal@microsoft.com (the feature owner); CC included ricea@chromium.org",
+        "Cited in ChromeStatus as evidence of Web-developer Positive signal"
+      ],
+      "limitations": "Bug is tagged Blink>Storage>FileSystem (file-read path); it is the BYOB behavior that motivated the feature rather than a direct request for the min option by name."
+    },
+    {
+      "id": "s-crbug40942083",
+      "url": "https://issues.chromium.org/issues/40942083",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chromium tracking bug for the feature, referenced by ChromeStatus (bug_url) and the Chrome 140 release notes; snippet confirms it tracks 'The Streams specification has been updated to add an optional min option to byobReader.read(view)'."
+      ],
+      "limitations": "Full issue page could not be retrieved (reader timed out / 500); confirmed via search-result snippet only. Implementation CLs, reviewers, and exact landing milestone not directly verified."
+    },
+    {
+      "id": "s-chromereleases",
+      "url": "https://chromereleases.googleblog.com/2025/09/stable-channel-update-for-desktop_9.html",
+      "publisher": "Chrome Releases (Google official blog)",
+      "publishedOrObservedAt": "2025-09-09",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Corroborates Chrome 140 stable channel desktop update (140.0.7339.x) in September 2025."
+      ],
+      "limitations": "Only a search-result snippet was retrieved, not the full page; confirms the stable-update timing but not feature-specific content."
+    }
+  ],
+  "successes": [
+    "Correctly scoped as a low-risk 'Chromium catches up' of an already-merged WHATWG living standard (Nov 2023) and an already-Firefox-shipped (134) additive option, minimizing Chrome-specific design risk.",
+    "Developer problem was real, recurring and concretely evidenced (crbug 383158935; Cloudflare '1% fill' finding; cross-language readFully/read_exact precedent), with an honest maintainer statement (ricea: 'clearly fixes an ergonomic problem').",
+    "ChromeStatus signals were reported accurately rather than optimistically: Safari 'No signal' (not inflated), Firefox Positive with version 134, Web-dev Positive with cited bug URLs.",
+    "Multi-year, multi-reviewer open incubation (WHATWG PR #1145, 2021-2023) with explicit API-shape iteration (readFully->fill->atLeast->min) before stabilization; WPT tests authored alongside.",
+    "Clean release communication: documented in official Chrome 140 release notes (Sep 2 2025) with spec/ChromeStatus/tracking-bug links; MDN docs complete with live example and Baseline indicator; spec example updated to recommend min.",
+    "Multi-runtime ecosystem uptake of the standardized shape (Node.js shipped; Deno interested; Bun requested), de-risking long-term interop beyond browsers."
+  ],
+  "failures": [
+    "Safari/WebKit has not implemented: bug 264731 still NEW ~2.5 years after the spec merged, despite annevk's spec-time interest — a gap between incubation signal and outcome that leaves the feature at 2/3 browser engines and blocks Baseline 'widely available'.",
+    "Cloudflare Workers — the runtime that most publicly suffered the underlying problem ('1% fill') — ships a non-standard readAtLeast(minElements, view) instead of the standardized read(view,{min}), a real ecosystem API divergence that the Chrome 140 launch materials did not acknowledge or address.",
+    "Chrome shipped ~20 months after the spec merge and ~8 months after Firefox; ricea's 2021 note that Blink work was 'stuck behind #1123 and other things that are higher priority' shows prioritization friction for a developer-ergonomics fix that external developers were actively hitting.",
+    "Enablement/data-quality gaps: ChromeStatus doc_links and sample_links are empty (no samples or dedicated docs linked); is_releasenotes_content_reviewed/publish_ready were false at cache time despite shipping; MDN's Baseline 'March 2026 newly available' date is unreconciled with the actual Firefox/Chrome ship dates."
+  ],
+  "counterfactuals": [
+    "If the launch had coordinated a single canonical API shape with Cloudflare Workers before Chrome 140 shipped (or flagged the readAtLeast vs read(view,{min}) divergence in MDN/release notes), the cross-runtime interop confusion for a low-level Streams primitive could have been reduced.",
+    "If Safari implementation had been treated as a tracked launch dependency rather than accepted as terminal 'No signal' — with periodic WebKit-bug advocacy and a Baseline blocker flagged in prepare-to-ship — cross-browser interop and Baseline 'widely available' would be materially closer.",
+    "If a dedicated DevRel article/sample (not just a release-notes bullet) had accompanied the ship — e.g., a 'read an exact number of bytes from a stream' guide anchored on Cloudflare's '1% fill' finding — developer discoverability and early adoption signals would likely be stronger.",
+    "If the motivating external bug (383158935) and its 'Works in Firefox' observation had been surfaced in the ChromeStatus motivation text, the cross-browser-interop framing and the urgency case for the Chrome catch-up would have been stronger and more self-evident.",
+    "If ChromeStatus doc_links/sample_links had been populated before ship, the enablement story would be self-contained on the feature page and would not rely solely on MDN."
+  ],
+  "skillImprovements": [
+    "Add a 'catch-up feature' fast-path to the launch-retrospective method: when feature_type is 'Chromium catches up' and the spec is already a published standard with another engine shipped, streamline intake/incubation/prototype/wide-review replay and concentrate scarce review effort on the genuine residual risks (other-engine gaps, non-browser runtime divergences, enablement completeness).",
+    "Add an explicit 'non-browser runtime divergence' check to the wide-review and adoption phase modules: for low-level primitives (Streams, Fetch, Encoding, WebCrypto), audit Node.js, Deno, Bun, and Workers/edge runtimes for divergent or non-standard shapes and require any divergence to be surfaced in release notes/MDN.",
+    "Add a Safari/WebKit tracking expectation to the interoperability dimension: when a WebKit bug exists but has no implementation for >12 months, flag it as a launch risk and a Baseline blocker in the prepare-to-ship transition packet; do not let 'No signal' decay silently into 'accepted'.",
+    "Add a ChromeStatus enablement-completeness gate to prepare-to-ship: doc_links and sample_links must be non-empty (or carry a documented exception) before is_releasenotes_publish_ready can be set true.",
+    "Add a Baseline-date reconciliation check: when MDN/web-features Baseline 'newly available' is >3 months after the second-engine ship date, flag the discrepancy and require a sourced explanation rather than propagating an unexplained date.",
+    "Add a regression eval set to the retrospective skill using this feature as a positive 'clean low-risk catch-up' exemplar and the Cloudflare-divergence / Safari-gap as counter-exemplars to detect in future reviews."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent-to-ship thread content (groups.google.com blink-dev message ID in ChromeStatus intent_thread_url) could not be retrieved directly; intent-stage/LGTM/review-state claims rely on ChromeStatus metadata.",
+      "Full Chromium tracking bug 40942083 page could not be read (reader timed out/500); confirmed via search snippet only — implementation CLs, reviewers, and exact landing milestone not directly verified.",
+      "No independent production usage/adoption metrics (Chrome use counters, HTTP Archive, BigQuery) or attributable case studies for the standardized min option were located.",
+      "MDN Baseline 'March 2026 newly available' date not reconciled with primary ship dates (Firefox ~Jan 2025, Chrome Sep 2025); Safari non-shipment inferred from the open WebKit bug rather than an official Safari release-notes/caniuse confirmation.",
+      "Node.js/Deno/Bun runtime support partly observed via references inside the WHATWG spec PR rather than a current direct re-read of each runtime's documentation.",
+      "No dedicated DevRel article/sample for this specific feature found (only a release-notes bullet); ChromeStatus sample_links/doc_links empty."
+    ],
+    "reviewedAt": "2026-07-22T16:30:00Z"
+  }
+}

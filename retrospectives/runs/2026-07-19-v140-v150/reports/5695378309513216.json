@@ -1,0 +1,542 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5695378309513216,
+    "name": "Get Installed Related Apps API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5695378309513216",
+    "webApiName": "navigator.getInstalledRelatedApps()",
+    "category": "JavaScript",
+    "blinkComponent": "Mobile>WebAPKs",
+    "owners": [
+      "ishikapatel@microsoft.com",
+      "dmurph@chromium.org"
+    ],
+    "creator": "dhnishi@chromium.org",
+    "created": "2016-02-17",
+    "manifestScopedLaunchEvent": "140:Stepped rollout:5695378309513216 (desktop PWA in-scope support, Chrome 140 stable 2025-09-02)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "59:Origin trial:5695378309513216",
+      "milestone": 59,
+      "category": "Origin trial"
+    },
+    {
+      "eventId": "80:Enabled by default:5695378309513216",
+      "milestone": 80,
+      "category": "Enabled by default"
+    },
+    {
+      "eventId": "85:Enabled by default:5695378309513216",
+      "milestone": 85,
+      "category": "Enabled by default"
+    },
+    {
+      "eventId": "140:Stepped rollout:5695378309513216",
+      "milestone": 140,
+      "category": "Stepped rollout"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T15:45:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "Created 2016-02-17 by Dion Nishi (dhnishi), forked from DHNishi/IsNativeAppInstalled and incubated in WICG. The core problem (web/native app convergence making installed-app detection useful) is stated in the explainer and spec. However the ChromeStatus record's motivation field is empty and no original intake/use-case brief is public, so the early problem validation is thin relative to the API shape.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-spec",
+        "src-explainer"
+      ],
+      "limitations": "Original intake artifact, owner map, and highest-risk-assumption list are not public; ChromeStatus 'motivation' is blank."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "WICG incubation produced an explainer with goals, non-goals, privacy considerations (bidirectional verification, incognito suppression, UA-defined app cap), and abuse considerations added after review. Concrete validated developer demand is weak: the primary use case shifted over time (notification de-duplication -> PWA install suppression -> cross-app coordination -> metrics) and was asserted rather than evidenced by research, and was contested by reviewers.",
+      "evidenceIds": [
+        "src-explainer",
+        "src-mozilla-213",
+        "src-tag-436"
+      ],
+      "limitations": "No documented developer research, interviews, or demand evidence ledger; use cases were enumerated late (Apr 2020) in the Mozilla thread."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Prototype ran as a Chrome 59 Origin Trial (Intent to Experiment, Matt Giuca, 2017-03-29) on Android, gated by Digital Asset Links verification. The intent explicitly framed open design questions (e.g. getInstalledRelatedApps() vs an isAppInstalled() predicate) and listed notification de-duplication as the motivating case. No public friction logs or framework-integration spikes accompany the prototype.",
+      "evidenceIds": [
+        "src-intent-experiment",
+        "src-medium-launch",
+        "src-explainer"
+      ],
+      "limitations": "No prototype friction report, integration matrix, or design-decision log found publicly."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "An Origin Trial ran across Chrome 59-61 (Android) with scheduled 'feedback from M59/M60/M61' milestones, but no cohort, methodology, task-completion data, or findings were published. The later Intent to Ship asserts 'Web / Framework developers: Positive based on OT feedback' without citing any participant, sample size, or result.",
+      "evidenceIds": [
+        "src-intent-experiment",
+        "src-intent-ship-win"
+      ],
+      "limitations": "No public trial kit, cohort report, attributable partner evidence, or feedback themes; the 'positive' claim is unsupported by retrievable evidence."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Wide review produced strong, unresolved opposition. The W3C TAG (design-reviews #436) raised an architectural concern (should drive to web, not only native), incognito/private-mode detection via pre-installed apps, and stated Mozilla's alternative privacy-preserving proposal 'doesn't seem to have been seriously considered, which the TAG finds disappointing.' Mozilla marked the feature 'harmful' (standards-positions #213, 2020-04-07) with a detailed coalition-fingerprinting threat model (BigTrackingNetwork buying app associations) and argued push de-duplication asks the 'wrong question.' Safari gave 'No signal.' Web-dev was recorded 'Positive' but on unsupported OT-feedback grounds. ChromeStatus still shows TAG/Mozilla/security/privacy review states as 'Pending' despite multiple shipments.",
+      "evidenceIds": [
+        "src-tag-436",
+        "src-mozilla-213",
+        "src-olejnik",
+        "src-chromestatus",
+        "src-intent-ship-win"
+      ],
+      "limitations": "Review requests appear to have been sent and engaged with, but the unresolved negative positions were not reflected in the ChromeStatus review-status fields at ship."
+    },
+    "experiment": {
+      "status": "unknown",
+      "finding": "The Origin Trial (Chrome 59-61, Android) had explicit experiment goals (API ergonomics; does it solve notification de-duplication) and feedback milestones, but no hypotheses/metrics, denominators, participant ledger, interim/final readout, or decision record was published. The transition from experiment to ship therefore rests on unrecorded evidence.",
+      "evidenceIds": [
+        "src-intent-experiment",
+        "src-intent-ship-win"
+      ],
+      "limitations": "No experiment protocol, results, or continuation/extension rationale retrievable; goals were never publicly answered."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "The Windows Intent to Ship (Sunggook Chue/Microsoft, 2020-04-03) documented the Windows-specific implementation (UWP via appUriHandler, max 3 apps, hardcoded 'windows' platform, incognito returns empty, UWP-only not Win32) and WPT limited to the JS API surface. It recorded Firefox as 'No resolved position' at a moment Mozilla was actively debating and four days from marking it 'harmful,' and Safari 'No Signals.' It cited 'Positive based on OT feedback' for web/framework developers without evidence. The Android ship (Chrome 80) intent thread was not retrieved.",
+      "evidenceIds": [
+        "src-intent-ship-win",
+        "src-chromestatus",
+        "src-mozilla-213"
+      ],
+      "limitations": "Android (Chrome 80) Intent to Ship not retrieved; the Windows I2S under-represented Mozilla's actively hostile trajectory."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Shipped Android native-app detection Chrome 80 (Feb 2020), Windows UWP Chrome 85 (Aug 2020), and desktop PWA in-scope detection Chrome 140 (stable 2025-09-02, stepped rollout). Reference docs are comprehensive and current (web.dev updated 2025-07-13; Chrome 140 release notes; MDN). However the launch materials do not surface the Mozilla 'harmful' position or TAG disappointment, and MDN marks the feature 'Experimental' and 'not Baseline.'",
+      "evidenceIds": [
+        "src-webdev-doc",
+        "src-chrome140-rn",
+        "src-mdn",
+        "src-medium-launch",
+        "src-chromestatus"
+      ],
+      "limitations": "No public partner case studies or production-deployment evidence accompany any release; negative positions absent from developer-facing materials."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Real and growing but low and quality-skewed adoption. Chrome use counter (V8Navigator_GetInstalledRelatedApps_Method) rose from ~0.62% of page loads (Jan 2024) to ~0.95% (Jul 2026). HTTP Archive shows ~1.1% of mobile and ~0.5% of desktop top URLs. But the enumerated top-adopter sample URLs are predominantly gambling/betting domains (166bet, 1go.plus, 1goplus, 789bingo, 7k.bet, 888win) plus 2gis.ru, corroborating the Mozilla/Olejnik 'drive users to native / abuse' concern rather than healthy cross-framework adoption. Alex Russell (2021) noted usage 'isn't super high right now, but is growing quickly.'",
+      "evidenceIds": [
+        "src-cs-metric",
+        "src-webdev-doc",
+        "src-tag-436"
+      ],
+      "limitations": "Adoption is concentrated in a narrow, low-trust segment; no major framework/library integration or attributable case study found."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Recurring developer friction is visible: StackOverflow reports of the API failing/returning empty on Android 12/13 and for installed desktop PWAs, and a long-lived Chromium feature request (issue 40735286, dup of 40144143/1114966) documented a ~5-year gap where installed desktop PWAs were not returned despite the browser knowing they were installed. The desktop gap was eventually closed by the Chrome 140 launch event. No support-burden denominators or trend data are public.",
+      "evidenceIds": [
+        "src-crbug-40735286",
+        "src-so-76336748",
+        "src-so-76438774",
+        "src-reddit-pwa"
+      ],
+      "limitations": "Only anecdotal/snippet evidence for StackOverflow/Reddit; no recurrence, resolution-time, or support-volume metrics."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "The feature is actively maintained and expanding (desktop PWA in-scope support shipped in Chrome 140, 2025-09-02), not under deprecation or removal. No removal intent, reverse trial, or migration path applies. Marked not-relevant because the feature is not in a deprecation/removal lifecycle, not because it is untested.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-chrome140-rn",
+        "src-webdev-doc"
+      ],
+      "limitations": "None; phase does not apply to this feature at the evidence cutoff."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Genuine but narrow and contested developer jobs: suppress PWA-install prompts when a native app exists, de-duplicate notifications, coordinate behavior across web/native, and direct product pages into an installed app. Mozilla argued the notification case asks the 'wrong question' (the server should decide on authenticated endpoints, not the endpoint on device signals), and the strongest concrete demand remained push de-duplication throughout incubation. Jobs are real for dual web+native publishers but not broadly validated.",
+      "evidenceIds": [
+        "src-mozilla-213",
+        "src-explainer",
+        "src-webdev-doc",
+        "src-intent-experiment"
+      ],
+      "limitations": "No attributable demand research; use-case breadth asserted late and partly in response to criticism."
+    },
+    "endUserImpact": {
+      "status": "failure",
+      "finding": "Substantive negative end-user impact risks documented by Mozilla, the TAG, and independent privacy researcher Lukasz Olejnik: coalition fingerprinting (a tracker buying app-to-origin associations), private/incognito-mode detection via pre-installed apps, and 'drive users to native / nagging.' The realized adopter profile (gambling/betting-dominated top sites) is consistent with the abuse vector rather than benign personalization. Mitigations (3-app cap, top-frame-only, incognito suppression) reduce but do not eliminate the surface, and the incognito suppression itself enables mode detection.",
+      "evidenceIds": [
+        "src-mozilla-213",
+        "src-tag-436",
+        "src-olejnik",
+        "src-cs-metric"
+      ],
+      "limitations": "No measurement of actual fingerprinting/incognito-detection abuse in the wild; inference rests on threat models and adopter composition."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Growing real usage (~0.95% of Chrome page loads by Jul 2026; ~1% mobile URLs in HTTP Archive) but concentrated in a low-trust vertical (gambling/betting) with no cross-engine, framework, or major-publisher traction and no case studies.",
+      "evidenceIds": [
+        "src-cs-metric",
+        "src-webdev-doc"
+      ],
+      "limitations": "Volume is non-trivial; composition is the concern. No framework/library integration evidence."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "No cross-engine support: Mozilla position 'harmful,' Safari 'No signal,' supported only in Chrome and Edge (Blink). MDN marks it 'not Baseline' / 'experimental.' WPT coverage is limited to the JS API surface (real app-store verification cannot be tested in WPT). Spec maturity is 'Unknown' (WICG CG draft). The Mozilla alternative proposal was not adopted.",
+      "evidenceIds": [
+        "src-mozilla-213",
+        "src-mdn",
+        "src-tag-436",
+        "src-intent-ship-win",
+        "src-chromestatus"
+      ],
+      "limitations": "Positions are dated (Mozilla 2020; TAG activity 2019-2021) and may have evolved, but no later positive signal from Firefox/Safari was found."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Core functionality works (Android via Digital Asset Links; Windows UWP via appUriHandler), and Microsoft delivered a cross-vendor implementation including the Chrome 140 desktop PWA-scope fix. But the implementation was Android-specific for years, UWP-only (not Win32) on Windows, hard-capped to 3 apps, and took ~5 years to expose installed desktop PWAs (a core 'suppress install prompt' use case) after the Dec 2020 request, with developer-visible failures along the way.",
+      "evidenceIds": [
+        "src-intent-ship-win",
+        "src-crbug-40735286",
+        "src-so-76336748",
+        "src-webdev-doc"
+      ],
+      "limitations": "No regression/conformance suite beyond API-surface WPT; no perf/resource measurements."
+    },
+    "evidenceAndCommunication": {
+      "status": "failure",
+      "finding": "Evidence quality at decision points is poor: ChromeStatus motivation is blank; review-status fields (TAG, Mozilla, security, privacy) remain 'Pending' despite three shipments; the Windows I2S recorded Mozilla as 'No resolved position' days before it was marked 'harmful,' and claimed 'Positive based on OT feedback' with no cited evidence; the OT produced no published results; the TAG's note that Mozilla's alternative was 'not seriously considered' went unaddressed. Launch materials omit the negative positions.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-intent-ship-win",
+        "src-mozilla-213",
+        "src-tag-436",
+        "src-intent-experiment"
+      ],
+      "limitations": "Some internal evidence may exist but is not public; assessment is on retrievable public evidence only."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Issues were tracked and the major gap (desktop PWA not returned) was eventually resolved in Chrome 140 after ~5 years, with Microsoft ownership (Sunggook Chue / Ishika Patel). But long-standing gaps, anecdotal developer failures, and the absence of public support-burden/trend data prevent a positive score.",
+      "evidenceIds": [
+        "src-crbug-40735286",
+        "src-so-76336748",
+        "src-so-76438774"
+      ],
+      "limitations": "No recurrence/resolution-time denominators; only public issue samples."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A shipped, growing, but Chrome/Edge-only capability with a 'harmful' Mozilla position, no Safari signal, no Baseline status, substantive privacy/abuse criticism partly realized in a gambling-skewed adopter base, weak public evidence at every decision gate (blank motivation, 'Pending' reviews despite ship, undocumented OT results), and a ~5-year gap for the core PWA use case that was only closed in Chrome 140 (the manifest's launch event). Not a broad web-platform success; a cautionary case for capability launches that proceed over explicit cross-engine opposition.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-mozilla-213",
+        "src-tag-436",
+        "src-mdn",
+        "src-cs-metric",
+        "src-crbug-40735286",
+        "src-intent-ship-win"
+      ],
+      "limitations": "Overall is the synthesis of mixed/failure dimensions; it does not rest on shipment, usage, or press sentiment alone."
+    }
+  },
+  "sources": [
+    {
+      "id": "src-chromestatus",
+      "url": "https://chromestatus.com/feature/5695378309513216",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-02-23",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: id, name, owners (ishikapatel@microsoft.com, dmurph@chromium.org), category JavaScript, component Mobile>WebAPKs, created 2016-02-17 by dhnishi",
+        "Ship milestones: Android 80, Desktop 85, Chrome 140 desktop PWA-scope stage",
+        "Standards signals: Firefox Negative(harmful), Safari No signal, WebDev Positive, spec maturity Unknown",
+        "Review states TAG/Mozilla/security/privacy 'Pending' despite ship; motivation blank; OT id -6232981884280766463 (InstalledAppOld) M59-63"
+      ],
+      "limitations": "Cached record; motivation/review fields may be stale; does not capture OT outcomes."
+    },
+    {
+      "id": "src-chromestatuslite",
+      "url": "https://chromestatuslite.com/feature/5695378309513216",
+      "publisher": "Chrome Platform Status (server-rendered)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms status 'Enabled by default (Chrome 85)', intent stage 'Prepare to ship', Firefox Negative, Safari No signal, Web developers Positive, Chrome 140 desktop note"
+      ],
+      "limitations": "Minimal server-rendered view; less detail than cached JSON."
+    },
+    {
+      "id": "src-spec",
+      "url": "https://wicg.github.io/get-installed-related-apps/spec/",
+      "publisher": "WICG",
+      "publishedOrObservedAt": "2021-03-08",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "IDL: SecureContext Navigator.getInstalledRelatedApps() -> Promise<sequence<RelatedApplication>>",
+        "Privacy: secure top-level context only; bidirectional association; UA MAY limit related apps; MUST NOT return in private mode",
+        "Algorithm returns empty list if no manifest; open issue #11 on top-level-frame restriction"
+      ],
+      "limitations": "WICG CG draft; maturity 'Unknown'; references WebAppManifest; not advancing to a stable REC."
+    },
+    {
+      "id": "src-explainer",
+      "url": "https://github.com/WICG/get-installed-related-apps/blob/main/EXPLAINER.md",
+      "publisher": "WICG",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Goals/abstract, related_applications manifest example (play/itunes/webapp), Digital Asset Links verification",
+        "Privacy considerations: HTTPS-only, bidirectional, timing side-channel guidance, UA app cap",
+        "Abuse considerations: incognito as privacy-mode detector via pre-installed apps; drive-to-native concern"
+      ],
+      "limitations": "Explainer; not normative; abuse section added after TAG review."
+    },
+    {
+      "id": "src-mozilla-213",
+      "url": "https://github.com/mozilla/standards-positions/issues/213",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2020-04-07",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position: harmful (negative), decided 2020-04-07 by martinthomson",
+        "Coalition fingerprinting threat model (bholley): tracker buys app associations, loads iframes to probe",
+        "Push de-duplication is the 'wrong question'; server should decide on authenticated endpoints",
+        "Concerns about nagging/drive-to-native, superficial privacy/security treatment in proposal",
+        "Label changed position:negative 2024-09-13"
+      ],
+      "limitations": "Position from 2020; may have evolved; reflects Mozilla engineering view at the time."
+    },
+    {
+      "id": "src-tag-436",
+      "url": "https://github.com/w3ctag/design-reviews/issues/436",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG architectural concern: should drive to web not only native; wanted multi-stakeholder support",
+        "Incognito/private-mode detection via pre-installed apps (lknik)",
+        "Mozilla alternative proposal 'not seriously considered, which the TAG finds disappointing' (kenchris)",
+        "Microsoft (John Jansen) confirmed support; slightlyoff noted usage growing, pointed to chromestatus metric 1870"
+      ],
+      "limitations": "Long thread spanning 2019-2021; no single dated TAG resolution; TAG review status still 'Pending' in ChromeStatus."
+    },
+    {
+      "id": "src-webdev-doc",
+      "url": "https://web.dev/articles/get-installed-related-apps",
+      "publisher": "web.dev (Pete LePage, Alexey Rodionov)",
+      "publishedOrObservedAt": "2025-07-13",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Platform matrix: Android native Chrome 80; Windows UWP Chrome/Edge 85; PWA in-scope Android Chrome 84; PWA in-scope Desktop Chrome/Edge 140",
+        "Setup: Digital Asset Links (Android), appUriHandler+windows-app-web-link (Windows), webapp platform entry",
+        "Only first 3 related apps considered; HTTPS/secure top-level only"
+      ],
+      "limitations": "Authoritative reference docs but a Chrome-team source; not independent ecosystem evidence."
+    },
+    {
+      "id": "src-mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getInstalledRelatedApps",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2025-11-30",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "'Not Baseline' / 'experimental'; secure context only; top-level only",
+        "Platforms: UWP, Android apps, PWAs; relationship via manifest related_applications + platform-specific attestation"
+      ],
+      "limitations": "Browser-compat table is JS-rendered; supports summary used from page text."
+    },
+    {
+      "id": "src-intent-experiment",
+      "url": "https://groups.google.com/a/chromium.org/d/topic/blink-dev/j-e8iI-WWg8/discussion",
+      "publisher": "blink-dev (Matt Giuca)",
+      "publishedOrObservedAt": "2017-03-29",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment M59 (Android only); motivated by notification de-duplication",
+        "Experiment goals: API ergonomics; does it solve notification de-dup",
+        "Timeline M59-M62 with 'feedback from M59/M60/M61' milestones; Android-only; relies on Digital Asset Links",
+        "Reviewer (PhistucK) raised drive-to-native/user-choice concern; Owen Campbell-Moore: desktop infeasible to implement"
+      ],
+      "limitations": "No experiment results or decision record in the thread; feedback milestones not answered publicly."
+    },
+    {
+      "id": "src-intent-ship-win",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/_ei6KAIpzGM",
+      "publisher": "blink-dev (Sunggook Chue, Microsoft)",
+      "publishedOrObservedAt": "2020-04-03",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship Windows (Chrome 85): UWP via appUriHandler, max 3 apps, hardcoded 'windows' platform, UWP-only, incognito empty",
+        "Interop recorded: Edge Positive; Firefox 'No resolved position'; Safari 'No Signals'; Web/Framework 'Positive based on OT feedback'",
+        "WPT limited to JS API surface (real app-store scenario untestable); supports Windows+Android only at ship"
+      ],
+      "limitations": "Recorded Firefox as 'no resolved position' days before Mozilla marked 'harmful'; 'positive' claim unsupported; Android (M80) I2S not in this thread."
+    },
+    {
+      "id": "src-medium-launch",
+      "url": "https://medium.com/dev-channel/detect-if-your-native-app-is-installed-from-your-web-site-2e690b7cb6fb",
+      "publisher": "dev-channel / Medium (Paul Kinlan)",
+      "publishedOrObservedAt": "2017-07-26",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 59 Origin Trial launch announcement; use cases: cancel PWA install if native installed, prevent duplicate notifications, detect installed PWA",
+        "Bidirectional verification via manifest related_applications + AndroidManifest asset_statements"
+      ],
+      "limitations": "Google-authored launch communication; not independent; predates the privacy debate."
+    },
+    {
+      "id": "src-olejnik",
+      "url": "https://blog.lukaszolejnik.com/privacy-analysis-of-websites-knowing-what-apps-are-installed-getinstalledrelatedapps/",
+      "publisher": "Lukasz Olejnik (independent privacy researcher)",
+      "publishedOrObservedAt": "2020-11-18",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Independent analysis: coalition tracking risk (websites+apps joining forces), fingerprinting/profiling",
+        "Incognito/private-mode detection via broadly/pre-installed apps",
+        "Anti-competition and consumer-protection dimensions beyond privacy"
+      ],
+      "limitations": "Single expert blog analysis; opinionated; not an empirical abuse measurement."
+    },
+    {
+      "id": "src-cs-metric",
+      "url": "https://chromestatus.com/metrics/feature/timeline/popularity/1870",
+      "publisher": "Chrome Platform Status (use counter) / HTTP Archive",
+      "publishedOrObservedAt": "2026-07-01",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "V8Navigator_GetInstalledRelatedApps_Method: ~0.62% page loads Jan 2024 rising to ~0.95% Jul 2026 (all Chrome channels/platforms)",
+        "HTTP Archive adoption: ~1.1% mobile / ~0.5% desktop top URLs (recent crawl)",
+        "Top adopter sample URLs predominantly gambling/betting domains (166bet, 1go.plus, 1goplus, 789bingo, 7k.bet, 888win) + 2gis.ru; 139 sites sampled"
+      ],
+      "limitations": "Browser-only (JS-rendered) page, read via DevTools; page-load % is Chrome-only and includes any call; HTTP Archive corpus jumps noted; adopter categorization inferred from domain names."
+    },
+    {
+      "id": "src-crbug-40735286",
+      "url": "https://issues.chromium.org/issues/40735286",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2020-12-03",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Feature request (dup of 40144143/1114966): getInstalledRelatedApps() does not return installed desktop PWAs (Chrome 87/88/89)",
+        "Reporter: browser knows PWA is installed (changes address-bar UI) but does not expose it; unmet developer expectation",
+        "Rayan Kanso: Android implementation is Android-specific; shared desktop impl possible with WebAppProvider",
+        "Microsoft (Sunggook Chue) assigned; gap persisted Dec 2020 until Chrome 140"
+      ],
+      "limitations": "Single tracking issue; one of several dups; does not quantify affected developers."
+    },
+    {
+      "id": "src-so-76336748",
+      "url": "https://stackoverflow.com/questions/76336748/navigator-getinstalledrelatedapps-fails-in-chrome-on-android-12-and-13",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Developer report: getInstalledRelatedApps does not work on Android 12 (Samsung tablet, Chrome)"
+      ],
+      "limitations": "Search-result snippet only; full thread not retrieved; anecdotal."
+    },
+    {
+      "id": "src-so-76438774",
+      "url": "https://stackoverflow.com/questions/76438774/pwa-check-if-pwa-is-installed-navigator-getinstalledrelatedapps-return-empty",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Developer report: getInstalledRelatedApps() always returns empty when checking if a PWA is installed"
+      ],
+      "limitations": "Search-result snippet only; anecdotal."
+    },
+    {
+      "id": "src-reddit-pwa",
+      "url": "https://www.reddit.com/r/PWA/comments/1ai7cdu/getinstalledrelatedapps_not_working/",
+      "publisher": "r/PWA (Reddit)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer report: getInstalledRelatedApps returns 0 on desktop despite PWA installed"
+      ],
+      "limitations": "Search-result snippet only; anecdotal."
+    },
+    {
+      "id": "src-chrome140-rn",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 stable 2025-09-02; 'Get Installed Related Apps API on desktop' listed under Web APIs",
+        "Confirms: launched Chrome 80 Android; desktop web-app support enabled Chrome 140; tracking bug 895854"
+      ],
+      "limitations": "Release-notes summary; not independent."
+    }
+  ],
+  "successes": [
+    "Bidirectional verification model (Digital Asset Links on Android, appUriHandler/windows-app-web-link on Windows) correctly restricts detection to apps the origin can prove it owns, preventing arbitrary installed-app enumeration",
+    "Incognito/private-browsing suppression and the UA-defined 3-app cap are genuine, if partial, fingerprinting mitigations designed in from the start",
+    "Microsoft delivered a real cross-vendor implementation (Windows UWP in Chrome 85 and the desktop PWA-scope support in Chrome 140), broadening the implementer base beyond Google",
+    "The long-standing desktop-PWA gap (requested Dec 2020) was finally closed in Chrome 140 (2025-09-02), resolving a clear developer-expectation mismatch",
+    "Real, growing usage (~0.95% of Chrome page loads by Jul 2026) indicates the capability solves a recurring job for a segment of publishers"
+  ],
+  "failures": [
+    "No cross-engine adoption: Mozilla 'harmful,' Safari 'No signal,' Chrome/Edge only; not Baseline; spec maturity 'Unknown' (WICG draft)",
+    "Mozilla's alternative privacy-preserving proposal was not seriously considered (per the TAG), foreclosing a possible path to multi-stakeholder consensus",
+    "Privacy/abuse risks raised by Mozilla, the TAG, and an independent expert (coalition fingerprinting, incognito-mode detection via pre-installed apps, drive-to-native) are partly realized in a top-adopter base dominated by gambling/betting sites",
+    "A ~5-year gap between Android PWA-in-scope support (Chrome 84) and Desktop PWA-in-scope support (Chrome 140) left the core 'suppress install prompt / detect own PWA' use case broken on desktop",
+    "The Origin Trial produced no published results; the 'Positive based on OT feedback' claim in the Intent to Ship is unsupported by any retrievable cohort, sample size, or finding",
+    "Review-status fields and launch materials presented Mozilla's actively hostile trajectory as 'No resolved position'/'Pending,' understating opposition at the ship decision"
+  ],
+  "counterfactuals": [
+    "If the experiment (phase 05) transition packet had required a public decision record (hypotheses, denominators, results, partner evidence), the 'Positive based on OT feedback' claim would have been testable and the ship decision better grounded",
+    "If Mozilla's alternative design had been jointly prototyped/incubated instead of set aside, cross-engine support and a Baseline path might have been reachable, changing the interoperability outcome",
+    "If the Intent to Ship wide-review matrix had quoted Mozilla's live concerns (and its imminent 'harmful' decision) rather than 'No resolved position,' the ship and messaging would have faced honest scrutiny before default availability",
+    "If adoption monitoring had flagged the gambling/betting-dominated top-adopter profile early (via the HTTP Archive sample-URL list), the abuse/nagging risk could have informed additional safeguards or scope narrowing",
+    "If the desktop PWA-scope gap had been tracked as platform-parity debt against the 'PWA install suppression' use case (rather than shipped Android-only and left for ~5 years), the core value proposition would have been cross-platform far sooner",
+    "If the feature detection story had been honest about Chrome/Edge-only reach at launch, developers would have been less likely to build load-bearing UX on a non-Baseline API"
+  ],
+  "skillImprovements": [
+    "Add a phase-05 (experiment) hard requirement: no Origin Trial may feed an Intent to Ship 'positive feedback' claim unless a public decision record (hypotheses, metrics, denominators, partner ledger, findings, limitations) is linked; absence is treated as 'unknown,' not 'positive'",
+    "Add a wide-review (phase 04) rule: when a vendor position is actively under review with documented concerns (or an open standards-positions issue), the Intent to Ship must quote the latest dated concerns verbatim and must not record 'no resolved position' until the issue is closed",
+    "Add a counter-proposal-engagement rule: when another engine publishes an alternative design, log a dated, substantive response; unresolved alternatives must appear as an explicit risk in the wide-review matrix and prepare-to-ship packet",
+    "Add an adoption-monitoring artifact (phase 08) that surfaces top-adopter site categories (e.g., via HTTP Archive sample URLs) as a quality/abuse signal, with an alert when high-risk verticals (gambling, adtech) dominate a privacy-sensitive capability",
+    "Add a platform-parity-debt tracker (phase 06/07): when a use case ships on a subset of platforms, record the cross-platform gap, affected use cases, owner, and remediation milestone; unresolved parity debt must be visible in release communication",
+    "Add a review-status integrity check: ChromeStatus TAG/Mozilla/security/privacy fields must not remain 'Pending' after ship; the report should flag any feature whose shipped state contradicts its recorded review states",
+    "Add a regression eval pairing this case (negative-position, Chrome-only, low-quality-adopter, undocumented-experiment) with a contrasting successful capability launch to calibrate the 'success vs mixed vs failure' thresholds"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Documented Origin Trial (Chrome 59-63) results: hypotheses, metrics, denominators, partner/participant ledger, interim/final readout, and the experiment->ship decision record (the 'positive based on OT feedback' claim is unsupported)",
+      "Android ship (Chrome 80) Intent to Ship thread content (only the Windows Chrome 85 I2S was retrieved)",
+      "Original tracking bug 895854 detailed history/timeline",
+      "Exact Chrome 140 desktop PWA-scope stepped-rollout configuration and percentage schedule",
+      "Independent partner case studies / verified production deployments (none found; adoption inferred from use counter and HTTP Archive)",
+      "Support-burden trend data: issue recurrence, resolution time, support volume (only anecdotal samples retrieved)",
+      "Current (post-2021) Firefox/Safari positions to confirm whether the 'harmful'/'no signal' signals have changed"
+    ],
+    "reviewedAt": "2026-07-22T15:45:00Z"
+  }
+}

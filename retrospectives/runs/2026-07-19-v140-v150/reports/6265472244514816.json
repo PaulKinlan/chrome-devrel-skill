@@ -1,0 +1,495 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6265472244514816,
+    "name": "SharedWorker on Android",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6265472244514816",
+    "blinkComponents": [
+      "Blink>Workers"
+    ],
+    "owners": [
+      "yyanagisawa@google.com",
+      "domenic@chromium.org"
+    ],
+    "featureType": "Chromium catches up",
+    "spec": "https://html.spec.whatwg.org/multipage/workers.html#shared-workers-and-the-sharedworker-interface",
+    "ffViews": "Shipped/Shipping",
+    "safariViews": "Shipped/Shipping",
+    "webDevViews": "Positive",
+    "shippingMilestone": 148,
+    "platforms": {
+      "android": 148,
+      "webview": 148
+    }
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:In developer trial (Behind a flag):6265472244514816",
+      "milestone": 140,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "140:Origin trial:6265472244514816",
+      "milestone": 140,
+      "category": "Origin trial"
+    },
+    {
+      "eventId": "148:Enabled by default:6265472244514816",
+      "milestone": 148,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem well-validated: SharedWorker (a final HTML Living Standard) was the last major mobile browser gap, disabled on Chrome Android since 2012 over process-lifecycle concerns. Sustained developer demand is documented across a 13-year tracking bug, a community Interop 2026 request, and third-party library friction. Firefox and Safari already ship on mobile, making Chrome the last holdout. Enabling an existing standardized API is clearly the right intervention layer.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "bug-40290702",
+        "interop-1064",
+        "livestore-321",
+        "chromestatuslite"
+      ],
+      "limitations": "Demand is largely self-reported developer comments and library issues, not a structured survey; no attributable partner production-deployment evidence is named publicly (the OT extension references an unnamed major partner)."
+    },
+    "incubation": {
+      "status": "not-relevant",
+      "finding": "Not applicable as an API incubation: this is a Chromium catches-up enablement of an already-final, multi-engine standard (HTML SharedWorker). No new surface was incubated for this feature. The one design question this work exposed (unpredictable agent-cluster killing under memory pressure) was incubated separately as the extendedLifetime option (whatwg/html#11205; distinct feature 5138641357373440) rather than folded into this feature's API.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "whatwg-11205",
+        "extended-lifetime-blog",
+        "spec-html-sharedworker"
+      ],
+      "limitations": "Marked not-relevant for THIS feature's API; the lifecycle/spec question it exposed remains open in whatwg/html#11205 and is tracked under a different feature, so it is not tested here either."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "The SharedWorker code path already shipped on desktop, so the Android work was enablement plus a runtime flag and an OT test rather than a greenfield prototype. Implementation CLs (runtime_enabled_features, SharedWorkerOnAndroid OT test, UseCounter, UMA) landed Jul-Aug 2025. No documented task-based prototype, friction log, or varied-cohort prototype phase precedes the dev trial; the Android-specific lifecycle risk was explicitly deferred to the origin trial for validation rather than prototyped away first.",
+      "evidenceIds": [
+        "bug-40290702",
+        "chromestatus-cached"
+      ],
+      "limitations": "No public prototype/friction-log artifact; reliance on desktop parity as a proxy for Android correctness is a known gap (Chromium WPT runs on Linux, not Android)."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial behind a flag shipped at M140 alongside the origin trial. Devtrial instructions point only to generic MDN SharedWorker docs (not Android-specific guidance). No documented cohort recruitment, representativeness report, or friction findings; the substantive developer feedback was collected via the OT (owner solicited feedback Oct 2025 and Jan 2026) rather than a structured dev-trial cohort.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "intent-ship",
+        "bug-40290702",
+        "mdn-sharedworker"
+      ],
+      "limitations": "No public cohort/methodology/limitations artifact; participation and task completion not separately reported from OT registrations."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Other-engine positions are strong and verified (Firefox and Safari Shipped/Shipping on mobile; Safari since iOS/Safari 16). The API is a final published standard, so TAG review is reasonably Not applicable. However, the cached record shows security_review_status and privacy_review_status both Pending and never visibly resolved in the public record, and no attributable WebKit/Gecko mobile-lifecycle perspective was captured into this feature's review despite whatwg/html#11205 explicitly asking for one.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "whatwg-11205",
+        "spec-html-sharedworker",
+        "interop-1064"
+      ],
+      "limitations": "Pending security/privacy review status is a genuine gap (not no-signal-treated-as-support); lifecycle behavioral parity between Chrome Android and WebKit/Gecko mobile is unspecified and unverified."
+    },
+    "experiment": {
+      "status": "mixed",
+      "finding": "Origin Trial M140-144, extended to M147, was well-scoped: explicit hypotheses (termination frequency, API sufficiency, need for a spec countermeasure), dedicated metrics (Content.SharedWorker.Host.DestructionSource UMA; kSharedWorkerStartOnAndroid use counter), third-party OT support, and an extension tied to a concrete partner need. But the evidence base is thin: 34 total sign-ups; at extension time the team stated it did not yet have the statistical volume to draw firm conclusions; the feared Worker-connection-lost events were confirmed real but rare; and the ship decision rested on crash-related terminations being not significant on Android vs desktop and no reports of unstable SharedWorkers rather than a pre-registered threshold.",
+      "evidenceIds": [
+        "intent-ship",
+        "intent-extend",
+        "chromestatus-cached",
+        "bug-40290702"
+      ],
+      "limitations": "No published OT readout with denominators, statistical method, or thresholds; 'no reports' is weak evidence; the unnamed major partner's results are not public."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (2026-03-26) followed process and received LGTM1 (contingent on OT findings, which were supplied), LGTM2, and LGTM3. The WebView risk was surfaced and resolved in-review (single renderer process; shared worker runs with its creator). Rollout is a Finch flag (SharedWorker) enabling rollback, and post-ship metric retention was committed. Gaps: documentation is MDN-only with no Chrome-authored article/sample for this feature or its Android lifecycle caveat, and security/privacy review remained Pending.",
+      "evidenceIds": [
+        "intent-ship",
+        "chromestatus-cached",
+        "mdn-sharedworker"
+      ],
+      "limitations": "No dedicated Chrome-authored docs/samples; formal review gate states not confirmed resolved in the public record."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled by default in M148 (stable desktop promoted 2026-05; Android/WebView at M148). Coordinated across the Chrome 148 beta blog, release notes, and New in Chrome 148, with modest independent press coverage (Notebookcheck). Caveat: the public framing reused the pre-OT hypothesis (a recent discussion suggests the lifecycle issue might not be as significant) rather than reporting the measured OT findings, so the evidentiary basis is understated in user-facing comms.",
+      "evidenceIds": [
+        "chrome148beta-blog",
+        "chrome148-releasenotes",
+        "chromereleases-m148",
+        "notebookcheck-press",
+        "ship-cl-wpt"
+      ],
+      "limitations": "No dedicated deep-dive article or sample; messaging does not surface the measured low-but-real termination rate or the open lifecycle spec question."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Strong pre-ship demand (13-year bug thread, Interop 2026 request, LiveStore single-tab fallback workaround, Pusher/RxDB/wa-sqlite ecosystem references) and 34 OT sign-ups indicate real interest. However the feature reached stable only around May-Jun 2026 and no post-ship production adoption, retention, or use-counter data is available at the evidence cutoff; the live use-counter page is browser-rendered and was not directly retrievable.",
+      "evidenceIds": [
+        "bug-40290702",
+        "interop-1064",
+        "livestore-321",
+        "intent-ship",
+        "usage-metric-5626"
+      ],
+      "limitations": "No post-ship adoption metrics; pre-ship interest is not production adoption."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "OT feedback channels were active (owner solicited feedback twice during the trial). A Trial Usage alert fired and was determined to be a false alarm, indicating monitoring exists. Post-ship support volume, regressions, and issue resolution are not yet observable (feature <2 months past stable).",
+      "evidenceIds": [
+        "intent-ship",
+        "bug-40290702",
+        "chromestatus-cached"
+      ],
+      "limitations": "No post-ship support/regression data; metrics committed but not yet reported."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is an enablement of an existing standard, not a restriction, replacement, or removal. No reverse trial, migration, or removal path is involved.",
+      "evidenceIds": [
+        "chromestatus-cached"
+      ],
+      "limitations": "Marked not-relevant because no deprecation/removal activity exists; the OT-expiry fallback (SharedWorker disabled again on Android after the trial) was a stated trial risk that is now superseded by default enablement."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a real, durable, repeatedly-articulated developer need (share a single WebSocket/SSE connection and persistent state such as WASM SQLite across mobile tabs) and closes the last major-browser gap. Demand is evidenced over 13 years and across frameworks/libraries (RxDB, LiveStore, wa-sqlite, Pusher).",
+      "evidenceIds": [
+        "bug-40290702",
+        "interop-1064",
+        "livestore-321",
+        "chromestatus-cached"
+      ],
+      "limitations": "Realized value depends on adoption not yet measured."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Indirect end-user benefit expected (fewer duplicated background connections -> less battery/data) but never measured directly. The principal end-user-relevant risk (a shared worker silently killed under memory pressure, breaking app state) was monitored during the OT and found low relative to desktop, but confirmed real and not fully characterized; the underlying behavior is unspecified.",
+      "evidenceIds": [
+        "intent-ship",
+        "intent-extend",
+        "whatwg-11205",
+        "chromestatus-cached"
+      ],
+      "limitations": "No end-user study; resource/battery benefit is inferred, not measured."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Pre-ship demand is strong and multi-source, but the feature is <2 months past stable and no post-ship adoption/use-counter/retention data is available, so durable production adoption cannot be scored.",
+      "evidenceIds": [
+        "bug-40290702",
+        "interop-1064",
+        "livestore-321",
+        "usage-metric-5626"
+      ],
+      "limitations": "Post-ship adoption data unavailable at cutoff."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "This is the defining win: after M148, SharedWorker is available in all major browsers on mobile, resolving the Interop 2026 rationale (implemented in every browser except Chrome on Android, so it cannot be used as a core feature). Firefox and Safari ship on mobile; the API is a final standard. Caveats: Chromium WPT runs on Linux not Android, and behavioral/lifecycle parity across mobile engines is unspecified (whatwg/html#11205 open).",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "interop-1064",
+        "spec-html-sharedworker",
+        "whatwg-11205"
+      ],
+      "limitations": "Android-side conformance not independently verified via WPT; lifecycle parity unspecified."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Implementation reuses the shipped desktop code path behind a runtime flag; OT found crash-related terminations not significant on Android vs desktop; dedicated UMA and use-counter monitoring added and committed post-ship; WebView process model clarified in review. But the feared termination events are real (observed, rare), the lifecycle behavior is implementation-defined (spec gap), and the team shipped before it had statistical volume to draw firm conclusions.",
+      "evidenceIds": [
+        "intent-ship",
+        "intent-extend",
+        "bug-40290702",
+        "chromestatus-cached",
+        "ship-cl-wpt"
+      ],
+      "limitations": "No statistical characterization published; Android WPT coverage absent."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Process rigor is high (stated hypotheses, metrics, an OT findings summary, three LGTMs with one contingent on findings, committed monitoring). But the ship decision rested on not-significant/no-reports rather than a pre-registered threshold while the team admitted insufficient statistical volume; public messaging reused the pre-OT hypothesis instead of the measured findings; docs are MDN-only; and security/privacy review stayed Pending in the public record.",
+      "evidenceIds": [
+        "intent-ship",
+        "intent-extend",
+        "chrome148beta-blog",
+        "chromestatus-cached",
+        "mdn-sharedworker"
+      ],
+      "limitations": "Security/privacy review resolution not visible; no published OT statistical readout."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too early to assess: feedback channels were active during the OT and monitoring exists, but post-ship support volume, regressions, and resolution times are not yet observable.",
+      "evidenceIds": [
+        "intent-ship",
+        "bug-40290702"
+      ],
+      "limitations": "No post-ship support data at cutoff."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, methodically-trialed catches-up enablement that closes a 13-year interoperability gap with strong developer demand. Mixed because the ship rests on modest statistical evidence, the core lifecycle risk is confirmed-real-but-rare and remains under-specified, documentation is thin, and release comms understated the measured basis. Net direction is positive; the weak spots are evidence/docs/communication, not the problem or the API.",
+      "evidenceIds": [
+        "intent-ship",
+        "intent-extend",
+        "bug-40290702",
+        "interop-1064",
+        "chromestatus-cached",
+        "chrome148beta-blog"
+      ],
+      "limitations": "Post-ship adoption and support outcomes unknown."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus-cached",
+      "url": "https://chromestatus.com/feature/6265472244514816",
+      "publisher": "Chrome Platform Status (cached JSON record, accurate_as_of 2026-04-20)",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Motivation; FF/Safari shipped; web-dev Positive; OT config M140-144 extended to M147; ship stage Android/WebView M148; use counter kSharedWorkerStartOnAndroid (bucket 5626); Finch name SharedWorker; WPT yes (Linux only); security/privacy review Pending; feature type Chromium catches up"
+      ],
+      "limitations": "Snapshot accurate as of 2026-04-20; later status changes (review resolution, actual M148 ship) not reflected."
+    },
+    {
+      "id": "chromestatuslite",
+      "url": "https://chromestatuslite.com/feature/6265472244514816",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Summary text; FF/Safari Shipped/Shipping; web developers Positive; tracking bug link"
+      ],
+      "limitations": "Server-rendered subset; omits stage/OT detail present in cached JSON."
+    },
+    {
+      "id": "intent-ship",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/pS1PDOa69CU",
+      "publisher": "blink-dev (Y. Yanagisawa via ChromeStatus), 2026-03-26",
+      "publishedOrObservedAt": "2026-03-26",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship; OT findings (34 sign-ups; crash-related terminations not significant on Android vs desktop; no instability reports); WebView single-renderer clarification (Torne/R. Coles); LGTM1/2/3 (A. Russell contingent on findings, P. Jaegenstedt, M. Taylor); post-ship metric retention committed"
+      ],
+      "limitations": "OT findings are a self-reported summary without published denominators/statistics."
+    },
+    {
+      "id": "intent-extend",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/yUokoGf06T0",
+      "publisher": "blink-dev (Y. Yanagisawa), 2026-01-07",
+      "publishedOrObservedAt": "2026-01-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Extension M145-147; rationale (major partner large-scale experiment); UMA observed Worker-connection-lost events extremely rare; insufficient statistical volume to draw firm conclusions; >10 OT sign-ups since Oct 2025"
+      ],
+      "limitations": "Partner unnamed; statistical claims qualitative."
+    },
+    {
+      "id": "bug-40290702",
+      "url": "https://issues.chromium.org/40290702",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": "2026-01-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "13-year demand history; 2013 process-limit/priority concerns; 2016 deprioritized for service workers; 2021 partner need and process-management concern; 2022-2025 developer demand (WebSocket/SSE/RxDB/WASM-SQLite); Safari shipped iOS/Safari 16; workarounds; implementation CLs (OT config, UseCounter, UMA, third-party OT, default-enablement WPT expectations)"
+      ],
+      "limitations": "Comment dates span 2012-2026; developer comments are self-reported, not a survey."
+    },
+    {
+      "id": "whatwg-11205",
+      "url": "https://github.com/whatwg/html/issues/11205",
+      "publisher": "WHATWG HTML issue tracker (D. Denicola), 2025-04-10",
+      "publishedOrObservedAt": "2025-04-10",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Motivating spec discussion; Android OOM-killer concern; view that under memory pressure shared-worker death is acceptable/common; request for WebKit/Gecko mobile perspectives; issue still open"
+      ],
+      "limitations": "Reader captured issue body but not full comment thread/reactions; no resolution."
+    },
+    {
+      "id": "extended-lifetime-blog",
+      "url": "https://developer.chrome.com/blog/extended-lifetime-shared-workers-origin-trial",
+      "publisher": "Chrome for Developers (B. Pollard, D. Denicola), 2025-07-31",
+      "publishedOrObservedAt": "2025-07-31",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Adjacent spec-level countermeasure (extendedLifetime:true; 30s post-unload) originating from the same lifecycle concern; separate OT from Chrome 139 (distinct feature 5138641357373440)"
+      ],
+      "limitations": "Documents a related but separate feature, not this feature's ship."
+    },
+    {
+      "id": "interop-1064",
+      "url": "https://github.com/web-platform-tests/interop/issues/1064",
+      "publisher": "web-platform-tests/interop (mariusGundersen), 2025-09-11",
+      "publishedOrObservedAt": "2025-09-11",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Community interoperability signal: SharedWorker implemented in every browser except Chrome on Android, so it cannot be used as a core feature; proposed for Interop 2026, not selected"
+      ],
+      "limitations": "Issue body captured; not selected for Interop 2026."
+    },
+    {
+      "id": "livestore-321",
+      "url": "https://github.com/livestorejs/livestore/issues/321",
+      "publisher": "livestorejs/livestore (schickling), 2025-05-27",
+      "publishedOrObservedAt": "2025-05-27",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Third-party library (LiveStore, ~3.6k stars) treating the Chrome-Android SharedWorker absence as a limitation requiring a single-tab fallback workaround"
+      ],
+      "limitations": "One library; workaround proposed, outcome not verified."
+    },
+    {
+      "id": "chrome148beta-blog",
+      "url": "https://developer.chrome.com/blog/chrome-148-beta",
+      "publisher": "Chrome for Developers (R. Andrew), 2026-04-08",
+      "publishedOrObservedAt": "2026-04-08",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Official M148 beta communication; SharedWorker on Android re-enabled; framing cites the GitHub discussion rather than OT findings; ships alongside extended-lifetime shared workers"
+      ],
+      "limitations": "Beta-period framing; does not report measured OT data."
+    },
+    {
+      "id": "chrome148-releasenotes",
+      "url": "https://developer.chrome.com/release-notes/148",
+      "publisher": "Chrome for Developers release notes",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "SharedWorker on Android listed in Chrome 148 release notes"
+      ],
+      "limitations": "Accessed via search snippet; full page not fully parsed."
+    },
+    {
+      "id": "notebookcheck-press",
+      "url": "https://www.notebookcheck.net/Chrome-148-Beta-for-Android-adds-Web-Serial-SharedWorker-support.1269721.0.html",
+      "publisher": "Notebookcheck",
+      "publishedOrObservedAt": "2026-04",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press coverage of the Chrome 148 Android beta noting SharedWorker support added"
+      ],
+      "limitations": "Single trade-press item; not deep technical analysis."
+    },
+    {
+      "id": "mdn-sharedworker",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Reference documentation; also the devtrial/OT documentation link used by this feature; browser-compat reference"
+      ],
+      "limitations": "Generic SharedWorker docs, not Android-specific guidance."
+    },
+    {
+      "id": "spec-html-sharedworker",
+      "url": "https://html.spec.whatwg.org/multipage/workers.html#shared-workers-and-the-sharedworker-interface",
+      "publisher": "WHATWG (HTML Living Standard)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "SharedWorker is a final published standard; defines SharedWorker/SharedWorkerGlobalScope; does not fully specify process-lifecycle/OOM-kill behavior"
+      ],
+      "limitations": "Living standard, no fixed publication date; lifecycle/OOM behavior under-specified (per whatwg/html#11205)."
+    },
+    {
+      "id": "ship-cl-wpt",
+      "url": "https://chromiumdash.appspot.com/commit/8bcc5686ef2509405cca1badb57568fdb471b270",
+      "publisher": "Chromium source (chromiumdash commit view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "CL updating SharedWorker WPT expectations for Android and WebView following default enablement on Android"
+      ],
+      "limitations": "Commit date/author not captured; one of several enablement CLs."
+    },
+    {
+      "id": "chromereleases-m148",
+      "url": "https://chromereleases.googleblog.com/2026/05/stable-channel-update-for-desktop.html",
+      "publisher": "Chrome Releases (Google)",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 148 promoted to the stable channel (desktop) in May 2026, anchoring the M148 enablement event"
+      ],
+      "limitations": "Desktop stable announcement; Android stable date inferred from milestone cadence."
+    },
+    {
+      "id": "usage-metric-5626",
+      "url": "https://chromestatus.com/metrics/feature/timeline/popularity/5626",
+      "publisher": "Chrome Platform Status use-counter metric",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Use-counter bucket 5626 (kSharedWorkerStartOnAndroid) is the defined adoption metric for this feature"
+      ],
+      "limitations": "Live metric page is browser-rendered and was not directly retrievable via the reader; current value not captured."
+    }
+  ],
+  "successes": [
+    "Closed a 13-year gap; after M148 SharedWorker is available in all major browsers on mobile, validating the Interop 2026 rationale.",
+    "Honest experiment design: explicit hypotheses (termination frequency, API sufficiency, spec-countermeasure need), dedicated metrics (Content.SharedWorker.Host.DestructionSource UMA; kSharedWorkerStartOnAndroid use counter), third-party OT support, and committed post-ship monitoring.",
+    "The OT extension was tied to a concrete (unnamed) partner need and was scrutinized rather than rubber-stamped, and the WebView process-model risk was surfaced and resolved during the ship review.",
+    "Adjacent spec work (extendedLifetime via whatwg/html#11205) advanced in parallel as a real countermeasure to the lifecycle concern, rather than ignoring it."
+  ],
+  "failures": [
+    "Public messaging (Chrome 148 beta blog) reused the pre-OT hypothesis framing instead of reporting the measured OT findings, understating the evidentiary basis for the ship decision.",
+    "Documentation is effectively MDN-only; there is no Chrome-authored article or sample covering the Android process-lifecycle caveat or graceful-termination guidance for this feature.",
+    "security_review_status and privacy_review_status were both Pending in the public record and never visibly resolved before default enablement.",
+    "The feared lifecycle failure (Worker connection lost) was confirmed real, yet at extension time the team stated it lacked statistical volume to draw firm conclusions; the ship proceeded on not-significant/no-reports rather than a pre-registered bar."
+  ],
+  "counterfactuals": [
+    "If a termination-rate threshold and a representative-cohort exposure target had been pre-registered before the OT, the ship decision would rest on a clearer evidentiary bar and the insufficient-statistical-volume gap would have been confronted before sign-off rather than after.",
+    "If the beta blog and release notes had stated the measured finding (crash-related terminations not significant vs desktop) alongside the known caveat (lifecycle still under-specified in the HTML Standard), developers would calibrate expectations instead of inferring desktop parity from re-enabled.",
+    "If a dedicated Chrome-authored doc/sample had covered the Android lifecycle caveat and the extendedLifetime fallback, third parties such as LiveStore would be less likely to ship single-tab fallbacks on Chrome Android.",
+    "If WPT ran on Android for Chromium, implementation parity and the lifecycle edge cases could be tested rather than asserted from Linux runs."
+  ],
+  "skillImprovements": [
+    "Phase 05 (experiment) rule: an OT findings summary at ship time must restate the original hypotheses, the pre-registered thresholds, denominators, and explicitly flag when statistical volume is insufficient; an Intent to Ship should not be approvable on no-reports alone when the team has stated it lacks statistical volume.",
+    "Phase 07 (release) rule: release communications for experiment-backed shipments must cite the measured findings (not the pre-experiment hypothesis) and state known caveats; a catches-up framing must not imply parity where platform behavior differs.",
+    "Phase 06/07 rule: catches-up enablements still require (a) a dedicated doc/sample covering platform-specific caveats (here: Android lifecycle) and (b) visible resolution of security/privacy review status before Enabled by default.",
+    "Add a retrospective regression-eval case for low-risk catches-up features where shipment on modest evidence is defensible but the real failure modes are evidence, docs, and communication rather than the API or the problem."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-ship production adoption and kSharedWorkerStartOnAndroid use-counter values (feature <2 months past M148 stable; live metric page is browser-rendered and was not directly retrievable).",
+      "Published OT statistical readout with denominators, thresholds, and the unnamed major partner's results.",
+      "Resolution of security_review_status and privacy_review_status (both Pending in the cached record).",
+      "Post-ship support/regression volume and resolution times.",
+      "WebKit/Gecko mobile-lifecycle perspectives captured into this feature's review (whatwg/html#11205 remains open)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

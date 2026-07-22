@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5165304401100800,
+    "name": "ToggleEvent source attribute",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5165304401100800",
+    "category": "DOM",
+    "featureType": "Chromium catches up",
+    "owner": "jarhar@chromium.org",
+    "specLink": "https://html.spec.whatwg.org/multipage/interaction.html#the-toggleevent-interface",
+    "flagName": "ToggleEventSource",
+    "finchName": "ToggleEventSource",
+    "starCount": 59
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5165304401100800",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T14:15:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry (created/accurate_as_of 2025-07-21) classifies this as a 'Chromium catches up' feature with a clear, narrow problem: expose the invoking element on ToggleEvent so developers using popovertarget/commandfor can branch on which control triggered a toggle without reimplementing invoker logic in JS. Owner jarhar@chromium.org; the manifest records a single launch event (Chrome 140, Enabled by default) on desktop/android/webview. The developer value is corroborated by MDN, which notes the source property removes the prior need to manually reimplement the command attribute and avoids JS tasks blocking show/hide.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5"
+      ],
+      "limitations": "No Chrome-authored explainer; incubation lived inside WHATWG HTML (explainer whatwg/html#9111, spec whatwg/html#11186)."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Design was incubated in WHATWG HTML (explainer whatwg/html#9111, merged spec whatwg/html#11186 at Living Standard maturity) before Chrome shipped, which makes the 'catch up' framing accurate. Both standards-position requests (Mozilla, WebKit) cite the same spec/explainer URLs.",
+      "evidenceIds": [
+        "S4",
+        "S6",
+        "S7"
+      ],
+      "limitations": "No Chrome-led developer research, partner discovery, or attributable demand evidence is present. ChromeStatus records web developers as 'No signals', i.e. signals were not gathered rather than being neutral."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implemented behind the 'ToggleEventSource' runtime/finch flag with WPT coverage in three files: popover-toggle-source, dialog-toggle-source, and details-toggle-source (ChromeStatus wpt_descr lists the wpt.fyi URLs and wpt=true).",
+      "evidenceIds": [
+        "S1",
+        "S15"
+      ],
+      "limitations": "Raw WPT pass-rate numbers could not be retrieved (wpt.fyi and webstatus.dev dashboards are JS-rendered)."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No 'In developer trial (Behind a flag)' launch event exists in the manifest or ChromeStatus stages for this feature; it moved from prototype directly to ship. This is consistent with a small, spec-following additive attribute that already had positive cross-engine positions, so a separate developer-trial milestone was not warranted. Rationale recorded because 'not-relevant' must never mean untested: the trade-off is that no pre-ship developer feedback loop occurred.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Absence of a developer trial means ergonomics/integration feedback was not collected before default-on shipment."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Both other engines filed positive standards positions before ship: Mozilla 'Positive' (issue #1220, opened 2025-05-01) and WebKit 'Support' (issue #494, opened 2025-05-12, status Done). TAG review marked 'Not applicable'; spec at Living Standard maturity; WPT tests present.",
+      "evidenceIds": [
+        "S1",
+        "S6",
+        "S7",
+        "S4"
+      ],
+      "limitations": "Web-developer signals recorded as 'No signals' (not gathered, not neutral). Mozilla project status still reads 'Position is proposed' although the label is position:positive and the issue is closed."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial launch event exists; all ot_* fields are null and origintrial is false. A field experiment was not justified for a small spec-following attribute with positive cross-engine positions and WPT coverage. Recorded as not-relevant (not 'untested') because no experiment hypotheses or field uncertainties were claimed.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None; the decision to skip an OT is defensible for this feature class."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "An Intent to Ship was posted to blink-dev (Blink>DOM; TAG Not applicable; interop risk assessed low). Rollout plan 'Will ship enabled for all users' on desktop/android/webview in 140, with finch name ToggleEventSource. The owner explicitly flagged three open items: (a) no UseCounters added ('I haven't added UseCounters... but I could if anyone is interested'), (b) an anticipated shadow-root retargeting spec change (whatwg/html#11345) treated as a fixable edge case, and (c) MDN documentation still pending at ship time (open mdn/content issue #39723).",
+      "evidenceIds": [
+        "S1",
+        "S12"
+      ],
+      "limitations": "Deliberate measurement gap (no UseCounter); docs not ready at ship; the intent_thread_url stored in the cached ChromeStatus record no longer resolves (Google Groups returns 'The requested conversation cannot be found'), so the live Intent to Ship had to be rediscovered at a different message ID."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 140 stable on 2025-09-02 across desktop/android/webview (iOS null) and featured in the Chrome 140 release notes DOM section ('The source attribute of a ToggleEvent contains the element that triggered the ToggleEvent...'); the release-notes meta description leads with the feature. MDN reference published 2025-10-27.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5"
+      ],
+      "limitations": "MDN landed ~7 weeks after stable. Coverage is release-note/roundup level; no dedicated Chrome article or video located. The cached ChromeStatus record itself was not updated post-ship (still shows status 'Proposed', is_released=false)."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No Chrome usage telemetry exists because UseCounters were deliberately not added. No attributable production deployment or case study was located; only tutorial/community coverage exists (Medium, jsdev.space, LinkedIn posts). The feature reached Baseline 'Newly available' on 2026-05-11 once Safari shipped. Absence of measurement is the finding, not success or failure.",
+      "evidenceIds": [
+        "S1",
+        "S11",
+        "S14"
+      ],
+      "limitations": "Adoption is structurally unmeasurable from the Chrome side; Baseline status and tutorial volume are not adoption evidence."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public bugs, regressions, or support-issue patterns were located for ToggleEvent.source. The owner stated 'There is no special DevTools support that is needed for this feature.'",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No positive support evidence either (no issue-resolution records, no telemetry); support burden is simply not evidenced rather than confirmed low."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive DOM attribute, not a deprecation or removal. No deprecation/removal launch event or migration plan exists in the manifest or ChromeStatus record. Recorded as not-relevant with rationale.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a real, narrow problem: identifying which invoker (a popovertarget/commandfor button or a showPopover()/source option) triggered a toggle, removing the prior need to reimplement command/invoker logic in JS and avoiding JS tasks blocking show/hide of the popover. MDN documents concrete examples (e.g., branching on which button closed a popover).",
+      "evidenceIds": [
+        "S4",
+        "S5"
+      ],
+      "limitations": "Narrow enhancement layered on the already-shipped popover/commandfor infrastructure; demand was not measured pre-ship."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No end-user impact evidence. The attribute is developer-facing and benefits users only indirectly via better-orchestrated popovers/dialogs/details.",
+      "evidenceIds": [],
+      "limitations": "No user-facing measurement exists or is realistically available for a DOM attribute; expected to be minimal/indirect."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Cannot be scored. No UseCounters were added (deliberate omission), and no attributable production deployments or case studies were located.",
+      "evidenceIds": [
+        "S1",
+        "S14"
+      ],
+      "limitations": "Baseline Newly-available status (2026-05-11) and tutorial coverage do not constitute adoption evidence."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "All three engines shipped and converged: Chrome 140 (2025-09-02), Firefox 145 (2025-11-11, bug 1968987), Safari 26.5 (2026-05-11), reaching Baseline 'Newly available' on 2026-05-11. WPT coverage exists in three files; both other engines held Positive/Support positions before Chrome shipped. The Popover API itself reached Baseline in January 2025, so this attribute layers on an interoperable base.",
+      "evidenceIds": [
+        "S3",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "limitations": "Raw WPT pass percentages not directly retrieved. Safari lagged Chrome by ~8 months."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "WPT tests exist in three files; the spec now specifies the source getter as retargeting source against currentTarget, resolving the anticipated shadow-root edge case the owner flagged at ship time (the spec also references DOM standard issue #1328 on standardizing associated event data). No regressions or compat-divergence bugs were found; all three engines converged without a compat break.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S15",
+        "S8",
+        "S9",
+        "S11"
+      ],
+      "limitations": "WPT pass percentages not retrieved; the retargeting behavior is noted as still evolving in the spec (issue #1328)."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Release communication was accurate and proportionate (Chrome 140 release notes DOM section plus MDN reference). However the evidence/communication ledger has real gaps: (a) UseCounters deliberately not added, leaving adoption unmeasurable; (b) web-developter signals recorded as 'No signals' (not gathered); (c) MDN landed ~7 weeks after stable; (d) the intent_thread_url in ChromeStatus no longer resolves.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S12"
+      ],
+      "limitations": "Claims that were made are accurate; the gap is measurement and provenance rather than misstatement."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support issues, regressions, or resolution records located in public sources.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Absence of support evidence is not evidence of low support burden."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A clean, well-executed 'catch up' interop win: merged Living-Standard spec, positive positions from both other engines, WPT coverage, all three engines shipped, and Baseline reached May 2026 with the anticipated retargeting edge case resolved cleanly. It is held at mixed rather than success because adoption, end-user impact, and support remain structurally unmeasurable (no UseCounters, no pre-ship developer signals), so success cannot be defensibly inferred from shipment, interop, or absent criticism alone.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S8",
+        "S9",
+        "S11"
+      ],
+      "limitations": "Promotion to overall success would require closing the adoption/usage evidence gap."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5165304401100800",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-07-21T19:44:47Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner, flag/finch name, WPT test list, UseCounter absence, standards positions, Chrome 140 desktop/android/webview ship stage, anticipated spec change whatwg/html#11345, activation risk noting open MDN issue"
+      ],
+      "limitations": "Local cached snapshot accurate_as_of 2025-07-21T19:44:47Z. Record was not updated post-ship: it still shows status 'Proposed' and is_released=false despite the manifest recording a Chrome 140 ship event. The stored intent_thread_url no longer resolves."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5165304401100800",
+      "publisher": "Chrome Platform Status (chromestatuslite)",
+      "publishedOrObservedAt": "2026-07-22T14:15:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered summary, category DOM, type 'Chromium catches up', Firefox Positive, Safari Support, spec URL"
+      ],
+      "limitations": "Minimal content; status still shown as 'Proposed'."
+    },
+    {
+      "id": "S3",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2025-09-02T00:00:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 stable date 2025-09-02, ToggleEvent source attribute in the DOM section of release notes, feature description matching ChromeStatus"
+      ],
+      "limitations": "Release-note level; no dedicated deep-dive article or video."
+    },
+    {
+      "id": "S4",
+      "url": "https://html.spec.whatwg.org/multipage/interaction.html#the-toggleevent-interface",
+      "publisher": "WHATWG",
+      "publishedOrObservedAt": "2026-07-19T00:00:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "ToggleEvent interface includes readonly attribute Element? source; source getter retargets against currentTarget; note on DOM standard issue #1328 for associated event data; CommandEvent.source parallels it"
+      ],
+      "limitations": "Living Standard reflecting current (2026-07) text, not the exact wording at the 2025-09 ship date."
+    },
+    {
+      "id": "S5",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/ToggleEvent/source",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2025-10-27T21:25:54Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Developer value statement, worked examples, feature-detection guidance, Baseline badge, behavior when source is null"
+      ],
+      "limitations": "Published ~7 weeks after Chrome 140 stable; full compatibility table not captured in retrieval."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1220",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": "2025-05-01T21:16:45Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position Positive (label position:positive, issue closed), spec whatwg/html#11186, explainer whatwg/html#9111, author @josepharhar, team DOM / topic HTML / venue WHATWG"
+      ],
+      "limitations": "Project status field still reads 'Position is proposed'; the closed issue plus positive label is treated as the authoritative position."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/494",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2025-05-12T23:35:02Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position Support (label position:support, status Done), spec reference whatwg/html#11186, proposal description"
+      ],
+      "limitations": "No narrative rationale beyond the position label."
+    },
+    {
+      "id": "S8",
+      "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/145",
+      "publisher": "MDN / Mozilla",
+      "publishedOrObservedAt": "2025-12-09T17:00:52Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox 145 released 2025-11-11 ships the source property of ToggleEvent; tracked as Firefox bug 1968987"
+      ],
+      "limitations": "Developer release notes; does not give exact nightly/landing date."
+    },
+    {
+      "id": "S9",
+      "url": "https://webkit.org/blog/17938/webkit-features-for-safari-26-5/",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2026-05-11T17:00:05Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Safari 26.5 adds ToggleEvent.source for popovers, with a usage example; 26.5 available on iOS/iPadOS/visionOS 26.5 and macOS Tahoe/Sequoia/Sonoma"
+      ],
+      "limitations": "Can I Use still marks Safari 26.5 as unsupported (data lag/inconsistency); the WebKit blog is treated as authoritative for Safari."
+    },
+    {
+      "id": "S10",
+      "url": "https://caniuse.com/wf-toggleevent-source",
+      "publisher": "Can I Use",
+      "publishedOrObservedAt": "2026-07-22T14:15:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Chrome/Edge 140+, Firefox 145+, Opera 124+, Chrome for Android 147+, Firefox for Android 149+ support tables"
+      ],
+      "limitations": "Safari 26.5 incorrectly shown as unsupported (contradicts WebKit blog); snapshot with no publication date."
+    },
+    {
+      "id": "S11",
+      "url": "https://webstatus.dev/features/toggleevent-source",
+      "publisher": "Web Platform Status (webstatus.dev)",
+      "publishedOrObservedAt": "2026-07-22T14:15:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Baseline Newly available since 2026-05-11; Chrome available since 2025-09-02 in version 140; Safari became available 2026-05-11"
+      ],
+      "limitations": "JS-rendered dashboard; data captured from a search-result snippet, the full feature page did not render for retrieval."
+    },
+    {
+      "id": "S12",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/CAA44PQgQpUSivLQLj8mn5s2kW7UGvv9iHpJUjRyqqjOHq%2BW9Rg%40mail.gmail.com",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship: ToggleEvent source attribute; component Blink>DOM; TAG review None / Not applicable; interop-risk framing"
+      ],
+      "limitations": "Thread body not fully retrieved (provider timeout/redirect). The intent_thread_url stored in the cached ChromeStatus record (msg-id CAK6btw...) no longer resolves on Google Groups; this URL was rediscovered via search."
+    },
+    {
+      "id": "S13",
+      "url": "https://web.dev/blog/web-platform-11-2025",
+      "publisher": "web.dev",
+      "publishedOrObservedAt": "2025-11-26T00:00:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Monthly platform roundup confirms Firefox 145 supports the ToggleEvent source property; contextualises within Firefox 145 / Safari 26.1 stable releases"
+      ],
+      "limitations": "Roundup-level coverage; not a dedicated feature article."
+    },
+    {
+      "id": "S14",
+      "url": "https://jsdev.space/toggleevent-source-dialog-closedby/",
+      "publisher": "jsdev.space / Medium (community tutorials)",
+      "publishedOrObservedAt": "2026-02-20T00:00:00Z",
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Existence of developer-oriented community tutorials and awareness content (jsdev.space guide dated 2026-02-20; a Medium piece 'What ToggleEvent.source and dialog.closedBy Actually Fix')"
+      ],
+      "limitations": "Community tutorials are not attributable production adoption or demand evidence."
+    },
+    {
+      "id": "S15",
+      "url": "https://wpt.fyi/results/html/semantics/popovers/popover-toggle-source.html",
+      "publisher": "web-platform-tests",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T14:15:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT coverage for toggle-source behavior across popover (and, per ChromeStatus wpt_descr, also dialog-toggle-source.html and details-toggle-source.html)"
+      ],
+      "limitations": "wpt.fyi is JS-rendered; pass-rate numbers could not be retrieved. Test existence is taken from the ChromeStatus wpt_descr."
+    }
+  ],
+  "successes": [
+    "Spec-first 'catch up': the WHATWG HTML Living Standard already contained the source attribute before Chrome shipped, enabling positive cross-engine positions and a low interop-risk launch.",
+    "Cross-engine convergence to Baseline Newly available within ~8 months (Chrome Sep 2025, Firefox Nov 2025, Safari May 2026).",
+    "Accurate, proportionate release communication that matched the feature's scope (release notes and roundups, not over-hyped).",
+    "The anticipated shadow-root retargeting spec change was correctly judged a fixable edge case and resolved in spec (retargeting against currentTarget) without a post-ship compat break."
+  ],
+  "failures": [
+    "No usage telemetry: UseCounters were deliberately not added, so adoption cannot be demonstrated, monitored, or anomaly-detected from the Chrome side.",
+    "No pre-ship developer-signal capture: web developers were recorded as 'No signals', which the owner treated as acceptable; the value-validation loop was therefore never exercised.",
+    "MDN reference documentation was not ready at ship (it landed ~7 weeks after Chrome 140 stable).",
+    "Provenance drift: the intent_thread_url stored in the cached ChromeStatus record no longer resolves on Google Groups, so the canonical Intent to Ship had to be rediscovered at a different message ID; the record was also not updated post-ship (still 'Proposed', is_released=false)."
+  ],
+  "counterfactuals": [
+    "If a UseCounter had been added at ship, the team could today cite adoption and detect usage anomalies; the owner explicitly offered to add one ('if anyone is interested'), making this a low-cost, high-value omission.",
+    "If even minimal pre-ship web-developer signal gathering had occurred (frameworks, authoring tools, community), the 'No signals' gap would be closed rather than carried as an unknown.",
+    "If MDN had been staged for stable-branch readiness, early adopters would not have waited ~7 weeks for canonical reference docs.",
+    "If the shadow-root retargeting change had required a compat-breaking follow-up rather than the clean spec evolution that occurred, the 'fixable edge case' judgment would have produced a post-ship interop cost; the judgment held.",
+    "If the ChromeStatus record had been maintained post-ship, downstream tooling (and this retrospective) would not have to reconcile a 'Proposed' status against a manifest-recorded Chrome 140 ship."
+  ],
+  "skillImprovements": [
+    "prepare-to-ship/release rule: any new DOM/HTML attribute shipping by default must either add a UseCounter at ship or carry a written rationale for why measurement is unnecessary; surface missing UseCounters in the ship packet so adoption is never silently unmeasurable.",
+    "wide-review packet minimum: even for small 'catch up' features, record where web-developer signals were sought (frameworks, authoring tools, communities) and the result, so 'No signals' is never silently treated as acceptable.",
+    "release transition gate: require reference docs (MDN) and at least one runnable sample to be live at stable, not weeks after.",
+    "provenance validation: detect and correct stale/unresolvable intent/spec URLs in ChromeStatus before ship, and keep the record updated post-ship (status, is_released, actual ship milestone).",
+    "lightweight 'catch-up feature' template that still mandates: other-engine shipping timeline estimate, Baseline target date, and an automated post-ship re-review trigger when the last major engine ships.",
+    "retro regression evals: a small spec-following attribute reaching Baseline within ~8 months with no compat break is a strong case; one that stalls, diverges, or ships with no telemetry is a weak case."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chrome usage telemetry: UseCounters were deliberately not added, so adoption is structurally unmeasurable.",
+      "Production case studies / attributable deployments: none located.",
+      "Raw WPT pass-rate numbers for popover-toggle-source, dialog-toggle-source, and details-toggle-source (wpt.fyi and webstatus.dev dashboards are JS-rendered and could not be read).",
+      "Full body of the blink-dev Intent to Ship thread and any LGTMs (thread body not fully retrievable; provider timeouts).",
+      "whatwg/html PR #11186 (merged spec) and #11345 (retargeting change) diffs (fetches timed out).",
+      "End-user impact evidence (none expected/available for a DOM attribute).",
+      "Support / issue-resolution records (none located)."
+    ],
+    "reviewedAt": "2026-07-22T14:15:00Z"
+  }
+}

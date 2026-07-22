@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4740780497043456,
+    "name": "CSS typed arithmetic",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4740780497043456",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "featureType": "Chromium catches up",
+    "owner": "sakhapov@chromium.org",
+    "shippingMilestone": 140,
+    "stableReleaseDate": "2025-09-02",
+    "specMaturity": "Published standard (CSS Values and Units Level 4)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:4740780497043456",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2025-06-16 by sakhapov@chromium.org and classified as 'Chromium catches up', i.e. another engine (WebKit) had already shipped the capability against a published standard. Mode/stage, problem, and intervention layer were clearly diagnosed: the stated motivation is eliminating the tan(atan2(length_value, 1px)) unit-stripping hack. Spec (CSS Values 4 #calc-type-checking), Blink component, tracking bug, and flag name were all recorded.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Cached record is the authoritative source; the server-rendered chromestatuslite.com view timed out on retrieval and was not read, but the cached record covers all material fields."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubation correctly happened mostly outside Chrome: this is a long-standing CSSWG request (csswg-drafts #545, 'Allow division of same types in calc()') resolved into the published CSS Values 4 standard, which WebKit then implemented first. Chrome is catching up rather than re-litigating a solved problem. The developer problem is real, recurring, and independently evidenced across years: a 2015 Stack Overflow question asks for exactly this (calc(100%/5px)); Scott Kellum (Typetura) calls unit division 'at the top of my CSS wishlist for years'; Amit Sheen (CSS-Tricks) frames it as enabling 'Computational CSS'.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S8",
+        "S10",
+        "S11",
+        "S14"
+      ],
+      "limitations": "No Chrome-authored explainer exists (ChromeStatus explainer_links empty; intent thread 'Explainer: None') - design rationale is spec-only, which is acceptable for a catches-up standard feature but leaves no Chrome-side design record."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An implementation existed behind the runtime flag CSSTypedArithmetic, gated against the CSS Values 4 #calc-type-checking spec, with at least one WPT test referenced (getComputedStyle-calc-mixed-units-003.html). DevTrial milestones were set (desktop 138, android 138).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S12"
+      ],
+      "limitations": "No public Chrome prototype/friction-log/sample docs were found; prototype evidence is limited to the flag, spec reference, and WPT test name rather than task-based samples or integration spikes."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A flag-based developer trial was scheduled for desktop and Android in milestone 138. However, no public cohort, recruitment, methodology, friction log, or attributable task-completion feedback exists. The only recorded developer signal ('Strongly positive') is explicitly described as 'Verbal confirmation from multiple developers' - non-attributable and unusable as durable trial evidence.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Dev trial existed as a flag but no external cohort/feedback evidence was recorded; the positive dev signal is non-attributable."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG review marked 'Not applicable' (defensible: published standard, already CSSWG-resolved). WebKit position is 'Shipped/Shipping'. Spec maturity is 'Published standard'. However Mozilla's position is still unresolved: standards-positions issue #1252 (opened 2025-06-16, assigned emilio) remained in 'Needs proposed position' status at retrieval (2026-07-19), matching ChromeStatus 'Gecko: No signal'. So two engines converge but the third engine's review is genuinely open - silence must not be read as support.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S11"
+      ],
+      "limitations": "Mozilla position unresolved ~13 months after request; the strongly-positive web-dev signal is non-attributable. Interop review is therefore mostly-aligned but incomplete."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run (ChromeStatus origintrial=false; no OT stage; non-finch 'Will ship enabled for all users'). The path was flag (DevTrial 138) -> ship (140). For a low-risk, standards-conforming CSS calc change that another engine had already shipped in stable, a field experiment was not needed to resolve uncertainty.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Not-relevant is used to mean an OT was not warranted, not that experimentation was untested."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship posted 2025-06-16; three API-owner LGTMs were obtained by 2025-06-25 (Mike Taylor, Vladimir Levin, Yoav Weiss). WPT/test rigor was actively scrutinized: Mike Taylor flagged on 2025-06-17 that many types were untested with no coverage of infinities, NaN, or signed zeroes; Sakhapov added coverage by 2025-06-23 and Mike Taylor approved on 2025-06-24 ('This is an awesome improvement to the testing story'). Feature is WPT-tested, all-platform, no //chrome code, no WebView risk.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S12"
+      ],
+      "limitations": "As of accurate_as_of (2025-08-25), ChromeStatus recorded security_review_status and privacy_review_status both as 'Pending' even while the feature was preparing to ship - a data/process hygiene gap, though de-facto low-risk for pure CSS arithmetic."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 140: early stable 2025-08-27, stable 2025-09-02, on Android, ChromeOS, Linux, macOS, Windows (desktop/android/webview 140; iOS null because Chrome on iOS uses WebKit). Officially documented in the Chrome 140 release notes on developer.chrome.com, with tracking bug, ChromeStatus entry, and spec linked.",
+      "evidenceIds": [
+        "S1",
+        "S4"
+      ],
+      "limitations": "The feature appears as a single release-notes bullet; no dedicated Chrome 'New in Chrome 140' deep-dive or Chrome blog post for this specific feature was found. MDN guide exists but its server-rendered page timed out on retrieval."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Qualitative adoption signals are positive and include attributable production use: Typetura.css shipped native unit division with a tan(atan2())+@property fallback, and Amit Sheen (CSS-Tricks) published a detailed 'Computational CSS' article with multiple working demos (spiral layouts, length->angle, length->opacity, dynamic width colors). However no public quantitative usage data exists (ChromeStatus webdx_usecounter_enum is null; no UseCounter %, HTTP Archive prevalence, or framework telemetry found), and Firefox non-support limits broad cross-browser adoption.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S1"
+      ],
+      "limitations": "No quantitative adoption denominator available for this recently-shipped niche feature; cannot score adoption magnitude. Firefox gap (below) suppresses broad production adoption."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "Documentation and fallback story exist: MDN guide + browser-compat data, WPT coverage (expanded pre-ship per the intent thread), and a documented progressive-enhancement pattern ('@supports not (width: calc(1% / 1px * 1px))' plus the tan(atan2()) fallback). No Chrome-specific regressions or support incidents were found in ~10 months post-ship. WPT-based regression coverage is the durable support asset.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S12"
+      ],
+      "limitations": "No public Chrome support-issue ledger was located; support evidence is indirect (docs/tests/fallbacks) rather than a measured support-health dashboard."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new CSS capability, not a deprecation, removal, or compatibility-restricting change (breaking_change=false, enterprise_impact=1/none). No migration, reverse-trial, or removal work applies.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not-relevant because the feature adds capability; it does not remove or restrict existing behavior."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a genuine, long-standing, recurring developer problem - typed value division/conversion (calc(10em / 1px)) that previously required the tan(atan2()) hack or JavaScript. Demand is independently corroborated across years and sources (2015 Stack Overflow request; Typetura 'top of my wishlist for years'; CSS-Tricks 'Computational CSS' with real demos), and there is attributable production integration (Typetura.css).",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S14",
+        "S1"
+      ],
+      "limitations": "Demand is qualitative; no measured task-success or productivity data."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Typed arithmetic is a developer-facing CSS primitive with indirect, unmeasured end-user effects (potential JS reduction, new responsive/animation behaviors). No public end-user benefit, accessibility, performance, or resource-cost evidence was found for this specific feature; impact is not inferable from developer value.",
+      "evidenceIds": [],
+      "limitations": "No end-user/perf/energy/accessibility evidence located; scored unscored rather than assumed."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Positive qualitative traction (expert coverage, one attributable library integration, demos) but no quantitative usage denominator, and broad production adoption is suppressed because Firefox does not support the feature ~10-12 months after Chrome/Safari, so developers must ship and maintain fallbacks.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "limitations": "Cannot quantify adoption; Firefox gap is a material ceiling on durable production use."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards-aligned and WPT-tested, with two engines converging (Blink 140+; WebKit shipped in Safari 18.2 per WebKit's own blog and Apple release notes, with Safari 26.x continuing support). However Gecko/Firefox does NOT implement it: Can I Use shows Firefox unsupported through 152 as of retrieval, and Mozilla's standards position remains pending ('Needs proposed position'). The feature is therefore not yet Baseline 'widely available'. A public-record inconsistency also exists: Can I Use marks Safari support as beginning at 26.0 while WebKit/Apple/Amit Sheen document the 18.2 ship - a data-mapping discrepancy, not an implementation disagreement.",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S9",
+        "S3",
+        "S7"
+      ],
+      "limitations": "Exact cross-engine status depends on third-party compat data; Mozilla's intent/timeline is unknown because its position is unresolved."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "WPT-tested with actively-reviewed coverage: the WPT lead (Mike Taylor) identified missing edge-case coverage (infinities, NaN, signed zeroes), the author added it, and review explicitly praised the result before LGTM. Three API-owner LGTMs. Pure CSS calc arithmetic with no security, privacy, embedder, or platform-specific risks raised; all-platform, non-finch clean ship; no public regressions found post-ship.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S12"
+      ],
+      "limitations": "Security/privacy review states were recorded 'Pending' at ship time; long-term regression telemetry was not gathered publicly."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The ship decision itself is well-evidenced (intent thread, LGTMs, test review, official release notes, published standard). But the evidence/communication layer has gaps: no Chrome explainer (spec-only); the strongly-positive web-dev signal is non-attributable ('verbal confirmation'); Mozilla position unresolved; security/privacy review states 'Pending' in the record at ship; and Chrome-authored launch communication is thin (a single release-notes bullet, no dedicated blog/post). A public-record inconsistency on the Safari ship version adds confusion.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S7",
+        "S9"
+      ],
+      "limitations": "Community docs (CSS-Tricks, Typetura, MDN) partially compensate, but they are not a substitute for a Chrome-owned source of truth."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Good foundations: MDN guide + BCD, expanded WPT coverage, and a documented fallback pattern exist; no Chrome-specific support incidents surfaced in ~10 months. But there is no public Chrome support dashboard, and the Firefox gap forces ongoing fallback maintenance on developers.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S12"
+      ],
+      "limitations": "Support health inferred indirectly; no measured issue-recurrence/resolution data."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-executed, low-risk, standards-aligned 'catches up' ship that solves a real, long-standing developer problem with strong test rigor and expert acclaim. Overall success is held back from 'success' by: Firefox non-implementation ~12 months after WebKit / ~10 months after Chrome (not Baseline-widely-available), no quantitative adoption evidence, thin Chrome-owned communications/explainer, non-attributable developer signal, and 'Pending' review states recorded at ship. Per methodology, success is not inferred from shipment, sentiment, or absence of criticism.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S5",
+        "S7",
+        "S8",
+        "S9",
+        "S3"
+      ],
+      "limitations": "Mixed dimensions (adoption, interoperability, evidenceAndCommunication) are not masked by the strong implementation-quality and developer-value dimensions."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/4740780497043456",
+      "publisher": "Chrome Platform Status (cached record evidence/chromestatus/features/4740780497043456.json, accurate_as_of 2025-08-25)",
+      "publishedOrObservedAt": "2025-08-25T09:06:49Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, stages (prototyping/devtrial/readiness/ship), browser signals, flag CSSTypedArithmetic, spec link, WPT link, tracking bug, security/privacy review states Pending, is_released=false as of accurate_as_of"
+      ],
+      "limitations": "accurate_as_of predates Chrome 140 stable (2025-09-02); server-rendered chromestatuslite view timed out on retrieval."
+    },
+    {
+      "id": "S2",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/A5APTVmqntU/m/wZh4soI3CAAJ",
+      "publisher": "blink-dev (Intent to Ship: CSS typed arithmetic)",
+      "publishedOrObservedAt": "2025-06-16T09:13:19Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent posted 2025-06-16 by sakhapov@; spec CSS Values 4; WebKit Shipped/Shipping; Gecko No signal; Web devs strongly positive (verbal); WPT yes; non-finch; all platforms; 3 LGTMs by 2025-06-25 (Mike Taylor, Vladimir Levin, Yoav Weiss); Mike Taylor test-coverage review and author's added infinities/NaN/signed-zeroes coverage"
+      ],
+      "limitations": "Mid-thread reply bodies (Sakhapov 2025-06-23, Levin 2025-06-24) were not rendered in full; LGTM2/LGTM3 attributions inferred from reply headers and threading."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/mozilla/standards-positions/issues/1252",
+      "publisher": "mozilla/standards-positions (CSS typed arithmetic #1252)",
+      "publishedOrObservedAt": "2025-06-16T12:00:29Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Issue opened 2025-06-16 by danielsakhapov; assigned emilio; topic CSS/venue W3C; WebKit standards-position field 'Implemented in WebKit'; project status 'Needs proposed position' (open/unresolved at 2026-07-19 retrieval)"
+      ],
+      "limitations": "No Mozilla position has been posted; open status means Gecko intent/timeline is unknown."
+    },
+    {
+      "id": "S4",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Chrome 140 release notes)",
+      "publishedOrObservedAt": "2025-09-02T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 stable release date 2025-09-02; CSS typed arithmetic listed as shipping with tracking bug #40768696, ChromeStatus entry, and spec; applies to Android/ChromeOS/Linux/macOS/Windows"
+      ],
+      "limitations": "Feature is one bullet among many; no dedicated deep-dive in this official source."
+    },
+    {
+      "id": "S5",
+      "url": "https://webkit.org/blog/16301/webkit-features-in-safari-18-2/",
+      "publisher": "WebKit (WebKit Features in Safari 18.2, Jen Simmons et al.)",
+      "publishedOrObservedAt": "2024-12-09T10:25:05-08:00",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Safari 18.2 'Division by units and other complex calculations': calc() updated to the latest standard, including dividing by values with units (calc(100vw / 1px)); Scott Kellum viewport-color demo; available on iOS 18.2/iPadOS 18.2/macOS Sequoia 15.2"
+      ],
+      "limitations": "Confirms WebKit ship in 18.2, which conflicts with Can I Use's Safari-26.0 attribution (treated as a third-party data-mapping lag)."
+    },
+    {
+      "id": "S6",
+      "url": "https://developer.apple.com/documentation/safari-release-notes/safari-18_2-release-notes",
+      "publisher": "Apple Developer (Safari 18.2 Release Notes)",
+      "publishedOrObservedAt": "2024-12-11T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Safari 18.2 released 2024-12-11 (build 18.2 20620.1.16); per search snippet, CSS additions updated calc() to the latest web standard including new division behavior"
+      ],
+      "limitations": "Page body is JS-rendered and did not return full text on retrieval; date/version corroborated from metadata, calc detail corroborated via search snippet and S5."
+    },
+    {
+      "id": "S7",
+      "url": "https://css-tricks.com/css-typed-arithmetic/",
+      "publisher": "CSS-Tricks (Amit Sheen, 'CSS Typed Arithmetic')",
+      "publishedOrObservedAt": "2025-09-30T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent expert deep-dive; typed arithmetic enables 'Computational CSS'; division of same-type values yields unitless numbers (calc(70px / 10px) = 7); shipped in Safari 18.2 and Chrome 140; multiple working demos (spiral layout, length->angle, length->opacity, dynamic width colors, chained conversions); 'browser support is very limited and experimental' as of writing"
+      ],
+      "limitations": "Advocacy tone; reflects author's experiments rather than measured production adoption."
+    },
+    {
+      "id": "S8",
+      "url": "https://typetura.com/blog/unit-division-with-css-and-fallbacks/",
+      "publisher": "Typetura (Scott Kellum, 'How unit division works in CSS, and how to use it today')",
+      "publishedOrObservedAt": "2024-09-13T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "Attributable production integration: Typetura.css uses native unit division when available with a tan(atan2())+@property fallback; unit division 'at the top of my CSS wishlist for years'; @supports-based progressive enhancement pattern; landed in Safari Technology Preview Sep 2024"
+      ],
+      "limitations": "Single vendor/library; predates Safari 18.2 stable and Chrome 140; not a usage denominator."
+    },
+    {
+      "id": "S9",
+      "url": "https://caniuse.com/mdn-css_types_calc_typed_division_produces_unitless_number",
+      "publisher": "Can I Use (calc() typed division feature table)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Chrome/Edge 140+ supported; Chrome for Android 147+; Safari 26.0+/iOS 26.0+ supported; Firefox NOT supported through 152 (desktop) and Firefox Android 149 not supported; Opera 124+; Samsung Internet not supported through 29"
+      ],
+      "limitations": "Marks Safari support as starting at 26.0 while WebKit blog/Apple/Amit Sheen document an 18.2 ship - treated as a Can I Use data-mapping lag; the Firefox 'not supported through 152' result is unambiguous and consistent with Mozilla's unresolved position (S3)."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/w3c/csswg-drafts/issues/545",
+      "publisher": "W3C CSSWG ([css-values] Allow division of same types in calc() #545)",
+      "publishedOrObservedAt": "2016-01-01T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec-origin request for same-type division in calc(); historical rationale that division by typed values was disallowed partly due to divide-by-zero ambiguity; resolved into CSS Values 4"
+      ],
+      "limitations": "Read via search snippet only; full thread/resolution dates not retrieved."
+    },
+    {
+      "id": "S11",
+      "url": "https://www.w3.org/TR/css-values-4/#calc-type-checking",
+      "publisher": "W3C (CSS Values and Units Module Level 4)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Published standard defining calc type-checking (the normative basis for typed arithmetic); ChromeStatus standards maturity 'Published standard'"
+      ],
+      "limitations": "Spec text not re-read in full; cited for maturity/normative basis only."
+    },
+    {
+      "id": "S12",
+      "url": "https://wpt.fyi/css/css-values/getComputedStyle-calc-mixed-units-003.html",
+      "publisher": "web-platform-tests (getComputedStyle-calc-mixed-units-003)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Referenced WPT test for calc with mixed units; feature flagged as WPT-tested in ChromeStatus and intent thread"
+      ],
+      "limitations": "Test page results not retrieved directly; only the referenced URL/coverage claim is cited."
+    },
+    {
+      "id": "S13",
+      "url": "https://issues.chromium.org/issues/40768696",
+      "publisher": "Chromium issue tracker (tracking bug #40768696)",
+      "publishedOrObservedAt": "2026-07-19T12:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug referenced by ChromeStatus, intent thread, and Chrome 140 release notes"
+      ],
+      "limitations": "Not directly readable (login-gated); cited as the canonical implementation tracker only."
+    },
+    {
+      "id": "S14",
+      "url": "https://stackoverflow.com/questions/29505279/css-calc-multiplication-and-division-with-unit-ed-values",
+      "publisher": "Stack Overflow ('CSS calc() - Multiplication and Division with unit-ed values')",
+      "publishedOrObservedAt": "2015-04-09T00:00:00Z",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing (2015) developer request to multiply/divide calc() by unit-bearing values, evidencing recurring problem validity predating the feature"
+      ],
+      "limitations": "Read via search snippet; a single Q&A thread, not a demand denominator."
+    }
+  ],
+  "successes": [
+    "Correctly executed as a 'catches up' feature against a published standard (CSS Values 4) that WebKit had already shipped in stable (Safari 18.2), avoiding needless re-incubation (S1, S2, S5, S11).",
+    "Strong implementation/test rigor: the WPT lead (Mike Taylor) flagged missing edge cases, the author added infinities/NaN/signed-zeroes coverage, and three API-owner LGTMs were granted with explicit praise for the testing story (S2).",
+    "Solved a genuine, long-standing developer problem with attributable production use (Typetura.css) and expert acclaim ('Computational CSS') (S7, S8).",
+    "Low-risk, clean ship: all-platform, non-finch, flag-gated dev trial, breaking_change=false, no security/privacy/embedder risks raised, no public regressions found ~10 months post-ship (S1, S2, S4).",
+    "A usable progressive-enhancement fallback pattern was already documented and shipped (Typetura @supports + tan(atan2())+@property), letting developers adopt during the Firefox-missing window (S8)."
+  ],
+  "failures": [
+    "No Chrome-authored explainer (spec-only); Chrome-owned launch communication is thin (a single Chrome 140 release-notes bullet, no dedicated Chrome blog/post found) (S1, S4).",
+    "The strongly-positive web-dev signal is recorded as non-attributable ('verbal confirmation from multiple developers') and therefore cannot serve as durable readiness evidence (S1, S2).",
+    "Mozilla position remains unresolved ~13 months after request (issue #1252 still 'Needs proposed position') and Firefox does not implement the feature through v152, so the feature is not Baseline 'widely available' ~10-12 months after Chrome/Safari (S3, S9).",
+    "ChromeStatus recorded security_review_status and privacy_review_status as 'Pending' as of accurate_as_of (2025-08-25), i.e. while the feature was preparing to ship - a data/process-hygiene gap (S1).",
+    "Public-record inconsistency on the exact Safari ship version: WebKit blog and Apple release notes say 18.2 while Can I Use attributes support from 26.0, creating avoidable confusion for developers assessing support (S5, S6, S9)."
+  ],
+  "counterfactuals": [
+    "If Chrome had published even a short explainer/worked-example and a dedicated 'New in Chrome 140' item plus an MDN BCD update at ship (rather than a single release-notes bullet), the Safari-version public-record confusion and the adoption ramp would likely have been faster and better supported - a comms gap, not a product-design failure.",
+    "If Chrome had set and monitored a quantitative adoption target (e.g., a UseCounter bucket for typed division with a re-check cadence), adoption could now be scored rather than left unknown; absence of such instrumentation is a measurement gap, not evidence of low adoption.",
+    "If Chrome had treated Mozilla's open position as an explicit accepted risk with a re-check reminder (rather than 'No signal'), the interoperability dimension would be more honestly represented; the decision to ship without Gecko was defensible given WebKit + published standard, but the consequence is a durable Chrome+Safari-vs-Firefox split.",
+    "Attributable partner evidence (named, consented developers) collected during the dev trial would have strengthened the readiness dossier without changing the (correct) decision; the 'verbal confirmation' record is not reusable.",
+    "Waiting for Gecko before shipping was not warranted given a final standard and WebKit ship, but the trade-off - developers must maintain fallbacks for ~a year-plus - is the real cost of the catches-up timing."
+  ],
+  "skillImprovements": [
+    "prepareToShip checklist item: require either an explainer or a recorded spec-excerpt link with a one-paragraph rationale plus a canonical worked example, even for 'catches up' features; if spec-only, capture why no explainer was written.",
+    "wideReview gate: when one engine has shipped but a third has no position, record the open position as an explicit accepted risk with a date and a re-check reminder; never convert 'No signal' into neutral/positive, and re-surface it at prepareToShip and release.",
+    "Review-hygiene rule for ChromeStatus: security_review_status and privacy_review_status must be 'complete' (or carry a documented low-risk rationale) before prepareToShip can be marked supported; 'Pending' at ship is a flagged finding, not a pass.",
+    "Small-CSS-feature launch-comms template: bundle a release-notes bullet + a short Chrome blog/MDN guide + an MDN BCD pull request, dated and owned, with a single named source-of-truth for the per-browser ship version to prevent Can-I-Use-vs-vendor-blog drift.",
+    "Adoption-measurement prompt: if a UseCounter bucket exists or can be added, define a denominator and re-check cadence at ship; otherwise explicitly mark the adoption outcome unscored and state that no public usage source is available.",
+    "Attributability rule: non-attributable developer signals (e.g., 'verbal confirmation') must be labelled as such in the readiness dossier and must not count toward any supported dimension; prompt for named, consented partner quotes before treat-if-as evidence."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "No public quantitative usage/adoption data exists for this recently-shipped niche feature (ChromeStatus webdx_usecounter_enum is null; no UseCounter %, HTTP Archive/Web Almanac prevalence, or framework telemetry found), so adoption magnitude cannot be scored.",
+      "Mozilla/Gecko implementation intent or timeline is unknown because standards-positions #1252 remains unresolved ('Needs proposed position'); only the absence of Firefox support (through v152) is documented.",
+      "The Chromium tracking bug (#40768696) is login-gated and the server-rendered ChromeStatus view and MDN guide page timed out on retrieval; implementation-quality and support findings rely on the intent thread, release notes, and third-party compat data rather than the primary tracker."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}
