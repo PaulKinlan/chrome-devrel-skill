@@ -1,0 +1,155 @@
+{
+  "artifactType": "counter-mapping-research",
+  "generatedAt": "2026-07-22T20:00:00Z",
+  "methodVersion": "1.0",
+  "method": "Normalized prefix matching of all 139 unmapped features' web_feature and webdx_usecounter_enum fields against all ChromeStatus counter names (CSS, WebDX, legacy HTML/JS). Multiple normalization strategies applied: lowercase, strip hyphens/underscores/dots, then exact and prefix matching.",
+  "mappingCommit": "b824850cd209f6b8903eeb6fcdbe8ae9462dfb92",
+  "inputs": {
+    "csspopularity": {
+      "path": "evidence/metrics/source/csspopularity.json",
+      "count": 694,
+      "sha256": "f3b0c16593b4ffc17fe781311cba6aadd0ec5b40f9c28048391714670b63b159"
+    },
+    "webfeaturepopularity": {
+      "path": "evidence/metrics/source/webfeaturepopularity.json",
+      "count": 1320,
+      "sha256": "b2da05bf40c5c2ebbabbb2e78483b0682827526c9b45a024669eb627b6b11186"
+    },
+    "featurepopularity": {
+      "path": "evidence/metrics/source/featurepopularity.json",
+      "count": 5239,
+      "sha256": "3168a285b7b6bf8bf3b1f57234643674358af6395024a5edd4594a6989da3732"
+    }
+  },
+  "totalRawCounterEntries": 7253,
+  "totalNormalizedCounterNames": 7149,
+  "result": {
+    "validNewMappings": 0,
+    "ambiguousNotAdded": 2,
+    "falsePositives": 13,
+    "netUnmapped": 139,
+    "conclusion": "Mapping was already exhaustive. Zero valid new mappings found."
+  },
+  "candidates": [
+    {
+      "fid": "4709921706868736", "feature": "Intl.Locale.prototype.variants",
+      "web_feature": "intl-locale", "matched_counter": "IntlLocaleInfo", "source": "webfeature", "bucket": 244,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "IntlLocaleInfo is a different API (Intl.Locale.info), not Intl.Locale.variants. Counter measures .info property usage."
+    },
+    {
+      "fid": "4830298126417920", "feature": "FileAPI: Blob.bytes()",
+      "web_feature": "file", "matched_counter": "FileError", "source": "legacy", "bucket": 126,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "FileError is a legacy error interface, not the File API or Blob.bytes()."
+    },
+    {
+      "fid": "5068127364186112", "feature": "AccentColor/AccentColorText system colors",
+      "web_feature": "system-color", "matched_counter": "system", "source": "css", "bucket": 681,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "'system' is the CSS system font keyword, not system colors."
+    },
+    {
+      "fid": "5068298146414592", "feature": "Local Network Access split permissions",
+      "web_feature": "local-network-access", "matched_counter": "LocalNetworkAccessPrivateAliasUse", "source": "legacy", "bucket": 5592,
+      "strategy": "prefix", "verdict": "ambiguous",
+      "rationale": "Counter measures private DNS alias usage in local network access — a specific sub-behavior, not overall LNA feature adoption. Low confidence; not equivalent to feature adoption. Not added per no-ambiguous-mappings rule."
+    },
+    {
+      "fid": "5070655645155328", "feature": "Custom property enumeration in getComputedStyle()",
+      "web_feature": "get-computed-style", "matched_counter": "GetComputedStyleOutsideFlatTree", "source": "legacy", "bucket": 3088,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "Counter measures getComputedStyle called outside flat tree — a misuse pattern, not custom property enumeration."
+    },
+    {
+      "fid": "5077341928816640", "feature": "Remove explicit border color UA rule",
+      "web_feature": "table", "matched_counter": "table-layout", "source": "css", "bucket": 126,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "table-layout is a different CSS property. Feature is about UA stylesheet changes."
+    },
+    {
+      "fid": "5090435261792256", "feature": "Scoped Custom Element Registry",
+      "web_feature": "scoped-custom-element-registries", "matched_counter": "Scope", "source": "webfeature", "bucket": 54,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "'Scope' is the CSS :scope concept, not scoped custom element registries."
+    },
+    {
+      "fid": "5140028068069376", "feature": "Preserving dropEffect from dragover to drop",
+      "web_feature": "draganddrop", "matched_counter": "d", "source": "css", "bucket": 518,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "'d' is the CSS path() shape property. Normalization artifact: 'draganddrop' starts with 'd'."
+    },
+    {
+      "fid": "5143313833000960", "feature": "ICU version 77",
+      "web_feature": "intl", "matched_counter": "IntlSegmenter", "source": "webfeature", "bucket": 129,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "IntlSegmenter is a specific Intl API, not the ICU version update."
+    },
+    {
+      "fid": "5151468306956288", "feature": "pointerrawupdate events",
+      "web_feature": "pointer-events-api", "matched_counter": "pointer-events", "source": "css", "bucket": 118,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "pointer-events is the CSS property. Feature is about the JS pointer events API."
+    },
+    {
+      "fid": "5160464445210624", "feature": "onanimationcancel event",
+      "web_feature": "animations-css", "matched_counter": "animation", "source": "css", "bucket": 424,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "animation is the CSS shorthand property. Feature is about the JS event handler."
+    },
+    {
+      "fid": "5167930847395840", "feature": "LCP: Match specced behavior",
+      "web_feature": "largest-contentful-paint", "matched_counter": "LargestContentfulPaintExplicitlyRequested", "source": "legacy", "bucket": 2927,
+      "strategy": "prefix", "verdict": "ambiguous",
+      "rationale": "Counter measures LCP explicitly requested via renderTime — a specific sub-behavior. Feature changes candidate emission logic. Not equivalent. Not added per no-ambiguous-mappings rule."
+    },
+    {
+      "fid": "5261280285949952", "feature": "Overscroll Gestures",
+      "web_feature": "animations-css", "matched_counter": "animation", "source": "css", "bucket": 424,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "Wrong web_feature assignment. Overscroll gestures unrelated to CSS animation property."
+    },
+    {
+      "fid": "6325617459068928", "feature": "Set dropEffect for dragEnter/dragLeave",
+      "web_feature": "draganddrop", "matched_counter": "d", "source": "css", "bucket": 518,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "Same as 5140028068069376: 'd' is CSS path shape, not drag-and-drop."
+    },
+    {
+      "fid": "6732314958757888", "feature": "Pointer event suppression on drag start",
+      "web_feature": "draganddrop", "matched_counter": "d", "source": "css", "bucket": 518,
+      "strategy": "prefix", "verdict": "false-positive",
+      "rationale": "Same as 5140028068069376: 'd' is CSS path shape, not drag-and-drop."
+    }
+  ],
+  "canonicalBreakdown": {
+    "method": "Exclusive priority categories: web_feature (non-null, non-'Missing feature') > webdx_usecounter_enum (only) > origin_trial_id (only) > neither",
+    "has_web_feature": 71,
+    "has_webdx_enum_only": 2,
+    "has_ot_id_only": 2,
+    "has_neither": 64,
+    "total": 139
+  },
+  "breakdownReconciliation": {
+    "priorCheckpoint": {
+      "has_web_feature": 92,
+      "has_webdx_enum": 6,
+      "has_ot_id": 5,
+      "has_neither": 41,
+      "method": "Non-exclusive categories; 'Missing feature' counted as web_feature; features with both wf+wdx counted in both"
+    },
+    "canonical": {
+      "has_web_feature": 71,
+      "has_webdx_enum_only": 2,
+      "has_ot_id_only": 2,
+      "has_neither": 64,
+      "method": "Exclusive priority: wf > wdx > ot > neither; 'Missing feature' excluded from web_feature"
+    },
+    "deltas": {
+      "web_feature": "-21 (excluded 'Missing feature' = 24 entries, but 3 had OT IDs reclassified)",
+      "webdx_enum": "-4 (features with both wf+wdx now classified as web_feature only)",
+      "neither": "+23 (includes 'Missing feature' entries + features with only OT IDs reclassified)"
+    },
+    "canonicalDenominator": "The canonical breakdown uses exclusive priority categories. 139 total is consistent across both methods — only the category assignment differs."
+  }
+}
