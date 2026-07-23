@@ -1,14 +1,12 @@
 ---
 title: "_InterfaceName_._eventName_ event"
-short-title: "_eventName_"
 slug: Web/API/_InterfaceName_/_eventName_event
 page-type: web-api-event
 browser-compat: api._InterfaceName_._eventName_event
-spec-url: "_spec section URL_"
 ---
 
-The **`eventName`** event of the {{domxref("InterfaceName")}} interface fires
-_when/why_.
+The **`eventName`** event of the {{domxref("InterfaceName")}} interface is fired
+when _trigger condition_.
 
 ## Syntax
 
@@ -24,15 +22,28 @@ InterfaceName.oneventname = (event) => {};
 
 A {{domxref("EventType")}}. Inherits from {{domxref("Event")}}.
 
+{{InheritanceDiagram("EventType")}}
+
 ## Event properties
 
-_List of event-specific properties beyond standard Event._
+_Also inherits properties from {{domxref("Event")}}._
+
+- `property1` {{ReadOnlyInline}}
+  - : _Description._
+
+## Description
+
+_Additional context about when this fires and what triggers it._
 
 ## Examples
 
+### _Descriptive heading_
+
 ```js
-// Working example
+// Working example with addEventListener
 ```
+
+{{EmbedLiveSample("_Descriptive heading_")}}
 
 ## Specifications
 
@@ -44,4 +55,4 @@ _List of event-specific properties beyond standard Event._
 
 ## See also
 
-- Related events
+- Related events on this interface

@@ -2,7 +2,7 @@
 // validate-public-core.mjs — no external dependencies
 // Validates public templates, manifests, schemas, and eval status reconciliation.
 
-import { readdir, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
 const root = resolve(new URL("..", import.meta.url).pathname);
@@ -224,6 +224,81 @@ try {
   }
 } catch (e) {
   fail("eval reconciliation", e.message);
+}
+
+// 7. MDN template checks: frontmatter, missing files, forbidden fields, fake BCD
+try {
+  const mdnFiles = (await readdir(join(root, "templates")))
+    .filter((f) => f.startsWith("mdn-") && f.endsWith(".md"));
+
+  const moduleText = await readFile(
+    join(root, "modules/mdn-reference-authoring.md"),
+    "utf8",
+  );
+
+  // Check module page-map references exist
+  const pageMapRefs = moduleText.match(/`templates\/(mdn-[a-z-]+\.md)`/g) || [];
+  for (const ref of pageMapRefs) {
+    const filename = ref.replace(/`/g, "").replace("templates/", "");
+    try {
+      await access(join(root, "templates", filename));
+      ok(`MDN page-map: ${filename} exists`);
+    } catch {
+      fail(
+        `MDN page-map`,
+        `module references ${filename} but file does not exist`,
+      );
+    }
+  }
+
+  // Check MDN templates for forbidden frontmatter fields
+  const forbiddenFields = ["spec-url", "experimental"];
+  for (const file of mdnFiles) {
+    const text = await readFile(join(root, "templates", file), "utf8");
+    const fm = text.startsWith("---") ? text.split("---")[1] : "";
+    for (const field of forbiddenFields) {
+      if (fm.includes(`${field}:`) || fm.includes(`${field} :`)) {
+        fail(`MDN ${file}`, `forbidden frontmatter field: ${field}`);
+      }
+    }
+  }
+
+  // Check BCD template for fake version data
+  const bcdText = await readFile(
+    join(root, "templates/mdn-bcd-entry.json"),
+    "utf8",
+  );
+  const bcd = JSON.parse(bcdText);
+  let fakeVersions = 0;
+  function checkVersions(obj, path) {
+    if (typeof obj !== "object" || obj === null) return;
+    if (
+      typeof obj.version_added === "string" && obj.version_added !== "mirror" &&
+      !obj.version_added.startsWith("REPLACE")
+    ) {
+      // Check if it looks like a real version (number-like)
+      if (/^\d+/.test(obj.version_added) || obj.version_added === "preview") {
+        fakeVersions++;
+        fail(
+          `BCD ${path}`,
+          `version_added "${obj.version_added}" looks like real data — template should use null`,
+        );
+      }
+    }
+    for (const [k, v] of Object.entries(obj)) {
+      if (typeof v === "object") checkVersions(v, `${path}.${k}`);
+    }
+  }
+  checkVersions(bcd, "root");
+  if (fakeVersions === 0) {
+    ok("BCD template: no fake version data (all null/placeholder)");
+  }
+
+  ok(
+    `MDN: ${mdnFiles.length} templates checked, ${pageMapRefs.length} page-map references verified`,
+  );
+} catch (e) {
+  fail("MDN validation", e.message);
 }
 
 // Output

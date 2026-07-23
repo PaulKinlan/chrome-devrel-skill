@@ -1,13 +1,11 @@
 ---
 title: "_InterfaceName_"
-short-title: "_InterfaceName_"
 slug: Web/API/_InterfaceName_
 page-type: web-api-interface
 browser-compat: api._InterfaceName_
-spec-url: "_spec section URL_"
 ---
 
-The **`InterfaceName`** interface of the _API Name_ API _(description)_.
+The **`InterfaceName`** interface of the _API Name_ API _description_.
 
 {{InheritanceDiagram}}
 
@@ -15,19 +13,33 @@ The **`InterfaceName`** interface of the _API Name_ API _(description)_.
 
 _Detailed description of the interface, its role, and lifecycle._
 
+## Constructor
+
+- {{DOMxRef("InterfaceName.InterfaceName()", "InterfaceName()")}}
+  - : _Creates a new InterfaceName object._
+
 ## Instance properties
 
 _Also inherits properties from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName.property")}} {{ReadOnlyInline}}
-  {{Experimental_Inline}}
+- {{DOMxRef("InterfaceName.propertyName")}} {{ReadOnlyInline}}
+  - : _Description._
+
+## Static properties
+
+- {{DOMxRef("InterfaceName.staticPropertyName")}}
   - : _Description._
 
 ## Instance methods
 
 _Also inherits methods from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName.method()")}}
+- {{DOMxRef("InterfaceName.methodName()")}}
+  - : _Description._
+
+## Static methods
+
+- {{DOMxRef("InterfaceName.staticMethodName()")}}
   - : _Description._
 
 ## Events
@@ -36,11 +48,17 @@ Listen to these events using {{domxref("EventTarget.addEventListener",
 "addEventListener()")}}.
 
 - `eventname`
-  - : _Description. Fired when..._
+  - : _Fired when..._
 
 ## Examples
 
-_Working example with live sample._
+### _Descriptive heading_
+
+```js
+// Working example
+```
+
+{{EmbedLiveSample("_Descriptive heading_")}}
 
 ## Specifications
 

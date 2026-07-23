@@ -1,28 +1,31 @@
 ---
-title: "_InterfaceName_._propertyName_"
-short-title: "_propertyName_"
+title: "_InterfaceName_.prototype._propertyName_"
 slug: Web/API/_InterfaceName_/propertyName
 page-type: web-api-instance-property
 browser-compat: api._InterfaceName_.propertyName
-spec-url: "_spec section URL_"
 ---
 
 The **`propertyName`** property of the {{domxref("InterfaceName")}} interface
-_(description)_.
+_description_.
 
 ## Value
 
-_Type. Description of the value, including valid range and behavior._
+_Type. Description of the value, including valid range, read-only status, and
+behavior._
 
 ## Description
 
-_Detailed behavior, read-only status, when it changes._
+_Detailed behavior, when it changes, what affects it._
 
 ## Examples
+
+### _Descriptive heading_
 
 ```js
 // Working example
 ```
+
+{{EmbedLiveSample("_Descriptive heading_")}}
 
 ## Specifications
 

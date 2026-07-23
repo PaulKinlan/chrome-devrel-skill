@@ -1,28 +1,36 @@
 ---
 title: "_API Name_ API"
-short-title: "_API Name_"
 slug: Web/API/_API_Name_
 page-type: web-api-overview
 browser-compat: api._API_Name_
-spec-url: "_spec URL_"
-experimental: "_true if behind flag_"
 ---
 
 {{SeeCompatTable}}
 
-The **_API Name_** API _(one-sentence description of what it does)_.
+The **_API Name_** API _description of what it does_.
 
-## Description
+## Concepts and usage
 
-_Longer description: what problem it solves, when to use it, key concepts._
+_Why the API exists, what problems it solves, key concepts developers need to
+understand._
 
-## Interfaces and dictionaries
+## Interfaces
 
-{{List of interfaces with one-line descriptions and links to subpages.}}
+{{ListSubpagesFor("/Web/API/_API_Name_")}}
+
+### Interfaces and dictionaries
+
+_List of interfaces with one-line descriptions and links to subpages._
 
 ## Examples
 
-_Mini example or link to examples page._
+### _Descriptive heading_
+
+```js
+// Working example
+```
+
+{{EmbedLiveSample("_Descriptive heading_", "100%", "200")}}
 
 ## Specifications
 
@@ -34,4 +42,4 @@ _Mini example or link to examples page._
 
 ## See also
 
-- Related APIs, guides, tutorials
+- Related guides, tutorials, and resources
