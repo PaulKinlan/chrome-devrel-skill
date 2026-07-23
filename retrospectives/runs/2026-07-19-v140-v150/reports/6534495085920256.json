@@ -77,7 +77,7 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "A field experiment was justified and approved, but no public outcome report exists. The I2E (2026-03-31) explicitly chose a 1%-stable finch (HTMLProcessingInstruction) rather than an Origin Trial, because real-origin exposure was needed to uncover web-compat issues from changing parser behaviour, while the design could still be revised. Mike Taylor asked about fuzzing and Daniel Bratell about canary/beta risk; nrosenthal answered fuzzers 'found some bugs during early development' (since fixed) and that Canary exposure had produced no filed bugs. Yoav Weiss LGTM'd 'to experiment M148-M150 inclusive'. The conservative design (identical character consumption to bogus comments) is the stated compat mitigation. However no public readout of the 1%→100% finch (compat findings, telemetry, holdback comparison) was found; the Chromium tracking bug is not publicly readable.",
+      "finding": "A field experiment was justified and approved, but no public outcome report exists. The I2E (2026-03-31) explicitly chose a 1%-stable finch (HTMLProcessingInstruction) rather than an Origin Trial, because real-origin exposure was needed to uncover web-compat issues from changing parser behaviour, while the design could still be revised. Mike Taylor asked about fuzzing and Daniel Bratell about canary/beta risk; nrosenthal answered fuzzers 'found some bugs during early development' (since fixed) and that Canary exposure had produced no filed bugs. Yoav Weiss LGTM'd 'to experiment M148-M150 inclusive'. The conservative design (identical character consumption to bogus comments) is the stated compat mitigation. However no public readout of the 1%\u2192100% finch (compat findings, telemetry, holdback comparison) was found; the Chromium tracking bug is not publicly readable.",
       "evidenceIds": [
         "s_i2e",
         "s_cs"
@@ -126,7 +126,7 @@
       "limitations": "No support telemetry or issue volume available; cannot score."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable. This is a new parser capability / new feature launch, not a deprecation, restriction, or removal. There is no removal path, migration, or reverse-trial in scope. (Used per the rule: not-relevant is justified, not a substitute for untested.) The only deprecation-adjacent note is the deliberate non-parsing of `<?xml`/`<?xml-stylesheet>` as bogus comments to preserve existing behaviour.",
       "evidenceIds": [
         "s_spec",
@@ -169,7 +169,7 @@
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "Strong standards alignment but Chrome-only implementation at ship. Spec merged into the HTML standard (PR #12118, 2026-06-25) before stable; TAG satisfied; Mozilla positive and WebKit support; tentative WPT test exists (wpt#60828); three-engine implementation bugs filed. However at cutoff only Chromium ships it: WebKit bug 317651 is NEW (filed 2026-06-23, references the merged PR, no implementation) and Gecko bug 2046367 is NEW, UNASSIGNED, flagged behind-pref/firefox-backlog, filed 'mostly to have something to reference for the required Sanitizer API work.' The ChromeStatus ff/safari 'Positive/Support' labels are on the parent OoOS feature and reflect position, not implementation. Baseline (≥2 engines, 30 months) is far off; npm polyfills bridge the gap for now.",
+      "finding": "Strong standards alignment but Chrome-only implementation at ship. Spec merged into the HTML standard (PR #12118, 2026-06-25) before stable; TAG satisfied; Mozilla positive and WebKit support; tentative WPT test exists (wpt#60828); three-engine implementation bugs filed. However at cutoff only Chromium ships it: WebKit bug 317651 is NEW (filed 2026-06-23, references the merged PR, no implementation) and Gecko bug 2046367 is NEW, UNASSIGNED, flagged behind-pref/firefox-backlog, filed 'mostly to have something to reference for the required Sanitizer API work.' The ChromeStatus ff/safari 'Positive/Support' labels are on the parent OoOS feature and reflect position, not implementation. Baseline (\u22652 engines, 30 months) is far off; npm polyfills bridge the gap for now.",
       "evidenceIds": [
         "s_spec",
         "s_tag",
@@ -184,7 +184,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Solid compat de-risking and a clean stable ship, but late design churn and no public post-ship telemetry. Compat was de-risked via HTTP Archive analysis ('relatively safe; doesn't parse xml-stylesheet and special characters like $'), fuzzers that 'found some bugs during early development' (fixed), Canary exposure with no filed bugs, then a 1% stable finch; the design deliberately consumes exactly the same characters as bogus comments to minimise parser-change risk. Released in Chrome 150 stable with no regressions listed. Against this: the PI target case-sensitivity flip-flopped during the PR (lowercased 2026-03-18 → 'Don't lowercase PI target' finalised only 2026-06-16, ~2 weeks before stable) and underscore-in-target was allowed 2026-06-15, i.e. the API surface was still being settled as the release train was committed; and no public compat/stability telemetry for the finch or post-ship period was found.",
+      "finding": "Solid compat de-risking and a clean stable ship, but late design churn and no public post-ship telemetry. Compat was de-risked via HTTP Archive analysis ('relatively safe; doesn't parse xml-stylesheet and special characters like $'), fuzzers that 'found some bugs during early development' (fixed), Canary exposure with no filed bugs, then a 1% stable finch; the design deliberately consumes exactly the same characters as bogus comments to minimise parser-change risk. Released in Chrome 150 stable with no regressions listed. Against this: the PI target case-sensitivity flip-flopped during the PR (lowercased 2026-03-18 \u2192 'Don't lowercase PI target' finalised only 2026-06-16, ~2 weeks before stable) and underscore-in-target was allowed 2026-06-15, i.e. the API surface was still being settled as the release train was committed; and no public compat/stability telemetry for the finch or post-ship period was found.",
       "evidenceIds": [
         "s_spec",
         "s_i2e",
@@ -195,7 +195,7 @@
     },
     "evidenceAndCommunication": {
       "status": "success",
-      "finding": "Communication was coherent, accurate, and shipped with enablement. Official Chrome blog 'Declarative partial updates' (Barry Pollard + Noam Rosenthal, 2026-05-19), accurate Chrome 150 release-notes entries for both the PI feature and the parent OoOS feature, MDN ProcessingInstruction, and npm polyfills (template-for-polyfill, html-setters-polyfill) all describe consistent behaviour matching the merged spec. Claims match actual rollout (M150, all desktop+android+webview, no iOS). One data-quality caveat: the ChromeStatus authoritative record lagged the ship (status='Proposed', reviews='Pending', is_released=false at the 2026-06-22 accurate_as_of, despite a 2026-06-30 stable ship and 2026-06-25 spec merge) — a record-freshness gap, not a messaging error.",
+      "finding": "Communication was coherent, accurate, and shipped with enablement. Official Chrome blog 'Declarative partial updates' (Barry Pollard + Noam Rosenthal, 2026-05-19), accurate Chrome 150 release-notes entries for both the PI feature and the parent OoOS feature, MDN ProcessingInstruction, and npm polyfills (template-for-polyfill, html-setters-polyfill) all describe consistent behaviour matching the merged spec. Claims match actual rollout (M150, all desktop+android+webview, no iOS). One data-quality caveat: the ChromeStatus authoritative record lagged the ship (status='Proposed', reviews='Pending', is_released=false at the 2026-06-22 accurate_as_of, despite a 2026-06-30 stable ship and 2026-06-25 spec merge) \u2014 a record-freshness gap, not a messaging error.",
       "evidenceIds": [
         "s_blog",
         "s_relnotes",
@@ -215,7 +215,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-run, standards-first launch of a foundational parser primitive that shipped cleanly with strong cross-engine signals and good DevRel enablement — but real developer/end-user value, adoption, and interoperability remain unproven. Strengths: spec merged before stable, TAG satisfied, Mozilla positive + WebKit support, conservative compat design, fuzzing + Canary + 1% finch de-risking, npm polyfills and docs shipped alongside. Open/mixed: Chrome-only in practice (Gecko unassigned/behind-pref, WebKit bug NEW), the PI value is mediated through the parent OoOS feature, the API surface was still churning ~2 weeks pre-ship, the authoritative ChromeStatus record lagged the launch, and adoption/usage/support are not yet observable at ~3 weeks post-ship. Overall is deliberately mixed; it does not hide the unscored adoption/end-user dimensions or the Chrome-only interop reality.",
+      "finding": "A well-run, standards-first launch of a foundational parser primitive that shipped cleanly with strong cross-engine signals and good DevRel enablement \u2014 but real developer/end-user value, adoption, and interoperability remain unproven. Strengths: spec merged before stable, TAG satisfied, Mozilla positive + WebKit support, conservative compat design, fuzzing + Canary + 1% finch de-risking, npm polyfills and docs shipped alongside. Open/mixed: Chrome-only in practice (Gecko unassigned/behind-pref, WebKit bug NEW), the PI value is mediated through the parent OoOS feature, the API surface was still churning ~2 weeks pre-ship, the authoritative ChromeStatus record lagged the launch, and adoption/usage/support are not yet observable at ~3 weeks post-ship. Overall is deliberately mixed; it does not hide the unscored adoption/end-user dimensions or the Chrome-only interop reality.",
       "evidenceIds": [
         "s_spec",
         "s_tag",
@@ -425,20 +425,20 @@
     }
   ],
   "successes": [
-    "Standards-first sequencing: WICG explainer → WHATWG spec PR #12118 merged by editor (annevk) on 2026-06-25, before the 2026-06-30 stable ship; TAG design-review #1134 satisfied; Mozilla positive and WebKit support; tests written and implementation bugs filed in all three engines. [s_spec, s_tag, s_moz, s_webkit, s_wpt]",
+    "Standards-first sequencing: WICG explainer \u2192 WHATWG spec PR #12118 merged by editor (annevk) on 2026-06-25, before the 2026-06-30 stable ship; TAG design-review #1134 satisfied; Mozilla positive and WebKit support; tests written and implementation bugs filed in all three engines. [s_spec, s_tag, s_moz, s_webkit, s_wpt]",
     "Conservative, well-de-risked parser change: HTTP Archive analysis ('relatively safe'), fuzzing that found and fixed early-development bugs, multi-week Canary exposure with no filed bugs, then a 1%-stable finch (HTMLProcessingInstruction) before full ship; the design consumes exactly the same characters as the prior bogus-comment behaviour to minimise web-compat risk. [s_i2e, s_spec, s_cs]",
     "DevRel enablement shipped with the platform feature: official Chrome blog (2026-05-19), accurate Chrome 150 release notes, and npm polyfills (template-for-polyfill, html-setters-polyfill) so developers can use the capability cross-browser before Gecko/WebKit ship. [s_blog, s_relnotes]",
     "Spec carries in-commit rationale and rejected alternatives, easing multi-engine review. [s_spec, s_explainer]"
   ],
   "failures": [
-    "ChromeStatus authoritative record lagged the launch: at the 2026-06-22 accurate_as_of it showed browsers.chrome.status='Proposed', is_released=false, security_review_status='Pending', privacy_review_status='Pending' — despite the spec merging 2026-06-25 and stable shipping 2026-06-30. Anyone using ChromeStatus as the launch readout would have been misled about release/review state. [s_cs vs s_spec/s_relnotes]",
-    "API surface was still churning ~2 weeks before stable: PI target case-sensitivity changed repeatedly (lowercased 2026-03-18 → 'Don't lowercase PI target' finalised 2026-06-16) and underscore-in-target allowed 2026-06-15, signalling the design was not fully settled when the release train committed. [s_spec]",
-    "Interop is Chrome-only at ship despite the 'Positive/Support' labels: Gecko bug is NEW/UNASSIGNED/behind-pref (filed as a reference for Sanitizer API work), WebKit bug is NEW with no patch. The ChromeStatus ff/safari positions are filed against the parent feature and reflect position, not implementation — a real risk of overstating cross-browser availability. [s_gecko_bug, s_webkit_bug, s_moz, s_webkit, s_cs]",
+    "ChromeStatus authoritative record lagged the launch: at the 2026-06-22 accurate_as_of it showed browsers.chrome.status='Proposed', is_released=false, security_review_status='Pending', privacy_review_status='Pending' \u2014 despite the spec merging 2026-06-25 and stable shipping 2026-06-30. Anyone using ChromeStatus as the launch readout would have been misled about release/review state. [s_cs vs s_spec/s_relnotes]",
+    "API surface was still churning ~2 weeks before stable: PI target case-sensitivity changed repeatedly (lowercased 2026-03-18 \u2192 'Don't lowercase PI target' finalised 2026-06-16) and underscore-in-target allowed 2026-06-15, signalling the design was not fully settled when the release train committed. [s_spec]",
+    "Interop is Chrome-only at ship despite the 'Positive/Support' labels: Gecko bug is NEW/UNASSIGNED/behind-pref (filed as a reference for Sanitizer API work), WebKit bug is NEW with no patch. The ChromeStatus ff/safari positions are filed against the parent feature and reflect position, not implementation \u2014 a real risk of overstating cross-browser availability. [s_gecko_bug, s_webkit_bug, s_moz, s_webkit, s_cs]",
     "No published finch readout or post-ship compat/stability telemetry: 'no compat issues' rests on absence of filed bugs and the Chromium bug is not publicly readable, so the compat outcome is asserted rather than evidenced. [s_i2e, s_cs]"
   ],
   "counterfactuals": [
     "If the spec had merged a cycle earlier (it merged 2026-06-25, five days before stable), the launch would not have shipped under a 'standards maturity: Working draft / under development' label, removing ambiguity about spec stability at ship.",
-    "If a published 1%→100% finch readout existed, the 'no web-compat issues' claim would be defensible public evidence instead of an inference from absence of bug reports.",
+    "If a published 1%\u2192100% finch readout existed, the 'no web-compat issues' claim would be defensible public evidence instead of an inference from absence of bug reports.",
     "If implementation status (engine bug state) rather than standards position were the tracked interop metric, the 'Positive/Support' labels would not have risked over-representing cross-browser availability at launch.",
     "If a short, published developer-trial friction report existed, the externally-discovered friction (safe streaming variant drops templates/markers; Unsafe required) could have been addressed in official docs before broad release.",
     "If the parent/child feature relationship were surfaced in the launch readout, the foundational PI primitive would not be scored as if it were the directly user-facing capability."
@@ -455,10 +455,10 @@
     "status": "partial",
     "missingEvidence": [
       "Intent to Ship thread content (msgid URL rejected by the reader) and the Intent to Prototype thread detail",
-      "Chromium tracking bug #481087638 detail and the 1%→100% finch/telemetry readout (issues.chromium.org requires auth; not public)",
+      "Chromium tracking bug #481087638 detail and the 1%\u2192100% finch/telemetry readout (issues.chromium.org requires auth; not public)",
       "Live WPT cross-browser pass/fail for parse-processing-instruction (dashboard is JS-rendered; PR read failed) and whether the .tentative test was de-tentative after spec merge",
-      "Post-ship adoption/usage data and production deployments — not yet collected at ~3 weeks post stable (2026-06-30)",
-      "Post-ship support issue volume/known-issues — not yet observable at ~3 weeks post stable",
+      "Post-ship adoption/usage data and production deployments \u2014 not yet collected at ~3 weeks post stable (2026-06-30)",
+      "Post-ship support issue volume/known-issues \u2014 not yet observable at ~3 weeks post stable",
       "TAG/Mozilla/WebKit reviewer comment reasoning (only labels/metadata were retrievable)"
     ],
     "reviewedAt": "2026-07-20T06:30:00Z"

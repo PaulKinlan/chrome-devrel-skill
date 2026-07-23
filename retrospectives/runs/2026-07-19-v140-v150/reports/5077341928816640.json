@@ -62,8 +62,7 @@
       "status": "supported",
       "finding": "DevTrial behind the flag at M148 (desktop) and M146 (android) per the cached stage record; the run manifest lists the M148 'In developer trial (Behind a flag)' event. No recruited cohort or feedback instrument is present, which is proportionate for a UA-stylesheet interop fix with no API to integrate and a small visible delta.",
       "evidenceIds": [
-        "chromestatus-cached",
-        "manifest"
+        "chromestatus-cached"
       ],
       "limitations": "No public devtrial-feedback artifact exists; the Android devtrial (M146) preceding the desktop devtrial (M148) is unexplained."
     },
@@ -81,7 +80,7 @@
       "limitations": "Security and Privacy review status were 'Pending' in the cache snapshot (accurate_as_of 2026-05-04); completion before the stable ship could not be confirmed from public sources. WebKit removal date was not pinned."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial, correctly. A field experiment is not justified for a UA-stylesheet interop fix: the uncertainty was resolved by spec alignment, other-engine convergence, and the flag devtrial, so an OT would have been customary rather than evidence-driven. Recorded as not-relevant (not untested): the flag devtrial (M148/M146) served the validation role.",
       "evidenceIds": [
         "chromestatus-cached"
@@ -111,13 +110,13 @@
       "limitations": "No standalone article or demo (none expected); no post-ship correction or incident observed."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "There is no API to adopt; the correct behavior is automatic and global once shipped, and most sites already neutralize the legacy grey via CSS resets (modern-normalize, normalize.css per Interop #713), so a developer adoption funnel does not apply. Recorded as not-relevant rather than untested.",
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. There is no API to adopt; the correct behavior is automatic and global once shipped, and most sites already neutralize the legacy grey via CSS resets (modern-normalize, normalize.css per Interop #713), so a developer adoption funnel does not apply. Recorded as not-relevant rather than untested.",
       "evidenceIds": [
         "interop713",
         "chromestatus-cached"
       ],
-      "limitations": "N/A by design."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
       "status": "unknown",
@@ -130,7 +129,7 @@
       "limitations": "Absence of public breakage reports is weak evidence; no post-ship monitoring or telemetry was accessed."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is removal of an internal UA-stylesheet rule, not deprecation/removal of a developer-facing API. There is no migration path to document: the new behavior is the spec-correct currentColor already matched by Firefox and WebKit and by common CSS resets. The only behavior-change risk (sites relying on the grey default without specifying border-color) is the intended interop convergence and is captured under interoperability. Recorded as not-relevant rather than untested.",
       "evidenceIds": [
         "chromestatus-cached",
@@ -163,7 +162,7 @@
       "limitations": "Near-imperceptible for sites that already use resets; no dedicated accessibility/contrast test evidence was gathered."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "No API to adopt; the correct behavior is automatic and global at ship, and the legacy grey is already neutralized by widely used CSS resets. A developer adoption funnel is not measurable or meaningful here.",
       "evidenceIds": [
         "interop713",

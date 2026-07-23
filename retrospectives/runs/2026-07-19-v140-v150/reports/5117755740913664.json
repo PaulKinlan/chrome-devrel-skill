@@ -106,7 +106,7 @@
       "limitations": "No published results yet; registrations-vs-use distinction unverified; experiment started before completion of TAG/security/privacy review."
     },
     "prepareToShip": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not yet reached. Default-enablement (Intent to Ship) is planned for M157 (desktop/android/webview), which is after the evidence cutoff; no prepare-to-ship transition packet, final review matrix, or rollout plan is public. Assessed as not-relevant because the feature has not entered the prepare-to-ship phase at the cutoff, not because it was untested.",
       "evidenceIds": [
         "cs-record"
@@ -114,7 +114,7 @@
       "limitations": "Ship plan and formal review states are future-dated and unverifiable at cutoff."
     },
     "release": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No stable/default-availability release has occurred; the only launch events in scope are the M146 developer trial (behind a flag) and the M149 origin trial, which are developer-trials and experiment-phase communications, not the release-communication phase. Developer-facing communication artifacts for the OT (developer.chrome.com docs published 2026-05-18, OT blog 2026-06-09, demos, inspector extension, early-preview program) are accurate and consistent with an experimental capability. Assessed not-relevant because there is no stable release to communicate.",
       "evidenceIds": [
         "docs",
@@ -124,8 +124,8 @@
       "limitations": "Cannot assess coordinated stable-release communication quality because no stable release has shipped."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "Broad/default-available adoption cannot be scored because the capability is not yet available by default (M149 origin trial only; M157 default-availability is after the cutoff); the adoption phase presupposes a default-available capability, so it is not-relevant. Later Chrome usage telemetry (collected 2026-07-22; latest data 2026-07-20/21, i.e. after the decision-phase cutoff) now exists for the dev trial and OT and is described here for current state only — it is trial-era usage, not broad/default-available adoption, and is not treated as if known during any intake/review/ship decision. Mapping is multiple-counters: (a) an EXACT origin-trial counter kModelContextRegisterTool (bucket 5791, OT stage 5111811472621568) and (b) a BROADER WebDX/property-family counter DocumentModelcontext (bucket 427, web_feature document-modelcontext; declared-family, not exact adoption for this launch). On the exact OT counter, the share of measured Chrome HTTP/HTTPS page loads where the counter fired (counter day_percentage) was 0.000002 at M146 dev-trial stable (2026-03-10), 0.000001 at dev-trial day-30 (2026-04-09), 0.00000668 at dev-trial day-90 (2026-06-08), 0.00000143 at M149 OT stable (2026-06-02), and 0.0000134 at OT day-30 (2026-07-02); it peaked at 0.00726857 on 2026-07-16 and was 0.00038953 on 2026-07-21 (latest); OT day-90/day-180 are not yet available. The family counter follows the same shape (dev-trial day-90 0.00000667; OT day-30 0.0000133; peak 0.00725595 on 2026-07-16; latest 0.000098 on 2026-07-20) but is a declared-family mapping whose property_name changed over time (DRAFT_WebMCP -> NavigatorModelcontext -> DocumentModelcontext), so it may capture more than registerTool and is not exact adoption for this launch. Leading interest indicators (GitHub 2.8k stars, ~9 CWS extensions, npm types, tutorials, demos) remain positive in direction but are not corroborated by substantial steady-state measured counter firing. No attributable production deployment, partner ship commitment, default-availability usage, unique-site, retention, task-success, or end-user-benefit evidence exists, and none can before M157 ship.",
+      "status": "not relevant",
+      "finding": "Broad/default-available adoption cannot be scored because the capability is not yet available by default (M149 origin trial only; M157 default-availability is after the cutoff); the adoption phase presupposes a default-available capability, so it is not-relevant. Later Chrome usage telemetry (collected 2026-07-22; latest data 2026-07-20/21, i.e. after the decision-phase cutoff) now exists for the dev trial and OT and is described here for current state only \u2014 it is trial-era usage, not broad/default-available adoption, and is not treated as if known during any intake/review/ship decision. Mapping is multiple-counters: (a) an EXACT origin-trial counter kModelContextRegisterTool (bucket 5791, OT stage 5111811472621568) and (b) a BROADER WebDX/property-family counter DocumentModelcontext (bucket 427, web_feature document-modelcontext; declared-family, not exact adoption for this launch). On the exact OT counter, the share of measured Chrome HTTP/HTTPS page loads where the counter fired (counter day_percentage) was 0.000002 at M146 dev-trial stable (2026-03-10), 0.000001 at dev-trial day-30 (2026-04-09), 0.00000668 at dev-trial day-90 (2026-06-08), 0.00000143 at M149 OT stable (2026-06-02), and 0.0000134 at OT day-30 (2026-07-02); it peaked at 0.00726857 on 2026-07-16 and was 0.00038953 on 2026-07-21 (latest); OT day-90/day-180 are not yet available. The family counter follows the same shape (dev-trial day-90 0.00000667; OT day-30 0.0000133; peak 0.00725595 on 2026-07-16; latest 0.000098 on 2026-07-20) but is a declared-family mapping whose property_name changed over time (DRAFT_WebMCP -> NavigatorModelcontext -> DocumentModelcontext), so it may capture more than registerTool and is not exact adoption for this launch. Leading interest indicators (GitHub 2.8k stars, ~9 CWS extensions, npm types, tutorials, demos) remain positive in direction but are not corroborated by substantial steady-state measured counter firing. No attributable production deployment, partner ship commitment, default-availability usage, unique-site, retention, task-success, or end-user-benefit evidence exists, and none can before M157 ship.",
       "evidenceIds": [
         "repo",
         "cs-record",
@@ -134,10 +134,10 @@
         "metrics-feature-5791",
         "metrics-webfeature-427"
       ],
-      "limitations": "Counter firing is the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; the family counter is broader than this launch and the OT counter measures tool registration, not successful task completion; counter instrumentation may include detection/probing and UMA reflects participating Chrome clients and the dominant milestone; only registered OT origins can fire the OT counter, so a single large origin or probing burst can dominate the series (the 2026-07-16 spike and subsequent decline illustrate this); no default-availability/production usage, unique-site, retention, task-success, or target evidence exists."
+      "limitations": "Counter firing is the share of measured Chrome HTTP/HTTPS page loads where the counter fired \u2014 not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; the family counter is broader than this launch and the OT counter measures tool registration, not successful task completion; counter instrumentation may include detection/probing and UMA reflects participating Chrome clients and the dominant milestone; only registered OT origins can fire the OT counter, so a single large origin or probing burst can dominate the series (the 2026-07-16 spike and subsequent decline illustrate this); no default-availability/production usage, unique-site, retention, task-success, or target evidence exists."
     },
     "support": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No shipped capability means no broad support burden yet. Trial-era support routing exists: a Chromium bug component (Blink>Agentic Platform>WebMCP) and an OT feedback submission URL, plus devtrial instructions and a 'WebMCP for testing' flag. No public issue taxonomy, recurrence data, or resolution-time evidence. Assessed not-relevant because the support-and-iteration phase has not begun for a generally-available capability.",
       "evidenceIds": [
         "cs-record",
@@ -146,7 +146,7 @@
       "limitations": "Cannot assess support burden or issue patterns pre-ship."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "WebMCP is a new feature with no removal/deprecation in scope; an origin-trial wind-down (M156) is a planned experiment end, not a feature deprecation, and the experiment_risks state that registered tools continue to be available in Chrome stable with browser agents able to actuate sites as before. Assessed not-relevant because there is no deprecation/removal trajectory.",
       "evidenceIds": [
         "cs-record"
@@ -188,7 +188,7 @@
         "metrics-feature-5791",
         "metrics-webfeature-427"
       ],
-      "limitations": "Default-availability adoption is undefined pre-ship; the measured counter is trial-era usage only. Counter firing is the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; the family counter is broader than this launch and the OT counter measures tool registration, not successful task completion; counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; only registered OT origins can fire the OT counter, so a single large origin or probing burst can dominate the series. No predeclared target and no corroborating production/retention evidence, so the outcome stays unscored."
+      "limitations": "Default-availability adoption is undefined pre-ship; the measured counter is trial-era usage only. Counter firing is the share of measured Chrome HTTP/HTTPS page loads where the counter fired \u2014 not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; the family counter is broader than this launch and the OT counter measures tool registration, not successful task completion; counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; only registered OT origins can fire the OT counter, so a single large origin or probing burst can dominate the series. No predeclared target and no corroborating production/retention evidence, so the outcome stays unscored."
     },
     "interoperability": {
       "status": "failure",
@@ -226,7 +226,7 @@
       "limitations": "Benchmark lineage traces to a single vendor source; the WebMCP tool-security doc could not be retrieved (timed out)."
     },
     "support": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No shipped capability means no support outcome to score. Trial-era routing (bug component, OT feedback URL, flag, devtrial instructions) exists. Assessed not-relevant, not untested.",
       "evidenceIds": [
         "cs-record",
@@ -371,7 +371,7 @@
       "supports": [
         "Chrome early preview (Chrome 146 Canary, 'WebMCP for testing' flag), navigator.modelContext 'Tool Contract', Microsoft co-development, W3C WebML CG incubation, WebMCP vs Anthropic MCP distinction, mid-to-late-2026 formal-announcement expectation"
       ],
-      "limitations": "Trade press repeating Google announcement (André Cipriani Bandarra); no independent benchmarks."
+      "limitations": "Trade press repeating Google announcement (Andr\u00e9 Cipriani Bandarra); no independent benchmarks."
     },
     {
       "id": "winbuzzer",
@@ -485,7 +485,7 @@
     "Interoperability failure at cutoff: WebKit formally opposes WebMCP (8 concern categories) and Mozilla has no positive signal, yet the feature entered an origin trial as Chromium-only while being communicated as an 'open web standard'; TAG, Security, and Privacy reviews are still Pending at the feature level.",
     "The ChromeStatus record materially under-represents interop risk: Safari and Firefox are shown as 'No signal' despite an active WebKit standards-positions opposition and an open Mozilla issue, which would mislead anyone relying on the record.",
     "Spec immaturity for an entering-OT capability: the declarative API is 'entirely a TODO', the synthesize-JSON-Schema algorithm is unspecified, ModelContextClient.requestUserInteraction steps are undefined, and the normative Security and Privacy Considerations sections are empty.",
-    "Developer-trial evidence conflates interest with success: the 'great deal of interest' claim rests on vanity metrics (stars, extension count) with no public cohort, task-completion denominator, methodology, or friction findings — and later Chrome usage telemetry is consistent with that gap rather than closing it, as the exact origin-trial counter (kModelContextRegisterTool) fired on only a counter day_percentage of 0.0000134 at OT day-30 (2026-07-02) and 0.00038953 at latest (2026-07-21), so the interest signals are not corroborated by substantial steady-state measured usage (low measured usage is not itself a failure, but it does not support an interest-equals-adoption claim).",
+    "Developer-trial evidence conflates interest with success: the 'great deal of interest' claim rests on vanity metrics (stars, extension count) with no public cohort, task-completion denominator, methodology, or friction findings \u2014 and later Chrome usage telemetry is consistent with that gap rather than closing it, as the exact origin-trial counter (kModelContextRegisterTool) fired on only a counter day_percentage of 0.0000134 at OT day-30 (2026-07-02) and 0.00038953 at latest (2026-07-21), so the interest signals are not corroborated by substantial steady-state measured usage (low measured usage is not itself a failure, but it does not support an interest-equals-adoption claim).",
     "Positive press is largely a single vendor source repeated: the ~67% token-reduction / ~98% task-accuracy figures trace to Google's announcement and are reproduced without independent replication, so they cannot support a success claim.",
     "The core value thesis is contested on first principles (wrong-layer argument) by both another engine and independent analysis, and the proposal has not publicly resolved the server-side-MCP vs browser-as-bridge vs WebMCP tradeoff before shipping into a trial."
   ],
@@ -495,7 +495,7 @@
     "If this retrospective had relied solely on the ChromeStatus record (Safari/Firefox 'No signal'), it would have scored interoperability far more favorably than the recorded WebKit opposition warrants; cross-checking against the engine's own standards-positions repo changed the conclusion.",
     "If the ~67% benchmark had been benchmarked against a well-implemented AX-Tree or server-side-MCP baseline (rather than worst-case scraping), the marginal-benefit case for a new developer-maintained layer would be substantially weaker, per the independent critique.",
     "If the developer trial had published a cohort report with task-completion denominators and representativeness, the OT rationale ('explicit uncertainties requiring field evidence') would be defensible on its own terms rather than resting on interest metrics.",
-    "If this retrospective had relied only on the ChromeStatus interest notes (star-history, ~9 extensions, npm types) and the 'great deal of interest' framing, it would have over-stated real measured usage; the cached telemetry shows the exact origin-trial counter (kModelContextRegisterTool) fired on a counter day_percentage of 0.0000134 at OT day-30 (2026-07-02) and 0.00038953 at latest (2026-07-21) — with the broader WebDX family counter (DocumentModelcontext) at the same low steady-state level — rather than the broad uptake the interest metrics imply."
+    "If this retrospective had relied only on the ChromeStatus interest notes (star-history, ~9 extensions, npm types) and the 'great deal of interest' framing, it would have over-stated real measured usage; the cached telemetry shows the exact origin-trial counter (kModelContextRegisterTool) fired on a counter day_percentage of 0.0000134 at OT day-30 (2026-07-02) and 0.00038953 at latest (2026-07-21) \u2014 with the broader WebDX family counter (DocumentModelcontext) at the same low steady-state level \u2014 rather than the broad uptake the interest metrics imply."
   ],
   "skillImprovements": [
     "Add a launch-retrospective / wide-review rule: a feature must not be scored as interoperability-'supported' while any target engine's standards-positions repo records opposition; ChromeStatus 'No signal' is not authoritative and must be cross-checked against WebKit/ Mozilla standards-positions and W3C position trackers before scoring.",

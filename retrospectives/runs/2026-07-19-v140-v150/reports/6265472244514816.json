@@ -54,7 +54,7 @@
       "limitations": "Demand is largely self-reported developer comments and library issues, not a structured survey; no attributable partner production-deployment evidence is named publicly (the OT extension references an unnamed major partner)."
     },
     "incubation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable as an API incubation: this is a Chromium catches-up enablement of an already-final, multi-engine standard (HTML SharedWorker). No new surface was incubated for this feature. The one design question this work exposed (unpredictable agent-cluster killing under memory pressure) was incubated separately as the extendedLifetime option (whatwg/html#11205; distinct feature 5138641357373440) rather than folded into this feature's API.",
       "evidenceIds": [
         "chromestatus-cached",
@@ -130,7 +130,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Strong pre-ship demand (13-year bug thread, Interop 2026 request, LiveStore single-tab fallback workaround, Pusher/RxDB/wa-sqlite ecosystem references) and 34 OT sign-ups indicate real interest. First-party Chrome usage telemetry is now cached for the exact feature counter (kSharedWorkerStartOnAndroid, ChromeStatus bucket 5626; scope exact, 162 daily points). During the OT/dev-trial the counter was effectively silent — 0% at stable (2025-09-02) and at day 30, ~0.000001% at day 90 (2025-12-15), and ~0.0000004% at day 180 (2026-03-01), consistent with opt-in-only exposure and 34 sign-ups. Default enablement produced a clear step-change: ~0.005904% of measured Chrome page loads at M148 stable (2026-05-05), ~0.007707% at day 30 (2026-06-04), a peak of ~0.012877% (2026-07-11), and ~0.007972% at the latest observation (2026-07-21); M148 day 90/day 180 are not yet available (feature ~78 days past stable at observation). These values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once — not unique developers, sites, or users — and no adoption target was predeclared, so the low-but-present level is described, not scored. Production-deployment, unique-site, and retention evidence remain absent.",
+      "finding": "Strong pre-ship demand (13-year bug thread, Interop 2026 request, LiveStore single-tab fallback workaround, Pusher/RxDB/wa-sqlite ecosystem references) and 34 OT sign-ups indicate real interest. First-party Chrome usage telemetry is now cached for the exact feature counter (kSharedWorkerStartOnAndroid, ChromeStatus bucket 5626; scope exact, 162 daily points). During the OT/dev-trial the counter was effectively silent \u2014 0% at stable (2025-09-02) and at day 30, ~0.000001% at day 90 (2025-12-15), and ~0.0000004% at day 180 (2026-03-01), consistent with opt-in-only exposure and 34 sign-ups. Default enablement produced a clear step-change: ~0.005904% of measured Chrome page loads at M148 stable (2026-05-05), ~0.007707% at day 30 (2026-06-04), a peak of ~0.012877% (2026-07-11), and ~0.007972% at the latest observation (2026-07-21); M148 day 90/day 180 are not yet available (feature ~78 days past stable at observation). These values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once \u2014 not unique developers, sites, or users \u2014 and no adoption target was predeclared, so the low-but-present level is described, not scored. Production-deployment, unique-site, and retention evidence remain absent.",
       "evidenceIds": [
         "bug-40290702",
         "interop-1064",
@@ -152,7 +152,7 @@
       "limitations": "No post-ship support/regression/issue-resolution data; the committed kSharedWorkerStartOnAndroid use counter is now reporting page-load share (see usage-timeline-5626-cached), but support-specific signals (regression volume, issue counts, resolution times) and the Content.SharedWorker.Host.DestructionSource UMA distribution are not in the cached telemetry."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable: this is an enablement of an existing standard, not a restriction, replacement, or removal. No reverse trial, migration, or removal path is involved.",
       "evidenceIds": [
         "chromestatus-cached"
@@ -185,7 +185,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Pre-ship demand is strong and multi-source (13-year bug, Interop 2026 request, LiveStore fallback, RxDB/Pusher/wa-sqlite references). Post-ship, the exact feature use counter (bucket 5626) now shows low-but-present, roughly stable usage with daily variance: ~0.005904% of measured Chrome page loads at M148 stable (2026-05-05), ~0.007707% at day 30 (2026-06-04), a peak of ~0.012877% (2026-07-11), and ~0.007972% at the latest observation (2026-07-21) — roughly four orders of magnitude above the near-zero OT period (0% at stable/day30; ~0.000001% at OT day 90). This is the share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once, not unique developers/sites/users or production deployment. No adoption target was predeclared for this feature and there is no corroborating production/retention/unique-site evidence, so durable adoption remains unscored; the measured level and trend are described above.",
+      "finding": "Pre-ship demand is strong and multi-source (13-year bug, Interop 2026 request, LiveStore fallback, RxDB/Pusher/wa-sqlite references). Post-ship, the exact feature use counter (bucket 5626) now shows low-but-present, roughly stable usage with daily variance: ~0.005904% of measured Chrome page loads at M148 stable (2026-05-05), ~0.007707% at day 30 (2026-06-04), a peak of ~0.012877% (2026-07-11), and ~0.007972% at the latest observation (2026-07-21) \u2014 roughly four orders of magnitude above the near-zero OT period (0% at stable/day30; ~0.000001% at OT day 90). This is the share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once, not unique developers/sites/users or production deployment. No adoption target was predeclared for this feature and there is no corroborating production/retention/unique-site evidence, so durable adoption remains unscored; the measured level and trend are described above.",
       "evidenceIds": [
         "bug-40290702",
         "interop-1064",
@@ -469,7 +469,7 @@
       "supports": [
         "Exact feature use counter for this feature (scope exact, 162 daily points). Measured share of Chrome HTTP/HTTPS page loads on which the counter fired at least once. Near-zero during OT/dev-trial: atStable and day30 0%; day90 (2025-12-15) 0.000001%; day180 (2026-03-01) 0.0000004%; first positive 2025-11-08 at 0.00000001%. Step-change at default enablement: M148 atStable (2026-05-05) 0.005904%; day30 (2026-06-04) 0.00770696%; peak 0.01287707% (2026-07-11); latest 0.00797191% (2026-07-21); latest snapshot 0.0082061% (2026-07-20). M148 day90/day180 not yet available."
       ],
-      "limitations": "Share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients (enterprise/opt-out populations underrepresented). The metrics cache also contained two CSS-property counters ('content' bucket 74 ~0.8%, 'source' bucket 667 0%) that text-matched the UMA name 'Content.SharedWorker.Host.DestructionSource' and are excluded as unrelated to SharedWorker. No predeclared adoption target; low values are not automatically failure."
+      "limitations": "Share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients (enterprise/opt-out populations underrepresented). The metrics cache also contained two CSS-property counters ('content' bucket 74 ~0.8%, 'source' bucket 667 0%) that text-matched the UMA name 'Content.SharedWorker.Host.DestructionSource' and are excluded as unrelated to SharedWorker. No predeclared adoption target; low values are not automatically failure."
     }
   ],
   "successes": [

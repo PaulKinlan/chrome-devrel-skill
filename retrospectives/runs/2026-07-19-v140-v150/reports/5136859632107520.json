@@ -55,7 +55,7 @@
       "limitations": "No observable task-based friction log, compatibility matrix, or representative-developer prototype evidence in the record."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No developer trial or origin trial was conducted for this feature (origintrial=false, no flag/OT stage, straight Intent to Prototype -> Intent to Ship). Rationale for not-relevant: there was no flag-gated or OT cohort to review, not merely that it was untested. Given the only customer is first-party, this skipped a stage that could have surfaced independent feedback and the spec algorithm gap.",
       "evidenceIds": [
         "s1",
@@ -76,17 +76,17 @@
       "limitations": "I could not read full position-comment bodies (GitHub issue rendering exposed only metadata), but labels/project-status are unambiguous."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial or field experiment was run (no OT stage, no hypotheses/metrics). Not-relevant because the feature did not pass through a field experiment, by design. This is defensible for a small additive enum but means no real-origin evidence exists on developer integration or model-availability behavior.",
       "evidenceIds": [
         "s1",
         "s9"
       ],
-      "limitations": "N/A — stage genuinely absent."
+      "limitations": "N/A \u2014 stage genuinely absent."
     },
     "prepareToShip": {
       "status": "partial",
-      "finding": "Intent to Ship (May 5-13 2026) reached 3 LGTMs (Alex Russell, Vladimir Levin, Daniel Bratell) but only after senior API owners pushed back: Rick Byers asked 'do we know of any website who wants to use this API? … we don't ship APIs without known customers' and 'why not [WPT]?', and flagged that the spec PR was not yet landed; Alex Russell was 'surprising this didn't go through TAG review' (the template left TAG review blank). Evan's answers: only Google Meet needs it for M150; Android/ChromeOS unsupported so no WPT infra to mock hardware-dependent ML. Security_review_status and privacy_review_status were both 'Pending' at ship; rollout is desktop-only, 'enabled for all users'.",
+      "finding": "Intent to Ship (May 5-13 2026) reached 3 LGTMs (Alex Russell, Vladimir Levin, Daniel Bratell) but only after senior API owners pushed back: Rick Byers asked 'do we know of any website who wants to use this API? \u2026 we don't ship APIs without known customers' and 'why not [WPT]?', and flagged that the spec PR was not yet landed; Alex Russell was 'surprising this didn't go through TAG review' (the template left TAG review blank). Evan's answers: only Google Meet needs it for M150; Android/ChromeOS unsupported so no WPT infra to mock hardware-dependent ML. Security_review_status and privacy_review_status were both 'Pending' at ship; rollout is desktop-only, 'enabled for all users'.",
       "evidenceIds": [
         "s9",
         "s1",
@@ -107,7 +107,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Feature shipped 2026-06-30 (~3 weeks before this revision's cutoff). A Chrome usage counter IS now mapped — the SpeechRecognition WebFeature counter (webfeature bucket_id 63) — but its scope is web-feature-family (confidence: declared-family), so it is NOT an exact counter for the quality enum. It aggregates all SpeechRecognition interface usage (legacy cloud Web Speech, the Chrome 139 on-device parent, and this quality option), and the counter has been positive since 2024-06-10 (0.000285), long before the quality enum was proposed (Jan 2026); it therefore cannot isolate this launch's adoption. Observed share of measured Chrome HTTP/HTTPS page loads where the counter fired: 0.00033809 (≈0.034%) at M150 stable (2026-06-30) and 0.00029795 (≈0.030%) on 2026-07-20 (latest) — flat-to-slightly-declining around launch, and well below the counter's own 2024-12-10 peak of 0.00139551 (≈0.14%), which predates the quality enum. Launch-relative day30/day90/day180 checkpoints are null at cutoff (too early). The only documented planned adopter remains first-party Google Meet; no independent (non-Google) production adoption, framework/library integration, or exact-feature usage is observed.",
+      "finding": "Feature shipped 2026-06-30 (~3 weeks before this revision's cutoff). A Chrome usage counter IS now mapped \u2014 the SpeechRecognition WebFeature counter (webfeature bucket_id 63) \u2014 but its scope is web-feature-family (confidence: declared-family), so it is NOT an exact counter for the quality enum. It aggregates all SpeechRecognition interface usage (legacy cloud Web Speech, the Chrome 139 on-device parent, and this quality option), and the counter has been positive since 2024-06-10 (0.000285), long before the quality enum was proposed (Jan 2026); it therefore cannot isolate this launch's adoption. Observed share of measured Chrome HTTP/HTTPS page loads where the counter fired: 0.00033809 (\u22480.034%) at M150 stable (2026-06-30) and 0.00029795 (\u22480.030%) on 2026-07-20 (latest) \u2014 flat-to-slightly-declining around launch, and well below the counter's own 2024-12-10 peak of 0.00139551 (\u22480.14%), which predates the quality enum. Launch-relative day30/day90/day180 checkpoints are null at cutoff (too early). The only documented planned adopter remains first-party Google Meet; no independent (non-Google) production adoption, framework/library integration, or exact-feature usage is observed.",
       "evidenceIds": [
         "s9",
         "s1",
@@ -127,7 +127,7 @@
       "limitations": "Issue 521896368 and tracking bug 476168420 could not be fully read (server 500 / URL rejected); only titles/metadata captured."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "New additive capability, not a deprecation or removal. Nothing to migrate or remove.",
       "evidenceIds": [
         "s1"
@@ -159,7 +159,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Shipped 2026-06-30. The only mapped Chrome usage counter is the SpeechRecognition WebFeature family/property counter (bucket_id 63, web-feature-family scope, declared-family confidence) — not exact-feature adoption, so it over-counts the quality enum. Measured share of Chrome HTTP/HTTPS page loads where it fired: 0.00033809 (≈0.034%) at M150 stable (2026-06-30) and 0.00029795 (≈0.030%) on 2026-07-20 (latest) — a low, flat-to-slightly-declining level that is also below the counter's own Dec-2024 peak (0.00139551, ≈0.14%). No predeclared adoption target/threshold appears in the launch record, and no independent production/retention/task-success evidence corroborates adoption of the quality enum itself. With no threshold and only a non-exact family counter, the adoption outcome remains unscored; the observed family-counter level is low and not yet trend-resolvable past launch (day30/90/180 null).",
+      "finding": "Shipped 2026-06-30. The only mapped Chrome usage counter is the SpeechRecognition WebFeature family/property counter (bucket_id 63, web-feature-family scope, declared-family confidence) \u2014 not exact-feature adoption, so it over-counts the quality enum. Measured share of Chrome HTTP/HTTPS page loads where it fired: 0.00033809 (\u22480.034%) at M150 stable (2026-06-30) and 0.00029795 (\u22480.030%) on 2026-07-20 (latest) \u2014 a low, flat-to-slightly-declining level that is also below the counter's own Dec-2024 peak (0.00139551, \u22480.14%). No predeclared adoption target/threshold appears in the launch record, and no independent production/retention/task-success evidence corroborates adoption of the quality enum itself. With no threshold and only a non-exact family counter, the adoption outcome remains unscored; the observed family-counter level is low and not yet trend-resolvable past launch (day30/90/180 null).",
       "evidenceIds": [
         "s15",
         "s9",
@@ -182,7 +182,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Implementation ships on time in M150 desktop and the spec PR landed. Material quality gaps: (1) spec inconsistency — the §4.1.4 availability algorithm never references the `quality` field even though the available() description promises quality-aware behavior, so the normative steps don't actually enforce the floor; (2) no WPT (acknowledged, due to inability to mock hardware-dependent ML); (3) desktop-only because Android/ChromeOS lack on-device Web Speech; (4) privacy/security reviews 'Pending' at ship.",
+      "finding": "Implementation ships on time in M150 desktop and the spec PR landed. Material quality gaps: (1) spec inconsistency \u2014 the \u00a74.1.4 availability algorithm never references the `quality` field even though the available() description promises quality-aware behavior, so the normative steps don't actually enforce the floor; (2) no WPT (acknowledged, due to inability to mock hardware-dependent ML); (3) desktop-only because Android/ChromeOS lack on-device Web Speech; (4) privacy/security reviews 'Pending' at ship.",
       "evidenceIds": [
         "s7",
         "s9",
@@ -333,7 +333,7 @@
         "Draft Community Group Report 21 May 2026 (not a Working Group spec)",
         "SpeechRecognitionQuality enum + quality member present",
         "available()/install() gated by Permissions-Policy 'on-device-speech-recognition' default 'self'",
-        "§4.1.4 availability algorithm omits the quality field"
+        "\u00a74.1.4 availability algorithm omits the quality field"
       ],
       "limitations": "Snapshot; commit-specific revision not pinned."
     },
@@ -491,24 +491,24 @@
       "sourceType": "usage",
       "supports": [
         "SpeechRecognition WebFeature counter (webfeature bucket_id 63) timeline; mapping status web-feature-family-counter, scope web-feature-family, confidence declared-family",
-        "share of measured Chrome HTTP/HTTPS page loads where the counter fired: 0.00033809 (≈0.034%) at M150 stable 2026-06-30; 0.00029795 (≈0.030%) on 2026-07-20 (latest)",
-        "counter positive since firstObservedPositive 2024-06-10 (0.000285), predating the quality enum (proposed Jan 2026); peak 0.00139551 (≈0.14%) on 2024-12-10",
+        "share of measured Chrome HTTP/HTTPS page loads where the counter fired: 0.00033809 (\u22480.034%) at M150 stable 2026-06-30; 0.00029795 (\u22480.030%) on 2026-07-20 (latest)",
+        "counter positive since firstObservedPositive 2024-06-10 (0.000285), predating the quality enum (proposed Jan 2026); peak 0.00139551 (\u22480.14%) on 2024-12-10",
         "launch-relative day30/day90/day180 checkpoints null at cutoff (too early)",
         "no exact webdxUseCounterEnum mapped for the quality enum (enum is null)"
       ],
-      "limitations": "Family/property counter for the SpeechRecognition interface, not an exact counter for the quality enum or this ChromeStatus feature; it aggregates legacy cloud Web Speech, the Chrome 139 on-device parent, and the quality option, so it over-counts and cannot isolate this launch; numerator/denominator is page loads where the counter fired / measured Chrome HTTP/HTTPS page loads — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit; UMA reflects participating Chrome clients and the dominant milestone; 578 timeline points cached."
+      "limitations": "Family/property counter for the SpeechRecognition interface, not an exact counter for the quality enum or this ChromeStatus feature; it aggregates legacy cloud Web Speech, the Chrome 139 on-device parent, and the quality option, so it over-counts and cannot isolate this launch; numerator/denominator is page loads where the counter fired / measured Chrome HTTP/HTTPS page loads \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit; UMA reflects participating Chrome clients and the dominant milestone; 578 timeline points cached."
     }
   ],
   "successes": [
     "Clean, privacy-motivated design: semantic quality levels (command/dictation/conversation) deliberately chosen over raw WER to reduce fingerprinting, with feature detection via available()/install() (s3, s7, s9).",
     "Early TAG review obtained (Feb 2026) and resolved 'satisfied with concerns'; the spec PR adding the enum landed before Chrome 150 stable (s6, s9, s7).",
     "Real production driver: first-party Google Meet needs the capability floor for on-device, privacy-preserving high-stakes transcription, giving a concrete ship rationale (s9, s13).",
-    "Low web-compat risk — additive enum with a sensible default and Permissions-Policy gating (s7, s1)."
+    "Low web-compat risk \u2014 additive enum with a sensible default and Permissions-Policy gating (s7, s1)."
   ],
   "failures": [
-    "Multi-stakeholder support is materially absent at ship: Firefox will not implement/use the hint, WebKit has 'No signal' and no active Web Speech work, Web developers 'No signals', and the TAG explicitly flagged 'lack of multi-stakeholder support' — effectively a Chrome-desktop-only feature (s9, s4, s5, s6, s1).",
+    "Multi-stakeholder support is materially absent at ship: Firefox will not implement/use the hint, WebKit has 'No signal' and no active Web Speech work, Web developers 'No signals', and the TAG explicitly flagged 'lack of multi-stakeholder support' \u2014 effectively a Chrome-desktop-only feature (s9, s4, s5, s6, s1).",
     "Evidence/communication accuracy gaps: ChromeStatus records Firefox as 'Positive' while the formal Mozilla position issue is Open/'Needs proposed position' and Mozilla says it won't use the hint; the Intent-to-Ship template left TAG review as 'No information provided'; cached spec maturity says 'Working Group/Working draft' but the document is a Community Group draft; security and privacy reviews are 'Pending' at ship (s1, s9, s4, s6, s7).",
-    "Spec/implementation quality gaps: the normative §4.1.4 availability algorithm never references the `quality` field (so the floor is not actually enforced in the spec's decision steps); no WPT coverage; desktop-only because Android/ChromeOS lack on-device Web Speech (s7, s9, s1).",
+    "Spec/implementation quality gaps: the normative \u00a74.1.4 availability algorithm never references the `quality` field (so the floor is not actually enforced in the spec's decision steps); no WPT coverage; desktop-only because Android/ChromeOS lack on-device Web Speech (s7, s9, s1).",
     "Release enablement/documentation gaps: no DevRel blog, MDN page, sample, or docs found for the quality enum; record not release-notes reviewed/publish-ready (s16, s1, s17)."
   ],
   "counterfactuals": [

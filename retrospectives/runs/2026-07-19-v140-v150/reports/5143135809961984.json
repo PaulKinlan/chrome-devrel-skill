@@ -52,7 +52,7 @@
       "limitations": "I could not retrieve the full Gerrit review (page is JS-rendered) to confirm exact test files added or review objections; the implementer's own uncertainty about testability of the new timing is a real prototype-phase weakness."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a 'No developer-visible change' behavior fix to an existing API with no new opt-in surface. It shipped directly to stable without a behind-a-flag developer trial or origin trial (the ChromeStatus stages show only prototype/implement/ship intent stages; no dev-trial or OT stage; flag_name is null, origintrial false). A developer trial is not the gating mechanism for this class of change.",
       "evidenceIds": [
         "S1",
@@ -67,10 +67,10 @@
         "S1",
         "S4"
       ],
-      "limitations": "The FF/Safari signals are labeled 'Not an official signal, but agreement to the change' in ChromeStatus — they are individual engineer agreements, not formal vendor position statements, though the CSSWG resolution itself is authoritative."
+      "limitations": "The FF/Safari signals are labeled 'Not an official signal, but agreement to the change' in ChromeStatus \u2014 they are individual engineer agreements, not formal vendor position statements, though the CSSWG resolution itself is authoritative."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No origin trial or field experiment was run, and none was warranted: this is a deterministic rendering-lifecycle timing fix with no privacy/security/perf trade-off needing real-origin measurement, and there is no new gated capability to trial. The record shows origintrial=false and no experiment goals/risks.",
       "evidenceIds": [
         "S1"
@@ -97,14 +97,14 @@
       "limitations": "The cached ChromeStatus record still showed status 'Proposed' / is_released:false (accurate_as_of 2025-07-16, before ship), so the authoritative source-of-truth record was stale relative to the actual launch; MDN's ViewTransition.finished page does not mention the timing change."
     },
     "adoption": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "There is no adoption funnel for this change: it is an automatic behavior change to the existing View Transitions API with no feature-detection, opt-in, or new API surface for developers to adopt (S1). The only mapped public counter is the broader WebDX family counter ViewTransitions (bucket_id 2; mappingStatus 'web-feature-family-counter'), which cannot be attributed to this timing fix; as family-level context it stood at 0.231316% of measured Chrome HTTP/HTTPS page loads at Chrome 140 stable (2025-09-02; day_percentage 0.00231316) and rose to 0.610281% by day 180 (2026-03-01; day_percentage 0.00610281), peaking at 0.758282% on 2026-04-04 (S12). The adjacent 2025 adoption context (same-document VT approaching Baseline Newly available; React core <ViewTransition> moving to canary) raises the profile of any VT behavior change but is not adoption of this specific timing fix (S8).",
       "evidenceIds": [
         "S1",
         "S8",
         "S12"
       ],
-      "limitations": "No exact feature-level adoption counter maps to this fix — only the ViewTransitions WebDX family counter, which reflects overall View Transitions usage and cannot be attributed to the change; no unique-site, production, retention, or predeclared-target evidence exists. Not-relevant reflects the absence of an opt-in/funnel mechanism, not the absence of any usage data."
+      "limitations": "No exact feature-level adoption counter maps to this fix \u2014 only the ViewTransitions WebDX family counter, which reflects overall View Transitions usage and cannot be attributed to the change; no unique-site, production, retention, or predeclared-target evidence exists. Not-relevant reflects the absence of an opt-in/funnel mechanism, not the absence of any usage data."
     },
     "support": {
       "status": "partial",
@@ -116,7 +116,7 @@
       "limitations": "Buganizer comment threads are not retrievable via the web reader, so I could not confirm the regression's severity, owner response, fix status, or whether a follow-up CL addressed it. This is a material support-dimension gap."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is not a deprecation or removal; no API is being restricted, replaced, or removed. The deprecation phase does not apply.",
       "evidenceIds": [
         "S1"
@@ -137,7 +137,7 @@
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "End users gain smoother end-of-transition visuals for the styles-transfer pattern (less flicker), but the same cleanup deferral produced a new transient glitch — removed items reappearing for one frame on Chrome 140 — which is a directly user-visible regression for the removal pattern. Net end-user impact is therefore mixed rather than purely positive.",
+      "finding": "End users gain smoother end-of-transition visuals for the styles-transfer pattern (less flicker), but the same cleanup deferral produced a new transient glitch \u2014 removed items reappearing for one frame on Chrome 140 \u2014 which is a directly user-visible regression for the removal pattern. Net end-user impact is therefore mixed rather than purely positive.",
       "evidenceIds": [
         "S8",
         "S9",
@@ -156,7 +156,7 @@
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "Cross-engine intent was clearly positive (Firefox and WebKit agreement Jul 3; CSSWG RESOLVED Jul 14, 2025), and emilio indicated Firefox already behaves the target way, lowering interop risk. Against that: Chrome shipped (Sep 2, 2025) only ~7 weeks after the resolution and before the normative spec text edit appears finalized — the CSSWG issue is still labeled 'Needs Edits' / Open and linked to #12957, which I could not confirm as merged; and I found no confirmation that Safari shipped the matching change (nt1m requested the spec edit to implement, then deferred on Oct 2). So interoperability is agreed in principle but not yet demonstrated across engines.",
+      "finding": "Cross-engine intent was clearly positive (Firefox and WebKit agreement Jul 3; CSSWG RESOLVED Jul 14, 2025), and emilio indicated Firefox already behaves the target way, lowering interop risk. Against that: Chrome shipped (Sep 2, 2025) only ~7 weeks after the resolution and before the normative spec text edit appears finalized \u2014 the CSSWG issue is still labeled 'Needs Edits' / Open and linked to #12957, which I could not confirm as merged; and I found no confirmation that Safari shipped the matching change (nt1m requested the spec edit to implement, then deferred on Oct 2). So interoperability is agreed in principle but not yet demonstrated across engines.",
       "evidenceIds": [
         "S1",
         "S4",
@@ -166,7 +166,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Implementation landed cleanly (bug Fixed; CL 'VT: Change the finished promise timing to be asynchronous'; WPT added) and demonstrably fixed the targeted flicker (blog's Chrome 139 vs 140 evidence). But the same mechanism introduced a confirmed regression — removed elements reappear for a frame on Chrome 140 — indicating the cleanup-deferral was validated primarily against the motivating add/transfer pattern and not against removal/exit-transition patterns. The author also flagged in-thread difficulty writing a reliable test for the deferred-cleanup behavior.",
+      "finding": "Implementation landed cleanly (bug Fixed; CL 'VT: Change the finished promise timing to be asynchronous'; WPT added) and demonstrably fixed the targeted flicker (blog's Chrome 139 vs 140 evidence). But the same mechanism introduced a confirmed regression \u2014 removed elements reappear for a frame on Chrome 140 \u2014 indicating the cleanup-deferral was validated primarily against the motivating add/transfer pattern and not against removal/exit-transition patterns. The author also flagged in-thread difficulty writing a reliable test for the deferred-cleanup behavior.",
       "evidenceIds": [
         "S5",
         "S6",
@@ -194,7 +194,7 @@
         "S9",
         "S5"
       ],
-      "limitations": "Resolution status, severity, and any follow-up CL are unknown — a material support-dimension gap."
+      "limitations": "Resolution status, severity, and any follow-up CL are unknown \u2014 a material support-dimension gap."
     },
     "overall": {
       "status": "mixed",
@@ -378,7 +378,7 @@
         "Family counter trajectory: first observed positive 2024-06-10 at 0.0051% (0.000051); peaked 2026-04-04 at 0.758282% (0.00758282); latest 2026-07-20 at 0.527740% (0.0052774).",
         "Interpretation: numerator = Chrome page loads where the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads; not equivalent to unique developers, unique sites, unique users, successful task completion, developer satisfaction, or end-user benefit."
       ],
-      "limitations": "Family counter, not an exact feature-level counter for this timing fix — values reflect overall View Transitions usage and cannot be attributed to the finished-promise change; counter instrumentation may include detection/probing depending on the counter implementation, and UMA reflects participating Chrome clients (enterprise and opt-out populations may be underrepresented). No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence accompanies this counter."
+      "limitations": "Family counter, not an exact feature-level counter for this timing fix \u2014 values reflect overall View Transitions usage and cannot be attributed to the finished-promise change; counter instrumentation may include detection/probing depending on the counter implementation, and UMA reflects participating Chrome clients (enterprise and opt-out populations may be underrepresented). No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence accompanies this counter."
     }
   ],
   "successes": [
@@ -388,7 +388,7 @@
     "Implementation landed and shipped on schedule in Chrome 140 (Sep 2, 2025) with WPT added alongside the change."
   ],
   "failures": [
-    "Post-ship regression: on Chrome v140 (with this change) 'removed items seem to reappear for a frame then disappear' — a new transient glitch for the removal/exit-transition pattern, distinct from the add/transfer pattern the fix targeted (S9).",
+    "Post-ship regression: on Chrome v140 (with this change) 'removed items seem to reappear for a frame then disappear' \u2014 a new transient glitch for the removal/exit-transition pattern, distinct from the add/transfer pattern the fix targeted (S9).",
     "Validated primarily against the motivating pattern: the author's demo and the blog cover only the box-shadow-transfer case; the removal case that regressed was evidently not a primary test target.",
     "Shipped ahead of finalized spec text: the CSSWG issue is still labeled 'Needs Edits'/Open and linked to #12957 (merge unconfirmed); the Chrome 140 release-notes entry has no Spec link, unlike peer features (S3, S7).",
     "Testability weakness flagged in-thread: the implementer could not reliably script-test that cleanup is deferred (rather than merely absent) (S4).",
@@ -410,11 +410,11 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Full Buganizer comment thread for bug 430018991, including the post-ship 'items reappear for a frame' regression's author, date, severity, and resolution/fix-CL status — not retrievable via the web reader; only a search-indexed snippet was available. This materially limits the support and implementationQuality scores.",
+      "Full Buganizer comment thread for bug 430018991, including the post-ship 'items reappear for a frame' regression's author, date, severity, and resolution/fix-CL status \u2014 not retrievable via the web reader; only a search-indexed snippet was available. This materially limits the support and implementationQuality scores.",
       "Whether the css-view-transitions-1 normative spec text edit (GitHub issue #12957 / the 'pending-done' algorithm) is merged; the CSSWG issue is still labeled 'Needs Edits'/Open and #12957 could not be retrieved (GitHub reader and API errors). This limits the interoperability and standards-maturity assessment.",
       "Whether Safari/WebKit shipped the matching finished-promise timing change; nt1m requested the spec edit to implement (2025-07-18) but deferred on 2025-10-02, and no WebKit shipping evidence was found via bounded search.",
-      "Gerrit review details for CL 6735828 (exact test files, reviewer objections) — page is JS-rendered and not extractable.",
-      "No exact feature-level adoption counter for the finished-promise timing change exists — only the broader ViewTransitions WebDX family counter (S12), which cannot be attributed to this fix; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence exists. Adoption is therefore described (family-level usage context) but unscored."
+      "Gerrit review details for CL 6735828 (exact test files, reviewer objections) \u2014 page is JS-rendered and not extractable.",
+      "No exact feature-level adoption counter for the finished-promise timing change exists \u2014 only the broader ViewTransitions WebDX family counter (S12), which cannot be attributed to this fix; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence exists. Adoption is therefore described (family-level usage context) but unscored."
     ],
     "reviewedAt": "2026-07-22T18:06:58Z"
   }

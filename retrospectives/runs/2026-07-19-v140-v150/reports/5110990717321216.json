@@ -53,7 +53,7 @@
     },
     "prototype": {
       "status": "partial",
-      "finding": "Intent to Prototype (Nov 2022) was approved: Chrome notifications OWNERS (Peter Beverloo, +Rayan Kanso, Peter Conn) were supportive and a Chromium implementation was built. But the original milestone estimate was M111 versus an actual OT start at M140 (off by ~29 versions / 3+ years), and at prototype time Mike West (Chrome security/privacy) and Thomas Nguyen explicitly warned the abuse model was underestimated and mitigations immature — issues that were not closed at this phase.",
+      "finding": "Intent to Prototype (Nov 2022) was approved: Chrome notifications OWNERS (Peter Beverloo, +Rayan Kanso, Peter Conn) were supportive and a Chromium implementation was built. But the original milestone estimate was M111 versus an actual OT start at M140 (off by ~29 versions / 3+ years), and at prototype time Mike West (Chrome security/privacy) and Thomas Nguyen explicitly warned the abuse model was underestimated and mitigations immature \u2014 issues that were not closed at this phase.",
       "evidenceIds": [
         "intent-proto",
         "cs-record"
@@ -72,7 +72,7 @@
     },
     "wideReview": {
       "status": "contradicted",
-      "finding": "Wide review is materially weak. TAG review is marked 'Not applicable' (API owner Domenic questioned this); the entry claims 'No interop and compat risk' which Domenic called 'unlikely, especially given that there are no signals from other vendors'; Firefox ('No signal', issue still Unscreened) and Safari ('No signal', 'Needs position') have given no position since Nov 2022; and both security_review_status and privacy_review_status were still 'Pending' as of Aug 2025 — nearly three years after Mike West's abuse flag.",
+      "finding": "Wide review is materially weak. TAG review is marked 'Not applicable' (API owner Domenic questioned this); the entry claims 'No interop and compat risk' which Domenic called 'unlikely, especially given that there are no signals from other vendors'; Firefox ('No signal', issue still Unscreened) and Safari ('No signal', 'Needs position') have given no position since Nov 2022; and both security_review_status and privacy_review_status were still 'Pending' as of Aug 2025 \u2014 nearly three years after Mike West's abuse flag.",
       "evidenceIds": [
         "intent-exp",
         "cs-record",
@@ -83,7 +83,7 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "Origin Trial approved (Intent to Experiment, Jun 2025) for M139-M141 and actually launched at M140 (announced Aug 5, 2025), running through M146 — an extension from a planned 3 milestones to 7. Explicit goals existed (developer ergonomics, action-button scenarios, general usage) and at least one strong attributable signal appeared (Matias Lopez, a B2B VoIP provider, requesting participation and giving concrete API/platform feedback). But no public readout, registration-vs-activation denominators, interim findings, or rationale for the milestone extension were published.",
+      "finding": "Origin Trial approved (Intent to Experiment, Jun 2025) for M139-M141 and actually launched at M140 (announced Aug 5, 2025), running through M146 \u2014 an extension from a planned 3 milestones to 7. Explicit goals existed (developer ergonomics, action-button scenarios, general usage) and at least one strong attributable signal appeared (Matias Lopez, a B2B VoIP provider, requesting participation and giving concrete API/platform feedback). But no public readout, registration-vs-activation denominators, interim findings, or rationale for the milestone extension were published.",
       "evidenceIds": [
         "intent-exp",
         "cs-record"
@@ -92,7 +92,7 @@
     },
     "prepareToShip": {
       "status": "unknown",
-      "finding": "A 'Prepare to ship' stage (intent_stage 5) exists in the record but is empty — no Intent to Ship thread, no rollout milestone, no Finch configuration. As of the cutoff no public 'Intent to Ship' for this feature could be found, and both security and privacy reviews remain 'Pending', which is consistent with the feature not having reached ship-readiness.",
+      "finding": "A 'Prepare to ship' stage (intent_stage 5) exists in the record but is empty \u2014 no Intent to Ship thread, no rollout milestone, no Finch configuration. As of the cutoff no public 'Intent to Ship' for this feature could be found, and both security and privacy reviews remain 'Pending', which is consistent with the feature not having reached ship-readiness.",
       "evidenceIds": [
         "cs-record",
         "intent-exp"
@@ -111,7 +111,7 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "A first-party origin-trial use counter is mapped for this feature (bucket 373, WebDXFeature::kDRAFT_IncomingCallNotifications; mapping confidence 'exact', scope 'origin-trial'), so Chrome usage telemetry does exist. However, the cached public timeline for bucket 373 is aliased to a different property ('DocumentImportNodeOptionalArgument'): all 623 points — first-positive 2014-05-06 (~1e-8%), peak 2014-10-05 (0.00000898%), latest 2023-11-09 (0%) — reflect that other property, which predates this API by years, and the series ends 2023-11-09, before the M140 origin trial began (2025-09-02). Every M140 launch checkpoint (atStable, day30, day90, day180) is null, so the counter does not measure Incoming Call Notifications usage. Beyond the counter, no attributable production adoption evidence exists: named targets in the explainer (Teams, Meet, Zoom) show no public integration, and the only concrete trial intent is Matias Lopez's stated interest to participate during M139-M141. Adjacent community posts (Reddit r/PWA, StackOverflow) confirm the underlying problem is felt but discuss workarounds, not this API.",
+      "finding": "A first-party origin-trial use counter is mapped for this feature (bucket 373, WebDXFeature::kDRAFT_IncomingCallNotifications; mapping confidence 'exact', scope 'origin-trial'), so Chrome usage telemetry does exist. However, the cached public timeline for bucket 373 is aliased to a different property ('DocumentImportNodeOptionalArgument'): all 623 points \u2014 first-positive 2014-05-06 (~1e-8%), peak 2014-10-05 (0.00000898%), latest 2023-11-09 (0%) \u2014 reflect that other property, which predates this API by years, and the series ends 2023-11-09, before the M140 origin trial began (2025-09-02). Every M140 launch checkpoint (atStable, day30, day90, day180) is null, so the counter does not measure Incoming Call Notifications usage. Beyond the counter, no attributable production adoption evidence exists: named targets in the explainer (Teams, Meet, Zoom) show no public integration, and the only concrete trial intent is Matias Lopez's stated interest to participate during M139-M141. Adjacent community posts (Reddit r/PWA, StackOverflow) confirm the underlying problem is felt but discuss workarounds, not this API.",
       "evidenceIds": [
         "intent-exp",
         "explainer",
@@ -130,7 +130,7 @@
       "limitations": "The MSEdgeExplainers feedback issues and the Chromium implementation issue (40246169) could not be loaded during retrieval, so individual feedback items are unverified."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable: this is a new, additive capability that has not shipped by default and is not being deprecated or removed. No reverse trial, migration, or removal plan is in scope.",
       "evidenceIds": [
         "cs-record"
@@ -152,7 +152,7 @@
     },
     "endUserImpact": {
       "status": "unscored",
-      "finding": "Intended end-user benefit (recognizing and answering calls faster) is plausible and is the explicit motivation, but no end-user impact evidence — missed-call reduction, answer-rate, accessibility, or user-control data — was produced or found. The trial was Windows-only behind registration.",
+      "finding": "Intended end-user benefit (recognizing and answering calls faster) is plausible and is the explicit motivation, but no end-user impact evidence \u2014 missed-call reduction, answer-rate, accessibility, or user-control data \u2014 was produced or found. The trial was Windows-only behind registration.",
       "evidenceIds": [
         "explainer",
         "cs-record"
@@ -172,7 +172,7 @@
     },
     "interoperability": {
       "status": "failure",
-      "finding": "Interoperability is the weakest dimension and has not improved over the feature's life: single-engine (Chromium/Edge), Windows-only, with 'No signal' from Firefox (issue Unscreened) and Safari ('Needs position') unchanged since Nov 2022; the WHATWG incubation issue still carries 'needs implementer interest'; WPT coverage is false; and the feature is not in Baseline — the web-features entry (Oct 2025) was opened speculatively ('I don't actually know a lot about this') and is still open.",
+      "finding": "Interoperability is the weakest dimension and has not improved over the feature's life: single-engine (Chromium/Edge), Windows-only, with 'No signal' from Firefox (issue Unscreened) and Safari ('Needs position') unchanged since Nov 2022; the WHATWG incubation issue still carries 'needs implementer interest'; WPT coverage is false; and the feature is not in Baseline \u2014 the web-features entry (Oct 2025) was opened speculatively ('I don't actually know a lot about this') and is still open.",
       "evidenceIds": [
         "moz-707",
         "webkit-89",
@@ -196,7 +196,7 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Communication assets are good in places — a thorough explainer with alternatives, a clear blog post, a demo, and consistent intent threads. But evidence hygiene is poor: the API owner flagged five ChromeStatus accuracy errors at OT approval (TAG 'N/A' unjustified, 'no interop risk' implausible, missing required Finch flag, missing OT milestones, email-vs-entry inconsistencies); the original milestone estimate (M111) was off by three years; security/privacy reviews stayed 'Pending'; and is_released:true is misleading.",
+      "finding": "Communication assets are good in places \u2014 a thorough explainer with alternatives, a clear blog post, a demo, and consistent intent threads. But evidence hygiene is poor: the API owner flagged five ChromeStatus accuracy errors at OT approval (TAG 'N/A' unjustified, 'no interop risk' implausible, missing required Finch flag, missing OT milestones, email-vs-entry inconsistencies); the original milestone estimate (M111) was off by three years; security/privacy reviews stayed 'Pending'; and is_released:true is misleading.",
       "evidenceIds": [
         "intent-exp",
         "intent-proto",
@@ -423,16 +423,16 @@
     {
       "id": "usage-ot-counter-373",
       "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=373",
-      "publisher": "Chrome Platform Status (Chromium) — use-counter timeline",
+      "publisher": "Chrome Platform Status (Chromium) \u2014 use-counter timeline",
       "publishedOrObservedAt": "2026-07-22T18:06:48Z",
       "retrievedAt": "2026-07-22T18:06:48Z",
       "sourceType": "usage",
       "supports": [
         "Origin-trial use counter bucket 373 (WebDXFeature::kDRAFT_IncomingCallNotifications) is mapped for this feature; mapping confidence 'exact', scope 'origin-trial' (not general feature adoption).",
-        "M140 origin-trial launch checkpoint (stableDate 2025-09-02) has null atStable/day30/day90/day180 values — no measured checkpoint at or after OT start.",
+        "M140 origin-trial launch checkpoint (stableDate 2025-09-02) has null atStable/day30/day90/day180 values \u2014 no measured checkpoint at or after OT start.",
         "Cached timeline summary: 623 points; first-positive 2014-05-06 (~1e-8% of measured Chrome HTTP/HTTPS page loads), peak 2014-10-05 (0.00000898%), latest 2023-11-09 (0%)."
       ],
-      "limitations": "Values are the share of measured Chrome HTTP/HTTPS page loads on which a counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. The cached public timeline for bucket 373 is aliased to a different property (property_name 'DocumentImportNodeOptionalArgument'): all 623 points, the 2014 first-positive/peak, and the 2023 tail reflect that other property, which predates Incoming Call Notifications by years. The series ends 2023-11-09, before the OT began (2025-09-02), and all M140 launch checkpoints are null, so the timeline does not measure this feature's usage."
+      "limitations": "Values are the share of measured Chrome HTTP/HTTPS page loads on which a counter fired \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. The cached public timeline for bucket 373 is aliased to a different property (property_name 'DocumentImportNodeOptionalArgument'): all 623 points, the 2014 first-positive/peak, and the 2023 tail reflect that other property, which predates Incoming Call Notifications by years. The series ends 2023-11-09, before the OT began (2025-09-02), and all M140 launch checkpoints are null, so the timeline does not measure this feature's usage."
     }
   ],
   "successes": [
@@ -442,17 +442,17 @@
     "Reasonable developer-trial kit at the Feb 2025 milestone: runnable Windows demo, flag instructions, and an open feedback channel."
   ],
   "failures": [
-    "Milestone estimate at Intent to Prototype was M111; the Origin Trial actually began at M140 — roughly three years and 29 versions late, with no revised plan communicated.",
+    "Milestone estimate at Intent to Prototype was M111; the Origin Trial actually began at M140 \u2014 roughly three years and 29 versions late, with no revised plan communicated.",
     "No other-engine movement in 3.5+ years: Firefox 'Unscreened', Safari 'Needs position', and the WHATWG incubation issue still labelled 'needs implementer interest'. The feature is single-engine and Windows-only.",
     "Security/abuse risk raised by Mike West and Thomas Nguyen in Nov 2022 was not closed: both security_review_status and privacy_review_status remained 'Pending' as of Aug 2025, which appears to gate default shipping.",
     "Evidence/metadata hygiene at OT approval: the API owner had to flag five ChromeStatus errors (unjustified TAG 'N/A', implausible 'no interop risk', missing required Finch flag, missing OT milestones, email-vs-entry inconsistencies).",
-    "Origin Trial extended from a planned 3 milestones (M139-M141) to 7 (M140-M146) with no public readout, registration/activation denominators, or published rationale. A first-party origin-trial counter (bucket 373) is mapped, but its cached public timeline is aliased to another property (DocumentImportNodeOptionalArgument) and shows null checkpoints for M140, so even the available telemetry cannot resolve actual use — the classic 'registrations reported as use' risk left unchecked.",
+    "Origin Trial extended from a planned 3 milestones (M139-M141) to 7 (M140-M146) with no public readout, registration/activation denominators, or published rationale. A first-party origin-trial counter (bucket 373) is mapped, but its cached public timeline is aliased to another property (DocumentImportNodeOptionalArgument) and shows null checkpoints for M140, so even the available telemetry cannot resolve actual use \u2014 the classic 'registrations reported as use' risk left unchecked.",
     "No web-platform-tests (wpt:false), no WHATWG spec text, and not in Baseline: the feature cannot be independently verified and has near-zero ecosystem visibility (the web-features entry was opened speculatively in Oct 2025)."
   ],
   "counterfactuals": [
     "If the team had answered Mike West's Nov 2022 abuse-mitigation ask with a concrete, reviewed abuse/quota/permission model instead of the explainer's 'the user can uninstall the PWA' fallback, security and privacy reviews likely would not still be 'Pending' in 2025, shortening the path to default availability.",
     "If a Mozilla and/or WebKit position had been actively pursued and obtained during the 2022-2024 incubation gap, the feature would not be framed as Chrome-only/Windows-only, and VoIP providers would face less adoption risk.",
-    "If Rick Byers' Dec 2022 suggestion had been adopted — ship a reduced Chrome UX (no ringtone, basic buttons) first while Edge pursued the full UX — Chrome could have delivered a safer subset to stable far earlier.",
+    "If Rick Byers' Dec 2022 suggestion had been adopted \u2014 ship a reduced Chrome UX (no ringtone, basic buttons) first while Edge pursued the full UX \u2014 Chrome could have delivered a safer subset to stable far earlier.",
     "If the Origin Trial had published interim usage/feedback readouts with denominators, the 3-to-7 milestone extension would be evidence-based rather than opaque, and adoption could be assessed instead of guessed.",
     "If an attributable production partner (e.g., Teams, Meet, or Zoom) had committed to trial, developer value and end-user impact would be defensible rather than unscored."
   ],

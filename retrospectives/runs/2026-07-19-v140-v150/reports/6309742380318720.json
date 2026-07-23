@@ -51,7 +51,7 @@
     },
     "prototype": {
       "status": "partial",
-      "finding": "Intent to Prototype was filed (Blink>ServiceWorker, finch name ServiceWorkerStaticRouterTimingInfo), design is additive ('only adds new fields... will not modify any existing fields' => no compatibility risk), and a WPT CL was in flight. But at prototype time Gecko/WebKit/Web developers were all 'No signal', TAG was 'Pending', and the explainer itself flagged workerRouterEvaluationStart as 'under discussion, and will not be included in the initial spec change' — i.e., the field set was not yet settled at prototype, yet workerRouterEvaluationStart later shipped (design/implementation drift from the explainer).",
+      "finding": "Intent to Prototype was filed (Blink>ServiceWorker, finch name ServiceWorkerStaticRouterTimingInfo), design is additive ('only adds new fields... will not modify any existing fields' => no compatibility risk), and a WPT CL was in flight. But at prototype time Gecko/WebKit/Web developers were all 'No signal', TAG was 'Pending', and the explainer itself flagged workerRouterEvaluationStart as 'under discussion, and will not be included in the initial spec change' \u2014 i.e., the field set was not yet settled at prototype, yet workerRouterEvaluationStart later shipped (design/implementation drift from the explainer).",
       "evidenceIds": [
         "s1",
         "s3",
@@ -82,7 +82,7 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "A justified Origin Trial ran: desktop/android/webview first 131, last 136, with third-party support, a use counter (kV8PerformanceResourceTiming_WorkerRouterEvaluationStart_AttributeGetter), feedback routed to GitHub #19 and a Google Doc, and stated goals to 'gather data on whether this provides enough information on debuggability.' The trial was then extended (stage 151, created 2025-05-07, desktop_last 139). However the extension's own rationale states the team 'haven't got enough feedback from partners yet as some minor issues had blocked partner OT participation' — i.e., the OT's primary goal (validate debuggability value with real partner data) was not demonstrably achieved in its original window, and the extension exists to retry gathering that evidence. Registrations/activation numbers and any interim readout were not found in public sources.",
+      "finding": "A justified Origin Trial ran: desktop/android/webview first 131, last 136, with third-party support, a use counter (kV8PerformanceResourceTiming_WorkerRouterEvaluationStart_AttributeGetter), feedback routed to GitHub #19 and a Google Doc, and stated goals to 'gather data on whether this provides enough information on debuggability.' The trial was then extended (stage 151, created 2025-05-07, desktop_last 139). However the extension's own rationale states the team 'haven't got enough feedback from partners yet as some minor issues had blocked partner OT participation' \u2014 i.e., the OT's primary goal (validate debuggability value with real partner data) was not demonstrably achieved in its original window, and the extension exists to retry gathering that evidence. Registrations/activation numbers and any interim readout were not found in public sources.",
       "evidenceIds": [
         "s1",
         "s12",
@@ -92,7 +92,7 @@
     },
     "prepareToShip": {
       "status": "partial",
-      "finding": "Intent to Ship was filed (stage 160, desktop/android first 140), rollout_plan is 'Will ship enabled for all users', enterprise_impact=1, breaking_change=false, and the feature shipped GA at Chrome 140 (desktop+android; WebView null). But security and privacy reviews were still 'Pending', specs were still incubating/pending, and the record carries no doc_links, sample_links, docs, or samples — so the ship packet lacks finalized docs, samples, and closed cross-functional reviews.",
+      "finding": "Intent to Ship was filed (stage 160, desktop/android first 140), rollout_plan is 'Will ship enabled for all users', enterprise_impact=1, breaking_change=false, and the feature shipped GA at Chrome 140 (desktop+android; WebView null). But security and privacy reviews were still 'Pending', specs were still incubating/pending, and the record carries no doc_links, sample_links, docs, or samples \u2014 so the ship packet lacks finalized docs, samples, and closed cross-functional reviews.",
       "evidenceIds": [
         "s1",
         "s2",
@@ -133,7 +133,7 @@
       "limitations": "Private OT feedback and any internal support tickets are not publicly visible."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable: this is a new, additive, non-breaking capability (feature_type 'New or changed feature', breaking_change=false, enterprise_impact=1). No deprecation, removal, reverse trial, or migration is involved. Used 'not-relevant' with rationale, not to mean untested.",
       "evidenceIds": [
         "s1"
@@ -214,7 +214,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, low-risk observability enhancement with positive Mozilla signal, WPT coverage, and a diligent multi-milestone OT — but it shipped Chrome-only with pending specs, pending security/privacy reviews, no dedicated docs/MDN/samples, design/explainer drift on workerRouterEvaluationStart, and an OT that did not gather sufficient partner evidence against its own stated goal. Success cannot be inferred from shipment, and material outcome evidence (adoption, usage, reviews) is missing, so the launch is mixed rather than successful.",
+      "finding": "A well-motivated, low-risk observability enhancement with positive Mozilla signal, WPT coverage, and a diligent multi-milestone OT \u2014 but it shipped Chrome-only with pending specs, pending security/privacy reviews, no dedicated docs/MDN/samples, design/explainer drift on workerRouterEvaluationStart, and an OT that did not gather sufficient partner evidence against its own stated goal. Success cannot be inferred from shipment, and material outcome evidence (adoption, usage, reviews) is missing, so the launch is mixed rather than successful.",
       "evidenceIds": [
         "s1",
         "s3",
@@ -436,11 +436,11 @@
     "WPT coverage added alongside implementation, supporting future interoperability."
   ],
   "failures": [
-    "The OT did not achieve its own stated goal — the extension rationale admits 'we haven't got enough feedback from partners yet as some minor issues had blocked partner OT participation,' so debuggability value was not validated with real partner data before the extension.",
+    "The OT did not achieve its own stated goal \u2014 the extension rationale admits 'we haven't got enough feedback from partners yet as some minor issues had blocked partner OT participation,' so debuggability value was not validated with real partner data before the extension.",
     "Documentation and communication gap for the sub-feature: no dedicated developer.chrome.com article, MDN omits all four new fields at cutoff, and the ChromeStatus record has no docs or samples; the parent-API article does not substitute.",
     "Security and privacy reviews were still 'Pending' at the record cutoff, leaving the prepare-to-ship/wide-review packet incomplete.",
     "Specs remain incubating/pending (resource-timing #415, fetch #1832) and the feature shipped Chrome-only with no other-engine implementation.",
-    "Design/explainer drift: the explainer states workerRouterEvaluationStart 'will not be included in the initial spec change,' yet it shipped — the explainer and spec lag the implementation."
+    "Design/explainer drift: the explainer states workerRouterEvaluationStart 'will not be included in the initial spec change,' yet it shipped \u2014 the explainer and spec lag the implementation."
   ],
   "counterfactuals": [
     "If the OT feedback instrument, token/header setup, and a representative partner onboarding dry-run had been validated before OT start, the 'minor issues [that] blocked partner OT participation' could have been caught earlier, avoiding the extension and producing real partner evidence by ship.",
@@ -450,8 +450,8 @@
     "If Mozilla's Positive position had been converted into an implementation signal (or if WebKit had been re-engaged after its No signal), the interoperability story at ship would be materially stronger."
   ],
   "skillImprovements": [
-    "Phase 05 (Experiment) transition packet: add a pre-OT readiness check — 'Were the feedback instrument, token/header setup, and a representative partner onboarding dry-run validated?' with a stop/redesign condition if no partner can complete onboarding. Add the static-routing-timing OT as a regression case for insufficient partner feedback.",
-    "Phase 06 (Prepare to ship): add a gate — 'Are security and privacy review statuses non-Pending before Intent to Ship?' Treat any Pending review as an explicitly accepted risk recorded in the ship brief, never as silence.",
+    "Phase 05 (Experiment) transition packet: add a pre-OT readiness check \u2014 'Were the feedback instrument, token/header setup, and a representative partner onboarding dry-run validated?' with a stop/redesign condition if no partner can complete onboarding. Add the static-routing-timing OT as a regression case for insufficient partner feedback.",
+    "Phase 06 (Prepare to ship): add a gate \u2014 'Are security and privacy review statuses non-Pending before Intent to Ship?' Treat any Pending review as an explicitly accepted risk recorded in the ship brief, never as silence.",
     "Phase 07 (Release): for additive timing/observability APIs, require a dedicated MDN entry, a devrel article or explicit section, and at least one runnable sample before GA; a parent-feature article must not count as sub-feature documentation. Add a docs-coverage regression check (MDN + developer.chrome.com reference) keyed off the ChromeStatus doc_links/sample_links fields being non-empty.",
     "Add a reconciliation rule: whenever a shipped field set diverges from the explainer (e.g., workerRouterEvaluationStart), require the explainer/spec to be updated and the divergence recorded before ship.",
     "Phase 08 (Adoption): for observability features, require a documented pre-ship plan to monitor use-counter growth and at least one attributable partner evaluation before adoption can be scored; absence of usage data must keep adoption 'unscored.'",

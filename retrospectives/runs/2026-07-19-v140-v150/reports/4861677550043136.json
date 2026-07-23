@@ -45,7 +45,7 @@
     },
     "prototype": {
       "status": "supported",
-      "finding": "A complete prototype landed: Chromium CL 7607639 (Commit-Queue: Virali Purbey; reviewed by Sejal Anand and Divyansh Mangal, Microsoft, and Fredrik Söderquist/Opera) plus WPT PR #58280 (merged 2026-03-05, +244 lines across 14 files). WPT coverage spans parsing (valid/invalid/computed values), inheritance, CSS interpolation, SVG <animate> on pathLength, rendering/distance, CSS-overrides-attribute, path-length:0 handling, and a textPath display:none edge case. ChromeStatus documents debuggability via DevTools computed style and parse-time rejection of invalid values.",
+      "finding": "A complete prototype landed: Chromium CL 7607639 (Commit-Queue: Virali Purbey; reviewed by Sejal Anand and Divyansh Mangal, Microsoft, and Fredrik S\u00f6derquist/Opera) plus WPT PR #58280 (merged 2026-03-05, +244 lines across 14 files). WPT coverage spans parsing (valid/invalid/computed values), inheritance, CSS interpolation, SVG <animate> on pathLength, rendering/distance, CSS-overrides-attribute, path-length:0 handling, and a textPath display:none edge case. ChromeStatus documents debuggability via DevTools computed style and parse-time rejection of invalid values.",
       "evidenceIds": [
         "s8",
         "s9",
@@ -75,7 +75,7 @@
       "limitations": "'No signal' must not be read as neutral/positive; the substantive Mozilla typing concern was effectively unresolved through the I2S."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial or runtime experiment stage was planned or conducted for this feature (feature_type 'Chromium catches up'; rollout_plan 'Will ship enabled for all users'; no OT fields populated). This is consistent with the feature only exposing existing pathLength behavior with no new capability and a Finch kill-switch (SvgPathLengthCssProperty) as the mitigation lever. Not-relevant is used here because no experiment phase was defined for this launch, not because testing was skipped.",
       "evidenceIds": [
         "s1"
@@ -129,7 +129,7 @@
       "limitations": "No production support baseline exists yet; future support burden is unmeasured."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new CSS property launch, not a deprecation, removal, or intervention. Existing attribute-only behavior is explicitly preserved when the feature is disabled, so there is no removal surface to review. Not-relevant is used because no deprecation/removal phase applies; it is not used to mean untested.",
       "evidenceIds": [
         "s1"
@@ -186,7 +186,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Strengths: follows the established SVG-geometry-property pattern; comprehensive WPT; cross-org review (Microsoft implementer, Microsoft + Opera reviewers, Google Blink landing); explicit preservation of pathLength=0 infinite-scaling semantics; Finch kill-switch. Weaknesses: the implementation targeted/shipped the <number> value type that the CSSWG subsequently reversed to <length> (resolved 2026-05-20, spec merged 2026-06-08) — a typing design error caught only after Mozilla flagged it during review and only after the I2S. The corrected implementation (CL 7870411) explicitly notes it is 'not shipped,' leaving the in-tree behavior momentarily divergent from the merged spec.",
+      "finding": "Strengths: follows the established SVG-geometry-property pattern; comprehensive WPT; cross-org review (Microsoft implementer, Microsoft + Opera reviewers, Google Blink landing); explicit preservation of pathLength=0 infinite-scaling semantics; Finch kill-switch. Weaknesses: the implementation targeted/shipped the <number> value type that the CSSWG subsequently reversed to <length> (resolved 2026-05-20, spec merged 2026-06-08) \u2014 a typing design error caught only after Mozilla flagged it during review and only after the I2S. The corrected implementation (CL 7870411) explicitly notes it is 'not shipped,' leaving the in-tree behavior momentarily divergent from the merged spec.",
       "evidenceIds": [
         "s8",
         "s9",
@@ -357,7 +357,7 @@
       "retrievedAt": "2026-07-19T00:00:00Z",
       "sourceType": "implementation",
       "supports": [
-        "number->length implementation CL; reviewed by Fredrik Söderquist (Opera); explicit statement 'The feature remains behind the experimental SvgPathLengthCssProperty flag and is not shipped'; value stored as Length with zoom handling"
+        "number->length implementation CL; reviewed by Fredrik S\u00f6derquist (Opera); explicit statement 'The feature remains behind the experimental SvgPathLengthCssProperty flag and is not shipped'; value stored as Length with zoom handling"
       ],
       "limitations": "CL page not directly renderable; commit message quoted via Firefox mirror; exact land date approximate."
     },
@@ -561,10 +561,10 @@
     "status": "partial",
     "missingEvidence": [
       "Definitive confirmation of whether path-length was enabled-by-default in Chrome 150 stable or remained behind the experimental SvgPathLengthCssProperty flag: official release notes say shipped, while implementation CL 7870411 and the MDN collector say not shipped; the Chromium tracking bug (crbug 40670251) and Finch config could not be rendered to confirm the flag default.",
-      "Usage/adoption data (use counters / webstatus.dev / HTTP Archive) — not available; webdx_usecounter_enum is null.",
+      "Usage/adoption data (use counters / webstatus.dev / HTTP Archive) \u2014 not available; webdx_usecounter_enum is null.",
       "Other-engine implementation status for the CSS property in Firefox and WebKit, and whether the underlying pathLength attribute renders in current WebKit.",
-      "Case studies, framework/library integration, or verified production deployments — none found.",
-      "Post-ship support issues and regressions — none exist yet because the feature is not cleanly confirmed in broad production.",
+      "Case studies, framework/library integration, or verified production deployments \u2014 none found.",
+      "Post-ship support issues and regressions \u2014 none exist yet because the feature is not cleanly confirmed in broad production.",
       "Exact Intent-to-Ship date and blink-dev approval/LGTM count could not be extracted."
     ],
     "reviewedAt": "2026-07-19T00:00:00Z"

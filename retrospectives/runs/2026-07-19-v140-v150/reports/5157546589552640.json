@@ -12,7 +12,7 @@
     "webFeature": "svg",
     "specLink": null,
     "starCount": 76,
-    "summary": "This change adds support for the path attribute on the SVG <textPath> element, allowing authors to define text path geometry inline using SVG path data and reducing the need for separately defined <path> elements.\n\n<textPath> resolves its text path geometry using the following rules:\n\n1. If both path and href are present, geometry is resolved from the path attribute.\n2. If only the path attribute is present and parses successfully, the inline path definition is used.\n3. If the path attribute is absent or fails to parse, and an href attribute is provided, the referenced <path> element is used as a fallback.\n4. Existing href‑only behavior is preserved without change.\n\nThis implementation follows the SVG 2 specification’s definition of the path attribute on <textPath>, and the resolution behavior is consistent with other browser engines, improving interoperability and standards compliance.\nNote: When both path and href are specified on <textPath>, path now takes precedence, per SVG 2 specification."
+    "summary": "This change adds support for the path attribute on the SVG <textPath> element, allowing authors to define text path geometry inline using SVG path data and reducing the need for separately defined <path> elements.\n\n<textPath> resolves its text path geometry using the following rules:\n\n1. If both path and href are present, geometry is resolved from the path attribute.\n2. If only the path attribute is present and parses successfully, the inline path definition is used.\n3. If the path attribute is absent or fails to parse, and an href attribute is provided, the referenced <path> element is used as a fallback.\n4. Existing href\u2011only behavior is preserved without change.\n\nThis implementation follows the SVG 2 specification\u2019s definition of the path attribute on <textPath>, and the resolution behavior is consistent with other browser engines, improving interoperability and standards compliance.\nNote: When both path and href are specified on <textPath>, path now takes precedence, per SVG 2 specification."
   },
   "launchEvents": [
     {
@@ -26,7 +26,7 @@
   "phaseReview": {
     "intake": {
       "status": "supported",
-      "finding": "ChromeStatus record (created 2026-01-27 by viralipurbey@microsoft.com). This change adds support for the path attribute on the SVG <textPath> element, allowing authors to define text path geometry inline using SVG path data and reducing the need for separately defined <path> elements.\n\n<textPath> resolves its text path geometry using the following rules:\n\n1. If both path and href are present, geometry is resolved from the path attribute.\n2. If only the path attribute is present and parses successfully, the inline path definition is used.\n3. If the path attribute is absent or fails to parse, and an href attribute is provided, the referenced <path> element is used as a fallback.\n4. Existing href‑only behavior is preserved without change.\n\nThis implementation follows the SVG 2 specification’s definition of the path attribute on <textPath>, and the resolution behavior is consistent with other browser engines, improving interoperability and standards compliance.\nNote: When both path and href are specified on <textPath>, path now takes precedence, per SVG 2 specification. Category: Miscellaneous. Blink component: Blink>SVG. Stars: 76.",
+      "finding": "ChromeStatus record (created 2026-01-27 by viralipurbey@microsoft.com). This change adds support for the path attribute on the SVG <textPath> element, allowing authors to define text path geometry inline using SVG path data and reducing the need for separately defined <path> elements.\n\n<textPath> resolves its text path geometry using the following rules:\n\n1. If both path and href are present, geometry is resolved from the path attribute.\n2. If only the path attribute is present and parses successfully, the inline path definition is used.\n3. If the path attribute is absent or fails to parse, and an href attribute is provided, the referenced <path> element is used as a fallback.\n4. Existing href\u2011only behavior is preserved without change.\n\nThis implementation follows the SVG 2 specification\u2019s definition of the path attribute on <textPath>, and the resolution behavior is consistent with other browser engines, improving interoperability and standards compliance.\nNote: When both path and href are specified on <textPath>, path now takes precedence, per SVG 2 specification. Category: Miscellaneous. Blink component: Blink>SVG. Stars: 76.",
       "evidenceIds": [
         "S1"
       ],
@@ -152,8 +152,7 @@
       "status": "partial",
       "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
       "evidenceIds": [
-        "S1",
-        "S2"
+        "S1"
       ],
       "limitations": ""
     }

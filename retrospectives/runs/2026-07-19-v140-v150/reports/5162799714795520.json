@@ -48,7 +48,7 @@
     },
     "prototype": {
       "status": "partial",
-      "finding": "Prototype work is evidenced: an Intent to Prototype was filed (thread URL in the cached record and referenced as 'Links to previous Intent discussions' in the I2Ship), the WPT runtime flag and property parsing landed 2024-08-01 (chromium-wpt-export-bot, 'Nested view transition: runtime flag & parsing'), and the spec was written in parallel. The design iterated substantially through this phase — the original 'view-transition-tree: preserve|flatten' + 'view-transition-parent' proposal was replaced by a single 'view-transition-group: normal|contain|nearest|<custom-ident>' property — which is normal for incubation but means the shipped API differs from the initial prototype shape.",
+      "finding": "Prototype work is evidenced: an Intent to Prototype was filed (thread URL in the cached record and referenced as 'Links to previous Intent discussions' in the I2Ship), the WPT runtime flag and property parsing landed 2024-08-01 (chromium-wpt-export-bot, 'Nested view transition: runtime flag & parsing'), and the spec was written in parallel. The design iterated substantially through this phase \u2014 the original 'view-transition-tree: preserve|flatten' + 'view-transition-parent' proposal was replaced by a single 'view-transition-group: normal|contain|nearest|<custom-ident>' property \u2014 which is normal for incubation but means the shipped API differs from the initial prototype shape.",
       "evidenceIds": [
         "s-chromestatus",
         "s-csswg10334",
@@ -58,8 +58,8 @@
       "limitations": "The Intent to Prototype Google Groups thread content could not be retrieved (repeated reader timeouts/network errors); only its existence and reference are confirmed. No public friction log or prototype demo inventory was found."
     },
     "developerTrials": {
-      "status": "not-relevant",
-      "finding": "No developer trial (behind-a-flag) stage exists in the manifest or cached record; the lifecycle went from Intent to Prototype directly to Intent to Ship and default-on in M140. The 'NestedViewTransition' flag existed only for local/runtime testing. Not-relevant because no formal DT cohort/recruitment was conducted or recorded — but this absence is itself a noted gap (see skillImprovements), not a sign the design was untested.",
+      "status": "not relevant",
+      "finding": "No developer trial (behind-a-flag) stage exists in the manifest or cached record; the lifecycle went from Intent to Prototype directly to Intent to Ship and default-on in M140. The 'NestedViewTransition' flag existed only for local/runtime testing. Not-relevant because no formal DT cohort/recruitment was conducted or recorded \u2014 but this absence is itself a noted gap (see skillImprovements), not a sign the design was untested.",
       "evidenceIds": [
         "s-chromestatus",
         "s-i2ship",
@@ -69,7 +69,7 @@
     },
     "wideReview": {
       "status": "partial",
-      "finding": "Wide review was materially incomplete at ship. The CSSWG resolved the design (issue #10334 closed, spec merged) and web-developper signal was recorded as 'Positive'. However all three external reviews were unresolved: the TAG review (#1061) was CLOSED as 'Resolution: timed out — The TAG has requested additional information but has not received it'; Mozilla (#1183) remains Open with project status 'Needs proposed position' (assigned to emilio) i.e. no signal; WebKit (#466) remains Open with no position (assigned to mattwoodrow/nt1m) i.e. no signal. The Intent to Ship (2025-02-26) itself listed TAG status as 'Pending' and Gecko/WebKit as 'No signal'. Per the method, silence is not converted to support; the feature shipped into a Chromium-only interop position without TAG closure.",
+      "finding": "Wide review was materially incomplete at ship. The CSSWG resolved the design (issue #10334 closed, spec merged) and web-developper signal was recorded as 'Positive'. However all three external reviews were unresolved: the TAG review (#1061) was CLOSED as 'Resolution: timed out \u2014 The TAG has requested additional information but has not received it'; Mozilla (#1183) remains Open with project status 'Needs proposed position' (assigned to emilio) i.e. no signal; WebKit (#466) remains Open with no position (assigned to mattwoodrow/nt1m) i.e. no signal. The Intent to Ship (2025-02-26) itself listed TAG status as 'Pending' and Gecko/WebKit as 'No signal'. Per the method, silence is not converted to support; the feature shipped into a Chromium-only interop position without TAG closure.",
       "evidenceIds": [
         "s-tag1061",
         "s-mozilla1183",
@@ -81,8 +81,8 @@
       "limitations": "Positions were requested relatively late (all three opened 2025-02-26). It is unknown whether earlier engagement would have changed outcomes; the 'No signal' states are honestly disclosed in primary sources."
     },
     "experiment": {
-      "status": "not-relevant",
-      "finding": "No Origin Trial was conducted. The cached record shows origintrial=false with no OT stage, no experiment goals/risks, and the feature shipped directly to default-on. Not-relevant because there was no field experiment — justified by the feature being a non-breaking, feature-detectable CSS addition that degrades to existing flat view transitions, so field risk was low. No OT feedback URL exists.",
+      "status": "not relevant",
+      "finding": "No Origin Trial was conducted. The cached record shows origintrial=false with no OT stage, no experiment goals/risks, and the feature shipped directly to default-on. Not-relevant because there was no field experiment \u2014 justified by the feature being a non-breaking, feature-detectable CSS addition that degrades to existing flat view transitions, so field risk was low. No OT feedback URL exists.",
       "evidenceIds": [
         "s-chromestatus",
         "s-i2ship",
@@ -92,7 +92,7 @@
     },
     "prepareToShip": {
       "status": "partial",
-      "finding": "Intent to Ship (2025-02-26, nrosenthal/vmpstr) received multiple LGTMs (Chris Harrelson 'LGTM1' 2025-03-05; Mike Taylor 'LGTM2' 2025-03-10; further review by Yoav Weiss 2025-03-12) and disclosed Gecko/WebKit 'No signal' and web-dev 'Positive' honestly. Three material weaknesses: (1) the I2Ship estimated shipping on desktop/Android/WebView in milestone 136, but the feature actually shipped in milestone 140 — a ~4-month slip with no public explanation found; (2) a genuine WPT interop-quality issue surfaced during review: Noam Rosenthal acknowledged 'those tests pass when there is no view-transition support at all and fail when there is view-transition support without this additional feature on top', and both Harrelson and Mike Taylor asked to improve the tests (Taylor: add 'assert_true(CSS.supports(\"selector(::view-transition)\"))'); (3) ship proceeded with TAG/Mozilla/WebKit all unresolved. Measurement = 'Use counted as a CSS property'.",
+      "finding": "Intent to Ship (2025-02-26, nrosenthal/vmpstr) received multiple LGTMs (Chris Harrelson 'LGTM1' 2025-03-05; Mike Taylor 'LGTM2' 2025-03-10; further review by Yoav Weiss 2025-03-12) and disclosed Gecko/WebKit 'No signal' and web-dev 'Positive' honestly. Three material weaknesses: (1) the I2Ship estimated shipping on desktop/Android/WebView in milestone 136, but the feature actually shipped in milestone 140 \u2014 a ~4-month slip with no public explanation found; (2) a genuine WPT interop-quality issue surfaced during review: Noam Rosenthal acknowledged 'those tests pass when there is no view-transition support at all and fail when there is view-transition support without this additional feature on top', and both Harrelson and Mike Taylor asked to improve the tests (Taylor: add 'assert_true(CSS.supports(\"selector(::view-transition)\"))'); (3) ship proceeded with TAG/Mozilla/WebKit all unresolved. Measurement = 'Use counted as a CSS property'.",
       "evidenceIds": [
         "s-i2ship",
         "s-chromestatus",
@@ -105,7 +105,7 @@
     },
     "release": {
       "status": "supported",
-      "finding": "Shipped enabled-by-default in Chrome 140 (Early Stable 2025-08-27, Stable 2025-09-02) on desktop, Android and WebView (NOT iOS, consistent with view-transitions not being on iOS). Release communication is accurate and coherent: developer.chrome.com published a guide ('Prevent clipping issues (and more) in View Transitions by using Nested View Transition Groups'), the DevRel blog 'What's new in view transitions (2025 update)' (2025-10-08) states 'Nested view transition groups are available from Chrome 140', and an independent practitioner guide (bram.us, 2025-09-24) demonstrates real effects. Claims match actual rollout scope. Note: the WICG explainer's phrase 'shipped in Mar 2025' is imprecise — it points to the I2Ship LGTM thread, not stable availability.",
+      "finding": "Shipped enabled-by-default in Chrome 140 (Early Stable 2025-08-27, Stable 2025-09-02) on desktop, Android and WebView (NOT iOS, consistent with view-transitions not being on iOS). Release communication is accurate and coherent: developer.chrome.com published a guide ('Prevent clipping issues (and more) in View Transitions by using Nested View Transition Groups'), the DevRel blog 'What's new in view transitions (2025 update)' (2025-10-08) states 'Nested view transition groups are available from Chrome 140', and an independent practitioner guide (bram.us, 2025-09-24) demonstrates real effects. Claims match actual rollout scope. Note: the WICG explainer's phrase 'shipped in Mar 2025' is imprecise \u2014 it points to the I2Ship LGTM thread, not stable availability.",
       "evidenceIds": [
         "s-chromestatus",
         "s-devrel-blog",
@@ -118,7 +118,7 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "Nested-groups-specific adoption remains unmeasurable, but a Chrome usage source now exists for the surrounding capability family. The only mapped counter is the WebFeature 'view-transitions' family counter ViewTransitions (bucket_id 2), mapping scope web-feature-family (confidence: declared-family) — NOT an exact counter for nested view transition groups. Critically, it was already firing before nested groups shipped (first observed positive 2024-06-10 at 0.000051%), so it cannot isolate nested-groups adoption from base view-transitions usage; it is an upper bound only. As family-level context, the counter fired on the following share of measured Chrome HTTP/HTTPS page loads: at M140 stable (2025-09-02) 0.00231316%, day30 (2025-10-02) 0.00165856%, day90 (2025-12-01) 0.00523687%, day180 (2026-03-01) 0.00610281%, peaking 0.00758282% (2026-04-04), latest 0.0052774% (2026-07-20). None of this is nested-groups adoption, unique-site reach, production deployment, task success, satisfaction, or end-user benefit. There is still no exact counter, no attributable production case study, and no predeclared adoption target. Adoption is structurally constrained by Chrome-only availability (caniuse/MDN browser-compat-data mid-2026: Chromium-only). Community/educational content (bram.us, LogRocket, piccalil.li, YouTube '089: View transitions') and React core's <ViewTransition> (base VT, not nested groups) are not adoption evidence.",
+      "finding": "Nested-groups-specific adoption remains unmeasurable, but a Chrome usage source now exists for the surrounding capability family. The only mapped counter is the WebFeature 'view-transitions' family counter ViewTransitions (bucket_id 2), mapping scope web-feature-family (confidence: declared-family) \u2014 NOT an exact counter for nested view transition groups. Critically, it was already firing before nested groups shipped (first observed positive 2024-06-10 at 0.000051%), so it cannot isolate nested-groups adoption from base view-transitions usage; it is an upper bound only. As family-level context, the counter fired on the following share of measured Chrome HTTP/HTTPS page loads: at M140 stable (2025-09-02) 0.00231316%, day30 (2025-10-02) 0.00165856%, day90 (2025-12-01) 0.00523687%, day180 (2026-03-01) 0.00610281%, peaking 0.00758282% (2026-04-04), latest 0.0052774% (2026-07-20). None of this is nested-groups adoption, unique-site reach, production deployment, task success, satisfaction, or end-user benefit. There is still no exact counter, no attributable production case study, and no predeclared adoption target. Adoption is structurally constrained by Chrome-only availability (caniuse/MDN browser-compat-data mid-2026: Chromium-only). Community/educational content (bram.us, LogRocket, piccalil.li, YouTube '089: View transitions') and React core's <ViewTransition> (base VT, not nested groups) are not adoption evidence.",
       "evidenceIds": [
         "s-caniuse",
         "s-devrel-blog",
@@ -130,7 +130,7 @@
     },
     "support": {
       "status": "unknown",
-      "finding": "Insufficient public support evidence. A tracking bug exists (issuetracker.google.com/399431227) but is auth-gated and could not be read; no public issue taxonomy, recurrence or resolution-time data was found. The I2Ship states the feature is 'debuggable same as View Transitions (the pseudo tree) and as other CSS properties (view-transition-group property)' and DevTools gained view-transition-class pseudo inspection in Chrome 139. Progressive-enhancement behaviour (degrades to flat VT in unsupported browsers, feature-detectable) limits — but does not eliminate — support risk. The real-world problem it solves is independently visible (Stack Overflow 'overflow is ignored').",
+      "finding": "Insufficient public support evidence. A tracking bug exists (issuetracker.google.com/399431227) but is auth-gated and could not be read; no public issue taxonomy, recurrence or resolution-time data was found. The I2Ship states the feature is 'debuggable same as View Transitions (the pseudo tree) and as other CSS properties (view-transition-group property)' and DevTools gained view-transition-class pseudo inspection in Chrome 139. Progressive-enhancement behaviour (degrades to flat VT in unsupported browsers, feature-detectable) limits \u2014 but does not eliminate \u2014 support risk. The real-world problem it solves is independently visible (Stack Overflow 'overflow is ignored').",
       "evidenceIds": [
         "s-chromestatus",
         "s-i2ship",
@@ -140,7 +140,7 @@
       "limitations": "Tracking bug not retrievable; no public support-volume or regression data; 'no evidence of burden' is not evidence of low burden."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Brand-new additive CSS feature; no deprecation, removal, restriction or replacement is in scope. Not-relevant because the feature is being adopted, not retired. No reverse trial, policy, or removal plan applies.",
       "evidenceIds": [
         "s-chromestatus",
@@ -175,7 +175,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Unscored. No predeclared adoption target exists (I2Ship measurement is 'Use counted as a CSS property' with no threshold), and there is no corroborating production or retention evidence, so per the method the outcome is not scored as success, failure, or mixed. The only telemetry is the WebFeature view-transitions family counter (bucket_id 2), which is an upper bound, not a nested-groups measurement — it was firing before nested groups shipped (first positive 2024-06-10). For context the family counter was ~0.0023% of measured Chrome HTTP/HTTPS page loads at M140 stable (2025-09-02), ~0.0017% at day30, ~0.0052% at day90, ~0.0061% at day180, peaking ~0.0076% (2026-04-04), latest ~0.0053% (2026-07-20) — low single-digit-thousandths of a percent, generally trending up for the family. These bound but do not quantify nested-groups adoption; per the method low or high family usage is not, by itself, success or failure for the feature, and mixed is not a substitute for an absent threshold. Chrome-only availability (caniuse mid-2026) makes broad adoption structurally unlikely so far. Scored unscored rather than success/failure/mixed (do not infer from shipment, usage alone, or press sentiment).",
+      "finding": "Unscored. No predeclared adoption target exists (I2Ship measurement is 'Use counted as a CSS property' with no threshold), and there is no corroborating production or retention evidence, so per the method the outcome is not scored as success, failure, or mixed. The only telemetry is the WebFeature view-transitions family counter (bucket_id 2), which is an upper bound, not a nested-groups measurement \u2014 it was firing before nested groups shipped (first positive 2024-06-10). For context the family counter was ~0.0023% of measured Chrome HTTP/HTTPS page loads at M140 stable (2025-09-02), ~0.0017% at day30, ~0.0052% at day90, ~0.0061% at day180, peaking ~0.0076% (2026-04-04), latest ~0.0053% (2026-07-20) \u2014 low single-digit-thousandths of a percent, generally trending up for the family. These bound but do not quantify nested-groups adoption; per the method low or high family usage is not, by itself, success or failure for the feature, and mixed is not a substitute for an absent threshold. Chrome-only availability (caniuse mid-2026) makes broad adoption structurally unlikely so far. Scored unscored rather than success/failure/mixed (do not infer from shipment, usage alone, or press sentiment).",
       "evidenceIds": [
         "s-caniuse",
         "s-i2ship",
@@ -186,7 +186,7 @@
     },
     "interoperability": {
       "status": "failure",
-      "finding": "Decisive interoperability failure as of the evidence cutoff (~10 months post-ship). caniuse/MDN browser-compat-data shows view-transition-group supported only in Chromium browsers (Chrome/Edge/Opera/Chrome-Android/Android-Browser from 140/124/143) and explicitly NOT supported in Firefox (through 149), Safari (through 26.3, TP unknown), Safari iOS, Firefox for Android, and Samsung Internet (through 29). The TAG review timed out, Mozilla's position is 'Needs proposed position' (no signal), and WebKit's issue is open with no signal. Base view transitions reached Baseline in late 2025 (Firefox 144 same-document VT; Safari Dec 2024) but the nested-groups extension did not — a clear Chrome-only period with no other-engine implementation or positive signal.",
+      "finding": "Decisive interoperability failure as of the evidence cutoff (~10 months post-ship). caniuse/MDN browser-compat-data shows view-transition-group supported only in Chromium browsers (Chrome/Edge/Opera/Chrome-Android/Android-Browser from 140/124/143) and explicitly NOT supported in Firefox (through 149), Safari (through 26.3, TP unknown), Safari iOS, Firefox for Android, and Samsung Internet (through 29). The TAG review timed out, Mozilla's position is 'Needs proposed position' (no signal), and WebKit's issue is open with no signal. Base view transitions reached Baseline in late 2025 (Firefox 144 same-document VT; Safari Dec 2024) but the nested-groups extension did not \u2014 a clear Chrome-only period with no other-engine implementation or positive signal.",
       "evidenceIds": [
         "s-caniuse",
         "s-tag1061",
@@ -199,7 +199,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Clean, minimal API surface (one new property, normal|contain|nearest|<custom-ident>, plus a later ::view-transition-group-children pseudo) that is feature-detectable and degrades gracefully; spec is a Working Draft co-edited by four Google editors with full algorithms (spec section 9.7) and WPT coverage linked. Against this: (a) the I2Ship estimated milestone 136 but shipped in 140 (~4-month slip) with no public explanation; (b) a real WPT test-quality defect was flagged at I2Ship — nested tests passed on Firefox trivially because Firefox had no view-transition support at all, prompting LGTM-givers to ask for an explicit support guard; (c) the API continued to evolve after ship (the post-ship bram.us guide and element-scoped-transitions docs describe contain/nearest and ::view-transition-group-children behaviour beyond the Nov-2024 spec snapshot).",
+      "finding": "Clean, minimal API surface (one new property, normal|contain|nearest|<custom-ident>, plus a later ::view-transition-group-children pseudo) that is feature-detectable and degrades gracefully; spec is a Working Draft co-edited by four Google editors with full algorithms (spec section 9.7) and WPT coverage linked. Against this: (a) the I2Ship estimated milestone 136 but shipped in 140 (~4-month slip) with no public explanation; (b) a real WPT test-quality defect was flagged at I2Ship \u2014 nested tests passed on Firefox trivially because Firefox had no view-transition support at all, prompting LGTM-givers to ask for an explicit support guard; (c) the API continued to evolve after ship (the post-ship bram.us guide and element-scoped-transitions docs describe contain/nearest and ::view-transition-group-children behaviour beyond the Nov-2024 spec snapshot).",
       "evidenceIds": [
         "s-spec",
         "s-i2ship",
@@ -235,7 +235,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, cleanly designed, additive CSS feature that solves a real, developer-confirmed problem and shipped with honest disclosure and good DevRel comms — but it is decisively Chrome/Chromium-only with no other-engine implementation or positive signal ~10 months after ship, shipped with the TAG review unresolved (timed out) and all external positions at 'no signal', slipped ~4 months from its I2Ship estimate, and carried a flagged WPT test-quality caveat at review. Real problem solved, real interop deficit, real process gaps. Overall mixed; the interoperability dimension is a failure that overall status must not hide.",
+      "finding": "A well-motivated, cleanly designed, additive CSS feature that solves a real, developer-confirmed problem and shipped with honest disclosure and good DevRel comms \u2014 but it is decisively Chrome/Chromium-only with no other-engine implementation or positive signal ~10 months after ship, shipped with the TAG review unresolved (timed out) and all external positions at 'no signal', slipped ~4 months from its I2Ship estimate, and carried a flagged WPT test-quality caveat at review. Real problem solved, real interop deficit, real process gaps. Overall mixed; the interoperability dimension is a failure that overall status must not hide.",
       "evidenceIds": [
         "s-csswg10334",
         "s-explainer",
@@ -368,7 +368,7 @@
       "retrievedAt": "2026-07-22T14:00:00Z",
       "sourceType": "press",
       "supports": [
-        "'Nested view transition groups are available from Chrome 140'; base same-document VT about to become Baseline via Firefox 144 (Oct 14 2025) — but nested groups shown as Chrome 140 / Firefox not supported; React core <ViewTransition> for base VT; DevTools view-transition-class inspection in Chrome 139"
+        "'Nested view transition groups are available from Chrome 140'; base same-document VT about to become Baseline via Firefox 144 (Oct 14 2025) \u2014 but nested groups shown as Chrome 140 / Firefox not supported; React core <ViewTransition> for base VT; DevTools view-transition-class inspection in Chrome 139"
       ],
       "limitations": "DevRel/marketing source; confirms milestone and Chrome-only status of nested groups but is not independent adoption evidence."
     },
@@ -459,17 +459,17 @@
     {
       "id": "s-wf-family-counter",
       "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=2",
-      "publisher": "Chrome Platform Status — WebFeature popularity timeline (Chrome UseCounter / UMA), property ViewTransitions, bucket_id 2",
+      "publisher": "Chrome Platform Status \u2014 WebFeature popularity timeline (Chrome UseCounter / UMA), property ViewTransitions, bucket_id 2",
       "publishedOrObservedAt": "2026-07-20",
       "retrievedAt": "2026-07-22T18:07:00Z",
       "sourceType": "usage",
       "supports": [
-        "Mapping is web-feature-family (confidence: declared-family) for web_feature 'view-transitions' normalizing to WebFeature counter ViewTransitions (bucket_id 2) — NOT an exact counter for nested view transition groups; it is the broader view-transitions family counter.",
+        "Mapping is web-feature-family (confidence: declared-family) for web_feature 'view-transitions' normalizing to WebFeature counter ViewTransitions (bucket_id 2) \u2014 NOT an exact counter for nested view transition groups; it is the broader view-transitions family counter.",
         "Counter was already positive before nested groups shipped: first observed positive 2024-06-10 at 0.000051% day_percentage, so the timeline cannot isolate nested-groups adoption from base view-transitions usage (upper bound only).",
         "Launch-relative checkpoints (M140 Enabled by default, stable 2025-09-02), day_percentage = share of measured Chrome HTTP/HTTPS page loads where the counter fired: atStable 0.00231316% (2025-09-02); day30 0.00165856% (2025-10-02); day90 0.00523687% (2025-12-01); day180 0.00610281% (2026-03-01).",
         "Peak 0.00758282% (2026-04-04); latest 0.0052774% (2026-07-20); 578 timeline points. Timeline cached with sha256 0d7ee6d0c10d1499e28574e0cf0f3cad5658a433f370cfdee0f5366295fd6100."
       ],
-      "limitations": "Family counter, not exact nested-groups adoption — provides an upper bound only and was firing before the feature shipped, so it is non-informative about nested-groups adoption specifically. Values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired, not unique developers/sites/users, not task success, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented. Counter instrumentation may include detection/probing. Retrieved after the main 14:00Z evidence cutoff but all data points predate it (latest 2026-07-20)."
+      "limitations": "Family counter, not exact nested-groups adoption \u2014 provides an upper bound only and was firing before the feature shipped, so it is non-informative about nested-groups adoption specifically. Values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired, not unique developers/sites/users, not task success, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented. Counter instrumentation may include detection/probing. Retrieved after the main 14:00Z evidence cutoff but all data points predate it (latest 2026-07-20)."
     }
   ],
   "successes": [
@@ -482,7 +482,7 @@
   "failures": [
     "Interoperability failure: Chromium-only ~10 months post-ship; no Firefox, Safari, or Samsung Internet support and no positive signal from any non-Chromium engine (caniuse/MDN browser-compat-data).",
     "TAG review timed out ('requested additional information not received') and the feature shipped without TAG closure; Mozilla ('Needs proposed position') and WebKit (open, no position) also unresolved at ship.",
-    "Milestone slip: I2Ship estimated milestone 136 (~May 2025) but shipped in milestone 140 (Aug/Sep 2025) — ~4 months — with no public explanation found.",
+    "Milestone slip: I2Ship estimated milestone 136 (~May 2025) but shipped in milestone 140 (Aug/Sep 2025) \u2014 ~4 months \u2014 with no public explanation found.",
     "WPT test-quality defect flagged at I2Ship: nested tests passed on Firefox only because Firefox had no view-transition support at all; LGTM-givers asked for an explicit support guard.",
     "MDN documentation gap: no human-readable page for the view-transition-group CSS property at retrieval time."
   ],
@@ -495,8 +495,8 @@
   ],
   "skillImprovements": [
     "prepareToShip transition packet: add an explicit gate that a TAG review must not be open/timed-out at I2Ship; if it is, require an owner and ETA to respond, or an explicit 'TAG risk accepted' sign-off recorded in the claim ledger.",
-    "wideReview module: add a rule that when all three external positions (TAG/Mozilla/WebKit) are unresolved at I2Ship, the ship must carry an explicit 'interop risk accepted (Chrome-only period)' statement and a Baseline-path plan, and the retrospective must score interoperability accordingly — never silently treat 'No signal' as neutral.",
-    "prototype/prepareToShip: add a WPT test-quality checklist item — tests for a feature layered on another feature must assert the underlying feature is supported before asserting the layered behaviour (avoid false-pass on unsupported engines). Add this as a regression eval.",
+    "wideReview module: add a rule that when all three external positions (TAG/Mozilla/WebKit) are unresolved at I2Ship, the ship must carry an explicit 'interop risk accepted (Chrome-only period)' statement and a Baseline-path plan, and the retrospective must score interoperability accordingly \u2014 never silently treat 'No signal' as neutral.",
+    "prototype/prepareToShip: add a WPT test-quality checklist item \u2014 tests for a feature layered on another feature must assert the underlying feature is supported before asserting the layered behaviour (avoid false-pass on unsupported engines). Add this as a regression eval.",
     "Retrospective method: treat I2Ship-estimated milestone vs. actual ship milestone as a launch-quality signal; flag slips >=2 milestones for explanation in the report.",
     "release module: add an MDN/documentation-readiness check (canonical reference page exists for the shipped property/API before/at ship) to the prepare-to-ship and release packets.",
     "incubation module: encourage earlier (pre-spec) cross-engine position requests for features that extend a recently-Baselined capability, to reduce Chrome-only periods.",
@@ -505,9 +505,9 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "No exact/public counter for nested view transition groups: the only mapped Chrome usage telemetry is the broader WebFeature 'view-transitions' family counter (ViewTransitions, bucket_id 2), which was firing before the feature shipped and provides only an upper bound — so nested-groups-specific adoption is unmeasurable from public telemetry and the adoption outcome stays unscored.",
+      "No exact/public counter for nested view transition groups: the only mapped Chrome usage telemetry is the broader WebFeature 'view-transitions' family counter (ViewTransitions, bucket_id 2), which was firing before the feature shipped and provides only an upper bound \u2014 so nested-groups-specific adoption is unmeasurable from public telemetry and the adoption outcome stays unscored.",
       "No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared adoption-target evidence for nested groups.",
-      "Tracking bug issuetracker.google.com/399431227 content (auth-gated; not retrievable) — support dimension remains unscored.",
+      "Tracking bug issuetracker.google.com/399431227 content (auth-gated; not retrievable) \u2014 support dimension remains unscored.",
       "Live WPT pass-rate matrix (wpt.fyi dashboard is JS-rendered; only a shell was retrieved). The I2Ship qualitative WPT caveat is used as the primary test-quality signal.",
       "Intent to Prototype Google Groups thread body (repeated reader timeouts/network errors); only its existence and cross-reference from the I2Ship are confirmed. CSSWG/WPT-commit evidence covers the prototype phase.",
       "Any attributable production case studies or partner deployments (none found)."

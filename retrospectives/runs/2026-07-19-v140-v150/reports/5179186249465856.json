@@ -8,7 +8,7 @@
     "blinkComponents": [
       "Blink>FeaturePolicy"
     ],
-    "summary": "A Permissions-Policy that lets embedders block programmatic focus (element.focus(), autofocus, window.focus(), dialog.showModal(), popover focusing) from embedded content unless triggered by user activation; user-initiated focus is never affected; default resolved at TPAC 2024 to 'self' (disabled for cross-origin frames); supports parent→child focus delegation.",
+    "summary": "A Permissions-Policy that lets embedders block programmatic focus (element.focus(), autofocus, window.focus(), dialog.showModal(), popover focusing) from embedded content unless triggered by user activation; user-initiated focus is never affected; default resolved at TPAC 2024 to 'self' (disabled for cross-origin frames); supports parent\u2192child focus delegation.",
     "owners": [
       "ekaramad@chromium.org",
       "iclelland@chromium.org",
@@ -40,7 +40,7 @@
     },
     "incubation": {
       "status": "supported",
-      "finding": "Use cases, non-goals, and alternatives were thoroughly worked out: sandbox-vs-permissions-policy tradeoff, naming polarity (positive 'focus-without-user-activation' over 'disallow-programmatic-focus'), default-allowlist choice, and the Teams/Outlook/Copilot focus-delegation pattern. Co-design spanned W3C WebAppSec, WHATWG, Chromium and (later) Microsoft. However the proposal then sat largely dormant for ~5 years (2019–2024) without an explicit ship-or-stop decision.",
+      "finding": "Use cases, non-goals, and alternatives were thoroughly worked out: sandbox-vs-permissions-policy tradeoff, naming polarity (positive 'focus-without-user-activation' over 'disallow-programmatic-focus'), default-allowlist choice, and the Teams/Outlook/Copilot focus-delegation pattern. Co-design spanned W3C WebAppSec, WHATWG, Chromium and (later) Microsoft. However the proposal then sat largely dormant for ~5 years (2019\u20132024) without an explicit ship-or-stop decision.",
       "evidenceIds": [
         "S3",
         "S4",
@@ -50,7 +50,7 @@
     },
     "prototype": {
       "status": "partial",
-      "finding": "A Chromium implementation existed behind a flag from ~Chrome 75 (June 2019) and an early Intent to Ship was posted (pnUiTrLHHmw, 2019) that never shipped; WPT tentative tests exist. But the prototype stayed framed-content-only and experimental for years, and developers trying it later found it inconsistent (e.g. an iframe allow attribute 'still not work for chrome122'). The implementation is being actively refined (default→EnableForSelf Oct 2024; setter-policy-vs-target-policy fix) rather than frozen.",
+      "finding": "A Chromium implementation existed behind a flag from ~Chrome 75 (June 2019) and an early Intent to Ship was posted (pnUiTrLHHmw, 2019) that never shipped; WPT tentative tests exist. But the prototype stayed framed-content-only and experimental for years, and developers trying it later found it inconsistent (e.g. an iframe allow attribute 'still not work for chrome122'). The implementation is being actively refined (default\u2192EnableForSelf Oct 2024; setter-policy-vs-target-policy fix) rather than frozen.",
       "evidenceIds": [
         "S4",
         "S14",
@@ -82,7 +82,7 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "An Origin Trial is registered M149–152 (desktop/Android/WebView) with an approved Intent to Experiment (Mike Taylor LGTM, 9 Apr 2026; moved from 148→149 and later extended to 152). Stated goal is to 'validate the current API design and get feedback on whether it satisfies developer needs.' However the intent declares 'Risks: None' and 'Ongoing constraints: None' while the same author's Oct 2025 spec issue says the feature is 'blocked' pending agreement on descendant-focus behavior, and debuggability (console messages) was still being implemented at OT start. A default of 'self' meaningfully changes cross-origin-iframe behavior, so compat risk is non-trivial and exactly what the OT should measure.",
+      "finding": "An Origin Trial is registered M149\u2013152 (desktop/Android/WebView) with an approved Intent to Experiment (Mike Taylor LGTM, 9 Apr 2026; moved from 148\u2192149 and later extended to 152). Stated goal is to 'validate the current API design and get feedback on whether it satisfies developer needs.' However the intent declares 'Risks: None' and 'Ongoing constraints: None' while the same author's Oct 2025 spec issue says the feature is 'blocked' pending agreement on descendant-focus behavior, and debuggability (console messages) was still being implemented at OT start. A default of 'self' meaningfully changes cross-origin-iframe behavior, so compat risk is non-trivial and exactly what the OT should measure.",
       "evidenceIds": [
         "S9",
         "S10",
@@ -92,8 +92,8 @@
       "limitations": "No published experiment protocol/metrics/thresholds and no OT-participant-enrollment denominator; the public origin-trial use counter (available post-launch) measures policy-set page-load share, not enrolled-origin activation."
     },
     "prepareToShip": {
-      "status": "not-relevant",
-      "finding": "The feature has not reached the prepare-to-ship phase: it is in an Origin Trial (M149–152) and ChromeStatus still shows 'In developer trial (Behind a flag)'; default-on (GA) shipment has not begun (the intent's original M150 ship estimate has slipped). Assessed as not-relevant because the phase has not been entered, not because it was untested.",
+      "status": "not relevant",
+      "finding": "The feature has not reached the prepare-to-ship phase: it is in an Origin Trial (M149\u2013152) and ChromeStatus still shows 'In developer trial (Behind a flag)'; default-on (GA) shipment has not begun (the intent's original M150 ship estimate has slipped). Assessed as not-relevant because the phase has not been entered, not because it was untested.",
       "evidenceIds": [
         "S1",
         "S9"
@@ -111,7 +111,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Measurable but very low pre-default-on usage, consistent with latent demand rather than production enforcement. The origin-trial use counter kFocusWithoutUserActivationPolicySet (ChromeStatus bucket 5876; exact origin-trial counter, not a broader WebDX family counter) fires on ~0.0000157% of measured Chrome HTTP/HTTPS page loads at its latest point (2026-07-21), having first registered positive at ~0.000002% (2026-04-28) and peaked at ~0.0000243% (2026-07-18). Relative to the M149 Origin Trial (stable 2026-06-02) the counter was 0% at stable and ~0.0000140% at day-30 (2026-07-02); day-90/day-180 are not yet reached. The counter fires when the directive is set (header or iframe allow), which includes pre-emptive/defensive emission and very early OT participation — not production enforcement, durable deployment, or default-on adoption, none of which have begun.",
+      "finding": "Measurable but very low pre-default-on usage, consistent with latent demand rather than production enforcement. The origin-trial use counter kFocusWithoutUserActivationPolicySet (ChromeStatus bucket 5876; exact origin-trial counter, not a broader WebDX family counter) fires on ~0.0000157% of measured Chrome HTTP/HTTPS page loads at its latest point (2026-07-21), having first registered positive at ~0.000002% (2026-04-28) and peaked at ~0.0000243% (2026-07-18). Relative to the M149 Origin Trial (stable 2026-06-02) the counter was 0% at stable and ~0.0000140% at day-30 (2026-07-02); day-90/day-180 are not yet reached. The counter fires when the directive is set (header or iframe allow), which includes pre-emptive/defensive emission and very early OT participation \u2014 not production enforcement, durable deployment, or default-on adoption, none of which have begun.",
       "evidenceIds": [
         "S17",
         "S15",
@@ -129,7 +129,7 @@
       "limitations": "Support health cannot be assessed until the OT produces issues."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new feature/security control, not a deprecation or removal; the deprecation phase does not apply. (Not-relevant by phase applicability, not to mean untested.)",
       "evidenceIds": [
         "S1"
@@ -159,7 +159,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Unscored. The intent declared no numeric adoption target/threshold (its goal is qualitative: 'validate the current API design and get feedback on whether it satisfies developer needs'), and there is no corroborating production, retention, or task-success evidence, so the adoption outcome is described rather than graded (per the method, 'mixed' is not a substitute for an absent threshold). Measured level/trend: the exact origin-trial counter (bucket 5876) shows the directive set on a tiny but non-zero, slightly growing share of measured Chrome page loads — latest ~0.0000157% (2026-07-21), peak ~0.0000243% (2026-07-18), first positive ~0.000002% (2026-04-28); launch-relative to the M149 OT (2026-06-02): 0% at stable, ~0.0000140% at day-30 (2026-07-02), day-90/day-180 pending. These levels match pre-emptive header emission and very early OT participation, not durable production adoption.",
+      "finding": "Unscored. The intent declared no numeric adoption target/threshold (its goal is qualitative: 'validate the current API design and get feedback on whether it satisfies developer needs'), and there is no corroborating production, retention, or task-success evidence, so the adoption outcome is described rather than graded (per the method, 'mixed' is not a substitute for an absent threshold). Measured level/trend: the exact origin-trial counter (bucket 5876) shows the directive set on a tiny but non-zero, slightly growing share of measured Chrome page loads \u2014 latest ~0.0000157% (2026-07-21), peak ~0.0000243% (2026-07-18), first positive ~0.000002% (2026-04-28); launch-relative to the M149 OT (2026-06-02): 0% at stable, ~0.0000140% at day-30 (2026-07-02), day-90/day-180 pending. These levels match pre-emptive header emission and very early OT participation, not durable production adoption.",
       "evidenceIds": [
         "S17",
         "S15",
@@ -182,7 +182,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "The Chromium implementation is real and actively maintained (default switched to EnableForSelf per TPAC resolution Oct 2024; setter-policy-vs-target-policy focus-delegation fix in flight; base::Feature killswitch present). However the authoritative ChromeStatus record is internally stale/inconsistent — webview_risks text still claims a default of 'allow *' (the real default is 'self'), intent_stage reads 'Start prototyping', and the displayed Chrome status is 'Behind a flag' while an Origin Trial is active — and console debuggability was still being added at OT start. Default-'self' compat is under-tested, which is the OT's purpose.",
+      "finding": "The Chromium implementation is real and actively maintained (default switched to EnableForSelf per TPAC resolution Oct 2024; setter-policy-vs-target-policy focus-delegation fix in flight; base::Feature killswitch present). However the authoritative ChromeStatus record is internally stale/inconsistent \u2014 webview_risks text still claims a default of 'allow *' (the real default is 'self'), intent_stage reads 'Start prototyping', and the displayed Chrome status is 'Behind a flag' while an Origin Trial is active \u2014 and console debuggability was still being added at OT start. Default-'self' compat is under-tested, which is the OT's purpose.",
       "evidenceIds": [
         "S1",
         "S13",
@@ -206,7 +206,7 @@
     },
     "support": {
       "status": "unscored",
-      "finding": "No support evidence yet — the OT has just begun and no issue volume, recurrence, or resolution data exists. Debuggability is planned (console messages) but not confirmed shipped at OT start.",
+      "finding": "No support evidence yet \u2014 the OT has just begun and no issue volume, recurrence, or resolution data exists. Debuggability is planned (console messages) but not confirmed shipped at OT start.",
       "evidenceIds": [
         "S9"
       ],
@@ -214,7 +214,7 @@
     },
     "overall": {
       "status": "unscored",
-      "finding": "Too early to score overall success or failure. The feature has excellent problem validation and provenance, positive standards signals, and an active Microsoft/Chromium implementation, but it is mid-Origin-trial (not shipped default-on), the spec is not fully stabilized, and it is not yet interoperable across engines (no WebKit implementation, no Mozilla signal). Per the method, success is not inferred from the OT registration, latent demand, or positive sentiment. Early OT usage telemetry (origin-trial counter bucket 5876) is now available and shows very low 'policy-set' usage (~0.0000157% of measured page loads by 2026-07-21, up from ~0.000002% at first positive 2026-04-28) — consistent with pre-default-on latent demand and not, by itself, an adoption outcome. Overall outcome will be determinable only after default-on shipment, interop movement, and post-launch support/adoption data.",
+      "finding": "Too early to score overall success or failure. The feature has excellent problem validation and provenance, positive standards signals, and an active Microsoft/Chromium implementation, but it is mid-Origin-trial (not shipped default-on), the spec is not fully stabilized, and it is not yet interoperable across engines (no WebKit implementation, no Mozilla signal). Per the method, success is not inferred from the OT registration, latent demand, or positive sentiment. Early OT usage telemetry (origin-trial counter bucket 5876) is now available and shows very low 'policy-set' usage (~0.0000157% of measured page loads by 2026-07-21, up from ~0.000002% at first positive 2026-04-28) \u2014 consistent with pre-default-on latent demand and not, by itself, an adoption outcome. Overall outcome will be determinable only after default-on shipment, interop movement, and post-launch support/adoption data.",
       "evidenceIds": [
         "S1",
         "S8",
@@ -382,7 +382,7 @@
       "retrievedAt": "2026-07-20T22:30:00Z",
       "sourceType": "other",
       "supports": [
-        "focus-without-user-activation is NOT present in MDN's Permissions-Policy directive list (49 directives) as of 2026-06-08 — docs gap during the OT"
+        "focus-without-user-activation is NOT present in MDN's Permissions-Policy directive list (49 directives) as of 2026-06-08 \u2014 docs gap during the OT"
       ],
       "limitations": "MDN entry may be added later; absence is point-in-time."
     },
@@ -425,7 +425,7 @@
     {
       "id": "S17",
       "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5876",
-      "publisher": "Chrome Platform Status — feature-popularity timeline for use-counter bucket 5876 (kFocusWithoutUserActivationPolicySet)",
+      "publisher": "Chrome Platform Status \u2014 feature-popularity timeline for use-counter bucket 5876 (kFocusWithoutUserActivationPolicySet)",
       "publishedOrObservedAt": "2026-07-21",
       "retrievedAt": "2026-07-22T18:07:10Z",
       "sourceType": "usage",
@@ -439,21 +439,21 @@
     }
   ],
   "successes": [
-    "Real, practitioner-originated problem (ad focus-theft) with durable, multi-year, multi-source developer demand — not invented demand.",
+    "Real, practitioner-originated problem (ad focus-theft) with durable, multi-year, multi-source developer demand \u2014 not invented demand.",
     "Microsoft/Chromium collaboration revived a proposal that had stalled since 2019, producing a TPAC 2024 multi-stakeholder resolution, a merged WHATWG spec PR, and WPT coverage.",
     "Positive standards trajectory: TAG review satisfied, WebKit position 'Support', well-reasoned default ('self') and focus-delegation design that preserves user-initiated focus.",
     "Latent developer demand is observable and now measurable: several sites/frameworks already emit the directive defensively before enforcement, and the origin-trial use counter (bucket 5876) confirms a small but non-zero, slightly growing share of measured Chrome page loads where the directive is set (first positive ~0.000002% on 2026-04-28, latest ~0.0000157% on 2026-07-21, peak ~0.0000243% on 2026-07-18).",
     "Non-breaking opt-in design with a base::Feature killswitch, lowering rollback risk during the trial."
   ],
   "failures": [
-    "~6-year stall (2019–2024): a prototype shipped behind a flag in ~M75 with an Intent to Ship that never closed, leaving developers waiting with no reliable workaround for years.",
-    "Spec not stabilized at OT start: the implementer's own Oct 2025 issue says the feature is 'blocked' on descendant-focus semantics, contradicting the intent's 'Risks: None' — decision-quality honesty gap.",
+    "~6-year stall (2019\u20132024): a prototype shipped behind a flag in ~M75 with an Intent to Ship that never closed, leaving developers waiting with no reliable workaround for years.",
+    "Spec not stabilized at OT start: the implementer's own Oct 2025 issue says the feature is 'blocked' on descendant-focus semantics, contradicting the intent's 'Risks: None' \u2014 decision-quality honesty gap.",
     "Cached ChromeStatus record is stale/inconsistent: default-value framing ('allow *'), intent_stage ('Start prototyping'), and Chrome status ('Behind a flag') all misrepresent the active Origin Trial and the real default of 'self'.",
     "Documentation gap: MDN does not document the directive during the OT (as of Jun 2026); formal security/privacy review status still 'Pending'.",
-    "Not yet interoperable: no WebKit implementation (bug NEW/unassigned) and Mozilla 'No signal' — enforcement during the OT is Chromium/Edge-only."
+    "Not yet interoperable: no WebKit implementation (bug NEW/unassigned) and Mozilla 'No signal' \u2014 enforcement during the OT is Chromium/Edge-only."
   ],
   "counterfactuals": [
-    "If Chromium had run a structured developer-trial cohort in 2019–2023 instead of a passive flag, the spec edge cases (descendant focus, default value) and compat risk could plausibly have been resolved years earlier, shortening or removing the need for a 4-milestone Origin Trial.",
+    "If Chromium had run a structured developer-trial cohort in 2019\u20132023 instead of a passive flag, the spec edge cases (descendant focus, default value) and compat risk could plausibly have been resolved years earlier, shortening or removing the need for a 4-milestone Origin Trial.",
     "If the Intent to Experiment had disclosed the open whatwg/html#11839 questions and the default-'self' compat risk instead of 'Risks: None', the API-owner review and OT framing would have been more decision-useful and the cached record less likely to mis-state the default.",
     "If MDN documentation and a WebKit implementation had landed before or alongside the OT, developer onboarding and interoperability confidence would be materially stronger.",
     "If the cached record's default-value, breaking_change, and status fields had been kept current after the TPAC 2024 resolution, partners/enterprises assessing impact would not be misled into thinking the change is opt-in ('allow *') rather than default-'self'.",
@@ -464,7 +464,7 @@
     "Add a ChromeStatus data-freshness rule: when a TPAC/WG resolution changes a feature's default value or scope, require webview_risks/breaking_change/summary/intent_stage to be re-validated and updated within N days; stale default-value framing is a launch-resilience and impact-assessment risk.",
     "Add an OT/trial docs-readiness gate: require either an MDN directive entry or an explicit 'docs pending' note with an owner before an Origin Trial starts, so trial participants have reference material.",
     "In retrospectives, strictly separate standards *position* from *implementation*: score 'position: support' as a signal, not as interoperability; track WebKit/Mozilla implementation bugs (and their status/assignee) as distinct evidence.",
-    "Add a 'stalled feature' monitor and anti-pattern: features behind a flag for more than N milestones without a ship-or-stop decision should trigger an explicit review and be flagged in retrospectives (this feature's 2019–2024 stall is the canonical case).",
+    "Add a 'stalled feature' monitor and anti-pattern: features behind a flag for more than N milestones without a ship-or-stop decision should trigger an explicit review and be flagged in retrospectives (this feature's 2019\u20132024 stall is the canonical case).",
     "Add a default-value/compat-risk lens for permissions-policy features: a default other than '*' is a behavior change for cross-origin embeds and should be tested in the OT with explicit compat metrics, not filed under 'Risks: None'."
   ],
   "completion": {

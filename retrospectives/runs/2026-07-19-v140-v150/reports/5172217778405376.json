@@ -57,7 +57,7 @@
       "limitations": "Cannot confirm or deny a prototype phase from public sources; the bug transitioned from cold to Fixed without a visible prototype artifact."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "A developer trial would reveal no new information: the value is a deterministic synonym of `pixelated` (already shipped in Chrome for ~12 years) and of `crisp-edges` in Firefox (since 2019, standard) and Safari (since 2016). The non_finch_justification explicitly states it is 'just a synonym... been shipping in Firefox and Safari for many years so websites that would be affected are already affected.' No cohort, task, or field signal could distinguish Chrome's behavior from the already-existing identical behavior.",
       "evidenceIds": [
         "S1",
@@ -77,7 +77,7 @@
       "limitations": "Mozilla bugzilla and WebKit commit URLs are taken from the ChromeStatus record; their content was not independently retrieved. No fresh TAG/vendor review was conducted because the standard was already final."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No field experiment was warranted. There is no probabilistic or privacy-sensitive behavior to measure: crisp-edges is a deterministic synonym of pixelated. origintrial is false and no Origin Trial stage exists. The non_finch_justification documents why no gradual rollout/finch was needed. An Origin Trial here would have been 'customary, not because field evidence is needed'.",
       "evidenceIds": [
         "S1"
@@ -106,7 +106,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Chrome usage telemetry now exists, but only at the property-family level, not for this value. The CSS property-family counter for 'image-rendering' (bucket_id 82; scope 'property-family'; confidence 'name-matched-family') fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02), 0.06813463% at the day-30 checkpoint (2026-07-02), and 0.06947455% on the latest observed day (2026-07-21); day90 and day180 checkpoints are not yet observed. The counter was first positive on 2013-08-08 (0.05%) and peaked 2018-05-19 (0.22060595%), both before this launch, because pixelated and other image-rendering values already existed — so the family level cannot isolate crisp-edges adoption attributable to this ship. webdx_usecounter_enum is null (no value-level/WebDX counter), and no HTTP Archive, unique-site, or production-deployment measurement is linked; adoption_expectation/plan are empty (no predeclared target). The caniuse global 'usage_perc_y: 96.53%' remains a browser-support share (StatCounter), not adoption. Because crisp-edges is a synonym of the already-shipped pixelated, incremental page-level adoption from the launch is plausible but not separable from the family counter. This telemetry is post-launch outcome evidence (cached 2026-07-22) and is not treated as known during intake/review/ship.",
+      "finding": "Chrome usage telemetry now exists, but only at the property-family level, not for this value. The CSS property-family counter for 'image-rendering' (bucket_id 82; scope 'property-family'; confidence 'name-matched-family') fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02), 0.06813463% at the day-30 checkpoint (2026-07-02), and 0.06947455% on the latest observed day (2026-07-21); day90 and day180 checkpoints are not yet observed. The counter was first positive on 2013-08-08 (0.05%) and peaked 2018-05-19 (0.22060595%), both before this launch, because pixelated and other image-rendering values already existed \u2014 so the family level cannot isolate crisp-edges adoption attributable to this ship. webdx_usecounter_enum is null (no value-level/WebDX counter), and no HTTP Archive, unique-site, or production-deployment measurement is linked; adoption_expectation/plan are empty (no predeclared target). The caniuse global 'usage_perc_y: 96.53%' remains a browser-support share (StatCounter), not adoption. Because crisp-edges is a synonym of the already-shipped pixelated, incremental page-level adoption from the launch is plausible but not separable from the family counter. This telemetry is post-launch outcome evidence (cached 2026-07-22) and is not treated as known during intake/review/ship.",
       "evidenceIds": [
         "S1",
         "S5",
@@ -125,7 +125,7 @@
       "limitations": "Post-ship observation window is short (~6 weeks). Adjacent regressions were identified via search snippets, not full triage of the Blink>CSS component."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This feature ADDS a CSS value; nothing is removed or deprecated, so there is no migration, reverse-trial, or removal path. The legacy prefixed `-webkit-optimize-contrast` remains but is outside this feature's scope.",
       "evidenceIds": [
         "S1"
@@ -158,7 +158,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Chrome now publishes a CSS property-family counter for 'image-rendering' (bucket_id 82; scope 'property-family'; confidence 'name-matched-family'), which fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02), 0.06813463% at the day-30 checkpoint (2026-07-02), and 0.06947455% on the latest observed day (2026-07-21) — essentially flat around the launch (day90/day180 not yet observed). This is a property-family counter, not an exact crisp-edges counter: it was already positive in 2013 because pixelated and other image-rendering values existed, so it cannot isolate adoption attributable to this launch, and webdx_usecounter_enum remains null. There is no predeclared adoption target/expectation and no corroborating production, retention, or unique-site evidence. Per method, with no threshold and no corroborating production signal, the adoption outcome remains unscored; the measured family level (~0.07%, flat) and trend are described, not judged, and 'mixed' is not used as a substitute for an absent threshold.",
+      "finding": "Chrome now publishes a CSS property-family counter for 'image-rendering' (bucket_id 82; scope 'property-family'; confidence 'name-matched-family'), which fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02), 0.06813463% at the day-30 checkpoint (2026-07-02), and 0.06947455% on the latest observed day (2026-07-21) \u2014 essentially flat around the launch (day90/day180 not yet observed). This is a property-family counter, not an exact crisp-edges counter: it was already positive in 2013 because pixelated and other image-rendering values existed, so it cannot isolate adoption attributable to this launch, and webdx_usecounter_enum remains null. There is no predeclared adoption target/expectation and no corroborating production, retention, or unique-site evidence. Per method, with no threshold and no corroborating production signal, the adoption outcome remains unscored; the measured family level (~0.07%, flat) and trend are described, not judged, and 'mixed' is not used as a substitute for an absent threshold.",
       "evidenceIds": [
         "S1",
         "S5",
@@ -209,7 +209,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "Clean execution of a low-risk catch-up: developerValue, interoperability, implementationQuality, evidenceAndCommunication, and support are all success, and the launch event (Chrome 149, 2026-06-02) landed without drama. Overall is mixed rather than success because two material outcome dimensions remain unscored: endUserImpact (no user-benefit measurement) and adoption (a property-family image-rendering counter now exists at ~0.07% of measured page loads — 0.06893917% at stable, 0.06813463% at day-30, 0.06947455% latest — flat across the launch, but it cannot isolate crisp-edges, webdx_usecounter_enum is null, and there is no predeclared target or corroborating production evidence to score against). Declaring blanket success would overclaim. Net direction is unambiguously positive with acknowledged unknowns.",
+      "finding": "Clean execution of a low-risk catch-up: developerValue, interoperability, implementationQuality, evidenceAndCommunication, and support are all success, and the launch event (Chrome 149, 2026-06-02) landed without drama. Overall is mixed rather than success because two material outcome dimensions remain unscored: endUserImpact (no user-benefit measurement) and adoption (a property-family image-rendering counter now exists at ~0.07% of measured page loads \u2014 0.06893917% at stable, 0.06813463% at day-30, 0.06947455% latest \u2014 flat across the launch, but it cannot isolate crisp-edges, webdx_usecounter_enum is null, and there is no predeclared target or corroborating production evidence to score against). Declaring blanket success would overclaim. Net direction is unambiguously positive with acknowledged unknowns.",
       "evidenceIds": [
         "S1",
         "S3",
@@ -467,12 +467,12 @@
     {
       "id": "S20",
       "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=82",
-      "publisher": "Chrome Platform Status — CSS popularity timeline (chromestatus.com)",
+      "publisher": "Chrome Platform Status \u2014 CSS popularity timeline (chromestatus.com)",
       "publishedOrObservedAt": "2026-07-21",
       "retrievedAt": "2026-07-22T18:07:07Z",
       "sourceType": "usage",
       "supports": [
-        "CSS property-family counter bucket_id 82 ('image-rendering'); scope 'property-family'; confidence 'name-matched-family' — covers the whole image-rendering property, NOT the crisp-edges value (webdx_usecounter_enum remains null)",
+        "CSS property-family counter bucket_id 82 ('image-rendering'); scope 'property-family'; confidence 'name-matched-family' \u2014 covers the whole image-rendering property, NOT the crisp-edges value (webdx_usecounter_enum remains null)",
         "Fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02); day-30 checkpoint 2026-07-02 = 0.06813463%; latest observed 2026-07-21 = 0.06947455%; day90 and day180 checkpoints not yet observed",
         "Counter first positive 2013-08-08 (0.05%) and peaked 2018-05-19 (0.22060595%), both before this launch, because pixelated and other image-rendering values already existed",
         "Numerator = Chrome page loads on which the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads across official channels/platforms; not equivalent to unique developers, sites, users, successful tasks, satisfaction, or end-user benefit"
@@ -500,7 +500,7 @@
   ],
   "skillImprovements": [
     "Add a 'catch-up / synonym' fast-path to the intake and wide-review phase packets so that spec-final, dual-engine-shipped, deterministic-synonym features are explicitly cleared to skip prototype/developer-trial/experiment with a documented rationale (preventing reviewers from treating 'not-relevant' as evasion and preventing teams from running customary-but-useless OTs).",
-    "Add an 'evidence-of-impact by default' prompt for even tiny CSS value additions: require either a value-level (webdx) counter, an HTTP Archive query that isolates the value, or an explicit 'property-family counter only — adoption unscored' decision recorded at ship, so that a family counter (which crisp-edges now has) is not mistaken for feature-level adoption.",
+    "Add an 'evidence-of-impact by default' prompt for even tiny CSS value additions: require either a value-level (webdx) counter, an HTTP Archive query that isolates the value, or an explicit 'property-family counter only \u2014 adoption unscored' decision recorded at ship, so that a family counter (which crisp-edges now has) is not mistaken for feature-level adoption.",
     "Add a regression-history check to the prototype/prepare-to-ship packets: search the component for prior unship/revert records (e.g. the crisp-edges canvas/compositor revert) and require a friction-log on the historically failing surface before declaring the reused path safe.",
     "Add a 'cross-source milestone reconciliation' step to launch-retrospective: when ChromeStatus/official release notes and third-party trackers (caniuse/MDN BCD) disagree on the ship milestone, record the discrepancy and the authoritative source rather than silently picking one.",
     "Add an eval/regression case to the launch-retrospective skill using this feature: a low-risk, long-delayed catch-up where execution is clean and a property-family counter exists (~0.07%, flat) but no value-level counter or target exists, to verify the scorer keeps adoption 'unscored' (not 'mixed'), overall 'mixed' (not 'success'), and completion 'partial' (not 'complete')."

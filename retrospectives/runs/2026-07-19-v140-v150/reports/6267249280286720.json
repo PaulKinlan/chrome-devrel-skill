@@ -59,8 +59,8 @@
       "limitations": "WPT test names are listed but their pass status and cross-engine coverage are not verified; no sample/demo artifacts are linked."
     },
     "developerTrials": {
-      "status": "not-relevant",
-      "finding": "No developer trial or Origin Trial was run (no flag_name, no origin_trial, no devtrial_instructions). This is consistent with a small additive 'Chromium catches up' spec change and is not, by itself, a defect — but it means no representative-cohort task evidence exists for the counters specifically. Marked not-relevant (rationale: a two-attribute read-only diagnostic catch-up does not require a field trial), not 'untested'.",
+      "status": "not relevant",
+      "finding": "No developer trial or Origin Trial was run (no flag_name, no origin_trial, no devtrial_instructions). This is consistent with a small additive 'Chromium catches up' spec change and is not, by itself, a defect \u2014 but it means no representative-cohort task evidence exists for the counters specifically. Marked not-relevant (rationale: a two-attribute read-only diagnostic catch-up does not require a field trial), not 'untested'.",
       "evidenceIds": [
         "S-chromestatus"
       ],
@@ -80,8 +80,8 @@
       "limitations": "The formal standards-position issues may resolve later; review-gate statuses are as of accurate_as_of 2026-06-22 and may have advanced; the activity-page comment is captured only via a search snippet."
     },
     "experiment": {
-      "status": "not-relevant",
-      "finding": "No Origin Trial and no finch experiment is recorded (finch_name 'MediaStreamTrackProcessorStats' with rollout_plan 'Will ship enabled for all users'). For a minor read-only additive spec change this is defensible, so the phase is not-relevant rather than a gap — but it also means there is no field evidence de-risking the redundancy/noise concern raised in wide review.",
+      "status": "not relevant",
+      "finding": "No Origin Trial and no finch experiment is recorded (finch_name 'MediaStreamTrackProcessorStats' with rollout_plan 'Will ship enabled for all users'). For a minor read-only additive spec change this is defensible, so the phase is not-relevant rather than a gap \u2014 but it also means there is no field evidence de-risking the redundancy/noise concern raised in wide review.",
       "evidenceIds": [
         "S-chromestatus"
       ],
@@ -125,7 +125,7 @@
       "limitations": "Feature not shipped; no support telemetry, issue taxonomy, or recurrence data."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new additive read-only attribute on an existing interface with breaking_change=false and enterprise_impact=1 (lowest). Nothing is deprecated or removed, so the deprecation/removal phase does not apply (rationale: purely additive surface, no removal/migration path needed).",
       "evidenceIds": [
         "S-chromestatus"
@@ -136,7 +136,7 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "The capability addresses a real, documented developer need: making dropped/discarded frames in real-time media pipelines diagnosable (Google Meet demand; USB-hub fps loss; frame-decimation and load-induced drops; live MediaStreamTrackProcessor frame-drop bugs). The value is plausible and the design (total + discarded counters as monotonic integers) is the right shape for interval math. However the distinct value of placing these counters on MediaStreamTrackProcessor — versus the already-shipping, Mozilla-positive MediaStreamTrack.stats API which provides totalFrames/deliveredFrames/discardedFrames — is not articulated in the entry, and a reviewer explicitly questioned redundancy and counter noise. So developer value is real but under-justified for this specific surface.",
+      "finding": "The capability addresses a real, documented developer need: making dropped/discarded frames in real-time media pipelines diagnosable (Google Meet demand; USB-hub fps loss; frame-decimation and load-induced drops; live MediaStreamTrackProcessor frame-drop bugs). The value is plausible and the design (total + discarded counters as monotonic integers) is the right shape for interval math. However the distinct value of placing these counters on MediaStreamTrackProcessor \u2014 versus the already-shipping, Mozilla-positive MediaStreamTrack.stats API which provides totalFrames/deliveredFrames/discardedFrames \u2014 is not articulated in the entry, and a reviewer explicitly questioned redundancy and counter noise. So developer value is real but under-justified for this specific surface.",
       "evidenceIds": [
         "S-webkit-260",
         "S-trackstats-intent",
@@ -188,7 +188,7 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Communication accuracy is the weakest dimension. Strengths: the summary is technically correct and the spec link is canonical. Concerns: (1) ChromeStatus annotates Mozilla/WebKit as 'Spec PR was approved by Mozilla/WebKit' while the formal standards-positions issues are still open/undecided ('Needs proposed position' / no label) — this conflates spec-editorial review by Mozilla/WebKit staff with formal vendor positions; (2) standards maturity is overstated ('Final published standard') when the underlying spec is a W3C Editor's Draft / WG Note (metadata w3c-status: ED); (3) the entry is sparse — no motivation, no explainer, no docs, no samples; (4) MDN documents only 'readable' (new attributes absent as of 2025-05-23) and the Chrome insertable-streams article dates to 2021 and omits the counters; (5) an unresolved redundancy/noise concern is visible in the activity comments.",
+      "finding": "Communication accuracy is the weakest dimension. Strengths: the summary is technically correct and the spec link is canonical. Concerns: (1) ChromeStatus annotates Mozilla/WebKit as 'Spec PR was approved by Mozilla/WebKit' while the formal standards-positions issues are still open/undecided ('Needs proposed position' / no label) \u2014 this conflates spec-editorial review by Mozilla/WebKit staff with formal vendor positions; (2) standards maturity is overstated ('Final published standard') when the underlying spec is a W3C Editor's Draft / WG Note (metadata w3c-status: ED); (3) the entry is sparse \u2014 no motivation, no explainer, no docs, no samples; (4) MDN documents only 'readable' (new attributes absent as of 2025-05-23) and the Chrome insertable-streams article dates to 2021 and omits the counters; (5) an unresolved redundancy/noise concern is visible in the activity comments.",
       "evidenceIds": [
         "S-chromestatus",
         "S-moz-1417",
@@ -211,7 +211,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A genuinely useful, well-engineered, narrowly-scoped diagnostic that addresses documented real-time-media pain, backed by a clean W3C spec and WPT tests. It is being shipped appropriately as a small catch-up. But it goes to stable with: no feature-level demand/evidence articulation, a misleading 'approved by Mozilla/WebKit' framing while formal positions are still undecided, an overstated standards-maturity label, an unaddressed redundancy concern versus the already-shipping track.stats API, no docs/samples, Pending security/privacy review, and — critically — it lands on a MediaStreamTrackProcessor surface that Firefox does not implement and Safari exposes only in workers. Pre-release, so adoption/user-impact/support outcomes remain unknown. Overall: solid engineering, mixed readiness and interop posture.",
+      "finding": "A genuinely useful, well-engineered, narrowly-scoped diagnostic that addresses documented real-time-media pain, backed by a clean W3C spec and WPT tests. It is being shipped appropriately as a small catch-up. But it goes to stable with: no feature-level demand/evidence articulation, a misleading 'approved by Mozilla/WebKit' framing while formal positions are still undecided, an overstated standards-maturity label, an unaddressed redundancy concern versus the already-shipping track.stats API, no docs/samples, Pending security/privacy review, and \u2014 critically \u2014 it lands on a MediaStreamTrackProcessor surface that Firefox does not implement and Safari exposes only in workers. Pre-release, so adoption/user-impact/support outcomes remain unknown. Overall: solid engineering, mixed readiness and interop posture.",
       "evidenceIds": [
         "S-chromestatus",
         "S-spec-pr",
@@ -259,7 +259,7 @@
       "retrievedAt": "2026-07-20T06:02:00Z",
       "sourceType": "standards-position",
       "supports": [
-        "Mozilla standards-position request opened Jun 4 2026 by guidou; assigned to jan-ivar; labels topic:API, venue:W3C; project status 'Needs proposed position' — i.e. NO formal Mozilla position yet"
+        "Mozilla standards-position request opened Jun 4 2026 by guidou; assigned to jan-ivar; labels topic:API, venue:W3C; project status 'Needs proposed position' \u2014 i.e. NO formal Mozilla position yet"
       ],
       "limitations": "Position may resolve after cutoff; only the issue header was captured, not full comment thread."
     },
@@ -271,7 +271,7 @@
       "retrievedAt": "2026-07-20T06:00:00Z",
       "sourceType": "standards-position",
       "supports": [
-        "WebKit standards-position request opened Jun 4 2026 by guidou; addressed to @youennf; no labels/position assigned; issue 'Open' — i.e. NO formal WebKit position yet"
+        "WebKit standards-position request opened Jun 4 2026 by guidou; addressed to @youennf; no labels/position assigned; issue 'Open' \u2014 i.e. NO formal WebKit position yet"
       ],
       "limitations": "Position may resolve after cutoff; full comment thread not captured."
     },
@@ -302,12 +302,12 @@
     {
       "id": "S-trackstats-intent",
       "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/ttzYv-30gY4",
-      "publisher": "blink-dev / Henrik Boström",
+      "publisher": "blink-dev / Henrik Bostr\u00f6m",
       "publishedOrObservedAt": "2023-10-09T10:16:28Z",
       "retrievedAt": "2026-07-20T06:08:00Z",
       "sourceType": "intent",
       "supports": [
-        "Parallel 'Intent to Ship: MediaStreamTrack Stats' (track.stats on MediaStreamTrack, mediacapture-extensions) providing total/delivered/discarded frame counters; LGTM1 from Philip Jägenstedt Oct 11 2023 noting 'positive standards position from Mozilla' and TPAC WG discussion — establishes an already-shipping, Mozilla-positive overlapping API"
+        "Parallel 'Intent to Ship: MediaStreamTrack Stats' (track.stats on MediaStreamTrack, mediacapture-extensions) providing total/delivered/discarded frame counters; LGTM1 from Philip J\u00e4genstedt Oct 11 2023 noting 'positive standards position from Mozilla' and TPAC WG discussion \u2014 establishes an already-shipping, Mozilla-positive overlapping API"
       ],
       "limitations": "This is the track.stats intent, not the feature's own intent; confirms overlap but not the feature's intent-stage evidence."
     },
@@ -343,7 +343,7 @@
       "retrievedAt": "2026-07-20T06:04:00Z",
       "sourceType": "support",
       "supports": [
-        "Real developer/engineering pain: 'MediaStreamTrackProcessor drops frames after [camera reopened] ... all frames will be dropped until the timestamp eventually exceeds the last value' — evidence of the frame-drop diagnosability gap the counters address"
+        "Real developer/engineering pain: 'MediaStreamTrackProcessor drops frames after [camera reopened] ... all frames will be dropped until the timestamp eventually exceeds the last value' \u2014 evidence of the frame-drop diagnosability gap the counters address"
       ],
       "limitations": "Full issue content NOT retrievable (reader network errors on issues.chromium.org); only the search snippet is available; date/status unknown."
     },
@@ -367,7 +367,7 @@
       "retrievedAt": "2026-07-20T06:04:00Z",
       "sourceType": "implementation",
       "supports": [
-        "Safari 18 implemented MediaStreamTrackProcessor and VideoTrackGenerator but only in dedicated workers — basis for MDN's cross-browser incompatibility warning"
+        "Safari 18 implemented MediaStreamTrackProcessor and VideoTrackGenerator but only in dedicated workers \u2014 basis for MDN's cross-browser incompatibility warning"
       ],
       "limitations": "Full issue not retrieved; only search snippet; precise dates/status not confirmed."
     },
@@ -379,7 +379,7 @@
       "retrievedAt": "2026-07-20T06:04:00Z",
       "sourceType": "implementation",
       "supports": [
-        "Insertable streams: Chrome 94+, Safari 18+, Firefox NOT supported — confirms the non-interoperable base the counters ship on"
+        "Insertable streams: Chrome 94+, Safari 18+, Firefox NOT supported \u2014 confirms the non-interoperable base the counters ship on"
       ],
       "limitations": "Only search snippet retrieved; exact support table/version cutoffs not fully captured."
     },
@@ -393,7 +393,7 @@
       "supports": [
         "Existence of an Intent to Ship (intent_stage 5) for this feature, per the ChromeStatus record"
       ],
-      "limitations": "Content NOT retrievable — the encoded msgid URL was rejected by the reader ('Incorrect URL Format'); LGTMs, motivation, interop claims, and exact date unverified."
+      "limitations": "Content NOT retrievable \u2014 the encoded msgid URL was rejected by the reader ('Incorrect URL Format'); LGTMs, motivation, interop claims, and exact date unverified."
     },
     {
       "id": "S-crbug-513481577",
@@ -405,7 +405,7 @@
       "supports": [
         "Existence of the feature tracking bug (513481577) and component Blink>MediaStream, per the ChromeStatus record"
       ],
-      "limitations": "Content NOT retrievable — repeated reader network errors (500) on issues.chromium.org; implementation status, blockers, and timeline unverified."
+      "limitations": "Content NOT retrievable \u2014 repeated reader network errors (500) on issues.chromium.org; implementation status, blockers, and timeline unverified."
     },
     {
       "id": "S-chromestatus-activity",
@@ -421,14 +421,14 @@
     }
   ],
   "successes": [
-    "Clean, minimal, correct spec design: two monotonic integer counters with precisely defined increment points (queue-full drop and UA-initiated removal) and internal slots — the right shape for interval math and session totals.",
+    "Clean, minimal, correct spec design: two monotonic integer counters with precisely defined increment points (queue-full drop and UA-initiated removal) and internal slots \u2014 the right shape for interval math and session totals.",
     "WPT coverage including a transfer/worker variant (MediaStreamTrackProcessor-stats.https.html and ...-stats-transfer.https.html) shipped alongside the spec.",
     "Spec-level cross-vendor engagement: editorial review and applied suggestions from jan-ivar (Mozilla) and youennf (WebKit) in PR #125, merged into the W3C WG spec before Chrome ships.",
-    "Addresses a genuinely documented pain point — dropped/discarded-frame diagnosability in real-time media pipelines (Google Meet demand, USB-hub fps loss, frame-decimation and load drops) — for which apps previously had to infer drops from timestamp gaps.",
+    "Addresses a genuinely documented pain point \u2014 dropped/discarded-frame diagnosability in real-time media pipelines (Google Meet demand, USB-hub fps loss, frame-decimation and load drops) \u2014 for which apps previously had to infer drops from timestamp gaps.",
     "Appropriately scoped and routed as a small 'Chromium catches up' item with no breaking change, enterprise impact 1, and direct-to-ship (no unnecessary Origin Trial)."
   ],
   "failures": [
-    "ChromeStatus mislabels vendor signals: it states the spec PR 'was approved by Mozilla/WebKit' while the formal Mozilla (#1417, 'Needs proposed position') and WebKit (#679, no position) standards-positions issues are still open — conflating spec-editorial review with formal vendor positions.",
+    "ChromeStatus mislabels vendor signals: it states the spec PR 'was approved by Mozilla/WebKit' while the formal Mozilla (#1417, 'Needs proposed position') and WebKit (#679, no position) standards-positions issues are still open \u2014 conflating spec-editorial review with formal vendor positions.",
     "Standards maturity is overstated ('Final published standard') for a W3C Editor's Draft / WG Note (metadata w3c-status: ED).",
     "Feature entry is evidence-thin: no motivation, explainer, docs, samples, adoption/interop/measurement fields, or developer-segment/partner identification; the summary alone carries intent.",
     "Unresolved redundancy/noise concern versus the already-shipping, Mozilla-positive MediaStreamTrack.stats API (totalFrames/deliveredFrames/discardedFrames) is visible in the activity comments but not addressed in the entry.",
@@ -452,12 +452,12 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Intent to Ship thread content (msgid URL rejected by reader) — LGTMs, exact motivation, interop claims, and date unverified.",
-      "Main Chromium tracking bug 513481577 content (reader network errors on issues.chromium.org) — implementation status, blockers, timeline unverified.",
-      "Chromium issue 40825013 full content — only a search snippet available; confirms frame-drop pain but not status/date.",
-      "ChromeStatus Comments & Activity full thread (JS-rendered) — redundancy/noise concern captured only via a search snippet; author/resolution unknown.",
-      "Security and privacy review outcomes — both 'Pending' in the cached record; unverified against source at cutoff.",
-      "Post-shipment adoption/usage/user-impact/support evidence — feature not yet shipped to stable (is_released=false as of 2026-06-22; M150 not in stable by ~2026-07-20 cutoff).",
+      "Intent to Ship thread content (msgid URL rejected by reader) \u2014 LGTMs, exact motivation, interop claims, and date unverified.",
+      "Main Chromium tracking bug 513481577 content (reader network errors on issues.chromium.org) \u2014 implementation status, blockers, timeline unverified.",
+      "Chromium issue 40825013 full content \u2014 only a search snippet available; confirms frame-drop pain but not status/date.",
+      "ChromeStatus Comments & Activity full thread (JS-rendered) \u2014 redundancy/noise concern captured only via a search snippet; author/resolution unknown.",
+      "Security and privacy review outcomes \u2014 both 'Pending' in the cached record; unverified against source at cutoff.",
+      "Post-shipment adoption/usage/user-impact/support evidence \u2014 feature not yet shipped to stable (is_released=false as of 2026-06-22; M150 not in stable by ~2026-07-20 cutoff).",
       "Live W3C spec text confirming the counters (retrieved ED was a stale pre-PR cache; TR text confirmed only via a search snippet, not a full read)."
     ],
     "reviewedAt": "2026-07-20T06:10:00Z"

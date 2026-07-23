@@ -56,7 +56,7 @@
       "limitations": "Prototype was reverse-discovered from a Canary flag via press; no first-party prototype docs/explainer exists to review."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No developer trial exists (devtrial_instructions null; no flag-as-dev-trial stage; no cohort or feedback instrument). For this feature class (a transparent Android IME integration with no new web-facing JS API), a structured developer trial is not the natural evidence instrument, so its absence is not, by analogy to web-API features, an untested gap. The genuinely untested risk (whether insertion actually works inside real contenteditable/rich-text/chat editors) is noted under adoption rather than asserted 'tested' here.",
       "evidenceIds": [
         "S1",
@@ -75,7 +75,7 @@
       "limitations": "Reviews may exist in non-linked internal systems and 'Pending' ChromeStatus values may be stale; but no public review evidence is available."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial and no experiment stages (all OT fields null/false; no OT in the Chrome 149 release notes). A field experiment is not obviously required for a transparent IME integration, and none was run.",
       "evidenceIds": [
         "S1",
@@ -104,15 +104,15 @@
       "limitations": "Cannot independently confirm the feature is fully functional in stable 149; the last hands-on report (2025-10) found it only partially worked, and the ChromeStatus 'shipped' claim is stale/unverified."
     },
     "adoption": {
-      "status": "unscored",
-      "finding": "No adoption evidence. There is no new web-facing API for developers to adopt (transparent IME integration), webdx_usecounter_enum is null, no framework/library integration or case studies exist, and no usage data is available. Whether end users can actually insert GIFs/stickers/images into real-world web editors (contenteditable, rich-text editors, chat apps) in stable 149 is unconfirmed.",
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. No adoption evidence. There is no new web-facing API for developers to adopt (transparent IME integration), webdx_usecounter_enum is null, no framework/library integration or case studies exist, and no usage data is available. Whether end users can actually insert GIFs/stickers/images into real-world web editors (contenteditable, rich-text editors, chat apps) in stable 149 is unconfirmed.",
       "evidenceIds": [
         "S1",
         "S2",
         "S4",
         "S6"
       ],
-      "limitations": "No usage/adoption instrumentation surfaced; the feature may be partially or not working in many editors."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
       "status": "unscored",
@@ -125,7 +125,7 @@
       "limitations": "No support metrics or issues attributable to this feature."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new capability, not a deprecation or removal; no removal/migration path applies.",
       "evidenceIds": [
         "S1"
@@ -156,7 +156,7 @@
       "limitations": "No post-ship impact evidence; cannot score."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "No adoption signal of any kind (no API, no UseCounter, no framework integration, no case study). For a transparent feature, 'adoption' effectively means 'works for end users across sites/IMEs', which is unmeasured.",
       "evidenceIds": [
         "S1",

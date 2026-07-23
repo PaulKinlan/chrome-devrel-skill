@@ -86,8 +86,8 @@
       "limitations": "The TAG review was a CG early review, not a formal spec-stage review; nevertheless its 'unsatisfied' resolution and explicit lack of multi-stakeholder support are direct, dated evidence."
     },
     "experiment": {
-      "status": "not-relevant",
-      "finding": "No Origin Trial was conducted. The record shows origintrial=false and rollout_plan 'Will ship enabled for all users'; the feature went DevTrial (M147) directly to default-on ship (M150). This assessment is marked not-relevant because the experiment phase (resolving field-only uncertainties via a real-origin trial) was not used — not because it was untested. An Origin Trial could plausibly have resolved handshake/.well-known hosting friction and split-app consolidation before default-on, but none was declared, so there is no experiment evidence to assess.",
+      "status": "not relevant",
+      "finding": "No Origin Trial was conducted. The record shows origintrial=false and rollout_plan 'Will ship enabled for all users'; the feature went DevTrial (M147) directly to default-on ship (M150). This assessment is marked not-relevant because the experiment phase (resolving field-only uncertainties via a real-origin trial) was not used \u2014 not because it was untested. An Origin Trial could plausibly have resolved handshake/.well-known hosting friction and split-app consolidation before default-on, but none was declared, so there is no experiment evidence to assess.",
       "evidenceIds": [
         "S1",
         "S6"
@@ -96,7 +96,7 @@
     },
     "prepareToShip": {
       "status": "partial",
-      "finding": "Intent to Ship was filed 2026-03-16 targeting desktop ship in M148 and DevTrial M147, and received three blink-dev LGTMs (Alex Russell, Mike Taylor, Chris Harrelson) on 2026-03-18. During the thread, Vladimir Levin asked whether same-origin cookies/storage are lost; the response confirmed the migration does NOT affect any storage (cookies, IndexedDB) — developers must transfer state themselves. However, at ship-intent time the TAG review was still open and later closed unsatisfied (2026-05-15); actual shipment slipped from M148 to M150; ChromeStatus security_review_status and privacy_review_status remained 'Pending' despite substantive security analysis in the explainer; and the summary's 'preserving... permissions' overclaim was carried into the ship packet unchanged.",
+      "finding": "Intent to Ship was filed 2026-03-16 targeting desktop ship in M148 and DevTrial M147, and received three blink-dev LGTMs (Alex Russell, Mike Taylor, Chris Harrelson) on 2026-03-18. During the thread, Vladimir Levin asked whether same-origin cookies/storage are lost; the response confirmed the migration does NOT affect any storage (cookies, IndexedDB) \u2014 developers must transfer state themselves. However, at ship-intent time the TAG review was still open and later closed unsatisfied (2026-05-15); actual shipment slipped from M148 to M150; ChromeStatus security_review_status and privacy_review_status remained 'Pending' despite substantive security analysis in the explainer; and the summary's 'preserving... permissions' overclaim was carried into the ship packet unchanged.",
       "evidenceIds": [
         "S6",
         "S7",
@@ -118,7 +118,7 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "Post-launch adoption of PWA origin migration specifically remains unmeasurable, but a related public Chrome usage counter now exists. The only mapped public ChromeStatus counter is the broad WebFeature 'Manifest' property/family counter (bucket_id 302, scope=family/property, confidence=declared-family), which fires on any measured Chrome HTTP/HTTPS page load that carries a web app manifest — not on migration specifically (webdx_usecounter_enum is null; no migration-specific counter is exposed publicly). It reads 21.650422% of measured Chrome page loads at the latest snapshot (2026-07-20) and has been stable around 21–23% across its 508-point observation window (first positive 0.0049% on 2025-02-27; peak 22.9893% on 2025-03-31). Launch-relative checkpoints for this Manifest counter: at the M150 default-on stable date (2026-06-30) it read 21.465578%; at the M147 dev-trial stable date (2026-04-07) 22.176519%, day30 (2026-05-07) 22.017692%, day90 (2026-07-06) 21.613213%; M150 day30/day90 are not yet available at collection. Because the counter predates the feature and tracks manifest presence generally, its level and stability say nothing about PWA migration adoption. The feature is desktop-only and roughly three weeks past stable at the metrics cutoff. The explainer explicitly notes long-term usage by any single site is unlikely by design (it is a transient migration tool), so even a migration-specific counter would be expected near-zero. caniuse/web-features list support as Chrome/Edge only. No production case studies were found.",
+      "finding": "Post-launch adoption of PWA origin migration specifically remains unmeasurable, but a related public Chrome usage counter now exists. The only mapped public ChromeStatus counter is the broad WebFeature 'Manifest' property/family counter (bucket_id 302, scope=family/property, confidence=declared-family), which fires on any measured Chrome HTTP/HTTPS page load that carries a web app manifest \u2014 not on migration specifically (webdx_usecounter_enum is null; no migration-specific counter is exposed publicly). It reads 21.650422% of measured Chrome page loads at the latest snapshot (2026-07-20) and has been stable around 21\u201323% across its 508-point observation window (first positive 0.0049% on 2025-02-27; peak 22.9893% on 2025-03-31). Launch-relative checkpoints for this Manifest counter: at the M150 default-on stable date (2026-06-30) it read 21.465578%; at the M147 dev-trial stable date (2026-04-07) 22.176519%, day30 (2026-05-07) 22.017692%, day90 (2026-07-06) 21.613213%; M150 day30/day90 are not yet available at collection. Because the counter predates the feature and tracks manifest presence generally, its level and stability say nothing about PWA migration adoption. The feature is desktop-only and roughly three weeks past stable at the metrics cutoff. The explainer explicitly notes long-term usage by any single site is unlikely by design (it is a transient migration tool), so even a migration-specific counter would be expected near-zero. caniuse/web-features list support as Chrome/Edge only. No production case studies were found.",
       "evidenceIds": [
         "S1",
         "S2",
@@ -137,7 +137,7 @@
       "limitations": "Support burden cannot yet be characterized; revisit after one or two milestones of stable usage."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable: this is a new capability, not a deprecation, restriction, or removal. The deprecation/removal phase has no target artifact to assess. Marked not-relevant for this reason, not to indicate something was left unexamined.",
       "evidenceIds": [
         "S1"
@@ -159,7 +159,7 @@
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "Positive in principle: users get an informed update/consent dialog instead of a broken redirect or manual uninstall/reinstall, and the design separates a forced URL change from branding changes to preserve user control over app identity. Negative/limited in practice: only desktop users benefit; a 'force' migration can block the user on next launch; same-site (same eTLD+1) restriction excludes many real rebrands that cross sites; and because permissions are reset, users must re-grant notifications/location on the new origin — a real regression versus the pre-migration install.",
+      "finding": "Positive in principle: users get an informed update/consent dialog instead of a broken redirect or manual uninstall/reinstall, and the design separates a forced URL change from branding changes to preserve user control over app identity. Negative/limited in practice: only desktop users benefit; a 'force' migration can block the user on next launch; same-site (same eTLD+1) restriction excludes many real rebrands that cross sites; and because permissions are reset, users must re-grant notifications/location on the new origin \u2014 a real regression versus the pre-migration install.",
       "evidenceIds": [
         "S2",
         "S10",
@@ -169,7 +169,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Unscored. No predeclared adoption target exists (adoption_expectation/adoption_plan unset), and no production deployments, case studies, or retention evidence corroborate adoption. The only mapped public ChromeStatus counter is the broad WebFeature 'Manifest' family/property counter (bucket_id 302), which is not specific to PWA origin migration and predates it: latest snapshot 2026-07-20 reads 21.650422% of measured Chrome page loads (peak 22.9893% on 2025-03-31; at M150 default-on stable 2026-06-30, 21.465578%; at M147 dev-trial stable 22.176519%, day30 22.017692%, day90 21.613213%). Per the method these values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers, sites, users, successful migrations, satisfaction, production deployment, or end-user benefit — and a family/property counter is not exact feature adoption. With no migration-specific counter, no predeclared target, and no production/retention evidence, adoption remains unscored; the measured level/trend (a stable ~21–23% family counter that pre-dates the feature) is described rather than scored, and low usage is not treated as failure nor any level as success.",
+      "finding": "Unscored. No predeclared adoption target exists (adoption_expectation/adoption_plan unset), and no production deployments, case studies, or retention evidence corroborate adoption. The only mapped public ChromeStatus counter is the broad WebFeature 'Manifest' family/property counter (bucket_id 302), which is not specific to PWA origin migration and predates it: latest snapshot 2026-07-20 reads 21.650422% of measured Chrome page loads (peak 22.9893% on 2025-03-31; at M150 default-on stable 2026-06-30, 21.465578%; at M147 dev-trial stable 22.176519%, day30 22.017692%, day90 21.613213%). Per the method these values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired \u2014 not unique developers, sites, users, successful migrations, satisfaction, production deployment, or end-user benefit \u2014 and a family/property counter is not exact feature adoption. With no migration-specific counter, no predeclared target, and no production/retention evidence, adoption remains unscored; the measured level/trend (a stable ~21\u201323% family counter that pre-dates the feature) is described rather than scored, and low usage is not treated as failure nor any level as success.",
       "evidenceIds": [
         "S1",
         "S2",
@@ -202,7 +202,7 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "The explainer is high quality (security/privacy self-review, alternatives, iterative revision for security and TAG feedback) and the launch blog is accurate (it is silent on permissions). But there is a material, shipped communication defect: both the ChromeStatus summary and the official Chrome 150 release notes still claim the feature preserves 'user trust and permissions', and the Intent to Ship retained 'with your notification settings intact' — even though permission migration was removed in February 2026 per TAG and partner feedback. The team possessed this knowledge before stable but did not refresh the canonical summary/release-notes boilerplate. Separately, the formal ChromeStatus security/privacy review gates remained 'Pending' despite substantive security analysis.",
+      "finding": "The explainer is high quality (security/privacy self-review, alternatives, iterative revision for security and TAG feedback) and the launch blog is accurate (it is silent on permissions). But there is a material, shipped communication defect: both the ChromeStatus summary and the official Chrome 150 release notes still claim the feature preserves 'user trust and permissions', and the Intent to Ship retained 'with your notification settings intact' \u2014 even though permission migration was removed in February 2026 per TAG and partner feedback. The team possessed this knowledge before stable but did not refresh the canonical summary/release-notes boilerplate. Separately, the formal ChromeStatus security/privacy review gates remained 'Pending' despite substantive security analysis.",
       "evidenceIds": [
         "S1",
         "S11",
@@ -467,7 +467,7 @@
     "Responsive to review: removed permission migration per TAG and partner feedback rather than shipping a contested behavior."
   ],
   "failures": [
-    "Shipped default-on as a Chrome-desktop-only incubation against an explicitly UNSATISFIED TAG review (closed 2026-05-15, 'Missing: Multi-stakeholder support') and zero Mozilla/WebKit engagement — an interoperability failure at launch, not offset by Chrome/Edge shipment.",
+    "Shipped default-on as a Chrome-desktop-only incubation against an explicitly UNSATISFIED TAG review (closed 2026-05-15, 'Missing: Multi-stakeholder support') and zero Mozilla/WebKit engagement \u2014 an interoperability failure at launch, not offset by Chrome/Edge shipment.",
     "Material shipped communication defect: the ChromeStatus summary and the official Chrome 150 release notes still claim the feature preserves 'permissions', and the Intent to Ship retained 'notification settings intact', after permission migration was removed in February 2026. The team had this knowledge before stable.",
     "No Origin Trial and no WPT/conformance tests (wpt=false); the feature went DevTrial to default-on with limited public pre-ship validation of the handshake, .well-known hosting burden, and split-app consolidation in real conditions.",
     "Flagship redirect-plus-in-scope usage pattern depends on other non-standardized proposals (Scope Extensions, Predictable App Updating) with no cross-vendor path, which the TAG flagged as coupling.",
@@ -477,7 +477,7 @@
   "counterfactuals": [
     "If an 'unsatisfied'/closed TAG review were a hard pre-ship gate, default-on shipment would likely have been held for cross-vendor engagement or a redirect/Link-header redesign, trading launch timing for a real interop path.",
     "If the ChromeStatus/intent/release-notes boilerplate had been re-derived from the final explainer's non-goals when permission migration was removed (Feb 2026), the 'preserving permissions' overclaim would not have shipped to release notes.",
-    "If an Origin Trial had been run between DevTrial (M147) and ship, the team would have real-origin evidence on handshake friction, the .well-known hosting requirement, and split-app consolidation before default-on — directly addressing the TAG's 'works backwards' concern.",
+    "If an Origin Trial had been run between DevTrial (M147) and ship, the team would have real-origin evidence on handshake friction, the .well-known hosting requirement, and split-app consolidation before default-on \u2014 directly addressing the TAG's 'works backwards' concern.",
     "If desktop+Android parity had been in scope, user reach would be far larger, but at substantially higher implementation cost (acknowledged and intentionally deferred).",
     "If the TAG's redirect-first suggestion had been adopted, the same-origin 'split app' consolidation case (where the URL does not change) would still require a separate mechanism; the chosen manifest approach covers more identity cases but at the cost of standardization support.",
     "If a public migration-specific use counter (webdx_use_counter_enum) had been exposed for migration activations, post-launch adoption could be assessed instead of relying on the broad Manifest family counter, which cannot distinguish migration use from general manifest presence."

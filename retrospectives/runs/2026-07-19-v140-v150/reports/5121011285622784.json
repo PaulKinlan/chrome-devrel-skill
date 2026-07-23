@@ -50,7 +50,7 @@
       "limitations": "No public friction log or framework/server integration spike was found; prototype validation appears to rest on the spec and WPT rather than task-based testing. The Intent to Prototype thread itself could not be read directly (reader rejected its URL-encoded msgid), so its content is inferred from the Intent to Ship reference."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No developer trial was conducted: the manifest contains only the milestone-150 'Enabled by default' event, with no behind-flag dev-trial stage. For a narrow, spec-stable CSS parsing/rendering primitive with WPT coverage and pre-existing cross-engine implementation, a recruited developer-trial cohort was not warranted.",
       "evidenceIds": [
         "S1",
@@ -60,7 +60,7 @@
     },
     "wideReview": {
       "status": "mixed",
-      "finding": "Wide review was rigorous on the Chromium side and surfaced a real interop defect. TAG review was marked 'Not applicable'. The blink-dev Intent to Ship disclosed Gecko as 'Shipped/Shipping' and WebKit as 'No signal', but Dan Clark (Microsoft/Edge) noted image()/light-dark(none) WPTs still failed on Firefox Stable 151; Emilio Cobos Álvarez (Mozilla) clarified that Firefox's light-dark(none) ship was an internal-representation accident and that image(<color>) proper only lands in Firefox 152. LGTMs then followed from Dan Clark, Mike Taylor, and Yoav Weiss. WebKit has no written position: standards-positions #658 (light-dark with images) shows 'WebKittens: No response' and #402 (image() itself, opened 2024-09-23) also has no WebKit reply.",
+      "finding": "Wide review was rigorous on the Chromium side and surfaced a real interop defect. TAG review was marked 'Not applicable'. The blink-dev Intent to Ship disclosed Gecko as 'Shipped/Shipping' and WebKit as 'No signal', but Dan Clark (Microsoft/Edge) noted image()/light-dark(none) WPTs still failed on Firefox Stable 151; Emilio Cobos \u00c1lvarez (Mozilla) clarified that Firefox's light-dark(none) ship was an internal-representation accident and that image(<color>) proper only lands in Firefox 152. LGTMs then followed from Dan Clark, Mike Taylor, and Yoav Weiss. WebKit has no written position: standards-positions #658 (light-dark with images) shows 'WebKittens: No response' and #402 (image() itself, opened 2024-09-23) also has no WebKit reply.",
       "evidenceIds": [
         "S4",
         "S5",
@@ -70,7 +70,7 @@
       "limitations": "No formal WebKit/Safari position exists for image(); the WebKit signals tracked in ChromeStatus actually point at the adjacent light-dark-with-images issue (#658), not image() directly. The Chromium 'position identified' project label on #658 is not a published WebKit stance."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial or field experiment was run (experiment_timeline null; no OT stage; no Intent to Experiment). There were no field-only uncertainties to resolve for a self-contained parsing/rendering primitive whose behavior is fully specified and WPT-covered.",
       "evidenceIds": [
         "S1",
@@ -117,7 +117,7 @@
       "limitations": "Feature is days-to-weeks old; support ticket volume, recurrence, and resolution time are unknown. The WPT disagreement concerns the dependent light-dark() behavior, not image(<color>) parsing directly."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new feature addition, not a deprecation or removal: no existing API is restricted, removed, or put behind a reverse trial. The Chrome 150 release notes explicitly state 'There are no deprecations and removals in this release.'",
       "evidenceIds": [
         "S7"
@@ -299,7 +299,7 @@
         "Intent to Ship CSS image(<color>) 2026-05-26 by cgqaq; ship desktop/android/webview 150; Finch CSSImageFunction; all six Blink platforms",
         "Disclosed Gecko Shipped/Shipping (bug 2023569) and WebKit No signal (#658) with 'light-dark(none,none) depends on image(none)' notes",
         "Dan Clark (Microsoft/Edge): image()/light-dark(none) WPTs fail on Firefox Stable 151; requested Mozilla confirmation",
-        "Emilio Cobos Álvarez (Mozilla): Firefox's light-dark(none) ship was an internal-representation accident; image(<color>) implemented after CSSWG discussion and should ship in Firefox 152",
+        "Emilio Cobos \u00c1lvarez (Mozilla): Firefox's light-dark(none) ship was an internal-representation accident; image(<color>) implemented after CSSWG discussion and should ship in Firefox 152",
         "LGTMs from Dan Clark, Mike Taylor, Yoav Weiss (2026-05-27); references Intent to Prototype thread"
       ],
       "limitations": "Reader rejected the URL-encoded msgid form; accessed via the @ form. The referenced Intent to Prototype thread could not be read directly."

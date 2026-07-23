@@ -30,7 +30,7 @@
   "phaseReview": {
     "intake": {
       "status": "supported",
-      "finding": "The developer problem is real, recurring and concretely evidenced: ReadableStreamBYOBReader.read(view) does not guarantee how many elements are written before resolving, so performance-sensitive parsers/decoders cannot rely on a minimum fill. ricea (Chromium Streams owner) stated in 2021 that 'some people expect read() to work this way already' and that the proposal 'clearly fixes an ergonomic problem.' A filed Chromium bug (383158935, Dec 2024) shows an external developer hitting exactly this — BYOB reads returning fewer bytes than the view near a 2MiB boundary, noting 'Works in Firefox as expected.' Cloudflare Workers docs independently report plain read() 'typically fills only 1% of the provided buffer.' Cross-language precedent exists (Java readFully, Rust read_exact). Feature correctly classified 'Chromium catches up': the WHATWG spec was already merged (Nov 2023) and Firefox already shipped (134) when Chrome 140 shipped.",
+      "finding": "The developer problem is real, recurring and concretely evidenced: ReadableStreamBYOBReader.read(view) does not guarantee how many elements are written before resolving, so performance-sensitive parsers/decoders cannot rely on a minimum fill. ricea (Chromium Streams owner) stated in 2021 that 'some people expect read() to work this way already' and that the proposal 'clearly fixes an ergonomic problem.' A filed Chromium bug (383158935, Dec 2024) shows an external developer hitting exactly this \u2014 BYOB reads returning fewer bytes than the view near a 2MiB boundary, noting 'Works in Firefox as expected.' Cloudflare Workers docs independently report plain read() 'typically fills only 1% of the provided buffer.' Cross-language precedent exists (Java readFully, Rust read_exact). Feature correctly classified 'Chromium catches up': the WHATWG spec was already merged (Nov 2023) and Firefox already shipped (134) when Chrome 140 shipped.",
       "evidenceIds": [
         "s-chromestatus",
         "s-pr1145",
@@ -41,13 +41,13 @@
     },
     "incubation": {
       "status": "supported",
-      "finding": "Strong, multi-year public incubation in WHATWG/streams (PR #1145, opened Jul 2021, merged Nov 13 2023). The API shape was openly bikeshedded over ~2 years — readFully(view) -> fill(view) -> read(view,{atLeast}) -> read(view,{min}) — and the generalized 'min' form was chosen for flexibility. At least two browser implementers expressed interest at spec time (Chrome/ricea, Safari/annevk), plus non-browser implementers (Deno/lucacasonato, Node.js). domenic and ricea approved the spec text. Tests written alongside (WPT #29723).",
+      "finding": "Strong, multi-year public incubation in WHATWG/streams (PR #1145, opened Jul 2021, merged Nov 13 2023). The API shape was openly bikeshedded over ~2 years \u2014 readFully(view) -> fill(view) -> read(view,{atLeast}) -> read(view,{min}) \u2014 and the generalized 'min' form was chosen for flexibility. At least two browser implementers expressed interest at spec time (Chrome/ricea, Safari/annevk), plus non-browser implementers (Deno/lucacasonato, Node.js). domenic and ricea approved the spec text. Tests written alongside (WPT #29723).",
       "evidenceIds": [
         "s-pr1145",
         "s-spec",
         "s-mozbug"
       ],
-      "limitations": "Safari's spec-time interest (annevk) did not translate into implementation (see wideReview/interoperability) — a gap between incubation signal and outcome."
+      "limitations": "Safari's spec-time interest (annevk) did not translate into implementation (see wideReview/interoperability) \u2014 a gap between incubation signal and outcome."
     },
     "prototype": {
       "status": "partial",
@@ -60,7 +60,7 @@
       "limitations": "No Blink-specific prototype/friction-log artifacts were found; evidence of an in-Blink prototype behind a flag is absent because there was none (the feature went straight to ship as an additive catch-up)."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not relevant because this is an additive, opt-in, backward-compatible option on an already-shipped interface with no behavioral change for callers that do not use it (ChromeStatus: breaking_change=false, enterprise_impact=1, no flag, no origin trial). No developer trial was conducted or warranted. 'Not-relevant' is used per the method's explicit instruction (with rationale), not to mean untested.",
       "evidenceIds": [
         "s-chromestatus"
@@ -80,7 +80,7 @@
       "limitations": "TAG review record not separately located (tag_review_status 'Not applicable' on ChromeStatus). No evidence of an explicit Safari standards-position request/response beyond the open WebKit bug."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not relevant: no origin trial or field experiment was run or needed. The feature is additive and opt-in, the spec was already a published living standard, and another engine had already shipped it; there was no field uncertainty requiring real-origin evidence. ChromeStatus confirms origintrial=false, no experiment goals/risks.",
       "evidenceIds": [
         "s-chromestatus"
@@ -109,7 +109,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Mixed ecosystem uptake with real gaps. Positive: Node.js implemented the standardized API (nodejs/node#50888 merged); Deno expressed interest (denoland/deno#20849); Bun has an open support request (oven-sh/bun#7091). Concerning: Cloudflare Workers — a runtime that depends heavily on Streams and that publicly documented the '1% fill' pain — implements a NON-STANDARD readAtLeast(minElements, view) instead of the standardized read(view,{min}), creating a real ecosystem API divergence that the Chrome launch materials did not address. No production case studies or usage metrics (Chrome use counters, HTTP Archive, BigQuery) for the standardized min option were located.",
+      "finding": "Mixed ecosystem uptake with real gaps. Positive: Node.js implemented the standardized API (nodejs/node#50888 merged); Deno expressed interest (denoland/deno#20849); Bun has an open support request (oven-sh/bun#7091). Concerning: Cloudflare Workers \u2014 a runtime that depends heavily on Streams and that publicly documented the '1% fill' pain \u2014 implements a NON-STANDARD readAtLeast(minElements, view) instead of the standardized read(view,{min}), creating a real ecosystem API divergence that the Chrome launch materials did not address. No production case studies or usage metrics (Chrome use counters, HTTP Archive, BigQuery) for the standardized min option were located.",
       "evidenceIds": [
         "s-pr1145",
         "s-cfworkers",
@@ -128,7 +128,7 @@
       "limitations": "Short post-ship observation window and no access to internal Chromium support/crash telemetry; 'no regressions found' is not proof of zero regressions."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not relevant: this is a new additive capability, not a deprecation, removal, or behavior change. No existing API is restricted or removed; callers that ignore min see unchanged behavior.",
       "evidenceIds": [
         "s-chromestatus"
@@ -159,7 +159,7 @@
     },
     "adoption": {
       "status": "mixed",
-      "finding": "Node.js shipped the standardized API; Deno interested; Bun requested. Against that, no production case studies or usage metrics exist for the standardized min option, and Cloudflare Workers — the runtime that most publicly suffered the underlying problem — ships a divergent non-standard readAtLeast(minElements, view). Chrome-only period is already closed (Firefox shipped first), but the standardized shape is not yet uniformly adopted across JS runtimes.",
+      "finding": "Node.js shipped the standardized API; Deno interested; Bun requested. Against that, no production case studies or usage metrics exist for the standardized min option, and Cloudflare Workers \u2014 the runtime that most publicly suffered the underlying problem \u2014 ships a divergent non-standard readAtLeast(minElements, view). Chrome-only period is already closed (Firefox shipped first), but the standardized shape is not yet uniformly adopted across JS runtimes.",
       "evidenceIds": [
         "s-pr1145",
         "s-cfworkers",
@@ -169,7 +169,7 @@
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "Spec is a published WHATWG living standard; WPT tests exist (#29723) and pass in shipping engines; Firefox (134) and Chrome (140) both ship the standardized read(view,{min}). Two material interop gaps remain: (1) Safari/WebKit has not implemented — bug 264731 is still NEW with no patches ~2.5 years after the spec merged; (2) Cloudflare Workers uses a non-standard readAtLeast(minElements, view) signature, so the standardized shape is not interoperable across all JS runtimes that expose BYOB readers.",
+      "finding": "Spec is a published WHATWG living standard; WPT tests exist (#29723) and pass in shipping engines; Firefox (134) and Chrome (140) both ship the standardized read(view,{min}). Two material interop gaps remain: (1) Safari/WebKit has not implemented \u2014 bug 264731 is still NEW with no patches ~2.5 years after the spec merged; (2) Cloudflare Workers uses a non-standard readAtLeast(minElements, view) signature, so the standardized shape is not interoperable across all JS runtimes that expose BYOB readers.",
       "evidenceIds": [
         "s-spec",
         "s-mozbug",
@@ -358,7 +358,7 @@
       "retrievedAt": "2026-07-22T16:30:00Z",
       "sourceType": "support",
       "supports": [
-        "Concrete, attributable external developer demand: reported 2024-12-10 by a TU Chemnitz developer — BYOB read() returning a chunk smaller than the provided view near a 2MiB boundary; explicitly noted 'Works in Firefox as expected'",
+        "Concrete, attributable external developer demand: reported 2024-12-10 by a TU Chemnitz developer \u2014 BYOB read() returning a chunk smaller than the provided view near a 2MiB boundary; explicitly noted 'Works in Firefox as expected'",
         "Status Fixed; Priority P2, Severity S2; Found In Chrome 131/132/133; Targeted milestone 133; assigned to snehagarwal@microsoft.com (the feature owner); CC included ricea@chromium.org",
         "Cited in ChromeStatus as evidence of Web-developer Positive signal"
       ],
@@ -398,15 +398,15 @@
     "Multi-runtime ecosystem uptake of the standardized shape (Node.js shipped; Deno interested; Bun requested), de-risking long-term interop beyond browsers."
   ],
   "failures": [
-    "Safari/WebKit has not implemented: bug 264731 still NEW ~2.5 years after the spec merged, despite annevk's spec-time interest — a gap between incubation signal and outcome that leaves the feature at 2/3 browser engines and blocks Baseline 'widely available'.",
-    "Cloudflare Workers — the runtime that most publicly suffered the underlying problem ('1% fill') — ships a non-standard readAtLeast(minElements, view) instead of the standardized read(view,{min}), a real ecosystem API divergence that the Chrome 140 launch materials did not acknowledge or address.",
+    "Safari/WebKit has not implemented: bug 264731 still NEW ~2.5 years after the spec merged, despite annevk's spec-time interest \u2014 a gap between incubation signal and outcome that leaves the feature at 2/3 browser engines and blocks Baseline 'widely available'.",
+    "Cloudflare Workers \u2014 the runtime that most publicly suffered the underlying problem ('1% fill') \u2014 ships a non-standard readAtLeast(minElements, view) instead of the standardized read(view,{min}), a real ecosystem API divergence that the Chrome 140 launch materials did not acknowledge or address.",
     "Chrome shipped ~20 months after the spec merge and ~8 months after Firefox; ricea's 2021 note that Blink work was 'stuck behind #1123 and other things that are higher priority' shows prioritization friction for a developer-ergonomics fix that external developers were actively hitting.",
     "Enablement/data-quality gaps: ChromeStatus doc_links and sample_links are empty (no samples or dedicated docs linked); is_releasenotes_content_reviewed/publish_ready were false at cache time despite shipping; MDN's Baseline 'March 2026 newly available' date is unreconciled with the actual Firefox/Chrome ship dates."
   ],
   "counterfactuals": [
     "If the launch had coordinated a single canonical API shape with Cloudflare Workers before Chrome 140 shipped (or flagged the readAtLeast vs read(view,{min}) divergence in MDN/release notes), the cross-runtime interop confusion for a low-level Streams primitive could have been reduced.",
-    "If Safari implementation had been treated as a tracked launch dependency rather than accepted as terminal 'No signal' — with periodic WebKit-bug advocacy and a Baseline blocker flagged in prepare-to-ship — cross-browser interop and Baseline 'widely available' would be materially closer.",
-    "If a dedicated DevRel article/sample (not just a release-notes bullet) had accompanied the ship — e.g., a 'read an exact number of bytes from a stream' guide anchored on Cloudflare's '1% fill' finding — developer discoverability and early adoption signals would likely be stronger.",
+    "If Safari implementation had been treated as a tracked launch dependency rather than accepted as terminal 'No signal' \u2014 with periodic WebKit-bug advocacy and a Baseline blocker flagged in prepare-to-ship \u2014 cross-browser interop and Baseline 'widely available' would be materially closer.",
+    "If a dedicated DevRel article/sample (not just a release-notes bullet) had accompanied the ship \u2014 e.g., a 'read an exact number of bytes from a stream' guide anchored on Cloudflare's '1% fill' finding \u2014 developer discoverability and early adoption signals would likely be stronger.",
     "If the motivating external bug (383158935) and its 'Works in Firefox' observation had been surfaced in the ChromeStatus motivation text, the cross-browser-interop framing and the urgency case for the Chrome catch-up would have been stronger and more self-evident.",
     "If ChromeStatus doc_links/sample_links had been populated before ship, the enablement story would be self-contained on the feature page and would not rely solely on MDN."
   ],
@@ -422,7 +422,7 @@
     "status": "partial",
     "missingEvidence": [
       "Intent-to-ship thread content (groups.google.com blink-dev message ID in ChromeStatus intent_thread_url) could not be retrieved directly; intent-stage/LGTM/review-state claims rely on ChromeStatus metadata.",
-      "Full Chromium tracking bug 40942083 page could not be read (reader timed out/500); confirmed via search snippet only — implementation CLs, reviewers, and exact landing milestone not directly verified.",
+      "Full Chromium tracking bug 40942083 page could not be read (reader timed out/500); confirmed via search snippet only \u2014 implementation CLs, reviewers, and exact landing milestone not directly verified.",
       "No independent production usage/adoption metrics (Chrome use counters, HTTP Archive, BigQuery) or attributable case studies for the standardized min option were located.",
       "MDN Baseline 'March 2026 newly available' date not reconciled with primary ship dates (Firefox ~Jan 2025, Chrome Sep 2025); Safari non-shipment inferred from the open WebKit bug rather than an official Safari release-notes/caniuse confirmation.",
       "Node.js/Deno/Bun runtime support partly observed via references inside the WHATWG spec PR rather than a current direct re-read of each runtime's documentation.",

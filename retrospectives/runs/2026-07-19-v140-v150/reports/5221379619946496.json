@@ -53,7 +53,7 @@
       "limitations": "Prototype/friction-log artifacts are not on the record; implementation evidence is indirect (component, finch name, WPT links) rather than a cited design doc. WPT pass/fail across engines could not be read (JS-rendered dashboard)."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No developer trial or origin trial was conducted; the feature went directly to default-on at M140. Rationale: this is a low-risk, spec-defined, string-syntax catch-up descriptor with a seven-year-old Firefox reference implementation, so it does not present the field-only uncertainties that justify a trial. Going straight to ship is a defensible process choice for this class of change. Not-relevant is used to mean the phase was intentionally and reasonably skipped, not that it was untested.",
       "evidenceIds": [
         "src-chromestatus-cache",
@@ -64,7 +64,7 @@
     },
     "wideReview": {
       "status": "partial",
-      "finding": "Mixed. The spec is reasonably mature (CSS Fonts L4) and Firefox already ships, which lowers risk. However, material wide-review gaps existed at ship: (1) Safari gives 'No signal' — the WebKit standards-position request (issue #525) was opened only 2025-07-08, ~7 weeks before stable, and drew no WebKittens response; (2) WebKit Bug 215605 (open since 2020) still carries the FIXME 'Implement Step 6: the font-variation-settings descriptor inside @font-face', so Safari does not implement the descriptor; (3) ChromeStatus records security_review_status and privacy_review_status both as 'Pending' and tag_review_status as 'Not applicable'. The descriptor therefore shipped while one major engine had neither a position nor an implementation.",
+      "finding": "Mixed. The spec is reasonably mature (CSS Fonts L4) and Firefox already ships, which lowers risk. However, material wide-review gaps existed at ship: (1) Safari gives 'No signal' \u2014 the WebKit standards-position request (issue #525) was opened only 2025-07-08, ~7 weeks before stable, and drew no WebKittens response; (2) WebKit Bug 215605 (open since 2020) still carries the FIXME 'Implement Step 6: the font-variation-settings descriptor inside @font-face', so Safari does not implement the descriptor; (3) ChromeStatus records security_review_status and privacy_review_status both as 'Pending' and tag_review_status as 'Not applicable'. The descriptor therefore shipped while one major engine had neither a position nor an implementation.",
       "evidenceIds": [
         "src-chromestatus-cache",
         "src-webkit-position",
@@ -75,7 +75,7 @@
       "limitations": "The actual TAG/standards review correspondence was not retrievable; 'No signal' for Safari is an absence of position, not evidence of opposition. Security/privacy 'Pending' is the cached state (accurate as of 2025-09-25) and may have resolved later."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No origin trial was run, consistent with a low-risk catch-up CSS descriptor for which there was no field-only uncertainty to resolve. Not-relevant denotes an intentional, defensible skip rather than an untested gap.",
       "evidenceIds": [
         "src-chromestatus-cache"
@@ -120,7 +120,7 @@
       "limitations": "Support burden is genuinely unmeasured here, not assessed as low; the Buganizer sign-in wall blocked direct verification of bug resolution and any new issues."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a newly added capability, not a removal or restriction; the deprecation/removal phase does not apply. No usage is being removed, no migration or reverse trial is needed, and no end users lose existing behavior.",
       "evidenceIds": [
         "src-chromestatus-cache"
@@ -305,7 +305,7 @@
       "sourceType": "other",
       "supports": [
         "Descriptor is documented with syntax, formal definition, and an @font-face example",
-        "Banner states 'Limited availability — This feature is not Baseline because it does not work in some of the most widely-used browsers' as of 2026-04-20, ~7 months after Chrome M140 ship, confirming not Baseline / Safari gap"
+        "Banner states 'Limited availability \u2014 This feature is not Baseline because it does not work in some of the most widely-used browsers' as of 2026-04-20, ~7 months after Chrome M140 ship, confirming not Baseline / Safari gap"
       ],
       "limitations": "The browser-compatibility table is JS-rendered and did not yield per-version numbers in the retrieved text; exact Safari version support could not be read here."
     },
@@ -384,7 +384,7 @@
     "Intent-to-Ship evidence (LGTMs and any objections) is not independently verifiable from public sources, and the originating/tracking Chromium bugs require sign-in, limiting external validation."
   ],
   "counterfactuals": [
-    "Earlier WebKit engagement (the underlying WebKit bug dates to 2020) could have enabled a coordinated or near-simultaneous ship, making the descriptor Baseline-eligible at launch and removing the need for dual authoring — the single highest-leverage missed opportunity.",
+    "Earlier WebKit engagement (the underlying WebKit bug dates to 2020) could have enabled a coordinated or near-simultaneous ship, making the descriptor Baseline-eligible at launch and removing the need for dual authoring \u2014 the single highest-leverage missed opportunity.",
     "A 'prepare to ship' packet that surfaced the 'Pending' security/privacy review and corrected the spec-maturity overstatement (WD vs 'Published standard') before launch would have prevented the record from implying stronger standards/review grounding than existed.",
     "Because Firefox shipped a reference implementation in 2018 and the spec text was stable, Chrome could plausibly have shipped years earlier; the seven-year gap suggests the feature was unfunded until a Microsoft contributor picked it up, not that it was technically blocked.",
     "Shipping an explicit explainer/sample contrasting the old per-element workaround with the new @font-face descriptor (plus Safari fallback guidance) would have made the value proposition and progressive-enhancement story clearer at launch, since the record carried none."

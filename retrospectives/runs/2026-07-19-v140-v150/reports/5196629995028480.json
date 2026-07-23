@@ -50,7 +50,7 @@
       "limitations": "No evidence of IME-composition (CJK commit/replace) testing against the buffer-snapshot logic during prototyping; the manual WPT only covers touch-keyboard autocorrect, not IME interaction."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No developer trial or flag period occurred (flag_name 'Not Applicable', no origin trial, finch rollout 'Will ship enabled for all users'). This is the standard path for a Windows-only platform-enforcement fix that introduces no new web-facing API, event, or state (per the feature's own debuggability statement) and is gated by a Finch kill switch. There was nothing API-shaped for external developers to trial.",
       "evidenceIds": [
         "s1",
@@ -70,7 +70,7 @@
       "limitations": "Whether the Firefox parity bug Dan Clark requested was actually filed and its status are unknown; security/privacy review outcomes post-cache-date are unevidenced."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No origin trial or field experiment was run and none was justified: the change is a platform-level enforcement fix with no stated uncertainty requiring real-origin/user field evidence, gated instead by the kTSFHonorAutocorrectOff Finch kill switch, with a 'ship enabled for all users' plan.",
       "evidenceIds": [
         "s1",
@@ -103,13 +103,13 @@
       "limitations": "Exact M147 stable ship date and the precise M147 point-release number that first carried the revert were not pinned; the regression bug 498745133 detail requires authenticated access."
     },
     "adoption": {
-      "status": "unscored",
-      "finding": "Adoption is not meaningfully measurable for this change: it introduces no new web-facing API (authors already set autocorrect=\"off\"; the feature makes that work on the Windows touch keyboard), no use-counter bucket is linked (webdx_usecounter_enum null), and no framework/library integration, case study, or production-usage evidence was found. The developer value is implicit correctness rather than instrumented adoption.",
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. Adoption is not meaningfully measurable for this change: it introduces no new web-facing API (authors already set autocorrect=\"off\"; the feature makes that work on the Windows touch keyboard), no use-counter bucket is linked (webdx_usecounter_enum null), and no framework/library integration, case study, or production-usage evidence was found. The developer value is implicit correctness rather than instrumented adoption.",
       "evidenceIds": [
         "s1",
         "s11"
       ],
-      "limitations": "No usage telemetry, HTTP Archive / web-features data, or partner usage was found; for a no-new-API platform fix this is expected rather than necessarily a gap."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
       "status": "unscored",
@@ -120,7 +120,7 @@
       "limitations": "No post-ship support telemetry or issue data accessible; cannot determine whether the reland fully eliminated the IME regression in production."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is an additive correctness fix that honors an existing standard attribute; it is not a deprecation or removal. A Finch kill switch (kTSFHonorAutocorrectOff) exists for rollback, but there is no deprecation/removal lifecycle to replay.",
       "evidenceIds": [
         "s1"
@@ -151,7 +151,7 @@
       "limitations": "Severity, affected IMEs, and user-report counts for bug 498745133 require authenticated access and were not retrieved."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "No adoption is instrumented or observable for a no-new-API, Windows-only platform fix (no use-counter bucket, no framework integration, no case studies found). Adoption as a dimension is not applicable/evidenced here.",
       "evidenceIds": [
         "s1"

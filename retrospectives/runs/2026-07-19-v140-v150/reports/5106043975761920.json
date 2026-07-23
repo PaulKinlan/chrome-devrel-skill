@@ -27,7 +27,7 @@
   "phaseReview": {
     "intake": {
       "status": "supported",
-      "finding": "The problem was real, recurring and well-scoped: system accent color was exposed inconsistently — accent-color: auto resolved to the OS accent color everywhere, while AccentColor/AccentColorText were planned for installed-web-app-only — creating both a fingerprinting surface and accessibility/UX complaints (the owner stated Chrome received 'more accessibility bug reports and complaints when we first enabled system color styling by default'). The motivation links to a long-standing CSSWG fingerprinting concern opened May 2024. This is a Microsoft-contributed scoping fix to an existing approved feature, not a new API.",
+      "finding": "The problem was real, recurring and well-scoped: system accent color was exposed inconsistently \u2014 accent-color: auto resolved to the OS accent color everywhere, while AccentColor/AccentColorText were planned for installed-web-app-only \u2014 creating both a fingerprinting surface and accessibility/UX complaints (the owner stated Chrome received 'more accessibility bug reports and complaints when we first enabled system color styling by default'). The motivation links to a long-standing CSSWG fingerprinting concern opened May 2024. This is a Microsoft-contributed scoping fix to an existing approved feature, not a new API.",
       "evidenceIds": [
         "S1",
         "S3",
@@ -39,7 +39,7 @@
     },
     "incubation": {
       "status": "partial",
-      "finding": "Solution shape was incubated primarily in CSSWG issue #10372 (opened May 2024), where alternatives — tainting the color, quantizing it (Lea Verou), and per-profile/theme colors — were discussed and rejected as too complex or insufficient. The owner stated the discussion found 'differing needs and security requirements across UAs' with no agreed resolution. Chromium therefore adopted a Chromium-specific mitigation (scope to installed web apps) rather than a cross-engine consensus design.",
+      "finding": "Solution shape was incubated primarily in CSSWG issue #10372 (opened May 2024), where alternatives \u2014 tainting the color, quantizing it (Lea Verou), and per-profile/theme colors \u2014 were discussed and rejected as too complex or insufficient. The owner stated the discussion found 'differing needs and security requirements across UAs' with no agreed resolution. Chromium therefore adopted a Chromium-specific mitigation (scope to installed web apps) rather than a cross-engine consensus design.",
       "evidenceIds": [
         "S3",
         "S4"
@@ -48,7 +48,7 @@
     },
     "prototype": {
       "status": "partial",
-      "finding": "This is a behavior-scoping change to an already-shipped feature, so there is little conventional prototype evidence. The key implementation artifact — a CL scoping availability to the initial profile in addition to installed web apps — was produced during the Intent-to-Ship review (referenced Apr 3, 2026), not in a distinct prototype phase. No samples, demos, or feature-detection guidance were published.",
+      "finding": "This is a behavior-scoping change to an already-shipped feature, so there is little conventional prototype evidence. The key implementation artifact \u2014 a CL scoping availability to the initial profile in addition to installed web apps \u2014 was produced during the Intent-to-Ship review (referenced Apr 3, 2026), not in a distinct prototype phase. No samples, demos, or feature-detection guidance were published.",
       "evidenceIds": [
         "S1",
         "S3"
@@ -56,7 +56,7 @@
       "limitations": "The tracking bug body (which would contain the CL and integration detail) could not be retrieved (server 500). ChromeStatus sample_links and doc_links are empty. No public friction log or compatibility spike exists."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable with rationale (not used to mean untested): this is a privacy-driven restriction of an existing behavior, not a new API surface for developers to evaluate, so a developer/origin trial is not an appropriate instrument. No flag, devtrial_instructions, or trial existed. Consequence recorded as a limitation: no external developer feedback was gathered before ship (ChromeStatus webdev = 'No signals'; web-platform-dx developer-signals exists only for the underlying accent-color property, not this scoping).",
       "evidenceIds": [
         "S1",
@@ -77,7 +77,7 @@
       "limitations": "GitHub readers rendered issue bodies but not full comment threads, so the precise content of Emilio's and the WebKit assignees' remarks is only partially captured. The 'Positive' Mozilla signal is overstated relative to a formal position; the formal positions are unresolved."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable with rationale: a fingerprinting restriction is not amenable to an origin/field trial (there is no adoption uncertainty to resolve and no API for participants to exercise). No origin trial was used or appropriate. The WebAppScopeSystemAccentColor Finch flag is a rollout safety kill-switch, not an experiment.",
       "evidenceIds": [
         "S1",
@@ -87,18 +87,18 @@
     },
     "prepareToShip": {
       "status": "mixed",
-      "finding": "Decision quality was strong but alignment was incomplete. The Intent to Ship (Feb 13, 2026, initially targeting desktop M147) generated a real privacy iteration: Yasskin's cross-profile fingerprinting concern was closed by an 'initial profile' scoping CL (Apr 3), and three LGTMs were obtained (Mike Taylor LGTM1 Apr 4 after the spec-basis question was answered; Daniel Bratell and Rick Byers Apr 8). The milestone moved M147 to M149, and the higher-risk AccentColor/AccentColorText keywords were deliberately sequenced to M150 'to allow buffer time in case compat issues with the scoping change need rollback' — a clear resilience signal. Gaps: no spec text was added (owner argued existing CSS Color system-color latitude suffices); no WPT tests for the scoping itself (justified as hard to test, existing coverage unbroken); ChromeStatus privacy/security fields stale at 'Pending'; breaking_change recorded as false despite a shipped default behavior changing.",
+      "finding": "Decision quality was strong but alignment was incomplete. The Intent to Ship (Feb 13, 2026, initially targeting desktop M147) generated a real privacy iteration: Yasskin's cross-profile fingerprinting concern was closed by an 'initial profile' scoping CL (Apr 3), and three LGTMs were obtained (Mike Taylor LGTM1 Apr 4 after the spec-basis question was answered; Daniel Bratell and Rick Byers Apr 8). The milestone moved M147 to M149, and the higher-risk AccentColor/AccentColorText keywords were deliberately sequenced to M150 'to allow buffer time in case compat issues with the scoping change need rollback' \u2014 a clear resilience signal. Gaps: no spec text was added (owner argued existing CSS Color system-color latitude suffices); no WPT tests for the scoping itself (justified as hard to test, existing coverage unbroken); ChromeStatus privacy/security fields stale at 'Pending'; breaking_change recorded as false despite a shipped default behavior changing.",
       "evidenceIds": [
         "S1",
         "S3",
         "S7",
         "S14"
       ],
-      "limitations": "The spec-basis claim (CSS Color permits returning fixed system-color values) was accepted on the owner's word in the thread rather than verified against normative text in this run. The exact M147→M149 slip date and rationale were not pinned."
+      "limitations": "The spec-basis claim (CSS Color permits returning fixed system-color values) was accepted on the owner's word in the thread rather than verified against normative text in this run. The exact M147\u2192M149 slip date and rationale were not pinned."
     },
     "release": {
       "status": "mixed",
-      "finding": "Shipped on Chrome 149 desktop stable (June 2, 2026) — confirmed by the official Chrome for Developers release notes, which describe it accurately and proportionately ('Restricts access to the system accent color ... limits a significant fingerprinting vector'). Communication was release-notes-driven with no feature-specific DevRel article, demo, or MDN update (Mozilla issue lists MDN URL 'No response'). Generic Chrome 149 roundups (YouTube/Instagram) mention it only in passing. For a low-visibility privacy-scoping change this is a proportionate channel choice, but developer guidance beyond the one-paragraph release note is absent.",
+      "finding": "Shipped on Chrome 149 desktop stable (June 2, 2026) \u2014 confirmed by the official Chrome for Developers release notes, which describe it accurately and proportionately ('Restricts access to the system accent color ... limits a significant fingerprinting vector'). Communication was release-notes-driven with no feature-specific DevRel article, demo, or MDN update (Mozilla issue lists MDN URL 'No response'). Generic Chrome 149 roundups (YouTube/Instagram) mention it only in passing. For a low-visibility privacy-scoping change this is a proportionate channel choice, but developer guidance beyond the one-paragraph release note is absent.",
       "evidenceIds": [
         "S1",
         "S8",
@@ -108,14 +108,14 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "As a restriction of an already-shipped behavior rather than a new capability, conventional adoption does not map cleanly, and there is no exact counter for the scoping (webdxUseCounterEnum is null; mappingStatus is 'multiple-counters'). First-party Chrome usage telemetry is now cached but only at family/property scope. The accent-color CSS property counter (bucket 695) and the AccentColor webfeature counter (bucket 6) were each ~2.64% of measured Chrome page loads at M149 stable (2026-06-02: 0.02639605 / 0.02643632), rose to ~2.84% by day30 (2026-07-02: 0.02839699 / 0.02843502), peaked ~2.88% around 2026-07-01 (0.02883695 / 0.02885075), and were ~2.76% at latest observation (2026-07-20/21: 0.02725928 / 0.02755589); day90/day180 checkpoints are not yet available. These two counters track each other closely, but they aggregate all accent-color usage (CSS counter first positive 2021-03-31; webfeature first positive 2024-06-10 — both predate this M149 scoping) and do not isolate accent-color: auto, the system-keyword behavior, the scoping itself, or installed-web-app usage. The primary value-prop consumer (AccentColor/AccentColorText keywords) ships only in M150. Whether installed PWAs meaningfully adopt accent-color: auto / AccentColor[Text] in production therefore remains unmeasured at feature level; the family-level signal is context, not adoption of this restriction.",
+      "finding": "As a restriction of an already-shipped behavior rather than a new capability, conventional adoption does not map cleanly, and there is no exact counter for the scoping (webdxUseCounterEnum is null; mappingStatus is 'multiple-counters'). First-party Chrome usage telemetry is now cached but only at family/property scope. The accent-color CSS property counter (bucket 695) and the AccentColor webfeature counter (bucket 6) were each ~2.64% of measured Chrome page loads at M149 stable (2026-06-02: 0.02639605 / 0.02643632), rose to ~2.84% by day30 (2026-07-02: 0.02839699 / 0.02843502), peaked ~2.88% around 2026-07-01 (0.02883695 / 0.02885075), and were ~2.76% at latest observation (2026-07-20/21: 0.02725928 / 0.02755589); day90/day180 checkpoints are not yet available. These two counters track each other closely, but they aggregate all accent-color usage (CSS counter first positive 2021-03-31; webfeature first positive 2024-06-10 \u2014 both predate this M149 scoping) and do not isolate accent-color: auto, the system-keyword behavior, the scoping itself, or installed-web-app usage. The primary value-prop consumer (AccentColor/AccentColorText keywords) ships only in M150. Whether installed PWAs meaningfully adopt accent-color: auto / AccentColor[Text] in production therefore remains unmeasured at feature level; the family-level signal is context, not adoption of this restriction.",
       "evidenceIds": [
         "S1",
         "S14",
         "S15",
         "S16"
       ],
-      "limitations": "No exact-feature adoption counter (webdxUseCounterEnum null); the family/property counters do not isolate the scoping, accent-color: auto, or installed-web-app usage. Values are share of measured Chrome HTTP/HTTPS page loads where a counter fired — not unique sites, developers, users, production deployment, successful tasks, satisfaction, or end-user benefit. No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence; day90/day180 not yet available."
+      "limitations": "No exact-feature adoption counter (webdxUseCounterEnum null); the family/property counters do not isolate the scoping, accent-color: auto, or installed-web-app usage. Values are share of measured Chrome HTTP/HTTPS page loads where a counter fired \u2014 not unique sites, developers, users, production deployment, successful tasks, satisfaction, or end-user benefit. No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence; day90/day180 not yet available."
     },
     "support": {
       "status": "unknown",
@@ -127,7 +127,7 @@
       "limitations": "Support window is short (M149 shipped June 2, 2026; cutoff July 20, 2026). The Chromium tracking bug body was unreadable, so any filed regressions there were not directly inspected."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable with rationale: this is a privacy scoping of a capability that still exists (it remains available in installed-web-app/initial-profile contexts), not a deprecation or removal from the platform, so a removal notice, reverse trial, or migration toolkit is not the right lifecycle event. Adjacent caveat recorded as a limitation: a previously-default open-web behavior (accent-color: auto resolving to the OS color) did change, which has a deprecation-like flavor yet carried no detection/migration tooling.",
       "evidenceIds": [
         "S1",
@@ -151,7 +151,7 @@
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "Privacy-positive for open-web users (a passive, stable fingerprinting signal is removed) with a minor visual change (form controls revert to a default color outside installed apps). The most serious end-user risk — cross-profile correlation via a near-unique wallpaper-derived accent color (Yasskin) — was identified in review and mitigated by initial-profile scoping. No measured user-impact data exists; the owner's claim of net benefit rests on reduced a11y complaints.",
+      "finding": "Privacy-positive for open-web users (a passive, stable fingerprinting signal is removed) with a minor visual change (form controls revert to a default color outside installed apps). The most serious end-user risk \u2014 cross-profile correlation via a near-unique wallpaper-derived accent color (Yasskin) \u2014 was identified in review and mitigated by initial-profile scoping. No measured user-impact data exists; the owner's claim of net benefit rests on reduced a11y complaints.",
       "evidenceIds": [
         "S3",
         "S4"
@@ -160,7 +160,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Cached first-party Chrome usage telemetry now exists but only at family/property scope (mappingStatus 'multiple-counters'; webdxUseCounterEnum is null). The accent-color property counter (bucket 695) and the AccentColor webfeature counter (bucket 6) were each ~2.64% of measured Chrome page loads at M149 stable (2026-06-02: 0.02639605 / 0.02643632), ~2.84% at day30 (2026-07-02: 0.02839699 / 0.02843502), peaking ~2.88% around 2026-07-01 (0.02883695 / 0.02885075), and ~2.76% at latest observation (2026-07-20/21: 0.02725928 / 0.02755589); day90/day180 are not yet available. The two counters track each other closely and were steady-to-slightly-rising across the M149 window. These values are the share of page loads where the broad accent-color property/webfeature fired — measured since 2021/2024, long predating this scoping — not the adoption of this feature's restriction, and no counter isolates accent-color: auto, the system-keyword behavior, or installed-web-app usage. There is no predeclared adoption target in the launch record and no production, retention, or unique-site evidence. Per method, without a target and without corroborating production/retention evidence the adoption outcome is not scoreable: the family-level signal shows the underlying property is in modest, steady use and did not collapse across the M149 window, but that is not evidence of the scoping's adoption, success, or failure, and 'mixed' is not a valid substitute for an absent threshold.",
+      "finding": "Cached first-party Chrome usage telemetry now exists but only at family/property scope (mappingStatus 'multiple-counters'; webdxUseCounterEnum is null). The accent-color property counter (bucket 695) and the AccentColor webfeature counter (bucket 6) were each ~2.64% of measured Chrome page loads at M149 stable (2026-06-02: 0.02639605 / 0.02643632), ~2.84% at day30 (2026-07-02: 0.02839699 / 0.02843502), peaking ~2.88% around 2026-07-01 (0.02883695 / 0.02885075), and ~2.76% at latest observation (2026-07-20/21: 0.02725928 / 0.02755589); day90/day180 are not yet available. The two counters track each other closely and were steady-to-slightly-rising across the M149 window. These values are the share of page loads where the broad accent-color property/webfeature fired \u2014 measured since 2021/2024, long predating this scoping \u2014 not the adoption of this feature's restriction, and no counter isolates accent-color: auto, the system-keyword behavior, or installed-web-app usage. There is no predeclared adoption target in the launch record and no production, retention, or unique-site evidence. Per method, without a target and without corroborating production/retention evidence the adoption outcome is not scoreable: the family-level signal shows the underlying property is in modest, steady use and did not collapse across the M149 window, but that is not evidence of the scoping's adoption, success, or failure, and 'mixed' is not a valid substitute for an absent threshold.",
       "evidenceIds": [
         "S1",
         "S14",
@@ -215,7 +215,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, privacy-positive scoping change that closed a real fingerprinting vector, was strengthened by rigorous API-owner review (cross-profile mitigation), shipped safely with a Finch kill-switch and deliberate M149/M150 sequencing, and was communicated accurately via release notes. It is held to mixed overall because: interoperability diverges rather than converges (Chromium-only scoping; Firefox/WebKit unscoped; CSSWG unresolved); the ChromeStatus 'Positive' Mozilla signal and 'Pending' review fields overstate/understate the actual review state; feature-exact adoption and measured user-impact evidence remain absent (cached family-level accent-color usage telemetry now exists as context — ~2.64% of measured page loads at M149 stable, ~2.84% at day30, ~2.76% latest — but does not isolate the scoping behavior, and the adoption outcome is unscored for lack of a predeclared target and production/retention evidence); and test/spec/MDN coverage for the scoping itself is absent.",
+      "finding": "A well-motivated, privacy-positive scoping change that closed a real fingerprinting vector, was strengthened by rigorous API-owner review (cross-profile mitigation), shipped safely with a Finch kill-switch and deliberate M149/M150 sequencing, and was communicated accurately via release notes. It is held to mixed overall because: interoperability diverges rather than converges (Chromium-only scoping; Firefox/WebKit unscoped; CSSWG unresolved); the ChromeStatus 'Positive' Mozilla signal and 'Pending' review fields overstate/understate the actual review state; feature-exact adoption and measured user-impact evidence remain absent (cached family-level accent-color usage telemetry now exists as context \u2014 ~2.64% of measured page loads at M149 stable, ~2.84% at day30, ~2.76% latest \u2014 but does not isolate the scoping behavior, and the adoption outcome is unscored for lack of a predeclared target and production/retention evidence); and test/spec/MDN coverage for the scoping itself is absent.",
       "evidenceIds": [
         "S1",
         "S3",
@@ -265,7 +265,7 @@
       "supports": [
         "Intent to Ship Feb 13 2026 initially desktop M147; discussion by D. Herr (extensions), V. Levin (default-value usage concern), J. Yasskin (cross-profile fingerprinting + quantization), A. Russell (API-owners privacy concern); initial-profile scoping CL Apr 3; LGTM1 M. Taylor Apr 4 after spec-basis answer; API-owner LGTMs D. Bratell & R. Byers Apr 8; WebView Finch flag; no spec change planned; CSS Color latitude rationale; owner predicts low compat regression"
       ],
-      "limitations": "Reader-rendered; some emails redacted; exact M147→M149 slip date not pinned; final two LGTM posts rendered near-empty but are dated Apr 8."
+      "limitations": "Reader-rendered; some emails redacted; exact M147\u2192M149 slip date not pinned; final two LGTM posts rendered near-empty but are dated Apr 8."
     },
     {
       "id": "S4",
@@ -436,16 +436,16 @@
     "No site-breakage or regression reports surfaced in the post-ship window, consistent with the owner's low-regression prediction."
   ],
   "failures": [
-    "ChromeStatus records 'Firefox: Positive' on the strength of an informal CSSWG remark, while the formal Mozilla position (#1354) remains 'Unscreened/Open' with no position label — the wide-review signal is overstated.",
-    "ChromeStatus privacy_review_status and security_review_status both read 'Pending' in the cached record despite an approved intent with privacy engagement and three LGTMs — the review-state fields are stale/inaccurate.",
+    "ChromeStatus records 'Firefox: Positive' on the strength of an informal CSSWG remark, while the formal Mozilla position (#1354) remains 'Unscreened/Open' with no position label \u2014 the wide-review signal is overstated.",
+    "ChromeStatus privacy_review_status and security_review_status both read 'Pending' in the cached record despite an approved intent with privacy engagement and three LGTMs \u2014 the review-state fields are stale/inaccurate.",
     "The change widens rather than narrows behavioral divergence: Chromium now scopes system accent color while Firefox and WebKit expose it unscoped; CSSWG #10372 has no agreed resolution and the spec carries no scoping text.",
     "No WPT coverage for the scoping itself, no spec text added, and no MDN/caniuse update; developer guidance beyond a one-paragraph release note is absent.",
-    "breaking_change is recorded as false and no detection/migration tooling was provided, even though a previously-default open-web behavior (accent-color: auto → OS color) changed."
+    "breaking_change is recorded as false and no detection/migration tooling was provided, even though a previously-default open-web behavior (accent-color: auto \u2192 OS color) changed."
   ],
   "counterfactuals": [
     "Had the team skipped API-owner privacy engagement, the cross-profile fingerprinting hole (a near-unique wallpaper-derived accent color readable across profiles) would have shipped; the offline discussion plus the initial-profile CL closed it. Dropping that step would have been a real privacy regression.",
     "Had Mozilla #1354 received a formal position label, the wide-review packet would have been materially stronger and the ChromeStatus 'Positive' claim defensible; its 'Unscreened' state is the single biggest weakness in the recorded support signal.",
-    "Had a CSSWG-agreed quantization mitigation (Verou/Emilio) been pursued to resolution, cross-engine convergence might have been possible and the Chromium-only divergence avoided — but the owner's judgment that it was too complex/insufficient was defensible given the unresolved thread.",
+    "Had a CSSWG-agreed quantization mitigation (Verou/Emilio) been pursued to resolution, cross-engine convergence might have been possible and the Chromium-only divergence avoided \u2014 but the owner's judgment that it was too complex/insufficient was defensible given the unresolved thread.",
     "Had breaking_change been flagged true (a shipped default changed) with a detection/migration note, long-tail and enterprise detection would be better; no breakage has yet surfaced to confirm whether this mattered."
   ],
   "skillImprovements": [

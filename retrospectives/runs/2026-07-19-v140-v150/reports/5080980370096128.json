@@ -57,7 +57,7 @@
       "limitations": "The public ITP thread SUMMARY contains erroneous copy-paste text ('define float exclusion shapes using rectangle coordinates, aligning Chrome with Firefox and Safari which already support this feature') that actually describes the sibling rect()/xywh() feature and is false for path()/shape(). No task-based friction logs or representative-user testing are visible publicly."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No developer trial (behind a flag) was conducted. The manifest's single launch event is '149: Enabled by default' and the ChromeStatus record has no dev-trial stage (flag_name null, origintrial false). For a deterministic CSS parsing/rendering extension that reuses proven machinery, a flag trial would add limited field evidence, so its absence is defensible.",
       "evidenceIds": [
         "s1",
@@ -67,7 +67,7 @@
     },
     "wideReview": {
       "status": "partial",
-      "finding": "Tag review 'Not applicable'. Firefox is Positive and placed path()/shape() into the Interop 2026 CSS shape focus area (bugzilla meta 2017356, platform-scheduled 2026-07-17). The Interop 2026 announcement (web.dev, authored by Rachel Andrew; Apple, Google, Igalia, Microsoft, Mozilla) explicitly names shape() for BOTH clip-path and shape-outside as a 2026 focus area — strong multi-engine coordination. WPT is enabled. However: Safari returned 'No signal' (WebKit/standards-positions#650, opened 2026-04-22 by the same owner, still open, unassigned, no position as of retrieval); 'web developers: No signals'; security_review_status and privacy_review_status both 'Pending' at cache time (2026-05-13); spec maturity is only Editor's Draft / 'Working draft' (val 4), not CR.",
+      "finding": "Tag review 'Not applicable'. Firefox is Positive and placed path()/shape() into the Interop 2026 CSS shape focus area (bugzilla meta 2017356, platform-scheduled 2026-07-17). The Interop 2026 announcement (web.dev, authored by Rachel Andrew; Apple, Google, Igalia, Microsoft, Mozilla) explicitly names shape() for BOTH clip-path and shape-outside as a 2026 focus area \u2014 strong multi-engine coordination. WPT is enabled. However: Safari returned 'No signal' (WebKit/standards-positions#650, opened 2026-04-22 by the same owner, still open, unassigned, no position as of retrieval); 'web developers: No signals'; security_review_status and privacy_review_status both 'Pending' at cache time (2026-05-13); spec maturity is only Editor's Draft / 'Working draft' (val 4), not CR.",
       "evidenceIds": [
         "s1",
         "s3",
@@ -78,7 +78,7 @@
       "limitations": "Safari silence must not be read as support (issue #650 is unresolved). Review statuses are stale-pending in the cache (likely resolved by ship but unverified). No TAG review was linked."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial (origintrial false; no OT stage or goals/risks). Appropriate: a deterministic, spec-defined CSS value extension with no field uncertainty requiring real-origin/user conditions does not need an experiment.",
       "evidenceIds": [
         "s1"
@@ -108,7 +108,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "The shape-outside property has a CSS property-family use counter (ChromeStatus CSS popularity timeline, bucket 347) even though this feature has no exact counter (webdx_usecounter_enum null; mappingStatus 'web-feature-family-counter', confidence 'name-matched-family'). That family counter fired on 0.00628762% of measured Chrome HTTP/HTTPS page loads at the M149 stable launch (2026-06-02), 0.00609283% at the day-30 checkpoint (2026-07-02), and 0.00652203% on 2026-07-21 (latest observed) — essentially flat since launch and at a long-standing niche level (first positive 2013-08-30; peak 0.64483067% on 2013-10-16 during the webkit-prefixed era; day90/day180 not yet available). Because the counter is property-family, it captures ALL shape-outside usage (basic functions, image-based, inset/circle/ellipse, path()/shape()) and cannot isolate the path()/shape() values this launch added; no step-change attributable to this feature is visible. No case studies, framework/tool integrations, or production deployments were found.",
+      "finding": "The shape-outside property has a CSS property-family use counter (ChromeStatus CSS popularity timeline, bucket 347) even though this feature has no exact counter (webdx_usecounter_enum null; mappingStatus 'web-feature-family-counter', confidence 'name-matched-family'). That family counter fired on 0.00628762% of measured Chrome HTTP/HTTPS page loads at the M149 stable launch (2026-06-02), 0.00609283% at the day-30 checkpoint (2026-07-02), and 0.00652203% on 2026-07-21 (latest observed) \u2014 essentially flat since launch and at a long-standing niche level (first positive 2013-08-30; peak 0.64483067% on 2013-10-16 during the webkit-prefixed era; day90/day180 not yet available). Because the counter is property-family, it captures ALL shape-outside usage (basic functions, image-based, inset/circle/ellipse, path()/shape()) and cannot isolate the path()/shape() values this launch added; no step-change attributable to this feature is visible. No case studies, framework/tool integrations, or production deployments were found.",
       "evidenceIds": [
         "s1",
         "s16",
@@ -125,7 +125,7 @@
       "limitations": "No public support issues attributable to this feature yet; restricted tracking bug blocks external verification."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This launch adds a capability (new accepted <basic-shape> values); nothing is deprecated or removed. No replacement, migration, reverse trial, or removal timeline applies.",
       "evidenceIds": [
         "s1"
@@ -155,7 +155,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No predeclared adoption target exists for this spec-alignment ('Chromium catches up') feature, and there is no corroborating production, retention, or unique-site evidence, so adoption is described, not scored. The only available signal is the property-family counter (bucket 347): 0.00628762% of measured Chrome HTTP/HTTPS page loads at M149 stable (2026-06-02), 0.00609283% at day 30 (2026-07-02), and 0.00652203% on 2026-07-21 — flat at a niche level with no visible step-change attributable to path()/shape(). This measures any shape-outside use, not the launched values (exact counter absent).",
+      "finding": "No predeclared adoption target exists for this spec-alignment ('Chromium catches up') feature, and there is no corroborating production, retention, or unique-site evidence, so adoption is described, not scored. The only available signal is the property-family counter (bucket 347): 0.00628762% of measured Chrome HTTP/HTTPS page loads at M149 stable (2026-06-02), 0.00609283% at day 30 (2026-07-02), and 0.00652203% on 2026-07-21 \u2014 flat at a niche level with no visible step-change attributable to path()/shape(). This measures any shape-outside use, not the launched values (exact counter absent).",
       "evidenceIds": [
         "s1",
         "s17"
@@ -164,7 +164,7 @@
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "The spec defines path()/shape() as <basic-shape> and the feature is part of the coordinated Interop 2026 'shape()' focus area (which explicitly names shape-outside) across Apple/Google/Igalia/Microsoft/Mozilla; Firefox is Positive and tracks it (interop-2026-shape). BUT at the evidence cutoff only Chrome had shipped path()/shape() in shape-outside (M149, June 2, 2026): Safari 27 beta (June 8, 2026) lists only bug FIXES for shape-outside/shape() and no new-feature support, and the WebKit standards position (#650) is open with no position; Firefox 151/152 release notes do not list it. MDN marks shape-outside Baseline 'widely available' only for the basic functions. The 'Chromium catches up' label is misleading — Chrome actually leads here; it catches up to the spec, not to other engines.",
+      "finding": "The spec defines path()/shape() as <basic-shape> and the feature is part of the coordinated Interop 2026 'shape()' focus area (which explicitly names shape-outside) across Apple/Google/Igalia/Microsoft/Mozilla; Firefox is Positive and tracks it (interop-2026-shape). BUT at the evidence cutoff only Chrome had shipped path()/shape() in shape-outside (M149, June 2, 2026): Safari 27 beta (June 8, 2026) lists only bug FIXES for shape-outside/shape() and no new-feature support, and the WebKit standards position (#650) is open with no position; Firefox 151/152 release notes do not list it. MDN marks shape-outside Baseline 'widely available' only for the basic functions. The 'Chromium catches up' label is misleading \u2014 Chrome actually leads here; it catches up to the spec, not to other engines.",
       "evidenceIds": [
         "s3",
         "s6",
@@ -188,7 +188,7 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "The OFFICIAL Chrome 149 release notes describe the feature correctly and link spec/tracking-bug/ChromeStatus. Weaknesses: (1) the public Intent to Prototype SUMMARY carries copy-paste error text from the sibling rect()/xywh() feature ('rectangle coordinates... aligning Chrome with Firefox and Safari which already support this feature') — both false for path()/shape(); (2) MDN's shape-outside page (last modified 2025-08-09) still states 'other <basic-shape> functions are invalid', directly contradicting the shipped behavior; (3) there is no dedicated launch article (release-notes line item only); (4) the 'Chromium catches up' label misrepresents cross-browser status.",
+      "finding": "The OFFICIAL Chrome 149 release notes describe the feature correctly and link spec/tracking-bug/ChromeStatus. Weaknesses: (1) the public Intent to Prototype SUMMARY carries copy-paste error text from the sibling rect()/xywh() feature ('rectangle coordinates... aligning Chrome with Firefox and Safari which already support this feature') \u2014 both false for path()/shape(); (2) MDN's shape-outside page (last modified 2025-08-09) still states 'other <basic-shape> functions are invalid', directly contradicting the shipped behavior; (3) there is no dedicated launch article (release-notes line item only); (4) the 'Chromium catches up' label misrepresents cross-browser status.",
       "evidenceIds": [
         "s4",
         "s9",
@@ -207,7 +207,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A clean, low-risk, spec-aligned, Interop-2026-coordinated extension that shipped on schedule across all platforms with accurate official release notes and a real, long-standing developer problem. It is tempered by: adoption measurable only at the property-family level (shape-outside fired on ~0.006% of measured Chrome page loads, flat since the M149 launch, with no exact counter to isolate path()/shape()); interoperability that is Chrome-only today (Safari/Firefox catching up, WebKit no-signal); an erroneous public intent-thread summary; stale MDN documentation; no pre-ship developer feedback; and an inaccurate 'catches up' framing. Overall mixed — the launch itself was executed competently, but several evidence/communication and adoption-measurability gaps are material.",
+      "finding": "A clean, low-risk, spec-aligned, Interop-2026-coordinated extension that shipped on schedule across all platforms with accurate official release notes and a real, long-standing developer problem. It is tempered by: adoption measurable only at the property-family level (shape-outside fired on ~0.006% of measured Chrome page loads, flat since the M149 launch, with no exact counter to isolate path()/shape()); interoperability that is Chrome-only today (Safari/Firefox catching up, WebKit no-signal); an erroneous public intent-thread summary; stale MDN documentation; no pre-ship developer feedback; and an inaccurate 'catches up' framing. Overall mixed \u2014 the launch itself was executed competently, but several evidence/communication and adoption-measurability gaps are material.",
       "evidenceIds": [
         "s1",
         "s4",
@@ -337,7 +337,7 @@
       "retrievedAt": "2026-07-19T00:00:00Z",
       "sourceType": "other",
       "supports": [
-        "shape-outside Baseline 'widely available' since Jan 2020 (basic functions only); page still says 'other <basic-shape> functions are invalid'; last modified 2025-08-09 — predates and contradicts the M149 ship"
+        "shape-outside Baseline 'widely available' since Jan 2020 (basic functions only); page still says 'other <basic-shape> functions are invalid'; last modified 2025-08-09 \u2014 predates and contradicts the M149 ship"
       ],
       "limitations": "Page is stale relative to launch; browser-compatibility table did not render."
     },
@@ -425,7 +425,7 @@
         "Mapping is property-family (mappingStatus 'web-feature-family-counter', confidence 'name-matched-family'), NOT exact feature adoption of path()/shape() in shape-outside",
         "webdx_usecounter_enum is null for this feature (no exact counter); originTrialCounters empty"
       ],
-      "limitations": "Property-family counter measures ANY use of the shape-outside property (basic functions, circle/ellipse/inset, path()/shape(), image-based), not the path()/shape() values this launch added; it cannot isolate this feature's uptake and shows no step-change attributable to it. Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented. Zero/missing/delayed points are not proof of zero real-world use."
+      "limitations": "Property-family counter measures ANY use of the shape-outside property (basic functions, circle/ellipse/inset, path()/shape(), image-based), not the path()/shape() values this launch added; it cannot isolate this feature's uptake and shows no step-change attributable to it. Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented. Zero/missing/delayed points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -436,15 +436,15 @@
     "Good launch hygiene: Codepen demos linked, finch name set, rollout plan 'enabled for all users', all platforms aligned at M149."
   ],
   "failures": [
-    "The public Intent to Prototype thread summary carried erroneous copy-paste text from the sibling rect()/xywh() feature ('rectangle coordinates... aligning Chrome with Firefox and Safari which already support this feature'), both false for path()/shape() — a factual error in a public intent document that could mislead readers about cross-browser readiness.",
+    "The public Intent to Prototype thread summary carried erroneous copy-paste text from the sibling rect()/xywh() feature ('rectangle coordinates... aligning Chrome with Firefox and Safari which already support this feature'), both false for path()/shape() \u2014 a factual error in a public intent document that could mislead readers about cross-browser readiness.",
     "MDN documentation was not updated at ship: the shape-outside page (last modified 2025-08-09) still states 'other <basic-shape> functions are invalid', directly contradicting the shipped behavior and hurting discoverability.",
-    "The 'Chromium catches up' label is inaccurate for this sub-feature — Chrome leads (Safari/Firefox had not shipped path()/shape() in shape-outside at cutoff); it catches up to the spec, not to other engines.",
+    "The 'Chromium catches up' label is inaccurate for this sub-feature \u2014 Chrome leads (Safari/Firefox had not shipped path()/shape() in shape-outside at cutoff); it catches up to the spec, not to other engines.",
     "No developer trial and no pre-ship developer feedback; 'web developers: No signals' was recorded, so demand/ergonomics were not validated before ship.",
     "Exact-feature adoption is not instrumented: webdx_usecounter_enum is null, so the path()/shape() values specifically cannot be isolated in Chrome telemetry. A property-family counter for shape-outside (CSS bucket 347) does exist and shows the property fires on ~0.006% of measured page loads (flat since launch), but it cannot separate this feature's uptake from all other shape-outside usage.",
     "Security and privacy review were still 'Pending' at the last cache (2026-05-13); the Intent to Ship body was not publicly retrievable, leaving formal review/LGTM state unverified from independent evidence."
   ],
   "counterfactuals": [
-    "A brief behind-a-flag developer trial — or circulating the linked Codepen demos to a varied cohort before M149 — could have validated the animation/responsive value claim and surfaced edge cases (e.g., the shape() control-point-anchor serialization that Safari later fixed per spec) before Chrome's stable ship.",
+    "A brief behind-a-flag developer trial \u2014 or circulating the linked Codepen demos to a varied cohort before M149 \u2014 could have validated the animation/responsive value claim and surfaced edge cases (e.g., the shape() control-point-anchor serialization that Safari later fixed per spec) before Chrome's stable ship.",
     "If MDN had been updated in lockstep with the ship, developers would have accurate discoverability at launch instead of a page that still calls these functions invalid; this likely suppresses real early adoption.",
     "If the intent-thread summary had been QA'd against the canonical ChromeStatus record (and the sibling rect()/xywh() description), the public record would not carry the false 'Firefox and Safari already support this feature' claim, which risks developers shipping path()/shape() in shape-outside expecting cross-browser support that does not yet exist.",
     "Wiring an exact use counter for the path()/shape() values at ship would make this feature's adoption measurable; the property-family counter (bucket 347) only bounds the niche (~0.006% of page loads) and cannot isolate it, so exact uptake remains unmeasurable and could be misread as 'no adoption.'",
@@ -454,7 +454,7 @@
     "Add a phase-06 (prepare-to ship) automated diff: compare each Intent to Prototype / Intent to Ship thread summary against the canonical ChromeStatus summary AND against sibling-feature summaries in the same milestone, to flag copy-paste contamination (the rect()/xywh() text bled into path/shape here).",
     "Add a release-readiness gate for 'Chromium catches up' features: verify the 'catches up' claim per sub-function against actual other-engine ship status; if Chrome leads, require a corrected feature_type or an explicit note, because the label drives Baseline/interop messaging.",
     "Add a doc-sync requirement: before 'Enabled by default' ships for a CSS property/value, confirm the MDN page and BCD entry are updated (or a tracked edit is open) and alert when the live MDN page contradicts shipped behavior (here it still says 'invalid').",
-    "Add an adoption-measurability check at ship: if a feature launches without a webdx use-counter enum, record it explicitly as a known exact-adoption gap — and do NOT treat a broader property/WebDX family counter as a substitute for exact-feature measurement (here a shape-outside family counter exists, bucket 347, but cannot isolate path()/shape()) — so future retrospectives do not equate 'no exact usage data' with 'low usage.'",
+    "Add an adoption-measurability check at ship: if a feature launches without a webdx use-counter enum, record it explicitly as a known exact-adoption gap \u2014 and do NOT treat a broader property/WebDX family counter as a substitute for exact-feature measurement (here a shape-outside family counter exists, bucket 347, but cannot isolate path()/shape()) \u2014 so future retrospectives do not equate 'no exact usage data' with 'low usage.'",
     "Add a wide-review cross-engine reality check: when an Interop focus area names a feature, record which engines have actually shipped vs only committed, and ensure intent/release notes never imply broader support than exists (relevant to the false 'already support' claim).",
     "Add a Google-Groups-intent fallback in the research toolchain (msgID-to-archived-URL resolver or a browser fetch) so Intent to Ship/Prototype bodies are reliably retrievable instead of timing out, which left LGTM/review state unverified here."
   ],
@@ -463,7 +463,7 @@
     "missingEvidence": [
       "No exact-feature usage counter (webdx_usecounter_enum null); only a shape-outside property-family counter (CSS bucket 347) exists, measuring any shape-outside use (~0.006% of page loads, flat since launch) but unable to isolate path()/shape() uptake. No unique-site, production, retention, or predeclared-adoption-target evidence.",
       "Confirmation that Safari (27+) and Firefox have shipped path()/shape() in shape-outside (only Chrome had shipped at cutoff; Safari 27 beta shows fixes only; WebKit position still open).",
-      "Intent to Ship thread body (LGTMs, objections, final review states) — Google Groups repeatedly timed out; only title/snippet obtained.",
+      "Intent to Ship thread body (LGTMs, objections, final review states) \u2014 Google Groups repeatedly timed out; only title/snippet obtained.",
       "WPT per-feature pass rates for shape-outside path()/shape() (wpt.fyi dashboard timed out).",
       "Current security/privacy review statuses (cached record showed 'Pending' as of 2026-05-13; likely resolved by ship but unverified).",
       "MDN update reflecting shipped support (page still says other basic-shape functions are invalid at retrieval)."

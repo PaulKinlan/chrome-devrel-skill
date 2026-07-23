@@ -57,7 +57,7 @@
     },
     "prototype": {
       "status": "partial",
-      "finding": "Implementation exists behind the `service-worker-auto-preload` flag / `ServiceWorkerAutoPreload` Finch feature from at least M126 (dev-trial stage desktop/android_first=126). The explainer describes how the parallel request is consumed and discarded, redirect handling, and the eligibility heuristic (high fallback rate + SW not running). A DevTools-visibility plan is tracked in crbug 344912796. However, there are no WPT tests and the team states the feature is 'not testable on the WPT infrastructure' because it is heuristic-only with no API surface — a documented but real testability gap.",
+      "finding": "Implementation exists behind the `service-worker-auto-preload` flag / `ServiceWorkerAutoPreload` Finch feature from at least M126 (dev-trial stage desktop/android_first=126). The explainer describes how the parallel request is consumed and discarded, redirect handling, and the eligibility heuristic (high fallback rate + SW not running). A DevTools-visibility plan is tracked in crbug 344912796. However, there are no WPT tests and the team states the feature is 'not testable on the WPT infrastructure' because it is heuristic-only with no API surface \u2014 a documented but real testability gap.",
       "evidenceIds": [
         "s1-chromestatus",
         "s3-explainer",
@@ -110,7 +110,7 @@
     },
     "release": {
       "status": "partial",
-      "finding": "Shipped enabled-by-default with stepped rollout at Chrome 140 (Early Stable 2025-08-27, Stable 2025-09-02), desktop/android/webview. The enterprise policy became available at M140 and is documented as a temporary measure to be removed at M154. Microsoft Edge (Chromium) documents the identical policy from Edge 140+. The feature is absent from the Chrome 140 developer release notes (developer.chrome.com/release-notes/140): the Service worker section lists SharedWorker controller inheritance and ServiceWorkerStaticRouterTimingInfo but omits ServiceWorkerAutoPreload, and no web.dev / New in Chrome article was found. Additionally the ChromeStatus `browsers.chrome.status` text renders 'In developer trial (Behind a flag)' at M140, inconsistent with the launch-event categories 'Enabled by default' + 'Stepped rollout' — a source-data inconsistency.",
+      "finding": "Shipped enabled-by-default with stepped rollout at Chrome 140 (Early Stable 2025-08-27, Stable 2025-09-02), desktop/android/webview. The enterprise policy became available at M140 and is documented as a temporary measure to be removed at M154. Microsoft Edge (Chromium) documents the identical policy from Edge 140+. The feature is absent from the Chrome 140 developer release notes (developer.chrome.com/release-notes/140): the Service worker section lists SharedWorker controller inheritance and ServiceWorkerStaticRouterTimingInfo but omits ServiceWorkerAutoPreload, and no web.dev / New in Chrome article was found. Additionally the ChromeStatus `browsers.chrome.status` text renders 'In developer trial (Behind a flag)' at M140, inconsistent with the launch-event categories 'Enabled by default' + 'Stepped rollout' \u2014 a source-data inconsistency.",
       "evidenceIds": [
         "s1-chromestatus",
         "s2-chromestatuslite",
@@ -122,12 +122,12 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "No defensible adoption evidence exists in public sources. The feature has no MDN page, no Caniuse entry, and no Baseline status (consistent with the spec being an unmerged draft PR). Because it is automatic and heuristic-gated with no API to integrate, framework/library integration is not applicable and there are no attributable case studies or production-deployment signals beyond Chrome's own experiment. Adoption cannot be inferred from shipment or from the absence of criticism.",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. No defensible adoption evidence exists in public sources. The feature has no MDN page, no Caniuse entry, and no Baseline status (consistent with the spec being an unmerged draft PR). Because it is automatic and heuristic-gated with no API to integrate, framework/library integration is not applicable and there are no attributable case studies or production-deployment signals beyond Chrome's own experiment. Adoption cannot be inferred from shipment or from the absence of criticism.",
       "evidenceIds": [
         "s1-chromestatus",
         "s5-specpr"
       ],
-      "limitations": "No usage counter, HTTP Archive, or partner evidence was found; none may exist for an auto/heuristic optimization, so this remains unknown rather than negative."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
       "status": "unknown",
@@ -170,7 +170,7 @@
       "limitations": "No CrUX/Chrome UX Report confirmation, no desktop numbers, no accessibility/battery/bandwidth impact assessment in public sources."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "No defensible adoption evidence (MDN/caniuse/Baseline absent; no case studies; no framework/tool integration applicable). Adoption is effectively unmeasurable for an auto/heuristic feature and is not inferred from shipment.",
       "evidenceIds": [
         "s1-chromestatus",
@@ -393,7 +393,7 @@
       "retrievedAt": "2026-07-22T15:15:00Z",
       "sourceType": "standards-position",
       "supports": [
-        "Edge documents the identical policy from version >=140 on Windows/macOS/Android — Chromium-engine parity"
+        "Edge documents the identical policy from version >=140 on Windows/macOS/Android \u2014 Chromium-engine parity"
       ],
       "limitations": "Edge is Chromium-derived, so this confirms engine parity rather than independent implementation intent."
     },
@@ -405,7 +405,7 @@
       "retrievedAt": "2026-07-22T15:15:00Z",
       "sourceType": "other",
       "supports": [
-        "Chrome 140 Stable date 2025-09-02; the Service worker section lists SharedWorker controller inheritance and ServiceWorkerStaticRouterTimingInfo but does NOT mention ServiceWorkerAutoPreload — a developer-communication gap"
+        "Chrome 140 Stable date 2025-09-02; the Service worker section lists SharedWorker controller inheritance and ServiceWorkerStaticRouterTimingInfo but does NOT mention ServiceWorkerAutoPreload \u2014 a developer-communication gap"
       ],
       "limitations": "Only the public release-notes page was checked; a separate non-public launch brief may exist."
     },
@@ -444,14 +444,14 @@
     "Honest public experiment reporting (Issue #3) including the negative framing of server-side cost."
   ],
   "failures": [
-    "ServiceWorkerAutoPreload is absent from the Chrome 140 developer release notes despite shipping enabled-by-default there — weak developer communication for an observable network-behaviour change.",
+    "ServiceWorkerAutoPreload is absent from the Chrome 140 developer release notes despite shipping enabled-by-default there \u2014 weak developer communication for an observable network-behaviour change.",
     "ChromeStatus status text is inconsistent ('In developer trial (Behind a flag)' at M140 vs enabled-by-default + stepped-rollout launch events), creating an ambiguous public record.",
     "No developer trial was actually run (null devtrial instructions, no cohort/findings); heuristic-only design substituted a Stable Finch for developer-facing feedback.",
     "Formal TAG (#1108), security, and privacy reviews were still Pending when the feature shipped in M140.",
     "The spec change (w3c/ServiceWorker#1756) remained an unmerged draft PR at ship, so the feature is not standards-track/Baseline.",
     "WebKit has no official standards position (issue #359 still open); informal reviewer support was treated in the cached record as near-support, which risks overstating interop.",
     "Public experiment evidence is Android-only and reported in relative terms; desktop impact and absolute effect sizes were not published.",
-    "No WPT coverage and the team asserts the feature is not testable on WPT — a durable conformance/testability gap.",
+    "No WPT coverage and the team asserts the feature is not testable on WPT \u2014 a durable conformance/testability gap.",
     "Web-develop demand recorded as 'No signals'; no attributable partner or survey evidence of demand."
   ],
   "counterfactuals": [
@@ -463,7 +463,7 @@
     "If the feature's standards-position tracking distinguished WebKit's informal reviewer comment from an official position, the cached record would not risk overstating cross-engine support."
   ],
   "skillImprovements": [
-    "Add a retrospective rule: heuristic-only / no-API features that change observable network behaviour still require a developer-facing release-notes entry (problem, heuristic, possible extra requests, opt-out) — 'no API surface' is not a communication exemption.",
+    "Add a retrospective rule: heuristic-only / no-API features that change observable network behaviour still require a developer-facing release-notes entry (problem, heuristic, possible extra requests, opt-out) \u2014 'no API surface' is not a communication exemption.",
     "Add a prepare-to-ship transition-packet check: reconcile the ChromeStatus status-display text against the manifest launch-event categories before scoring the release phase; flag inconsistencies as evidence-quality findings.",
     "Add a dimension prompt: when the only public experiment evidence is single-platform (e.g. Android-only) and reported in relative magnitudes, score endUserImpact/developerValue as partial or mixed, never success, and name the missing platform explicitly.",
     "Add a wide-review rule: distinguish informal reviewer comments from official engine positions; do not let a single reviewer approval of a spec PR substitute for a vendor's official standards-position label, and carry the distinction into the cached record.",

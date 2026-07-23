@@ -58,8 +58,8 @@
       "limitations": "No evidence of a representative external cohort running friction logs; validation is the team's own measurements plus telemetry."
     },
     "developerTrials": {
-      "status": "not-relevant",
-      "finding": "No developer trial or Origin Trial was run and none was appropriate. The launch manifest records a single event ('Enabled by default', M149); ChromeStatus stage 150 carries experiment_goals='NA'. Because the change introduces no new API surface and is transparent to existing code, a developer-facing trial is not the relevant validation mechanism. Rationale for the not-relevant rating: this is not 'untested' — validation instead came from telemetry (~0.0004% of cases change the clipboard between read and getType, per the pre-ship UseCounters 5684/5685 referenced in the non_finch_justification) plus a field-trial test merged into the M148 release before the M149 default-on. There is nothing for a developer cohort to opt into.",
+      "status": "not relevant",
+      "finding": "No developer trial or Origin Trial was run and none was appropriate. The launch manifest records a single event ('Enabled by default', M149); ChromeStatus stage 150 carries experiment_goals='NA'. Because the change introduces no new API surface and is transparent to existing code, a developer-facing trial is not the relevant validation mechanism. Rationale for the not-relevant rating: this is not 'untested' \u2014 validation instead came from telemetry (~0.0004% of cases change the clipboard between read and getType, per the pre-ship UseCounters 5684/5685 referenced in the non_finch_justification) plus a field-trial test merged into the M148 release before the M149 default-on. There is nothing for a developer cohort to opt into.",
       "evidenceIds": [
         "S1",
         "S8",
@@ -69,7 +69,7 @@
     },
     "wideReview": {
       "status": "partial",
-      "finding": "Engine alignment is strong but review completeness has gaps. Mozilla closed standards-positions #1279 with 'position: positive' (team: DOM, venue: W3C). Safari already ships the lazy-read behavior — confirmed in the intent thread as shipped by Safari in 2019 — so WebKit's runtime behavior already matches, and the DevRel blog frames Chrome as 'converging to the same model'. However: (a) TAG review was deliberately NOT requested ('None requested because this behavior has achieved consensus in the Editing working group and matches what Safari already does'); (b) WebKit's formal standards-positions #537 is still Open with no position label; (c) the normative spec PR #248 ('Defer OS clipboard read from clipboard.read() to ClipboardItem.getType()') was opened 2026-03-26 and was still open/working-draft when Chrome shipped; (d) WPT coverage is explicitly incomplete, blocked by missing test infrastructure (chromium #508091414).",
+      "finding": "Engine alignment is strong but review completeness has gaps. Mozilla closed standards-positions #1279 with 'position: positive' (team: DOM, venue: W3C). Safari already ships the lazy-read behavior \u2014 confirmed in the intent thread as shipped by Safari in 2019 \u2014 so WebKit's runtime behavior already matches, and the DevRel blog frames Chrome as 'converging to the same model'. However: (a) TAG review was deliberately NOT requested ('None requested because this behavior has achieved consensus in the Editing working group and matches what Safari already does'); (b) WebKit's formal standards-positions #537 is still Open with no position label; (c) the normative spec PR #248 ('Defer OS clipboard read from clipboard.read() to ClipboardItem.getType()') was opened 2026-03-26 and was still open/working-draft when Chrome shipped; (d) WPT coverage is explicitly incomplete, blocked by missing test infrastructure (chromium #508091414).",
       "evidenceIds": [
         "S6",
         "S7",
@@ -83,7 +83,7 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "There was no Origin Trial and the final M149 default-on used no staged Finch rollout — but a field-trial (Finch) test WAS merged into the M148 release first (chromium bug 502745047, '[Merge M148] merge field trial testing for Selective clipboard format read in 148 release', Fixed by 2026-06-16). The ChromeStatus non_finch_justification cites UseCounters 5684/5685 (~0.0004%, the pre-ship breakage-frequency counters) to argue negligible breakage risk. So the 'no Finch' claim is technically about the M149 ship specifically; the safety valve of a prior-milestone field trial did exist, which is good practice the record understates.",
+      "finding": "There was no Origin Trial and the final M149 default-on used no staged Finch rollout \u2014 but a field-trial (Finch) test WAS merged into the M148 release first (chromium bug 502745047, '[Merge M148] merge field trial testing for Selective clipboard format read in 148 release', Fixed by 2026-06-16). The ChromeStatus non_finch_justification cites UseCounters 5684/5685 (~0.0004%, the pre-ship breakage-frequency counters) to argue negligible breakage risk. So the 'no Finch' claim is technically about the M149 ship specifically; the safety valve of a prior-milestone field trial did exist, which is good practice the record understates.",
       "evidenceIds": [
         "S12",
         "S1",
@@ -104,7 +104,7 @@
     },
     "release": {
       "status": "success",
-      "finding": "Chrome 149 stable (released 2026-06-02) shipped the feature enabled by default on all platforms, and it is listed under 'Web APIs' in the official Chrome 149 release notes with tracking bug #435051711. The DevRel blog 'Selective format read: A better default for the Async Clipboard API' (Prashant Singh, published 2026-07-03) is accurate and honest: it states the M149 ship, the one observable behavior change (getType() on a stale ClipboardItem now rejects with InvalidStateError), concrete migration guidance (try/catch, copy the Blob, use clipboardChange), and correctly characterizes browser support (Safari supports; Firefox 'indicated a positive standards position and intent to align' — not overclaimed as shipped). Coverage reached mainstream/creator media (an Instagram reel on 'hidden upgrades in Chrome 149') and was amplified by a browser engineer (Patrick Brosset) on LinkedIn.",
+      "finding": "Chrome 149 stable (released 2026-06-02) shipped the feature enabled by default on all platforms, and it is listed under 'Web APIs' in the official Chrome 149 release notes with tracking bug #435051711. The DevRel blog 'Selective format read: A better default for the Async Clipboard API' (Prashant Singh, published 2026-07-03) is accurate and honest: it states the M149 ship, the one observable behavior change (getType() on a stale ClipboardItem now rejects with InvalidStateError), concrete migration guidance (try/catch, copy the Blob, use clipboardChange), and correctly characterizes browser support (Safari supports; Firefox 'indicated a positive standards position and intent to align' \u2014 not overclaimed as shipped). Coverage reached mainstream/creator media (an Instagram reel on 'hidden upgrades in Chrome 149') and was amplified by a browser engineer (Patrick Brosset) on LinkedIn.",
       "evidenceIds": [
         "S5",
         "S4",
@@ -116,7 +116,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "As of the 2026-07-22 evidence refresh the feature has been stable ~7 weeks (shipped 2026-06-02) and remains a transparent optimization with no new API surface, so there is no developer adoption funnel to measure — every page that calls navigator.clipboard.read() benefits automatically with zero code change. Chrome usage telemetry now exists for the underlying AsyncClipboard web-feature family (ChromeStatus timeline, bucket_id=121): this is a family counter (mappingStatus 'web-feature-family-counter', confidence 'declared-family'), not an exact measure of this optimization. Its share of measured Chrome HTTP/HTTPS page loads was 0.00490346% at the M149 stable ship (2026-06-02), 0.00470185% at day-30 (2026-07-02), and 0.00502461% on 2026-07-21 (latest); the series peaked at 0.00547393% on 2026-05-13 (pre-ship) and first recorded a positive value on 2024-10-01 (~20 months before this launch), confirming it tracks the pre-existing AsyncClipboard API family rather than the selective-format-read path. The day-90 and day-180 checkpoints are not yet observed. The counter is an upper bound on the substrate this optimization improves (it covers clipboard read and write) and does not isolate adoption of the lazy-read path itself. No real-world latency/memory, partner case-study, unique-site, production-deployment, retention, or feature-path usage evidence is yet available, and no predeclared usage target was recorded, so adoption remains unscored rather than success or failure.",
+      "finding": "As of the 2026-07-22 evidence refresh the feature has been stable ~7 weeks (shipped 2026-06-02) and remains a transparent optimization with no new API surface, so there is no developer adoption funnel to measure \u2014 every page that calls navigator.clipboard.read() benefits automatically with zero code change. Chrome usage telemetry now exists for the underlying AsyncClipboard web-feature family (ChromeStatus timeline, bucket_id=121): this is a family counter (mappingStatus 'web-feature-family-counter', confidence 'declared-family'), not an exact measure of this optimization. Its share of measured Chrome HTTP/HTTPS page loads was 0.00490346% at the M149 stable ship (2026-06-02), 0.00470185% at day-30 (2026-07-02), and 0.00502461% on 2026-07-21 (latest); the series peaked at 0.00547393% on 2026-05-13 (pre-ship) and first recorded a positive value on 2024-10-01 (~20 months before this launch), confirming it tracks the pre-existing AsyncClipboard API family rather than the selective-format-read path. The day-90 and day-180 checkpoints are not yet observed. The counter is an upper bound on the substrate this optimization improves (it covers clipboard read and write) and does not isolate adoption of the lazy-read path itself. No real-world latency/memory, partner case-study, unique-site, production-deployment, retention, or feature-path usage evidence is yet available, and no predeclared usage target was recorded, so adoption remains unscored rather than success or failure.",
       "evidenceIds": [
         "S4",
         "S5",
@@ -137,7 +137,7 @@
       "limitations": "Chromium issue pages are browser-only and unreadable via the reader; support signal is limited to bug titles/status and search. Short post-ship window means support burden is not yet observable."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable: this is a behavior-change optimization to an existing API, not a feature removal, restriction, or replacement, so the deprecation/removal lifecycle (detection tooling, migration, reverse trials, removal timeline) does not apply. The one behavior change (ClipboardItem is no longer a frozen snapshot; stale getType() rejects) is a documented behavior change handled in release communication, not a deprecation requiring a migration path. Rated not-relevant with explicit rationale rather than as 'untested'.",
       "evidenceIds": [
         "S4",
@@ -150,7 +150,7 @@
   "outcomes": {
     "developerValue": {
       "status": "success",
-      "finding": "Addresses a real, recurring developer problem (paste latency and memory blow-up in rich editors/spreadsheets/email clients when read() eagerly fetches and sanitizes every format) with a solution that requires no opt-in and no API change — existing code 'just works faster'. The value proposition is backed by measured data (179.5 ms -> 10.8 ms for a 7.7 MB clipboard) and is automatic for the whole web. The DevRel blog and explainer are clear that the only developer-facing nuance is the stale-read InvalidStateError, with concrete mitigations.",
+      "finding": "Addresses a real, recurring developer problem (paste latency and memory blow-up in rich editors/spreadsheets/email clients when read() eagerly fetches and sanitizes every format) with a solution that requires no opt-in and no API change \u2014 existing code 'just works faster'. The value proposition is backed by measured data (179.5 ms -> 10.8 ms for a 7.7 MB clipboard) and is automatic for the whole web. The DevRel blog and explainer are clear that the only developer-facing nuance is the stale-read InvalidStateError, with concrete mitigations.",
       "evidenceIds": [
         "S3",
         "S4",
@@ -170,17 +170,17 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Adoption is not a meaningful scored dimension for this feature type (transparent optimization, no opt-in), and no predeclared usage target or corroborating production/retention evidence exists, so the outcome is kept unscored rather than inferred from telemetry. For descriptive context, the underlying AsyncClipboard web-feature family counter (ChromeStatus bucket_id=121) — a family counter, not exact adoption of this optimization — was 0.00490346% of measured Chrome page loads at the M149 stable ship (2026-06-02), 0.00470185% at day-30 (2026-07-02), and 0.00502461% on 2026-07-21; it has been essentially flat around ~0.005% since the ship (peak 0.00547393% was pre-ship on 2026-05-13) and first turned positive on 2024-10-01, ~20 months before this launch. Because the counter covers the whole AsyncClipboard API family (read and write), it bounds — and overstates — the substrate for this optimization and does not establish production deployment, retention, or feature-path usage. Day-90/day-180 checkpoints are not yet observed. Real-world latency/memory gains and any regressions in the ~7 weeks since ship remain unmeasured independently.",
+      "finding": "Adoption is not a meaningful scored dimension for this feature type (transparent optimization, no opt-in), and no predeclared usage target or corroborating production/retention evidence exists, so the outcome is kept unscored rather than inferred from telemetry. For descriptive context, the underlying AsyncClipboard web-feature family counter (ChromeStatus bucket_id=121) \u2014 a family counter, not exact adoption of this optimization \u2014 was 0.00490346% of measured Chrome page loads at the M149 stable ship (2026-06-02), 0.00470185% at day-30 (2026-07-02), and 0.00502461% on 2026-07-21; it has been essentially flat around ~0.005% since the ship (peak 0.00547393% was pre-ship on 2026-05-13) and first turned positive on 2024-10-01, ~20 months before this launch. Because the counter covers the whole AsyncClipboard API family (read and write), it bounds \u2014 and overstates \u2014 the substrate for this optimization and does not establish production deployment, retention, or feature-path usage. Day-90/day-180 checkpoints are not yet observed. Real-world latency/memory gains and any regressions in the ~7 weeks since ship remain unmeasured independently.",
       "evidenceIds": [
         "S4",
         "S5",
         "S16-usage"
       ],
-      "limitations": "Family counter only — not exact adoption of the selective-format-read optimization; cannot be read as unique sites/users/developers, production deployment, retention, or end-user benefit. No predeclared target and no independent production/retention evidence, so unscored by design (not mixed, which would substitute a threshold that was never declared)."
+      "limitations": "Family counter only \u2014 not exact adoption of the selective-format-read optimization; cannot be read as unique sites/users/developers, production deployment, retention, or end-user benefit. No predeclared target and no independent production/retention evidence, so unscored by design (not mixed, which would substitute a threshold that was never declared)."
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "Strong engine convergence but unfinished standards plumbing. Safari already ships this behavior (since 2019), Mozilla's position is explicitly Positive, and the DevRel blog positions Chrome as aligning to the existing Safari model — so the runtime interop direction is good. Against that: the normative spec PR #248 was opened 2026-03-26 and was still open (working draft) when Chrome shipped M149 on 2026-06-02; WebKit's formal standards-positions #537 remains Open with no verdict; TAG review was deliberately not requested; WPT coverage is explicitly blocked by a test-infrastructure gap (chromium #508091414); and Firefox has only a positive position, not a shipped implementation. Net: real-world behavior will match Safari, but the verifiable, test-backed, spec-finalized interop story is incomplete.",
+      "finding": "Strong engine convergence but unfinished standards plumbing. Safari already ships this behavior (since 2019), Mozilla's position is explicitly Positive, and the DevRel blog positions Chrome as aligning to the existing Safari model \u2014 so the runtime interop direction is good. Against that: the normative spec PR #248 was opened 2026-03-26 and was still open (working draft) when Chrome shipped M149 on 2026-06-02; WebKit's formal standards-positions #537 remains Open with no verdict; TAG review was deliberately not requested; WPT coverage is explicitly blocked by a test-infrastructure gap (chromium #508091414); and Firefox has only a positive position, not a shipped implementation. Net: real-world behavior will match Safari, but the verifiable, test-backed, spec-finalized interop story is incomplete.",
       "evidenceIds": [
         "S6",
         "S7",
@@ -194,7 +194,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Solid implementation discipline in places: shipped on all six Blink platforms in M149, with a pre-ship field-trial test merged into M148 (bug 502745047) and a telemetry-informed risk argument (pre-ship UseCounters 5684/5685, ~0.0004% clipboard-change frequency). However, test quality is explicitly incomplete — WPT coverage is blocked by missing infrastructure (chromium #508091414) — and the cached record showed security_review_status and privacy_review_status still 'Pending' as of 2026-05-25 (formal closure unconfirmed, though the Chrome security lead commented positively on the intent thread).",
+      "finding": "Solid implementation discipline in places: shipped on all six Blink platforms in M149, with a pre-ship field-trial test merged into M148 (bug 502745047) and a telemetry-informed risk argument (pre-ship UseCounters 5684/5685, ~0.0004% clipboard-change frequency). However, test quality is explicitly incomplete \u2014 WPT coverage is blocked by missing infrastructure (chromium #508091414) \u2014 and the cached record showed security_review_status and privacy_review_status still 'Pending' as of 2026-05-25 (formal closure unconfirmed, though the Chrome security lead commented positively on the intent thread).",
       "evidenceIds": [
         "S8",
         "S12",
@@ -227,7 +227,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, genuinely low-risk, transparent optimization that aligns Chrome with Safari's long-standing (2019) behavior, validated by telemetry and by a pre-ship M148 field-trial test, and communicated accurately post-ship. The overall leans positive but is rated mixed because of unresolved standards-maturity and process gaps present at ship: the normative spec PR was still open, TAG review was skipped, WebKit's formal position is Open, WPT coverage is blocked by infra, and the cached record showed security/privacy reviews still Pending. Post-ship, family-level Chrome usage telemetry is now available for the underlying AsyncClipboard API (the substrate this optimization improves; see adoption, which remains unscored — no predeclared target), but real-world latency/memory gains and production/retention outcomes remain unmeasured (~7 weeks post-ship).",
+      "finding": "A well-motivated, genuinely low-risk, transparent optimization that aligns Chrome with Safari's long-standing (2019) behavior, validated by telemetry and by a pre-ship M148 field-trial test, and communicated accurately post-ship. The overall leans positive but is rated mixed because of unresolved standards-maturity and process gaps present at ship: the normative spec PR was still open, TAG review was skipped, WebKit's formal position is Open, WPT coverage is blocked by infra, and the cached record showed security/privacy reviews still Pending. Post-ship, family-level Chrome usage telemetry is now available for the underlying AsyncClipboard API (the substrate this optimization improves; see adoption, which remains unscored \u2014 no predeclared target), but real-world latency/memory gains and production/retention outcomes remain unmeasured (~7 weeks post-ship).",
       "evidenceIds": [
         "S3",
         "S4",
@@ -363,7 +363,7 @@
       "supports": [
         "Spec PR title 'Defer OS clipboard read from clipboard.read() to ClipboardItem.getType()'; opened 2026-03-26; ChromeStatus standards maturity = 'Working draft' / under development; search metadata (PR list + W3C archive) indicates it was still open/synchronizing around ship time, i.e., Chrome shipped M149 ahead of a merged normative spec."
       ],
-      "limitations": "Direct page reads failed (network errors); exact merge status and diff unverified — inferred from search metadata."
+      "limitations": "Direct page reads failed (network errors); exact merge status and diff unverified \u2014 inferred from search metadata."
     },
     {
       "id": "S11",
@@ -416,7 +416,7 @@
     {
       "id": "S15-wpt",
       "url": "https://issues.chromium.org/issues/508091414",
-      "publisher": "Chromium (Issue Tracker) — referenced via ChromeStatus wpt_descr",
+      "publisher": "Chromium (Issue Tracker) \u2014 referenced via ChromeStatus wpt_descr",
       "publishedOrObservedAt": null,
       "retrievedAt": "2026-07-20T22:20:00Z",
       "sourceType": "implementation",
@@ -440,7 +440,7 @@
     {
       "id": "S16-usage",
       "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=121",
-      "publisher": "Chrome Platform Status — WebFeature popularity timeline (Chrome usage telemetry)",
+      "publisher": "Chrome Platform Status \u2014 WebFeature popularity timeline (Chrome usage telemetry)",
       "publishedOrObservedAt": "2026-07-21T00:00:00Z",
       "retrievedAt": "2026-07-22T18:07:22Z",
       "sourceType": "usage",
@@ -462,15 +462,15 @@
   ],
   "failures": [
     "Standards lag at ship: Chrome shipped M149 (2026-06-02) while the normative spec PR #242 (opened 2026-03-26) was still open/working-draft, so Chrome shipped ahead of a finalized spec.",
-    "TAG review was deliberately skipped ('None requested because... matches what Safari already does') — defensible but a recorded wide-review gap.",
-    "WebKit's formal standards-positions #537 was left Open with no verdict, even though Safari ships the behavior — a documentation/position gap.",
+    "TAG review was deliberately skipped ('None requested because... matches what Safari already does') \u2014 defensible but a recorded wide-review gap.",
+    "WebKit's formal standards-positions #537 was left Open with no verdict, even though Safari ships the behavior \u2014 a documentation/position gap.",
     "WPT coverage was explicitly incomplete at ship, blocked by missing test infrastructure (chromium #508091414), weakening independent interop verification.",
     "Cached ChromeStatus showed security_review_status and privacy_review_status still 'Pending' as of 2026-05-25 (before the June 2 ship); formal review closure is not evidenced in the record (mitigated only by the security lead's positive intent-thread comment).",
     "DevRel launch docs shipped ~1 month after stable (blog 2026-07-03 vs ship 2026-06-02), so launch-day guidance for the InvalidStateError behavior change was absent.",
     "The non_finch_justification framing in the launch record understates that a real M148 field-trial test actually ran, a small accuracy gap in the ship packet."
   ],
   "counterfactuals": [
-    "If the M148 field-trial test had surfaced breakage in a major editor/spreadsheet, the team could have reverted before the M149 default-on; the field trial was the safety valve the 'no Finch' framing obscured — without it the direct ship would have been materially riskier.",
+    "If the M148 field-trial test had surfaced breakage in a major editor/spreadsheet, the team could have reverted before the M149 default-on; the field trial was the safety valve the 'no Finch' framing obscured \u2014 without it the direct ship would have been materially riskier.",
     "If TAG review had been requested, it could have flagged the spec-finalization ordering (shipping before PR merge) and the WPT-coverage gap, potentially delaying ship or strengthening the test story.",
     "If the spec PR had been merged before M149 ship, the interoperability outcome would likely score 'success' rather than 'mixed'.",
     "If the DevRel blog had shipped on launch day (2026-06-02), developers hitting the new InvalidStateError would have had immediate guidance; the ~1-month gap is a concrete communications counterfactual.",
@@ -479,14 +479,14 @@
     "Because the AsyncClipboard web-feature family counter fires on only ~0.005% of measured Chrome page loads (and covers read and write, so the read-only slice this optimization improves is smaller still), the web-wide aggregate CPU/memory savings are bounded to a small slice of the web; the per-call improvement (179.5 ms -> 10.8 ms) is real but materializes only on page loads that use the clipboard API, so the 'whole web benefits automatically' framing should be read as 'every clipboard-using page benefits automatically'."
   ],
   "skillImprovements": [
-    "Add a prepare-to-ship gate: any feature shipping before its normative spec PR is merged must either (a) merge the spec first, (b) record an explicit interop-safe rationale (e.g., another engine already ships the behavior since a named date), or (c) file an accepted-risk — and the chosen option must appear in the transition packet.",
+    "Add a prepare-to-ship gate: any feature shipping before its normative spec PR is merged must either (a) merge the spec first, (b) record an explicit interop-safe rationale (e.g., another engine already ships the behavior since a named date), or (c) file an accepted-risk \u2014 and the chosen option must appear in the transition packet.",
     "Add a rule that cross-checks every 'no Finch' / 'no staged rollout' justification against actual field-trial or flag testing in prior milestones; this retrospective found a real M148 field-trial test despite a 'no Finch' claim, so the packet should capture whether a safety field-trial ran, not only whether a staged rollout is planned.",
-    "Add a release-communication rule: require launch-day (or pre-ship) DevRel docs/blog for any feature with an observable behavior change (e.g., new promise rejection) — not only for new APIs; this feature's blog shipped ~1 month late.",
+    "Add a release-communication rule: require launch-day (or pre-ship) DevRel docs/blog for any feature with an observable behavior change (e.g., new promise rejection) \u2014 not only for new APIs; this feature's blog shipped ~1 month late.",
     "Tighten the wide-review completeness check: 'no TAG review' is acceptable only with rationale AND (another engine shipping the behavior) AND (spec PR merged); here TAG was skipped and the spec PR was open, so the gate should have flagged it.",
     "Add a WPT/test-coverage rule: features that cannot achieve WPT coverage due to infrastructure gaps must record an accepted-risk plus a tracked follow-up test-infra issue (here #508091414) in the ship packet, and the interop outcome should not be scoreable 'success' until coverage exists.",
     "Add a formal-review-status reconciliation step: security/privacy review fields showing 'Pending' in ChromeStatus must be reconciled to a terminal state before the prepare-to-ship transition is rated supported (the snapshot here showed Pending at ship).",
     "Add an interop/Baseline tracking prompt: for transparent behavior changes, record the named date each engine ships the behavior and Firefox's implementation (not just position) status, so the 'converging to the same model' claim is testable over time.",
-    "For transparent, no-API-change optimizations (where there is no developer adoption funnel), the retrospective should still pull and record the relevant WebFeature/WebDX family usage counter as the substrate size, and explicitly bound any aggregate 'whole web benefits' claim by that share — this retrospective initially recorded 'no post-ship usage data' when the AsyncClipboard family counter (bucket_id=121, positive since 2024-10-01) was already available."
+    "For transparent, no-API-change optimizations (where there is no developer adoption funnel), the retrospective should still pull and record the relevant WebFeature/WebDX family usage counter as the substrate size, and explicitly bound any aggregate 'whole web benefits' claim by that share \u2014 this retrospective initially recorded 'no post-ship usage data' when the AsyncClipboard family counter (bucket_id=121, positive since 2024-10-01) was already available."
   ],
   "completion": {
     "status": "partial",

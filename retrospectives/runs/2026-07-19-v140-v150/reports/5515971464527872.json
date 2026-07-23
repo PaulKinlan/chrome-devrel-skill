@@ -73,7 +73,7 @@
       "limitations": "'No signal' from WebKit must not be read as neutral or positive. Security/privacy review completion is not publicly confirmed; the explainer's self-review is the only on-record treatment."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial or field experiment. origintrial=false in ChromeStatus; the Intent to Ship states 'Goals for experimentation: None'. The feature went flag (Chrome 139) directly to default-on (Chrome 150). Not-relevant because no field evidence was sought, not because it was untested in any form.",
       "evidenceIds": [
         "intent-to-ship",
@@ -83,7 +83,7 @@
     },
     "prepareToShip": {
       "status": "partial",
-      "finding": "Intent to Ship filed 2026-04-29 by mstensho; received 3 LGTMs (Philip Jägenstedt, Yoav Weiss, Daniel Bratell) with rollout to desktop/Android/WebView at 150, 'Will ship enabled for all users', no //chrome code, iOS excluded. Several prepare-to-ship packets are incomplete: 'Is this feature fully tested by web-platform-tests? = No' with the WPT testing RFC 'stuck in review' (only tentative tests in Chromium's content_shell runner, not portable WPT); 'Interoperability and Compatibility', 'WebView application risks', and 'Debuggability' left as 'No information provided'; security/privacy 'Pending' in ChromeStatus. LGTM1 explicitly accepted shipping without the WPT infra and deferring portable tests.",
+      "finding": "Intent to Ship filed 2026-04-29 by mstensho; received 3 LGTMs (Philip J\u00e4genstedt, Yoav Weiss, Daniel Bratell) with rollout to desktop/Android/WebView at 150, 'Will ship enabled for all users', no //chrome code, iOS excluded. Several prepare-to-ship packets are incomplete: 'Is this feature fully tested by web-platform-tests? = No' with the WPT testing RFC 'stuck in review' (only tentative tests in Chromium's content_shell runner, not portable WPT); 'Interoperability and Compatibility', 'WebView application risks', and 'Debuggability' left as 'No information provided'; security/privacy 'Pending' in ChromeStatus. LGTM1 explicitly accepted shipping without the WPT infra and deferring portable tests.",
       "evidenceIds": [
         "intent-to-ship",
         "chromestatus-record",
@@ -120,7 +120,7 @@
       "limitations": "No support channel evidence retrieved; cannot assert low or high support burden."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "New CSS capability, not a restriction/removal of existing behavior. breaking_change=false, enterprise_impact=1 (none). No replacement/migration or reverse-trial work applies. Not-relevant because the feature adds an option, not a deprecation.",
       "evidenceIds": [
         "chromestatus-record",
@@ -306,7 +306,7 @@
       "retrievedAt": "2026-07-19T22:10:00Z",
       "sourceType": "intent",
       "supports": [
-        "Intent to Ship filed 2026-04-29 by mstensho; 3 LGTMs (Jägenstedt, Weiss, Bratell); ship at desktop/android/webview=150; TAG 'Issues addressed'; Gecko Positive / WebKit No signal / WebDev No signals; NOT fully tested by WPT (RFC #233 in review, tentative tests in content_shell only); no //chrome code; Finch CSSSafePrintableInset; 'Goals for experimentation: None'; Interop/compat, WebView risks, debuggability left blank"
+        "Intent to Ship filed 2026-04-29 by mstensho; 3 LGTMs (J\u00e4genstedt, Weiss, Bratell); ship at desktop/android/webview=150; TAG 'Issues addressed'; Gecko Positive / WebKit No signal / WebDev No signals; NOT fully tested by WPT (RFC #233 in review, tentative tests in content_shell only); no //chrome code; Finch CSSSafePrintableInset; 'Goals for experimentation: None'; Interop/compat, WebView risks, debuggability left blank"
       ],
       "limitations": "Google Groups render; no separate security/privacy review result recorded in the intent body."
     },
@@ -361,7 +361,7 @@
     {
       "id": "community-jp-tohoho",
       "url": "https://www.tohoho-web.com/css/rule/page.htm",
-      "publisher": "とほほのWWW入門 (tohoho-web, community reference)",
+      "publisher": "\u3068\u307b\u307b\u306eWWW\u5165\u9580 (tohoho-web, community reference)",
       "publishedOrObservedAt": "2026-06-30",
       "retrievedAt": "2026-07-19T22:10:00Z",
       "sourceType": "community",
@@ -373,23 +373,23 @@
   ],
   "successes": [
     "Identified and scoped a real, durable CSS paged-media gap (authors cannot avoid the non-printable margin area when setting custom @page margins or margin boxes) and drove it through the CSSWG (issue on April 2025 + TPAC 2025 agendas, closed).",
-    "Design was iterated through genuine multi-stakeholder review: Mozilla's env()-vs-keyword concern was incorporated, converging from env(safe-printable-inset) on css-env-1 to the page-margin-safety descriptor in css-page-3 edited by fantasai (Apple) — a cross-engine editor signal.",
+    "Design was iterated through genuine multi-stakeholder review: Mozilla's env()-vs-keyword concern was incorporated, converging from env(safe-printable-inset) on css-env-1 to the page-margin-safety descriptor in css-page-3 edited by fantasai (Apple) \u2014 a cross-engine editor signal.",
     "Clean, accurate, on-schedule release: Chrome 150 stable (2026-06-30) and Edge platform notes both describe page-margin-safety correctly, with 3 LGTMs and an all-platform (desktop/Android/WebView) rollout requiring no //chrome code.",
     "Honest explainer with explicit privacy/security/accessibility self-review, non-goals, and alternatives (including the Mozilla counter-proposal and the print-preview-fit alternative)."
   ],
   "failures": [
-    "Shipped default-on without portable WPT coverage: the WPT print-test RFC (#233) was still 'in review' at ship and tests exist only in Chromium's content_shell runner, not in shared web-platform-tests. The Intent to Ship explicitly answers 'fully tested by WPT? = No' and LGTM1 acknowledged deferring portable tests — a real cross-engine interop/correctness risk.",
+    "Shipped default-on without portable WPT coverage: the WPT print-test RFC (#233) was still 'in review' at ship and tests exist only in Chromium's content_shell runner, not in shared web-platform-tests. The Intent to Ship explicitly answers 'fully tested by WPT? = No' and LGTM1 acknowledged deferring portable tests \u2014 a real cross-engine interop/correctness risk.",
     "Single-engine launch with no interop: no Firefox/Safari implementation evidence; WebKit standards-position #519 still open with 'No signal' (despite the spec editor being Apple-employed); not in Baseline; 'Web Feature ID: Missing feature'.",
     "Documentation/enablement gap for a shipped stable feature: no MDN reference page, no caniuse/web-features/Baseline entry, and empty doc_links/sample_links in ChromeStatus. Discovery leans on release notes + author explainer.",
     "Incomplete prepare-to-ship evidence: security_review_status and privacy_review_status 'Pending' in ChromeStatus (accurate_as_of 2026-06-01); Intent to Ship left Interoperability & Compatibility, WebView application risks, and Debuggability as 'No information provided'.",
     "No developer-demand evidence for a niche printing feature: 'Web developers: No signals', no attributable partner/trial evidence, no cohort feedback from the Chrome 139-150 flag period."
   ],
   "counterfactuals": [
-    "If the WPT print-test infra (RFC #233) had landed before ship, cross-engine test coverage would exist and reduce silent interop drift risk, giving Firefox/Safari a concrete conformance target — at the cost of slipping past Chrome 150.",
+    "If the WPT print-test infra (RFC #233) had landed before ship, cross-engine test coverage would exist and reduce silent interop drift risk, giving Firefox/Safari a concrete conformance target \u2014 at the cost of slipping past Chrome 150.",
     "If WebKit had been engaged to a closed position pre-ship, the 'No signal' gap and Chrome-only reality could have been reduced; the mismatch between an Apple-employed spec editor and a silent WebKit standards-position issue is itself a friction signal an earlier WebKit bug could have surfaced.",
     "If an MDN page plus a runnable sample had been ready at ship, discoverability and adoption would be materially stronger; this absence is a process/DevRel gap, not a product-design flaw.",
     "If a behind-the-flag developer trial with an attributable cohort had been run across Chrome 139-150, it could have produced the missing 'web developer' signal and stress-tested real-printer edge cases (e.g., the explainer's own concern about a printer with one very large unprintable edge) before default-on.",
-    "Filing Mozilla/WebKit/TAG reviews against css-env-1 while the artifact shipped as css-page-3 page-margin-safety left the public review trail pointing at a superseded design — re-requesting positions against the shipped descriptor might change the 'No signal' picture."
+    "Filing Mozilla/WebKit/TAG reviews against css-env-1 while the artifact shipped as css-page-3 page-margin-safety left the public review trail pointing at a superseded design \u2014 re-requesting positions against the shipped descriptor might change the 'No signal' picture."
   ],
   "skillImprovements": [
     "prepare-to-ship packet: add a rule that an 'Enabled by default' must not ship with 'fully tested by WPT = No' without (a) an explicit accepted-risk note and (b) a filed, owner-tracked plan to land portable WPT; flag this as a readiness gap in retrospectives.",
@@ -402,14 +402,14 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Intent to Prototype thread (Google Groups; read timed out) — would confirm prototype-phase decisions and early security/privacy treatment.",
-      "Chromium tracking bug #368070327 (issues.chromium.org; reads failed) — would show implementation timeline, regressions, and test/review completion.",
-      "WPT RFC #233 (web-platform-tests/rfcs; four read attempts failed) — print-test infra status currently characterized only via the Intent to Ship.",
+      "Intent to Prototype thread (Google Groups; read timed out) \u2014 would confirm prototype-phase decisions and early security/privacy treatment.",
+      "Chromium tracking bug #368070327 (issues.chromium.org; reads failed) \u2014 would show implementation timeline, regressions, and test/review completion.",
+      "WPT RFC #233 (web-platform-tests/rfcs; four read attempts failed) \u2014 print-test infra status currently characterized only via the Intent to Ship.",
       "Security and privacy review completion (ChromeStatus shows 'Pending' as of 2026-06-01; no public confirmation of completion at ship).",
-      "Post-shipment adoption/usage data (Chrome use counters, web-features/Baseline entry, production deployments) — too early and currently 'Missing feature'.",
-      "MDN/caniuse reference page — not present at cutoff.",
-      "Attributable developer-trial / partner feedback — none found ('Web developers: No signals').",
-      "Full prose of css-page-3 section 7.6 (page-margin-safety) — embedded in an oversized single line; only TOC + computation rules confirmed."
+      "Post-shipment adoption/usage data (Chrome use counters, web-features/Baseline entry, production deployments) \u2014 too early and currently 'Missing feature'.",
+      "MDN/caniuse reference page \u2014 not present at cutoff.",
+      "Attributable developer-trial / partner feedback \u2014 none found ('Web developers: No signals').",
+      "Full prose of css-page-3 section 7.6 (page-margin-safety) \u2014 embedded in an oversized single line; only TOC + computation rules confirmed."
     ],
     "reviewedAt": "2026-07-19T22:10:00Z"
   }

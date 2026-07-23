@@ -77,7 +77,7 @@
       "limitations": "TAG review status is still 'Pending' in the cached record (2026-06-02). The spec PR #5423 diff and the intent-thread review exchange could not be retrieved, so reviewer-specific objections/conditions are not verified."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial was used or requested (origintrial:false; no 'Origin trial' launch event). This is consistent with how WGSL language-extension additions ship: on spec maturity plus CTS coverage, gated at runtime by the wgslLanguageFeatures feature-detect, with no field-experiment uncertainty requiring real-origin conditions evidenced. This is a process observation, not a claim the feature was untested.",
       "evidenceIds": [
         "s1",
@@ -96,7 +96,7 @@
     },
     "release": {
       "status": "supported",
-      "finding": "Shipped in Chrome 150, whose stable release date is 2026-06-30, on desktop, Android, and WebView. Coordinated, accurate ship communication: a dedicated 'What's New in WebGPU (Chrome 149-150)' blog (François Beaufort, 2026-06-17) with a working code sample and feature-detection guidance; the feature is listed in the Chrome 150 release notes; independent community coverage (webgpu.com, 2026-06-29); and an in-depth independent tutorial (WebGPUFundamentals) existed at ship. NOTABLE: the shipped API method is `setImmediates()` in both the official blog and the current WebGPUFundamentals tutorial, whereas the cached ChromeStatus record and the merged explainer both name it `setImmediateData()` — an authoritative-record inconsistency at ship.",
+      "finding": "Shipped in Chrome 150, whose stable release date is 2026-06-30, on desktop, Android, and WebView. Coordinated, accurate ship communication: a dedicated 'What's New in WebGPU (Chrome 149-150)' blog (Fran\u00e7ois Beaufort, 2026-06-17) with a working code sample and feature-detection guidance; the feature is listed in the Chrome 150 release notes; independent community coverage (webgpu.com, 2026-06-29); and an in-depth independent tutorial (WebGPUFundamentals) existed at ship. NOTABLE: the shipped API method is `setImmediates()` in both the official blog and the current WebGPUFundamentals tutorial, whereas the cached ChromeStatus record and the merged explainer both name it `setImmediateData()` \u2014 an authoritative-record inconsistency at ship.",
       "evidenceIds": [
         "s6",
         "s7",
@@ -116,7 +116,7 @@
         "s9",
         "s8"
       ],
-      "limitations": "The only mapped counter is a WebDX family counter for Webgpu — broader than this launch and not exact immediates adoption. Values are the share of measured Chrome page loads where the counter fired at least once, not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit. No immediates-specific counter exists; day30/90/180 checkpoints are null at the cutoff; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence."
+      "limitations": "The only mapped counter is a WebDX family counter for Webgpu \u2014 broader than this launch and not exact immediates adoption. Values are the share of measured Chrome page loads where the counter fired at least once, not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit. No immediates-specific counter exists; day30/90/180 checkpoints are null at the cutoff; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence."
     },
     "support": {
       "status": "unknown",
@@ -128,7 +128,7 @@
       "limitations": "Recency means the support burden is genuinely unevidenced; chromium bug/tracker detail was not retrievable to confirm absence of post-ship regressions."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new capability, not a deprecation or removal; no restriction, replacement, or removal is in scope. The Chrome 150 release notes contain no related deprecation. Phase is not applicable.",
       "evidenceIds": [
         "s7"
@@ -167,7 +167,7 @@
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "Strong at the specification layer, weak at the runtime layer at cutoff. Spec-level: Firefox Positive, WebKit Positive, WebDev Positive, W3C WG approval — the strongest available standards signal for a WebGPU addition. Runtime-level: only Chrome 150 ships immediates at the cutoff; WebGPUFundamentals states immediates 'will hopefully be shipping in all browsers by the end of 2026' and that the feature-detect should ideally be unnecessary by 2027. General WebGPU is now cross-browser (Chrome 113+/Firefox 141-145/Safari in macOS Tahoe 26/iOS 26), but that does not confirm immediates in those engines.",
+      "finding": "Strong at the specification layer, weak at the runtime layer at cutoff. Spec-level: Firefox Positive, WebKit Positive, WebDev Positive, W3C WG approval \u2014 the strongest available standards signal for a WebGPU addition. Runtime-level: only Chrome 150 ships immediates at the cutoff; WebGPUFundamentals states immediates 'will hopefully be shipping in all browsers by the end of 2026' and that the feature-detect should ideally be unnecessary by 2027. General WebGPU is now cross-browser (Chrome 113+/Firefox 141-145/Safari in macOS Tahoe 26/iOS 26), but that does not confirm immediates in those engines.",
       "evidenceIds": [
         "s1",
         "s9",
@@ -211,7 +211,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-grounded, cleanly-communicated ship of a genuinely useful capability with the strongest possible cross-engine spec signal — but a very recent Chrome-only runtime launch whose only mapped Chrome usage telemetry is a broader WebGPU family counter (no immediates-specific usage/adoption, user-impact, or support evidence), a registry-of-record that is stale and inconsistent with shipped docs (method name, release status, tag review, samples), and no developer-trial or origin-trial evidence trail for the new API surface. Mixed dimensions are not hidden by the strong design and comms.",
+      "finding": "A well-grounded, cleanly-communicated ship of a genuinely useful capability with the strongest possible cross-engine spec signal \u2014 but a very recent Chrome-only runtime launch whose only mapped Chrome usage telemetry is a broader WebGPU family counter (no immediates-specific usage/adoption, user-impact, or support evidence), a registry-of-record that is stale and inconsistent with shipped docs (method name, release status, tag review, samples), and no developer-trial or origin-trial evidence trail for the new API surface. Mixed dimensions are not hidden by the strong design and comms.",
       "evidenceIds": [
         "s1",
         "s2",
@@ -299,7 +299,7 @@
     {
       "id": "s6",
       "url": "https://developer.chrome.com/blog/new-in-webgpu-149-150",
-      "publisher": "Chrome for Developers (François Beaufort)",
+      "publisher": "Chrome for Developers (Fran\u00e7ois Beaufort)",
       "publishedOrObservedAt": "2026-06-17",
       "retrievedAt": "2026-07-20T06:00:00Z",
       "sourceType": "press",
@@ -364,7 +364,7 @@
     {
       "id": "s11",
       "url": "https://web.dev/blog/webgpu-supported-major-browsers",
-      "publisher": "web.dev (François Beaufort)",
+      "publisher": "web.dev (Fran\u00e7ois Beaufort)",
       "publishedOrObservedAt": "2025-11-25",
       "retrievedAt": "2026-07-20T06:00:00Z",
       "sourceType": "press",
@@ -424,7 +424,7 @@
         "Launch checkpoints for milestone 150 (Enabled by default, stable 2026-06-30): atStable 0.01958135%; day30, day90, and day180 are null (not yet available, ~20 days post-stable).",
         "Timeline series: 515 points; timelineSha256 6cf9777eb01b8bab93b638453a957497beb66e8737241a8c845f70221798f7f9."
       ],
-      "limitations": "Family counter measures all WebGPU usage, NOT immediates specifically; it is broader than this ChromeStatus launch and is not exact immediates adoption. Values are the share of measured Chrome page loads where the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. day30/day90/day180 checkpoints are null at the cutoff. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; zero/missing/delayed points are not proof of zero real-world use."
+      "limitations": "Family counter measures all WebGPU usage, NOT immediates specifically; it is broader than this ChromeStatus launch and is not exact immediates adoption. Values are the share of measured Chrome page loads where the counter fired at least once \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. day30/day90/day180 checkpoints are null at the cutoff. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; zero/missing/delayed points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -458,14 +458,14 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Intent to Ship thread content (blink-dev msgid URL rejected by reader; canonical thread not resolved) — ship rationale, accepted risks, LGTMs unverified.",
-      "Chromium bug 366291600 content (reader 500) — implementation completeness, landed CLs, CTS linkage, regressions unverified.",
-      "Spec PR #5423 diff (reader 500/timeout) — including the apparent setImmediateData->setImmediates rename.",
-      "CTS immediates coverage (gpuweb/cts) — breadth and pass state not directly verified.",
-      "Immediates-specific usage/adoption evidence and framework integration — no immediates-specific Chrome use counter exists; the only mapped counter is the broader WebGPU family counter (Webgpu bucket 290, now cited as s15). No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence exists at ~20 days post-stable; only interest-stage signals (PlayCanvas investigation) exist.",
-      "Cross-engine runtime implementation/ship of immediates in Firefox (wgpu) and Safari (WebKit) — only spec-level Positive positions evidenced; Baseline not established.",
-      "Post-ship support issues / regressions specific to immediates — none located; may not yet exist.",
-      "Concrete measured performance/user-impact outcomes — none evidenced."
+      "Intent to Ship thread content (blink-dev msgid URL rejected by reader; canonical thread not resolved) \u2014 ship rationale, accepted risks, LGTMs unverified.",
+      "Chromium bug 366291600 content (reader 500) \u2014 implementation completeness, landed CLs, CTS linkage, regressions unverified.",
+      "Spec PR #5423 diff (reader 500/timeout) \u2014 including the apparent setImmediateData->setImmediates rename.",
+      "CTS immediates coverage (gpuweb/cts) \u2014 breadth and pass state not directly verified.",
+      "Immediates-specific usage/adoption evidence and framework integration \u2014 no immediates-specific Chrome use counter exists; the only mapped counter is the broader WebGPU family counter (Webgpu bucket 290, now cited as s15). No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence exists at ~20 days post-stable; only interest-stage signals (PlayCanvas investigation) exist.",
+      "Cross-engine runtime implementation/ship of immediates in Firefox (wgpu) and Safari (WebKit) \u2014 only spec-level Positive positions evidenced; Baseline not established.",
+      "Post-ship support issues / regressions specific to immediates \u2014 none located; may not yet exist.",
+      "Concrete measured performance/user-impact outcomes \u2014 none evidenced."
     ],
     "reviewedAt": "2026-07-22T18:07:22.611Z"
   }

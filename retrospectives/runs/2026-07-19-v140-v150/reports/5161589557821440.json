@@ -84,7 +84,7 @@
       "limitations": "Formal security and privacy reviews unresolved at cutoff; no web-developer signal confirming the behavioral change is harmless."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "There is no Origin Trial (origintrial is false; no new web API to opt into, so an OT is structurally inappropriate). The team instead uses a staged Finch rollout (rollout_plan: Experiment users ramp up over time; finch IdbSqliteOnDiskRollout) with A/B measurements during rollout as the field risk-reduction mechanism, and explicitly stated that the incognito-first launch was an extra precaution to verify correctness in a low-stakes environment before touching persisted data. Not-relevant specifically to the Origin-Trial phase; this does NOT mean untested - the staged rollout carries the field-experiment function.",
       "evidenceIds": [
         "S1",
@@ -112,14 +112,14 @@
       "limitations": "Absence of reported step-1 regressions is not proof of success (method rule); on-disk ship outcome is structurally unavailable."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "For a no-API-change implementation rewrite there is no site adoption path: sites use IndexedDB unchanged and receive the new backend via rollout. The meaningful adoption metric is rollout completion plus maintenance of ecosystem tooling that depends on the on-disk format. On-disk new-store rollout has not reached stable. Ecosystem tools that reason about the backing store exist (RxDB; forensic parsers) and RxDB assessed that no changes are needed because Firefox and Safari already use SQLite. Not-relevant as a site-adoption dimension with rationale; not untested.",
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. For a no-API-change implementation rewrite there is no site adoption path: sites use IndexedDB unchanged and receive the new backend via rollout. The meaningful adoption metric is rollout completion plus maintenance of ecosystem tooling that depends on the on-disk format. On-disk new-store rollout has not reached stable. Ecosystem tools that reason about the backing store exist (RxDB; forensic parsers) and RxDB assessed that no changes are needed because Firefox and Safari already use SQLite. Not-relevant as a site-adoption dimension with rationale; not untested.",
       "evidenceIds": [
         "S1",
         "S6",
         "S10"
       ],
-      "limitations": "Rollout completion not yet measurable on-disk; forensic-tool re-tooling burden not quantified."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
       "status": "unknown",
@@ -131,7 +131,7 @@
       "limitations": "No support-issue taxonomy, denominators, or recurrence data for the on-disk variant; lower-risk step-1 is a weak proxy."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a backend migration, not a web-facing API deprecation or removal. The IndexedDB Web API is unchanged; there is no reverse trial or removal timeline. The internal LevelDB code is being phased out, and the future step-3 (migration of existing persisted data) carries deprecation-like data-loss risk, but that is a separate future feature. Not-relevant to this feature deprecation phase, with rationale.",
       "evidenceIds": [
         "S1",
@@ -164,7 +164,7 @@
       "limitations": "No public measurement of storage delta, perf regression, or reliability gain on-disk; incognito-oracle tradeoff only lightly reviewed externally."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "No site adoption path exists (no API change); rollout completion is the metric and on-disk rollout has not reached stable. Ecosystem-tool maintenance (RxDB: no changes needed) is the relevant signal and is tentatively positive but thin. Not scoreable as adoption success or failure.",
       "evidenceIds": [
         "S1",

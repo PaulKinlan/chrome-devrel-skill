@@ -93,7 +93,7 @@
       "limitations": "No TAG, Mozilla, or WebKit position statements found; all formal Chrome reviews pending; spec text not yet stable (proposed for a future css-overscroll level)."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial exists or is planned (ChromeStatus origintrial=false; no OT stage data; no experiment goals/risks fields populated). This is appropriate: the feature is at dev-trial stage behind a flag, and an OT is not justified yet because the uncertainties the team faces (design ergonomics, other-engine interest, accessibility details) are better answered by developer-trial feedback and standards discussion than by a field experiment. 'Not-relevant' here means a field experiment has not been warranted at this stage, NOT that the feature is untested.",
       "evidenceIds": [
         "s1",
@@ -102,7 +102,7 @@
       "limitations": "If wide review surfaces user/population-scale uncertainty (e.g. gesture-vs-browser-navigation conflicts at scale), an OT may become relevant later."
     },
     "prepareToShip": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "The feature has not reached prepare-to-ship. ChromeStatus status is 'Proposed', is_released=false; there is no Intent to Ship, no populated rollout/enterprise/support/monitoring plan, and no docs/FAQ/assets. Although the ship stage in the record carries planned desktop_first/android_first of 149, the only actual launch event is the behind-a-flag developer trial at 149. 'Not-relevant' reflects that this phase has not been entered, not that it is unimportant.",
       "evidenceIds": [
         "s1",
@@ -143,7 +143,7 @@
       "limitations": "Chromium bug body not retrievable; no support issues or known-issues docs found."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a brand-new feature with nothing to deprecate or remove; no deprecation/removal path applies. 'Not-relevant' reflects that there is no legacy surface being restricted or replaced, not that removal risk is untested.",
       "evidenceIds": [
         "s1",
@@ -429,7 +429,7 @@
     "Add a phase-02/03 'demand evidence' checkpoint: require at least one attributable framework/library-author or developer-research signal (distinct from problem validity) before recommending wide review, so 'Web Dev: No signals' is an explicit blocker rather than silently accepted.",
     "Add an interop early-warning rule: when ChromeStatus records Firefox/Safari 'No signal' AND a WHATWG/CSSWG issue is labeled 'needs implementer interest', the prepare-to-ship/readiness packet must surface the Chrome-only-period and Baseline risk explicitly and must never treat 'No signal' as neutral/positive.",
     "Add a dev-trial artifact-completeness check: count a developer trial as 'launched' only when the instructions and a live sample are fetchable and linked; flag unreachable trial docs (devtrial.md, demo) as a documentation-durability defect to fix before wider recruitment.",
-    "Add a regression-eval rule for pre-shipment features: adoption, end-user-impact, implementation-quality, and support dimensions default to 'unscored', and overall completion is 'partial' when reviews are pending and no other-engine signal exists — codify what this run does so success is never inferred from shipment, usage, press sentiment, or absent criticism.",
+    "Add a regression-eval rule for pre-shipment features: adoption, end-user-impact, implementation-quality, and support dimensions default to 'unscored', and overall completion is 'partial' when reviews are pending and no other-engine signal exists \u2014 codify what this run does so success is never inferred from shipment, usage, press sentiment, or absent criticism.",
     "Add a spec/test consistency check: when ChromeStatus claims WPT:true but a linked standards issue is labeled 'Needs Testcase (WPT)', flag the discrepancy in the wide-review packet rather than reporting test readiness as supported."
   ],
   "completion": {

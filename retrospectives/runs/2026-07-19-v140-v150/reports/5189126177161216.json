@@ -79,8 +79,8 @@
       "limitations": "Could not retrieve full comment threads on the Mozilla/WebKit/TAG issues (only the top-level state), so additional nuance in those threads is unobserved."
     },
     "experiment": {
-      "status": "not-relevant",
-      "finding": "No Origin Trial was conducted. The origin-trial stage (stage_type 150) is entirely null, origintrial=false, and the rollout plan is 'Will ship enabled for all users'. The feature went Developer Trial (M138) directly to ship (M140). This is not 'untested for an OT' — the dev-trial milestone served as the only field window; an OT was a deliberate non-choice for a small additive CSS property.",
+      "status": "not relevant",
+      "finding": "No Origin Trial was conducted. The origin-trial stage (stage_type 150) is entirely null, origintrial=false, and the rollout plan is 'Will ship enabled for all users'. The feature went Developer Trial (M138) directly to ship (M140). This is not 'untested for an OT' \u2014 the dev-trial milestone served as the only field window; an OT was a deliberate non-choice for a small additive CSS property.",
       "evidenceIds": [
         "src-cs-cache",
         "src-intent"
@@ -113,7 +113,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Strong awareness-stage community traction within weeks of Chrome 140 (Una Kravets, Sara Soueidan, rolandfranke.nl, CSS-Tricks, CodePen demos). First-party Chrome usage telemetry is now available as a CSS property-popularity counter (ChromeStatus timeline, bucket 843, property 'scroll-target-group'; scope=property, confidence=exact-title; mappingStatus=web-feature-family-counter; no WebFeature use-counter and no origin-trial counter are mapped for this feature). The counter measures the share of measured Chrome HTTP/HTTPS page loads on which it fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Launch-relative checkpoints (day_percentage): atStable 2025-09-02 = 0.001777 (~0.178%); day30 2025-10-02 = 0.00017428 (~0.0174%); day90 2025-12-01 = 0.00023027 (~0.0230%); day180 2026-03-01 = 0.00017292 (~0.0173%); peak 2026-05-09 = 0.0027476 (~0.275%); latest observed 2026-07-21 = 0.00199706 (~0.200%) (telemetry collected 2026-07-22, a post-cutoff refresh). Usage is consistently a small fraction of a percent of page loads; the atStable value exceeds the day-30/90/180 values, consistent with bucket-rename transition noise rather than monotonic adoption. No production deployment by major sites, no framework/library integration (React/Vue/etc.), and no documented migration from the Bootstrap Scrollspy pattern the feature replaces is evidenced. The feature is Chrome-only and was flagged as WCAG-violating at launch (Sara advised waiting for production), which gates real adoption on cross-browser support and the a11y fix.",
+      "finding": "Strong awareness-stage community traction within weeks of Chrome 140 (Una Kravets, Sara Soueidan, rolandfranke.nl, CSS-Tricks, CodePen demos). First-party Chrome usage telemetry is now available as a CSS property-popularity counter (ChromeStatus timeline, bucket 843, property 'scroll-target-group'; scope=property, confidence=exact-title; mappingStatus=web-feature-family-counter; no WebFeature use-counter and no origin-trial counter are mapped for this feature). The counter measures the share of measured Chrome HTTP/HTTPS page loads on which it fired \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Launch-relative checkpoints (day_percentage): atStable 2025-09-02 = 0.001777 (~0.178%); day30 2025-10-02 = 0.00017428 (~0.0174%); day90 2025-12-01 = 0.00023027 (~0.0230%); day180 2026-03-01 = 0.00017292 (~0.0173%); peak 2026-05-09 = 0.0027476 (~0.275%); latest observed 2026-07-21 = 0.00199706 (~0.200%) (telemetry collected 2026-07-22, a post-cutoff refresh). Usage is consistently a small fraction of a percent of page loads; the atStable value exceeds the day-30/90/180 values, consistent with bucket-rename transition noise rather than monotonic adoption. No production deployment by major sites, no framework/library integration (React/Vue/etc.), and no documented migration from the Bootstrap Scrollspy pattern the feature replaces is evidenced. The feature is Chrome-only and was flagged as WCAG-violating at launch (Sara advised waiting for production), which gates real adoption on cross-browser support and the a11y fix.",
       "evidenceIds": [
         "src-una",
         "src-sara",
@@ -136,7 +136,7 @@
       "limitations": "Chromium issue bodies were observed only via search snippets, not read in full, so exact resolution dates and severities are approximate."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No deprecation or removal is contemplated; the feature is newly shipped and additive. This dimension does not apply to this feature at this time.",
       "evidenceIds": [
         "src-cs-cache"
@@ -147,7 +147,7 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "The developer problem is real and validated (carousel/Scrollspy patterns normally require JavaScript; carousels were a top missing CSS feature in State of HTML 2023). The property genuinely reduces a scroll-spy/TOC or carousel-marker pattern to ~2 lines of CSS, and influential developers (Una Kravets, Sara Soueidan) were enthusiastic. Mixed because: it shipped Chrome-only (not usable cross-browser without progressive enhancement), and it shipped with a WCAG 1.3.1 gap that forced a JavaScript workaround at launch — undercutting the headline 'no JavaScript needed' value proposition for accessible sites.",
+      "finding": "The developer problem is real and validated (carousel/Scrollspy patterns normally require JavaScript; carousels were a top missing CSS feature in State of HTML 2023). The property genuinely reduces a scroll-spy/TOC or carousel-marker pattern to ~2 lines of CSS, and influential developers (Una Kravets, Sara Soueidan) were enthusiastic. Mixed because: it shipped Chrome-only (not usable cross-browser without progressive enhancement), and it shipped with a WCAG 1.3.1 gap that forced a JavaScript workaround at launch \u2014 undercutting the headline 'no JavaScript needed' value proposition for accessible sites.",
       "evidenceIds": [
         "src-tag",
         "src-una",
@@ -158,7 +158,7 @@
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "For sighted users on Chrome 140+, the active TOC/carousel-marker highlight is smoother and requires no JS. For screen-reader users and users who rely on programmatic state, the active state was NOT communicated at launch (no aria-current) — a WCAG 1.3.1 (Level A) regression in equity that Sara Soueidan documented with a DevTools screenshot. Resolved post-ship (Chrome now sets aria-current='true'). End-user benefit was real but was not equitably delivered at launch.",
+      "finding": "For sighted users on Chrome 140+, the active TOC/carousel-marker highlight is smoother and requires no JS. For screen-reader users and users who rely on programmatic state, the active state was NOT communicated at launch (no aria-current) \u2014 a WCAG 1.3.1 (Level A) regression in equity that Sara Soueidan documented with a DevTools screenshot. Resolved post-ship (Chrome now sets aria-current='true'). End-user benefit was real but was not equitably delivered at launch.",
       "evidenceIds": [
         "src-sara",
         "src-io26",
@@ -168,7 +168,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "First-party Chrome usage telemetry (CSS property-popularity counter, ChromeStatus bucket 843, property 'scroll-target-group'; scope=property, confidence=exact-title; mappingStatus=web-feature-family-counter; no WebFeature use-counter and no origin-trial counter mapped for this feature) is available. The counter fired on 0.001777 (~0.178%) of measured Chrome page loads at Chrome 140 stable (2025-09-02), 0.00017428 (~0.0174%) at day 30 (2025-10-02), 0.00023027 (~0.0230%) at day 90 (2025-12-01), 0.00017292 (~0.0173%) at day 180 (2026-03-01), peaking at 0.0027476 (~0.275%) on 2026-05-09 and 0.00199706 (~0.200%) on 2026-07-21 (telemetry collected 2026-07-22). These figures are the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. No predeclared launch adoption target exists, and there is no corroborating production-deployment, framework-integration, or retention evidence, so adoption is not scored as success or failure. The measured level is consistently a small fraction of a percent of page loads, with a modest rise from the day-30/90/180 trough (~0.017–0.023%) to ~0.20–0.27% in mid-2026 — directionally consistent with slow uptake of a newly shipped, Chrome-only CSS property, but not interpretable as success or failure without a target.",
+      "finding": "First-party Chrome usage telemetry (CSS property-popularity counter, ChromeStatus bucket 843, property 'scroll-target-group'; scope=property, confidence=exact-title; mappingStatus=web-feature-family-counter; no WebFeature use-counter and no origin-trial counter mapped for this feature) is available. The counter fired on 0.001777 (~0.178%) of measured Chrome page loads at Chrome 140 stable (2025-09-02), 0.00017428 (~0.0174%) at day 30 (2025-10-02), 0.00023027 (~0.0230%) at day 90 (2025-12-01), 0.00017292 (~0.0173%) at day 180 (2026-03-01), peaking at 0.0027476 (~0.275%) on 2026-05-09 and 0.00199706 (~0.200%) on 2026-07-21 (telemetry collected 2026-07-22). These figures are the share of measured Chrome HTTP/HTTPS page loads where the counter fired \u2014 not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. No predeclared launch adoption target exists, and there is no corroborating production-deployment, framework-integration, or retention evidence, so adoption is not scored as success or failure. The measured level is consistently a small fraction of a percent of page loads, with a modest rise from the day-30/90/180 trough (~0.017\u20130.023%) to ~0.20\u20130.27% in mid-2026 \u2014 directionally consistent with slow uptake of a newly shipped, Chrome-only CSS property, but not interpretable as success or failure without a target.",
       "evidenceIds": [
         "src-mdn",
         "src-caniuse",
@@ -462,7 +462,7 @@
     {
       "id": "src-usage-timeline-css843",
       "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=843",
-      "publisher": "Chrome Platform Status — CSS property-popularity timeline (Chrome use-counter, bucket 843)",
+      "publisher": "Chrome Platform Status \u2014 CSS property-popularity timeline (Chrome use-counter, bucket 843)",
       "publishedOrObservedAt": "2026-07-21",
       "retrievedAt": "2026-07-22T18:07:16Z",
       "sourceType": "usage",

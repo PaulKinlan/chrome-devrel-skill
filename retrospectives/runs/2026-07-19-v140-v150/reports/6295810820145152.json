@@ -12,7 +12,7 @@
     "webFeature": "url",
     "specLink": null,
     "starCount": 89,
-    "summary": "IDNA is the mechanism for non-ASCII characters in domain names, encoding a URL like http://네이버.한국/ as http://xn--950bt9s8xi.xn--3e0b707e/ (a redirect to naver.com).\n\nThe processing is defined by https://www.unicode.org/reports/tr46/#Processing and is invoked by https://url.spec.whatwg.org/#idna.\n\nThe URL spec sets the CheckJoiners flag, which enables the ContextJ rules in IDNA2008:\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.1\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.2\n\nThis disallows ZWNJ (U+200C ZERO WIDTH NON-JOINER) and ZWJ (U+200D ZERO WIDTH JOINER) in most places in URLs.\n\nThe implementation is to simply pass the UIDNA_CHECK_CONTEXTJ option to ICU, where this rule is implemented:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/icu/source/common/uts46.cpp;l=1137-1204;drc=8a1988938d4298fbe8fb499b1a59fe4b04a21b15\n\nThis would fix over 200 subtests in WPT relating to IDNA, which already pass in Firefox and Safari:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/6990929\nhttps://wpt.fyi/results/url/IdnaTestV2.window.html\n\nAll of the IdnaTestV2 cases that would regress from shipping ICU 77 (https://chromestatus.com/feature/5143313833000960) would also be fixed again by this change."
+    "summary": "IDNA is the mechanism for non-ASCII characters in domain names, encoding a URL like http://\ub124\uc774\ubc84.\ud55c\uad6d/ as http://xn--950bt9s8xi.xn--3e0b707e/ (a redirect to naver.com).\n\nThe processing is defined by https://www.unicode.org/reports/tr46/#Processing and is invoked by https://url.spec.whatwg.org/#idna.\n\nThe URL spec sets the CheckJoiners flag, which enables the ContextJ rules in IDNA2008:\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.1\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.2\n\nThis disallows ZWNJ (U+200C ZERO WIDTH NON-JOINER) and ZWJ (U+200D ZERO WIDTH JOINER) in most places in URLs.\n\nThe implementation is to simply pass the UIDNA_CHECK_CONTEXTJ option to ICU, where this rule is implemented:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/icu/source/common/uts46.cpp;l=1137-1204;drc=8a1988938d4298fbe8fb499b1a59fe4b04a21b15\n\nThis would fix over 200 subtests in WPT relating to IDNA, which already pass in Firefox and Safari:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/6990929\nhttps://wpt.fyi/results/url/IdnaTestV2.window.html\n\nAll of the IdnaTestV2 cases that would regress from shipping ICU 77 (https://chromestatus.com/feature/5143313833000960) would also be fixed again by this change."
   },
   "launchEvents": [
     {
@@ -26,7 +26,7 @@
   "phaseReview": {
     "intake": {
       "status": "supported",
-      "finding": "ChromeStatus record (created 2025-09-26 by foolip@chromium.org). IDNA is the mechanism for non-ASCII characters in domain names, encoding a URL like http://네이버.한국/ as http://xn--950bt9s8xi.xn--3e0b707e/ (a redirect to naver.com).\n\nThe processing is defined by https://www.unicode.org/reports/tr46/#Processing and is invoked by https://url.spec.whatwg.org/#idna.\n\nThe URL spec sets the CheckJoiners flag, which enables the ContextJ rules in IDNA2008:\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.1\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.2\n\nThis disallows ZWNJ (U+200C ZERO WIDTH NON-JOINER) and ZWJ (U+200D ZERO WIDTH JOINER) in most places in URLs.\n\nThe implementation is to simply pass the UIDNA_CHECK_CONTEXTJ option to ICU, where this rule is implemented:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/icu/source/common/uts46.cpp;l=1137-1204;drc=8a1988938d4298fbe8fb499b1a59fe4b04a21b15\n\nThis would fix over 200 subtests in WPT relating to IDNA, which already pass in Firefox and Safari:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/6990929\nhttps://wpt.fyi/results/url/IdnaTestV2.window.html\n\nAll of the IdnaTestV2 cases that would regress from shipping ICU 77 (https://chromestatus.com/feature/5143313833000960) would also be fixed again by this change. Category: Network / Connectivity. Blink component: Blink>Network. Stars: 89.",
+      "finding": "ChromeStatus record (created 2025-09-26 by foolip@chromium.org). IDNA is the mechanism for non-ASCII characters in domain names, encoding a URL like http://\ub124\uc774\ubc84.\ud55c\uad6d/ as http://xn--950bt9s8xi.xn--3e0b707e/ (a redirect to naver.com).\n\nThe processing is defined by https://www.unicode.org/reports/tr46/#Processing and is invoked by https://url.spec.whatwg.org/#idna.\n\nThe URL spec sets the CheckJoiners flag, which enables the ContextJ rules in IDNA2008:\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.1\nhttps://www.rfc-editor.org/rfc/rfc5892.html#appendix-A.2\n\nThis disallows ZWNJ (U+200C ZERO WIDTH NON-JOINER) and ZWJ (U+200D ZERO WIDTH JOINER) in most places in URLs.\n\nThe implementation is to simply pass the UIDNA_CHECK_CONTEXTJ option to ICU, where this rule is implemented:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/icu/source/common/uts46.cpp;l=1137-1204;drc=8a1988938d4298fbe8fb499b1a59fe4b04a21b15\n\nThis would fix over 200 subtests in WPT relating to IDNA, which already pass in Firefox and Safari:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/6990929\nhttps://wpt.fyi/results/url/IdnaTestV2.window.html\n\nAll of the IdnaTestV2 cases that would regress from shipping ICU 77 (https://chromestatus.com/feature/5143313833000960) would also be fixed again by this change. Category: Network / Connectivity. Blink component: Blink>Network. Stars: 89.",
       "evidenceIds": [
         "S1"
       ],
@@ -102,7 +102,7 @@
   "outcomes": {
     "developerValue": {
       "status": "supported",
-      "finding": "Addresses: IDNA is the mechanism for non-ASCII characters in domain names, encoding a URL like http://네이버.한국/ as http://xn--950bt9s8xi.xn--3e0b707e/ (a redirect to naver.com).\n\nThe processing is defined by https",
+      "finding": "Addresses: IDNA is the mechanism for non-ASCII characters in domain names, encoding a URL like http://\ub124\uc774\ubc84.\ud55c\uad6d/ as http://xn--950bt9s8xi.xn--3e0b707e/ (a redirect to naver.com).\n\nThe processing is defined by https",
       "evidenceIds": [
         "S1"
       ],
@@ -152,8 +152,7 @@
       "status": "partial",
       "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
       "evidenceIds": [
-        "S1",
-        "S2"
+        "S1"
       ],
       "limitations": ""
     }

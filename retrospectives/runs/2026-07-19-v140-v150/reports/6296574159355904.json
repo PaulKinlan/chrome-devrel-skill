@@ -61,7 +61,6 @@
       "status": "partial",
       "finding": "A flag-based dev trial was scheduled for M148 (desktop+Android) per the manifest, cached stages, and PSA milestone table, and the implementation was available behind the flag. But the Chrome 148 beta blog does not mention the feature, the cached devtrial_instructions is null, and there is no evidence of a recruited cohort, feedback instrument, or any findings that informed the ship decision. web-dev signals stayed 'No signals'.",
       "evidenceIds": [
-        "S-manifest",
         "S-chromestatus",
         "S-psa",
         "S-beta-148"
@@ -81,7 +80,7 @@
       "limitations": "Silence from Gecko/WebKit was effectively treated as sufficient; per the method, 'No signal' must not be converted to support. The single post-ship engine signal is a reconsideration, not endorsement."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial was run or planned (origintrial=false, no OT stage). This is consistent with the chosen launch path: a 'No developer-visible change' Web-Facing Change PSA for a behavioral/standards-alignment fix, which does not use an OT.",
       "evidenceIds": [
         "S-chromestatus",
@@ -111,23 +110,23 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "Adoption is not meaningfully measurable for a behavioral fix: there is no UseCounter (webdx_usecounter_enum null), no usage metric, and no framework/library integration evidence. The one concrete real-world signal is negative: a production application hit a regression (bug #5-7) where hover-revealed controls (`.img-container:hover .controls`) stopped working across a popover top-layer boundary.",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. Adoption is not meaningfully measurable for a behavioral fix: there is no UseCounter (webdx_usecounter_enum null), no usage metric, and no framework/library integration evidence. The one concrete real-world signal is negative: a production application hit a regression (bug #5-7) where hover-revealed controls (`.img-container:hover .controls`) stopped working across a popover top-layer boundary.",
       "evidenceIds": [
         "S-chromestatus",
         "S-crbug"
       ],
-      "limitations": "No usage/adoption telemetry exists; cannot confirm how widespread the affected hover-reveals-controls-in-popover pattern is across the web."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
       "status": "mixed",
-      "finding": "A regression was reported on 2026-06-03 (one day after stable) and the owner responded promptly and politely on 2026-06-05, correctly framing it as a spec-mandated change and offering a workaround. However: (a) the suggested workaround `:hover, :has(:hover)` is technically suspect because :has() descendant matching also does not cross the top-layer boundary for the same spec reason, so it may not restore the behavior; (b) the bug remained in 'Fixed' status — the regression was not reopened or tracked as a blocking follow-up; (c) the developer's follow-up (2026-06-17) confirmed the broken pattern and the thread is unresolved with the developer's task not confirmed recovered; (d) no canonical migration/troubleshooting doc was produced.",
+      "finding": "A regression was reported on 2026-06-03 (one day after stable) and the owner responded promptly and politely on 2026-06-05, correctly framing it as a spec-mandated change and offering a workaround. However: (a) the suggested workaround `:hover, :has(:hover)` is technically suspect because :has() descendant matching also does not cross the top-layer boundary for the same spec reason, so it may not restore the behavior; (b) the bug remained in 'Fixed' status \u2014 the regression was not reopened or tracked as a blocking follow-up; (c) the developer's follow-up (2026-06-17) confirmed the broken pattern and the thread is unresolved with the developer's task not confirmed recovered; (d) no canonical migration/troubleshooting doc was produced.",
       "evidenceIds": [
         "S-crbug"
       ],
       "limitations": "Thread unresolved in the public record; workaround efficacy unverified; no support-health denominator available."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is not a deprecation or removal of a public web API. It is a behavioral/standards-alignment fix. The only thing 'removed' is an internal Chromium special-case for the select ::picker() popover, which is an implementation detail, not a developer-facing API.",
       "evidenceIds": [
         "S-chromestatus",
@@ -158,7 +157,7 @@
       "limitations": "No broad user-impact measurement; severity beyond the one report is unknown."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "Not scorable: no usage metric exists for a behavioral fix (no UseCounter; webdx_usecounter_enum null), and the single real-world data point is a negative compatibility regression rather than adoption.",
       "evidenceIds": [
         "S-chromestatus",
@@ -242,7 +241,7 @@
       "retrievedAt": "2026-07-20T22:55:00Z",
       "sourceType": "spec",
       "supports": [
-        "Selectors Level 4 is a W3C Working Draft (22 Jan 2026); §9 defines :hover/:active/:focus/:focus-visible/:focus-within user-action pseudo-classes; spec maturity is low (WD)"
+        "Selectors Level 4 is a W3C Working Draft (22 Jan 2026); \u00a79 defines :hover/:active/:focus/:focus-visible/:focus-within user-action pseudo-classes; spec maturity is low (WD)"
       ],
       "limitations": "Editor's Draft under active revision; the top-layer-boundary propagation text is contested (see S-csswg-14143)."
     },
@@ -278,7 +277,7 @@
       "retrievedAt": "2026-07-20T22:55:00Z",
       "sourceType": "intent",
       "supports": [
-        "Web-Facing Change PSA (not a full Intent to Ship, no LGTMs — consistent with 'No developer-visible change'); Gecko/WebKit/Web-dev all 'No signal(s)'; interop risk self-assessed 'very unlikely to cause compat issues, old behavior was so broken'; not fully WPT-tested; WebView risks and Debuggability 'No information provided'; dev trial M148, ship M149 desktop/Android/WebView; tracking bug 407769114; zero replies on the thread"
+        "Web-Facing Change PSA (not a full Intent to Ship, no LGTMs \u2014 consistent with 'No developer-visible change'); Gecko/WebKit/Web-dev all 'No signal(s)'; interop risk self-assessed 'very unlikely to cause compat issues, old behavior was so broken'; not fully WPT-tested; WebView risks and Debuggability 'No information provided'; dev trial M148, ship M149 desktop/Android/WebView; tracking bug 407769114; zero replies on the thread"
       ],
       "limitations": "PSA is the prepare-to-ship artifact; risk rationale is a self-assessment with no external evidence."
     },
@@ -314,9 +313,9 @@
       "retrievedAt": "2026-07-20T22:55:00Z",
       "sourceType": "implementation",
       "supports": [
-        "Bug created 2025-04-01 by the Spec Resolution bot; verbatim CSSWG resolution text (#1); impl CL 7683005 'Implement user action pseudo-class propagation boundary for top layer' Mason Freed (#2, 2026-03-20); ship CL 7759059 (#4, 2026-04-15, marked Fixed); POST-SHIP REGRESSION reported 2026-06-03 (#5) — hover-revealed menu controls broke; owner response 2026-06-05 (#6) suggesting :hover/:has(:hover); developer follow-up 2026-06-17 (#7) confirming broken `.img-container:hover .controls` pattern, unresolved; status remains Fixed; 4 votes; component Blink>CSS"
+        "Bug created 2025-04-01 by the Spec Resolution bot; verbatim CSSWG resolution text (#1); impl CL 7683005 'Implement user action pseudo-class propagation boundary for top layer' Mason Freed (#2, 2026-03-20); ship CL 7759059 (#4, 2026-04-15, marked Fixed); POST-SHIP REGRESSION reported 2026-06-03 (#5) \u2014 hover-revealed menu controls broke; owner response 2026-06-05 (#6) suggesting :hover/:has(:hover); developer follow-up 2026-06-17 (#7) confirming broken `.img-container:hover .controls` pattern, unresolved; status remains Fixed; 4 votes; component Blink>CSS"
       ],
-      "limitations": "Bug left 'Fixed' despite the regression; comment #3 references a different ChromeStatus id (6657453179666432) — possible duplicate/merge, not resolved; full test/perf coverage not visible."
+      "limitations": "Bug left 'Fixed' despite the regression; comment #3 references a different ChromeStatus id (6657453179666432) \u2014 possible duplicate/merge, not resolved; full test/perf coverage not visible."
     },
     {
       "id": "S-webstandards-149",
@@ -350,7 +349,7 @@
       "retrievedAt": "2026-07-20T22:55:00Z",
       "sourceType": "other",
       "supports": [
-        "General context: open popover elements render in the top layer and are not influenced by parent positioning — the premise underlying this feature"
+        "General context: open popover elements render in the top layer and are not influenced by parent positioning \u2014 the premise underlying this feature"
       ],
       "limitations": "General reference; no feature-specific documentation of the top-layer :hover boundary behavior was located."
     }
@@ -365,7 +364,7 @@
     "The load-bearing compat-risk claim ('old behavior was so broken... very unlikely to cause compat issues') was an unsupported self-assessment and was falsified within ~1 day of stable by a real production regression (bug 407769114 #5-7) breaking a common hover-reveals-controls-in-popover pattern (`.img-container:hover .controls`).",
     "No field validation of any kind (no recruited dev-trial feedback, no compat-data/web-pattern sweep, no telemetry) was performed for a generalized behavioral change, despite a flag-based dev trial being available in M148.",
     "Regression handling was weak: the suggested workaround `:hover, :has(:hover)` likely does not cross the top-layer boundary either; the bug was left in 'Fixed' status rather than reopened/tracked; no canonical migration doc; the developer's task was not confirmed recovered.",
-    "Mozilla reopened the standards question post-ship (CSSWG #14143, 2026-07-08), arguing the model may be overcomplicated and inconsistent with non-custom <select> and with mouseenter/mouseleave — undermining the interop basis the ship relied on.",
+    "Mozilla reopened the standards question post-ship (CSSWG #14143, 2026-07-08), arguing the model may be overcomplicated and inconsistent with non-custom <select> and with mouseenter/mouseleave \u2014 undermining the interop basis the ship relied on.",
     "The feature was classified 'No developer-visible change' when it in fact changed observable, relied-upon behavior."
   ],
   "counterfactuals": [

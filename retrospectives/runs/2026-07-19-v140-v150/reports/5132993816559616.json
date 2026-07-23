@@ -72,7 +72,7 @@
       "limitations": "Security review and privacy review are 'Pending' - material wide-review gates are initiated but incomplete. No TAG or other-engine engagement on the cachehint attribute, where interop would actually matter."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial is configured (all OT fields null) and rollout_plan is 'Will ship enabled for all users'; for a 'no developer-visible change' optimization an OT adds no developer-testable surface, so a flag-based dev trial is the chosen vehicle.",
       "evidenceIds": [
         "s1",
@@ -81,7 +81,7 @@
       "limitations": "Not-relevant because no OT is planned - distinct from 'untested'. No public field/Finch measurement plan was found to validate the performance win before broad rollout; that measurement gap should be closed by prepare-to-ship."
     },
     "prepareToShip": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "The feature has not transitioned to prepare-to-ship: status 'Proposed', active intent stage prototyping, security/privacy 'Pending', is_released false, no rollout milestone set.",
       "evidenceIds": [
         "s1"
@@ -89,7 +89,7 @@
       "limitations": "Not-relevant because the lifecycle has not reached this phase (not 'untested'). Prerequisites when reached: completed security/privacy review and a public/reviewable performance readout."
     },
     "release": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No release has occurred: the only availability is an opt-in behind-flag dev trial (M149); is_released is false. No stable/beta default-on ship, release notes, or coordinated launch communication found. M149 stable shipped 2026-06-02 and M150 is now current.",
       "evidenceIds": [
         "s1",
@@ -99,16 +99,16 @@
       "limitations": "Not-relevant because no release phase has occurred (not 'untested')."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "Not shipped by default; there is no production availability to adopt. The only 'use' is developers opting into a flag for testing.",
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry. Not shipped by default; there is no production availability to adopt. The only 'use' is developers opting into a flag for testing.",
       "evidenceIds": [
         "s1",
         "s3"
       ],
-      "limitations": "Not-relevant because adoption cannot have occurred (not 'untested')."
+      "limitations": "No public ChromeStatus counter exists for this feature. This does not mean zero usage \u2014 usage is unknown, not measured."
     },
     "support": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No production support burden yet; feature not shipped by default.",
       "evidenceIds": [
         "s1"
@@ -116,7 +116,7 @@
       "limitations": "Not-relevant because the support phase has not been entered (not 'untested'). When shipped, watch for compat regressions and perf-regression support cases (inline-script timing changes; code-cache deserialization cost)."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new capability, not a deprecation or removal.",
       "evidenceIds": [
         "s1"
@@ -146,7 +146,7 @@
       "limitations": "No RUM/Core Web Vitals or device-class impact data."
     },
     "adoption": {
-      "status": "unscored",
+      "status": "unknown",
       "finding": "Not shipped by default; only an opt-in flag dev trial. No registration, usage, or production-deployment data.",
       "evidenceIds": [
         "s1",
@@ -155,7 +155,7 @@
       "limitations": "Inherent to the unshipped state."
     },
     "interoperability": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This feature is 'No developer-visible change' with no web-facing API or behavior surface to standardize; cross-engine/Baseline interoperability is structurally inapplicable for this entry (FF/Safari 'N/A' is appropriate). The companion cachehint attribute (4891009419968512) is where interop work is actually needed and is currently 'No signal'.",
       "evidenceIds": [
         "s1",

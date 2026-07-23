@@ -59,7 +59,7 @@
     },
     "developerTrials": {
       "status": "partial",
-      "finding": "A Chrome 140 dev trial was announced via 'Ready for Developer Testing' (2025-08-08), and spec-mentor review improved the record (Reilly Grant pushed back on template 'None' answers; owner corrected TAG rationale, interop risk, WebView risk, debuggability). But the record carries no devtrial instructions (null), no chrome://flags flag name ('None'), no recruited cohort, no feedback instrument, and no published findings — i.e. a milestone marker rather than an evidenced trial.",
+      "finding": "A Chrome 140 dev trial was announced via 'Ready for Developer Testing' (2025-08-08), and spec-mentor review improved the record (Reilly Grant pushed back on template 'None' answers; owner corrected TAG rationale, interop risk, WebView risk, debuggability). But the record carries no devtrial instructions (null), no chrome://flags flag name ('None'), no recruited cohort, no feedback instrument, and no published findings \u2014 i.e. a milestone marker rather than an evidenced trial.",
       "evidenceIds": [
         "intent-dt",
         "cs"
@@ -78,7 +78,7 @@
       "limitations": "The 'Pending' review statuses may reflect ChromeStatus field lag rather than genuinely unresolved gates; internal review state is not publicly verifiable."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Origin Trial was conducted. The ChromeStatus OT/extend-OT stages (stage_type 140/150) carry no trial id, goals, or participants. This is appropriate, not a gap: the feature is admin-gated on managed ChromeOS with a fully controlled audience and low field uncertainty, so an OT would not resolve additional questions that a flag/build test or admin pilot could not.",
       "evidenceIds": [
         "cs",
@@ -127,7 +127,7 @@
       "limitations": "Cannot assess support burden or issue resolution from public sources."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is an enablement/configurability change, not a deprecation or removal, so the deprecation/removal workflow does not apply. The only deprecation-adjacent aspect is that force-installed PWA access via WebAppInstallForceList ended at v140 in favor of force-installed IWAs (IsolatedWebAppInstallForceList) + kiosk; the team assessed this migration impact as nil ('no known IWAs using the API'), and it is not a removal with a warning/reverse-trial path.",
       "evidenceIds": [
         "policy-allowed",
@@ -139,7 +139,7 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "The intended value is coherent and partly realized as a capability: it makes the Device Attributes API usable with less per-origin configuration (enabled by default for force-installed IWAs/kiosks) while preserving admin control via content settings and three policies. The value thesis is documented and the artifact shipped. But there is no attributable evidence of developers actually realizing value — no testimonials, case studies, or production use — and the underlying demand evidence (WICG/proposals#14) predates and concerns the original API, not this change.",
+      "finding": "The intended value is coherent and partly realized as a capability: it makes the Device Attributes API usable with less per-origin configuration (enabled by default for force-installed IWAs/kiosks) while preserving admin control via content settings and three policies. The value thesis is documented and the artifact shipped. But there is no attributable evidence of developers actually realizing value \u2014 no testimonials, case studies, or production use \u2014 and the underlying demand evidence (WICG/proposals#14) predates and concerns the original API, not this change.",
       "evidenceIds": [
         "explainer",
         "spec",
@@ -151,7 +151,7 @@
       "limitations": "Realized developer value cannot be inferred from shipment or documentation alone; no proposal-specific demand evidence was found."
     },
     "endUserImpact": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Direct end-user impact is not the relevant lens: the feature is admin-mediated on managed ChromeOS, and only force-installed IWAs/kiosks can reach the API. Device users neither choose nor directly experience this change. The latent user-privacy consideration (device identifiers usable for tracking) is handled structurally by admin gating and the spec's privacy section, which explicitly makes unmanaged exposure a non-goal; the original TAG concern about pervasive employee monitoring was addressed at the underlying-API level in 2023.",
       "evidenceIds": [
         "spec",
@@ -170,7 +170,7 @@
       "limitations": "Adoption of managed/ChromeOS-only features is largely private and not measurable from public sources."
     },
     "interoperability": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Cross-engine interoperability and Baseline are explicitly out of scope by design: the API is ChromeOS-only 'for the foreseeable future,' FF/Safari/Web-dev 'No signal' is the expected and appropriate state, and the 'device-attributes' permissions-policy token is a Chrome-only extension with no WPT and no path to other engines. Mozilla/WebKit were neutral/mixed on the underlying API precisely because management is not a cross-browser concept.",
       "evidenceIds": [
         "cs",
@@ -195,7 +195,7 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Communication content was accurate and well-scoped: the Chrome 141 release notes used a dedicated 'Managed ChromeOS only' heading, enterprise release notes covered it, policy docs are clear and consistent with the explainer/spec, and there was no cross-engine or capability overclaiming. However, the authoritative ChromeStatus record was materially stale: as of the 2026-01-13 cache the top-level status read 'Proposed' and is_released was false ~3.5+ months after the feature actually shipped and appeared in release notes — a single-source-of-truth defect.",
+      "finding": "Communication content was accurate and well-scoped: the Chrome 141 release notes used a dedicated 'Managed ChromeOS only' heading, enterprise release notes covered it, policy docs are clear and consistent with the explainer/spec, and there was no cross-engine or capability overclaiming. However, the authoritative ChromeStatus record was materially stale: as of the 2026-01-13 cache the top-level status read 'Proposed' and is_released was false ~3.5+ months after the feature actually shipped and appeared in release notes \u2014 a single-source-of-truth defect.",
       "evidenceIds": [
         "rn141",
         "ent-rn",
@@ -371,7 +371,7 @@
       "retrievedAt": "2026-07-22T13:00:00Z",
       "sourceType": "other",
       "supports": [
-        "DeviceAttributesAllowedForOrigins policy; IWAs via IsolatedWebAppInstallForceList (since v125) or kiosk; force-installed PWAs via WebAppInstallForceList only before v140 — evidencing the PWA->IWA migration shift"
+        "DeviceAttributesAllowedForOrigins policy; IWAs via IsolatedWebAppInstallForceList (since v125) or kiosk; force-installed PWAs via WebAppInstallForceList only before v140 \u2014 evidencing the PWA->IWA migration shift"
       ],
       "limitations": "Live policy doc; per-version annotations taken from page description."
     },
@@ -395,7 +395,7 @@
       "retrievedAt": "2026-07-22T13:00:00Z",
       "sourceType": "other",
       "supports": [
-        "IWA high-trust model context; permissions_policy manifest field mechanism; admin force-install via Admin console — the deployment target for this feature"
+        "IWA high-trust model context; permissions_policy manifest field mechanism; admin force-install via Admin console \u2014 the deployment target for this feature"
       ],
       "limitations": "General IWA documentation, not feature-specific."
     }
@@ -408,7 +408,7 @@
   ],
   "failures": [
     "The authoritative ChromeStatus status/is_released fields were stale/inaccurate for 3.5+ months after shipment: 'Proposed' and is_released=false in the 2026-01-13 cache versus a 2025-09-30 ship in release notes.",
-    "The developer-trials phase carried no devtrial instructions, no chrome://flags flag name, no cohort, no feedback instrument, and no published findings — a milestone marker rather than an evidenced trial.",
+    "The developer-trials phase carried no devtrial instructions, no chrome://flags flag name, no cohort, no feedback instrument, and no published findings \u2014 a milestone marker rather than an evidenced trial.",
     "No attributable adoption or support evidence ~9.5 months post-ship; the headline VDI-client-within-12-months adoption claim remains unverified.",
     "Public review-state incompleteness: security_review_status and privacy_review_status read 'Pending' with no documented resolution for this change, and there is no WPT coverage or public launch/tracking bug."
   ],
@@ -428,10 +428,10 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Public adoption/usage signals (case studies, framework/tool integration, VDI-client production use) — none found; managed-only deployments are private.",
-      "Public support/friction/issue data — none found; routed through private enterprise channels.",
-      "Final security and privacy review state for this incremental change — ChromeStatus shows 'Pending' with no resolution documented.",
-      "Direct retrieval of the cited spec change WICG/WebApiDevice#27 — two retrieval attempts failed; content inferred from the published spec which already reflects the change.",
+      "Public adoption/usage signals (case studies, framework/tool integration, VDI-client production use) \u2014 none found; managed-only deployments are private.",
+      "Public support/friction/issue data \u2014 none found; routed through private enterprise channels.",
+      "Final security and privacy review state for this incremental change \u2014 ChromeStatus shows 'Pending' with no resolution documented.",
+      "Direct retrieval of the cited spec change WICG/WebApiDevice#27 \u2014 two retrieval attempts failed; content inferred from the published spec which already reflects the change.",
       "Exact post dates for the Intent to Prototype and Intent to Ship threads (reconstructed within milestone windows)."
     ],
     "reviewedAt": "2026-07-22T13:00:00Z"

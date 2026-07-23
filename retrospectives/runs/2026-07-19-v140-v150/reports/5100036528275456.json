@@ -72,7 +72,7 @@
       "limitations": "Positive positions have not translated to cross-engine shipment ~4 months after Chrome stable. The I2S template understated the on-record positions."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No origin trial (origintrial=false; all OT fields null). Appropriate for a small, additive, low-risk CSSOM delta that the author describes as usable as a progressive enhancement with polyfill fallback to scrollTo, and for which feature detection is possible via a position:fixed DOM probe.",
       "evidenceIds": [
         "S1",
@@ -92,7 +92,7 @@
     },
     "release": {
       "status": "supported",
-      "finding": "Shipped enabled by default in Chrome 140 stable (Sep 2 2025) on desktop, Android and WebView (iOS null), enabled by CL Jul 7 2025 (Finch feature ScrollIntoViewNearest). Chrome for Developers Chrome 140 release notes cover it under CSS with a code snippet and ChromeStatus/Spec links; Gigazine provided independent press coverage the next day. Note an evidence-quality defect: the cached ChromeStatus snapshot (accurate_as_of 2025-08-11, pre-ship) is internally inconsistent — top-level status 'Proposed', is_released=false, intent_stage 'None' — even though the ship stage records M140; the authoritative ship fact is confirmed by the release notes and the Web Platform DX support table.",
+      "finding": "Shipped enabled by default in Chrome 140 stable (Sep 2 2025) on desktop, Android and WebView (iOS null), enabled by CL Jul 7 2025 (Finch feature ScrollIntoViewNearest). Chrome for Developers Chrome 140 release notes cover it under CSS with a code snippet and ChromeStatus/Spec links; Gigazine provided independent press coverage the next day. Note an evidence-quality defect: the cached ChromeStatus snapshot (accurate_as_of 2025-08-11, pre-ship) is internally inconsistent \u2014 top-level status 'Proposed', is_released=false, intent_stage 'None' \u2014 even though the ship stage records M140; the authoritative ship fact is confirmed by the release notes and the Web Platform DX support table.",
       "evidenceIds": [
         "S10",
         "S13",
@@ -104,7 +104,7 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Adoption is now measured via the exact feature use counter ScrollIntoViewContainerNearest (bucket 5578), named verbatim in the ChromeStatus measurement field ('Measured as web feature ScrollIntoViewContainerNearest'). It fired on 0% of measured Chrome HTTP/HTTPS page loads at stable (M140, 2025-09-02), first registered a positive value on 2025-09-08 (0.00000015%), and rose through the launch-relative checkpoints: 0.00000701% at day 30 (2025-10-02), 0.00002715% at day 90 (2025-12-01), and 0.00003056% at day 180 (2026-03-01), reaching 0.00006212% on the latest observed day (2026-07-21; peak 0.00009195% on 2026-06-25) — single-digit page-loads per ~10 million, with slow but real growth from a near-zero base. Qualitative developer demand pre-dates and accompanies the ship (CSSWG #9452: argyleink and bakura10 production use cases; web-platform-dx developer-signals #463; positive I2S comments). mappingStatus is multiple-counters: two CSS property counters (contain bucket 517, https://chromestatus.com/data/timeline/csspopularity?bucket_id=517; container bucket 699, https://chromestatus.com/data/timeline/csspopularity?bucket_id=699) also map but measure unrelated CSS properties (a name collision with the feature's 'container' option), are broader property counters rather than exact feature adoption, and are excluded from feature-adoption claims. There is no predeclared adoption target in the ChromeStatus record or Intent to Ship, and no production/retention evidence corroborates the page-load share, so the measured level is described rather than judged success or failure (low page-load share is not, by itself, failure).",
+      "finding": "Adoption is now measured via the exact feature use counter ScrollIntoViewContainerNearest (bucket 5578), named verbatim in the ChromeStatus measurement field ('Measured as web feature ScrollIntoViewContainerNearest'). It fired on 0% of measured Chrome HTTP/HTTPS page loads at stable (M140, 2025-09-02), first registered a positive value on 2025-09-08 (0.00000015%), and rose through the launch-relative checkpoints: 0.00000701% at day 30 (2025-10-02), 0.00002715% at day 90 (2025-12-01), and 0.00003056% at day 180 (2026-03-01), reaching 0.00006212% on the latest observed day (2026-07-21; peak 0.00009195% on 2026-06-25) \u2014 single-digit page-loads per ~10 million, with slow but real growth from a near-zero base. Qualitative developer demand pre-dates and accompanies the ship (CSSWG #9452: argyleink and bakura10 production use cases; web-platform-dx developer-signals #463; positive I2S comments). mappingStatus is multiple-counters: two CSS property counters (contain bucket 517, https://chromestatus.com/data/timeline/csspopularity?bucket_id=517; container bucket 699, https://chromestatus.com/data/timeline/csspopularity?bucket_id=699) also map but measure unrelated CSS properties (a name collision with the feature's 'container' option), are broader property counters rather than exact feature adoption, and are excluded from feature-adoption claims. There is no predeclared adoption target in the ChromeStatus record or Intent to Ship, and no production/retention evidence corroborates the page-load share, so the measured level is described rather than judged success or failure (low page-load share is not, by itself, failure).",
       "evidenceIds": [
         "S3",
         "S11",
@@ -116,7 +116,7 @@
     },
     "support": {
       "status": "partial",
-      "finding": "MDN documents the `container` option (values all/nearest, default all) and the author (Robert Flack) is responsive. But support friction is evidenced: a developer's feature-detection question on the I2S thread (kurtextrem, Jul 28 2025) went unanswered for ~2 months and was re-asked Sep 23 2025 (after stable shipped Sep 2) before Flack provided a non-trivial position:fixed DOM-probe detection snippet — indicating feature detection is awkward with no clean capability check. Separately the spec-clarity issue #12260 (Jun 2 2025) remained open.",
+      "finding": "MDN documents the `container` option (values all/nearest, default all) and the author (Robert Flack) is responsive. But support friction is evidenced: a developer's feature-detection question on the I2S thread (kurtextrem, Jul 28 2025) went unanswered for ~2 months and was re-asked Sep 23 2025 (after stable shipped Sep 2) before Flack provided a non-trivial position:fixed DOM-probe detection snippet \u2014 indicating feature detection is awkward with no clean capability check. Separately the spec-clarity issue #12260 (Jun 2 2025) remained open.",
       "evidenceIds": [
         "S12",
         "S8",
@@ -125,7 +125,7 @@
       "limitations": "No captured support-ticket volume; only the public I2S thread exchange and the open spec issue are evidenced."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "This is a new additive option on an existing API (feature_type 'New or changed feature'); there is no deprecation or removal path to review.",
       "evidenceIds": [
         "S1"
@@ -155,7 +155,7 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Real qualitative demand plus now-measured but very low and slowly growing Chrome page-load usage. The exact feature counter ScrollIntoViewContainerNearest (bucket 5578) fired on 0.00000701% of measured page loads at day 30 (2025-10-02), 0.00002715% at day 90 (2025-12-01), 0.00003056% at day 180 (2026-03-01), and 0.00006212% on the latest observed day (2026-07-21; peak 0.00009195% on 2026-06-25) — single-digit page-loads per ~10 million, rising slowly from a near-zero base (0% at stable, first positive 2025-09-08). mappingStatus is multiple-counters: two CSS property counters (contain bucket 517, container bucket 699) also map but measure unrelated CSS properties (name collision) and are not feature adoption; they are excluded. The ChromeStatus record and Intent to Ship contain no predeclared adoption target, and no production/retention evidence corroborates the page-load share; per the rules low usage is not automatically failure and the absence of a threshold is not 'mixed', so the adoption outcome remains unscored and the measured level/trend is described rather than judged.",
+      "finding": "Real qualitative demand plus now-measured but very low and slowly growing Chrome page-load usage. The exact feature counter ScrollIntoViewContainerNearest (bucket 5578) fired on 0.00000701% of measured page loads at day 30 (2025-10-02), 0.00002715% at day 90 (2025-12-01), 0.00003056% at day 180 (2026-03-01), and 0.00006212% on the latest observed day (2026-07-21; peak 0.00009195% on 2026-06-25) \u2014 single-digit page-loads per ~10 million, rising slowly from a near-zero base (0% at stable, first positive 2025-09-08). mappingStatus is multiple-counters: two CSS property counters (contain bucket 517, container bucket 699) also map but measure unrelated CSS properties (name collision) and are not feature adoption; they are excluded. The ChromeStatus record and Intent to Ship contain no predeclared adoption target, and no production/retention evidence corroborates the page-load share; per the rules low usage is not automatically failure and the absence of a threshold is not 'mixed', so the adoption outcome remains unscored and the measured level/trend is described rather than judged.",
       "evidenceIds": [
         "S3",
         "S11",
@@ -221,7 +221,7 @@
         "S12",
         "S16"
       ],
-      "limitations": "Overall is deliberately mixed because interoperability (single-engine as of Dec 2025), adoption (now measured but unscored — very low page-load share, no predeclared target), and end-user-impact dimensions are unscored/unachieved while developer-value and implementation-quality are strong."
+      "limitations": "Overall is deliberately mixed because interoperability (single-engine as of Dec 2025), adoption (now measured but unscored \u2014 very low page-load share, no predeclared target), and end-user-impact dimensions are unscored/unachieved while developer-value and implementation-quality are strong."
     }
   },
   "sources": [

@@ -41,7 +41,7 @@
     },
     "incubation": {
       "status": "supported",
-      "finding": "Spec design happened openly in the W3C Web Payments WG. The Payment Request spec gained a 'payment handler indicates an internal error algorithm' (PR w3c/payment-request#1050, reviewed by Marcos Cáceres of WebKit who is also implementing it), and the Web-Based Payment Handler spec was tracked in w3c/web-based-payment-handler#428 (opened 2026-03-03) to map respondWith rejection onto OperationError vs AbortError with explicit backwards-compatibility consideration. The design choice (a single OperationError vs arbitrary developer-error pass-through) was consciously debated with Apple and flagged for TAG follow-up because it also affects the Digital Credentials API.",
+      "finding": "Spec design happened openly in the W3C Web Payments WG. The Payment Request spec gained a 'payment handler indicates an internal error algorithm' (PR w3c/payment-request#1050, reviewed by Marcos C\u00e1ceres of WebKit who is also implementing it), and the Web-Based Payment Handler spec was tracked in w3c/web-based-payment-handler#428 (opened 2026-03-03) to map respondWith rejection onto OperationError vs AbortError with explicit backwards-compatibility consideration. The design choice (a single OperationError vs arbitrary developer-error pass-through) was consciously debated with Apple and flagged for TAG follow-up because it also affects the Digital Credentials API.",
       "evidenceIds": [
         "s4",
         "s5",
@@ -62,7 +62,7 @@
       "limitations": "No public prototype/demo/explainer artifact beyond the GitHub issue; crbug body not read directly (only the cached link and search snippet). No public Intent to Prototype email found."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable to this feature's lifecycle. There was no flag-based developer trial: flag_name is null, devtrial_instructions is null, and the stage of type 250 (dev trial/eval) carries no intent thread or dates. A minor, additive, backwards-compatible error outcome shipped directly to stable.",
       "evidenceIds": [
         "s1"
@@ -82,7 +82,7 @@
       "limitations": "Privacy, Web-Platform Security and Adoption approvals were knowingly deferred/skipped before the ship intent; their post-hoc outcome is not visible in the evidence. TAG review was informal (TPAC sidebar), not a formal request."
     },
     "experiment": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable. There was no origin trial: origintrial is false and every ot_* field is null; the availability_expectation is direct shipment in Chromium (and Safari for the PR-level change). A trial would add little for an additive error value.",
       "evidenceIds": [
         "s1",
@@ -113,7 +113,7 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "Too early and not measurable. The feature shipped ~7 weeks before the evidence cutoff (2026-06-02 → 2026-07-20). No use counter is linked (webdx_usecounter_enum is null), no HTTP Archive/BigQuery or Web Platform Dashboard signal is available this soon, and targeted searches for PayPal/Google Pay/Stripe adoption of the new OperationError behaviour returned only generic troubleshooting noise. The motivating adopter (PayPal) has not published a confirmed switch from error.message string-matching to OperationError.",
+      "finding": "Too early and not measurable. The feature shipped ~7 weeks before the evidence cutoff (2026-06-02 \u2192 2026-07-20). No use counter is linked (webdx_usecounter_enum is null), no HTTP Archive/BigQuery or Web Platform Dashboard signal is available this soon, and targeted searches for PayPal/Google Pay/Stripe adoption of the new OperationError behaviour returned only generic troubleshooting noise. The motivating adopter (PayPal) has not published a confirmed switch from error.message string-matching to OperationError.",
       "evidenceIds": [
         "s1"
       ],
@@ -126,10 +126,10 @@
         "s1",
         "s9"
       ],
-      "limitations": "Support burden cannot be assessed this early; a 6–12 month re-check is needed before scoring."
+      "limitations": "Support burden cannot be assessed this early; a 6\u201312 month re-check is needed before scoring."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable. This is an additive new error outcome for an existing API, not a deprecation or removal; enterprise_impact is minimal (1), breaking_change is false, and there is no removal/removal-trial stage.",
       "evidenceIds": [
         "s1"
@@ -140,7 +140,7 @@
   "outcomes": {
     "developerValue": {
       "status": "success",
-      "finding": "The shipped design directly resolves the documented pain point: merchants can now branch PaymentRequest.show() rejection on error name (OperationError = internal app failure → retry/fallback; AbortError = user cancel → stop) instead of fragile, vendor-specific error.message string matching that PayPal explicitly called out as a maintainability risk. The problem was raised by a major real-world payment handler and the solution is the minimal interoperable fix. Limitation: expressive power is deliberately limited to a single OperationError (not arbitrary developer errors), so richer error signalling remains a future question.",
+      "finding": "The shipped design directly resolves the documented pain point: merchants can now branch PaymentRequest.show() rejection on error name (OperationError = internal app failure \u2192 retry/fallback; AbortError = user cancel \u2192 stop) instead of fragile, vendor-specific error.message string matching that PayPal explicitly called out as a maintainability risk. The problem was raised by a major real-world payment handler and the solution is the minimal interoperable fix. Limitation: expressive power is deliberately limited to a single OperationError (not arbitrary developer errors), so richer error signalling remains a future question.",
       "evidenceIds": [
         "s3",
         "s9",
@@ -163,7 +163,7 @@
       "evidenceIds": [
         "s1"
       ],
-      "limitations": "Early-window absence is expected and is not negative evidence; re-evaluate at 6–12 months."
+      "limitations": "Early-window absence is expected and is not negative evidence; re-evaluate at 6\u201312 months."
     },
     "interoperability": {
       "status": "mixed",
@@ -180,7 +180,7 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Mixed. Tests exist: WPT PR #59002 ('Payment Handler: Add test for OperationError propagation') plus Chrome source-level automated tests, and standard DevTools debugging is available. But the feature is explicitly 'not fully tested by web-platform-tests' — only manual WPTs were possible because Payment Request/Web-based Payment Handler lack the necessary chromedriver automation, so there is no automated cross-browser regression guard for the new error path.",
+      "finding": "Mixed. Tests exist: WPT PR #59002 ('Payment Handler: Add test for OperationError propagation') plus Chrome source-level automated tests, and standard DevTools debugging is available. But the feature is explicitly 'not fully tested by web-platform-tests' \u2014 only manual WPTs were possible because Payment Request/Web-based Payment Handler lack the necessary chromedriver automation, so there is no automated cross-browser regression guard for the new error path.",
       "evidenceIds": [
         "s10",
         "s7",
@@ -266,7 +266,7 @@
       "retrievedAt": "2026-07-20T22:30:00Z",
       "sourceType": "spec",
       "supports": [
-        "Spec PR adding the 'payment handler indicates an internal error algorithm'; reviewed/being implemented by Marcos Cáceres (WebKit); cited as the WebKit Positive signal in ChromeStatus and the intent thread"
+        "Spec PR adding the 'payment handler indicates an internal error algorithm'; reviewed/being implemented by Marcos C\u00e1ceres (WebKit); cited as the WebKit Positive signal in ChromeStatus and the intent thread"
       ],
       "limitations": "Full PR body and merge date could not be retrieved (reader timed out twice); existence and WebKit review corroborated by s1, s7, s8."
     },
@@ -326,7 +326,7 @@
       "retrievedAt": "2026-07-20T22:30:00Z",
       "sourceType": "other",
       "supports": [
-        "Chrome 149 stable release date 2026-06-02; feature listed under Web APIs with accurate description (AbortError vs OperationError, retry/fallback), tracking bug #473478138, ChromeStatus entry and spec link — confirms shipment"
+        "Chrome 149 stable release date 2026-06-02; feature listed under Web APIs with accurate description (AbortError vs OperationError, retry/fallback), tracking bug #473478138, ChromeStatus entry and spec link \u2014 confirms shipment"
       ],
       "limitations": "Release-notes summary only; not a per-page-usage or telemetry source."
     },
@@ -362,7 +362,7 @@
       "retrievedAt": "2026-07-20T22:30:00Z",
       "sourceType": "other",
       "supports": [
-        "PaymentRequest is 'not Baseline because it does not work in some of the most widely-used browsers'; Firefox shows no support / disabled — confirming the parent API's non-Baseline status that bounds this feature's interoperability"
+        "PaymentRequest is 'not Baseline because it does not work in some of the most widely-used browsers'; Firefox shows no support / disabled \u2014 confirming the parent API's non-Baseline status that bounds this feature's interoperability"
       ],
       "limitations": "MDN compat data observed via search snippet; live table not parsed cell-by-cell."
     },
@@ -374,7 +374,7 @@
       "retrievedAt": "2026-07-20T22:30:00Z",
       "sourceType": "implementation",
       "supports": [
-        "Tracking bug title '[Payment Handler] Payment apps are unable to indicate difference...'; description references identifying a spec-level error code for the 'app failed' case — the implementation work-item behind this feature"
+        "Tracking bug title '[Payment Handler] Payment apps are unable to indicate difference...'; description references identifying a spec-level error code for the 'app failed' case \u2014 the implementation work-item behind this feature"
       ],
       "limitations": "Bug body not read directly (login-gated); title/description captured via search snippet and the cached record."
     }
@@ -396,10 +396,10 @@
     "If Payment Request had chromedriver-based WPT automation, the feature could have shipped with fully automated cross-browser tests, materially strengthening the interoperability and implementation-quality dimensions instead of relying on manual tests + Chrome source tests.",
     "If the design had chosen arbitrary developer-error pass-through (the option debated with Apple) instead of a single OperationError, it would have been more expressive for merchants but riskier to standardise and harder to keep interoperable; the conservative choice trades future flexibility for ship-ability, and the unresolved TAG follow-up suggests this trade-off may be revisited (with implications for the Digital Credentials API).",
     "If a use counter had been added for the new OperationError outcome, post-ship adoption could be measured directly; its absence means the feature's real-world uptake is currently unknowable.",
-    "If the lifecycle had not been compressed to ~5 days (ChromeStatus creation → Intent to Ship), a distinct public Intent to Prototype and earlier dev feedback might have de-risked the design before the M149 deadline."
+    "If the lifecycle had not been compressed to ~5 days (ChromeStatus creation \u2192 Intent to Ship), a distinct public Intent to Prototype and earlier dev feedback might have de-risked the design before the M149 deadline."
   ],
   "skillImprovements": [
-    "Add a phase rule that treats 'approvals skipped due to milestone timeline' as a flagged risk marker requiring an explicit recorded rationale (present here) AND a scheduled post-ship confirmation that the deferred reviews raised no issues — do not let it pass silently even for 'minor' changes.",
+    "Add a phase rule that treats 'approvals skipped due to milestone timeline' as a flagged risk marker requiring an explicit recorded rationale (present here) AND a scheduled post-ship confirmation that the deferred reviews raised no issues \u2014 do not let it pass silently even for 'minor' changes.",
     "Add an explicit WPT-automation-gap check: when a feature cannot be fully WPT-tested due to missing harness automation (e.g. Payment Request chromedriver), the phase packet should record this as a first-class interop/quality limitation and track the upstream automation bug, rather than only flipping 'wpt: false'.",
     "For 'Chromium catches up' features driven by a named external adopter (PayPal here), add a skill prompt to capture a post-ship adoption confirmation from that adopter within a fixed window (e.g. 90 days), so developerValue can move from inferred to evidenced.",
     "Add a Baseline-context rule: for any feature in the Payment Request / Payment Handler family, automatically surface that the parent API is non-Baseline (Firefox non-shipment) and score interoperability accordingly, so reviewers do not over-credit Chromium+WebKit agreement.",

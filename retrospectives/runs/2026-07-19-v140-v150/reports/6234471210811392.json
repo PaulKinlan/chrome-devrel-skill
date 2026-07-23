@@ -33,7 +33,7 @@
   "phaseReview": {
     "intake": {
       "status": "supported",
-      "finding": "The intake is coherent: a 'Chromium catches up' CSS feature (feature_type_int=1) that implements the `border-area` value of `background-clip` from CSS Backgrounds Level 4 to reach parity with WebKit, which already ships it. The ChromeStatus entry was created 2026-03-19 by cgqaq@chromium.org (Blink>CSS). The developer problem it targets — gradient/image borders without the complexity of `border-image` — is independently validated in the CSSWG incubation issue (#9456), which documents many existing real-world workarounds (CSS-Tricks, DigitalOcean, CodePen, GeeksforGeeks tutorials). Mode = feature; lifecycle stage at review = shipped. Note the cached snapshot was taken before ship (is_released=false, status 'Proposed' as of 2026-05-27); independent evidence confirms the M150 ship occurred 2026-06-30.",
+      "finding": "The intake is coherent: a 'Chromium catches up' CSS feature (feature_type_int=1) that implements the `border-area` value of `background-clip` from CSS Backgrounds Level 4 to reach parity with WebKit, which already ships it. The ChromeStatus entry was created 2026-03-19 by cgqaq@chromium.org (Blink>CSS). The developer problem it targets \u2014 gradient/image borders without the complexity of `border-image` \u2014 is independently validated in the CSSWG incubation issue (#9456), which documents many existing real-world workarounds (CSS-Tricks, DigitalOcean, CodePen, GeeksforGeeks tutorials). Mode = feature; lifecycle stage at review = shipped. Note the cached snapshot was taken before ship (is_released=false, status 'Proposed' as of 2026-05-27); independent evidence confirms the M150 ship occurred 2026-06-30.",
       "evidenceIds": [
         "cs-record",
         "csswg-9456",
@@ -64,7 +64,7 @@
       "limitations": "Material implementation detail could not be directly retrieved: the Intent to Prototype msgid URL was rejected by the reader, the Chromium bug timed out on read, and WPT.fyi pass rates timed out. Only test existence and the resolved bug snippet are confirmed; CLs, perf, and any regressions are unverified."
     },
     "developerTrials": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "No Chromium developer trial or Origin Trial was conducted. ChromeStatus shows flag=false, origintrial=false, and all OT fields null; devtrial_instructions is null. The Intent to Ship states 'Goals for experimentation: None'. This is a documented process choice for a low-risk CSS parity property whose behavior and tests already exist in another engine, not an untested gap: pre-ship validation rested on WebKit's prior ship (Safari 18.2, 2024-12) plus WPT conformance tests. No Chromium-specific developer cohort feedback was gathered before default-on ship.",
       "evidenceIds": [
         "cs-record",
@@ -75,7 +75,7 @@
     },
     "wideReview": {
       "status": "partial",
-      "finding": "Wide review is genuinely mixed and must not be read as positive. WebKit: shipped (Safari 18.2), positive. TAG review: 'Not applicable' / none requested (typical for a catch-up CSS property) per the Intent to Ship. Mozilla: NO position — standards-positions issue #1397 was opened 2026-04-29 and remains 'Needs proposed position' at evidence cutoff; ChromeStatus records ff_views 'No signal'. Per the phase rules, this silence is treated as unknown, not neutral. Standards maturity is low: the spec is a First Public Working Draft (2026-05-08), not CR. Interop: proposed for Interop 2025 (#881) but explicitly NOT selected; a 2026 proposal (#1164) is open. So at ship the feature had one positive engine, one silent engine, an immature spec, and no interop-investment commitment.",
+      "finding": "Wide review is genuinely mixed and must not be read as positive. WebKit: shipped (Safari 18.2), positive. TAG review: 'Not applicable' / none requested (typical for a catch-up CSS property) per the Intent to Ship. Mozilla: NO position \u2014 standards-positions issue #1397 was opened 2026-04-29 and remains 'Needs proposed position' at evidence cutoff; ChromeStatus records ff_views 'No signal'. Per the phase rules, this silence is treated as unknown, not neutral. Standards maturity is low: the spec is a First Public Working Draft (2026-05-08), not CR. Interop: proposed for Interop 2025 (#881) but explicitly NOT selected; a 2026 proposal (#1164) is open. So at ship the feature had one positive engine, one silent engine, an immature spec, and no interop-investment commitment.",
       "evidenceIds": [
         "intent-ship",
         "mozilla-position",
@@ -87,8 +87,8 @@
       "limitations": "'No signal' from Mozilla and 'No signals' from web_dev (ChromeStatus) are accurately recorded and must not be inflated to support. The TAG-not-applicable decision is reasonable for parity CSS but means there was no independent TAG scrutiny."
     },
     "experiment": {
-      "status": "not-relevant",
-      "finding": "No Origin Trial was run. ChromeStatus origintrial=false with all OT_* fields null; the Intent to Ship states 'Goals for experimentation: None' and there is no field uncertainty requiring real-origin/user conditions. Not-relevant because an OT was not warranted for a low-risk declarative CSS parity property — this is a deliberate decision, not a gap.",
+      "status": "not relevant",
+      "finding": "No Origin Trial was run. ChromeStatus origintrial=false with all OT_* fields null; the Intent to Ship states 'Goals for experimentation: None' and there is no field uncertainty requiring real-origin/user conditions. Not-relevant because an OT was not warranted for a low-risk declarative CSS parity property \u2014 this is a deliberate decision, not a gap.",
       "evidenceIds": [
         "cs-record",
         "intent-ship"
@@ -108,7 +108,7 @@
     },
     "release": {
       "status": "partial",
-      "finding": "The feature shipped on schedule: Chrome/Chrome Android 150 (2026-06-30) and Edge 150 (2026-07-02) per developer-signals, with accurate platform coverage (all_platforms=true). Community awareness exists and is positive (the @ChallengesCss account tweeted '@ChromiumDev V150 ... comes with border-area. The magic value to create gradient borders easily'; Barry Pollard noted the Intent to Ship on Bluesky; an educational YouTube covers it). However: ChromeStatus release notes were not publish-ready at snapshot; no Chrome-authored launch article/blog was found (the canonical explainer remains WebKit's Nov-2024 post); and BCD/caniuse lagged or contradicted the actual ship — multiple caniuse entries showed Chrome 'not supported' even for v150 in stale crawls, which could mislead developers doing compatibility checks at launch. Post-Chrome-150, the feature reaches ~57.75% of global users (Safari 18.2+ + Chrome/Edge 150+) per caniuse.",
+      "finding": "The feature shipped on schedule: Chrome/Chrome Android 150 (2026-06-30) and Edge 150 (2026-07-02) per developer-signals, with accurate platform coverage (all_platforms=true). Community awareness exists and is positive (the @ChallengesCss account tweeted '@ChromiumDev V150 ... comes with border-area. The magic value to create gradient borders easily'; Barry Pollard noted the Intent to Ship on Bluesky; an educational YouTube covers it). However: ChromeStatus release notes were not publish-ready at snapshot; no Chrome-authored launch article/blog was found (the canonical explainer remains WebKit's Nov-2024 post); and BCD/caniuse lagged or contradicted the actual ship \u2014 multiple caniuse entries showed Chrome 'not supported' even for v150 in stale crawls, which could mislead developers doing compatibility checks at launch. Post-Chrome-150, the feature reaches ~57.75% of global users (Safari 18.2+ + Chrome/Edge 150+) per caniuse.",
       "evidenceIds": [
         "dev-signals-266",
         "challengescss-tweet",
@@ -131,14 +131,14 @@
     },
     "support": {
       "status": "unknown",
-      "finding": "No support issues, regressions, or friction reports were found in the ~3 weeks since ship. The feature is a declarative, progressively-enhanceable CSS property — the WebKit blog demonstrates a clean `@supports (background-clip: border-area)` fallback pattern — so a low support burden is plausible, but there is no evidence either way yet.",
+      "finding": "No support issues, regressions, or friction reports were found in the ~3 weeks since ship. The feature is a declarative, progressively-enhanceable CSS property \u2014 the WebKit blog demonstrates a clean `@supports (background-clip: border-area)` fallback pattern \u2014 so a low support burden is plausible, but there is no evidence either way yet.",
       "evidenceIds": [
         "webkit-blog"
       ],
       "limitations": "Too early to assess; no public support tracker evidence retrieved."
     },
     "deprecation": {
-      "status": "not-relevant",
+      "status": "not relevant",
       "finding": "Not applicable: this is a new additive CSS value, not a deprecation or removal. There is no removal, migration, or reverse-trial path to evaluate.",
       "evidenceIds": [
         "cs-record"
@@ -149,7 +149,7 @@
   "outcomes": {
     "developerValue": {
       "status": "success",
-      "finding": "The feature targets a real, recurring, well-evidenced developer problem — creating gradient/image/pattern borders ergonomically — that today forces authors to `border-image` (complex, overrides border styling, poor composition) or pseudo-element/background-overlay hacks. CSSWG #9456 documents dozens of concrete real-world workarounds it would replace, and the chosen minimal `border-area` value is a clean, declarative solution with a documented design rationale. WebKit shipped it and authors responded with examples. The value proposition is accurately and modestly stated in the ChromeStatus motivation.",
+      "finding": "The feature targets a real, recurring, well-evidenced developer problem \u2014 creating gradient/image/pattern borders ergonomically \u2014 that today forces authors to `border-image` (complex, overrides border styling, poor composition) or pseudo-element/background-overlay hacks. CSSWG #9456 documents dozens of concrete real-world workarounds it would replace, and the chosen minimal `border-area` value is a clean, declarative solution with a documented design rationale. WebKit shipped it and authors responded with examples. The value proposition is accurately and modestly stated in the ChromeStatus motivation.",
       "evidenceIds": [
         "csswg-9456",
         "intent-ship",
@@ -178,7 +178,7 @@
     },
     "interoperability": {
       "status": "mixed",
-      "finding": "Genuine progress but incomplete. WebKit shipped first (Safari 18.2 / iOS 18.2, 2024-12-11) and Chromium/Blink now ships parity (Chrome/Edge/ChromeAndroid 150, 2026-06-30/07-02) — 2 of 3 engines. However: Firefox has NO implementation and NO standards position (Mozilla issue #1397 still 'Needs proposed position'); therefore the feature is NOT cross-browser and NOT Baseline. The spec is only a First Public Working Draft. It was proposed but explicitly NOT selected for Interop 2025 (#881), and the Interop 2026 proposal (#1164) is open with WPT.fyi badging the border-area test under 'Interop 2026' (definitive 2026 selection could not be confirmed from the web.dev announcement, which timed out). Post-M150 reach is ~57.75% of users, leaving ~42% (Firefox + older browsers) without support, so progressive enhancement is still required.",
+      "finding": "Genuine progress but incomplete. WebKit shipped first (Safari 18.2 / iOS 18.2, 2024-12-11) and Chromium/Blink now ships parity (Chrome/Edge/ChromeAndroid 150, 2026-06-30/07-02) \u2014 2 of 3 engines. However: Firefox has NO implementation and NO standards position (Mozilla issue #1397 still 'Needs proposed position'); therefore the feature is NOT cross-browser and NOT Baseline. The spec is only a First Public Working Draft. It was proposed but explicitly NOT selected for Interop 2025 (#881), and the Interop 2026 proposal (#1164) is open with WPT.fyi badging the border-area test under 'Interop 2026' (definitive 2026 selection could not be confirmed from the web.dev announcement, which timed out). Post-M150 reach is ~57.75% of users, leaving ~42% (Firefox + older browsers) without support, so progressive enhancement is still required.",
       "evidenceIds": [
         "webkit-blog",
         "dev-signals-266",
@@ -203,7 +203,7 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Core claims are accurate and non-inflated: the ChromeStatus motivation matches the spec/CSSWG, the Intent to Ship is transparent (correctly notes WebKit already ships, no OT needed), and Mozilla 'No signal' / web_dev 'No signals' were recorded honestly rather than promoted. But communication artifacts are weak: ChromeStatus doc_links/sample_links/explainer_links are empty, release notes are not publish-ready, 'initial public proposal' is 'No information provided' (the CSSWG origin is uncited), no Chrome-authored launch content exists, and BCD/caniuse lagged or contradicted the M150 ship in stale crawls — a real discoverability/compatibility-check risk at launch.",
+      "finding": "Core claims are accurate and non-inflated: the ChromeStatus motivation matches the spec/CSSWG, the Intent to Ship is transparent (correctly notes WebKit already ships, no OT needed), and Mozilla 'No signal' / web_dev 'No signals' were recorded honestly rather than promoted. But communication artifacts are weak: ChromeStatus doc_links/sample_links/explainer_links are empty, release notes are not publish-ready, 'initial public proposal' is 'No information provided' (the CSSWG origin is uncited), no Chrome-authored launch content exists, and BCD/caniuse lagged or contradicted the M150 ship in stale crawls \u2014 a real discoverability/compatibility-check risk at launch.",
       "evidenceIds": [
         "cs-record",
         "intent-ship",
@@ -223,7 +223,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A competent, low-controversy parity ship of a well-incubated CSS property that solves a validated developer problem and shipped cleanly across all Blink platforms — but it is not a clean success at evidence cutoff. Firefox has no implementation or position (so it is not cross-browser / not Baseline), it was not selected for Interop 2025, the spec is still a First Public Working Draft, Chrome shipped with empty docs/samples and non-publish-ready release notes, BCD/caniuse lagged the ship, and it is far too early for any adoption/usage evidence. Net: clear developer value and a clean Blink parity landing, offset by incomplete interoperability and thin launch communication."
+      "finding": "A competent, low-controversy parity ship of a well-incubated CSS property that solves a validated developer problem and shipped cleanly across all Blink platforms \u2014 but it is not a clean success at evidence cutoff. Firefox has no implementation or position (so it is not cross-browser / not Baseline), it was not selected for Interop 2025, the spec is still a First Public Working Draft, Chrome shipped with empty docs/samples and non-publish-ready release notes, BCD/caniuse lagged the ship, and it is far too early for any adoption/usage evidence. Net: clear developer value and a clean Blink parity landing, offset by incomplete interoperability and thin launch communication."
     }
   },
   "sources": [
@@ -273,7 +273,7 @@
       "supports": [
         "Intent to Prototype stage (stage_type 220) created 2026-03-19; referenced by Intent to Ship"
       ],
-      "limitations": "Content not directly retrievable — the percent-encoded msgid URL was rejected by the reader; only existence and cross-reference confirmed."
+      "limitations": "Content not directly retrievable \u2014 the percent-encoded msgid URL was rejected by the reader; only existence and cross-reference confirmed."
     },
     {
       "id": "webkit-blog",
@@ -295,7 +295,7 @@
       "retrievedAt": "2026-07-20T06:30:00Z",
       "sourceType": "standards-position",
       "supports": [
-        "Mozilla standards-position issue opened 2026-04-29 by CGQAQ; assigned to emilio; project status 'Needs proposed position' — NO Mozilla position at evidence cutoff; topic CSS, venue W3C"
+        "Mozilla standards-position issue opened 2026-04-29 by CGQAQ; assigned to emilio; project status 'Needs proposed position' \u2014 NO Mozilla position at evidence cutoff; topic CSS, venue W3C"
       ],
       "limitations": "Open issue with no resolved position; 'No signal' must not be read as opposition or support."
     },
@@ -369,7 +369,7 @@
       "supports": [
         "Tracking bug exists; search snippet indicates 'RESOLVED: add background-clip: border-area'"
       ],
-      "limitations": "Full bug body, linked CLs, components, and any regressions could not be read — the page timed out on every attempt."
+      "limitations": "Full bug body, linked CLs, components, and any regressions could not be read \u2014 the page timed out on every attempt."
     },
     {
       "id": "wpt-test",
@@ -429,7 +429,7 @@
   "failures": [
     "Long parity gap: Chrome shipped ~18 months after WebKit (Safari 18.2, 2024-12-11 -> Chrome 150, 2026-06-30) and only created the ChromeStatus entry in 2026-03, leaving a prolonged Safari-only period for a low-risk CSS property.",
     "Incomplete interoperability at ship: Firefox has no implementation and no standards position, so the feature is not cross-browser and not Baseline, and the Interop 2025 proposal was explicitly rejected.",
-    "Thin launch communication: ChromeStatus doc_links/sample_links/explainer_links are empty, release notes are not publish-ready, and no Chrome-authored launch article/sample exists — ship relied on WebKit's 2024 blog and MDN.",
+    "Thin launch communication: ChromeStatus doc_links/sample_links/explainer_links are empty, release notes are not publish-ready, and no Chrome-authored launch article/sample exists \u2014 ship relied on WebKit's 2024 blog and MDN.",
     "BCD/caniuse lagged or contradicted the M150 ship in stale crawls (showed Chrome 'not supported' for v150), which could mislead developers performing compatibility checks at launch.",
     "Weak provenance capture: the Intent to Ship lists 'Initial public proposal: No information provided' despite a clear CSSWG origin (#9456), and 'Anticipated spec changes: No information provided' despite documented, ongoing CSSWG behavior changes."
   ],
@@ -451,12 +451,12 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Chromium tracking bug (crbug 329302543) full status, linked CLs, and any regressions — reader timed out on every attempt; only a 'RESOLVED: add' snippet was confirmed via search.",
-      "WPT.fyi cross-engine pass rates for the clip-border-area test set (Chrome/Firefox/Safari) — reader timed out; only test existence was verified.",
-      "Intent to Prototype thread body — the percent-encoded msgid URL was rejected by the reader; only its existence and cross-reference from the Intent to Ship were confirmed.",
-      "Post-ship usage/adoption data (Chrome UseCounters, HTTP Archive/Baseline usage, production case studies) — inherently unavailable at ~3 weeks post-ship; Chrome UseCounters are not public.",
-      "Definitive confirmation of whether the Interop 2026 proposal (#1164) was selected — issue status was 'No status' at read and the web.dev/blog/interop-2026 announcement timed out (WPT.fyi shows an 'Interop 2026' badge on the test, suggesting tracking but not final selection).",
-      "Final security/privacy review gate states — the cached snapshot (2026-05-27) showed both 'Pending'."
+      "Chromium tracking bug (crbug 329302543) full status, linked CLs, and any regressions \u2014 reader timed out on every attempt; only a 'RESOLVED: add' snippet was confirmed via search.",
+      "WPT.fyi cross-engine pass rates for the clip-border-area test set (Chrome/Firefox/Safari) \u2014 reader timed out; only test existence was verified.",
+      "Intent to Prototype thread body \u2014 the percent-encoded msgid URL was rejected by the reader; only its existence and cross-reference from the Intent to Ship were confirmed.",
+      "Post-ship usage/adoption data (Chrome UseCounters, HTTP Archive/Baseline usage, production case studies) \u2014 inherently unavailable at ~3 weeks post-ship; Chrome UseCounters are not public.",
+      "Definitive confirmation of whether the Interop 2026 proposal (#1164) was selected \u2014 issue status was 'No status' at read and the web.dev/blog/interop-2026 announcement timed out (WPT.fyi shows an 'Interop 2026' badge on the test, suggesting tracking but not final selection).",
+      "Final security/privacy review gate states \u2014 the cached snapshot (2026-05-27) showed both 'Pending'."
     ],
     "reviewedAt": "2026-07-20T06:30:00Z"
   }
