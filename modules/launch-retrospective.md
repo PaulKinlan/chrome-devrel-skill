@@ -182,6 +182,20 @@ for low-risk features but unacceptable for high-risk ones.
 "simple CSS fix" could have accessibility or performance implications. When
 uncertain, default to deeper analysis.
 
+**Risk-trigger checklist (advisory — classification needs stakeholder
+calibration):**
+
+| Trigger                                              | Example                                               | Minimum depth                                   |
+| ---------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------- |
+| Changes user agency, consent, or control             | Attestation, permission changes, background execution | Stakeholder critique + user-impact rehearsal    |
+| Changes privacy, tracking, or fingerprinting surface | New signals, data collection, cross-origin access     | Privacy analysis + stakeholder critique         |
+| Changes market power or competition                  | Gatekeeping API, bundling, self-preferencing          | Competition analysis + stakeholder critique     |
+| Known external criticism or contentious position     | Public objections from other engines, civil society   | Source-grounded steelman + response plan        |
+| New platform capability (not catchup)                | New API primitive, new execution model                | Ecosystem research + interop analysis           |
+| Origin trial                                         | Any OT feature                                        | Trial design + learning goals + feedback plan   |
+| Accessibility, security, or abuse implications       | New input modality, resource exposure, attack surface | A11y/security review rehearsal + abuse analysis |
+| Default to deeper when uncertain                     | Risk unclear                                          | Deeper analysis is the safe default             |
+
 ### R5: Explicit unknown status required
 
 Every lifecycle phase in a report must have an explicit status (supported,
