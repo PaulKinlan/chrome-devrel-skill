@@ -100,3 +100,68 @@ For each dimension, rate the feature as:
   escalation, and aftercare prepared.
 - **Partial:** Some preparation but incomplete coverage.
 - **Unknown:** No launch resilience preparation.
+
+### Accessibility
+
+- **Supported:** AT compatibility tested (screen readers, keyboard/switch,
+  zoom/reflow, contrast/forced colors, reduced motion). Equivalent semantics,
+  navigation, and error recovery available.
+- **Partial:** Some a11y testing but gaps in AT coverage or semantic
+  equivalence.
+- **Unknown:** No accessibility testing conducted.
+
+### Privacy and data protection
+
+- **Supported:** Data-flow analysis complete. What data is collected, where it
+  goes, retention, and user control documented. "Local"/"private" claims
+  technically demonstrated.
+- **Partial:** Some privacy analysis but data flow or user-control gaps remain.
+- **Unknown:** No privacy analysis. "Local" or "private" claims unverified.
+
+### Security and abuse
+
+- **Supported:** Threat model complete. Hostile-site behavior, resource
+  exhaustion, privilege escalation, and data exfiltration analyzed. Abuse
+  controls proportionate.
+- **Partial:** Some security analysis but threat model or abuse controls
+  incomplete.
+- **Unknown:** No security/abuse analysis.
+
+### Legal, regulatory, and competition
+
+- **Supported:** Legal review routed. Jurisdictional, consumer-protection,
+  data-protection, accessibility-duty, and competition questions identified as
+  routing questions for qualified counsel.
+- **Partial:** Some legal questions identified but review not routed.
+- **Unknown:** No legal/regulatory analysis. (Note: DevRel identifies questions
+  and routes to counsel; it never provides legal conclusions.)
+
+### Server and deployment integration
+
+- **Supported:** Server requirements, headers, secure-context constraints,
+  enterprise policy, and deployment paths tested and documented.
+- **Partial:** Some integration testing but enterprise or deployment gaps.
+- **Unknown:** No server/deployment testing.
+
+### Performance and resource cost
+
+- **Supported:** Performance measured across device tiers (flagship, mid-range,
+  low-end). Memory, CPU/GPU, battery, thermal, and bandwidth costs quantified
+  with methodology.
+- **Partial:** Flagship-only measurements; low-end device behavior unknown.
+- **Unknown:** No performance measurement.
+
+### Supportability
+
+- **Supported:** Support route defined. Known issues documented. FAQ from real
+  developer questions. Issue triage owner assigned.
+- **Partial:** Some support preparation but FAQ or triage gaps.
+- **Unknown:** No support plan.
+
+### Narrative and claim accuracy
+
+- **Supported:** All public claims traceable to cited evidence. Terminology
+  consistent across artifacts. Known limitations disclosed.
+- **Partial:** Some claims lack evidence citation or terminology is
+  inconsistent.
+- **Unknown:** Claims not verified against evidence.

@@ -62,6 +62,7 @@ Run structural validation:
 
 ```sh
 node evals/validate.mjs
+node scripts/validate-public-core.mjs
 ```
 
 A model runner and judge calibration set are still to be implemented.
@@ -114,12 +115,13 @@ A model runner and judge calibration set are still to be implemented.
 
 ## Scoring status summary
 
-| Status                                 | Count |
-| -------------------------------------- | ----- |
-| Independently verified                 | 0     |
-| Provisional (same-session self-scored) | 9     |
-| Unscored                               | 1     |
-| Total cases                            | 18    |
+| Status                                 | Count  | Definition                                                      |
+| -------------------------------------- | ------ | --------------------------------------------------------------- |
+| Independently verified                 | 0      | Fresh-context responder + separate fresh-context judge          |
+| Provisional (same-session self-scored) | 9      | Same session produced response and scoring; shares context bias |
+| Unscored (case exists, no result)      | 1      | Eval case defined but no response/judgment retained             |
+| No retained result                     | 8      | Case exists in cases.json but no result file was produced       |
+| **Total cases**                        | **18** |                                                                 |
 
 All provisional results share context bias and require fresh-context
 verification before citing as defensible baselines.
