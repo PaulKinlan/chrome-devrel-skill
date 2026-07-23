@@ -22,7 +22,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:32Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -108,13 +108,14 @@
       "limitations": "The feature is Chromium-only and MDN flags it Experimental, so the 'shipped' claim is qualified by single-engine availability. Reach is modest for a niche CSS property and the public ChromeStatus page still showed 'In development' after release, undercutting the canonical availability signal."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "No defensible adoption evidence was located. The cached record's adoption_expectation is explicitly speculative (caret-color is ~12% of page loads; animated caret-color ~0.016%; 'maybe hit 1% over time') and the adoption_plan is 'organic adoption once publicized.' Bloomberg is the named sponsor and requestor but no public production case study exists, and no framework/library/tool integration was found ~10 months after stable.",
+      "status": "partial",
+      "finding": "Usage is now measurable. The caret-animation CSS property counter (ChromeStatus bucket 809, exact-title match to the property token) fired on 0.1781% of measured Chrome HTTP/HTTPS page loads at Chrome 140 stable (2025-09-02). It had peaked at 0.2197% on 2025-08-15 (during the flag/developer-trial window; first positive observation 2024-11-15 at 0.0001%), then dropped roughly tenfold after stable to 0.017451% at day 30 (2025-10-02), held 0.022938% at day 90 (2025-12-01) and 0.017254% at day 180 (2026-03-01), and returned to 0.181975% by 2026-07-21 (~10.6 months post-ship; the latestSnapshot on 2026-07-20 was 0.177269%). These figures are the share of measured page loads where the property counter fired at least once, not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit, and a property counter is not equivalent to exact feature adoption. No WebDX web-feature counter or origin-trial counter is mapped (webFeature and webdxUseCounterEnum are null; originTrialCounters is empty). The only pre-ship figure is the team's self-described speculative, method-less estimate (animated caret-color ~0.016%; caret-animation 'maybe 1% over time'); measured usage sits between those anchors — above the 0.016% reference and below the speculative 1% ceiling. Bloomberg is the named sponsor/requestor but no public production case study, framework/library/tool integration, unique-site, or retention evidence exists.",
       "evidenceIds": [
         "S1",
-        "S11"
+        "S11",
+        "S17"
       ],
-      "limitations": "No public Chrome use-counter dashboard or number for caret-animation was located; the Chromium tracking bug is access-restricted; absence of public adoption signals is not evidence of zero adoption, so the dimension is unknown rather than negative."
+      "limitations": "The counter is property-scope (exact-title), not a WebDX family or origin-trial counter, and per the method a property counter is not equivalent to exact feature adoption; counter instrumentation may include detection/probing, and UMA reflects participating Chrome clients and the dominant milestone with enterprise/opt-out populations potentially underrepresented. Zero, missing, or delayed points are not proof of zero real-world use, and the non-monotonic peak-then-drop-then-recovery trajectory is reported as observed, not explained. No unique-site, production case-study, framework/library integration, task-success, or retention evidence."
     },
     "support": {
       "status": "unknown",
@@ -136,15 +137,16 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "A genuine, narrow developer problem is solved with a minimal, well-scoped API (two keywords) and an interop-conscious @supports-gating design, and the underlying pain is corroborated by widely-documented brittle workarounds. But developer value today is confined to Chromium/Edge users, the realistic audience is editors/terminals (the named requestor is the spec editor's employer), and the value depends on the property actually being adopted, for which there is no evidence.",
+      "finding": "A genuine, narrow developer problem is solved with a minimal, well-scoped API (two keywords) and an interop-conscious @supports-gating design, and the underlying pain is corroborated by widely-documented brittle workarounds. But developer value today is confined to Chromium/Edge users, the realistic audience is editors/terminals (the named requestor is the spec editor's employer), and the value depends on the property actually being adopted, for which measured usage is now low (caret-animation property counter ~0.017-0.18% of page loads, property-scope) and uncorroborated by production evidence.",
       "evidenceIds": [
         "S1",
         "S3",
         "S4",
         "S11",
-        "S15"
+        "S15",
+        "S17"
       ],
-      "limitations": "No measured demand or production uptake; value assessment rests on problem validity, not demonstrated adoption."
+      "limitations": "No measured demand cohort or production uptake; the value assessment rests on problem validity, and measured usage is a property-scope counter, not demonstrated adoption."
     },
     "endUserImpact": {
       "status": "mixed",
@@ -154,15 +156,17 @@
         "S3",
         "S5"
       ],
-      "limitations": "No user-testing or accessibility-validation evidence; end-user benefit is theoretical and single-engine."
+      "limitations": "No user-testing or accessibility-validation evidence; end-user benefit is theoretical and single-engine. Usage telemetry is share of page loads and is not evidence of end-user benefit."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No defensible usage or adoption data exists post-ship; the only figures are the team's pre-ship, method-less estimates. Per the scoring rule, adoption is not inferred from shipment, usage alone, or absence of criticism.",
+      "finding": "Per the scoring rule, adoption is not inferred from shipment, usage alone, or absence of criticism, and is not scored against the team's speculative, method-less ~1% estimate. The measured level and trend: the caret-animation CSS property counter (bucket 809, property-scope, exact-title) fired on 0.1781% of measured Chrome HTTP/HTTPS page loads at stable (2025-09-02), peaked pre-stable at 0.2197% (2025-08-15), dropped to ~0.017-0.023% from day 30 through day 180 (0.017451% / 0.022938% / 0.017254%), and returned to 0.181975% by 2026-07-21 — below the speculative 1% ceiling but above the 0.016% animated-caret-color anchor. With no rigorous predeclared target and no corroborating production, retention, unique-site, or framework-integration evidence, the adoption outcome remains unscored; the telemetry describes the measured reach of a property counter, not demonstrated adoption.",
       "evidenceIds": [
-        "S1"
+        "S1",
+        "S11",
+        "S17"
       ],
-      "limitations": "No public use-counter, case study, or framework-integration evidence; Bloomberg sponsorship is not attributable production adoption."
+      "limitations": "Property-scope counter (exact-title), not exact feature adoption; the value is the share of page loads where the counter fired, not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit. No unique-site, production, retention, task-success, or framework-integration evidence; the only comparator is a speculative, method-less pre-ship estimate."
     },
     "interoperability": {
       "status": "failure",
@@ -177,7 +181,7 @@
         "S14",
         "S4"
       ],
-      "limitations": "Only ~10 months since stable; other engines could implement later, and the design means current non-interoperability does not break pages. Score reflects the present state, not future potential."
+      "limitations": "Only ~10-11 months since stable; other engines could implement later, and the design means current non-interoperability does not break pages. Score reflects the present state, not future potential."
     },
     "implementationQuality": {
       "status": "mixed",
@@ -213,7 +217,18 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A competently executed, low-risk launch of a well-scoped CSS property with genuine (if niche) developer and accessibility value, clean DevRel coordination, and an interop-conscious design. The launch is held back by single-engine interoperability with no positive signals from Firefox or WebKit, an untestable-behavior WPT gap, a stale ChromeStatus availability signal, and a complete absence of measured adoption. Overall is mixed because the execution dimensions are solid while the outcome dimensions (interop, adoption, support) remain unresolved or unknown."
+      "finding": "A competently executed, low-risk launch of a well-scoped CSS property with genuine (if niche) developer and accessibility value, clean DevRel coordination, and an interop-conscious design. The launch is held back by single-engine interoperability with no positive signals from Firefox or WebKit, an untestable-behavior WPT gap, a stale ChromeStatus availability signal, and adoption that is now measured but low and uncorroborated — the caret-animation property counter fired on ~0.017-0.18% of page loads post-ship with no production, retention, unique-site, or framework-integration evidence. Overall is mixed because the execution dimensions are solid while the outcome dimensions (interop, production adoption, support) remain unresolved or unevidenced beyond raw usage.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S8",
+        "S11",
+        "S17"
+      ],
+      "limitations": "Overall integrates the per-dimension assessments above and does not add independent evidence. Interoperability and production-adoption evidence remain incomplete, and only ~10-11 months have elapsed since stable; adoption telemetry is a property-scope counter, not demonstrated production adoption."
     }
   },
   "sources": [
@@ -227,7 +242,7 @@
       "supports": [
         "Feature metadata; owners schenney@chromium.org, zsun@igalia.com; dev trial M132 desktop+android; ship stage desktop/android/webview_first 140; finch CSSCaretAnimation; security/privacy review 'Issues addressed'; intent fields (motivation, activation_risks 'No risks', measurement 'usual CSS feature counters'); Mozilla 'Under consideration', WebKit 'No signal'; WPT parsing test; adoption_expectation caret-color ~12%, animated ~0.016%→maybe 1%; top-level status field 'In development' and is_released=false despite ship-stage milestones filled"
       ],
-      "limitations": "Self-reported by the feature owner; top-level status/is_released fields inconsistent with the stage milestone data and with actual shipment."
+      "limitations": "Self-reported by the feature owner; top-level status/is_released fields inconsistent with the stage milestone data and with actual shipment; the adoption_expectation figures are speculative and presented without method."
     },
     {
       "id": "S2",
@@ -408,6 +423,21 @@
         "A post-ship search snapshot showed the ChromeStatus entry 'Updated: Monday, December 8, 2025' and 'Last updated on 2025-10-22 to implement', i.e. the public record continued to describe the shipped feature as in development months after stable"
       ],
       "limitations": "Snippet-level evidence; same underlying record as S1/S2."
+    },
+    {
+      "id": "S17",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=809",
+      "publisher": "Chrome Platform Status — CSS property popularity timeline (bucket 809, caret-animation)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:32Z",
+      "sourceType": "usage",
+      "supports": [
+        "caret-animation CSS property counter (ChromeStatus bucket 809), exact-title match to the property token; webFeature and webdxUseCounterEnum are null (no WebDX web-feature mapping) and originTrialCounters is empty, so the only mapped counter is a property-scope CSS counter.",
+        "Counter fired on 0.1781% (day_percentage 0.001781) of measured Chrome HTTP/HTTPS page loads at Chrome 140 stable (2025-09-02); peak 0.2197% (0.002197) on 2025-08-15; first positive observation 2024-11-15 at 0.0001% (0.000001).",
+        "Launch-relative checkpoints: day 30 (2025-10-02) 0.017451% (0.00017451); day 90 (2025-12-01) 0.022938% (0.00022938); day 180 (2026-03-01) 0.017254% (0.00017254); latest 2026-07-21 0.181975% (0.00181975); latestSnapshot 2026-07-20 0.177269% (0.00177269).",
+        "Timeline cached with sha256 b378008f6f283ade5c00522bcc109d4414980f216a5f43cf4a5f919a72269aa8; 597 data points; mapping status labeled web-feature-family-counter but the matched counter is the exact-title CSS property token."
+      ],
+      "limitations": "Per ChromeStatus metrics methodology, the value is the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. A CSS property counter is property-scope and is not equivalent to exact feature adoption; counter instrumentation may include detection or probing, and UMA reflects participating Chrome clients and the dominant milestone (enterprise/opt-out populations may be underrepresented). Zero, missing, or delayed points are not proof of zero real-world use; the non-monotonic peak-then-drop-then-recovery trend is reported as observed, not explained."
     }
   ],
   "successes": [
@@ -420,21 +450,21 @@
     "Interoperability is single-engine: Firefox has 'No support' and Mozilla has taken no formal position; WebKit gave 'No response' with no Bugzilla/Radar; the property is absent from Baseline-2026 and the spec remains a Working Draft.",
     "The public ChromeStatus status field remained 'In development' / is_released=false for months after stable shipment, so the canonical dashboard misrepresented a shipped feature as unavailable.",
     "Test coverage is limited to a CSS parsing test; caret-blinking behavior was deemed untestable across platforms, leaving behavioral correctness and regressions effectively unverified in WPT.",
-    "Adoption is unevidenced: speculative pre-ship estimates (animated caret-color ~0.016% → 'maybe 1%') with no public usage data, partner case study, or framework integration ~10 months after stable.",
+    "Adoption is measured but low and uncorroborated beyond a property-scope usage counter: the caret-animation CSS property counter (bucket 809) fired on 0.1781% of page loads at stable (2025-09-02), dropped to ~0.017% through day 180, and returned to 0.181975% by 2026-07-21, with no production case study, framework/library integration, unique-site, or retention evidence to corroborate adoption; the only pre-ship figure was a speculative, method-less 'maybe 1%' estimate, so the level is described rather than judged a pass/fail against a threshold.",
     "Minor communication-accuracy gap: the implementer's blog states the feature shipped in Chromium 'since version 139' while all official sources say 140."
   ],
   "counterfactuals": [
     "If the ship packet had treated WebKit 'No response' and Mozilla 'no formal position' as explicit launch risks, DevRel could have led with the @supports-gating/progressive-enhancement message and set single-engine expectations, reducing the chance of developers assuming cross-browser support.",
     "If Blink had invested in (or brokered an interop agreement on) a reliable cross-platform caret-blinking test harness, the 'untestable behavior' rationale would shrink and other engines would have less reason to defer on testing.",
-    "If the team had committed a concrete adoption measurement (a use-counter link plus a dated 3-/6-month re-review), the adoption dimension would now be evidence rather than speculation.",
+    "If the team had committed a concrete adoption measurement at ship time — citing the caret-animation CSS property counter (bucket 809) and a dated 3-/6-month re-review — adoption tracking would have been built into the launch rather than sourced independently by this retrospective; the counter existed and now shows ~0.017-0.18% of page loads, but no pre-ship commitment to revisit it was recorded.",
     "Earlier, explicit closure of Emilio's Mozilla position (still 'Needs proposed position') might have either unblocked interop or surfaced the accessibility/design objections in time to influence the shape before shipment.",
-    "A Bloomberg production case study would have converted sponsorship into attributable demand evidence instead of leaving adoption unknown."
+    "A Bloomberg production case study would have converted sponsorship into attributable demand evidence instead of leaving production adoption uncorroborated by the low-usage property counter."
   ],
   "skillImprovements": [
     "Add a release/phase-07 checklist item: before launch comms, verify the ChromeStatus status field and is_released flag match the filled ship-stage milestones; treat any feature whose stage milestones are set but whose status is not 'Enabled by default' as a data-quality defect to file and fix.",
     "Add a wide-review/phase-04 rule: when Mozilla/WebKit positions are 'No signal' or unresolved, the ship packet and launch comms must explicitly label the feature single-engine/progressive-enhancement and require @supports feature detection in all sample code; 'No signal' must never be omitted from messaging.",
     "Add a phase-06 interop/test acceptance signal for CSS properties: record WPT coverage type (parsing-only vs behavioral) and, when behavioral testing is infeasible, require either a documented cross-engine interop agreement or an explicitly accepted risk rather than silently shipping with a parsing-only test.",
-    "Add a phase-08 adoption-measurement requirement: every shipped feature must link a usage counter (or explicitly mark adoption unmeasured) and schedule a dated post-ship adoption re-review before the launch is considered closed.",
+    "Add a phase-08 adoption-measurement requirement: every shipped feature must link a usage counter (the caret-animation CSS property counter, bucket 809, existed but was not linked in this ship packet) or explicitly mark adoption unmeasured, and schedule a dated post-ship adoption re-review before the launch is considered closed.",
     "Add a phase-06 evidence-accuracy check: reconcile implementer-blog, MDN, caniuse, and ChromeStatus milestone/version numbers before launch to avoid post-ship discrepancies such as the 139-vs-140 claim."
   ],
   "completion": {
@@ -442,10 +472,10 @@
     "missingEvidence": [
       "Intent-to-Ship thread content (groups.google.com not retrievable via the web reader; relied on cached ChromeStatus intent fields).",
       "Chromium tracking bug #329301988 contents (access-restricted).",
-      "Actual Chrome use-counter / usage numbers for caret-animation (not publicly located).",
       "A formal Mozilla standards position (none taken as of review; issue still 'Needs proposed position').",
-      "Any production case study or framework/library integration evidence (none found ~10 months post-ship)."
+      "Production case study, framework/library integration, unique-site, retention, task-success, or user-benefit evidence (none found ~10-11 months post-ship; the cached usage telemetry is a property-scope counter and is not production/retention evidence).",
+      "A rigorous predeclared adoption target/threshold (the only pre-ship figure was a speculative, method-less estimate, so the adoption outcome is unscored rather than judged against a threshold)."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:32Z"
   }
 }

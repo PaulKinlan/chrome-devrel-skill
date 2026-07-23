@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6296574159355904,
+    "name": "User action pseudo class top layer boundary",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6296574159355904",
+    "webFeature": "user-action-pseudos",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owner": "masonf@chromium.org",
+    "specLink": "https://www.w3.org/TR/selectors-4/#useraction-pseudos",
+    "finchName": "UserActionPseudosStopAtTopLayer",
+    "featureType": "No developer-visible change",
+    "trackingBug": "https://crbug.com/407769114"
+  },
+  "launchEvents": [
+    {
+      "eventId": "148:In developer trial (Behind a flag):6296574159355904",
+      "milestone": 148,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "149:Enabled by default:6296574159355904",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:55:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "A concrete, observed problem drove this work: with customizable <select>, the proposed UA rules for select:hover/select:active were wrongly applying while the user clicked/hovered inside the select's ::picker() popover (reproduced with a GIF in CSSWG #11185 by a Google engineer). The CSSWG then generalized the fix to all top-layer elements. The ChromeStatus entry was created 2026-04-04 by the owner (masonfreed). The problem statement, users (authors of popover/dialog/select UI), and rationale (top-layer elements render visually disconnected from ancestors) are clearly stated.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-csswg-11185",
+        "S-crbug"
+      ],
+      "limitations": "The problem was framed narrowly around customizable select and then generalized to ALL top-layer elements without separate demand evidence that the generalized behavior was wanted or needed by developers."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Solution shape and scope came from a standards venue (CSSWG resolution ~Jan 2025 on #11185, captured verbatim in the Chromium bug), which is the right incubation path for a CSS change. However there is no ecosystem/demand research, no developer-job analysis for the generalized behavior, no alternatives analysis in the public record (e.g. the UA-stylesheet `select:not(:open):hover` alternative later raised in #14143 was not explored pre-ship), and web-dev signals were explicitly 'No signals'.",
+      "evidenceIds": [
+        "S-csswg-11185",
+        "S-chromestatus",
+        "S-csswg-14143",
+        "S-psa"
+      ],
+      "limitations": "Incubation was standards-driven, not demand-driven; the jobs/use-cases for generalizing beyond the select picker were never validated with developers."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A working implementation landed as Gerrit CL 7683005 'Implement user action pseudo-class propagation boundary for top layer' (Mason Freed, ~2026-03-20), removing the hard-coded select ::picker() special case in favor of the general behavior. It was gated behind the UserActionPseudosStopAtTopLayer flag for the M148 dev trial.",
+      "evidenceIds": [
+        "S-crbug",
+        "S-chromestatus"
+      ],
+      "limitations": "The PSA states the feature is 'not fully tested by web-platform-tests' and answers 'No' to support on all six Blink platforms; no framework-integration or friction-log evidence exists."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A flag-based dev trial was scheduled for M148 (desktop+Android) per the manifest, cached stages, and PSA milestone table, and the implementation was available behind the flag. But the Chrome 148 beta blog does not mention the feature, the cached devtrial_instructions is null, and there is no evidence of a recruited cohort, feedback instrument, or any findings that informed the ship decision. web-dev signals stayed 'No signals'.",
+      "evidenceIds": [
+        "S-manifest",
+        "S-chromestatus",
+        "S-psa",
+        "S-beta-148"
+      ],
+      "limitations": "The trial existed procedurally but produced no captured developer feedback; the exact hover-revealed-controls pattern that later broke (bug #5-7) is the kind of real-world case a recruited trial could have surfaced."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "The one genuine wide-review signal is the CSSWG resolution on #11185 (Closed, 'Accepted by CSSWG Resolution', css-forms-1+selectors-4). Beyond that, at PSA time (2026-04-03) and at the cache snapshot (2026-05-04) Gecko, WebKit, and Web developers were all 'No signal(s)'. tag_review_status is 'Not applicable'. The first other-engine signal arrived AFTER ship: CSSWG #14143 (emilio/Mozilla, 2026-07-08), an Agenda+ request to RECONSIDER the behavior, citing inconsistency with non-custom <select> (which keeps :hover while open in Chrome and Firefox) and with mouseenter/mouseleave. The spec is a Working Draft and the underlying behavior is still under active standards debate.",
+      "evidenceIds": [
+        "S-csswg-11185",
+        "S-psa",
+        "S-chromestatus",
+        "S-csswg-14143",
+        "S-spec"
+      ],
+      "limitations": "Silence from Gecko/WebKit was effectively treated as sufficient; per the method, 'No signal' must not be converted to support. The single post-ship engine signal is a reconsideration, not endorsement."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run or planned (origintrial=false, no OT stage). This is consistent with the chosen launch path: a 'No developer-visible change' Web-Facing Change PSA for a behavioral/standards-alignment fix, which does not use an OT.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-psa"
+      ],
+      "limitations": "Not-relevant refers only to a formal Origin Trial on this PSA path, NOT to validation. Critically, no field evidence of any kind (compat-data sweep, recruited trial readout, telemetry) was substituted to test the load-bearing 'very unlikely to cause compat issues' claim, which was later falsified. See counterfactuals."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "The Web-Facing Change PSA was filed 2026-04-03 with accurate summary, spec, milestones (dev trial 148, ship 149 on desktop/Android/WebView), tracking bug, and correct finch name; the ship CL 7759059 'Ship the new user action pseudo class top layer behavior' landed 2026-04-15 and the bug was marked Fixed. However several prepare-to-ship artifacts are missing or empty: WebView application risks and Debuggability are 'No information provided'; the feature is 'not fully tested by web-platform-tests'; security_review_status and privacy_review_status were still 'Pending' at the 2026-05-04 cache; is_releasenotes_content_reviewed/publish_ready were false in cache. Most importantly the central Interoperability/Compatibility risk ('the old behavior was so broken... very unlikely to cause compat issues') was an unsupported self-assessment with no external evidence, later contradicted by a real regression.",
+      "evidenceIds": [
+        "S-psa",
+        "S-crbug",
+        "S-chromestatus"
+      ],
+      "limitations": "Cannot confirm final security/privacy review state (cache showed Pending); the headline risk claim was unvalidated and falsified; no migration guidance was prepared."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Chrome 149 stable shipped 2026-06-02 and the release notes include an accurate, appropriately scoped bullet for 'User action pseudo-class top layer boundary' with tracking bug #407769114, ChromeStatus, and spec links. Independent coverage (web-standards.dev 2026-06-04; the Monthly Platform podcast) referenced it. The description matches the shipped behavior exactly.",
+      "evidenceIds": [
+        "S-relnotes-149",
+        "S-webstandards-149",
+        "S-crbug"
+      ],
+      "limitations": "Communication was minimal (no dedicated article or migration doc), which mattered once the regression appeared; the cache's is_releasenotes_content_reviewed=false predates final review but the notes did publish accurately."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Adoption is not meaningfully measurable for a behavioral fix: there is no UseCounter (webdx_usecounter_enum null), no usage metric, and no framework/library integration evidence. The one concrete real-world signal is negative: a production application hit a regression (bug #5-7) where hover-revealed controls (`.img-container:hover .controls`) stopped working across a popover top-layer boundary.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-crbug"
+      ],
+      "limitations": "No usage/adoption telemetry exists; cannot confirm how widespread the affected hover-reveals-controls-in-popover pattern is across the web."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "A regression was reported on 2026-06-03 (one day after stable) and the owner responded promptly and politely on 2026-06-05, correctly framing it as a spec-mandated change and offering a workaround. However: (a) the suggested workaround `:hover, :has(:hover)` is technically suspect because :has() descendant matching also does not cross the top-layer boundary for the same spec reason, so it may not restore the behavior; (b) the bug remained in 'Fixed' status — the regression was not reopened or tracked as a blocking follow-up; (c) the developer's follow-up (2026-06-17) confirmed the broken pattern and the thread is unresolved with the developer's task not confirmed recovered; (d) no canonical migration/troubleshooting doc was produced.",
+      "evidenceIds": [
+        "S-crbug"
+      ],
+      "limitations": "Thread unresolved in the public record; workaround efficacy unverified; no support-health denominator available."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is not a deprecation or removal of a public web API. It is a behavioral/standards-alignment fix. The only thing 'removed' is an internal Chromium special-case for the select ::picker() popover, which is an implementation detail, not a developer-facing API.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-psa",
+        "S-crbug"
+      ],
+      "limitations": "Not-relevant is used because no public capability is being deprecated or removed; it does not mean the compatibility impact of the behavior change was untested (see support/prepareToShip)."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The change fixes a genuine, observable correctness bug (user-action pseudos matching visually-disconnected ancestors across a top-layer boundary), validated by a CSSWG resolution and directly improving the customizable <select> experience. But it was classified 'No developer-visible change' while in fact removing a capability some developers relied on, breaking at least one production app's hover-revealed-controls pattern within a day of stable.",
+      "evidenceIds": [
+        "S-csswg-11185",
+        "S-relnotes-149",
+        "S-crbug"
+      ],
+      "limitations": "No demand evidence for the generalized (beyond-select) behavior; net developer value is positive for correctness but negative for the affected compat pattern."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Intended end-user effect is improved UI consistency (parents no longer highlight when the user interacts with a disconnected overlay). Realized end-user effect includes visible breakage in at least one application (menus disappearing when the pointer enters a popover menu).",
+      "evidenceIds": [
+        "S-crbug",
+        "S-relnotes-149"
+      ],
+      "limitations": "No broad user-impact measurement; severity beyond the one report is unknown."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Not scorable: no usage metric exists for a behavioral fix (no UseCounter; webdx_usecounter_enum null), and the single real-world data point is a negative compatibility regression rather than adoption.",
+      "evidenceIds": [
+        "S-chromestatus",
+        "S-crbug"
+      ],
+      "limitations": "Unscored due to absence of any defensible adoption/usage denominator."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Shipped with zero signals from Gecko and WebKit and zero signals from web developers, against a Working-Draft spec, and 'not fully tested by web-platform-tests'. Chrome unilaterally generalized a behavioral change that no other engine has implemented or signaled for. The first engine signal arrived post-ship as a reconsideration: CSSWG #14143 (Mozilla/emilio, 2026-07-08, Agenda+, Open) arguing the model may be overcomplicated and inconsistent with non-custom <select> and with mouseenter/mouseleave. Safari is shipping customizable <select> in Safari 27 without a stated position on this specific behavior. Baseline/interoperability progress is therefore not demonstrated.",
+      "evidenceIds": [
+        "S-psa",
+        "S-chromestatus",
+        "S-spec",
+        "S-csswg-14143",
+        "S-crbug",
+        "S-webkit-select"
+      ],
+      "limitations": "Cannot confirm Firefox/Safari implementation intent for this exact behavior; #14143 is open and unresolved; WPT coverage unconfirmed. The CSSWG resolution (#11185) is partial mitigation but is now contested."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Implementation delivery was clean: two focused CLs by the owner (impl 7683005, ship 7759059), finch-gated (UserActionPseudosStopAtTopLayer), generalized and removed a special-case hack, bug marked Fixed, shipped on the planned milestone across desktop/Android/WebView. Weaknesses: not fully WPT-tested; a real-world regression appeared immediately on stable; the regression was not re-tracked as an open issue; and the offered mitigation is technically questionable.",
+      "evidenceIds": [
+        "S-crbug",
+        "S-psa",
+        "S-relnotes-149"
+      ],
+      "limitations": "Full test/perf coverage not visible; regression severity beyond the one report unknown."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Published communication (PSA, release notes) was accurate and consistent with the shipped behavior. The evidence BASIS for the ship decision was poor: the single load-bearing risk assertion ('old behavior was so broken... very unlikely to cause compat issues') was an unsupported self-assessment with no compat data, no framework/usage evidence, and it was falsified within ~1 day of stable by a real regression. 'No signal(s)' from all three external constituencies was shipped against without escalation.",
+      "evidenceIds": [
+        "S-psa",
+        "S-crbug",
+        "S-relnotes-149",
+        "S-chromestatus"
+      ],
+      "limitations": "Comms accuracy is good; evidence quality supporting the risk call is the failure mode."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Responsive, courteous owner engagement on the regression, but the workaround (`:hover, :has(:hover)`) is likely ineffective across a top-layer boundary, the bug was left 'Fixed', and the developer's reported task is not confirmed recovered in the public thread.",
+      "evidenceIds": [
+        "S-crbug"
+      ],
+      "limitations": "No support-health denominator; thread unresolved; workaround efficacy unverified."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A real, spec-aligned correctness bug was fixed and shipped on schedule with accurate release communication and a responsive owner. But the launch was weakened by shipping against zero engine/developer signals on a falsified low-compat-risk self-assessment, causing an immediate real-world regression of a common UI pattern, a questionable mitigation, an unresolved support thread, and a post-ship Mozilla-led reconsideration of the underlying spec behavior. Interoperability and evidence quality are the clear failures; correctness intent and delivery are the successes.",
+      "evidenceIds": [
+        "S-csswg-11185",
+        "S-psa",
+        "S-relnotes-149",
+        "S-crbug",
+        "S-csswg-14143"
+      ],
+      "limitations": "Overall is mixed and must not obscure the interop/evidence failures; adoption is unscored and several review states were unconfirmed at cache time."
+    }
+  },
+  "sources": [
+    {
+      "id": "S-chromestatus",
+      "url": "https://chromestatus.com/feature/6296574159355904",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-05-04)",
+      "publishedOrObservedAt": "2026-05-04",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, owner (masonf@chromium.org), category CSS/Blink>CSS, spec link, finch name UserActionPseudosStopAtTopLayer, feature_type 'No developer-visible change', dev-trial M148 / ship M149 desktop+Android+WebView, Gecko/WebKit 'No signal' and Web developers 'No signals', security/privacy review 'Pending', is_released false at cache time, tag_review 'Not applicable'"
+      ],
+      "limitations": "Cache snapshot predates stable (2026-06-02); status field 'Proposed'/is_released false is stale relative to actual ship; security/privacy final state unknown."
+    },
+    {
+      "id": "S-spec",
+      "url": "https://www.w3.org/TR/selectors-4/#useraction-pseudos",
+      "publisher": "W3C CSS Working Group (Selectors Level 4)",
+      "publishedOrObservedAt": "2026-01-22",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Selectors Level 4 is a W3C Working Draft (22 Jan 2026); §9 defines :hover/:active/:focus/:focus-visible/:focus-within user-action pseudo-classes; spec maturity is low (WD)"
+      ],
+      "limitations": "Editor's Draft under active revision; the top-layer-boundary propagation text is contested (see S-csswg-14143)."
+    },
+    {
+      "id": "S-csswg-11185",
+      "url": "https://github.com/w3c/csswg-drafts/issues/11185",
+      "publisher": "W3C CSSWG (issue by josepharhar/Google)",
+      "publishedOrObservedAt": "2025-01-01",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Original problem (select:hover/select:active wrongly applying while hovering the ::picker popover); CSSWG resolution generalizing to all top-layer elements; resolution text captured in S-crbug comment #1; resolved ~CSSWG Jan 2025 meeting; status Closed/Accepted by CSSWG Resolution"
+      ],
+      "limitations": "Exact resolution date inferred from the issue's 'CSSWG January 2025 meeting' project field and the 2025-04-01 auto-filed bug; generalization beyond select was not separately demand-validated."
+    },
+    {
+      "id": "S-csswg-14143",
+      "url": "https://github.com/w3c/csswg-drafts/issues/14143",
+      "publisher": "W3C CSSWG (issue by emilio/Mozilla)",
+      "publishedOrObservedAt": "2026-07-08",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Post-ship Mozilla-led reconsideration of the :hover/:active top-layer propagation; argues model may be overcomplicated, inconsistent with non-custom <select> (keeps :hover while open in Chrome+Firefox) and with mouseenter/mouseleave; status Open, Agenda+, css-ui-4"
+      ],
+      "limitations": "Opened AFTER Chrome 149 shipped (post-ship signal); unresolved; cc'd engineers include mfreed7, keithamus, nt1m, smaug----, tabatkins."
+    },
+    {
+      "id": "S-psa",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/N1a1ra0BVOo",
+      "publisher": "blink-dev (Mason Freed, Google)",
+      "publishedOrObservedAt": "2026-04-03",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Web-Facing Change PSA (not a full Intent to Ship, no LGTMs — consistent with 'No developer-visible change'); Gecko/WebKit/Web-dev all 'No signal(s)'; interop risk self-assessed 'very unlikely to cause compat issues, old behavior was so broken'; not fully WPT-tested; WebView risks and Debuggability 'No information provided'; dev trial M148, ship M149 desktop/Android/WebView; tracking bug 407769114; zero replies on the thread"
+      ],
+      "limitations": "PSA is the prepare-to-ship artifact; risk rationale is a self-assessment with no external evidence."
+    },
+    {
+      "id": "S-relnotes-149",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 stable date 2026-06-02; feature shipped as 'User action pseudo-class top layer boundary' with accurate description, tracking bug, ChromeStatus and spec links"
+      ],
+      "limitations": "Minimal coverage (bullet only, no migration doc); is_releasenotes_content_reviewed was false in the 2026-05-04 cache."
+    },
+    {
+      "id": "S-beta-148",
+      "url": "https://developer.chrome.com/blog/chrome-148-beta",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-04-08",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chrome 148 beta feature list does NOT mention this feature, consistent with a behind-a-flag dev trial that was not prominently communicated"
+      ],
+      "limitations": "Absence from the beta blog is expected for a flag-gated dev trial but confirms no prominent dev-trial communication."
+    },
+    {
+      "id": "S-crbug",
+      "url": "https://issues.chromium.org/issues/407769114",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2025-04-01",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug created 2025-04-01 by the Spec Resolution bot; verbatim CSSWG resolution text (#1); impl CL 7683005 'Implement user action pseudo-class propagation boundary for top layer' Mason Freed (#2, 2026-03-20); ship CL 7759059 (#4, 2026-04-15, marked Fixed); POST-SHIP REGRESSION reported 2026-06-03 (#5) — hover-revealed menu controls broke; owner response 2026-06-05 (#6) suggesting :hover/:has(:hover); developer follow-up 2026-06-17 (#7) confirming broken `.img-container:hover .controls` pattern, unresolved; status remains Fixed; 4 votes; component Blink>CSS"
+      ],
+      "limitations": "Bug left 'Fixed' despite the regression; comment #3 references a different ChromeStatus id (6657453179666432) — possible duplicate/merge, not resolved; full test/perf coverage not visible."
+    },
+    {
+      "id": "S-webstandards-149",
+      "url": "https://web-standards.dev/news/2026/06/chrome-149/",
+      "publisher": "Web Standards (web-standards.dev)",
+      "publishedOrObservedAt": "2026-06-04",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent Chrome 149 coverage; the user-action pseudo top-layer change is not singled out in the headline bullet list, indicating low external prominence"
+      ],
+      "limitations": "Secondary aggregator; not a deep technical review."
+    },
+    {
+      "id": "S-webkit-select",
+      "url": "https://webkit.org/blog/18117/the-golden-rule-of-customizable-select/",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2026-06-15",
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Customizable <select> is coming to Safari 27; the blog does not state a WebKit position on the :hover/:active top-layer propagation behavior this feature relies on, consistent with cached safari_views 'No signal'"
+      ],
+      "limitations": "Adjacent-feature context only; no direct statement on this CSS behavior."
+    },
+    {
+      "id": "S-mdn-popover",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:55:00Z",
+      "sourceType": "other",
+      "supports": [
+        "General context: open popover elements render in the top layer and are not influenced by parent positioning — the premise underlying this feature"
+      ],
+      "limitations": "General reference; no feature-specific documentation of the top-layer :hover boundary behavior was located."
+    }
+  ],
+  "successes": [
+    "Correctly identified and fixed a real, reproduced correctness bug (user-action pseudo-classes matching visually-disconnected ancestors across a top-layer boundary) with a CSSWG resolution as the standards basis (CSSWG #11185).",
+    "Clean implementation delivery by the owner: focused impl + ship CLs, finch-gated (UserActionPseudosStopAtTopLayer), removed an internal select ::picker() special-case in favor of the general behavior, shipped on the planned milestone (M149, 2026-06-02) across desktop/Android/WebView.",
+    "Accurate, appropriately scoped release-notes communication and prompt, courteous owner engagement when the regression was reported."
+  ],
+  "failures": [
+    "Shipped against 'No signal' from Gecko and WebKit and 'No signals' from web developers; silence was effectively treated as sufficient (PSA and cache both show no engine/dev signals).",
+    "The load-bearing compat-risk claim ('old behavior was so broken... very unlikely to cause compat issues') was an unsupported self-assessment and was falsified within ~1 day of stable by a real production regression (bug 407769114 #5-7) breaking a common hover-reveals-controls-in-popover pattern (`.img-container:hover .controls`).",
+    "No field validation of any kind (no recruited dev-trial feedback, no compat-data/web-pattern sweep, no telemetry) was performed for a generalized behavioral change, despite a flag-based dev trial being available in M148.",
+    "Regression handling was weak: the suggested workaround `:hover, :has(:hover)` likely does not cross the top-layer boundary either; the bug was left in 'Fixed' status rather than reopened/tracked; no canonical migration doc; the developer's task was not confirmed recovered.",
+    "Mozilla reopened the standards question post-ship (CSSWG #14143, 2026-07-08), arguing the model may be overcomplicated and inconsistent with non-custom <select> and with mouseenter/mouseleave — undermining the interop basis the ship relied on.",
+    "The feature was classified 'No developer-visible change' when it in fact changed observable, relied-upon behavior."
+  ],
+  "counterfactuals": [
+    "If a recruited developer trial or a compat-data/web-pattern sweep (e.g., searching for `:hover`/`:active` rules co-occurring with popover/dialog top-layer usage) had been run before ship, the hover-revealed-controls pattern would likely have been identified as at-risk, enabling migration guidance before stable.",
+    "If Gecko/WebKit had been explicitly asked for a position before ship (instead of accepting 'No signal'), Mozilla's reconsideration concern (#14143) could have surfaced pre-ship and informed whether to generalize beyond the select picker.",
+    "If the `:hover, :has(:hover)` workaround had been validated against a top-layer boundary before being offered as the official mitigation, its likely ineffectiveness would have been caught (the same propagation rule that breaks :hover also breaks :has(:hover) across the boundary).",
+    "If the change had been scoped to the customizable-select ::picker() case (the original #11185 bug) rather than generalized to all top-layer elements, the reported regression pattern would not have been affected.",
+    "If the feature had been reclassified as a developer-visible behavioral change (not 'No developer-visible change'), it would have required a full Intent to Ship with LGTMs, compat evidence, and a migration plan rather than a no-LGTM PSA."
+  ],
+  "skillImprovements": [
+    "Add a phase-04/phase-06 rule: for behavioral changes shipped as PSAs with 'No signal' from one or more engines, require before ship either (a) a documented compat-data / web-pattern sweep, or (b) an explicit owner-accepted risk plus a published migration doc. Silence must never close the risk question.",
+    "Add a prepare-to-ship checklist item: any 'old behavior was broken / unlikely relied upon' risk claim requires at least one piece of external evidence (usage data, web search, framework issue tracker); otherwise the risk must be marked 'unknown', not 'low'.",
+    "Add a support-phase eval: regression workarounds must be technically validated (e.g., test `:has(:hover)` against a top-layer boundary) before being offered as the official mitigation.",
+    "Add a regression-handling rule: when a 'Fixed' PSA-class bug receives a post-ship regression report, auto-reopen or file a blocking follow-up rather than leaving it 'Fixed'; track developer task recovery as the exit criterion.",
+    "Add an interop/Baseline phase-08 check: features shipped unilaterally against a Working-Draft spec with no engine signals must be flagged non-Baseline and automatically re-reviewed when the first engine signal arrives (here, CSSWG #14143).",
+    "Add an intake/classification check: any change that alters matching of :hover/:active/:focus-within (observable, widely-used pseudo-classes) must NOT be classified 'No developer-visible change'; it should follow the full Intent to Ship path with compat evidence."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "No usage/adoption telemetry exists (no UseCounter; webdx_usecounter_enum null), so adoption cannot be scored and the prevalence of the affected hover-reveals-controls-in-popover pattern across the web is unknown.",
+      "Security and privacy review final states were 'Pending' in the 2026-05-04 cache and could not be confirmed completed via public sources.",
+      "WPT/automated test coverage was not confirmed beyond the PSA's self-reported 'not fully tested by web-platform-tests'.",
+      "Firefox and Safari implementation intent for this exact behavior is unconfirmed (Safari ships customizable <select> in 27 but states no position on this CSS behavior; Mozilla's only signal is the post-ship reconsideration #14143, which is unresolved).",
+      "The CSSWG reconsideration (#14143) is open, so the ultimate spec outcome and cross-engine convergence are undecided at the evidence cutoff.",
+      "Full Chromium bug detail (test/perf coverage, any additional blocking/duplicate issues, the unrelated ChromeStatus id 6657453179666432 referenced in bug comment #3) was only partially visible."
+    ],
+    "reviewedAt": "2026-07-20T22:55:00Z"
+  }
+}

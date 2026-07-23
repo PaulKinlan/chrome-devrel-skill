@@ -111,13 +111,14 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "No attributable production adoption evidence exists for the API itself. Named targets in the explainer (Teams, Meet, Zoom) show no public integration; the only concrete trial intent is Matias Lopez's stated interest to participate during M139-M141. Adjacent community posts (Reddit r/PWA, StackOverflow) confirm the underlying problem is felt but discuss workarounds, not this API.",
+      "finding": "A first-party origin-trial use counter is mapped for this feature (bucket 373, WebDXFeature::kDRAFT_IncomingCallNotifications; mapping confidence 'exact', scope 'origin-trial'), so Chrome usage telemetry does exist. However, the cached public timeline for bucket 373 is aliased to a different property ('DocumentImportNodeOptionalArgument'): all 623 points — first-positive 2014-05-06 (~1e-8%), peak 2014-10-05 (0.00000898%), latest 2023-11-09 (0%) — reflect that other property, which predates this API by years, and the series ends 2023-11-09, before the M140 origin trial began (2025-09-02). Every M140 launch checkpoint (atStable, day30, day90, day180) is null, so the counter does not measure Incoming Call Notifications usage. Beyond the counter, no attributable production adoption evidence exists: named targets in the explainer (Teams, Meet, Zoom) show no public integration, and the only concrete trial intent is Matias Lopez's stated interest to participate during M139-M141. Adjacent community posts (Reddit r/PWA, StackOverflow) confirm the underlying problem is felt but discuss workarounds, not this API.",
       "evidenceIds": [
         "intent-exp",
         "explainer",
-        "wpacando"
+        "wpacando",
+        "usage-ot-counter-373"
       ],
-      "limitations": "No production case study, framework/library integration, or usage data; absence of adoption cannot be scored as failure without denominators, so it remains unknown."
+      "limitations": "The mapped counter's public timeline is uninformative for this feature (aliased to DocumentImportNodeOptionalArgument; no post-OT points; all M140 launch checkpoints null), so the measured level/trend of this API's use is not captured. No production case study, framework/library integration, unique-site, retention, or predeclared-target evidence; absence of observed adoption cannot be scored as failure, so it remains unknown."
     },
     "support": {
       "status": "unknown",
@@ -160,13 +161,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "After an Origin Trial extended to seven milestones, there is no evidence of production adoption by any named VoIP provider, and the feature had not reached default availability by the cutoff. This is at best unproven adoption; scored unscored (not failure) because registration/activation denominators and post-OT outcomes are not public.",
+      "finding": "After an Origin Trial extended to seven milestones, there is no evidence of production adoption by any named VoIP provider, and the feature had not reached default availability by the cutoff. A first-party origin-trial counter (bucket 373) is mapped and confidence-labeled 'exact', but the only cached public timeline for that bucket is aliased to a different property (DocumentImportNodeOptionalArgument) and ends 2023-11-09, with all M140 launch checkpoints (atStable/day30/day90/day180) null; no measured Incoming Call Notifications usage level or trend is therefore available. The report contains no predeclared adoption target and there is no corroborating production or retention evidence; adoption is described, not scored.",
       "evidenceIds": [
         "intent-exp",
         "webfeatures-3466",
-        "cs-record"
+        "cs-record",
+        "usage-ot-counter-373"
       ],
-      "limitations": "Adoption funnel (awareness/evaluation/trial/production) is entirely unmeasured publicly."
+      "limitations": "Measured level/trend for this API is not observable in the cached timeline (bucket aliased to DocumentImportNodeOptionalArgument; series ends before the OT; all M140 checkpoints null). No unique-site, production, retention, task-success, or predeclared-target evidence. Without a threshold and corroborating production/retention data, adoption stays unscored rather than mixed."
     },
     "interoperability": {
       "status": "failure",
@@ -215,7 +217,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, cleanly-designed, genuinely collaborative Microsoft-Chromium capability addressing a real but niche problem, which reached a long Windows-only Origin Trial but, as of the cutoff, had not shipped by default, attracted no other-engine interest, remained in WHATWG incubation with unresolved 'Pending' security/privacy reviews first flagged in 2022, and produced no defensible adoption or end-user-impact evidence. Overall mixed: sound premise and competent trial execution, undermined by an unresolved abuse-mitigation/security path, no interop movement, and thin outcome evidence.",
+      "finding": "A well-motivated, cleanly-designed, genuinely collaborative Microsoft-Chromium capability addressing a real but niche problem, which reached a long Windows-only Origin Trial but, as of the cutoff, had not shipped by default, attracted no other-engine interest, and remained in WHATWG incubation with unresolved 'Pending' security/privacy reviews first flagged in 2022. A first-party origin-trial use counter is mapped, but its cached public timeline is aliased to a different property and has no points at or after the origin trial, so it yields no measured Incoming Call Notifications usage; there is otherwise no defensible adoption or end-user-impact evidence. Overall mixed: sound premise and competent trial execution, undermined by an unresolved abuse-mitigation/security path, no interop movement, and thin outcome evidence.",
       "evidenceIds": [
         "cs-record",
         "intent-proto",
@@ -223,7 +225,8 @@
         "moz-707",
         "webkit-89",
         "webfeatures-3466",
-        "whatwg-183"
+        "whatwg-183",
+        "usage-ot-counter-373"
       ],
       "limitations": "Overall mixes a still-in-flight feature; later default-shipment could change several dimensions, but cannot be assumed."
     }
@@ -395,7 +398,7 @@
     },
     {
       "id": "wpacando",
-      "url": "https://https://whatpwacando.today/incoming-call-notifications/",
+      "url": "https://whatpwacando.today/incoming-call-notifications/",
       "publisher": "whatpwacando.today",
       "publishedOrObservedAt": null,
       "retrievedAt": "2026-07-22T14:30:00Z",
@@ -416,6 +419,20 @@
         "implementation tracked (per search snippet): extend Notifications API for 'incoming-call' notifications with customized buttons, ringtone and increased priority"
       ],
       "limitations": "Page failed to load (500/timeout) during retrieval; only search snippet available, so status, owner, milestone and bug detail are unverified."
+    },
+    {
+      "id": "usage-ot-counter-373",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=373",
+      "publisher": "Chrome Platform Status (Chromium) — use-counter timeline",
+      "publishedOrObservedAt": "2026-07-22T18:06:48Z",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Origin-trial use counter bucket 373 (WebDXFeature::kDRAFT_IncomingCallNotifications) is mapped for this feature; mapping confidence 'exact', scope 'origin-trial' (not general feature adoption).",
+        "M140 origin-trial launch checkpoint (stableDate 2025-09-02) has null atStable/day30/day90/day180 values — no measured checkpoint at or after OT start.",
+        "Cached timeline summary: 623 points; first-positive 2014-05-06 (~1e-8% of measured Chrome HTTP/HTTPS page loads), peak 2014-10-05 (0.00000898%), latest 2023-11-09 (0%)."
+      ],
+      "limitations": "Values are the share of measured Chrome HTTP/HTTPS page loads on which a counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. The cached public timeline for bucket 373 is aliased to a different property (property_name 'DocumentImportNodeOptionalArgument'): all 623 points, the 2014 first-positive/peak, and the 2023 tail reflect that other property, which predates Incoming Call Notifications by years. The series ends 2023-11-09, before the OT began (2025-09-02), and all M140 launch checkpoints are null, so the timeline does not measure this feature's usage."
     }
   ],
   "successes": [
@@ -429,7 +446,7 @@
     "No other-engine movement in 3.5+ years: Firefox 'Unscreened', Safari 'Needs position', and the WHATWG incubation issue still labelled 'needs implementer interest'. The feature is single-engine and Windows-only.",
     "Security/abuse risk raised by Mike West and Thomas Nguyen in Nov 2022 was not closed: both security_review_status and privacy_review_status remained 'Pending' as of Aug 2025, which appears to gate default shipping.",
     "Evidence/metadata hygiene at OT approval: the API owner had to flag five ChromeStatus errors (unjustified TAG 'N/A', implausible 'no interop risk', missing required Finch flag, missing OT milestones, email-vs-entry inconsistencies).",
-    "Origin Trial extended from a planned 3 milestones (M139-M141) to 7 (M140-M146) with no public readout, registration/activation denominators, or published rationale — the classic 'registrations reported as use' risk left unchecked.",
+    "Origin Trial extended from a planned 3 milestones (M139-M141) to 7 (M140-M146) with no public readout, registration/activation denominators, or published rationale. A first-party origin-trial counter (bucket 373) is mapped, but its cached public timeline is aliased to another property (DocumentImportNodeOptionalArgument) and shows null checkpoints for M140, so even the available telemetry cannot resolve actual use — the classic 'registrations reported as use' risk left unchecked.",
     "No web-platform-tests (wpt:false), no WHATWG spec text, and not in Baseline: the feature cannot be independently verified and has near-zero ecosystem visibility (the web-features entry was opened speculatively in Oct 2025)."
   ],
   "counterfactuals": [
@@ -445,17 +462,18 @@
     "Add a ChromeStatus metadata-audit gate to the OT/Intent-to-Ship transition packet: reconcile TAG-review status, interop-risk claim, Finch flag, OT milestones, and email-vs-entry consistency before API-owner submission; treat API-owner correction requests as a recorded quality defect.",
     "Add an Origin Trial evidence requirement: at every milestone extension, require a public readout (registration count, activation/use, feedback themes, denominators, limitations); disallow silent extension and disallow registrations-as-adoption reporting.",
     "Add a 'visibility/Baseline' rule: require a web-features/Baseline entry plan and a WPT strategy at prototype or ship-prep; features discoverable only via use counters with no published explainer-to-Baseline path are flagged as high ecosystem-visibility risk.",
-    "Add an estimate-discipline rule: when a prototype milestone estimate slips by more than ~6 versions, require a written re-estimate and cause note in the ChromeStatus entry rather than letting the stale estimate persist."
+    "Add an estimate-discipline rule: when a prototype milestone estimate slips by more than ~6 versions, require a written re-estimate and cause note in the ChromeStatus entry rather than letting the stale estimate persist.",
+    "Add a use-counter mapping-integrity gate: when a WebDX or origin-trial counter is mapped for a feature, verify the cached public timeline's property_name matches the feature and that launch-relative checkpoints (atStable/day30/day90/day180) are non-null before quoting any percentage. Flag bucket collisions/aliasing (here bucket 373's timeline reflects DocumentImportNodeOptionalArgument, not Incoming Call Notifications) as 'telemetry mapped but uninformative for this feature' rather than as 'no telemetry,' and require either a correct counter or an explicit statement that usage cannot be measured before the adoption phase."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
       "Content of Vincent Scheib's (Chrome security) comment on the Intent to Experiment thread (rendered empty); needed to assess post-2022 security-review substance.",
       "Chromium implementation tracker issue 40246169 failed to load (500/timeout); implementation status, owner, bug/regression evidence unverified.",
-      "Origin Trial registration counts, activation/use denominators, and any interim or final OT readout — not public.",
+      "Origin Trial activation/use is not measured in the cached public telemetry: a counter (bucket 373) is mapped, but its public timeline is aliased to DocumentImportNodeOptionalArgument with null M140 checkpoints (atStable/day30/day90/day180) and ends 2023-11-09; no registration counts, activation/use denominators, or interim/final OT readout are public.",
       "MSEdgeExplainers feedback-issues content (the OT feedback submission target) was not retrieved, so individual developer feedback is unverified beyond the blink-dev thread.",
       "Any post-cached-record (after 2025-08-25) movement on security/privacy review, Intent to Ship, or default availability could not be confirmed; a 2026 search found none but absence of evidence is not definitive."
     ],
-    "reviewedAt": "2026-07-22T14:30:00Z"
+    "reviewedAt": "2026-07-22T18:06:48Z"
   }
 }

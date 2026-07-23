@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5199572022853632,
+    "name": "Controlled Frame API (available only to IWAs)",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5199572022853632",
+    "category": "Isolated Web Apps-specific API",
+    "trackingBug": "https://crbug.com/40191772",
+    "owners": [
+      "cmp@chromium.org",
+      "rmcelrath@chromium.org",
+      "zelin@chromium.org"
+    ],
+    "specLink": "https://wicg.github.io/controlled-frame",
+    "requiresEmbedderSupport": true,
+    "flagName": "ControlledFrame"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5199572022853632",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2023-01-25 by Chase Phillips (cmp@google.com) as an Isolated Web Apps-specific API. The motivation is concrete and well-scoped: IWAs need to embed and control arbitrary third-party content that <iframe> cannot (blocked by X-Frame-Options/CSP), for virtual-desktop media overlays, kiosks, and managed browsing sessions. The problem is tightly coupled to the Chrome Apps deprecation timeline (kiosk Chrome Apps reach end of life at ChromeOS 150, full EOL ChromeOS 168/Feb 2028), making Controlled Frame the designated IWA successor to the Chrome Apps <webview> API. Initial public proposal (WICG/proposals#88) and explainer followed within days. However, adoption_expectation, availability_expectation, and adoption_plan were left empty, so no measurable success criteria were set at intake.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S16",
+        "S11"
+      ],
+      "limitations": "No documented adoption/availability targets in the ChromeStatus record to later validate against."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubated in WICG with an explainer (last updated 2023-01-30) and a work-in-progress spec at wicg.github.io/controlled-frame. The explainer explicitly scopes the API to IWAs and admits a known implementation limitation (a policy-controlled feature may be visible to normal web pages via script-based policy introspection, 'not intentional'). Multi-stakeholder grounding is structurally weak: the underlying IWA proposal received a negative Mozilla standards position and no WebKit response, so the embedding API inherits that posture. The explainer has not been materially updated since Jan 2023 despite a 2026 ship, leaving security/design assumptions unrefreshed.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S7",
+        "S11"
+      ],
+      "limitations": "Explainer revision history not enumerated; only the top-level 'last updated' date was observable."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Intent to Prototype was posted to blink-dev (Jan 2023, corroborated by the @intenttoship mirror and referenced from the Ready-for-Trial thread). Prototyping is explicitly modeled on the mature Chrome Apps WebView API and reuses its method/event surface (back/forward/reload, executeScript, insertCSS, WebRequest interception, contextMenus, clearData). Implementation lives in //chrome (requires embedder support) behind the IwaControlledFrame flag and Blink>ControlledFrame component, tracked under crbug 40191772 (originally 1233993).",
+      "evidenceIds": [
+        "S12",
+        "S13",
+        "S20",
+        "S21",
+        "S1"
+      ],
+      "limitations": "Direct ITP thread body was not fully readable (Google Groups message-id URLs were rejected by the reader); prototype existence is corroborated via the Ready-for-Trial thread's back-reference and the X mirror."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A Ready-for-Trial / developer trial was declared (estimated milestone M114, desktop_first=114) with a public test_app and devtrial instructions. At trial time TAG review was explicitly 'Not yet requested'. The activation_risks field honestly flags that building+deploying an IWA via managed enterprise distribution is a significant activation hurdle. Observable feedback volume is thin: the controlled-frame repo has only ~38 stars/11 forks, and one open issue ('is the API available in kiosk ChromeOS apps?') signals availability confusion. No origin trial was ever run (origintrial=false; stage 150 goals/risks empty).",
+      "evidenceIds": [
+        "S1",
+        "S12",
+        "S10"
+      ],
+      "limitations": "No public dev-trial feedback digest; partner feedback referenced only generically ('internal partners have requested embedding APIs')."
+    },
+    "wideReview": {
+      "status": "failure",
+      "finding": "Cross-ecosystem validation effectively did not occur. A W3C TAG review was requested only in March 2025 (#1067), roughly two years after incubation and immediately before ship; it concedes that without the IWA context 'we wouldn't recommend supporting an API like this' and that Mozilla's position on IWA was negative and WebKit non-responsive. ChromeStatus records Firefox/WebKit 'No signal' and Web developers 'No signals'. This is partly structural: Chromium's own IWA launch guidance states TAG review should NOT be requested for IWA-specific APIs and that Mozilla/Apple are 'disinterested', and recommends soliciting JS-platform communities (Electron/Node/Deno/Bun) and WinterTC instead — but no evidence of such outreach was found. The late, governance-contradicting TAG request yielded no external endorsement.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S9",
+        "S11"
+      ],
+      "limitations": "No public record of Electron/WinterTC outreach was located, so absence is not proof of non-attempt; however the ChromeStatus standards-position fields and TAG thread show no cross-engine support."
+    },
+    "experiment": {
+      "status": "unknown",
+      "finding": "No formal experiment existed: no origin trial (origintrial=false, no OT id, stage 150 empty), no Finch field trial, and no public field data. Experimentation was limited to the long-running behind-a-flag developer trial (M114→M140). ChromeStatus lists internal partner interest but provides no partner names, metrics, or telemetry.",
+      "evidenceIds": [
+        "S1",
+        "S12"
+      ],
+      "limitations": "Private/enterprise partner trials, if any, are not publicly observable; no experiment artifacts to evaluate."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship thread exists (stage 160, intent_stage 5, desktop_first=140) and the IWA launch process requires it to be sent manually to blink-dev + iwa-dev@chromium.org with IWA-owner approval and 3 Blink API-owner LGTMs. Security review and Privacy review are both marked 'Issues addressed'. Developer documentation was finalized on developer.chrome.com (Controlled Frame doc, last updated 2025-09-18). However, adoption_expectation/availability_expectation remain empty at ship, and the Intent to Ship body itself could not be read directly (Google Groups message-id URL rejected by the reader), so LGTM/IWA-owner approval is only indirectly evidenced.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S11",
+        "S14"
+      ],
+      "limitations": "Could not confirm the actual LGTM count or IWA-owner sign-off from the ITS thread body."
+    },
+    "release": {
+      "status": "mixed",
+      "finding": "Shipped enabled-by-default on desktop in Chrome 140 (stage 160 desktop_first=140; is_released=true; ChromeStatus search surface shows 'Shipping: 140'). Not on Android/iOS/WebView (all_platforms=false; conceptually a ChromeOS/desktop WebView analogue). Timing is strategically aligned with Chrome Apps kiosk deprecation (kiosk disabled-by-default from ChromeOS 138). However, practical availability is severely constrained: the API is IWA-only, requires //chrome embedder support, the ChromeStatus status field still reads 'In developer trial (Behind a flag)' (a data-quality anomaly vs. the ship milestone), IWAs are enterprise-managed and were ChromeOS-only at ship, and a Google-managed IWA allowlist gate was added in Chrome 143. So 'enabled by default' denotes code shipped in the build, not broad GA availability.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S16",
+        "S17",
+        "S19",
+        "S11"
+      ],
+      "limitations": "Exact stable-channel date of Chrome 140 not pinned; the 'behind a flag' vs 'shipped' status contradiction in ChromeStatus could not be reconciled from primary sources."
+    },
+    "adoption": {
+      "status": "failure",
+      "finding": "No defensible adoption evidence. The linked use-counter popularity page (#5624) is JavaScript-rendered and returned no extractable numbers, and IWA usage is enterprise-scoped so public counters are near-zero/unrepresentative by construction. No independent production case study was found (searches returned only generic kiosk/signage vendors, none referencing Controlled Frame). The explainer repo shows low traction (~38 stars, 11 forks, 3 open issues including a 2026 message-passing request and a 2025 'is the API available in kiosk ChromeOS apps?' availability-confusion question). The IWA platform itself is still described as 'currently under development' in Chrome Enterprise documentation. Across a ~3-year dev-trial-to-ship window there are no positive public adoption signals and concrete friction exists.",
+      "evidenceIds": [
+        "S10",
+        "S15",
+        "S18",
+        "S1"
+      ],
+      "limitations": "Private enterprise deployments are not observable; absence of public adoption does not equal zero private use. Per the method, no success is inferred from shipment or absent criticism."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Insufficient public evidence to score support burden or health. Tracking bug 40191772 remains open; the repo has 3 open issues (including availability confusion and host/guest message-passing). High-quality docs exist and were maintained through 2025-09-18. The Chrome 143 IWA allowlist adds deployment friction for support. No regression storm or significant issue volume is observable, but the feature is too new/niche for a defensible support-health read.",
+      "evidenceIds": [
+        "S21",
+        "S10",
+        "S5",
+        "S17"
+      ],
+      "limitations": "Crash/bug statistics and internal support volume are not public."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Controlled Frame itself is newly shipped (Chrome 140); no deprecation is planned or applicable for it within this review window. The relevant deprecation is of its predecessor (Chrome Apps <webview>), tracked separately (ChromeOS kiosk EOL at 150; full EOL 168/Feb 2028), and is treated as motivation context rather than an outcome of this feature.",
+      "evidenceIds": [
+        "S16",
+        "S1"
+      ],
+      "limitations": "None; phase replayed and assessed as not-relevant by rationale, not as untested."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Strong problem-solution fit for a narrow, high-trust audience: embedding arbitrary content (bypassing X-Frame-Options/CSP) plus deep control (script/CSS injection, request interception, custom context menus, storage partitioning) is a real, articulated need for kiosks, signage, classroom/managed sessions, and virtual-desktop overlays, and it directly fills the Chrome Apps WebView gap. Value is materially capped because it is reachable only through the IWA platform, which is enterprise-managed and was ChromeOS-only at ship.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S16",
+        "S11"
+      ],
+      "limitations": "No quantitative developer-satisfaction or partner-count evidence; 'internal partners have requested' is the only adoption-need signal and is unsourced."
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End users are impacted only indirectly (via kiosk/signage/managed-session experiences). The design deliberately privileges the embedding IWA/administrator over third-party content publishers by allowing override of their embedding opt-outs and script injection into their pages — a tradeoff the TAG review flagged and the IWA trust model is meant to justify. No measurable end-user-impact data (accessibility, privacy, security incidents) exists.",
+      "evidenceIds": [
+        "S3",
+        "S7",
+        "S5"
+      ],
+      "limitations": "No user-research artifacts surfaced; security/privacy questionnaires exist but their resolutions were not read in full."
+    },
+    "adoption": {
+      "status": "failure",
+      "finding": "No measurable adoption across a ~3-year availability window: no extractable usage data, no independent case studies, low explainer-repo traction, active availability confusion in issues, and the host IWA platform still self-described as 'under development' and gated by an enterprise allowlist from Chrome 143. Available signals are negative-adjacent rather than merely absent.",
+      "evidenceIds": [
+        "S10",
+        "S15",
+        "S18",
+        "S17"
+      ],
+      "limitations": "Enterprise/private deployments are not publicly observable, so the failure is about measurable/public adoption, not a proof of zero usage."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Single-browser, single-OS (desktop/ChromeOS; explicitly not Android), WPT:false with only Chromium-internal pseudo-WPT tests, and no cross-engine signal (Mozilla negative on IWA, WebKit no signal, webdev no signals). Chromium's IWA guidance concedes there is 'little value in requesting standards positions' for IWA APIs, so this foreclosure is partly by-design — but it still means there is no interoperability story and no path to Baseline.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S11",
+        "S12"
+      ],
+      "limitations": "No web-features/Baseline or Web Platform Dashboard entry to consult; the API is not a candidate by construction."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Security and privacy reviews are marked 'Issues addressed'; the implementation reuses the battle-tested Chrome Apps WebView semantics and ships a pseudo-WPT test harness in //chrome/test/data/controlled_frame and controlled_frame_wpt_browsertest.cc. Negatives: no real web-platform-tests (interoperability gap), and the explainer itself documents a known policy-introspection leakage limitation for normal web pages that was still being investigated.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S12"
+      ],
+      "limitations": "No access to crash/regression telemetry or code-review history; quality assessment rests on review-status fields and the explainer's self-reported limitation."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Developer documentation is high quality and current (Controlled Frame doc updated 2025-09-18; IWA intro updated 2026-02-06) and accurately communicates the IWA-only constraints and the 'prefer iframe first' guidance. But the ChromeStatus record has data-quality inconsistencies: the status field reads 'In developer trial (Behind a flag)' at milestone 140 while the ship stage records desktop_first=140 and is_released=true; and adoption_expectation/availability_expectation/adoption_plan are all empty. The explainer is stale (last updated Jan 2023 for a 2026 ship).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S6"
+      ],
+      "limitations": "Could not fully read the Intent to Ship thread body to confirm communications accuracy at ship."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too little public signal to score. Open tracking bug and 3 open explainer issues exist; docs are maintained; the Chrome 143 allowlist adds deployment friction. No defensible read on support burden or issue-resolution health is possible this early and at this niche.",
+      "evidenceIds": [
+        "S21",
+        "S10",
+        "S5",
+        "S17"
+      ],
+      "limitations": "Internal support volume and SLA data are not public."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Controlled Frame solves a real, well-scoped problem with a coherent, review-addressed security model and shipped on schedule aligned with Chrome Apps kiosk deprecation — a competent enterprise-scoped launch. But it is structurally single-vendor/single-OS with no interoperability or measurable adoption, its availability is heavily gated (IWA-only, enterprise-managed ChromeOS, embedder flag, allowlist from 143), and the ChromeStatus record carries status/targets data-quality gaps. Per the method, overall must not hide these mixed-to-failing dimensions.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S7",
+        "S10",
+        "S16",
+        "S17",
+        "S11"
+      ],
+      "limitations": "Material evidence gaps (usage numbers, ITS thread body, private adoption) prevent a complete verdict; see completion."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5199572022853632",
+      "publisher": "Chrome Platform Status (cached record)",
+      "publishedOrObservedAt": "2025-09-03",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, lifecycle stages, ship at desktop_first=140, IWA-only scope, reviews addressed, no OT, empty adoption targets, status-field anomaly"
+      ],
+      "limitations": "accurate_as_of 2025-09-03; status field contradicts ship stage."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5199572022853632",
+      "publisher": "ChromeStatus Lite (server-rendered)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered confirmation of status 'In developer trial (Behind a flag) (Chrome 140)' and IWA-only scope"
+      ],
+      "limitations": "Static snapshot; reflects the same status-field anomaly."
+    },
+    {
+      "id": "S3",
+      "url": "https://raw.githubusercontent.com/WICG/controlled-frame/main/README.md",
+      "publisher": "WICG/controlled-frame (Chase Phillips, Ovidio Ruiz-Henriquez)",
+      "publishedOrObservedAt": "2023-01-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer scope (IWA-only), design intent, known policy-introspection limitation, last-updated Jan 2023 (stale)"
+      ],
+      "limitations": "Only author/date and intro section were cleanly extractable; revision history not enumerated."
+    },
+    {
+      "id": "S4",
+      "url": "https://wicg.github.io/controlled-frame/",
+      "publisher": "WICG",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Work-in-progress specification, WICG incubation maturity"
+      ],
+      "limitations": "Full spec body not deeply read."
+    },
+    {
+      "id": "S5",
+      "url": "https://developer.chrome.com/docs/iwa/controlled-frame",
+      "publisher": "Chrome for Developers (Demián Renzulli, Simon Hangl)",
+      "publishedOrObservedAt": "2025-09-18",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Developer documentation quality, API surface, permissions_policy requirement, 'prefer iframe first' guidance, demo + Kitchen Sink"
+      ],
+      "limitations": "Doc last-updated date only; no analytics on developer uptake."
+    },
+    {
+      "id": "S6",
+      "url": "https://developer.chrome.com/docs/iwa/introduction",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-02-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "IWA distribution model: enterprise-managed ChromeOS-only at initial launch; high-trust security model framing"
+      ],
+      "limitations": "Confirms ChromeOS-only initial distribution; Windows came later via separate rollout."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1067",
+      "publisher": "W3C TAG design-reviews",
+      "publishedOrObservedAt": "2025-03-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review requested Mar 2025 (late), Mozilla negative on IWA, WebKit no response, 'wouldn't recommend outside IWA context'"
+      ],
+      "limitations": "Only the opening review-request was captured; TAG's eventual position/comments not fully read."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/WICG/proposals/issues/88",
+      "publisher": "WICG/proposals (cp238916)",
+      "publishedOrObservedAt": "2023-01-31",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Initial public proposal, problem statement, Electron-comparable framing"
+      ],
+      "limitations": "Issue has no captured discussion threads beyond the opening post."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/WebView-CG/explainers/issues/3",
+      "publisher": "WebView-CG (cp238916)",
+      "publishedOrObservedAt": "2023-03-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "WebView CG FYI/review requested; no captured community response"
+      ],
+      "limitations": "Only the opening FYI post was visible."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/WICG/controlled-frame/issues",
+      "publisher": "WICG/controlled-frame",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Low repo traction (~38 stars, 11 forks), 3 open issues incl. availability confusion and host/guest message passing"
+      ],
+      "limitations": "Star/issue counts are point-in-time; comment threads not read in full."
+    },
+    {
+      "id": "S11",
+      "url": "https://www.chromium.org/blink/launching-features/isolated-web-apps/",
+      "publisher": "The Chromium Projects",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "IWA-specific API launch governance: prefer web-platform, TAG review should NOT be requested, Mozilla/Apple 'disinterested', solicit JS-platform/WinterTC, manual ITS to blink-dev+iwa-dev@, require spec+tests+IWA-owner approval"
+      ],
+      "limitations": "Doc is policy guidance, not feature-specific evidence; version/date not shown."
+    },
+    {
+      "id": "S12",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/y7BHD8SL4YA",
+      "publisher": "blink-dev (cmp, odejesush)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Ready-for-Trial / dev trial at M114, flag IwaControlledFrame, requires //chrome, TAG 'Not yet requested' at trial, references ITP, Android excluded"
+      ],
+      "limitations": "Only the opening intent body was captured; LGTMs/replies not read."
+    },
+    {
+      "id": "S13",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/CAKcCwFPo79ELzrS5qDcbXNM9K71c1a964uqWpMxK0AZNzOXa1w%40mail.gmail.com",
+      "publisher": "blink-dev",
+      "publishedOrObservedAt": "2023-01-31",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype thread exists (referenced from S12 and S20)"
+      ],
+      "limitations": "Message-id URL was rejected by the reader; body not directly readable, existence is corroborated."
+    },
+    {
+      "id": "S14",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/CANtkjcTM7Yj16SDVpT-T6o%2BGLb7CgzcXKrGw0n_x04-25UqWcg%40mail.gmail.com",
+      "publisher": "blink-dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship thread exists (stage 160, desktop_first=140)"
+      ],
+      "limitations": "Message-id URL was rejected by the reader; body/LGTMs/IWA-owner approval not directly readable."
+    },
+    {
+      "id": "S15",
+      "url": "https://chromestatus.com/metrics/feature/timeline/popularity/5624",
+      "publisher": "Chrome Platform Status (use counter)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "A popularity use-counter is linked for the feature"
+      ],
+      "limitations": "Page is JavaScript-rendered; no numeric usage data could be extracted. Also IWA usage is enterprise-scoped, making public counters unrepresentative."
+    },
+    {
+      "id": "S16",
+      "url": "https://support.google.com/chrome/a/answer/15950395",
+      "publisher": "Google Chrome Enterprise & Education Help",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome Apps deprecation timeline: kiosk disabled-by-default ChromeOS 138 (Jul 2025), kiosk EOL ChromeOS 150 (Jul 2026), full EOL ChromeOS 168 (Feb 2028)"
+      ],
+      "limitations": "Support-article content is current-snapshot, undated."
+    },
+    {
+      "id": "S17",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/iTCPaBw6HxU/m/xSwr3FDWAgAJ",
+      "publisher": "blink-dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "From Chrome 143 only allowlisted IWAs can be installed/updated via admin-managed installation (corroborated by developer.chrome.com/docs/iwa/allowlist)"
+      ],
+      "limitations": "PSA page timed out on direct read; content confirmed via search snippet + secondary docs source."
+    },
+    {
+      "id": "S18",
+      "url": "https://support.google.com/chrome/a/answer/15820731",
+      "publisher": "Google Chrome Enterprise & Education Help",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "support",
+      "supports": [
+        "IWAs 'currently under development' per Chrome Enterprise FAQ"
+      ],
+      "limitations": "Confirmed via search snippet; full page not directly read."
+    },
+    {
+      "id": "S19",
+      "url": "https://chromestatus.com/feature/5146307550248960",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "IWA support in enterprise-managed Windows is a separate, later rollout; auto-install was 'supported only on ChromeOS' at Controlled Frame ship"
+      ],
+      "limitations": "ChromeStatus page is JS-rendered (no body); confirmed via search snippets and the ChromeOS-only auto-install support page."
+    },
+    {
+      "id": "S20",
+      "url": "https://x.com/intenttoship/status/1620227495919341573",
+      "publisher": "@intenttoship (mirror)",
+      "publishedOrObservedAt": "2023-02-01",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Corroborates the Blink Intent-to-Prototype: Controlled Frame API for Isolated Web Apps was posted (~Jan/Feb 2023)"
+      ],
+      "limitations": "Mirror only; links to the same unreadable message-id thread."
+    },
+    {
+      "id": "S21",
+      "url": "https://issues.chromium.org/40191772",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Fugu tracking bug for Controlled Frame; open; migrated from original crbug 1233993"
+      ],
+      "limitations": "Bug body/comments not read (requires auth); status inferred from ChromeStatus fields."
+    }
+  ],
+  "successes": [
+    "Clear, well-scoped problem (embed + control arbitrary content in a high-trust app) with a coherent security model that passed security and privacy review with 'Issues addressed'.",
+    "Strategic timing: shipped in Chrome 140 in lockstep with the Chrome Apps kiosk deprecation (disabled-by-default ChromeOS 138), directly filling the <webview> capability gap for kiosk/signage/managed-session apps.",
+    "Honest risk disclosure in ChromeStatus (activation_risks, interop_compat_risks, security_risks) and high-quality, current developer documentation with a working demo and IWA Kitchen Sink.",
+    "Reused the mature Chrome Apps WebView semantics, reducing design risk, and built a pseudo-WPT test harness given WPT cannot run in IWA contexts."
+  ],
+  "failures": [
+    "No interoperability: single-browser, single-OS (no Android), WPT:false, Mozilla negative on the host IWA proposal, WebKit no signal, web developers 'no signals' — no Baseline path and no cross-engine owner.",
+    "Negligible measurable adoption across a ~3-year availability window: no usage data, no case studies, low explainer-repo traction, and active availability confusion in issues.",
+    "Severe practical-availability gating that makes 'enabled by default at 140' not equivalent to GA: IWA-only, enterprise-managed ChromeOS-only at ship, embedder flag, and a Google-managed allowlist added in Chrome 143.",
+    "Weak/late wide review: TAG review requested only in March 2025 and against Chromium's own IWA guidance (which says not to request it); no evidence of the recommended JS-platform/WinterTC outreach.",
+    "ChromeStatus data-quality gaps: status field reads 'In developer trial (Behind a flag)' while the ship stage records desktop_first=140, and adoption/availability expectations were left empty at ship.",
+    "Stale explainer (last updated Jan 2023) carrying an admitted policy-introspection leakage limitation still under investigation at a 2026 ship."
+  ],
+  "counterfactuals": [
+    "If IWAs had been available beyond enterprise-managed ChromeOS (or if the Chrome 143 allowlist gate had not been introduced), activation friction would be materially lower and adoption might be observable; the platform-readiness gap is the dominant adoption constraint, not the API design.",
+    "If a cross-engine or JS-runtime owner (Electron/Node/Deno/Bun via WinterTC) had co-designed and adopted the surface, interoperability and a Baseline path could exist; the IWA-only scoping and Mozilla's negative IWA position foreclose this.",
+    "If adoption_expectation/availability_expectation had been defined at intake/ship, success could be measured against targets rather than inferred from absence.",
+    "If the explainer had been kept current and the policy-introspection leakage resolved before ship, security/wide-review assumptions could be validated against the shipped design.",
+    "If the TAG review had been requested early (not Mar 2025) and reconciled with the IWA guidance ('do not request TAG'), wide review would not have been a near-ship formality.",
+    "If the ChromeStatus status field had been reconciled with the ship stage, downstream tooling (and this retrospective) would not have to treat 'enabled by default' vs 'behind a flag' as contradictory."
+  ],
+  "skillImprovements": [
+    "Add a constrained-availability-ship detection rule: when a feature has requires_embedder_support=true, is enterprise/IWA-scoped, or ships while the status field still reads 'Behind a flag', the report must explicitly distinguish 'code shipped/enabled by default' from 'broadly available/GA' and must not count the ship as adoption.",
+    "Add a ChromeStatus data-consistency check that flags when browsers.chrome.status text contradicts the ship stage / desktop milestone (e.g., status='In developer trial (Behind a flag)' vs stage 160 desktop_first=140 + is_released=true) and records which signal was treated as authoritative.",
+    "Add an IWA-specific-API phase packet: (a) verify the 'why IWA-specific' explainer section, (b) check that the manual Intent-to-Ship was sent to both blink-dev@ and iwa-dev@ and that IWA-owner approval + 3 Blink API-owner LGTMs are present, (c) treat interoperability/Baseline as 'not-relevant with rationale' (per Chromium IWA guidance) rather than as a failure to test, and (d) seek JS-platform/WinterTC and Electron signals instead of Mozilla/WebKit/TAG positions.",
+    "Add a prepareToShip adoption-targets gate: if adoption_expectation, availability_expectation, and adoption_plan are all empty at Intent-to-Ship, mark the transition packet incomplete and require explicit targets (or a documented rationale for their absence).",
+    "Add a successor-to-deprecated-feature linkage rule: when a feature is the designated successor to a deprecated API (here Chrome Apps <webview>), include the deprecation timeline as required context and check migration readiness — flag when successor-platform readiness (IWA enterprise/ChromeOS-only, allowlist) lags the predecessor's EOL milestones (ChromeOS kiosk EOL at 150).",
+    "Add a usage-data fallback for JS-rendered sources: when a chromestatus.com use-counter or metrics page returns no extractable body, record it as missing evidence and do not infer usage (and note when enterprise-scoping makes public counters unrepresentative)."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Actual usage numbers: the linked use-counter page (chromestatus.com/metrics/feature/timeline/popularity/5624) is JavaScript-rendered and returned no data; IWA usage is also enterprise-private, so no defensible usage figure exists.",
+      "Intent to Ship thread body (Google Groups message-id URLs were rejected by the reader): LGTM count, IWA-owner sign-off, and ship comms could not be read directly, only inferred from ChromeStatus fields and the IWA governance doc.",
+      "No public adoption/partner case studies: searches found no production deployment of Controlled Frame; partner interest is referenced only generically ('internal partners have requested').",
+      "Timed-out reads: chromeos.dev 'PWAs: Past, Present, Future' post and the blink-dev IWA-allowlist PSA page did not load fully (content partially recovered via search snippets + secondary docs).",
+      "TAG review eventual position/comments beyond the opening request were not read; security/privacy questionnaire resolutions were not read in full.",
+      "Internal Chromium crash/regression telemetry and support volume are not public, leaving support-health unscored."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

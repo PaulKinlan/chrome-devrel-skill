@@ -20,7 +20,7 @@
       "category": "In developer trial (Behind a flag)"
     }
   ],
-  "evidenceCutoff": "2026-07-20T07:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:17Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -109,12 +109,13 @@
       "limitations": "Stable M151 timing and any GA comms/incidents are outside the available evidence window; is_releasenotes_publish_ready=false in the record."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "No adoption evidence exists because the feature is pre-stable. No use counter/webdx bucket is allocated (webdx_usecounter_enum=null), so post-stable usage cannot be measured. The only adoption signal is the stated expectation that Google Meet use it within 12 months (interest/intent, not verified production deployment). No framework/library/tool integration evidence found.",
+      "status": "partial",
+      "finding": "A WebDX web-feature-family counter exists for the SpeechRecognition property (bucket_id=63; mappingStatus web-feature-family-counter; confidence declared-family), but there is NO exact counter for the unspokenPunctuation attribute (webdx_usecounter_enum=null), so the family percentage is NOT evidence of this attribute's adoption. The family counter has fired since 2024-06-10 — predating this feature — and is at a low, roughly flat baseline: 0.00029795% of measured Chrome HTTP/HTTPS page loads (2026-07-20), having peaked at 0.00139551% (2024-12-10) and first appeared at 0.000285% (2024-06-10); at the M150 dev-trial stable reference date (2026-06-30) it read 0.00033809%. day30/day90/day180 launch checkpoints are not yet available, and M151 stable is not captured as a checkpoint. This indicates the parent SpeechRecognition API itself is used on only a tiny share of page loads, so the addressable surface for the new attribute is small; it does not show whether any of those uses set unspokenPunctuation=true. No attributable third-party production deployment is evidenced (only the stated Google Meet intent within 12 months); no framework/library/tool integration evidence found.",
       "evidenceIds": [
-        "S1"
+        "S1",
+        "S16"
       ],
-      "limitations": "Unknown is due to pre-stable state, not absence of relevance; revisit once M151 is stable and counters exist."
+      "limitations": "Family counter is not an exact adoption measure for the attribute; the same low page-load share could include zero uses of unspokenPunctuation. No unique-site, production, retention, task-success, user-benefit, or numeric-target evidence. day30/90/180 not yet available; M151 stable not captured as a launch checkpoint."
     },
     "support": {
       "status": "unknown",
@@ -162,11 +163,12 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Unscoreable at present: feature is pre-stable, no use counter bucket allocated, and no attributable third-party production deployment. Only Google Meet intent is recorded.",
+      "finding": "Remains unscored. No exact counter exists for the unspokenPunctuation attribute — only the broader SpeechRecognition family counter (bucket_id=63), which is not attributable to this attribute and predates it — so the attribute-specific level/trend is unmeasured. There is no attributable third-party production deployment and no retention evidence. The only stated expectation is the Google Meet intent within 12 months (partner interest, not a numeric usage target and not a verified deployment), so there is no threshold against which to score. For context, the SpeechRecognition family counter sits at ~0.0003% of measured Chrome page loads (0.00029795% on 2026-07-20; 0.00033809% at the M150 dev-trial stable reference date 2026-06-30; day30/90/180 null), indicating a very small addressable surface; that figure does not measure this attribute.",
       "evidenceIds": [
-        "S1"
+        "S1",
+        "S16"
       ],
-      "limitations": "Too early to score; requires post-stable counters and partner verification."
+      "limitations": "No exact feature-level counter; the family counter is not attributable to the attribute. No unique-site, production, retention, task-success, user-benefit, or numeric-target evidence. Unscored because there is no predeclared numeric target and no corroborating production/retention evidence — not because usage is presumed low or high."
     },
     "interoperability": {
       "status": "mixed",
@@ -214,7 +216,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "An early-stage, well-motivated, minimal additive capability with a genuinely validated developer problem and a clean opt-in API, shipping Chrome-first (M150 dev trial; M151 beta; stable target M151). It is too early to verdict adoption, end-user impact or support. Principal risks: Chrome-only interop with no resolved positive standards position and no TAG review; a ChromeStatus record that overstates Mozilla's position; implementation-dependent ML behavior with no field/accuracy evidence; no Origin Trial or structured cohort feedback; pending security/privacy reviews at the time of the record; and single-owner concentration (owner is also spec editor).",
+      "finding": "An early-stage, well-motivated, minimal additive capability with a genuinely validated developer problem and a clean opt-in API, shipping Chrome-first (M150 dev trial; M151 beta; stable target M151). It is too early to verdict adoption: there is no exact counter for the attribute, and the only available telemetry (the SpeechRecognition family counter, bucket_id=63) sits at ~0.0003% of measured Chrome page loads — a small addressable surface — but predates and is not attributable to unspokenPunctuation. End-user impact and support also remain unscored. Principal risks: Chrome-only interop with no resolved positive standards position and no TAG review; a ChromeStatus record that overstates Mozilla's position; implementation-dependent ML behavior with no field/accuracy evidence; no Origin Trial or structured cohort feedback; pending security/privacy reviews at the time of the record; and single-owner concentration (owner is also spec editor).",
       "evidenceIds": [
         "S1",
         "S2",
@@ -223,9 +225,10 @@
         "S7",
         "S8",
         "S3",
-        "S11"
+        "S11",
+        "S16"
       ],
-      "limitations": "Overall is provisional; a post-stable revision with counters, partner verification and resolved reviews is required before a firmer verdict."
+      "limitations": "Overall is provisional; a post-stable revision with an exact attribute counter, partner verification and resolved reviews is required before a firmer verdict."
     }
   },
   "sources": [
@@ -237,7 +240,7 @@
       "retrievedAt": "2026-07-20T07:00:00Z",
       "sourceType": "chromestatus",
       "supports": [
-        "Feature metadata, owner, stages, intent-to-ship for M151, dev-trial M150, security/privacy review 'Pending', adoption expectation (Google Meet), finch name, no OT, no use counter, ff_views=3/safari_views=5/web_dev_views=2"
+        "Feature metadata, owner, stages, intent-to-ship for M151, dev-trial M150, security/privacy review 'Pending', adoption expectation (Google Meet), finch name, no OT, no exact use counter for the attribute (webdx_usecounter_enum=null; web_feature speech-recognition), ff_views=3/safari_views=5/web_dev_views=2"
       ],
       "limitations": "Record can lag live state; some fields (intent_thread content, review outcomes) not inline."
     },
@@ -408,6 +411,20 @@
         "api.SpeechRecognition.unspokenPunctuation added to browser-compat-data, tracking its introduction"
       ],
       "limitations": "Changelog entry only; no behavioral detail."
+    },
+    {
+      "id": "S16",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=63",
+      "publisher": "Chrome Platform Status (WebDX web-feature popularity timeline, bucket_id=63 / SpeechRecognition)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:17Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX web-feature-family counter for the SpeechRecognition property (bucket_id=63; mappingStatus web-feature-family-counter; confidence declared-family); latest snapshot 2026-07-20 day_percentage 0.00029795%; at the M150 dev-trial stable reference date 2026-06-30 = 0.00033809%; first positive 2024-06-10 = 0.000285%; peak 2024-12-10 = 0.00139551%; day30/day90/day180 = null",
+        "Counter measures the SpeechRecognition property family, NOT the unspokenPunctuation attribute; no exact feature-level counter exists (webdx_usecounter_enum=null)",
+        "Counter has fired since 2024-06-10, predating this feature's M150 dev trial, i.e., baseline parent-API usage independent of the attribute"
+      ],
+      "limitations": "Family counter (SpeechRecognition) covers all SpeechRecognition usage; firing does not imply unspokenPunctuation was set true. Values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers, sites, users, tasks, satisfaction, production deployment, or end-user benefit. day30/day90/day180 not yet available; M151 stable not captured as a launch checkpoint."
     }
   ],
   "successes": [
@@ -420,7 +437,7 @@
     "ChromeStatus materially overstates Mozilla's position as 'Positive' from an informal comment while the formal mozilla/standards-positions#1416 is still pending (and Firefox shows No support in MDN BCD)",
     "No TAG design review requested; spec is a low-maturity CG draft edited by the implementer",
     "No Origin Trial and no public developer-trial cohort methodology/feedback, so the core behavior is unvalidated by representative evidence",
-    "No use counter/webdx bucket allocated, so post-stable adoption cannot be measured",
+    "No EXACT use counter for the unspokenPunctuation attribute — only a broader SpeechRecognition family counter (bucket_id=63) exists, which is not attributable to this attribute and predates it, so attribute-level adoption cannot be measured",
     "Security and privacy reviews still 'Pending' in the cached record at intent-to-ship time",
     "Cross-engine interop absent at launch: Chrome/Edge only; Firefox No, Safari No, not Baseline-eligible"
   ],
@@ -428,7 +445,7 @@
     "If a TAG review had been requested before intent-to-ship, the implementation-dependent punctuation/capitalization behavior (and any i18n, fingerprinting, or accuracy-equity implications) would likely have received formal scrutiny before stable",
     "If the formal Mozilla position had been resolved rather than treating an informal comment as 'Positive', the interoperability path (and the ChromeStatus record) would be more defensible",
     "If an Origin Trial or a structured, attributable developer cohort with feedback had been run, real-world punctuation accuracy across accents, dialects and languages would have surfaced before stable",
-    "If a use counter bucket had been allocated at dev-trial time, post-stable adoption would be measurable today (webdx_usecounter_enum is currently null)",
+    "If an EXACT use counter for the unspokenPunctuation attribute (not merely the SpeechRecognition family counter, bucket_id=63) had been allocated at dev-trial time, attribute-level post-stable adoption would be measurable today; webdx_usecounter_enum is currently null",
     "If the single owner were not also the sole spec editor, an independent spec reviewer might have challenged the implementation-dependent, untestable normative behavior"
   ],
   "skillImprovements": [
@@ -436,14 +453,14 @@
     "Transition-packet check: TAG review status must be explicitly stated (requested, waived with justification, or absent) — never silently absent — before prepare-to-ship",
     "Rule: when a feature's behavior is probabilistic/implementation-dependent (ML punctuation), require a field-evidence or accuracy-evaluation plan even for a 'minimal additive boolean' API, and a not-relevant experiment phase must carry the residual risk",
     "Pre-ship check: security_review_status and privacy_review_status should not remain 'Pending' when intent-to-ship is filed; flag as a launch-readiness gap",
-    "Practice: allocate a UseCounter/webdx bucket at developer-trial time so post-stable adoption is measurable",
+    "Practice: allocate an EXACT UseCounter/webdx bucket for each new attribute (here unspokenPunctuation) at developer-trial time — a family counter (e.g., SpeechRecognition, bucket_id=63) is insufficient because it predates and conflates the new attribute with existing usage",
     "Checklist item: flag owner-concentration risk (single owner also editing the spec) for bus-factor and editorial-bias review, and recommend a second spec reviewer",
     "Evidence rule: prefer chromestatuslite.com server-rendered route or the WPT dashboard over JS-rendered chromestatus.com/activity when automated readers are used, to avoid empty retrieval"
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Post-stable adoption/usage data (no use counter allocated; feature pre-stable as of record)",
+      "Exact feature-level adoption/usage for the unspokenPunctuation attribute — only the broader SpeechRecognition family counter (bucket_id=63) exists, which is not attributable to the attribute; plus no unique-site, production, retention, or numeric-target evidence",
       "Attributable third-party production deployment (only internal Google Meet intent recorded)",
       "Second-engine implementation or resolved positive standards position (Chrome/Edge only; Mozilla formal position pending; WebKit no signal; no TAG review)",
       "Developer-trial cohort methodology, recruitment, representativeness, feedback themes and friction results (none public)",
@@ -451,6 +468,6 @@
       "Confirmed security and privacy review outcomes (both 'Pending' in cached record)",
       "Full intent-to-ship thread content and literal text of padenot's comment on web-speech-api#187 (URLs not retrievable via reader; relied on metadata and snippets)"
     ],
-    "reviewedAt": "2026-07-20T07:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:17Z"
   }
 }

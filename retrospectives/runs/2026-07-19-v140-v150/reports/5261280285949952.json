@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5261280285949952,
+    "name": "Overscroll Gestures",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5261280285949952",
+    "summary": "Adds HTML primitives (overscrollcontainer attribute + command=toggle-overscroll via command invokers) to anchor elements to overscroll areas of containers and reveal them with swipe gestures, with a guaranteed accessible button fallback. Also incubated as 'Declarative Overscroll Actions'.",
+    "category": "Miscellaneous",
+    "blinkComponent": "Blink>Animation",
+    "owners": [
+      "vmpstr@chromium.org",
+      "flackr@chromium.org"
+    ],
+    "explainerAuthors": [
+      "vmpstr",
+      "flackr",
+      "mfreed7"
+    ],
+    "flagName": "enable-experimental-web-platform-features",
+    "finchName": "OverscrollGestures",
+    "isReleased": false,
+    "status": "Proposed"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):5261280285949952",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:40:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2025-09-08 by vmpstr with a clear, specific problem statement: gesture-driven UIs (drawer/side menus, swipe-to-reveal, pull-to-refresh) are awkward to express without script today. Mode classified as a new feature under Blink>Animation, owners vmpstr@chromium.org and flackr@chromium.org, devrel routing to devrel-chromestatus-all, behind enable-experimental-web-platform-features. Explainer, initial public proposal (CSSWG), bug, devtrial instructions, and a sample were all linked at intake. The acceptance of a requested ship year is correctly NOT treated as the lifecycle stage: the feature is at Proposed/dev-trial, not shipped.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s4"
+      ],
+      "limitations": "Intake metadata is strong; no evidence of an explicit intake diagnosis artifact, but the ChromeStatus record carries the equivalent problem/owner/venue information."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The developer/end-user problem is real, recurring, and narrowly scoped, and the team chose the right venues: an initial CSSWG proposal (2025-09-08, placed on the CSS WG TPAC 2025 agenda) followed by Open UI incubation (issue 2026-02-13) and a WHATWG HTML proposal (2026-03-17). Alternatives were genuinely considered and rejected with reasoning: a CSS-only solution was rejected because it lacks semantic enforcement and risks inaccessible 'invisible' gestures, and scroll-driven-animations/snap workarounds are noted as hard. The design deliberately evolved from pure-CSS to HTML attributes plus a new toggle-overscroll invoker command, reusing the Invoker Commands pattern. However, developer/end-user demand is asserted rather than evidenced: ChromeStatus records Web Dev 'No signals', and no survey, framework-author, or partner evidence was found. The 'why not' / counterevidence search surfaced only awareness amplification of the I/O announcement, not independent demand.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s13"
+      ],
+      "limitations": "No attributable developer research, partner interest, or framework/library-author evidence found to validate demand distinct from problem validity."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An Intent to Prototype was sent to blink-dev (thread confirmed; full body not retrievable). A detailed explainer with API examples, use cases (drawer, swipe-to-reveal, swipe-to-dismiss, pull-to-refresh), an implementation model, accessibility considerations, progressive-enhancement/polyfill-via-popover fallback, and open questions was published. A polyfill demo that 'does not require any browser features' is referenced, and a Chromium implementation exists behind the flag (finch name OverscrollGestures). Authors (vmpstr, flackr, mfreed7) are the continuity team behind Invoker Commands/popover, which de-risks the API-pattern reuse. Gaps: the canonical sample demo and the Chromium implementation bug could not be retrieved, so there is no independent confirmation of implementation completeness, test coverage, or friction-log state at the prototype->dev-trial handoff.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s5",
+        "s7",
+        "s11",
+        "s12"
+      ],
+      "limitations": "Intent-to-Prototype body, flackr sample demo, and Chromium bug (issues.chromium.org/443719046) were not retrievable via the reader; no friction-log or conformance artifact was found."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "This is the feature's current/active stage: a developer trial behind the enable-experimental-web-platform-features flag at Chrome 149. Trial infrastructure exists: devtrial instructions are linked (vmpstr/htmldemos gestures/devtrial.md), a sample is linked (flackr web-demos), and the feature is flagged and finch-named. The trial is very recent (Chrome 149 stable ~June 2026; first public DevRel mention 2026-07-01), so the phase's core decisions are unanswered: no cohort/recruitment report, no task-completion or friction findings, no attributable partner-evidence ladder, and no published design changes from trial feedback have been found. Per the phase module, this is the moment to avoid vanity counts and self-selected-enthusiast bias; instead there is simply no published denominator yet.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s8",
+        "s10",
+        "s11"
+      ],
+      "limitations": "Dev-trial instructions document could not be retrieved (reader errors); no cohort findings, feedback themes, or partner evidence published or found. Too early to assess trial outcomes."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Wide review has not substantively begun and is formally pending: ChromeStatus records tag review 'Pending', security review 'Pending', privacy review 'Pending'; Firefox 'No signal'; Safari 'No signal'; Web Dev 'No signals'; standards maturity 'Unknown status'. Standards work is genuinely active but early and unresolved across venues: CSSWG issue 13999 (2026-06-01) is labeled 'Needs Edits' and 'Needs Testcase (WPT)', and the WHATWG HTML proposal (2026-03-17) is labeled 'addition/proposal', 'needs implementer interest', and 'stage: 1 Incubation'. ChromeStatus claims WPT:true but the CSSWG issue still asks for a WPT testcase, a discrepancy. Crucially, 'No signal' from other engines must NOT be read as neutral or positive: the WHATWG 'needs implementer interest' label makes the Chrome-only-period and Baseline risk explicit and unresolved.",
+      "evidenceIds": [
+        "s1",
+        "s6",
+        "s5",
+        "s2",
+        "s3"
+      ],
+      "limitations": "No TAG, Mozilla, or WebKit position statements found; all formal Chrome reviews pending; spec text not yet stable (proposed for a future css-overscroll level)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial exists or is planned (ChromeStatus origintrial=false; no OT stage data; no experiment goals/risks fields populated). This is appropriate: the feature is at dev-trial stage behind a flag, and an OT is not justified yet because the uncertainties the team faces (design ergonomics, other-engine interest, accessibility details) are better answered by developer-trial feedback and standards discussion than by a field experiment. 'Not-relevant' here means a field experiment has not been warranted at this stage, NOT that the feature is untested.",
+      "evidenceIds": [
+        "s1",
+        "s2"
+      ],
+      "limitations": "If wide review surfaces user/population-scale uncertainty (e.g. gesture-vs-browser-navigation conflicts at scale), an OT may become relevant later."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "The feature has not reached prepare-to-ship. ChromeStatus status is 'Proposed', is_released=false; there is no Intent to Ship, no populated rollout/enterprise/support/monitoring plan, and no docs/FAQ/assets. Although the ship stage in the record carries planned desktop_first/android_first of 149, the only actual launch event is the behind-a-flag developer trial at 149. 'Not-relevant' reflects that this phase has not been entered, not that it is unimportant.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s9"
+      ],
+      "limitations": "A '149' milestone appears in both the dev-trial launch event and the (empty) ship stage, which could be misread as shipping; the manifest and ChromeStatus confirm only the dev trial has occurred."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "The feature has not shipped, and release communication so far is accurate and appropriately hedged. It is correctly absent from the 'New in Chrome 149' shipped-features post (whose highlights are gap decorations, bfcache WebSockets, and Intl.Locale.variants). Its first significant public DevRel mention is the Google I/O 2026 'What's new in web UI' post (2026-07-01), which frames it accurately as 'a proposed declarative solution, in discussion with OpenUI community group' rather than an available feature. This is the right framing for a behind-a-flag trial and avoids the common failure of announcement outrunning implementation.",
+      "evidenceIds": [
+        "s8",
+        "s9",
+        "s1",
+        "s2"
+      ],
+      "limitations": "No reference docs, MDN entry, release-notes item, or demo/article authored for the trial were found; the trial is communicated only via the I/O roundup."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No adoption evidence exists and none should be expected at this stage: the feature is behind a flag (no default availability), webdx_usecounter_enum is null (no use counter yet), and no framework/library/tool integration or production case study was found. Public mentions are amplification of the I/O 2026 announcement (LinkedIn reshares, a note.com explainer, a Spanish I/O recap), not evaluation or production use. This remains unknown, not negative.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s13",
+        "s8"
+      ],
+      "limitations": "Adoption cannot be assessed until the feature reaches at least origin-trial or default availability."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence is available. A tracking bug exists (issues.chromium.org/443719046) but was not retrievable, and no public support issues, known-issues material, or troubleshooting content were found. The feature is too new and too gated to have a support burden signal.",
+      "evidenceIds": [
+        "s1",
+        "s12"
+      ],
+      "limitations": "Chromium bug body not retrievable; no support issues or known-issues docs found."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a brand-new feature with nothing to deprecate or remove; no deprecation/removal path applies. 'Not-relevant' reflects that there is no legacy surface being restricted or replaced, not that removal risk is untested.",
+      "evidenceIds": [
+        "s1",
+        "s2"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer problem is genuine and recurring (declarative, accessible, script-free gesture UIs such as drawer menus, swipe-to-reveal, and pull-to-refresh), and the design is well-reasoned: it anchors every gesture to a semantic <button> so a keyboard/AT fallback always exists, offloads physics to the compositor, and reuses the proven Invoker Commands mechanism. This is a credible, accessibility-first improvement over JS gesture polyfills. The weakness is evidence: independent developer demand is unevidenced (Web Dev 'No signals'; no framework-author, survey, or partner signal), so value is asserted from problem validity and design quality rather than demonstrated demand.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s5",
+        "s13"
+      ],
+      "limitations": "No attributable developer demand or partner-evidence ladder; 'value' inferred from problem framing + design, not measured."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Not shipped and no end-user impact study, telemetry, accessibility user-testing, or motion-sensitivity/vestibular evidence was found. The design intends a positive, more-accessible gesture experience, but end-user impact is undetermined.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "limitations": "Feature is behind a flag; no end-user data exists."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No usage counters, framework/library integration, or production deployment evidence exists; too early and too gated to score.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s13"
+      ],
+      "limitations": "Feature not available by default; no adoption denominator possible."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Interoperability is the most consequential open risk and is unresolved but being worked. Concrete positives: active, multi-venue standards engagement (Open UI incubation, CSSWG, WHATWG HTML proposal) and reuse of the Invoker Commands pattern that itself is advancing cross-engine. Concrete gaps: Firefox and Safari both 'No signal'; the WHATWG proposal is labeled 'needs implementer interest' and 'stage: 1 Incubation'; the CSSWG spec issue is 'Needs Edits' and 'Needs Testcase (WPT)'; no Baseline path is established. A Chrome-only period is the current default outlook and must not be mistaken for broad success.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s5",
+        "s6",
+        "s4"
+      ],
+      "limitations": "No Mozilla/WebKit/TAG positions found; spec not stable; no WPT results confirmed."
+    },
+    "implementationQuality": {
+      "status": "unscored",
+      "finding": "A Chromium implementation exists behind the flag (finch name OverscrollGestures), but its completeness, test coverage, performance, and compatibility could not be verified: ChromeStatus claims WPT:true while the CSSWG issue still requests a WPT testcase, and the tracking bug was not retrievable. No friction-log or conformance evidence was found.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s6",
+        "s12"
+      ],
+      "limitations": "Implementation bug and test state not independently verifiable."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication accuracy is strong: the I/O 2026 post correctly frames the feature as proposed/in-discussion, and it is correctly omitted from the shipped-features Chrome 149 post. The explainer is detailed and honest about open questions. Weaknesses: developer demand is asserted rather than evidenced in the record; the dev-trial instructions and canonical sample were not durably retrievable; and no independent developer evidence dossier accompanies the trial.",
+      "evidenceIds": [
+        "s8",
+        "s9",
+        "s1",
+        "s2",
+        "s3",
+        "s10",
+        "s11"
+      ],
+      "limitations": "Dev-trial instructions and sample not retrievable; no claim/evidence ledger or developer-evidence dossier found."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support burden, issue taxonomy, or known-issues material exists; the feature is too new and too gated to score.",
+      "evidenceIds": [
+        "s1",
+        "s12"
+      ],
+      "limitations": "No retrievable support signal."
+    },
+    "overall": {
+      "status": "unscored",
+      "finding": "Overall outcome is undetermined and is correctly NOT scored as success or failure. The feature is at the developer-trial stage with sound process ingredients (Open UI incubation, accessibility-first design, accurate and hedged communication, active multi-venue standards work, continuity authors reusing Invoker Commands), but the decisive evidence is missing or pending: no developer demand, zero other-engine interest, all formal reviews pending, spec unstable, and no trial findings. It is premature to call success or failure; the realistic near-term risks are a prolonged Chrome-only period and unvalidated demand.",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s5",
+        "s6",
+        "s8",
+        "s9",
+        "s13"
+      ],
+      "limitations": "Feature pre-shipment; multiple material evidence gaps; outcome will only become scoreable after trial findings, other-engine signals, and review completion."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5261280285949952",
+      "publisher": "Chrome Platform Status (Chromium)",
+      "publishedOrObservedAt": "2026-04-17",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record, owners, flag/finch, stages, dev-trial at M149, review statuses pending, FF/Safari/WebDev no signal, webdx_usecounter null, is_released=false, status Proposed"
+      ],
+      "limitations": "Assessed via the immutable cached snapshot at evidence/chromestatus/features/5261280285949952.json (accurate_as_of 2025-09-08; last updated 2026-04-17). The live chromestatuslite server-rendered view was not separately fetched."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatus.com/feature/5261280285949952",
+      "publisher": "Chrome Platform Status (Chromium)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Live summary and motivation text confirming the cached record"
+      ],
+      "limitations": "Search-snippet only; full live page not browser-rendered in this run."
+    },
+    {
+      "id": "s3",
+      "url": "https://open-ui.org/components/overscroll-actions.explainer",
+      "publisher": "Open UI (authors: vmpstr, flackr, mfreed7)",
+      "publishedOrObservedAt": "2026-02-13",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer: API (overscrollcontainer + command=toggle-overscroll), goals (no-JS, a11y-by-default, compositor performance), use cases, light-dismiss/modal/a11y/focus behavior, progressive enhancement via popover, alternatives (CSS-only rejected), open questions; created 2026-02-13, last updated 2026-06-04"
+      ],
+      "limitations": "Explainer (not a ratified spec); 'last updated 2026-06-04' per page metadata."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12750",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2025-09-08",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Initial public proposal (2025-09-08, vmpstr); placed on CSS WG TPAC 2025 agenda; original pure-CSS framing that later evolved to HTML attributes"
+      ],
+      "limitations": "Reader returned the issue body only; comment thread (TPAC discussion) not captured."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/openui/open-ui/issues/1372",
+      "publisher": "Open UI",
+      "publishedOrObservedAt": "2026-02-13",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Open UI incubation introduction (2026-02-13, mfreed7) of 'Declarative Overscroll Actions'; confirms design moved to Open UI and references a polyfill demo"
+      ],
+      "limitations": "Reader returned the issue body only; subsequent Open UI discussion comments not captured."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/w3c/csswg-drafts/issues/13999",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2026-06-01",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "CSSWG spec-definition issue (2026-06-01, flackr); labels 'Needs Edits', 'Needs Testcase (WPT)', 'css-overscroll-1'; documents evolution to HTML attributes and references whatwg/html#12273; proposed for a future css-overscroll level"
+      ],
+      "limitations": "Reader returned the issue body only; resolution/edit history not captured."
+    },
+    {
+      "id": "s7",
+      "url": "https://https://github.com/whatwg/html/issues/12273",
+      "publisher": "WHATWG (HTML)",
+      "publishedOrObservedAt": "2026-03-17",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WHATWG HTML proposal (2026-03-17, vmpstr) 'Overscroll areas via command=toggle-overscroll'; labels 'addition/proposal', 'needs implementer interest', 'stage: 1 Incubation'; confirms Open UI incubation and a11y-first rationale"
+      ],
+      "limitations": "URL normalized to https://github.com/whatwg/html/issues/12273; reader returned issue body only; implementer-interest status is the key unresolved signal."
+    },
+    {
+      "id": "s8",
+      "url": "https://developer.chrome.com/blog/new-in-web-ui-io26",
+      "publisher": "Chrome for Developers (Bramus, Una Kravets)",
+      "publishedOrObservedAt": "2026-07-01",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "press",
+      "supports": [
+        "First major DevRel mention: item #28 'Overscroll gestures (swipeable areas)', accurately framed as 'a proposed declarative solution, in discussion with OpenUI community group' using overscrollcontainer and command invokers; published 2026-07-01"
+      ],
+      "limitations": "DevRel-authored announcement, not independent assessment."
+    },
+    {
+      "id": "s9",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-149",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 shipped-features post (2026-06-02) does NOT mention Overscroll Gestures; highlights are gap decorations, bfcache WebSockets, Intl.Locale.variants; consistent with behind-a-flag dev trial, not shipment"
+      ],
+      "limitations": "Negative evidence (absence from the post); confirms non-shipment only."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/vmpstr/htmldemos/blob/master/gestures/devtrial.md",
+      "publisher": "vmpstr (personal repo)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Dev-trial instructions document is referenced by ChromeStatus as the trial's developer onboarding"
+      ],
+      "limitations": "Not retrievable (reader returned 500/fetch-failed on blob and raw URLs); content, tasks, and limitations unknown."
+    },
+    {
+      "id": "s11",
+      "url": "https://https://flackr.github.io/web-demos/html/overscrollcontainer",
+      "publisher": "flackr (personal demo)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Canonical sample/demo is referenced by ChromeStatus"
+      ],
+      "limitations": "URL normalized to https://flackr.github.io/web-demos/html/overscrollcontainer; not retrievable (reader timed out); demo behavior/quality not verified."
+    },
+    {
+      "id": "s12",
+      "url": "https://issues.chromium.org/443719046",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking/launch bug is referenced by ChromeStatus"
+      ],
+      "limitations": "Not retrievable via reader (typically requires authenticated browser); implementation status, tests, and regressions unknown."
+    },
+    {
+      "id": "s13",
+      "url": "https://www.linkedin.com/posts/chalani-kaushi_whats-new-in-web-ui-activity-7469304935025692672-4g2l",
+      "publisher": "Developer community (note.com, nbellocam.dev, LinkedIn amplifiers of the I/O 2026 session)",
+      "publishedOrObservedAt": "2026-07-01",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Post-I/O awareness amplification referencing the explainer/session; a note.com '2026 Latest' explainer and a Spanish I/O recap (nbellocam.dev) describe the API as in-development"
+      ],
+      "limitations": "Amplification of the official announcement, not independent demand, evaluation, or adoption; representative link shown, denominator not enumerable."
+    }
+  ],
+  "successes": [
+    "Accessibility-first design that anchors every gesture to a semantic <button>, guaranteeing a keyboard/AT fallback and directly addressing a known a11y failure mode of JS gesture polyfills.",
+    "Correct venue strategy and genuine iteration: started in CSSWG, moved component semantics to Open UI, and opened WHATWG HTML + css-overscroll proposals; the design deliberately evolved from pure-CSS to HTML attributes + a new toggle-overscroll invoker command reusing the proven Invoker Commands mechanism.",
+    "Accurate, well-hedged communication: the Google I/O 2026 post frames it as a proposed solution 'in discussion with OpenUI', and it is correctly omitted from the shipped-features Chrome 149 post, avoiding announcement-outruns-implementation.",
+    "Continuity and de-risked pattern reuse: same author team (vmpstr, flackr, mfreed7) that delivered Invoker Commands/popover, lowering API-design risk."
+  ],
+  "failures": [
+    "Developer demand is asserted from problem validity, not evidenced: Web Dev 'No signals', and no framework-author, survey, or partner-evidence ladder accompanies the trial.",
+    "Interoperability is unresolved and currently Chrome-only in outlook: Firefox and Safari 'No signal'; the WHATWG proposal is labeled 'needs implementer interest' and 'stage: 1 Incubation'; the css-overscroll spec is 'Needs Edits'/'Needs Testcase (WPT)'.",
+    "All formal reviews (tag, security, privacy) are pending and no ratified spec exists, so wide-review readiness has not been demonstrated.",
+    "Developer-trial outcomes are unevidenced: no cohort, task-completion, friction, or partner findings have been published, so the phase's core questions remain open.",
+    "Documentation durability gap: the dev-trial instructions and the canonical sample demo were not retrievable, weakening the trial's onboarding evidence."
+  ],
+  "counterfactuals": [
+    "If the team had gathered attributable developer demand (e.g. from framework/library authors building drawers, swipe-lists, and pull-to-refresh, plus app-developer research) before or alongside the prototype, the 'Web Dev: No signals' gap and the WHATWG 'needs implementer interest' label would be easier to close before prepare-to-ship.",
+    "If other-engine engagement had been secured earlier (Open UI is the right shared venue, but Mozilla/WebKit have not signaled), the Chrome-only-period and Baseline risk would be materially lower; the current 'needs implementer interest' status shows this has not happened yet.",
+    "If the developer trial publishes cohort, task-completion, and friction findings (per phase 03) before wide review, it would answer whether the toggle-overscroll/overscrollcontainer design solves realistic tasks and composes with frameworks, de-risking the next transition.",
+    "If the dev-trial instructions and sample were hosted on durable, reader/browser-friendly URLs, trial onboarding and independent verification would not be blocked by dead/unfetchable links."
+  ],
+  "skillImprovements": [
+    "Add a phase-02/03 'demand evidence' checkpoint: require at least one attributable framework/library-author or developer-research signal (distinct from problem validity) before recommending wide review, so 'Web Dev: No signals' is an explicit blocker rather than silently accepted.",
+    "Add an interop early-warning rule: when ChromeStatus records Firefox/Safari 'No signal' AND a WHATWG/CSSWG issue is labeled 'needs implementer interest', the prepare-to-ship/readiness packet must surface the Chrome-only-period and Baseline risk explicitly and must never treat 'No signal' as neutral/positive.",
+    "Add a dev-trial artifact-completeness check: count a developer trial as 'launched' only when the instructions and a live sample are fetchable and linked; flag unreachable trial docs (devtrial.md, demo) as a documentation-durability defect to fix before wider recruitment.",
+    "Add a regression-eval rule for pre-shipment features: adoption, end-user-impact, implementation-quality, and support dimensions default to 'unscored', and overall completion is 'partial' when reviews are pending and no other-engine signal exists — codify what this run does so success is never inferred from shipment, usage, press sentiment, or absent criticism.",
+    "Add a spec/test consistency check: when ChromeStatus claims WPT:true but a linked standards issue is labeled 'Needs Testcase (WPT)', flag the discrepancy in the wide-review packet rather than reporting test readiness as supported."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Prototype (blink-dev) full body not retrievable; only title/summary confirmed via search.",
+      "Developer-trial instructions (vmpstr/htmldemos gestures/devtrial.md) not retrievable; trial tasks/limitations unknown.",
+      "Canonical sample/demo (flackr.github.io/web-demos/html/overscrollcontainer) not retrievable (timeout); demo quality unverified.",
+      "Chromium tracking/launch bug (issues.chromium.org/443719046) not retrievable; implementation completeness, tests, and regressions unknown.",
+      "No Firefox, Safari, or TAG standards positions found; all Chrome formal reviews (tag/security/privacy) pending.",
+      "No developer demand evidence (survey, framework-author, partner) found; Web Dev recorded as 'No signals'.",
+      "No usage/adoption data possible (behind a flag, webdx_usecounter null); no framework/library integration or case studies.",
+      "No support-issue or known-issues material found.",
+      "Live ChromeStatus / chromestatuslite server-rendered view not separately fetched (cached record used)."
+    ],
+    "reviewedAt": "2026-07-20T22:40:00Z"
+  }
+}

@@ -39,7 +39,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -129,26 +129,27 @@
       "limitations": "No dedicated deep-dive article or sample; messaging does not surface the measured low-but-real termination rate or the open lifecycle spec question."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Strong pre-ship demand (13-year bug thread, Interop 2026 request, LiveStore single-tab fallback workaround, Pusher/RxDB/wa-sqlite ecosystem references) and 34 OT sign-ups indicate real interest. However the feature reached stable only around May-Jun 2026 and no post-ship production adoption, retention, or use-counter data is available at the evidence cutoff; the live use-counter page is browser-rendered and was not directly retrievable.",
+      "status": "partial",
+      "finding": "Strong pre-ship demand (13-year bug thread, Interop 2026 request, LiveStore single-tab fallback workaround, Pusher/RxDB/wa-sqlite ecosystem references) and 34 OT sign-ups indicate real interest. First-party Chrome usage telemetry is now cached for the exact feature counter (kSharedWorkerStartOnAndroid, ChromeStatus bucket 5626; scope exact, 162 daily points). During the OT/dev-trial the counter was effectively silent — 0% at stable (2025-09-02) and at day 30, ~0.000001% at day 90 (2025-12-15), and ~0.0000004% at day 180 (2026-03-01), consistent with opt-in-only exposure and 34 sign-ups. Default enablement produced a clear step-change: ~0.005904% of measured Chrome page loads at M148 stable (2026-05-05), ~0.007707% at day 30 (2026-06-04), a peak of ~0.012877% (2026-07-11), and ~0.007972% at the latest observation (2026-07-21); M148 day 90/day 180 are not yet available (feature ~78 days past stable at observation). These values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once — not unique developers, sites, or users — and no adoption target was predeclared, so the low-but-present level is described, not scored. Production-deployment, unique-site, and retention evidence remain absent.",
       "evidenceIds": [
         "bug-40290702",
         "interop-1064",
         "livestore-321",
         "intent-ship",
-        "usage-metric-5626"
+        "usage-metric-5626",
+        "usage-timeline-5626-cached"
       ],
-      "limitations": "No post-ship adoption metrics; pre-ship interest is not production adoption."
+      "limitations": "Use counter is a page-load share (counter fired at least once), not unique sites/developers/users, production deployment, task success, or end-user benefit; counter instrumentation may include probing, and UMA reflects participating Chrome clients with enterprise/opt-out populations underrepresented. No predeclared adoption target, so low usage is not scored as failure. The metrics cache also surfaced two CSS-property counters ('content' bucket 74 at ~0.8%, 'source' bucket 667 at 0%) that text-matched the UMA name 'Content.SharedWorker.Host.DestructionSource' and are excluded as unrelated to SharedWorker. The metrics layer was collected 2026-07-22 and postdates the original 2026-07-19 evidence base; process-phase assessments are unchanged."
     },
     "support": {
       "status": "unknown",
-      "finding": "OT feedback channels were active (owner solicited feedback twice during the trial). A Trial Usage alert fired and was determined to be a false alarm, indicating monitoring exists. Post-ship support volume, regressions, and issue resolution are not yet observable (feature <2 months past stable).",
+      "finding": "OT feedback channels were active (owner solicited feedback twice during the trial). A Trial Usage alert fired and was determined to be a false alarm, indicating monitoring exists. Post-ship support volume, regressions, and issue resolution are not yet observable (feature ~2.5 months past stable as of 2026-07-22).",
       "evidenceIds": [
         "intent-ship",
         "bug-40290702",
         "chromestatus-cached"
       ],
-      "limitations": "No post-ship support/regression data; metrics committed but not yet reported."
+      "limitations": "No post-ship support/regression/issue-resolution data; the committed kSharedWorkerStartOnAndroid use counter is now reporting page-load share (see usage-timeline-5626-cached), but support-specific signals (regression volume, issue counts, resolution times) and the Content.SharedWorker.Host.DestructionSource UMA distribution are not in the cached telemetry."
     },
     "deprecation": {
       "status": "not-relevant",
@@ -169,7 +170,7 @@
         "livestore-321",
         "chromestatus-cached"
       ],
-      "limitations": "Realized value depends on adoption not yet measured."
+      "limitations": "Realized value depends on adoption; the use counter now shows low-but-present usage but no unique-site/production evidence."
     },
     "endUserImpact": {
       "status": "mixed",
@@ -184,14 +185,15 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Pre-ship demand is strong and multi-source, but the feature is <2 months past stable and no post-ship adoption/use-counter/retention data is available, so durable production adoption cannot be scored.",
+      "finding": "Pre-ship demand is strong and multi-source (13-year bug, Interop 2026 request, LiveStore fallback, RxDB/Pusher/wa-sqlite references). Post-ship, the exact feature use counter (bucket 5626) now shows low-but-present, roughly stable usage with daily variance: ~0.005904% of measured Chrome page loads at M148 stable (2026-05-05), ~0.007707% at day 30 (2026-06-04), a peak of ~0.012877% (2026-07-11), and ~0.007972% at the latest observation (2026-07-21) — roughly four orders of magnitude above the near-zero OT period (0% at stable/day30; ~0.000001% at OT day 90). This is the share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once, not unique developers/sites/users or production deployment. No adoption target was predeclared for this feature and there is no corroborating production/retention/unique-site evidence, so durable adoption remains unscored; the measured level and trend are described above.",
       "evidenceIds": [
         "bug-40290702",
         "interop-1064",
         "livestore-321",
-        "usage-metric-5626"
+        "usage-metric-5626",
+        "usage-timeline-5626-cached"
       ],
-      "limitations": "Post-ship adoption data unavailable at cutoff."
+      "limitations": "Page-load share (counter fired at least once), not unique sites/developers/users, production deployment, task success, or end-user benefit. No predeclared adoption target, so low usage is not scored as failure and a higher value would not alone be success; M148 day 90/day 180 checkpoints not yet available. No production/retention/unique-site evidence."
     },
     "interoperability": {
       "status": "success",
@@ -239,16 +241,17 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, methodically-trialed catches-up enablement that closes a 13-year interoperability gap with strong developer demand. Mixed because the ship rests on modest statistical evidence, the core lifecycle risk is confirmed-real-but-rare and remains under-specified, documentation is thin, and release comms understated the measured basis. Net direction is positive; the weak spots are evidence/docs/communication, not the problem or the API.",
+      "finding": "A well-motivated, methodically-trialed catches-up enablement that closes a 13-year interoperability gap with strong developer demand. Mixed because the ship rests on modest statistical evidence, the core lifecycle risk is confirmed-real-but-rare and remains under-specified, documentation is thin, and release comms understated the measured basis. Early post-ship usage is low-but-present and roughly stable (~0.006-0.013% of measured Chrome page loads over the first ~11 weeks, with no predeclared adoption target), which does not by itself revise the mixed call. Net direction is positive; the weak spots are evidence/docs/communication, not the problem or the API.",
       "evidenceIds": [
         "intent-ship",
         "intent-extend",
         "bug-40290702",
         "interop-1064",
         "chromestatus-cached",
-        "chrome148beta-blog"
+        "chrome148beta-blog",
+        "usage-timeline-5626-cached"
       ],
-      "limitations": "Post-ship adoption and support outcomes unknown."
+      "limitations": "Adoption now partially measured (low page-load share, no target, no production/unique-site evidence); post-ship support outcomes still unknown."
     }
   },
   "sources": [
@@ -454,7 +457,19 @@
       "supports": [
         "Use-counter bucket 5626 (kSharedWorkerStartOnAndroid) is the defined adoption metric for this feature"
       ],
-      "limitations": "Live metric page is browser-rendered and was not directly retrievable via the reader; current value not captured."
+      "limitations": "Live popularity page is browser-rendered; this entry documents the metric definition/bucket from the feature record (accurate as of 2026-04-20). Cached daily values are captured in source usage-timeline-5626-cached (retrieved 2026-07-22)."
+    },
+    {
+      "id": "usage-timeline-5626-cached",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5626",
+      "publisher": "Chrome Platform Status feature-popularity timeline (cached daily JSON; bucket 5626 = kSharedWorkerStartOnAndroid)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact feature use counter for this feature (scope exact, 162 daily points). Measured share of Chrome HTTP/HTTPS page loads on which the counter fired at least once. Near-zero during OT/dev-trial: atStable and day30 0%; day90 (2025-12-15) 0.000001%; day180 (2026-03-01) 0.0000004%; first positive 2025-11-08 at 0.00000001%. Step-change at default enablement: M148 atStable (2026-05-05) 0.005904%; day30 (2026-06-04) 0.00770696%; peak 0.01287707% (2026-07-11); latest 0.00797191% (2026-07-21); latest snapshot 0.0082061% (2026-07-20). M148 day90/day180 not yet available."
+      ],
+      "limitations": "Share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients (enterprise/opt-out populations underrepresented). The metrics cache also contained two CSS-property counters ('content' bucket 74 ~0.8%, 'source' bucket 667 0%) that text-matched the UMA name 'Content.SharedWorker.Host.DestructionSource' and are excluded as unrelated to SharedWorker. No predeclared adoption target; low values are not automatically failure."
     }
   ],
   "successes": [
@@ -484,12 +499,12 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Post-ship production adoption and kSharedWorkerStartOnAndroid use-counter values (feature <2 months past M148 stable; live metric page is browser-rendered and was not directly retrievable).",
+      "Unique-site, production-deployment, and retention evidence for SharedWorker on Android (the exact feature use counter kSharedWorkerStartOnAndroid is now cached at ~0.006-0.013% of measured page loads through 2026-07-21; M148 day 90/day 180 checkpoints are pending).",
       "Published OT statistical readout with denominators, thresholds, and the unnamed major partner's results.",
       "Resolution of security_review_status and privacy_review_status (both Pending in the cached record).",
-      "Post-ship support/regression volume and resolution times.",
+      "Post-ship support/regression volume and resolution times (the use counter reports usage but not support burden).",
       "WebKit/Gecko mobile-lifecycle perspectives captured into this feature's review (whatwg/html#11205 remains open)."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

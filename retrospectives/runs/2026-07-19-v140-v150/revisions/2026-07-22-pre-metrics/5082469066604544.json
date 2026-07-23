@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5082469066604544,
+    "name": "CSS caret-animation property",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5082469066604544",
+    "blinkComponents": [
+      "Blink>CSS"
+    ],
+    "owners": [
+      "schenney@chromium.org",
+      "zsun@igalia.com"
+    ],
+    "specLink": "https://drafts.csswg.org/css-ui/#caret-animation",
+    "trackingBug": "https://issues.chromium.org/issues/329301988",
+    "values": "auto | manual"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5082469066604544",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The intake is well-formed: a narrow, recurring developer problem (animating caret-color is broken because the UA blinking interferes, e.g. a blue↔red animation renders as a randomly-colored blinking cursor) with a documented brittle workaround (hide the caret with caret-color:transparent and draw/track a div with JavaScript). The named requestor is Bloomberg (the spec editor's employer). The property exposes two values, auto (UA default) and manual (author controls animation), and additionally gives motion/photosensitive users a user-stylesheet escape hatch. Browser-layer intervention is plausible and the request originates from the standards body rather than a vendor API push.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S11"
+      ],
+      "limitations": "No formal explainer document exists (explainer_links point to the spec section and the CSSWG issue); the only named customer is Bloomberg and the only developer-segment evidence is editor/terminal use cases; no stakeholder/owner map beyond the two owners."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Public incubation happened in the CSSWG: issue #9707 was opened 2023-12-14 by Florian Rivoal, enumerated real use cases (VS Code fade-in caret; Bloomberg Terminal color alternation) and the brittle workaround, and the group resolved on 2024-02-08 ('The caret animation is auto versus none'). Counter-evidence was engaged during incubation: a contributor raised that Chromium honors the OS blink rate, WebKit has a dictation 'throbbing' caret hard to sync, and a solid caret could confuse users, and questioned whether editors/terminals would even use it. The spec text (commit 58d739b) deliberately named the non-auto value manual to avoid implying it blocks CSS animations.",
+      "evidenceIds": [
+        "S3",
+        "S4"
+      ],
+      "limitations": "No written developer-research cohort or demand survey; 'use cases' are largely the editor/terminal category and the proposer's own employer; no alternatives-rejected ledger beyond the discussion."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A Chromium prototype existed and reached a behind-flag developer trial by M132 (desktop+android). schenney reported a Chromium CL adding initial support plus a WPT test in Oct 2024, and the WPT parsing test landed 2024-10-09. The property composes with existing caret-color infrastructure and the @supports gating rule means non-implementing engines simply do not expose the property.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Testing was deliberately limited to a CSS parsing test; caret-blinking behavior was deemed untestable because it is inconsistent across platforms and flaky under test-machine load, leaving behavioral correctness effectively uncovered in WPT. No documented task-based friction logs or framework-integration spikes."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial ran in Chrome 132 (desktop and android) behind 'Experimental web platform features' (stage data: desktop_first/android_first 132). The flag-based trial is the stated evaluation path and the finch name is CSSCaretAnimation.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No evidence of a recruited/representative cohort, task-completion data, feedback themes, survey methodology, or attributable partner trial. The adoption_plan explicitly relies on 'organic adoption' and self-publicization rather than a structured trial, so trial learning quality is unknown."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Cross-engine review was requested and tracked honestly: Mozilla standards-positions #1100 (opened 2024-10-16, assigned to emilio) and WebKit standards-positions #417 (opened 2024-10-16, label 'from: Igalia'). ChromeStatus records Mozilla as 'Under consideration' and WebKit as 'No signal', and the live issues confirm no formal Mozilla position ('Needs proposed position') and WebKit 'No response' with no Bugzilla/Radar. Security and privacy review statuses are 'Issues addressed'; TAG review was marked N/A. An accessibility objection (risk that authors misuse caret-color:transparent / solid-caret confusion, plus honoring OS blink rate) was raised in the CSSWG and echoed in the Mozilla thread.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S4"
+      ],
+      "limitations": "No formal positive position from either other engine; 'No signal' is correctly not treated as support in the record, but the practical outcome is single-engine. No written response to the accessibility objection in the ship materials beyond the spec's user-stylesheet recipe."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run or warranted. The feature is a low-risk, spec-resolved CSS property with activation_risks 'No risks', no origin-trial fields populated, and a flag-based developer trial already completed. Because the @supports-gating design means engines that will not honor 'manual' must not implement the property at all, a field experiment would not have resolved material uncertainty about compatibility or adoption; not-relevant by design, not because it went untested.",
+      "evidenceIds": [
+        "S1",
+        "S4"
+      ],
+      "limitations": "This judgment relies on the team's self-assessed 'No risks'; there is no independent field evidence either way."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "The ship packet was substantially complete: an Intent to Ship thread exists (stage 160 intent_thread_url), rollout plan 'Will ship enabled for all users', finch CSSCaretAnimation, measurement 'Through usual CSS feature counters', no enterprise impact, and security/privacy 'Issues addressed'. The spec is a CSSWG Working Draft with the property resolved by the group.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S8"
+      ],
+      "limitations": "The Intent to Ship thread content could not be independently retrieved (groups.google.com is not reader-accessible), so review relied on the cached ChromeStatus intent fields. Critically, the public ChromeStatus status field was never flipped to 'Enabled by default' and is_released stayed false for months after stable shipment (still 'In development' as of the cache date 2025-10-22 and per a later ChromeStatus snapshot), so the canonical dashboard misrepresented availability at the prepare-to-ship/release boundary."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "caret-animation shipped in Chrome 140 stable on 2025-09-02 for Android, ChromeOS, Linux, macOS, and Windows (desktop/android/webview; not iOS), matching the manifest launch event. Coordinated DevRel communication occurred: the Chrome 140 beta blog, the Chrome 140 release notes (with tracking bug #329301988, ChromeStatus and Spec links), the web.dev 'New to the web platform in September' digest, an MDN reference page (auto|manual, marked Experimental), and Igalia demo screencasts.",
+      "evidenceIds": [
+        "S8",
+        "S9",
+        "S10",
+        "S7",
+        "S11",
+        "S1"
+      ],
+      "limitations": "The feature is Chromium-only and MDN flags it Experimental, so the 'shipped' claim is qualified by single-engine availability. Reach is modest for a niche CSS property and the public ChromeStatus page still showed 'In development' after release, undercutting the canonical availability signal."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No defensible adoption evidence was located. The cached record's adoption_expectation is explicitly speculative (caret-color is ~12% of page loads; animated caret-color ~0.016%; 'maybe hit 1% over time') and the adoption_plan is 'organic adoption once publicized.' Bloomberg is the named sponsor and requestor but no public production case study exists, and no framework/library/tool integration was found ~10 months after stable.",
+      "evidenceIds": [
+        "S1",
+        "S11"
+      ],
+      "limitations": "No public Chrome use-counter dashboard or number for caret-animation was located; the Chromium tracking bug is access-restricted; absence of public adoption signals is not evidence of zero adoption, so the dimension is unknown rather than negative."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "The record states 'Support in DevTools' for debuggability, and no significant public support issues, regressions, or migration friction were found in accessible trackers for caret-animation specifically.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "The Chromium tracking bug (329301988) is not publicly readable and no public issue taxonomy, recurrence, or resolution-time data exists. Absence of visible support issues is not proof of low support burden."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new feature launch, not a deprecation or removal, so the deprecation/removal phase does not apply. (The feature may reduce reliance on the caret-color:transparent-plus-drawn-div workaround, but deprecating that workaround is not part of this feature's lifecycle.)",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not applicable; included for completeness per the schema."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "A genuine, narrow developer problem is solved with a minimal, well-scoped API (two keywords) and an interop-conscious @supports-gating design, and the underlying pain is corroborated by widely-documented brittle workarounds. But developer value today is confined to Chromium/Edge users, the realistic audience is editors/terminals (the named requestor is the spec editor's employer), and the value depends on the property actually being adopted, for which there is no evidence.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S11",
+        "S15"
+      ],
+      "limitations": "No measured demand or production uptake; value assessment rests on problem validity, not demonstrated adoption."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Positive: motion-sensitive and photosensitive users gain a user-stylesheet escape hatch to stop caret blinking/fading (the spec cites WCAG 2.2 and 2.3), and custom caret UX becomes possible. Negative/uncertain: the benefit is Chromium-only so most end users are unaffected; reviewers raised that authors could misuse it (e.g. caret-color:transparent) or that a solid/non-blinking caret could confuse users, and the OS blink-rate honoring concern is unresolved in the ship materials.",
+      "evidenceIds": [
+        "S4",
+        "S3",
+        "S5"
+      ],
+      "limitations": "No user-testing or accessibility-validation evidence; end-user benefit is theoretical and single-engine."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible usage or adoption data exists post-ship; the only figures are the team's pre-ship, method-less estimates. Per the scoring rule, adoption is not inferred from shipment, usage alone, or absence of criticism.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public use-counter, case study, or framework-integration evidence; Bloomberg sponsorship is not attributable production adoption."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "The concrete interoperability state is single-engine: Chrome and Edge 140 ship it; Firefox has 'No support' and Mozilla has taken no formal position (issue still 'Needs proposed position'); WebKit gave 'No response' with no Bugzilla/Radar; the property is absent from the Baseline-2026 newly-available set and the spec remains a Working Draft. The @supports-gating rule is an intentional, graceful-degradation mitigation (non-implementing engines simply do not expose the property), which makes the failure safe-by-design rather than a compat break, but it does not change the cross-engine outcome.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S7",
+        "S12",
+        "S13",
+        "S14",
+        "S4"
+      ],
+      "limitations": "Only ~10 months since stable; other engines could implement later, and the design means current non-interoperability does not break pages. Score reflects the present state, not future potential."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The implementation was delivered cleanly by Igalia (schenney + Ziran Sun) sponsored by Bloomberg, has DevTools support, and a WPT parsing test landed alongside initial support. However, test coverage is intentionally limited to parsing because caret-blinking behavior is untestable across platforms/flaky under load, leaving behavioral correctness and regressions unverified in WPT, and the implementer's blog states it shipped in Chromium 'since version 139' while all official sources (manifest, ChromeStatus stage data, MDN, Chrome 140 release notes, web.dev) say 140.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S8",
+        "S11"
+      ],
+      "limitations": "No access to the Chromium bug/CL history to assess regressions or perf; the milestone discrepancy is minor but an accuracy gap."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Primary evidence is strong and coherent (CSSWG issue + resolution, spec text, intent fields, MDN, release notes, web.dev digest, Igalia demos). But three evidence-quality gaps stand out: (1) the public ChromeStatus status field stayed 'In development' / is_released=false for months after stable shipment, misrepresenting availability on the canonical dashboard; (2) Mozilla's position is recorded as 'Under consideration' while the live issue shows no formal position; (3) adoption expectations (0.016% → maybe 1%) are presented without method.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5",
+        "S8",
+        "S10",
+        "S16"
+      ],
+      "limitations": "Intent-to-ship thread and Chromium bug were not independently retrievable; communication quality outside Google channels (e.g. editor/framework communities) is thin."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "DevTools support is claimed and no public support burden is observable, but there is no public issue taxonomy, recurrence, or resolution data, and the tracking bug is access-restricted. Insufficient evidence to score.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Absence of visible issues is not evidence of low support burden."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A competently executed, low-risk launch of a well-scoped CSS property with genuine (if niche) developer and accessibility value, clean DevRel coordination, and an interop-conscious design. The launch is held back by single-engine interoperability with no positive signals from Firefox or WebKit, an untestable-behavior WPT gap, a stale ChromeStatus availability signal, and a complete absence of measured adoption. Overall is mixed because the execution dimensions are solid while the outcome dimensions (interop, adoption, support) remain unresolved or unknown."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5082469066604544",
+      "publisher": "Chrome Platform Status (cached record 5082469066604544.json, accurate_as_of 2025-10-22)",
+      "publishedOrObservedAt": "2025-10-22",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata; owners schenney@chromium.org, zsun@igalia.com; dev trial M132 desktop+android; ship stage desktop/android/webview_first 140; finch CSSCaretAnimation; security/privacy review 'Issues addressed'; intent fields (motivation, activation_risks 'No risks', measurement 'usual CSS feature counters'); Mozilla 'Under consideration', WebKit 'No signal'; WPT parsing test; adoption_expectation caret-color ~12%, animated ~0.016%→maybe 1%; top-level status field 'In development' and is_released=false despite ship-stage milestones filled"
+      ],
+      "limitations": "Self-reported by the feature owner; top-level status/is_released fields inconsistent with the stage milestone data and with actual shipment."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5082469066604544",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Public page still renders 'Status: In development' and 'Intent stage: None' for a feature that shipped in Chrome 140, confirming the stale availability signal"
+      ],
+      "limitations": "Server-rendered snapshot; does not expose comment/audit history."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/w3c/csswg-drafts/issues/9707",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2023-12-14",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Problem statement (caret-color animation broken by blinking); use cases (VS Code fade, Bloomberg Terminal color alternation); brittle workaround (hide caret + empty div + JS); counter-concerns (OS blink rate, dictation caret sync, solid-caret confusion, narrow use cases); CSSWG resolution 2024-02-08 'auto vs none'; spec landed commit 58d739b naming value 'manual'; schenney Chromium CL + WPT parsing test 2024-10-09; testing limitation (blinking flaky across platforms)"
+      ],
+      "limitations": "Single GitHub thread; later engine-position outcomes are tracked in separate issues."
+    },
+    {
+      "id": "S4",
+      "url": "https://drafts.csswg.org/css-ui/#caret-animation",
+      "publisher": "W3C CSS Working Group (CSS Basic User Interface Module Level 4)",
+      "publishedOrObservedAt": "2026-05-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "caret-animation auto|manual definition; applies to text/elements accepting text input; inherited; animation type discrete; @supports-gating rule (UA unwilling to yield control must not implement the property); user-stylesheet accessibility recipe :read-write { caret-animation: manual !important }; WCAG 2.2/2.3 references; Working Draft maturity WD-css-ui-4-20260506; editors Florian Rivoal (Bloomberg) and Tab Atkins"
+      ],
+      "limitations": "Working Draft, not a Recommendation; normative text can still change."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/mozilla/standards-positions/issues/1100",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2024-10-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Request opened 2024-10-16 by schenney; assigned to emilio; project status 'Needs proposed position' (no formal Mozilla position); cross-link to WebKit #417; thread comments note 'no MDN page for caret-animation' and an accessibility concern that caret-color:transparent is supported by all browsers and 'not good for users if used'"
+      ],
+      "limitations": "Rendered page did not expose the full comment timeline; the ChromeStatus 'Under consideration' label is the owner's interpretation, while the live issue shows no formal position."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/WebKit/standards-positions/issues/417",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2024-10-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Request opened 2024-10-16 by schenney; 'WebKittens: No response'; no assignee; no Bugzilla URL (N/A); no Radar (N/A); label 'from: Igalia'"
+      ],
+      "limitations": "No WebKit response or implementation signal; Safari/WebKit status is effectively 'no signal'."
+    },
+    {
+      "id": "S7",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/caret-animation",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-05-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Reference docs: auto|manual; applies to text/elements accepting text input; inherited yes; computed as specified; animation type discrete; marked 'Experimental'; browser compat Chrome 140, Edge 140, Firefox 'No support', Opera full; examples and 'see also' (caret, caret-color, caret-shape); last modified 2026-05-13"
+      ],
+      "limitations": "MDN compat data is community-maintained; compat-table cells did not fully render in text extraction."
+    },
+    {
+      "id": "S8",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Release notes)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 stable release date 2025-09-02; 'CSS caret-animation property' section with auto/manual description, tracking bug #329301988, ChromeStatus and Spec links; applies to Android/ChromeOS/Linux/macOS/Windows"
+      ],
+      "limitations": "Release-notes summary; no adoption or interoperability claims."
+    },
+    {
+      "id": "S9",
+      "url": "https://developer.chrome.com/blog/chrome-140-beta",
+      "publisher": "Chrome for Developers (Beta blog)",
+      "publishedOrObservedAt": "2025-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Beta-channel communication of caret-animation with auto/manual description ahead of stable"
+      ],
+      "limitations": "Exact publish date not confirmed from snippet; beta-milestone framing only."
+    },
+    {
+      "id": "S10",
+      "url": "https://web.dev/blog/web-platform-09-2025",
+      "publisher": "web.dev (New to the web platform)",
+      "publishedOrObservedAt": "2025-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "'The CSS caret-animation property shipped in Chrome 140' with auto/manual explanation; confirms stable-milestone shipment"
+      ],
+      "limitations": "Monthly digest, secondary to the release notes."
+    },
+    {
+      "id": "S11",
+      "url": "https://blogs.igalia.com/mrego/playing-with-the-new-caret-css-properties/",
+      "publisher": "Igalia (Manuel Rego 'mrego')",
+      "publishedOrObservedAt": "2025-07-11",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Igalia implemented caret-animation and caret-shape (Stephen Chenney and Ziran Sun) sponsored by Bloomberg; demos; blog states caret-animation 'shipping in Chromium since version 139' (discrepancy with official 140); caret-shape still behind the experimental flag in 140.0.7288"
+      ],
+      "limitations": "Personal/company blog; the 'version 139' stable-milestone claim conflicts with ChromeStatus/MDN/Chrome release notes/web.dev (all 140) and is treated here as an accuracy discrepancy."
+    },
+    {
+      "id": "S12",
+      "url": "https://caniuse.com/?search=caret-animation",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "caret-animation not supported in Safari and Firefox; supported in Chrome/Edge (140+)"
+      ],
+      "limitations": "Community-maintained table; snippet-level extraction."
+    },
+    {
+      "id": "S13",
+      "url": "https://modern-css.com/browser-support/",
+      "publisher": "modern-css.com (CSS Browser Support Checker)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "caret-animation: Chrome 140+, Edge 140+, Firefox —, Safari —; rated 'Limited' (single-engine)"
+      ],
+      "limitations": "Community aggregator; secondary corroboration of MDN/caniuse."
+    },
+    {
+      "id": "S14",
+      "url": "https://webstatus.dev/",
+      "publisher": "Web Platform Status (webstatus.dev) / web.dev Baseline digests",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "caret-animation is absent from the Baseline-2026 newly-available set (the March 2026 Baseline digest lists other 140-shipped features such as ToggleEvent source but not caret-animation), consistent with it being Chromium-only and not interoperable"
+      ],
+      "limitations": "webstatus.dev feature pages are client-rendered and did not yield a per-feature row via reader; conclusion is inferred from the Baseline-2026 hotlist and cross-engine support data."
+    },
+    {
+      "id": "S15",
+      "url": "https://stackoverflow.com/questions/9333044/how-to-hide-blinking-caret-in-input-text",
+      "publisher": "Stack Overflow / dev.to / GeeksforGeeks (workaround posts)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "The brittle workaround this feature replaces (hide the native caret via caret-color:transparent and render/track a custom caret with a div and JavaScript) is real, widely asked-about, and documented across multiple independent Q&A/tutorial sources, corroborating the incubation problem statement"
+      ],
+      "limitations": "Q&A sentiment, not measured demand; represents the workaround, not demand for the native property specifically."
+    },
+    {
+      "id": "S16",
+      "url": "https://chromestatus.com/feature/5082469066604544",
+      "publisher": "Chrome Platform Status (search-result snapshot)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "A post-ship search snapshot showed the ChromeStatus entry 'Updated: Monday, December 8, 2025' and 'Last updated on 2025-10-22 to implement', i.e. the public record continued to describe the shipped feature as in development months after stable"
+      ],
+      "limitations": "Snippet-level evidence; same underlying record as S1/S2."
+    }
+  ],
+  "successes": [
+    "Clean, well-scoped incubation entirely inside the CSSWG with an explicit resolution (issue opened 2023-12-14; resolved 2024-02-08) and spec text landed by the editor the same day.",
+    "Honest standards signaling: ChromeStatus recorded Mozilla 'Under consideration' and WebKit 'No signal' without converting silence to support, and the spec encodes a graceful-degradation rule (a UA that will not honor 'manual' must not implement the property) that makes @supports feature detection safe.",
+    "On-time, low-risk shipment in Chrome 140 stable (2025-09-02) with coordinated DevRel coverage (beta blog, release notes, web.dev monthly digest, MDN, Igalia demos) and a clear end-user accessibility benefit (user-stylesheet recipe to disable blinking, citing WCAG 2.2/2.3).",
+    "The underlying problem is real and corroborated by widely documented brittle workarounds (caret-color:transparent + a drawn div tracked with JavaScript), so the launch addresses genuine developer pain."
+  ],
+  "failures": [
+    "Interoperability is single-engine: Firefox has 'No support' and Mozilla has taken no formal position; WebKit gave 'No response' with no Bugzilla/Radar; the property is absent from Baseline-2026 and the spec remains a Working Draft.",
+    "The public ChromeStatus status field remained 'In development' / is_released=false for months after stable shipment, so the canonical dashboard misrepresented a shipped feature as unavailable.",
+    "Test coverage is limited to a CSS parsing test; caret-blinking behavior was deemed untestable across platforms, leaving behavioral correctness and regressions effectively unverified in WPT.",
+    "Adoption is unevidenced: speculative pre-ship estimates (animated caret-color ~0.016% → 'maybe 1%') with no public usage data, partner case study, or framework integration ~10 months after stable.",
+    "Minor communication-accuracy gap: the implementer's blog states the feature shipped in Chromium 'since version 139' while all official sources say 140."
+  ],
+  "counterfactuals": [
+    "If the ship packet had treated WebKit 'No response' and Mozilla 'no formal position' as explicit launch risks, DevRel could have led with the @supports-gating/progressive-enhancement message and set single-engine expectations, reducing the chance of developers assuming cross-browser support.",
+    "If Blink had invested in (or brokered an interop agreement on) a reliable cross-platform caret-blinking test harness, the 'untestable behavior' rationale would shrink and other engines would have less reason to defer on testing.",
+    "If the team had committed a concrete adoption measurement (a use-counter link plus a dated 3-/6-month re-review), the adoption dimension would now be evidence rather than speculation.",
+    "Earlier, explicit closure of Emilio's Mozilla position (still 'Needs proposed position') might have either unblocked interop or surfaced the accessibility/design objections in time to influence the shape before shipment.",
+    "A Bloomberg production case study would have converted sponsorship into attributable demand evidence instead of leaving adoption unknown."
+  ],
+  "skillImprovements": [
+    "Add a release/phase-07 checklist item: before launch comms, verify the ChromeStatus status field and is_released flag match the filled ship-stage milestones; treat any feature whose stage milestones are set but whose status is not 'Enabled by default' as a data-quality defect to file and fix.",
+    "Add a wide-review/phase-04 rule: when Mozilla/WebKit positions are 'No signal' or unresolved, the ship packet and launch comms must explicitly label the feature single-engine/progressive-enhancement and require @supports feature detection in all sample code; 'No signal' must never be omitted from messaging.",
+    "Add a phase-06 interop/test acceptance signal for CSS properties: record WPT coverage type (parsing-only vs behavioral) and, when behavioral testing is infeasible, require either a documented cross-engine interop agreement or an explicitly accepted risk rather than silently shipping with a parsing-only test.",
+    "Add a phase-08 adoption-measurement requirement: every shipped feature must link a usage counter (or explicitly mark adoption unmeasured) and schedule a dated post-ship adoption re-review before the launch is considered closed.",
+    "Add a phase-06 evidence-accuracy check: reconcile implementer-blog, MDN, caniuse, and ChromeStatus milestone/version numbers before launch to avoid post-ship discrepancies such as the 139-vs-140 claim."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent-to-Ship thread content (groups.google.com not retrievable via the web reader; relied on cached ChromeStatus intent fields).",
+      "Chromium tracking bug #329301988 contents (access-restricted).",
+      "Actual Chrome use-counter / usage numbers for caret-animation (not publicly located).",
+      "A formal Mozilla standards position (none taken as of review; issue still 'Needs proposed position').",
+      "Any production case study or framework/library integration evidence (none found ~10 months post-ship)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

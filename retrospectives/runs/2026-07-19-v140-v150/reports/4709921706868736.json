@@ -1,0 +1,532 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4709921706868736,
+    "name": "Intl.Locale.prototype.variants",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4709921706868736",
+    "category": "JavaScript",
+    "featureType": "Chromium catches up",
+    "blinkComponents": [
+      "Blink>JavaScript>Internationalization"
+    ],
+    "webFeature": "intl-locale",
+    "specLink": "https://tc39.es/ecma402/#sec-Intl.Locale.prototype.variants",
+    "ownerEmail": "ftang@google.com",
+    "starCount": 92,
+    "standardsMaturity": "Published standard",
+    "rolloutPlan": "Will ship enabled for all users"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:4709921706868736",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T13:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry created 2025-10-08 by ftang@google.com and correctly classified as a low-risk 'Chromium catches up' feature whose motivation is simply 'TC39 already approve for the change so it is now part of ECMA402 spec.' The underlying developer problem is real and documented: Intl.Locale exposed language/region/script getters but no variants accessor (tc39/ecma402 issue #900, opened 2024-06-18). The intake diagnosed the right mode (spec-following catch-up) and the right intervention layer (a standardized accessor already shipping elsewhere).",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S16"
+      ],
+      "limitations": "No Chrome-side problem brief, customer map, or stakeholder scan exists; the feature inherited its rationale entirely from TC39. The decision was effectively pre-made by the standard."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubation happened at TC39, not in Chrome. Issue #900 framed the gap; normative PR #960 (by gibson042) evolved the design from a getVariants() method (first commit 2025-02-14) to a `variants` accessor plus a constructor `variants` option (2025-05-08). It was approved by TC39-TG2 (2025-05-08) and TC39-TG1 plenary (2025-05-28) and merged 2025-05-29 into the published ECMA-402 spec. Chrome's role was to follow a finished, dual-approved standard, not to incubate.",
+      "evidenceIds": [
+        "S6",
+        "S16",
+        "S7",
+        "S5"
+      ],
+      "limitations": "Chrome performed no independent incubation, alternatives analysis, or adversarial 'why not'; that work is owned by TC39 and was not re-litigated by Blink."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A V8/Blink implementation was staged behind a flag and announced 'Ready for Developer Testing' on 2025-10-08. Chromium Dash shows ftang commits titled 'Stage Intl.Locale.prototype.variants' and 'Ship Intl.Locale.prototype.variants'. No standalone explainer existed (explainer_links empty); the ECMA-402 spec served as the design document, which is appropriate for a finalized normative change.",
+      "evidenceIds": [
+        "S4",
+        "S1"
+      ],
+      "limitations": "The exact Chromium CL number, flag name, and the staging bug could not be retrieved (Chromium Dash requires sign-in and the Chrome 149 release-notes entry for this feature carries no tracking-bug link, unlike sibling entries)."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A 'Ready for Developer Testing' announcement was posted 2025-10-08, but it was perfunctory: every signal field was 'No signal', 'all six Blink platforms' was answered 'No', and WPT coverage was answered 'No' (all later contradicted with 'Yes' in the Intent to Ship). There is no evidence of a recruited cohort, feedback instrument, or task-based friction log. For a standardized accessor already shipping in two engines a heavyweight trial was arguably unnecessary, but the announced trial produced no documented learning.",
+      "evidenceIds": [
+        "S4",
+        "S1"
+      ],
+      "limitations": "No cohort, feedback, or friction evidence exists; the trial announcement appears to be a template-driven formality rather than a learning exercise."
+    },
+    "wideReview": {
+      "status": "mixed",
+      "finding": "Wide review was substantive and caught real issues, but signals were assembled late. At TC39 the normative PR review surfaced a genuine correctness defect: anba (André Bargull, Firefox) noted on 2025-05-29 that `unicode_variant_subtag` matches only a single subtag, so `new Intl.Locale('kl-tunumiit-kleinsch')` would throw RangeError; gibson042 filed fix PR #1007. In Blink, the Intent to Ship (2025-11-01) listed 'WebKit: No signal', prompting API owner Chris Harrelson to request a WebKit position; Apple then confirmed it was already shipped in Safari 26, and Harrelson retracted the request ('Since this is TC39 we don't need a position request as long as it's at stage 3'). Three LGTMs followed (Harrelson, Jägenstedt, Mike Taylor, all 2025-11-06).",
+      "evidenceIds": [
+        "S3",
+        "S6",
+        "S7"
+      ],
+      "limitations": "The WebKit/Firefox shipping evidence was gathered during ship review rather than before it. The exact resolution of fix PR #1007 could not be retrieved (timed out), but the defect and the follow-up are documented in PR #960 review comments."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted and none was warranted. All ot_* fields are null/false; there was no field uncertainty requiring real-origin/user conditions for a finalized, test262-covered ECMA-402 accessor already shipping in Firefox and Safari. The feature went directly to default-enabled shipment. Not-relevant (not 'untested'): conformance is covered by test262/WPT and the spec was stable.",
+      "evidenceIds": [
+        "S1",
+        "S8"
+      ],
+      "limitations": "None."
+    },
+    "prepareToShip": {
+      "status": "mixed",
+      "finding": "Intent to Ship approved with 3 LGTMs (2025-11-06), 'Will ship enabled for all users', no finch/flag. However: (1) the intent estimated milestones desktop/Android/WebView = 144, but the feature actually shipped in 149 — a slip of ~5 milestones/~5 months; (2) the cached ChromeStatus record (accurate_as_of 2026-05-05, four weeks before stable) still showed status 'Proposed' with both security_review_status and privacy_review_status 'Pending'; (3) the intent body contained typos ('consturctor') and carried stale 'No signal' entries forward from the Ready-for-Trial template.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No public rationale exists for the 144→149 slip (review scheduling, implementation timing, or review-gate delay cannot be distinguished from available evidence). Whether the 'Pending' security/privacy statuses reflect genuinely late reviews or merely stale ChromeStatus bookkeeping is not determinable."
+    },
+    "release": {
+      "status": "success",
+      "finding": "Shipped in Chrome 149 stable on 2026-06-02 (desktop, Android, WebView; iOS not separately tracked). Coordinated, accurate communication across the Chrome 149 release notes, the 'New in Chrome 149' blog (Rachel Andrew), MDN reference docs, and the independent web-standards.dev summary. The blog correctly and modestly states 'This feature is already shipped in Firefox and Safari, and is now available in Chrome,' and notes the parent Intl.Locale is 'Baseline Widely available.' The MDN page is thorough with examples and a spec link.",
+      "evidenceIds": [
+        "S13",
+        "S14",
+        "S15",
+        "S17",
+        "S1"
+      ],
+      "limitations": "The Chrome 149 release-notes entry for this feature is the only Web-API entry without a tracking-bug link. Enterprise notification milestone (142) preceded actual ship (149) by seven milestones."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No usage or adoption evidence is available. The feature shipped only ~6 weeks before the evidence cutoff; no Chrome use-counter bucket, HTTP Archive, or BigQuery data was found or expected to be meaningful this early. ChromeStatus sets an aspirational adoption_expectation ('considered a best practice for some use case within 12 months of Baseline') with no measurement plan. 92 ChromeStatus stars are a weak interest signal. The formatjs ecosystem has an Intl.Locale polyfill (@formatjs/intl-locale) but there is no evidence it added `variants` support.",
+      "evidenceIds": [
+        "S1",
+        "S20"
+      ],
+      "limitations": "Adoption cannot be scored from shipment, star counts, or press sentiment; it is legitimately unknown this soon after launch for a niche accessor. No framework-integration confirmation retrieved."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "Post-ship support history is minimal (~6 weeks). One documented friction point exists: a Chromium bug titled 'Unable to check for support of the new Intl.Locale.prototype.variants feature' (P2), indicating minor feature-detection friction for developers. Conformance is backed by test262 (8 named Locale test paths) and WPT. Otherwise the support burden for a small read-mostly accessor is expected to be low.",
+      "evidenceIds": [
+        "S18",
+        "S8",
+        "S1"
+      ],
+      "limitations": "The specific Chromium issue number and detail could not be retrieved (only a search-result snippet on the Blink>JavaScript>Internationalization issue list); no support-volume or recurrence data exists yet."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a new, additive accessor and constructor option with no removed or changed behavior (breaking_change=false, webview_risks='No'). Nothing is deprecated. Not-relevant by design, not 'untested'.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Clear, demand-driven developer value. It fills a real symmetry gap in Intl.Locale (language/region/script getters existed but not variants, per issue #900), and provides a robust get/set of variant subtags instead of manual locale-string parsing. Behavior is well-specified, read-only accessor (set accessor undefined), with constructor-option support. Documented with examples (sl-rozaj-biske, de-1901/de-1996, en-emodeng) in MDN and the launch blog.",
+      "evidenceIds": [
+        "S16",
+        "S15",
+        "S14",
+        "S6",
+        "S5"
+      ],
+      "limitations": "Value is narrow/specialist (locale-variant subtags such as orthographies and dialects); not a broadly used capability."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Indirect and low-magnitude. This is a developer-facing i18n data accessor; end users benefit only via more correct handling of variant locales (e.g. Valencian, Resian dialects, German 1901/1996 orthographies). No evidence of measurable end-user impact, and none is plausible for an accessor of this scope.",
+      "evidenceIds": [
+        "S15",
+        "S14"
+      ],
+      "limitations": "No user-impact study, telemetry, or accessibility evidence; impact is inferred from the API's purpose, not observed."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption evidence. Shipped 2026-06-02; only ~6 weeks of stable availability at cutoff. No use-counter/HTTP Archive/BigQuery data, no production case studies, no confirmed framework integration. Per method, adoption is not inferred from shipment, usage absence, or press sentiment.",
+      "evidenceIds": [
+        "S1",
+        "S20"
+      ],
+      "limitations": "Adoption is unscored due to recency and the niche nature of the API; this is an unknown, not a negative signal."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "Genuinely cross-engine from Chrome's day one. Firefox 141 (2025-07-22, anba, Bug 1970161), Safari 26.0 (2025-09-15, WebKit Bug 294755 / commit b8b32fe6 by Sosuke Suzuki), and Chrome 149 (2026-06-02) all ship the same standardized accessor, covered by test262 (PR #4474) and WPT, in the published ECMA-402 standard. A multi-variant validation defect in the merged spec (anba's review on PR #960) was caught and addressed via fix #1007. The parent Intl.Locale is Baseline widely available; `variants` reached all three engines by 2026-06, satisfying the ChromeStatus Baseline expectation trivially.",
+      "evidenceIds": [
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S8",
+        "S6"
+      ],
+      "limitations": "Exact resolution/date of fix PR #1007 not retrieved; Baseline 'newly available' date for the `variants` sub-feature not confirmed from a web-features/Baseline dashboard (inferred from the three engine ship dates)."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Implementations are careful and conformant: Firefox landed it as 4 reviewed parts with a documented internal-representation change (intl::Locale 144→153 bytes, stack-allocated subtags); WebKit shipped within ~5 weeks of the spec merge; Chrome staged and shipped behind the standard V8 i18n path with test262/WPT coverage. Against this, a spec-level defect (multi-variant subtag validation causing spurious RangeError) reached the merged standard and required fix #1007, and Chrome's ChromeStatus review statuses (security/privacy) remained 'Pending' through stable — a data-quality/process gap.",
+      "evidenceIds": [
+        "S9",
+        "S11",
+        "S6",
+        "S1",
+        "S8"
+      ],
+      "limitations": "Exact Chromium CL and any regressions not retrieved; the 'Pending' review statuses may be stale bookkeeping rather than uncompleted reviews."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Outbound communication is accurate and well-coordinated (release notes + blog + MDN + web-standards.dev, with the blog explicitly crediting prior Firefox/Safari shipment). But the evidence/claim ledger is sloppy: the Intent to Ship estimated milestone 144 (actual 149), contained typos, carried stale 'No signal'/'No WPT'/'No all-platforms' forward from the Ready-for-Trial template, and the Chrome 149 release-notes entry lacks a tracking-bug link. WebKit shipping evidence was assembled during LGTM review rather than presented up front.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S1",
+        "S13",
+        "S14",
+        "S15"
+      ],
+      "limitations": "Cannot determine whether the 144→149 estimate error was a planning miss or a later schedule change; root cause undocumented."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Insufficient post-ship history to score (~6 weeks). One P2 feature-detection friction bug is documented; no volume, recurrence, or resolution-time data. Low burden is plausible for a small accessor but unproven.",
+      "evidenceIds": [
+        "S18",
+        "S8"
+      ],
+      "limitations": "Specific Chromium support issue not retrievable in detail; no telemetry or support-dashboard evidence."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, standardized, fully-interoperable ECMA-402 catch-up accessor that shipped correctly and with accurate, modest communication. However, Chrome was the laggard: it shipped ~10.5 months after Firefox and ~8.5 months after Safari for a trivial standardized accessor ('Chromium catches up'); the ship milestone slipped 144→149 (~5 months) with no public rationale; and intent/ChromeStatus bookkeeping was sloppy (stale signals, typos, 'Pending' security/privacy reviews at stable, no tracking bug in release notes). Net: technically clean, process/cadence weak, adoption not yet knowable.",
+      "evidenceIds": [
+        "S13",
+        "S14",
+        "S9",
+        "S11",
+        "S12",
+        "S3",
+        "S1"
+      ],
+      "limitations": "Overall reflects available public evidence only; adoption and long-term support outcomes remain unknown."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/4709921706868736",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-05-05",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: id 4709921706868736, 'Chromium catches up', owner ftang@google.com, created 2025-10-08, accurate_as_of 2026-05-05",
+        "Ship stage desktop/android/webview=149, status 'Proposed', is_released tracked via 149 enablement",
+        "security_review_status and privacy_review_status 'Pending'; tag_review_status 'Issues addressed'; availability/adoption expectations set",
+        "Intent threads for prototype (msgid), ready-for-trial, and ship; webFeature intl-locale; 92 stars"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-05-05; security/privacy 'Pending' may be stale. iOS milestone null despite ship intent claiming all six platforms."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/4709921706868736",
+      "publisher": "Chrome Platform Status (server-rendered lite)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Summary, motivation, spec link, Firefox 'Shipped/Shipping' (MDN Firefox 141), Safari 'Shipped/Shipping' (Safari 26 + WebKit commit), Web developers 'Strongly positive'"
+      ],
+      "limitations": "Lite view; full review/telemetry fields read from cached record S1."
+    },
+    {
+      "id": "S3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/-IH8qyT_7bQ/m/K8ymVPNvBQAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-11-01",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship posted 2025-11-01; estimated milestones desktop/Android/WebView = 144",
+        "3 LGTMs 2025-11-06: Chris Harrelson (LGTM1), Philip Jägenstedt (LGTM2), Mike Taylor (LGTM3)",
+        "Harrelson requested WebKit position, then retracted ('Since this is TC39 we don't need a position request as long as it's at stage 3')",
+        "Frank Tang: Apple confirmed shipped in Safari 26 (WebKit commit b8b32fe6, WebKit bug 294755); Shane Carr: PR #960 approved May 2025 TG1 plenary, TG2 approved 2025-05-08",
+        "Contains typos ('consturctor') and stale 'WebKit: No signal' carried from template"
+      ],
+      "limitations": "Estimate (144) differs from actual ship (149); reason for slip not stated."
+    },
+    {
+      "id": "S4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/i6QEHcH_fiI/m/4xUyZbSvAAAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2025-10-08",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Ready for Developer Testing announced 2025-10-08",
+        "All signal fields 'No signal'; 'all six Blink platforms' answered 'No'; WPT coverage answered 'No' (later contradicted at ship)"
+      ],
+      "limitations": "Announcement is template-driven; no cohort/feedback instruments described."
+    },
+    {
+      "id": "S5",
+      "url": "https://tc39.es/ecma402/#sec-Intl.Locale.prototype.variants",
+      "publisher": "TC39 / Ecma International (ECMA-402)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Intl.Locale.prototype.variants defined in the published ECMA-402 standard; maturity 'Final published standard'"
+      ],
+      "limitations": "Living standard; section retrieved via PR diff (S6) and ChromeStatus metadata rather than a successful direct fetch (tc39.es timed out)."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/tc39/ecma402/pull/960",
+      "publisher": "tc39/ecma402 (GitHub)",
+      "publishedOrObservedAt": "2025-05-29",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "'Normative: Add Intl.Locale.prototype.variants' by gibson042; fixes #900; merged 2025-05-29 (3 commits)",
+        "Design evolved getVariants() (2025-02-14) → `variants` accessor + constructor `variants` option (2025-05-08)",
+        "anba review (2025-05-29): `unicode_variant_subtag` matches a single subtag, so 'kl-tunumiit-kleinsch' throws RangeError; gibson042: 'Fix: #1007'",
+        "Spec adds `variants` option handling in constructor and the Intl.Locale.prototype.variants getter (set accessor undefined)"
+      ],
+      "limitations": "Fix PR #1007 resolution/date not retrieved (timed out); reviewer approval detail read from intent thread S3."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/tc39/notes/blob/main/meetings/2025-05/may-28.md",
+      "publisher": "TC39 meeting notes",
+      "publishedOrObservedAt": "2025-05-28",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "PR #960 approved in the May 2025 TC39-TG1 plenary; TC39-TG2 approved the PR on 2025-05-08 (notes-2025-05-08.md)"
+      ],
+      "limitations": "Meeting-note URLs cited from the blink-dev intent thread (S3); notes content not fetched directly."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/tc39/test262/pull/4474",
+      "publisher": "tc39/test262 (GitHub)",
+      "publishedOrObservedAt": "2025",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "test262 coverage merged for Intl.Locale variants (constructor-options-variants-valid/invalid, prototype/variants/name and prop-desc, getters-grandfathered/missing, constructor-getter-order/options-throwing-getters)"
+      ],
+      "limitations": "Exact merge date not retrieved; PR content referenced via ChromeStatus (S1) and intent (S3)."
+    },
+    {
+      "id": "S9",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1970161",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": "2025-07-22",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug 1970161 'Implement Intl.Locale.prototype.variants' (reporter/assignee anba / André Bargull), RESOLVED FIXED, Target Milestone 141 Branch, status-firefox141=fixed",
+        "4-part implementation: variant-subtag setter on intl::Locale (144→153 bytes), constructor 'variants' option, prototype.variants accessor; reviewers platform-i18n/spidermonkey (dminor)",
+        "Shipped with Firefox 141 (released 2025-07-22)"
+      ],
+      "limitations": "Bugzilla 'months ago' relative timestamps; absolute dates inferred from Firefox 141 release (S10)."
+    },
+    {
+      "id": "S10",
+      "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/141",
+      "publisher": "MDN Web Docs / Mozilla",
+      "publishedOrObservedAt": "2025-07-22",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Firefox 141 released 2025-07-22; 'The variants accessor property is now supported on Intl.Locale instances... a more robust way to get and set variant subtags... (Firefox bug 1970161)'"
+      ],
+      "limitations": "Page publishedTime metadata 2025-10-16 (post-release edit); release date stated in body."
+    },
+    {
+      "id": "S11",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=294755",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2025-06-20",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit Bug 294755 '[JSC] Implement Intl.Locale.prototype.variants getter' reported 2025-06-20 by Sosuke Suzuki (PR #46992)",
+        "Committed 2025-06-20 18:21 PDT as 296467@main (b8b32fe6a3c5cdaf94eab51e0dfef07620ac170e); shipped in Safari 26"
+      ],
+      "limitations": "Exact Safari 26 build inclusion inferred; bug shows commit landing only."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.apple.com/documentation/safari-release-notes/safari-26-release-notes",
+      "publisher": "Apple Developer Documentation",
+      "publishedOrObservedAt": "2025-09-15",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Safari 26.0 released 2025-09-15 (build 20622.1.22); 'Added support for Intl.Locale.prototype.variants getter. (153939662)' (Radar, from WebKit bug)"
+      ],
+      "limitations": "Release-notes body is JS-rendered; 'Added support...' line confirmed via search snippet (S-search) and Apple metadata confirms the 2025-09-15 release date."
+    },
+    {
+      "id": "S13",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 stable release date 2026-06-02; Intl.Locale.prototype.variants listed under 'Web APIs' as shipped in 149",
+        "This Web-API entry has no tracking-bug link (unlike sibling entries)"
+      ],
+      "limitations": "Release notes do not state a tracking bug or CL for this feature."
+    },
+    {
+      "id": "S14",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-149",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "'New in Chrome 149' blog 2026-06-02: 'Intl.Locale.prototype.variants returns or sets the variants of a locale'",
+        "'The main object is Baseline Widely available' and 'This feature is already shipped in Firefox and Safari, and is now available in Chrome'",
+        "Example: new Intl.Locale('sl-rozaj-biske').variants === 'rozaj-biske'"
+      ],
+      "limitations": "Blog is a highlight summary, not exhaustive."
+    },
+    {
+      "id": "S15",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/variants",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2025-07-22",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Reference docs: variants is an accessor (set accessor undefined) returning dash-separated variant identifiers in original order; set via baseName or constructor option; spec 'ECMAScript 2027 Internationalization API'",
+        "Examples (sl-rozaj-biske via string and via options); 'See also' Unicode variant subtag / IANA registry"
+      ],
+      "limitations": "BCD compatibility table not rendered in reader output; MDN content issue mdn/content#40467 tracked the docs."
+    },
+    {
+      "id": "S16",
+      "url": "https://github.com/tc39/ecma402/issues/900",
+      "publisher": "tc39/ecma402 (GitHub)",
+      "publishedOrObservedAt": "2024-06-18",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Issue #900 opened 2024-06-18 by @nnmrts: 'Why is there no Intl.Locale.prototype.variants? There are getters for language, region and script...' — the documented demand origin (fixed by PR #960)"
+      ],
+      "limitations": "Single developer request; labels 's: discuss' / 'TG2 must discuss'; no broad demand survey."
+    },
+    {
+      "id": "S17",
+      "url": "https://web-standards.dev/news/2026/06/chrome-149/",
+      "publisher": "Web Standards (web-standards.dev)",
+      "publishedOrObservedAt": "2026-06-04",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent summary of Chrome 149 (2026-06-04) lists Intl.Locale.prototype.variants among the release's additions"
+      ],
+      "limitations": "Syndicates the Chrome release notes; independent confirmation of the ship milestone and framing."
+    },
+    {
+      "id": "S18",
+      "url": "https://issues.chromium.org/issues?q=customfield1222907:%22Blink%3EJavaScript%3EInternationalization%22",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Issue-list snippet shows a P2 bug 'Unable to check for support of the new Intl.Locale.prototype.variants feature' — documented feature-detection friction"
+      ],
+      "limitations": "Individual issue number and full detail not retrievable; only a search-result snippet on the component issue list. Confidence: low-to-medium."
+    },
+    {
+      "id": "S19",
+      "url": "https://thenewstack.io/es2026-solves-javascript-headaches-with-dates-math-and-modules/",
+      "publisher": "The New Stack",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Community/press mention: ECMAScript 2026 'will also include a variants API for Intl.Locale that lets developers use Unicode locale [variant subtags]'"
+      ],
+      "limitations": "Publication date not retrieved; secondary/community coverage, not primary evidence."
+    },
+    {
+      "id": "S20",
+      "url": "https://github.com/formatjs/intl-locale",
+      "publisher": "formatjs (@formatjs/intl-locale, npm)",
+      "publishedOrObservedAt": "2026-06",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "An Intl.Locale polyfill/ponyfill exists in the formatjs ecosystem (v5.3.9), evidencing the broader Intl.Locale developer ecosystem around this surface"
+      ],
+      "limitations": "No evidence the polyfill specifically added `variants` support; weak/proxy signal only."
+    }
+  ],
+  "successes": [
+    "Genuine, demand-driven developer value: the documented gap in Intl.Locale (issue #900, 2024) became a standardized, dual-approved (TG2+TG1) ECMA-402 accessor shipped by all three engines.",
+    "True cross-engine interoperability on Chrome's day one: Firefox (2025-07-22) and Safari (2025-09-15) had already shipped the identical standardized behavior, so Chrome 149 (2026-06-02) launched interop-complete with test262/WPT coverage.",
+    "Effective multi-engine implementer review caught a real spec defect (anba's multi-variant RangeError finding on PR #960 → fix #1007) before broad harm.",
+    "Accurate, modest release communication: the New in Chrome 149 blog explicitly credits prior Firefox/Safari shipment and MDN docs are thorough with examples.",
+    "Careful Firefox implementation (4 reviewed parts with a documented internal-representation change) demonstrates the change was non-trivial yet cleanly executed."
+  ],
+  "failures": [
+    "Chrome was the laggard by ~10.5 months after Firefox and ~8.5 months after Safari on a trivial, standardized 'Chromium catches up' accessor.",
+    "Ship milestone slipped from the Intent to Ship estimate of 144 to actual 149 — roughly five milestones / five months — with no public rationale in the intent or ChromeStatus record.",
+    "ChromeStatus review statuses (security/privacy) remained 'Pending' and overall status 'Proposed' in the snapshot accurate_as_of 2026-05-05, four weeks before stable — a launch-readiness/data-quality gap.",
+    "Intent bookkeeping was sloppy: typos ('consturctor') and stale 'No signal'/'No WPT'/'No all-platforms' answers carried from the Ready-for-Trial template, corrected only during the Intent to Ship.",
+    "WebKit shipping evidence was assembled during LGTM review (Harrelson's position-request detour) rather than presented up front in the ship intent.",
+    "The Chrome 149 release-notes entry for this feature is the only Web-API entry without a tracking-bug link."
+  ],
+  "counterfactuals": [
+    "Had Chrome tracked ECMA-402 normative changes at TG1 approval (2025-05) instead of creating the ChromeStatus entry in 2025-10, it could have shipped alongside Firefox/Safari rather than ~10.5 months after Firefox for a trivial accessor.",
+    "Had the Ready-for-Trial and Intent-to-Ship templates been diffed and refreshed, the stale 'No signal'/'No' answers and 'consturctor' typo would not have required correction during ship review.",
+    "Had anba not reviewed PR #960, a multi-variant RangeError (e.g. 'kl-tunumiit-kleinsch') could have shipped across engines — illustrating that small ECMA-402 normative PRs still need cross-engine implementer review.",
+    "Had WebKit/Firefox shipping evidence been populated in the ship intent up front, the mid-review position-request detour and 'No signal' inaccuracy would have been avoided.",
+    "Had ChromeStatus review statuses been a prepare-to-ship gate, the 'Pending' security/privacy statuses at stable would have been resolved or corrected before launch rather than left stale."
+  ],
+  "skillImprovements": [
+    "Add a 'TC39/ECMA-402 (and ECMA-262) normative-change tracker' intake rule: when a normative PR merges into a published standard, auto-open a catch-up Chrome ship task with a target milestone, to prevent multi-quarter lags on trivial standardized accessors.",
+    "Add a prepare-to-ship transition-packet check: ChromeStatus security/privacy/tag review statuses must be 'Complete' (or explicitly waived) before stable; flag any 'Pending' + 'Proposed' state within one milestone of ship as a launch-readiness defect.",
+    "Add a template-hygiene rule: the Intent to Ship must be diffed against the preceding Ready-for-Trial/Prototype intents, and any carried-forward 'No signal'/'No'/typo must be refreshed or explained.",
+    "Add an interop-evidence rule for 'Chromium catches up' features: Firefox/Safari shipping evidence (release-note + bug/commit links) must be populated in the ship intent body before LGTM request, not assembled during review.",
+    "Add a milestone-slip rule: when the actual ship milestone differs from the Intent-to-Ship estimate by ≥2 milestones, the ship record must include a public rationale (review delay, scheduling, implementation).",
+    "Add a release-notes completeness rule: every shipped Web-API entry in the Chrome release notes must include a tracking-bug link (this feature's entry is a counter-example).",
+    "Add a regression eval covering 'small standardized accessor catch-up' launches so the skill flags laggard cadence and stale ChromeStatus bookkeeping as launch risks, not just green-field features."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chrome use-counter / HTTP Archive / BigQuery usage data for Intl.Locale.prototype.variants is not yet available (feature shipped 2026-06-02, ~6 weeks before cutoff); adoption cannot be scored.",
+      "Exact Chromium implementation CL/bug number and flag name could not be retrieved; Chrome 149 release-notes entry has no tracking-bug link and Chromium Dash requires sign-in.",
+      "Public rationale for the 144→149 ship-milestone slip (~5 months) is absent from the intent and ChromeStatus record.",
+      "The Chromium feature-detection support bug ('Unable to check for support of...') could not be retrieved beyond a search-result snippet (no issue number/detail).",
+      "No production case study or framework (e.g. formatjs) integration confirming `variants` support was found."
+    ],
+    "reviewedAt": "2026-07-20T13:30:00Z"
+  }
+}

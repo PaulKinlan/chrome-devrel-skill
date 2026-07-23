@@ -1,0 +1,463 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5179186249465856,
+    "name": "Permissions Policy: focus-without-user-activation",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5179186249465856",
+    "category": "Miscellaneous",
+    "blinkComponents": [
+      "Blink>FeaturePolicy"
+    ],
+    "summary": "A Permissions-Policy that lets embedders block programmatic focus (element.focus(), autofocus, window.focus(), dialog.showModal(), popover focusing) from embedded content unless triggered by user activation; user-initiated focus is never affected; default resolved at TPAC 2024 to 'self' (disabled for cross-origin frames); supports parent→child focus delegation.",
+    "owners": [
+      "ekaramad@chromium.org",
+      "iclelland@chromium.org",
+      "mustaq@chromium.org",
+      "ffiori@microsoft.com",
+      "leo.lee@microsoft.com"
+    ],
+    "drivingOrg": "Microsoft (implementers Fernando Fiori, Siye Liu) in collaboration with Chromium",
+    "specLink": "https://html.spec.whatwg.org/#focus-without-user-activation-feature"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Origin trial:5179186249465856",
+      "milestone": 149,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "A real, recurring, practitioner-originated problem. The original 2019 request came from an advertising-security engineer for large publishers (Yahoo/Tumblr/HuffPost/TechCrunch/AOL) reporting that ads programmatically steal input focus, silently redirecting keystrokes; Chrome (mustaqahmed/ehsan-karamad) and Mozilla (dveditz) agreed feature-policy was the right layer over sandbox. Mode (new feature/security control), target users (embedders, end users, accessibility users), and the browser-intervention rationale are all clear and well-scoped.",
+      "evidenceIds": [
+        "S4",
+        "S3",
+        "S1"
+      ],
+      "limitations": "Demand is demonstrated through issue comments/reactions and workaround reports rather than a representative survey; magnitude of the abuse in the wild is not quantified."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Use cases, non-goals, and alternatives were thoroughly worked out: sandbox-vs-permissions-policy tradeoff, naming polarity (positive 'focus-without-user-activation' over 'disallow-programmatic-focus'), default-allowlist choice, and the Teams/Outlook/Copilot focus-delegation pattern. Co-design spanned W3C WebAppSec, WHATWG, Chromium and (later) Microsoft. However the proposal then sat largely dormant for ~5 years (2019–2024) without an explicit ship-or-stop decision.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S2"
+      ],
+      "limitations": "The multi-year stall is a process/ownership gap, not an incubation-quality gap; it is treated under counterfactuals."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A Chromium implementation existed behind a flag from ~Chrome 75 (June 2019) and an early Intent to Ship was posted (pnUiTrLHHmw, 2019) that never shipped; WPT tentative tests exist. But the prototype stayed framed-content-only and experimental for years, and developers trying it later found it inconsistent (e.g. an iframe allow attribute 'still not work for chrome122'). The implementation is being actively refined (default→EnableForSelf Oct 2024; setter-policy-vs-target-policy fix) rather than frozen.",
+      "evidenceIds": [
+        "S4",
+        "S14",
+        "S13",
+        "S1"
+      ],
+      "limitations": "No formal prototype friction-log or task-based validation artifacts are visible; evidence is issue-driven."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "There was no structured developer-trial cohort; instead the feature lingered as a passive behind-a-flag experiment that developers self-discovered and repeatedly asked about (2022, 2023, 2024) with no committed timeline. Web developers (YouTube Video Processing team, ad-blockers, embedders) expressed concrete demand and reported that no reliable workaround exists. This is closer to an unmanaged long-term flag than a recruited trial.",
+      "evidenceIds": [
+        "S4",
+        "S2"
+      ],
+      "limitations": "Participation was self-selected and untracked; no denominator, task-completion, or representativeness data."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Strong positive review signals: TAG review (#1066, Mar 2025) status 'Issues addressed'; WebKit position 'Support'; a TPAC 2024 WebAppSec+WHATWG resolution set default='self' and allowed focus delegation; spec PR whatwg/html#10672 merged March 2025; WPT tests referenced. But Mozilla's position is explicitly 'No signal' (issue open, 'Needs proposed position', assigned to smaug), and the implementer states key focus-delegation/descendant semantics are still unresolved in the spec.",
+      "evidenceIds": [
+        "S5",
+        "S7",
+        "S6",
+        "S4",
+        "S10"
+      ],
+      "limitations": "Mozilla silence must not be read as neutral/positive; TAG reviewer detail was not fully captured and relies on the ChromeStatus 'Issues addressed' status."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "An Origin Trial is registered M149–152 (desktop/Android/WebView) with an approved Intent to Experiment (Mike Taylor LGTM, 9 Apr 2026; moved from 148→149 and later extended to 152). Stated goal is to 'validate the current API design and get feedback on whether it satisfies developer needs.' However the intent declares 'Risks: None' and 'Ongoing constraints: None' while the same author's Oct 2025 spec issue says the feature is 'blocked' pending agreement on descendant-focus behavior, and debuggability (console messages) was still being implemented at OT start. A default of 'self' meaningfully changes cross-origin-iframe behavior, so compat risk is non-trivial and exactly what the OT should measure.",
+      "evidenceIds": [
+        "S9",
+        "S10",
+        "S1",
+        "S13"
+      ],
+      "limitations": "No published experiment protocol/metrics/thresholds; participant denominator and activation telemetry not yet available."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "The feature has not reached the prepare-to-ship phase: it is in an Origin Trial (M149–152) and ChromeStatus still shows 'In developer trial (Behind a flag)'; default-on (GA) shipment has not begun (the intent's original M150 ship estimate has slipped). Assessed as not-relevant because the phase has not been entered, not because it was untested.",
+      "evidenceIds": [
+        "S1",
+        "S9"
+      ],
+      "limitations": "Revisit when an Intent to Ship / default-on rollout is filed."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Release communication for the OT exists and is accurate: the Chrome 149 beta blog (6 May 2026) and Chrome 149 release notes list the feature under 'New origin trials' with a correct description. No default-on/GA release has occurred, so end-user-facing release comms are not yet due.",
+      "evidenceIds": [
+        "S11",
+        "S12"
+      ],
+      "limitations": "Communication is OT-scoped only; no GA launch assets, FAQ, or known-issues material observed."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early for enforced-policy adoption: the OT just began. There is, however, clear latent/pre-emptive demand — several sites/frameworks already emit 'focus-without-user-activation=()' defensively in Permissions-Policy headers before any enforcement (Drupal seckit, WordPress Core FLoC proposal, personal sites). A Chromium use counter (kFocusWithoutUserActivationPolicySet) is wired to measure real usage once the OT runs, but no values are available.",
+      "evidenceIds": [
+        "S15",
+        "S1"
+      ],
+      "limitations": "Pre-emptive header usage is anecdotal and self-selected, not a usage denominator; no OT activation/usage telemetry retrieved."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support-burden evidence yet: the OT is brand new. The explainer and intent reference planned debuggability (console messages when focus is blocked) but that work was in progress at OT start. No public issue taxonomy, recurrence, or incident data exists.",
+      "evidenceIds": [
+        "S9",
+        "S3"
+      ],
+      "limitations": "Support health cannot be assessed until the OT produces issues."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new feature/security control, not a deprecation or removal; the deprecation phase does not apply. (Not-relevant by phase applicability, not to mean untested.)",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The developer problem is real, important, recurring and currently unsolvable without browser help: embedded ads/widgets can programmatically hijack focus and there is 'nothing at all' that reliably stops it (sandbox disables JS entirely; blur/polling hacks flicker and race). Attestation spans 6+ years from an ad-security engineer, the YouTube Video Processing team, and many independent developers. Solving this has clear security and accessibility value.",
+      "evidenceIds": [
+        "S4",
+        "S2"
+      ],
+      "limitations": "Value of the *solution* (vs the problem) is not yet proven by adoption; success here is problem-validity, not shipped impact."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Not measurable yet: the policy is in origin trial and not enforced by default, so end users are largely unaffected today. The design promises positive security/accessibility impact (prevents silent keystroke redirection; helps keyboard/screen-reader users), but no user-impact or abuse-reduction data exists. Default-'self' could also surface compat friction for users of embedded apps that legitimately rely on programmatic focus.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S10"
+      ],
+      "limitations": "Impact will only be determinable after default-on shipment and telemetry."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Cannot score: enforced-policy adoption has not started (OT-only). Only latent demand (pre-emptive header emission) is observable; no production deployments of the enforced behavior, no framework/library integration, and no OT usage telemetry retrieved.",
+      "evidenceIds": [
+        "S15",
+        "S1"
+      ],
+      "limitations": "Use counter exists but values unavailable; adoption outcome deferred."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Positive trajectory but not yet interoperable in practice. Spec PR merged (whatwg/html#10672), TAG satisfied, WebKit position 'Support', WPT tests present, and the work is multi-stakeholder (Microsoft + Chromium). But WebKit has NOT implemented it (tracking bug 282951 is status NEW, unassigned, no patch, last activity Nov 2024), Mozilla has 'No signal' and no implementation, and core focus-delegation/descendant semantics remain open in the spec. During the OT the enforced behavior is effectively Chromium/Edge-only.",
+      "evidenceIds": [
+        "S8",
+        "S6",
+        "S7",
+        "S10",
+        "S14"
+      ],
+      "limitations": "WebKit bug could have progressed after Nov 2024; not confirmed in any shipped Safari release. Baseline not yet achievable."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The Chromium implementation is real and actively maintained (default switched to EnableForSelf per TPAC resolution Oct 2024; setter-policy-vs-target-policy focus-delegation fix in flight; base::Feature killswitch present). However the authoritative ChromeStatus record is internally stale/inconsistent — webview_risks text still claims a default of 'allow *' (the real default is 'self'), intent_stage reads 'Start prototyping', and the displayed Chrome status is 'Behind a flag' while an Origin Trial is active — and console debuggability was still being added at OT start. Default-'self' compat is under-tested, which is the OT's purpose.",
+      "evidenceIds": [
+        "S1",
+        "S13",
+        "S14",
+        "S9"
+      ],
+      "limitations": "Chromium tracking bug 40095111 could not be read (tracker errors); no compat telemetry yet."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The explainer is thorough (problem, goals, non-goals, alternatives, a11y/privacy/security, open questions, pseudo-algorithm, behavior table) and the OT has accurate release comms (Chrome 149 beta blog + release notes). But the intent's 'Risks: None' directly contradicts the implementer's own statement that the feature is 'blocked' on unresolved spec behavior, the cached record mis-states the default value, MDN does not yet document the directive (as of Jun 2026), and security/privacy formal review status is 'Pending'. Decision-quality honesty and docs readiness are gaps during the trial.",
+      "evidenceIds": [
+        "S9",
+        "S10",
+        "S1",
+        "S13",
+        "S11",
+        "S12"
+      ],
+      "limitations": "Some review statuses (security/privacy) may be stale in the cache."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support evidence yet — the OT has just begun and no issue volume, recurrence, or resolution data exists. Debuggability is planned (console messages) but not confirmed shipped at OT start.",
+      "evidenceIds": [
+        "S9"
+      ],
+      "limitations": "Deferred until OT/support data accrues."
+    },
+    "overall": {
+      "status": "unscored",
+      "finding": "Too early to score overall success or failure. The feature has excellent problem validation and provenance, positive standards signals, and an active Microsoft/Chromium implementation, but it is mid-Origin-trial (not shipped default-on), the spec is not fully stabilized, and it is not yet interoperable across engines (no WebKit implementation, no Mozilla signal). Per the method, success is not inferred from the OT registration, latent demand, or positive sentiment. Overall outcome will be determinable only after default-on shipment, interop movement, and post-launch support/adoption data.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S6",
+        "S10",
+        "S9"
+      ],
+      "limitations": "Inherits all dimension limitations above."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5179186249465856",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-04-24; updated 2026-07-17)",
+      "publishedOrObservedAt": "2026-07-17",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "feature identity, owners, OT window M149-152 (desktop/android/webview), flag=blocking-focus-without-user-activation, finch=BlockingFocusWithoutUserActivation",
+        "standards signals: Firefox No signal, Safari Support, Web developers Positive",
+        "TAG review status Issues addressed; spec link; use counter kFocusWithoutUserActivationPolicySet (bucket 5876)",
+        "stale fields: webview_risks says default allow *, intent_stage Start prototyping, Chrome status Behind a flag despite OT"
+      ],
+      "limitations": "Several fields are stale relative to the TPAC 2024 default=self resolution and the active Origin Trial."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5179186249465856",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "summary, motivation (focus theft by embedded content), standards signals"
+      ],
+      "limitations": "Lite view omits stage/rollout detail present in the cached record."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/ffiori/webappsec-permissions-policy/blob/focus-without-user-activation-explainer/policies/focus-without-user-activation.md",
+      "publisher": "Fernando Fiori (Microsoft) / W3C WebAppSec explainer",
+      "publishedOrObservedAt": "2025",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "problem/goals/non-goals, sandbox vs permissions-policy alternatives, naming rationale, focus delegation, default self, behavior-case table, open spec questions (#11839, #12032)"
+      ],
+      "limitations": "Living explainer on a personal fork; date approximate."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/webappsec-permissions-policy/issues/273",
+      "publisher": "W3C WebAppSec WG (GitHub)",
+      "publishedOrObservedAt": "2019-01-29 (opened) through 2024-09-30 (TPAC resolution)",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "original problem (marian-r, ad-security for large publishers), Chrome/Mozilla engagement 2019, ~6 years of developer demand (josephrocca, JoeAzar/YouTube, bozghiyy), clelland Dec-2023 ship-readiness, TPAC 2024 RESOLVED default=self + focus delegation, Chromium Oct-2024 default-to-self commit (bug 371112534), Wikimedia work-around, Opera UA intervention"
+      ],
+      "limitations": "GitHub comments/reactions are self-selected; demand not quantified."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1066",
+      "publisher": "W3C TAG",
+      "publishedOrObservedAt": "2025-03-07",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review requested by siliu1 (Microsoft), implementers ffiori+siliu1 (Microsoft), WPT test links, ChromeStatus status 'Issues addressed'"
+      ],
+      "limitations": "Detailed TAG reviewer responses not captured; relies on ChromeStatus status."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1080",
+      "publisher": "Mozilla",
+      "publishedOrObservedAt": "2024-10-01",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla = 'No signal'; issue Open, project status 'Needs proposed position', assigned to smaug (Olli Pettay), labels team: Security / venue: WHATWG"
+      ],
+      "limitations": "Position may be updated later; currently no formal Mozilla stance."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/406",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": "2024-10-01",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position = 'Support' (Closed, label position: support); notes WebKit already requires user gesture for cross-origin iframe focus; references WebKit bug 282951"
+      ],
+      "limitations": "Position is not implementation."
+    },
+    {
+      "id": "S8",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=282951",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2024-11-11 (reported) / 2024-11-18 (last activity)",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit implementation NOT done: bug status NEW, assignee Nobody, no patch attached, reported by Siye Liu (Microsoft), InRadar rdar://140149853"
+      ],
+      "limitations": "Bug could have progressed after Nov 2024; not confirmed shipped in any Safari release."
+    },
+    {
+      "id": "S9",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/GLmp1IrJ4Ig/m/OWAAhFpsAgAJ",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2026-04-09 (posted + Mike Taylor LGTM) / 2026-05-04 (Fernando Fiori moved OT 148->149-151)",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment; OT goal 'validate API design / developer needs'; Risks 'None'; debuggability console messages CL in progress; TAG review 'Issues addressed'; all six Blink platforms; original OT window M148-150 then moved"
+      ],
+      "limitations": "Google Groups message-id URL in the cached record did not render; this conversation URL retrieved via search."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/whatwg/html/issues/11839",
+      "publisher": "WHATWG (GitHub)",
+      "publishedOrObservedAt": "2025-10-27",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Implementer (ffiori) states feature is 'blocked' pending agreement on descendant-focus semantics despite satisfied TAG review + WebKit support + merged spec PR; motivation to 'avoid breaking existing sites'; proposed inclusive-descendant algorithm change; follows up on whatwg/html#11519"
+      ],
+      "limitations": "Reflects Oct 2025 state; may have progressed since."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.chrome.com/blog/chrome-149-beta",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-05-06",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "OT announced under 'New origin trials' with accurate description (M149 beta)"
+      ],
+      "limitations": "Beta-blog scoped comms; no GA launch article yet."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Feature listed as 'Origin Trial' in Chrome 149 release notes"
+      ],
+      "limitations": "Retrieved via search snippet only; full page not read."
+    },
+    {
+      "id": "S13",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026-06-08",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "focus-without-user-activation is NOT present in MDN's Permissions-Policy directive list (49 directives) as of 2026-06-08 — docs gap during the OT"
+      ],
+      "limitations": "MDN entry may be added later; absence is point-in-time."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromium.googlesource.com/chromium/src.git/+/90ca6cba573e23606dfbc6a4c849ed3eeea9833b",
+      "publisher": "Chromium source",
+      "publishedOrObservedAt": "2024-10-28 (default-to-self, bug 371112534) and later setter-policy fix",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Active Chromium refinement: default changed to EnableForSelf per TPAC resolution (CL reviewed by iclelland); '[focus-without-user-activation] Check setter's policy, not target's' fix in flight"
+      ],
+      "limitations": "Changelogs only; no compat telemetry."
+    },
+    {
+      "id": "S15",
+      "url": "https://make.wordpress.org/core/2021/04/18/proposal-treat-floc-as-a-security-concern/",
+      "publisher": "Various community configs (WordPress Core, Drupal seckit #3185024, Seirdy notes, msfjarvis server-config)",
+      "publishedOrObservedAt": "2019-2024",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Latent developer demand: sites/frameworks already emit 'focus-without-user-activation=()' defensively in Permissions-Policy headers before any browser enforcement"
+      ],
+      "limitations": "Anecdotal, self-selected; not a usage denominator; primary URL is one representative example, others surfaced via search."
+    },
+    {
+      "id": "S16",
+      "url": "https://html.spec.whatwg.org/#focus-without-user-activation-feature",
+      "publisher": "WHATWG (HTML Living Standard)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec section exists; ChromeStatus reports maturity 'Working draft / Specification currently under development in a Working Group'"
+      ],
+      "limitations": "Living standard; descendant-focus algorithm still being revised (see S10)."
+    }
+  ],
+  "successes": [
+    "Real, practitioner-originated problem (ad focus-theft) with durable, multi-year, multi-source developer demand — not invented demand.",
+    "Microsoft/Chromium collaboration revived a proposal that had stalled since 2019, producing a TPAC 2024 multi-stakeholder resolution, a merged WHATWG spec PR, and WPT coverage.",
+    "Positive standards trajectory: TAG review satisfied, WebKit position 'Support', well-reasoned default ('self') and focus-delegation design that preserves user-initiated focus.",
+    "Latent developer demand is observable: several sites/frameworks already emit the directive defensively before any enforcement, and a Chromium use counter is wired to measure real adoption.",
+    "Non-breaking opt-in design with a base::Feature killswitch, lowering rollback risk during the trial."
+  ],
+  "failures": [
+    "~6-year stall (2019–2024): a prototype shipped behind a flag in ~M75 with an Intent to Ship that never closed, leaving developers waiting with no reliable workaround for years.",
+    "Spec not stabilized at OT start: the implementer's own Oct 2025 issue says the feature is 'blocked' on descendant-focus semantics, contradicting the intent's 'Risks: None' — decision-quality honesty gap.",
+    "Cached ChromeStatus record is stale/inconsistent: default-value framing ('allow *'), intent_stage ('Start prototyping'), and Chrome status ('Behind a flag') all misrepresent the active Origin Trial and the real default of 'self'.",
+    "Documentation gap: MDN does not document the directive during the OT (as of Jun 2026); formal security/privacy review status still 'Pending'.",
+    "Not yet interoperable: no WebKit implementation (bug NEW/unassigned) and Mozilla 'No signal' — enforcement during the OT is Chromium/Edge-only."
+  ],
+  "counterfactuals": [
+    "If Chromium had run a structured developer-trial cohort in 2019–2023 instead of a passive flag, the spec edge cases (descendant focus, default value) and compat risk could plausibly have been resolved years earlier, shortening or removing the need for a 4-milestone Origin Trial.",
+    "If the Intent to Experiment had disclosed the open whatwg/html#11839 questions and the default-'self' compat risk instead of 'Risks: None', the API-owner review and OT framing would have been more decision-useful and the cached record less likely to mis-state the default.",
+    "If MDN documentation and a WebKit implementation had landed before or alongside the OT, developer onboarding and interoperability confidence would be materially stronger.",
+    "If the cached record's default-value, breaking_change, and status fields had been kept current after the TPAC 2024 resolution, partners/enterprises assessing impact would not be misled into thinking the change is opt-in ('allow *') rather than default-'self'.",
+    "If a 'stalled feature' monitor existed, the 2019 prototype would have triggered an explicit park-or-ship review long before 2024."
+  ],
+  "skillImprovements": [
+    "Add a Phase 05 (experiment) check: before OT approval, reconcile the intent's 'Risks'/'Ongoing constraints' fields against the most recent open spec issues and the implementer's own blocking statements; flag and require explanation of any contradiction.",
+    "Add a ChromeStatus data-freshness rule: when a TPAC/WG resolution changes a feature's default value or scope, require webview_risks/breaking_change/summary/intent_stage to be re-validated and updated within N days; stale default-value framing is a launch-resilience and impact-assessment risk.",
+    "Add an OT/trial docs-readiness gate: require either an MDN directive entry or an explicit 'docs pending' note with an owner before an Origin Trial starts, so trial participants have reference material.",
+    "In retrospectives, strictly separate standards *position* from *implementation*: score 'position: support' as a signal, not as interoperability; track WebKit/Mozilla implementation bugs (and their status/assignee) as distinct evidence.",
+    "Add a 'stalled feature' monitor and anti-pattern: features behind a flag for more than N milestones without a ship-or-stop decision should trigger an explicit review and be flagged in retrospectives (this feature's 2019–2024 stall is the canonical case).",
+    "Add a default-value/compat-risk lens for permissions-policy features: a default other than '*' is a behavior change for cross-origin embeds and should be tested in the OT with explicit compat metrics, not filed under 'Risks: None'."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "WebKit implementation status beyond Nov 2024 (bug 282951 last activity; not confirmed shipped in any Safari release).",
+      "Mozilla's formal position (issue still 'Needs proposed position', assigned to smaug).",
+      "Actual Origin Trial adoption/usage telemetry for kFocusWithoutUserActivationPolicySet (values not available).",
+      "Any OT-reported compatibility breakage arising from the default-'self' behavior change.",
+      "Chromium tracking bug 40095111 detail (Bugzilla/issues.chromium.org reads returned 500/timeout).",
+      "Post-ship end-user impact and support-burden evidence (feature has not shipped default-on; GA slipped past the intent's M150 estimate)."
+    ],
+    "reviewedAt": "2026-07-20T22:30:00Z"
+  }
+}

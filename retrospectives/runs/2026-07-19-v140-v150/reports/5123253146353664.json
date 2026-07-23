@@ -26,10 +26,11 @@
     {
       "eventId": "150:Enabled by default:5123253146353664",
       "milestone": 150,
-      "category": "Enabled by default"
+      "category": "Enabled by default",
+      "date": "2026-06-30"
     }
   ],
-  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:48Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -108,26 +109,27 @@
     },
     "release": {
       "status": "supported",
-      "finding": "Release communication was coordinated, timely and accurate across channels: the official Chrome 150 beta post (2026-06-03) described the feature correctly; Chrome 150 reached stable (~2026-06-17 per independent tracking) and press confirmed it shipped; MDN was updated (2026-04-18) ahead of stable to document both the color and image forms with formal syntax and an @supports detection example; a high-quality independent DevRel article (Bram.us, 2026-03-19, maintained to 2026-05-26) explained the design and browser matrix. Firefox 150 also carried a release note for the same capability.",
+      "finding": "Release communication was coordinated, timely and accurate across channels: the official Chrome 150 beta post (2026-06-03) described the feature correctly; Chrome 150 reached stable on 2026-06-30 (Chrome 150 stable launch checkpoint in the cached LightDark usage timeline, S16) and independent press confirmed the ship; MDN was updated (2026-04-18) ahead of stable to document both the color and image forms with formal syntax and an @supports detection example; a high-quality independent DevRel article (Bram.us, 2026-03-19, maintained to 2026-05-26) explained the design and browser matrix. Firefox 150 also carried a release note for the same capability.",
       "evidenceIds": [
         "S12",
         "S10",
         "S11",
         "S13",
         "S14",
-        "S7"
+        "S7",
+        "S16"
       ],
-      "limitations": "The feature was a low-profile Chrome 150 item — independent round-ups listed it among 'other updates' (Gigazine) or omitted it from the teaser (web-standards.dev). A dedicated 'New in Chrome 150' deep-dive on this feature was not confirmed. Chrome 150 stable-channel blog post did not render in the reader (date inferred from independent sources)."
+      "limitations": "The feature was a low-profile Chrome 150 item — independent round-ups listed it among 'other updates' (Gigazine) or omitted it from the teaser (web-standards.dev). A dedicated 'New in Chrome 150' deep-dive on this feature was not confirmed. Chrome 150 stable-channel blog post did not render in the reader (stable date taken from the Chrome telemetry launch checkpoint, S16)."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Too early for adoption evidence. The feature shipped only ~4 weeks before the evidence cutoff and no usage/use-counter data has been published. The image form is not yet Baseline: MDN marks light-dark() Baseline 2024 with the caveat 'Some parts of this feature may have varying levels of support,' because the color form reached Baseline in 2024 while the image form is new and only in Chrome 150 and Firefox 150 (not Safari). No framework/library integration or case-study evidence was found.",
+      "status": "partial",
+      "finding": "Adoption evidence now exists but only at the WebDX family level, not for the image form specifically. The LightDark WebDX use counter (ChromeStatus timeline bucket 337, S16) — a declared-family counter (mappingStatus web-feature-family-counter) — reached 1.34% of measured Chrome HTTP/HTTPS page loads by 2026-07-20 (its peak and latest point, raw day_percentage 0.01342112); at the Chrome 150 stable launch checkpoint (2026-06-30, 'Enabled by default') it stood at 1.28% (0.01280707); the series has risen monotonically from its first positive observation on 2025-05-12 (~0.0001%). Because the counter covers both the light-dark() color form (Baseline 2024, the dominant pre-existing contributor) and the new image form, it cannot isolate image-form adoption. Only ~3 weeks of post-stable data exist; day30/day90/day180 launch-relative checkpoints are not yet populated. The image form is not yet Baseline: MDN marks light-dark() Baseline 2024 with the caveat 'Some parts of this feature may have varying levels of support,' because the color form reached Baseline in 2024 while the image form is new and only in Chrome 150 and Firefox 150 (not Safari). No framework/library integration or case-study evidence was found.",
       "evidenceIds": [
+        "S16",
         "S10",
-        "S1",
-        "S11"
+        "S1"
       ],
-      "limitations": "No quantitative adoption or production-use evidence exists at cutoff. Qualitative demand signals (WG advocacy, MDN/Bram.us engagement, developer comments) are positive but are not adoption."
+      "limitations": "Family-level counter, not exact image-form adoption; the Baseline-2024 color form dominates and cannot be separated out. No unique-site, production, retention, task-success, or predeclared-target evidence; day30/90/180 checkpoints not yet populated (~3 weeks post-stable). Percentages are the share of measured Chrome page loads where the counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit."
     },
     "support": {
       "status": "unknown",
@@ -168,16 +170,18 @@
         "S10",
         "S9"
       ],
-      "limitations": "No measured end-user impact. Benefit is design-level and adoption-dependent; not inferable as achieved."
+      "limitations": "No measured end-user impact. Benefit is design-level and adoption-dependent; not inferable as achieved. The family-level LightDark counter (S16) does not isolate the image form, so it cannot confirm end-user benefit of this launch."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No adoption data exists yet. The feature shipped ~4 weeks before cutoff; no use-counter, web-features, HTTP Archive or partner production-use evidence was found. The image form is not Baseline (color form is Baseline 2024; image form is Chrome 150 + Firefox 150 only).",
+      "finding": "Unscored for the image form. The LightDark WebDX family counter (bucket 337, S16) reached 1.34% of measured Chrome page loads by 2026-07-20 (peak, raw 0.01342112) and 1.28% at the Chrome 150 stable checkpoint (2026-06-30, raw 0.01280707), rising monotonically since first detection 2025-05-12 (~0.0001%). This is a declared-family counter (mappingStatus web-feature-family-counter) spanning the light-dark() color form (Baseline 2024) and the image form; it cannot isolate image-form adoption, and the color form is the dominant pre-existing contributor, so the measured level is not evidence of image-form success or failure. The Intent to Ship (S6) predeclared no adoption target or expectation, and no unique-site, production, retention, or task-success evidence exists; day30/90/180 launch checkpoints are not yet populated (~3 weeks post-stable). With no threshold and no corroborating production/retention evidence, the adoption outcome remains unscored; the measured level and rising trend are reported, not graded. The image form is not Baseline (color form is Baseline 2024; image form is Chrome 150 + Firefox 150 only).",
       "evidenceIds": [
+        "S16",
         "S10",
-        "S1"
+        "S1",
+        "S6"
       ],
-      "limitations": "Inherently too early to score; absence of adoption data is a timing limitation, not evidence of failure."
+      "limitations": "Family counter, not exact image-form adoption; color form dominates and cannot be separated. No predeclared target; no unique-site, production, retention, or task-success evidence. day30/90/180 not yet populated. The percentage is a page-load share, not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit."
     },
     "interoperability": {
       "status": "mixed",
@@ -228,7 +232,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-executed, low-risk catch-up that closes a genuine interoperability gap with Firefox and ships with strong, accurate documentation and communication. It is not yet a full cross-engine success: Safari has not shipped, the image form is not Baseline, one WPT test shows a cross-engine nuance, and post-launch adoption/impact are unproven at the ~4-week-post-ship cutoff. Overall is mixed rather than success precisely because interoperability is incomplete and adoption/end-user impact remain unscored.",
+      "finding": "A well-executed, low-risk catch-up that closes a genuine interoperability gap with Firefox and ships with strong, accurate documentation and communication. It is not yet a full cross-engine success: Safari has not shipped, the image form is not Baseline, one WPT test shows a cross-engine nuance, and post-launch adoption is only measurable at the WebDX family level (LightDark counter ~1.34% and rising, S16) — not for the image form, with no predeclared target and no production/retention evidence, so image-form adoption/end-user impact remain unscored. Overall is mixed rather than success precisely because interoperability is incomplete and image-form adoption/end-user impact remain unscored.",
       "evidenceIds": [
         "S4",
         "S7",
@@ -236,9 +240,10 @@
         "S6",
         "S10",
         "S11",
-        "S12"
+        "S12",
+        "S16"
       ],
-      "limitations": "Overall deliberately does not hide the mixed interoperability and unscored adoption/support dimensions. Success is not inferred from shipment, Firefox alignment, or positive press."
+      "limitations": "Overall deliberately does not hide the mixed interoperability and unscored adoption/support dimensions. Success is not inferred from shipment, Firefox alignment, positive press, or the family-level usage counter."
     }
   },
   "sources": [
@@ -310,7 +315,7 @@
       "retrievedAt": "2026-07-19T00:00:00Z",
       "sourceType": "intent",
       "supports": [
-        "Intent to Ship (2026-05-26): ships desktop/Android/WebView/iOS in M150, finch CSSLightDarkImage, rollout 'enabled for all users', WPT links, TAG review 'Not applicable', no experimentation, all six Blink platforms yes, tracking bug crbug 491829958. Dan Clark LGTM1 (2026-05-26) 'pending my question ... confirming whether Gecko is shipping image()/none'; Jason Leo, Alex Russell, Yoav Weiss also responded."
+        "Intent to Ship (2026-05-26): ships desktop/Android/WebView/iOS in M150, finch CSSLightDarkImage, rollout 'enabled for all users', WPT links, TAG review 'Not applicable', no experimentation, all six Blink platforms yes, tracking bug crbug 491829958. Dan Clark LGTM1 (2026-05-26) 'pending my question ... confirming whether Gecko is shipping image()/none'; Jason Leo, Alex Russell, Yoav Weiss also responded. No adoption target or success metric was predeclared."
       ],
       "limitations": "Reply bodies for Jason Leo, Alex Russell and Yoav Weiss not rendered; resolution of Dan Clark's pending Gecko image()/none question not visible. 'Debuggability' and 'Anticipated spec changes' fields blank."
     },
@@ -421,6 +426,18 @@
         "Tracking bug 491829958 referenced by the ChromeStatus record and the Intent to Ship as the implementation/launch bug for the feature."
       ],
       "limitations": "Bug page did not render in the reader (repeated timeouts); content not directly retrieved. Substance is corroborated by S1 and S6."
+    },
+    {
+      "id": "S16",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=337",
+      "publisher": "Chrome Platform Status — Web Feature Popularity timeline (bucket 337, LightDark)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Cached first-party Chrome usage telemetry for the LightDark WebDX use counter (bucket_id 337), mapped as a declared-family counter (mappingStatus web-feature-family-counter; confidence declared-family) for the light-dark web feature — the counter family this ChromeStatus launch belongs to, not an exact image-form counter. Numerator = Chrome HTTP/HTTPS page loads on which the counter fired at least once; denominator = measured Chrome page loads across official channels/platforms. Latest point 2026-07-20: 1.342% (day_percentage 0.01342112), also the series peak (435 timeline points). Chrome 150 stable launch checkpoint (2026-06-30, 'Enabled by default', atStable): 1.281% (0.01280707). First positive observation 2025-05-12 (~0.0001%, day_percentage 0.000001); the series is monotonically rising. day30/day90/day180 launch-relative checkpoints are null (not yet populated). timelineSha256 e8b1cbb600d11c18e0f740037944e48fa2330aef60b463566b8b0a0833e5ee70."
+      ],
+      "limitations": "This is a declared-family WebDX counter covering both the light-dark() color form (Baseline 2024) and the image form; it does not isolate image-form adoption, and the color form is the dominant pre-existing contributor, so the level is not evidence of image-form success or failure. The percentage is the share of measured Chrome page loads where the counter fired — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Counter instrumentation may include detection/probing depending on implementation; UMA reflects participating Chrome clients and the dominant milestone, so enterprise and opt-out populations may be underrepresented. Only ~3 weeks of post-stable data; day30/90/180 not yet populated, so the launch-relative trend is incomplete."
     }
   ],
   "successes": [
@@ -447,7 +464,8 @@
     "Add a transition-packet requirement to link each Intent to its upstream WG resolution issue (here #12513) and to surface spec maturity plus open WG labels ('Needs Edits'/'Needs Testcase (WPT)') as explicitly accepted ship risks.",
     "Add a rule: when a reviewer raises a pending interop question (e.g., 'does Gecko ship X?'), its resolution must be logged in the thread/ChromeStatus before the gate closes; surface unresolved 'pending LGTM' caveats in the ship brief.",
     "Add an adoption-readiness check for low-profile CSS features: confirm a Baseline entry plan and a named doc/article owner, and verify independent round-ups list the feature; if they omit it, flag an awareness risk for the adoption plan.",
-    "Add a regression eval for 'clean catch-up' features that ship 2/3 engines: the retrospective must score interoperability 'mixed' (not success) and adoption 'unscored' until Baseline, to prevent inferring success from shipment + Firefox alignment."
+    "Add a regression eval for 'clean catch-up' features that ship 2/3 engines: the retrospective must score interoperability 'mixed' (not success) and adoption 'unscored' until Baseline, to prevent inferring success from shipment + Firefox alignment.",
+    "Add a usage-evidence scoping rule: record the exact counter mapping (exact / WebDX family / property / origin-trial / absent) before quoting any percentage, and never let a family counter stand in for image-form adoption or be read against an absent target; a family-level number with no predeclared target keeps the adoption outcome unscored."
   ],
   "completion": {
     "status": "partial",
@@ -456,9 +474,9 @@
       "Detailed WPT pass/fail matrix not verifiable (wpt.fyi dashboard is JS-rendered); only one cross-engine disagreement (Firefox, on light-dark-image `none`/interpolation) is documented via S7.",
       "Full text of Intent-to-Ship replies from Jason Leo, Alex Russell and Yoav Weiss was not rendered (names/timestamps captured); the resolution of Dan Clark's pending Gecko image()/none question is not visible in the retrieved thread.",
       "Implementation CL chromium-review 7675477 diff was referenced (S5) but not read directly.",
-      "No post-launch usage/adoption data exists: the feature shipped in Chrome 150 stable (~2026-06-17), only ~4 weeks before the evidence cutoff.",
+      "No exact image-form adoption counter exists: the only mapped Chrome usage telemetry is the LightDark WebDX family counter (S16, bucket 337), a declared-family counter that also includes the Baseline-2024 color form and cannot isolate the image form. No unique-site, production, retention, or task-success data; no predeclared adoption target; day30/day90/day180 launch checkpoints are not yet populated (~3 weeks post-stable).",
       "Formal security and privacy review statuses are stale ('Pending' as of 2026-06-02) in ChromeStatus and could not be independently verified."
     ],
-    "reviewedAt": "2026-07-19T00:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:48Z"
   }
 }

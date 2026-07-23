@@ -130,15 +130,17 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Nascent and Chrome-only. Chrome use counter 'ViewTransitionsElementScoped' (metric 281) rose from ~0.000017% (Apr 2025, pre-flag noise) to 0.000000% May-Nov 2025, then 0.000256% (Jan 2026), 0.154% (Mar 2026, first stable month), peaking 0.358% (May 2026), settling ~0.27% (Jun-Jul 2026) of Chrome page loads. CanIUse: supported only in Chromium-derived browsers (Chrome/Edge 147+, Opera 131+, Chrome Android 150); NOT in Firefox (<=155) or Safari (<=26.5/TP). Community enthusiasm exists (samwho 'I'm salivating'; Jake Archibald 'excited about this API' though with a public caveat). No independent attributable production case studies were found; all demos are Chrome-authored.",
+      "finding": "Nascent, Chromium-only, and now exactly measured. The feature's exact WebDX use counter ViewTransitionsElementScoped (webfeature bucket 281; scope=exact, confidence=exact, mapping verified via web-features-mappings chrome-use-counters) was effectively 0% through the M140 developer-trial window (atStable 2025-09-06, day30 2025-10-05, and day90 2025-12-02 all 0%; the only pre-stable non-zero points were draft-flag noise: 0.000001% on 2025-04-06 and 0.000724% at day180 / 2026-03-01, both under the DRAFT_ScopedViewTransitions name). After M147 stable (2026-04-07) it read 0.002902% at stable, 0.00414591% at day 30 (2026-05-07), peaked at 0.00831606% (2026-05-19), then settled to 0.00280462% at day 90 (2026-07-06) and 0.00300496% latest (2026-07-20) - a rise-then-settle pattern that returned to roughly the launch-day level by day 90. For magnitude context the broader View Transitions API counters (webfeature bucket 2 ViewTransitions: 0.00651494% at stable, 0.0052774% latest; feature bucket 4383 ViewTransition: 0.00652006% stable, 0.00528852% latest) sit at ~0.005-0.0065%; these are property/family counters for the document-level API, NOT exact element-scoped adoption. A coincidental CSS 'transition' property counter (bucket 150) was also name-matched and excluded as non-informative. CanIUse: Chromium-derived only (Chrome/Edge 147+, Opera 131+, Chrome Android 150); not Firefox (<=155) or Safari (<=26.5/TP). Community enthusiasm exists (samwho 'I'm salivating'; Jake Archibald 'excited about this API' with a public caveat). No independent attributable production case studies, framework/library integration, or unique-site/retention evidence was located; all demos are Chrome-authored.",
       "evidenceIds": [
-        "s-usage-281",
+        "s-usage-webfeature-281",
+        "s-usage-webfeature-2",
+        "s-usage-feature-4383",
         "s-caniuse",
         "s-samwho",
         "s-jake-x",
         "s-launch-blog"
       ],
-      "limitations": "Feature is only ~4 months past full stable at the evidence cutoff, so durable adoption cannot yet be judged. No framework/library integration evidence and no third-party production deployments were located. The use-counter measures 'used at least once per page load', not meaningful production use."
+      "limitations": "Exact Chrome usage telemetry now exists, but the counter is the share of measured Chrome HTTP/HTTPS page loads where it fired at least once - not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. No predeclared adoption target exists, so the measured level is descriptive, not a pass/fail. No independent production, framework-integration, unique-site, or retention evidence was located; the feature is only ~3.5 months past full stable, so durable adoption cannot be judged."
     },
     "support": {
       "status": "partial",
@@ -183,14 +185,15 @@
       "limitations": "No user-impact evidence exists to score; do not infer user benefit from developer enthusiasm. Accessibility of scoped transitions specifically is not separately tested in public sources."
     },
     "adoption": {
-      "status": "mixed",
-      "finding": "Measurable but tiny and single-engine: ~0.27% of Chrome page loads (Jul 2026), rising from ~0.15% at first stable month (Mar 2026) and a 0.36% peak (May 2026). Positive directional traction on Chrome is offset by Chromium-only availability, no independent production case studies, and no framework/library integration evidence at the cutoff.",
+      "status": "unscored",
+      "finding": "Exactly measured, nascent, and unscored. The feature-specific counter ViewTransitionsElementScoped fired on 0.002902% of measured Chrome page loads at M147 stable (2026-04-07), rose to a 0.00831606% peak (2026-05-19), then settled to 0.00280462% at day 90 (2026-07-06) / 0.00300496% latest (2026-07-20) - roughly the launch-day level after a transient peak, and roughly half the broader View Transitions API counter (webfeature bucket 2 ~0.005%). Availability is Chromium-only. No predeclared adoption target or success threshold was found in the launch record, and no independent production, retention, or unique-site evidence corroborates the measured level; the counter is a 'fired at least once per page load' share, not production deployment or durable use. Per method, with no threshold and no corroborating production/retention evidence, the adoption outcome is left unscored; the measured level and rise-then-settle trend are described, not judged.",
       "evidenceIds": [
-        "s-usage-281",
+        "s-usage-webfeature-281",
+        "s-usage-webfeature-2",
         "s-caniuse",
         "s-launch-blog"
       ],
-      "limitations": "Too early (4 months post-stable) to judge durable adoption; the use-counter is a weak proxy for production use. Not scored 'success' because shipment and a low usage counter are insufficient per method."
+      "limitations": "Unscored because there is no predeclared adoption target and no production/retention/unique-site evidence to corroborate the measured level; low counter values are descriptive, not a success or failure verdict, and 'mixed' is not used as a substitute for an absent threshold. Counter values are page-load shares, not unique developers/sites/users/production deployment."
     },
     "interoperability": {
       "status": "mixed",
@@ -239,18 +242,18 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-executed launch of a genuinely wanted, well-communicated developer capability, undercut at the evidence cutoff by single-engine availability (both other engines 'no signal'), an unresolved spec issue (#9890 'Open/Needs Edits'), late public-API naming churn, and nascent adoption (~0.27% of Chrome page loads, no independent production deployments). Strong on developer value, communication, and tooling; weak on interoperability and durable adoption.",
+      "finding": "A well-executed launch of a genuinely wanted, well-communicated developer capability, undercut at the evidence cutoff by single-engine availability (both other engines 'no signal'), an unresolved spec issue (#9890 'Open/Needs Edits'), and late public-API naming churn. Adoption is nascent, exactly measured, and left unscored (~0.003% of measured Chrome page loads at day-90 post-stable, after a ~0.008% peak; no predeclared target, no independent production deployments). Strong on developer value, communication, and tooling; weak on interoperability; durable adoption not yet judgeable.",
       "evidenceIds": [
         "s-chromestatus-cached",
         "s-launch-blog",
         "s-caniuse",
-        "s-usage-281",
+        "s-usage-webfeature-281",
         "s-mozilla-1352",
         "s-webkit-611",
         "s-csswg-9890",
         "s-csswg-13123"
       ],
-      "limitations": "Overall is deliberately mixed to avoid masking the interop/adoption gaps; the picture should be re-scored once other-engine positions resolve and post-stable adoption matures."
+      "limitations": "Overall is deliberately mixed to avoid masking the interoperability gaps (single-engine availability, unresolved spec issue, late API churn); adoption is unscored for lack of a predeclared target and corroborating production/retention evidence. The picture should be re-scored once other-engine positions resolve and post-stable adoption matures against a declared target."
     }
   },
   "sources": [
@@ -436,16 +439,43 @@
       "limitations": "Aggregated support data; reflects cutoff snapshot only."
     },
     {
-      "id": "s-usage-281",
-      "url": "https://chromestatus.com/metrics/webfeature/timeline/popularity/281",
-      "publisher": "Chrome Platform Status (use counter ViewTransitionsElementScoped, metric 281)",
-      "publishedOrObservedAt": "2026-07-01T00:00:00Z",
-      "retrievedAt": "2026-07-19T12:00:00Z",
+      "id": "s-usage-webfeature-281",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=281",
+      "publisher": "Chrome Platform Status (exact WebDX use counter ViewTransitionsElementScoped, webfeature bucket 281; cached timeline evidence/metrics/timelines/webfeature-281.json)",
+      "publishedOrObservedAt": "2026-07-20T00:00:00Z",
+      "retrievedAt": "2026-07-22T18:06:48Z",
       "sourceType": "usage",
       "supports": [
-        "Monthly avg % page loads: ~0.000017% Apr 2025; 0.000000% May-Nov 2025; 0.000256% Jan 2026; 0.154% Mar 2026; 0.266% Apr 2026; 0.358% May 2026 (peak); 0.278% Jun 2026; 0.273% Jul 2026; HTTP Archive/BigQuery query provided"
+        "Exact feature-scoped counter (scope=exact, confidence=exact; mapping verified via web-features-mappings chrome-use-counters). Daily share of measured Chrome HTTP/HTTPS page loads where the counter fired >=1x: 0% through the M140 dev-trial window (atStable 2025-09-06, day30 2025-10-05, day90 2025-12-02 all 0%; day180 2026-03-01 = 0.000724%); only pre-stable non-zero points were draft-flag noise (0.000001% on 2025-04-06 under DRAFT_ScopedViewTransitions). After M147 stable (2026-04-07): atStable 0.002902%, day30 (2026-05-07) 0.00414591%, peak 0.00831606% (2026-05-19), day90 (2026-07-06) 0.00280462%, latest (2026-07-20) 0.00300496%.",
+        "Timeline cached with sha256 045942a235da342063ea0aa84e4f53ffe4d6b198924e132c96989cd965a0a6fa."
       ],
-      "limitations": "Browser-only source (retrieved via DevTools). Measures 'used at least once per page load' across all Chrome channels/platforms, not meaningful production use; values at <0.4% are noisy."
+      "limitations": "Counter value = share of measured Chrome page loads where it fired at least once; NOT unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Values <0.01% are noisy; pre-rename points carry the DRAFT flag name. Telemetry postdates the report's 2026-07-19 qualitative evidence cutoff and informs outcomes only."
+    },
+    {
+      "id": "s-usage-webfeature-2",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=2",
+      "publisher": "Chrome Platform Status (broader View Transitions API WebDX use counter ViewTransitions, webfeature bucket 2; cached timeline evidence/metrics/timelines/webfeature-2.json)",
+      "publishedOrObservedAt": "2026-07-20T00:00:00Z",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Broader View Transitions API magnitude-context counter (scope=exact for that API, confidence=declared-name relative to THIS feature). Daily share of measured Chrome page loads: at M147 stable (2026-04-07) 0.00651494%, day30 (2026-05-07) 0.00579688%, day90 (2026-07-06) 0.00573169%, latest (2026-07-20) 0.0052774%, peak 0.00758282% (2026-04-04).",
+        "Timeline cached with sha256 0d7ee6d0c10d1499e28574e0cf0f3cad5658a433f370cfdee0f5366295fd6100."
+      ],
+      "limitations": "Broader WebDX/property-family counter for the document-level View Transitions API, NOT exact adoption of element-scoped view transitions; included only as magnitude context. Same page-load-share interpretation and non-equivalence caveats apply. Postdates the 2026-07-19 qualitative cutoff; informs outcomes only."
+    },
+    {
+      "id": "s-usage-feature-4383",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=4383",
+      "publisher": "Chrome Platform Status (broader View Transitions API feature counter ViewTransition, feature bucket 4383; cached timeline evidence/metrics/timelines/feature-4383.json)",
+      "publishedOrObservedAt": "2026-07-21T00:00:00Z",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Broader View Transitions API magnitude-context counter (feature bucket; confidence=declared-name relative to THIS feature). Daily share of measured Chrome page loads: at M147 stable (2026-04-07) 0.00652006%, day30 (2026-05-07) 0.005802%, day90 (2026-07-06) 0.00573287%, latest (2026-07-21) 0.00528852%, peak 0.00759369% (2026-04-04).",
+        "Timeline cached with sha256 935bef4b655864292368482b25b1166062f66414d7263c9c9b99c21de9df3c7a."
+      ],
+      "limitations": "Broader property/family counter for the View Transitions API, NOT exact adoption of element-scoped view transitions; included only as magnitude context. Same page-load-share interpretation and non-equivalence caveats apply. Postdates the 2026-07-19 qualitative cutoff; informs outcomes only."
     },
     {
       "id": "s-roselli",
@@ -555,7 +585,7 @@
     "Shipped as a single-engine-family feature (Chrome/Edge/Chromium 147+) while the originating CSS WG issue #9890 remained 'Open/Needs Design/Proposal/Needs Edits' - implementation moved ahead of a finalized spec.",
     "Public API surface was unstable into the ship milestone: the containment property was renamed twice (contain:view-transition -> view-transition-scope:auto -> view-transition-scope:all), with the naming issue (#13123) only opened 2025-11-19 and resolved late, churning early-adopter docs/samples.",
     "No Origin Trial and no published developer-trial cohort, methodology, task-completion, or feedback readout; the 'we are looking for feedback' signal was never converted into attributable evidence.",
-    "Nascent adoption (~0.27% of Chrome page loads ~4 months post-stable) with no attributable independent production case studies; all demos are Chrome-authored.",
+    "No attributable independent production case studies, framework/library integration, or unique-site/retention evidence was produced for the launch; all demos are Chrome-authored. Chrome usage is nascent and exactly measured (~0.003% of measured page loads at day-90 post-stable, after a ~0.008% peak), but with no predeclared adoption target this is described as an evidence gap, not judged as a usage shortfall.",
     "The primary demand signal ('Web developers: Positive - top feature request') relies on a survey whose methods/sample are not publicly auditable."
   ],
   "counterfactuals": [
@@ -570,7 +600,7 @@
     "Add an interop/Baseline gate prompt: 'Have both non-Chromium engine positions been filed and read at least one full milestone before I2S?' Require that 'No signal' be treated as a concrete (not neutral) interop risk disclosed in launch materials.",
     "Add a 'late API rename' detector in prepare-to-ship: if the public method name or CSS property name changed within two milestones of ship, require a doc/sample migration checklist and a compatibility note for early adopters.",
     "Make a developer-trials feedback readout (cohort, methodology, task completion, themes, contradictions) a required transition-packet artifact, not just a 'feedback wanted' blog post.",
-    "Add an adoption-evidence ladder eval: distinguish use-counter % (nascent/Chrome-only) from attributable production deployments and case studies; prohibit scoring adoption 'success' from a use counter alone.",
+    "Add an adoption-evidence ladder eval: distinguish use-counter % (nascent/Chrome-only) from attributable production deployments and case studies; prohibit scoring adoption 'success' from a use counter alone, and require a predeclared target before any success/failure verdict.",
     "Add a survey-audit reminder: before citing 'top feature request' as the demand signal, require the survey's methods/sample/limitations to be linked; if unavailable, label it as a claim, not evidence."
   ],
   "completion": {
@@ -578,11 +608,12 @@
     "missingEvidence": [
       "Intent to Ship thread (Google Groups message-id URL rejected by reader) - ship rationale, LGTMs, and accepted-risk list not directly confirmed from primary text.",
       "Full CSS WG #9890 resolution/comment thread (incl. the cited web-dev-positive comment 1927179371 and any WG resolutions) - only issue header/labels retrieved.",
-      "No independent attributable production case studies or framework/library integration evidence located (feature is ~4 months past stable; all demos are Chrome-authored).",
+      "No independent attributable production case studies, framework/library integration, unique-site, or retention evidence located (feature is ~3.5 months past stable; all demos are Chrome-authored).",
+      "No predeclared adoption target or success threshold in the launch record; the adoption outcome is therefore unscored rather than judged against the measured counter (~0.003% of Chrome page loads at day-90).",
       "Chromium bug tracker (394052227) not deeply inspected for open-issue volume/severity/regressions; support burden trend unknown.",
       "TAG #1188 response comments (beyond the review request and 'Issues addressed' status) and the #13123 closing resolution text (#13619) not retrieved.",
       "Jake Archibald X caveat and samwho Bluesky date/full context not retrieved."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:48Z"
   }
 }

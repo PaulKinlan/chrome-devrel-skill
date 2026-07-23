@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5484282563919872,
+    "name": "Android IME media insertion",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5484282563919872",
+    "summary": "Allows Android IMEs to insert media content (images, GIFs, stickers) into Chrome editable fields on Android, via Android's Commit Content API.",
+    "category": "User input",
+    "blinkComponent": "Blink>Editing>IME",
+    "owners": [
+      "hdchuong@google.com",
+      "tranbaoduy@google.com"
+    ],
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Stepped rollout:5484282563919872",
+      "milestone": 149,
+      "category": "Stepped rollout"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "A minimal ChromeStatus skeleton exists: name, one-line summary ('allows IMEs to insert media content such as images, gifs and stickers into the Chrome Browser in Android'), category 'User input', Blink>Editing>IME, Android-specific, two owners assigned, created 2026-04-07. However motivation, feature_notes, problem statement, stakeholder/owner map and an evidence ledger are all absent; devrel is the generic devrel-chromestatus-all alias. The entry was created only ~2 months before the Chrome 149 (2026-06-02) ship.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Only the ChromeStatus skeleton is public; no intake brief exists to assess."
+    },
+    "incubation": {
+      "status": "unknown",
+      "finding": "No public incubation artifacts: initial_public_proposal_url is null, explainer_links empty, motivation null, no use-case brief, no public incubation venue. The underlying problem is independently well-evidenced as real, recurring and long-standing (Android Commit Content API since 2016; years of 'doesn't support image insertion here' errors in Chrome web fields; chronic contenteditable+Android IME pain for rich-text editors), and Firefox for Android reportedly already supports IME rich-content insertion. But Chrome authored no public problem/explainer record.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S5",
+        "S6",
+        "S9"
+      ],
+      "limitations": "Problem validity is inferred from independent sources, not from any Chrome-authored incubation artifact."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A runtime flag 'Enable IME media insertion' was present in Chrome for Android Canary by 2025-10 (independently observed by Leopeva64 and reported via PiunikaWeb/Android Police), predating the April-2026 ChromeStatus entry. At that time it only partially worked: it unlocked Gboard's GIF/sticker media row and removed the 'this app does not support GIFs here' notice, but content could not yet be inserted into text fields. No Intent to Prototype, explainer, or design doc is linked on ChromeStatus.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S7"
+      ],
+      "limitations": "Prototype was reverse-discovered from a Canary flag via press; no first-party prototype docs/explainer exists to review."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial exists (devtrial_instructions null; no flag-as-dev-trial stage; no cohort or feedback instrument). For this feature class (a transparent Android IME integration with no new web-facing JS API), a structured developer trial is not the natural evidence instrument, so its absence is not, by analogy to web-API features, an untested gap. The genuinely untested risk (whether insertion actually works inside real contenteditable/rich-text/chat editors) is noted under adoption rather than asserted 'tested' here.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "No representative-developer feedback exists at all; the not-relevant rating applies only to the formal dev-trial instrument, not to the underlying integration risk."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Wide review is effectively absent relative to shipment. tag_review_status, security_review_status and privacy_review_status are all 'Pending'; no intent_thread_url on any stage; Firefox 'No signal', Safari 'No signal', Web developers 'No signals'. Yet a rollout step at milestone 149 is present. Safari 'No signal' is largely N/A for an Android-only feature, but Firefox parity is relevant and is known only via press, not via a recorded standards position. Shipping with every formal review 'Pending' contradicts the wide-review transition packet.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4"
+      ],
+      "limitations": "Reviews may exist in non-linked internal systems and 'Pending' ChromeStatus values may be stale; but no public review evidence is available."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial and no experiment stages (all OT fields null/false; no OT in the Chrome 149 release notes). A field experiment is not obviously required for a transparent IME integration, and none was run.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Absence of an experiment means end-user value and regressions are unvalidated, not validated."
+    },
+    "prepareToShip": {
+      "status": "failure",
+      "finding": "Prepare-to-ship artifacts are largely missing. An enterprise notification milestone is set (148) with enterprise_impact=2 (low) and a gradual-rollout plan exists, but there is no Intent to Ship, no docs, no samples, no completed reviews, and the ChromeStatus entry is self-flagged stale ('hasn't been verified as accurate since 3 months ago'). The feature-level rollout_plan reads 'Will ship enabled for all users' while the stage is a gradual/stepped rollout, and the cached stage records desktop_first=149 with android_first=null despite the live page showing Android - a data-quality slip.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Internal launch briefs may exist but are not public or linked."
+    },
+    "release": {
+      "status": "failure",
+      "finding": "ChromeStatus records a gradual rollout at Chrome 149 (Android) and the page banner states it 'claims to have shipped 2 months ago' (consistent with Chrome 149 stable 2026-06-02). However the feature is entirely absent from the Chrome 149 developer release notes, there is no Google-authored blog/doc/announcement, and the only public coverage is third-party press that reverse-engineered a Canary flag. Effective release communication for a shipped feature is absent.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Cannot independently confirm the feature is fully functional in stable 149; the last hands-on report (2025-10) found it only partially worked, and the ChromeStatus 'shipped' claim is stale/unverified."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption evidence. There is no new web-facing API for developers to adopt (transparent IME integration), webdx_usecounter_enum is null, no framework/library integration or case studies exist, and no usage data is available. Whether end users can actually insert GIFs/stickers/images into real-world web editors (contenteditable, rich-text editors, chat apps) in stable 149 is unconfirmed.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S4",
+        "S6"
+      ],
+      "limitations": "No usage/adoption instrumentation surfaced; the feature may be partially or not working in many editors."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support evidence (no support pack, no known-issue doc, no issue taxonomy, no linked bug). General Blink>Editing>IME component issues exist but none is linked to this feature. Given the historical IME/contenteditable pain, support risk is plausibly non-trivial but unmeasured.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S6"
+      ],
+      "limitations": "No support metrics or issues attributable to this feature."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new capability, not a deprecation or removal; no removal/migration path applies.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real, recurring and independently attested: for years Chrome for Android blocked IME rich-content (GIF/sticker/image) insertion into web text fields - a known gap versus native apps and Firefox for Android, and a chronic pain for rich-text-editor/chat-web-app developers and contenteditable users. The direction is sound and improves Android web/native parity. However, because the capability is transparent (no new JS API), it delivers little developer-facing value or control, and no developer demand or standards signal was recorded. Net: meaningful end-user/parity value, modest developer-API value, captured demand = none.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5",
+        "S6",
+        "S9"
+      ],
+      "limitations": "No Chrome-authored demand research; value is inferred from independent ecosystem evidence."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Plausibly positive (users could insert GIFs/stickers/images into web text fields as in native apps), but there is no measurement, usage data, accessibility assessment, or post-ship user feedback confirming realized impact. The last hands-on evidence (2025-10) showed insertion not yet working, and the ChromeStatus 'shipped' claim is unverified. End-user impact is currently unconfirmed.",
+      "evidenceIds": [
+        "S2",
+        "S4"
+      ],
+      "limitations": "No post-ship impact evidence; cannot score."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption signal of any kind (no API, no UseCounter, no framework integration, no case study). For a transparent feature, 'adoption' effectively means 'works for end users across sites/IMEs', which is unmeasured.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "No instrumentation available."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Not a web-standard initiative (spec_link null; standards maturity 'Unknown status'); it is an Android platform integration using Android's Commit Content API (since Android 7.1/API 25). Cross-browser parity exists in spirit - Firefox for Android reportedly already supports IME rich-content insertion - but there is no shared web standard, no Baseline relevance, and Safari is not applicable (Android-only). Recorded ChromeStatus signals are all 'No signal'. Net: reasonable platform parity, no web-standards progress.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5"
+      ],
+      "limitations": "Firefox support is per press, not a recorded standards position; no WPT/spec is applicable."
+    },
+    "implementationQuality": {
+      "status": "unscored",
+      "finding": "Last observed state (2025-10) was 'partially works' (media row unlocked, insertion not functional). ChromeStatus indicates a 149 rollout but is stale/unverified, and no regression/quality/WPT evidence exists (WPT is N/A - no web API). Implementation quality in stable 149 is unconfirmed.",
+      "evidenceIds": [
+        "S2",
+        "S4"
+      ],
+      "limitations": "No independent confirmation of final functional quality in stable; no bug/regression evidence."
+    },
+    "evidenceAndCommunication": {
+      "status": "failure",
+      "finding": "Comprehensive DevRel/evidence gap for a feature ChromeStatus treats as shipped. No explainer, spec, intent thread, docs, samples, or bug are linked; all formal reviews 'Pending'; no Firefox/Safari/web-dev signals recorded; the entry is self-flagged stale ('not verified ... in 3 months ... claims to have shipped 2 months ago'); the feature is absent from the Chrome 149 release notes; and the only public narrative is third-party press (Android Police, TudoCelular, Leopeva64) reverse-engineering a Canary flag. Communication accuracy cannot even be checked because there is no official statement to verify.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Internal docs/comms may exist but are not public; the judgment concerns the public evidence record."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support evidence attributable to the feature (see support phase).",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "No attributable support data."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, long-overdue Android web/native-parity capability that appears to have shipped (per the ChromeStatus rollout step) without the standard lifecycle/evidence/communication artifacts and without corroborating release notes, leaving realized end-user value, stable functionality, and support burden unverified. Process and evidence-communication dimensions clearly failed; product direction and problem validity are sound; impact dimensions are unknown. Net: mixed, leaning toward failure on launch execution and unknown on outcome.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Cannot confirm stable functionality or end-user impact."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5484282563919872",
+      "publisher": "Chrome Platform Status (cached detail record; accurate_as_of 2026-04-07)",
+      "publishedOrObservedAt": "2026-04-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners (hdchuong@google.com, tranbaoduy@google.com), Blink>Editing>IME, Android",
+        "Empty explainer_links/spec_link/doc_links/sample_links/intent_thread_url; motivation null",
+        "tag/security/privacy reviews all Pending; Firefox/Safari/WebDev 'No signal'/'No signals'",
+        "is_released false; status Proposed at snapshot; webdx_usecounter_enum null",
+        "Active stage 1061: rollout_milestone 149, rollout_platforms ['1'], desktop_first 149 (android_first null)",
+        "first_enterprise_notification_milestone 148; enterprise_impact 2; rollout_plan 'Will ship enabled for all users'"
+      ],
+      "limitations": "Snapshot (2026-04-07) predates the 149 ship and is sparse; some review statuses may be stale."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/feature/5484282563919872",
+      "publisher": "Chrome Platform Status (live page, browser snapshot)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Rollout step: Chrome milestone 149, platform Android, 'Feature rolls out gradually'",
+        "Banner: 'hasn't been verified as accurate since 3 months ago, but it claims to have shipped 2 months ago'",
+        "Overview 'Status in Chromium: No milestones specified' despite the rollout step",
+        "All earlier development stages (incubation/prototype/devtrials/readiness/OT/prepare-to-ship) empty; only Rollout step populated",
+        "Consensus: Firefox/Safari/Web Developers 'No signal'/'No signals'; entry created 2026-04-07, updated 2026-04-17"
+      ],
+      "limitations": "Client-rendered SPA snapshot; banner wording is approximate; live data may have changed since capture."
+    },
+    {
+      "id": "S3",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable release date 2026-06-02 (Android, ChromeOS, Linux, macOS, Windows)",
+        "Full enumerated feature list for Chrome 149; 'Android IME media insertion' is NOT listed",
+        "Listed keyboard-related items are different: 'Respect autocorrect=\"off\" for Windows touch keyboard in TSF'; no Android IME media-insertion entry"
+      ],
+      "limitations": "Release notes may not enumerate every end-user/platform-only change, but no Android IME media item appears even where other input changes are listed."
+    },
+    {
+      "id": "S4",
+      "url": "https://www.androidpolice.com/chrome-android-native-gif-support/",
+      "publisher": "Android Police (Karandeep Singh Oberoi; read via Yahoo syndication)",
+      "publishedOrObservedAt": "2025-10-21",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Canary flag 'Enable IME media insertion' for Chrome on Android discovered (via Leopeva64/PiunikaWeb)",
+        "At time of writing the flag only partially works: unlocks Gboard GIF/sticker row, removes 'this app does not support GIFs here', but content cannot yet be inserted",
+        "Firefox for Android already supports this ('Following Firefox's lead'); long-standing Chrome limitation",
+        "Users have for years been unable to add rich media (GIFs/stickers) from keyboards like Gboard into supported web text fields"
+      ],
+      "limitations": "Single hands-on press report from 2025-10; pre-ship; not first-party Google communication."
+    },
+    {
+      "id": "S5",
+      "url": "https://developer.android.com/develop/ui/views/touch-and-input/image-keyboard",
+      "publisher": "Android Developers (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Android Commit Content API provides a universal way for IMEs to send images/rich content to a text editor",
+        "Introduced in Android 7.1 (API level 25)"
+      ],
+      "limitations": "Describes the Android platform API, not Chrome's web-integration behavior."
+    },
+    {
+      "id": "S6",
+      "url": "https://discuss.prosemirror.net/t/contenteditable-on-android-is-the-absolute-worst/3810",
+      "publisher": "ProseMirror discuss forum",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing developer pain: contenteditable combined with the Android IME is especially problematic for rich-text editors"
+      ],
+      "limitations": "Anecdotal community thread; not quantified."
+    },
+    {
+      "id": "S7",
+      "url": "https://x.com/Leopeva64/status/1979564255574634624",
+      "publisher": "Leopeva64 (X/Twitter), via PiunikaWeb",
+      "publishedOrObservedAt": "2025-10",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Original discovery: 'Google has added a new flag in Chrome Canary for Android that enables keyboards like Gboard to insert media content such as images, GIFs ...'"
+      ],
+      "limitations": "Social-media post; accessed via search summary rather than read directly."
+    },
+    {
+      "id": "S8",
+      "url": "https://www.tudocelular.com/curiosidade/noticias/n241691/google-chrome-gifs-stickers-campos-texto.html",
+      "publisher": "TudoCelular",
+      "publishedOrObservedAt": "2025-10",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent non-English press pickup of the 'IME media insertion' Chrome flag discovery"
+      ],
+      "limitations": "Secondary; repeats the Leopeva64/PiunikaWeb discovery."
+    },
+    {
+      "id": "S9",
+      "url": "https://stackoverflow.com/questions/60342087/chrome-doesnt-support-image-insertion-here",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing user-facing 'Chrome doesn't support image insertion here' behavior for IME GIF insertion"
+      ],
+      "limitations": "Anecdotal Q&A."
+    },
+    {
+      "id": "S10",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest (2026-07-19-v140-v150)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Authoritative launch-event inventory: single event '149:Stepped rollout:5484282563919872' (milestone 149, Stepped rollout)"
+      ],
+      "limitations": "Run inventory input; not a ChromeStatus field but reconciles with the live rollout step."
+    }
+  ],
+  "successes": [
+    "Real, long-standing problem with a sound direction: closing an Android web/native gap and matching Firefox for Android parity.",
+    "Early prototype: the 'Enable IME media insertion' flag existed in Chrome Canary by 2025-10, ahead of the formal ChromeStatus entry.",
+    "Correct component/owner classification (Blink>Editing>IME; two named owners) and proportionate low enterprise-impact scoping (enterprise_impact=2; enterprise notice at milestone 148).",
+    "Independent ecosystem and multi-language press interest confirms genuine user/developer demand for the capability."
+  ],
+  "failures": [
+    "Shipped-or-shipping at milestone 149 without explainer, spec, intent thread, docs, samples, or bug; every formal review (TAG/security/privacy) left 'Pending'.",
+    "Absent from the Chrome 149 developer release notes and from any Google-authored announcement/blog/doc; the only public narrative is third-party press reverse-engineering a Canary flag.",
+    "ChromeStatus entry created only ~2 months before the 149 ship and left self-flagged stale ('claims to have shipped 2 months ago; not verified in 3 months').",
+    "No measurement of end-user impact or usage (webdx_usecounter_enum null); last observed functional state was 'partially works'.",
+    "Data-quality slips: cached stage records desktop_first=149 with android_first=null (live page shows Android), and 'Status in Chromium: No milestones specified' despite an active rollout step."
+  ],
+  "counterfactuals": [
+    "If the ChromeStatus lifecycle stages (intent/explainer/reviews) had been completed and linked before the 149 rollout, the entry would not be self-flagged stale and reviewers/users could actually verify the ship.",
+    "If the feature had a Chrome 149 release-notes entry plus a short doc stating which element types (input/textarea/contenteditable) and which IMEs support insertion, the public narrative would be Google-authored rather than press speculation from a Canary flag.",
+    "If a small representative-developer validation (rich-text-editor and chat-web-app maintainers) had been run, the real 'does insertion actually work inside contenteditable editors' risk would have been de-risked before broad rollout.",
+    "If a prepare-to-ship gate blocked rollout when the entry is <90 days old AND any core review is 'Pending' AND no docs exist, this would have surfaced before ship.",
+    "If the Android 'partially works' state (2025-10) had been tracked to full function with a public update before declaring a 149 rollout, the unverified 'shipped' claim would not exist."
+  ],
+  "skillImprovements": [
+    "Add a prepare-to-ship regression eval: a launch event whose ChromeStatus entry is <90 days old with any core review 'Pending' and no linked explainer/intent should be flagged as a transition-packet failure (this feature would fail it).",
+    "Add a 'platform-integration / end-user-only' feature category so phase modules do not force-fit web-API expectations (WPT, web spec, UseCounter, dev trial) onto features with no new web surface; instead require an explicit end-user-impact + IME/partner-compatibility validation checklist.",
+    "Add a release-coverage check: any 'Enabled by default'/'Stepped rollout' launch event must be cross-checked against the matching milestone's developer release notes and a Google-authored doc; absence => evidenceAndCommunication = failure.",
+    "Capture ecosystem press discovery of Canary flags as an early DevRel signal: when a flag is reverse-engineered by press before official comms, auto-generate a launch-resilience/comms task.",
+    "Encode data-quality checks: consistency between rollout_platforms and the *_first platform fields, and flag 'No milestones specified' in Chromium status while a rollout step exists.",
+    "For platform-integration launches, require at least one independent confirmation of stable-channel functionality (not just a Canary flag observation) before a rollout event is treated as shipped in retrospective scoring."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Independent confirmation that the feature is fully functional in Chrome 149 stable on Android across Gboard and other IMEs (last hands-on report, 2025-10, found it only partially worked).",
+      "Any Google-authored explainer/spec/intent/docs/blog or a Chrome 149 release-notes entry (feature absent from release notes).",
+      "End-user impact / usage measurement (UseCounter/telemetry; webdx_usecounter_enum is null).",
+      "Results of formal TAG/security/privacy/enterprise reviews (all 'Pending' in the record).",
+      "Representative-developer validation of insertion behavior in real contenteditable/rich-text/chat web editors.",
+      "Recorded Firefox/WebKit standards positions (parity currently evidenced only at press level)."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

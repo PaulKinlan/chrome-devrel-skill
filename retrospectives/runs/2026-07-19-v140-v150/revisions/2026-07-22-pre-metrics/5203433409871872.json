@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5203433409871872,
+    "name": "Selective Clipboard Format Read",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5203433409871872",
+    "webFeature": "async-clipboard",
+    "blinkComponent": "Blink>DataTransfer",
+    "category": "Miscellaneous",
+    "owners": [
+      "shwetabindal@microsoft.com",
+      "ashishkum@microsoft.com",
+      "ragoulik@microsoft.com"
+    ],
+    "creatorOrg": "Microsoft Edge",
+    "shippingMilestone": 149,
+    "stableReleaseDate": "2026-06-02"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5203433409871872",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:20:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry was created 2025-08-01 by a Microsoft Edge team (shwetabindal@microsoft.com) under Blink>DataTransfer / Miscellaneous. The problem is concrete and well-scoped: Async Clipboard read() eagerly fetches all OS clipboard formats regardless of what the app needs, wasting CPU and memory for rich editors/spreadsheets/email clients. Owner/editor/spec-mentor map is fully populated (all Microsoft), web_feature=async-clipboard, and the entry links an explainer, a spec PR, a tracking bug, and Mozilla/WebKit position requests. At intake the decision was correctly diagnosed as a behavior-change optimization to an existing API, not a brand-new surface.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Star count (73) is a weak demand signal and the ChromeStatus category is the uninformative 'Miscellaneous'; demand evidence beyond the team's own framing is thin at intake."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The problem is well-evidenced: the explainer ships a measured read-time analysis (a 7.7 MB mixed clipboard reduced from 179.5 ms to 10.8 ms, ~93%, by reading only text) and a reproducible experiment/demo, identifies the target segment (document editors, spreadsheets, email clients, data grids), and documents a rejected alternative (adding a `types` parameter to read()). Initial public proposal was filed in WICG (proposals #224) and the real design debate happened in the W3C Web Editing WG (clipboard-apis #240), where the central critique is that lazy getType() turns ClipboardItem from a frozen snapshot into a lazy proxy. Web-develop sentiment recorded on ChromeStatus is 'Positive'.",
+      "evidenceIds": [
+        "S3",
+        "S1",
+        "S9",
+        "S15-wicg"
+      ],
+      "limitations": "Full content of the incubation threads (WICG proposals #224 and w3c/clipboard-apis #240) could not be retrieved (pages timed out repeatedly for the reader); only search snippets were captured, so the breadth of counter-evidence and the exact WG consensus record are only partially verified."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "A complete prototype existed behind the runtime flag DeferOsClipboardReadCallToGetType: the explainer specifies the deferred-read model, boundary scenarios (clipboard changes between read() and getType()), caching semantics, the NotSupportedError/InvalidStateError rejection path, and security/privacy rationale (permission/focus checks stay at read() time). A published performance experiment and live demo back the claims. Telemetry counters (UseCounters 5684 and 5685) measuring how often the clipboard changes between read and getType were collected. The design is cross-platform by construction ('purely a browser-internal optimization').",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S1",
+        "S11"
+      ],
+      "limitations": "No evidence of a representative external cohort running friction logs; validation is the team's own measurements plus telemetry."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial or Origin Trial was run and none was appropriate. The launch manifest records a single event ('Enabled by default', M149); ChromeStatus stage 150 carries experiment_goals='NA'. Because the change introduces no new API surface and is transparent to existing code, a developer-facing trial is not the relevant validation mechanism. Rationale for the not-relevant rating: this is not 'untested' — validation instead came from telemetry (~0.0004% of cases change the clipboard between read and getType) plus a field-trial test merged into the M148 release before the M149 default-on. There is nothing for a developer cohort to opt into.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S12"
+      ],
+      "limitations": "The decision to skip a dev trial is defensible for a transparent optimization, but it means no external developer feedback was gathered between prototype and ship; the only pre-ship external signal was the standards-position requests and the WG thread."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Engine alignment is strong but review completeness has gaps. Mozilla closed standards-positions #1279 with 'position: positive' (team: DOM, venue: W3C). Safari already ships the lazy-read behavior — confirmed in the intent thread as shipped by Safari in 2019 — so WebKit's runtime behavior already matches, and the DevRel blog frames Chrome as 'converging to the same model'. However: (a) TAG review was deliberately NOT requested ('None requested because this behavior has achieved consensus in the Editing working group and matches what Safari already does'); (b) WebKit's formal standards-positions #537 is still Open with no position label; (c) the normative spec PR #248 ('Defer OS clipboard read from clipboard.read() to ClipboardItem.getType()') was opened 2026-03-26 and was still open/working-draft when Chrome shipped; (d) WPT coverage is explicitly incomplete, blocked by missing test infrastructure (chromium #508091414).",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S1",
+        "S4",
+        "S15-wpt"
+      ],
+      "limitations": "Full WG discussion (#240) and the spec PR diff were not retrievable; the exact merge status of PR #242 is inferred from search metadata (PR list shows it opened 2026-03-26, W3C archive shows it under synchronization). Absence of TAG review is a recorded process gap."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "There was no Origin Trial and the final M149 default-on used no staged Finch rollout — but a field-trial (Finch) test WAS merged into the M148 release first (chromium bug 502745047, '[Merge M148] merge field trial testing for Selective clipboard format read in 148 release', Fixed by 2026-06-16). The ChromeStatus non_finch_justification cites UseCounters 5684/5685 (~0.0004%) to argue negligible breakage risk. So the 'no Finch' claim is technically about the M149 ship specifically; the safety valve of a prior-milestone field trial did exist, which is good practice the record understates.",
+      "evidenceIds": [
+        "S12",
+        "S1",
+        "S8"
+      ],
+      "limitations": "The field-trial bug page is browser-only and was not directly readable; details (population size, metrics, findings) come only from the bug title and 'Fixed' status via search. No Origin Trial means no real-origin partner evidence."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was posted 2026-05-14 by Shweta Bindal, targeting M149 on desktop/Android/WebView/iOS, with a documented non-finch justification, an explainer, spec PR, and a 'will ship enabled for all users' rollout plan. Review engagement on blink-dev was positive: Vincent Scheib (Chrome security lead) replied 'Looking forward to this, it seems a good optimization [with] no web developer API change', Alex Russell gave 'LGTM1', and Daniel Bratell (Blink API owner) and Mike Taylor engaged. Weaknesses: the cached ChromeStatus snapshot (accurate_as_of 2026-05-25) still shows security_review_status='Pending' and privacy_review_status='Pending', so formal review closure is not evidenced in the record (mitigated, not replaced, by the security lead's positive intent-thread comment). TAG review was skipped. DevRel launch docs were not ready at ship (blog published ~1 month after stable).",
+      "evidenceIds": [
+        "S8",
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "limitations": "Later reviewer replies (Bratell, Taylor) were truncated by the reader, so the full LGTM count is unconfirmed. Security/privacy review final status is unconfirmed; only one explicit LGTM (Russell) and the security lead's positive comment are fully captured."
+    },
+    "release": {
+      "status": "success",
+      "finding": "Chrome 149 stable (released 2026-06-02) shipped the feature enabled by default on all platforms, and it is listed under 'Web APIs' in the official Chrome 149 release notes with tracking bug #435051711. The DevRel blog 'Selective format read: A better default for the Async Clipboard API' (Prashant Singh, published 2026-07-03) is accurate and honest: it states the M149 ship, the one observable behavior change (getType() on a stale ClipboardItem now rejects with InvalidStateError), concrete migration guidance (try/catch, copy the Blob, use clipboardChange), and correctly characterizes browser support (Safari supports; Firefox 'indicated a positive standards position and intent to align' — not overclaimed as shipped). Coverage reached mainstream/creator media (an Instagram reel on 'hidden upgrades in Chrome 149') and was amplified by a browser engineer (Patrick Brosset) on LinkedIn.",
+      "evidenceIds": [
+        "S5",
+        "S4",
+        "S13",
+        "S14",
+        "S1"
+      ],
+      "limitations": "The DevRel blog shipped ~1 month after stable (2026-07-03 vs 2026-06-02), so launch-day developer guidance for the InvalidStateError change was absent at ship; release-notes coverage itself is a one-liner without the behavior-change caveat."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "As of the evidence cutoff the feature has been stable for only ~7 weeks (shipped 2026-06-02) and is a transparent optimization with no new API surface, so there is no developer adoption funnel to measure — every site benefits automatically with zero code change. No post-ship usage, real-world latency/memory, or partner case-study data is yet available. The meaningful adoption metric here would be measured end-user paste-performance improvement, which has not been independently published.",
+      "evidenceIds": [
+        "S4",
+        "S5",
+        "S1"
+      ],
+      "limitations": "Cannot score adoption for a transparent change, and outcome data does not yet exist; this is genuinely unscored rather than a research failure."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "Active tracking bug (#435051711) and a resolved pre-ship field-trial merge bug (#502745047, Fixed) are on record. Known limitation is explicitly documented: initial WPT tests were added but further coverage is blocked by missing test infrastructure (chromium #508091414). A search for post-ship regressions ('InvalidStateError', 'paste broken') in the ~7 weeks since ship surfaced no feature-specific breakage, and generic 'Chrome reads wrong size of file' appears in the Blink>DataTransfer component with unclear causal relation. Absence of reports is not evidence of absence given the short post-ship window.",
+      "evidenceIds": [
+        "S11",
+        "S12",
+        "S15-wpt",
+        "S1"
+      ],
+      "limitations": "Chromium issue pages are browser-only and unreadable via the reader; support signal is limited to bug titles/status and search. Short post-ship window means support burden is not yet observable."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable: this is a behavior-change optimization to an existing API, not a feature removal, restriction, or replacement, so the deprecation/removal lifecycle (detection tooling, migration, reverse trials, removal timeline) does not apply. The one behavior change (ClipboardItem is no longer a frozen snapshot; stale getType() rejects) is a documented behavior change handled in release communication, not a deprecation requiring a migration path. Rated not-relevant with explicit rationale rather than as 'untested'.",
+      "evidenceIds": [
+        "S4",
+        "S3",
+        "S8"
+      ],
+      "limitations": "None; the deprecation phase genuinely does not apply, but the semantic-change risk it would otherwise address is tracked under release/support instead."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a real, recurring developer problem (paste latency and memory blow-up in rich editors/spreadsheets/email clients when read() eagerly fetches and sanitizes every format) with a solution that requires no opt-in and no API change — existing code 'just works faster'. The value proposition is backed by measured data (179.5 ms -> 10.8 ms for a 7.7 MB clipboard) and is automatic for the whole web. The DevRel blog and explainer are clear that the only developer-facing nuance is the stale-read InvalidStateError, with concrete mitigations.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S1"
+      ],
+      "limitations": "Real-world developer-perceived gains have not been independently measured post-ship; evidence is the team's own benchmarks plus the theoretical model."
+    },
+    "endUserImpact": {
+      "status": "success",
+      "finding": "Positive and transparent to end users: faster, more responsive paste and lower tab memory during paste, with no user action or permission change. The feature preserves the existing security/permission model (checks remain at read() time) and is framed around meeting the user expectation that 'pasting should feel instant'.",
+      "evidenceIds": [
+        "S4",
+        "S3",
+        "S8"
+      ],
+      "limitations": "No post-ship user-facing metrics (e.g., paste-latency/Core Web Vitals-adjacent) have been published; a narrow edge case (apps holding a ClipboardItem across async boundaries, e.g., clipboard-history UIs) can see InvalidStateError, mitigated only by documentation."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Adoption is not a meaningful dimension for this feature: it is transparent and automatic, so there is nothing for developers to adopt and no opt-in to measure. Post-ship outcome data (real-world perf/memory deltas, any regressions) does not exist yet (~7 weeks post-ship).",
+      "evidenceIds": [
+        "S4",
+        "S5"
+      ],
+      "limitations": "Unscored by design — not a research gap but an inherent property of the feature type and the short post-ship window."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Strong engine convergence but unfinished standards plumbing. Safari already ships this behavior (since 2019), Mozilla's position is explicitly Positive, and the DevRel blog positions Chrome as aligning to the existing Safari model — so the runtime interop direction is good. Against that: the normative spec PR #248 was opened 2026-03-26 and was still open (working draft) when Chrome shipped M149 on 2026-06-02; WebKit's formal standards-positions #537 remains Open with no verdict; TAG review was deliberately not requested; WPT coverage is explicitly blocked by a test-infrastructure gap (chromium #508091414); and Firefox has only a positive position, not a shipped implementation. Net: real-world behavior will match Safari, but the verifiable, test-backed, spec-finalized interop story is incomplete.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S15-wpt",
+        "S4",
+        "S1"
+      ],
+      "limitations": "Spec PR #242 exact merge status and diff were not retrievable (page timed out); inferred from search metadata. Firefox implementation status is inferred from the standards position only."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Solid implementation discipline in places: shipped on all six Blink platforms in M149, with a pre-ship field-trial test merged into M148 (bug 502745047) and a telemetry-informed risk argument (UseCounters 5684/5685, ~0.0004%). However, test quality is explicitly incomplete — WPT coverage is blocked by missing infrastructure (chromium #508091414) — and the cached record showed security_review_status and privacy_review_status still 'Pending' as of 2026-05-25 (formal closure unconfirmed, though the Chrome security lead commented positively on the intent thread).",
+      "evidenceIds": [
+        "S8",
+        "S12",
+        "S15-wpt",
+        "S1",
+        "S11"
+      ],
+      "limitations": "Formal security/privacy review closure is unconfirmed; WPT coverage state comes only from the ChromeStatus free-text field; the field-trial bug details were not directly readable."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Evidence and messaging are accurate and appropriately hedged. The explainer is thorough (measured data, rejected alternative, security/privacy rationale, WG consensus reference). The DevRel blog correctly attributes the Web Editing WG + Microsoft Edge team, states the behavior change explicitly, gives migration guidance, and does not overclaim Firefox support. The intent thread is well-structured and matches the shipped behavior. Minor blemishes: the ChromeStatus non_finch_justification framing understates that a real M148 field-trial test ran, and the blog shipped ~1 month after stable (so launch-day guidance for the InvalidStateError change was missing).",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S8",
+        "S5"
+      ],
+      "limitations": "The post-ship timing of the blog is a real (if minor) communication gap; the 'no Finch' framing vs. the actual M148 field trial is a small accuracy nuance in the launch record."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too early to score. The pre-ship field-trial merge bug (#502745047) was resolved and the tracking bug (#435051711) is active, but only ~7 weeks have passed since stable; no feature-specific post-ship support burden, regression, or breakage has surfaced in available sources. The known WPT-coverage gap (chromium #508091414) is a latent support/verification risk.",
+      "evidenceIds": [
+        "S12",
+        "S11",
+        "S15-wpt"
+      ],
+      "limitations": "Short post-ship window and browser-only issue trackers mean support health is not yet observable; scored unscored rather than success to avoid inferring health from absence of reports."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, genuinely low-risk, transparent optimization that aligns Chrome with Safari's long-standing (2019) behavior, validated by telemetry and by a pre-ship M148 field-trial test, and communicated accurately post-ship. The overall leans positive but is rated mixed because of unresolved standards-maturity and process gaps present at ship: the normative spec PR was still open, TAG review was skipped, WebKit's formal position is Open, WPT coverage is blocked by infra, and the cached record showed security/privacy reviews still Pending. Post-ship outcome evidence is not yet available (~7 weeks).",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S12",
+        "S15-wpt",
+        "S1"
+      ],
+      "limitations": "Overall is mixed, not success, precisely because the interop/standards/test dimensions are unfinished and because post-ship outcomes remain unscored."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5203433409871872",
+      "publisher": "Chrome Platform Status (cached record)",
+      "publishedOrObservedAt": "2026-05-25T09:07:30Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Authoritative cached feature record: owners (Microsoft Edge), category Miscellaneous, Blink>DataTransfer, flag DeferOsClipboardReadCallToGetType, ship M149 all platforms, non_finch_justification citing UseCounters 5684/5685 (~0.0004%), spec PR #242, Firefox=Positive, Safari=Shipped/Shipping, web-dev=Positive, security/privacy review status=Pending as of 2026-05-25, WPT coverage blocked by infra (#508091414), TAG review 'Not applicable'"
+      ],
+      "limitations": "accurate_as_of 2026-05-25; predates the 2026-06-02 stable ship, so post-ship fields (review status, is_released) are stale in the snapshot."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5203433409871872",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered confirmation of record fields: Status 'Proposed', FF=Positive, Safari=Shipped/Shipping, web-dev Positive, spec/bug/explainer links"
+      ],
+      "limitations": "Lite view still shows 'Proposed' status (cached), consistent with the upstream DB lagging the actual M149 ship."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/ClipboardAPI/SelectiveClipboardFormatRead/explainer.md",
+      "publisher": "Microsoft Edge Explainers",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Full explainer: problem/motivation, goals/non-goals, deferred-read proposal, boundary scenarios, caching, NotSupportedError rejection on stale clipboard, rejected 'types parameter' alternative, security/privacy rationale (permission/focus checks remain at read()), and measured read-time analysis (7.7 MB clipboard: 179.5 ms -> 10.8 ms, ~93% reduction). Authors: Abhishek Singh, Ashish Kumar, Rakesh Goulikar, Rohan Raja, Shweta Bindal."
+      ],
+      "limitations": "No explicit publication/revision date in the retrieved raw markdown."
+    },
+    {
+      "id": "S4",
+      "url": "https://developer.chrome.com/blog/selective-format-read",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-07-03T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Official DevRel blog (Prashant Singh): ships in Chrome and Edge 149; API surface unchanged; only-read-on-demand + automatic caching; InvalidStateError when clipboard changes between read() and getType(); migration guidance (try/catch, copy Blob, clipboardChange event); 'Safari also supports this behavior, and Firefox has indicated a positive standards position and intent to align'; 'Chromium now converging to the same model'; driven by Web Editing Working Group + Microsoft Edge team."
+      ],
+      "limitations": "Published 2026-07-03, ~1 month after the 2026-06-02 stable ship, so not launch-day guidance."
+    },
+    {
+      "id": "S5",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-02T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 stable release date 2026-06-02; 'Selective Clipboard Format Read' listed under Web APIs with tracking bug #435051711, ChromeStatus entry, and Spec link."
+      ],
+      "limitations": "Release-notes entry is a one-liner and does not mention the InvalidStateError behavior change."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1279",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2025-08-01T17:17:56Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla issue Closed with labels 'position: positive', 'team: DOM', 'venue: W3C'; opened 2025-08-01 by shwetabin; references spec w3c/clipboard-apis#242 and the Edge explainer."
+      ],
+      "limitations": "Mozilla position is 'positive' but Firefox has not shipped alignment; no implementation commitment date."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/537",
+      "publisher": "WebKit (standards-positions)",
+      "publishedOrObservedAt": "2025-08-01T17:24:50Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit issue is Open (no formal position label); labels only 'from: Microsoft', 'topic: web apis', 'venue: Edge Explainers'. Safari's runtime behavior already matches (lazy reads, shipped 2019 per the intent thread and the DevRel blog), so the Open status reflects an unresolved formal review request, not opposition."
+      ],
+      "limitations": "No formal WebKit verdict (Open); the 'Safari ships this' claim rests on the intent thread (S8) and blog (S4), not on this issue."
+    },
+    {
+      "id": "S8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/qzlyebrWWZg/m/95-89BOFAAAJ",
+      "publisher": "blink-dev (chromium.org)",
+      "publishedOrObservedAt": "2026-05-14T16:02:31Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship by Shweta Bindal (2026-05-14): ship M149 desktop/Android/WebView/iOS; flag DeferOsClipboardReadCallToGetType; non-finch justification (UseCounters 5684/5685, ~0.0004%); 'No risks for WebView'; no DevTools support needed; all-six-platforms yes; TAG review none requested ('consensus in the Editing WG and matches what Safari already does'). Reviewers: Vincent Scheib (Chrome security lead) positive ('good optimization, no web developer API change'); Shweta confirmed 'This feature was shipped in 2019 by Safari'; Alex Russell 'LGTM1'; Daniel Bratell and Mike Taylor responded."
+      ],
+      "limitations": "Later reviewer replies (Bratell, Taylor) were truncated by the reader, so the full LGTM tally is unconfirmed."
+    },
+    {
+      "id": "S9",
+      "url": "https://github.com/w3c/clipboard-apis/issues/240",
+      "publisher": "W3C Web Editing Working Group (clipboard-apis)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "WG proposal/discussion thread; captured snippet states the core critique: 'lazy getType() transforms ClipboardItem from a data object (snapshot of clipboard at read-time) to a service proxy (lazy ...)'. Referenced by the explainer as the consensus venue."
+      ],
+      "limitations": "Full page timed out for the reader; only a search snippet was captured, so the breadth of the debate and exact WG resolution are unverified."
+    },
+    {
+      "id": "S10",
+      "url": "https://github.com/w3c/clipboard-apis/pull/248",
+      "publisher": "W3C Web Editing Working Group (clipboard-apis)",
+      "publishedOrObservedAt": "2026-03-26T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec PR title 'Defer OS clipboard read from clipboard.read() to ClipboardItem.getType()'; opened 2026-03-26; ChromeStatus standards maturity = 'Working draft' / under development; search metadata (PR list + W3C archive) indicates it was still open/synchronizing around ship time, i.e., Chrome shipped M149 ahead of a merged normative spec."
+      ],
+      "limitations": "Direct page reads failed (network errors); exact merge status and diff unverified — inferred from search metadata."
+    },
+    {
+      "id": "S11",
+      "url": "https://issues.chromium.org/issues/435051711",
+      "publisher": "Chromium (Issue Tracker)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug for the feature (referenced by release notes and ChromeStatus)."
+      ],
+      "limitations": "Chromium issue pages are browser-only and unreadable via the reader; content inferred from release notes/ChromeStatus references only."
+    },
+    {
+      "id": "S12",
+      "url": "https://issues.chromium.org/issues/502745047",
+      "publisher": "Chromium (Issue Tracker)",
+      "publishedOrObservedAt": "2026-06-16T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug '[Merge M148] merge field trial testing for Selective clipboard format read in 148 release', status Fixed (related bug 502793635, last modified ~2026-06-16). Confirms a pre-M149 field-trial (Finch) test existed, contrasting the 'no Finch' framing in the ChromeStatus non_finch_justification."
+      ],
+      "limitations": "Bug page is browser-only; details (population, metrics, findings) come only from the title/status via search."
+    },
+    {
+      "id": "S13",
+      "url": "https://www.linkedin.com/posts/patrickbrosset_selective-format-read-a-better-default-for-activity-7478814251109920769-b8D5",
+      "publisher": "LinkedIn (Patrick Brosset)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Positive ecosystem amplification of the DevRel blog by a known browser engineer: 'We're fixing a performance issue for apps that rely on the clipboard API often.'"
+      ],
+      "limitations": "Secondary social signal; not independent technical validation."
+    },
+    {
+      "id": "S14",
+      "url": "https://www.instagram.com/reel/DZH56zwP9y2/",
+      "publisher": "Instagram ('Hidden user-facing upgrades in Google Chrome 149 update')",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Mainstream/creator coverage noting Chrome 149 'now delays fetching clipboard data until it is actually needed', i.e., the change reached non-developer media."
+      ],
+      "limitations": "Creator/social content; not authoritative technical reporting."
+    },
+    {
+      "id": "S15-wpt",
+      "url": "https://issues.chromium.org/issues/508091414",
+      "publisher": "Chromium (Issue Tracker) — referenced via ChromeStatus wpt_descr",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT coverage gap: per ChromeStatus, 'Added initial tests to WPT, but further coverage is currently blocked by missing test infrastructure. Created an issue for that (#508091414).' Documents an unfinished interop-test story at ship time."
+      ],
+      "limitations": "Source of this claim is the ChromeStatus free-text field (S1), not a directly readable bug page."
+    },
+    {
+      "id": "S15-wicg",
+      "url": "https://github.com/WICG/proposals/issues/224",
+      "publisher": "WICG (proposals)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Initial public proposal venue (ChromeStatus initial_public_proposal_url); also carries the 'web developers: Positive' signal recorded on ChromeStatus."
+      ],
+      "limitations": "Page timed out for the reader; full proposal text and any debate not captured; ChromeStatus records web-dev sentiment as Positive via this URL."
+    }
+  ],
+  "successes": [
+    "Transparent, no-API-change optimization that automatically benefits the whole web and aligns Chrome with Safari's shipping-since-2019 behavior, keeping interop and breakage risk genuinely low.",
+    "Pre-ship safety practice exceeded the record's framing: a field-trial (Finch) test was merged into the M148 release (bug #502745047, Fixed) before the M149 default-on, giving a real revert/learn valve.",
+    "Risk argument was telemetry-grounded (UseCounters 5684/5685 showing ~0.0004% of cases change the clipboard between read and getType), justifying direct-to-stable rather than an Origin Trial.",
+    "Honest, accurate DevRel communication: the blog explicitly names the one observable behavior change (InvalidStateError on stale reads) and gives migration guidance, rather than presenting the change as invisible.",
+    "Strong cross-engine direction at runtime: Safari already ships the behavior, Mozilla's position is Positive, and the blog correctly avoids overclaiming Firefox as shipped."
+  ],
+  "failures": [
+    "Standards lag at ship: Chrome shipped M149 (2026-06-02) while the normative spec PR #242 (opened 2026-03-26) was still open/working-draft, so Chrome shipped ahead of a finalized spec.",
+    "TAG review was deliberately skipped ('None requested because... matches what Safari already days') — defensible but a recorded wide-review gap.",
+    "WebKit's formal standards-positions #537 was left Open with no verdict, even though Safari ships the behavior — a documentation/position gap.",
+    "WPT coverage was explicitly incomplete at ship, blocked by missing test infrastructure (chromium #508091414), weakening independent interop verification.",
+    "Cached ChromeStatus showed security_review_status and privacy_review_status still 'Pending' as of 2026-05-25 (before the June 2 ship); formal review closure is not evidenced in the record (mitigated only by the security lead's positive intent-thread comment).",
+    "DevRel launch docs shipped ~1 month after stable (blog 2026-07-03 vs ship 2026-06-02), so launch-day guidance for the InvalidStateError behavior change was absent.",
+    "The non_finch_justification framing in the launch record understates that a real M148 field-trial test actually ran, a small accuracy gap in the ship packet."
+  ],
+  "counterfactuals": [
+    "If the M148 field-trial test had surfaced breakage in a major editor/spreadsheet, the team could have reverted before the M149 default-on; the field trial was the safety valve the 'no Finch' framing obscured — without it the direct ship would have been materially riskier.",
+    "If TAG review had been requested, it could have flagged the spec-finalization ordering (shipping before PR merge) and the WPT-coverage gap, potentially delaying ship or strengthening the test story.",
+    "If the spec PR had been merged before M149 ship, the interoperability outcome would likely score 'success' rather than 'mixed'.",
+    "If the DevRel blog had shipped on launch day (2026-06-02), developers hitting the new InvalidStateError would have had immediate guidance; the ~1-month gap is a concrete communications counterfactual.",
+    "If a developer held a ClipboardItem across an async boundary (e.g., a clipboard-history UI) they would hit InvalidStateError; the blog's migration guidance mitigates this, but absent that guidance it would be a real (if rare) post-ship breakage.",
+    "If Firefox had shipped alignment at or near M149, Baseline eligibility for the new behavior would be materially closer; today only Safari+Chrome ship it."
+  ],
+  "skillImprovements": [
+    "Add a prepare-to-ship gate: any feature shipping before its normative spec PR is merged must either (a) merge the spec first, (b) record an explicit interop-safe rationale (e.g., another engine already ships the behavior since a named date), or (c) file an accepted-risk — and the chosen option must appear in the transition packet.",
+    "Add a rule that cross-checks every 'no Finch' / 'no staged rollout' justification against actual field-trial or flag testing in prior milestones; this retrospective found a real M148 field-trial test despite a 'no Finch' claim, so the packet should capture whether a safety field-trial ran, not only whether a staged rollout is planned.",
+    "Add a release-communication rule: require launch-day (or pre-ship) DevRel docs/blog for any feature with an observable behavior change (e.g., new promise rejection) — not only for new APIs; this feature's blog shipped ~1 month late.",
+    "Tighten the wide-review completeness check: 'no TAG review' is acceptable only with rationale AND (another engine shipping the behavior) AND (spec PR merged); here TAG was skipped and the spec PR was open, so the gate should have flagged it.",
+    "Add a WPT/test-coverage rule: features that cannot achieve WPT coverage due to infrastructure gaps must record an accepted-risk plus a tracked follow-up test-infra issue (here #508091414) in the ship packet, and the interop outcome should not be scoreable 'success' until coverage exists.",
+    "Add a formal-review-status reconciliation step: security/privacy review fields showing 'Pending' in ChromeStatus must be reconciled to a terminal state before the prepare-to-ship transition is rated supported (the snapshot here showed Pending at ship).",
+    "Add an interop/Baseline tracking prompt: for transparent behavior changes, record the named date each engine ships the behavior and Firefox's implementation (not just position) status, so the 'converging to the same model' claim is testable over time."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Exact merge status and normative diff of spec PR #242 (direct page reads failed; inferred open from search metadata).",
+      "Full content of incubation/wide-review threads WICG proposals #224 and w3c/clipboard-apis #240 (pages timed out for the reader; only snippets captured).",
+      "Confirmed terminal security_review_status and privacy_review_status (cached record showed 'Pending' as of 2026-05-25; the Chrome security lead commented positively on the intent thread but formal closure is unconfirmed).",
+      "Post-ship outcome data is not yet available: real-world latency/memory gains, new-path usage, and any regressions in the ~7 weeks since the 2026-06-02 stable ship.",
+      "Full LGTM tally and content of later reviewer replies (Daniel Bratell, Mike Taylor) on the intent thread (truncated by the reader).",
+      "Whether the Blink>DataTransfer 'Chrome reads wrong size of file' bug found in search is causally related to this feature (unclear from available sources).",
+      "Chromium issue pages (#435051711, #502745047, #508091414) are browser-only and could not be directly read; their substance is inferred from titles/status/search and ChromeStatus references."
+    ],
+    "reviewedAt": "2026-07-20T22:20:00Z"
+  }
+}

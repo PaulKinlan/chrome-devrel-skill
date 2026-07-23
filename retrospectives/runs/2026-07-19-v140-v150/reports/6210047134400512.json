@@ -12,7 +12,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T15:45:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -102,12 +102,13 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "As a behavior fix to an existing property, 'adoption' maps to absence of meaningful breakage rather than uptake of a new API. No independent post-launch breakage, regression, or WebCompat reports attributable to this change were found across targeted searches ~10 months after stable. This is consistent with the pre-launch 'low risk' assessment and the fact that the new behavior matches Firefox/Safari, but absence of found breakage reports is not affirmative evidence of zero breakage and must not be scored as success.",
+      "finding": "As a behavior fix to an existing property, 'adoption' maps to absence of meaningful breakage rather than uptake of a new API. No independent post-launch breakage, regression, or WebCompat reports attributable to this change were found across targeted searches ~10 months after stable. The cached CSS property-family UseCounter (bucket 585) shows the underlying overscroll-behavior property fired on 0.1445% of measured Chrome page loads at M140 stable (2025-09-02), drifting within 0.1422%–0.1941% across the day30/day90/day180 checkpoints and the latest point (2026-07-21) — a low, slowly-rising exposure surface consistent with the pre-launch low-risk assessment. This counter measures exposure to the property, not adoption of the root-propagation fix, and absence of found breakage reports is not affirmative evidence of zero breakage.",
       "evidenceIds": [
+        "src-metrics-css-585",
         "src-bug-41453796",
         "src-chromestatus"
       ],
-      "limitations": "No independent post-stable breakage/usage-shift data located; the UseCounter (popularity/3736) current value and any post-launch WebCompat/crbug regressions could not be independently captured (chromestatus metrics and wpt.fyi are JS-rendered and not extractable by the reader)."
+      "limitations": "The cached counter is property-family (any use of overscroll-behavior), not the specific would-break case (popularity/3736) behind the '>1%' caution, whose current value is not in the cache. Low/rising property exposure reduces but does not eliminate the inferred compat ceiling, and no independent breakage/regression evidence confirms zero breakage."
     },
     "support": {
       "status": "unknown",
@@ -143,22 +144,24 @@
     },
     "endUserImpact": {
       "status": "unscored",
-      "finding": "The change alters observable end-user gesture behavior: pull-to-refresh (mobile) and forward/backward swipe navigation (desktop) may begin or stop occurring on pages where overscroll-behavior was set on <body> but not <html>. The owner's pre-launch manual inspection of 20 popular sites assessed this as low-risk and noted the new behavior mostly matches Firefox/Safari. However, no independent post-launch user-impact measurement (telemetry on pull-to-refresh/swipe-nav incidence, user-reported regressions) was located, so end-user impact cannot be defensibly scored.",
+      "finding": "The change alters observable end-user gesture behavior: pull-to-refresh (mobile) and forward/backward swipe navigation (desktop) may begin or stop occurring on pages where overscroll-behavior was set on <body> but not <html>. The owner's pre-launch manual inspection of 20 popular sites assessed this as low-risk and noted the new behavior mostly matches Firefox/Safari. The cached CSS property-family UseCounter (bucket 585) bounds the exposure surface: the gesture-affecting property is present on a low ~0.14%–0.19% of measured Chrome page loads around and after launch — but property presence is not a measurement of pull-to-refresh/swipe-nav incidence, and no post-launch end-user telemetry or regression reports were found, so end-user impact cannot be defensibly scored.",
       "evidenceIds": [
         "src-chromestatus",
         "src-bug-41453796",
-        "src-mdn"
+        "src-mdn",
+        "src-metrics-css-585"
       ],
-      "limitations": "Pre-launch risk assessment is owner-authored (20-site inspection, not independently reproduced); no post-launch end-user telemetry or regression reports were found. Not scored per the rule against inferring success from absence of criticism."
+      "limitations": "Pre-launch risk assessment is owner-authored (20-site inspection, not independently reproduced); the cached counter bounds the exposure surface but does not measure gesture-incidence changes. Not scored per the rule against inferring success from absence of criticism."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "For a behavior-correctness fix, durable production adoption is best measured by absence of breakage and continued correct operation. No post-stable breakage or regression evidence was found ~10 months after the September 2025 stable release, which is consistent with the low-risk assessment but does not constitute affirmative proof. The UseCounter that motivated caution oscillated over the project lifetime (~2% in 2021, ~0.38% in Oct 2021, ~0.82% in Jun 2023, '>1%' in the 2025 record), so residual compat exposure plausibly remains.",
+      "finding": "For a behavior-correctness fix there is no exact adoption counter — the change is silent behavior, not a new API — and no predeclared adoption target was recorded. The closest available measurement is the cached CSS property-family UseCounter (bucket 585, scope property-family, confidence name-matched-family), which records the share of measured Chrome HTTP/HTTPS page loads on which the overscroll-behavior property fired at least once. At M140 stable (2025-09-02) the property fired on 0.1445% of page loads; at the launch-relative checkpoints it was 0.1422% at day30 (2025-10-02), 0.1592% at day90 (2025-12-01), and 0.1779% at day180 (2026-03-01), reaching 0.1941% at the latest point (2026-07-21) against a series peak of 0.2087% (2026-07-11) — a low, slowly-rising level across ~10 months post-stable. This is exposure to the underlying property, not adoption of the root-propagation fix: the counter cannot distinguish html-set from body-set usage and does not measure whether the new propagation behavior is relied upon. The specific would-break behavior-difference counter (popularity/3736) that motivated the pre-launch '>1%' caution is a different instrument and is not in the cache. No post-stable breakage or regression evidence was found, consistent with the low-risk assessment but not affirmative proof. With no exact fix counter, no predeclared target, and no production/retention/breakage corroboration, adoption is kept unscored and the measured level/trend described rather than scored as success or mixed.",
       "evidenceIds": [
+        "src-metrics-css-585",
         "src-bug-41453796",
         "src-chromestatus"
       ],
-      "limitations": "Current UseCounter value and any post-launch breakage dashboards could not be independently read (JS-rendered). Scored unscored, not success, because shipment + absent criticism is insufficient to claim adoption success."
+      "limitations": "The cached counter is property-family (broader than the fix) and not directly comparable to the would-break behavior-difference counter (popularity/3736, historically ~2%/0.38%/0.82%/>1% per the bug thread and ChromeStatus record). Percentages are share of measured page loads where the counter fired — not unique developers/sites/users, task success, satisfaction, or end-user benefit. Kept unscored (not success/mixed) per the absent-target rule."
     },
     "interoperability": {
       "status": "success",
@@ -208,15 +211,16 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A successful interoperability outcome on a clean, well-instrumented implementation, with accurate cross-channel communication — but an outcome assessment that cannot be called an unqualified success because the end-user-impact, adoption/breakage, and support dimensions lack independent post-launch evidence. The core goal (three-engine alignment, reinforced by Interop 2025 and a CSSWG resolution) was achieved on a 6-year-old, externally-reported, author-confirmed bug; the residual risk dimensions remain unscored rather than confirmed-safe.",
+      "finding": "A successful interoperability outcome on a clean, well-instrumented implementation, with accurate cross-channel communication — but an outcome assessment that cannot be called an unqualified success because the end-user-impact, adoption, and support dimensions lack independent post-launch evidence. The core goal (three-engine alignment, reinforced by Interop 2025 and a CSSWG resolution) was achieved on a 6-year-old, externally-reported, author-confirmed bug. The now-cached property-family UseCounter (bucket 585) shows a low, slowly-rising exposure surface for the underlying property (~0.1445% of page loads at stable, ~0.1941% ten months later), which is consistent with the low-risk assessment but does not measure fix adoption or confirm absence of breakage; the residual risk dimensions therefore remain unscored rather than confirmed-safe.",
       "evidenceIds": [
         "src-interop-2025-readme",
         "src-csswg-f2f",
         "src-bug-41453796",
         "src-relnotes-140",
-        "src-chromestatus"
+        "src-chromestatus",
+        "src-metrics-css-585"
       ],
-      "limitations": "Overall is mixed because success is established for interoperability/implementation/communication but unscored for end-user impact, adoption, and support; the method prohibits inferring overall success from shipment, usage, or absent criticism."
+      "limitations": "Overall is mixed because success is established for interoperability/implementation/communication but unscored for end-user impact, adoption, and support; the method prohibits inferring overall success from shipment, usage, or absent criticism. The cached property-family percentage is exposure, not fix adoption."
     }
   },
   "sources": [
@@ -230,7 +234,19 @@
       "supports": [
         "Feature metadata, ship milestones (Desktop/Android/WebView 140), finch name PropagateOverscrollBehaviorFromRoot, UseCounter >1% + 20-site manual inspection, ff/safari=Shipped, webdev=No signals, spec link, enterprise notification M139"
       ],
-      "limitations": "Cached record accurate_as_of 2025-07-28; the live chromestatus.com/metrics popularity/3736 value is JS-rendered and was not independently captured."
+      "limitations": "Cached record accurate_as_of 2025-07-28; the CSS property-family counter (bucket 585) is now cached separately (src-metrics-css-585), while the specific behavior-difference UseCounter (popularity/3736) live value remains JS-rendered and not independently captured."
+    },
+    {
+      "id": "src-metrics-css-585",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=585",
+      "publisher": "Chrome Platform Status (CSS UseCounter timeline)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "CSS property-family UseCounter (bucket 585, overscroll-behavior; scope property-family, confidence name-matched-family): the property fired on 0.1445% of measured Chrome HTTP/HTTPS page loads at M140 stable (2025-09-02), 0.1422% at day30 (2025-10-02), 0.1592% at day90 (2025-12-01), 0.1779% at day180 (2026-03-01), 0.1941% latest (2026-07-21), with a series peak of 0.2087% (2026-07-11); first observed positive 2017-08-19. Timeline series cached at evidence/metrics/timelines/css-585.json (SHA-256 9c6eea5c365909dcb8cdb5a3e4ea284e49d6af59a7e7e5da87ad49cdefec2b0e)."
+      ],
+      "limitations": "Scope is property-family (any use of the overscroll-behavior CSS property), NOT exact adoption of the root-propagation behavior change; the counter cannot distinguish html-set from body-set usage or whether the fix's behavior is relied upon. Counter was renamed from scroll-boundary-behavior to overscroll-behavior (same bucket 585, continuous series). Percentages are the share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once — not unique developers/sites/users, successful tasks, satisfaction, or end-user benefit. UMA reflects participating Chrome clients; enterprise and opt-out populations may be underrepresented."
     },
     {
       "id": "src-spec",
@@ -278,7 +294,7 @@
       "supports": [
         "Bug filed 2019-04-19 by external developer jonjohnjohnson; confirmed a bug by property author majidvp (2019); UseCounter added 2020-2021; usage trajectory ~2%(2021)/0.38%(Oct2021)/0.82%(Jun2023)/>1%(2025); Mozilla engagement Oct 2023 (emilio/bb...@mozilla); fixed 2025 by David Awogbemila via CLs 6546636/6635849/6732448; Status Fixed, P2, S4, 9 votes, Hotlist-Interop; OS Android/Mac/ChromeOS"
       ],
-      "limitations": "Full comment thread read via browser snapshot; some Monorail-migration comments empty. Migrated from crbug 954423 in Jan 2024."
+      "limitations": "Full comment thread read via browser snapshot; some Monorail-migration comments empty. Migrated from crbug 954423 in Jan 2024. The ~2%/0.38%/0.82%/>1% figures are the would-break behavior-difference UseCounter (popularity/3736), a different instrument from the cached CSS property-family counter (src-metrics-css-585)."
     },
     {
       "id": "src-interop-399102343",
@@ -420,33 +436,33 @@
     "Industry reinforcement: the change shipped into an accepted Interop 2025 'Web compat' focus area with shared WPT coverage and constructive Mozilla engagement, rather than as a unilateral Chrome decision."
   ],
   "failures": [
-    "Outcome evidence is thin: no independent post-launch breakage/regression, user-impact, or support-burden data was located ~10 months after stable, so the end-user-impact, adoption, and support dimensions cannot be defensibly scored (the retrospective cannot claim the change was harmless, only that it aligned the engines).",
+    "Outcome evidence is thin for the risk dimensions: ~10 months after stable there is still no independent post-launch breakage/regression, user-impact, or support-burden data, so end-user-impact and support cannot be defensibly scored. Adoption is now partially illuminated by the cached property-family UseCounter (bucket 585: ~0.1445% of page loads at stable, ~0.1941% ten months later — a low, slowly-rising exposure surface) but remains unscored for outcome because the counter is broader than the fix, there is no predeclared target, and there is no production/retention/breakage corroboration.",
     "A latent spec-design question (CSSWG issue #6406, 'propagate non-auto overscroll-behavior from either root or body') remained open at ship; Chrome shipped against the existing spec rather than resolving the ambiguity, leaving a residual risk for the long-tail of sites that set the property on <body>.",
     "Minor process inconsistency: the blink-dev PSA estimated ship at milestone 139 but the feature shipped in 140; the estimate was not reconciled in the PSA."
   ],
   "counterfactuals": [
     "The 2021 attempt was correctly put on hold when the UseCounter showed ~2% page-load impact that could not be driven down; shipping then without Interop 2025's forcing function and cross-engine alignment could have caused widespread, hard-to-attribute changes to pull-to-refresh and swipe-navigation gestures. The ~4-year wait was defensible risk management, not inaction.",
     "If the team had driven the open CSSWG question (#6406, either-root-or-body) to a resolution before shipping, the long-tail compat risk for body-set sites (Spotify, Reddit mobile, Tumblr, TikTok, etc.) could have been removed by spec change rather than accepted — at the cost of delaying alignment further.",
-    "If a post-launch monitoring plan (telemetry on pull-to-refresh/swipe-nav incidence, a WebCompat/crbug regression watch) had been defined at ship, this retrospective could have scored end-user impact and adoption instead of leaving them unscored; its absence is the main thing preventing an unqualified success verdict.",
+    "If a fix-specific post-launch monitoring plan had been defined at ship — telemetry on pull-to-refresh/swipe-nav incidence and a WebCompat/crbug regression watch — this retrospective could have scored end-user impact and breakage rather than leaving them unscored. Standing property-family CSS telemetry (bucket 585) now exists incidentally, but it measures property presence, not gesture-incidence or breakage; its absence-as-a-plan is still the main thing preventing an unqualified success verdict.",
     "Mozilla's 2023 question (is the html-propagation half low-risk even if the body-removal half is not?) suggests a staged option — propagate from html first, deprecate body later — that could have de-risked rollout, though it would have prolonged divergence."
   ],
   "skillImprovements": [
     "Add a lifecycle rule for 'No developer-visible change' features that nonetheless alter observable behavior (gestures, navigation, focus): treat them as behavior changes requiring a pre-ship risk assessment AND a defined post-stable monitoring plan, not as invisible fixes. This feature's end-user impact remains unscored precisely because no such monitoring was evident.",
-    "For high-UseCounter behavior fixes, require a refreshed UseCounter reading taken close to ship date (this one oscillated 2%→0.38%→0.82%→>1%) and require the record to state why the current value is acceptable, with the inspection methodology reproducible (the 20-site doc is access-restricted and unverifiable).",
+    "For high-UseCounter behavior fixes, require a refreshed reading of the RELEVANT counter taken close to ship date and require the record to state why the current value is acceptable, with the inspection methodology reproducible (the 20-site doc here is access-restricted and unverifiable). This feature now illustrates the scope trap: the cached CSS property-family counter (bucket 585) shows the underlying property at ~0.1445% of page loads at stable, while the would-break behavior-difference counter (popularity/3736) read '>1%' on ChromeStatus — different instruments that must not be conflated, and the would-break counter (the one that actually motivated caution) is still not captured as a current value.",
     "Add a phase check: do not ship a behavior change against an open spec-design question (CSSWG #6406) without either resolving it or explicitly recording the accepted residual risk and the affected-site class.",
     "Add a release-comms accuracy check that reconciles PSA/intent milestone estimates with the actual ship milestone (PSA said 139, shipped 140) and updates the estimate, so historical launch records stay accurate.",
-    "Add a retrospective evidence step that captures post-stable signals (crbug regressions, WebCompat issues, support-forum themes, UseCounter deltas) 1–2 milestones after a behavior change lands, so end-user impact and adoption can be scored rather than left unknown."
+    "Add a retrospective evidence step that captures post-stable signals 1–2 milestones after a behavior change lands. The metrics cache now supplies one of these — the property-family UseCounter delta (bucket 585: ~0.1445% at stable → ~0.1779% at day180) — but the step must additionally capture the fix-specific would-break counter (popularity/3736), crbug/WebCompat regressions, and support-forum themes, so end-user impact and adoption can be scored rather than left unknown."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Current UseCounter (chromestatus.com/metrics/feature/timeline/popularity/3736) value — page is JS-rendered and not extractable by the reader; only historical values from the bug thread are available.",
+      "Current value of the specific would-break behavior-difference UseCounter (chromestatus.com/metrics/feature/timeline/popularity/3736, the html-auto/body-non-auto case behind the '>1%' caution) — not in the metrics cache; only its historical values from the bug thread and the ChromeStatus-recorded '>1%' are available. The broader CSS property-family counter (bucket 585) IS now cached (src-metrics-css-585).",
       "Post-launch independent breakage/regression evidence (crbug, WebCompat, support forums) attributable to the M140 change — none located ~10 months after stable; absence is not affirmative evidence.",
-      "End-user-impact telemetry (pull-to-refresh / swipe-navigation incidence changes) — not publicly available.",
+      "End-user-impact telemetry (pull-to-refresh / swipe-navigation incidence changes) — not publicly available; the cached counter measures property presence, not gesture incidence.",
       "WPT pass-rate numbers per engine for overscroll-behavior-root.html from wpt.fyi — dashboard is JS-rendered; only test existence and Interop-2025 coverage are confirmed.",
       "Contents of the 20-site manual inspection document (bit.ly/4ecLqQi) — access-restricted Google Doc; methodology and site list could not be independently verified.",
       "Full text of Chromium Interop issue 399102343 — reader returned a network error; only a search-snippet claim is available."
     ],
-    "reviewedAt": "2026-07-22T15:45:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

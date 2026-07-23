@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5077341928816640,
+    "name": "Remove explicit border color UA stylesheet rule for tables",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5077341928816640",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owner": "masonf@chromium.org",
+    "featureType": "No developer-visible change",
+    "spec": "https://html.spec.whatwg.org/multipage/rendering.html#tables-2",
+    "finchName": "TableDefaultBorderColorCurrentColor",
+    "stableMilestone": 149,
+    "stableReleaseDate": "2026-06-02"
+  },
+  "launchEvents": [
+    {
+      "eventId": "148:In developer trial (Behind a flag):5077341928816640",
+      "milestone": 148,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "149:Enabled by default:5077341928816640",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T13:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Correctly classified as a low-risk Blink>CSS interop fix, feature_type 'No developer-visible change', owner masonf@chromium.org (Mason Freed). Problem statement is clear and substantively accurate: Chrome's UA stylesheet carried an erroneous border-color: gray on <table> that is not in the HTML rendering spec, so table borders failed to default to currentColor and diverged from Firefox. Motivation is concise and spec-anchored: 'The current hard-coded gray color is not interoperable, and does not match the spec.' Tracking bug 494554835, spec link present, search tags table/border-color.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatuslite",
+        "intent-psa"
+      ],
+      "limitations": "The summary phrase 'Neither Firefox nor Webkit have this gray border color rule' is historically imprecise (both Chromium and WebKit had it; see wideReview)."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "The problem and use case were thoroughly validated in the standards community long before this ChromeStatus entry (created 2026-04-04). The grey rule (historically 'table, td, th { border-color: gray }') was removed from the WHATWG HTML rendering spec around 2019; WebKit bug 195016 'table border-color should be currentColor by default, not gray' (covering shared Blink/WebKit behavior) and Blink bug 935729 tracked it for years; and web-platform-tests/Interop 2025 issue #713 (2024-09-18) explicitly nominated this with two WPT tests (table-border-3s.html, table-border-3q.html) and noted that CSS resets (modern-normalize, normalize.css) already force currentColor as the developer workaround. Web-develop signal 'Positive'. The ChromeStatus entry is a late ship entry, not the incubation venue.",
+      "evidenceIds": [
+        "interop713",
+        "webkit195016",
+        "crbug-old",
+        "html-spec"
+      ],
+      "limitations": "Exact dates of the WHATWG spec removal and the WebKit/Blink bug filings were not pinned from primary reads."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implemented behind the TableDefaultBorderColorCurrentColor runtime/finch flag. Chromium commit b718ca72... states that when the feature is enabled, the default border-color of <table> resolves correctly to currentColor (e.g. when rendering <table border='1'>). WPT marked true on the record; Interop #713 nominated html/rendering/non-replaced-elements/tables/table-border-3s.html and table-border-3q.html. No separate explainer is expected for a UA-stylesheet fix.",
+      "evidenceIds": [
+        "chromium-commit",
+        "chromestatus-cached",
+        "interop713"
+      ],
+      "limitations": "Full CL diff and test pass/fail were not independently read (the googlesource diff endpoint timed out); only the commit description and the wpt:true flag were confirmed."
+    },
+    "developerTrials": {
+      "status": "supported",
+      "finding": "DevTrial behind the flag at M148 (desktop) and M146 (android) per the cached stage record; the run manifest lists the M148 'In developer trial (Behind a flag)' event. No recruited cohort or feedback instrument is present, which is proportionate for a UA-stylesheet interop fix with no API to integrate and a small visible delta.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "manifest"
+      ],
+      "limitations": "No public devtrial-feedback artifact exists; the Android devtrial (M146) preceding the desktop devtrial (M148) is unexplained."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Strong convergence. Firefox and Safari are marked 'Shipped/Shipping' on the record: Firefox was consistently spec-correct in standards mode, and WebKit removed the grey rule (WebKit commit 287861@main editing Source/WebCore/css/html.css, tracked via bug 195016), so by ship time all three engines converge on currentColor. Standards maturity is 'Published standard' (WHATWG Living Standard; CSS Backgrounds 3 initial value is currentColor). Web developers 'Positive'. The Interop 2025 issue #713 is the de-facto multi-vendor review and WPT-inclusion venue. Tag review 'Not applicable'.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "interop713",
+        "webkit195016",
+        "webkit-commit",
+        "html-spec",
+        "css-backgrounds-spec"
+      ],
+      "limitations": "Security and Privacy review status were 'Pending' in the cache snapshot (accurate_as_of 2026-05-04); completion before the stable ship could not be confirmed from public sources. WebKit removal date was not pinned."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial, correctly. A field experiment is not justified for a UA-stylesheet interop fix: the uncertainty was resolved by spec alignment, other-engine convergence, and the flag devtrial, so an OT would have been customary rather than evidence-driven. Recorded as not-relevant (not untested): the flag devtrial (M148/M146) served the validation role.",
+      "evidenceIds": [
+        "chromestatus-cached"
+      ],
+      "limitations": "None."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent posted as a 'Web-Facing Change PSA' (proportionate for 'no developer-visible change'). Rollout 'Will ship enabled for all users' via finch (TableDefaultBorderColorCurrentColor); breaking_change=false; all platforms (desktop/android/webview M149; iOS n/a); enterprise_impact low with no enterprise notification milestone required. Documentation was prepared (Chrome 149 beta blog + stable release notes).",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "intent-psa",
+        "chrome149-beta",
+        "chrome149-releasenotes"
+      ],
+      "limitations": "The PSA left Interoperability/Compatibility, WebView-risk, and Debuggability as '_No information provided_' instead of citing the WebKit/Firefox convergence. Security/Privacy 'Pending' in the snapshot."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 149 stable (stable release date June 2, 2026; beta May 6, 2026), documented under 'CSS and UI' in both the Chrome 149 beta blog and the stable release notes (with tracking bug #494554835 and spec link). Press coverage was minor/secondary: Gigazine listed it under 'other updates'; the independent Web Standards summary omitted it entirely, consistent with its low-profile 'no developer-visible change' classification.",
+      "evidenceIds": [
+        "chrome149-beta",
+        "chrome149-releasenotes",
+        "gigazine",
+        "webstandards-dev"
+      ],
+      "limitations": "No standalone article or demo (none expected); no post-ship correction or incident observed."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "There is no API to adopt; the correct behavior is automatic and global once shipped, and most sites already neutralize the legacy grey via CSS resets (modern-normalize, normalize.css per Interop #713), so a developer adoption funnel does not apply. Recorded as not-relevant rather than untested.",
+      "evidenceIds": [
+        "interop713",
+        "chromestatus-cached"
+      ],
+      "limitations": "N/A by design."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public post-ship support tickets, Web Compat reports, or regressions attributable to this change were found in targeted searches; the change is structurally low risk (matches spec + Firefox + WebKit; CSS resets mitigate; not a breaking change). However, no telemetry, use-counter, or monitoring evidence is available to affirmatively confirm zero breakage.",
+      "evidenceIds": [
+        "gigazine",
+        "webstandards-dev",
+        "interop713"
+      ],
+      "limitations": "Absence of public breakage reports is weak evidence; no post-ship monitoring or telemetry was accessed."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is removal of an internal UA-stylesheet rule, not deprecation/removal of a developer-facing API. There is no migration path to document: the new behavior is the spec-correct currentColor already matched by Firefox and WebKit and by common CSS resets. The only behavior-change risk (sites relying on the grey default without specifying border-color) is the intended interop convergence and is captured under interoperability. Recorded as not-relevant rather than untested.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "html-spec",
+        "interop713"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a real, multi-year, community-documented authoring/interop problem: by default, <table> borders did not match the surrounding text color in Chrome/Safari (grey) while Firefox rendered currentColor. Validated by WebKit bug 195016, Blink bug 935729, the WHATWG spec removal, and the Interop 2025 nomination with WPT tests; web-develop signal 'Positive'.",
+      "evidenceIds": [
+        "interop713",
+        "webkit195016",
+        "chromestatus-cached"
+      ],
+      "limitations": "No quantitative demand measure was gathered (appropriate for scope)."
+    },
+    "endUserImpact": {
+      "status": "success",
+      "finding": "Tables now render borders in the text color by default, matching author intent and Firefox, with parity preserved for accessibility (currentColor inherits the text color, so border/text contrast relationship is unchanged). Low risk and not a breaking change; converges with Safari.",
+      "evidenceIds": [
+        "html-spec",
+        "chrome149-beta",
+        "chrome149-releasenotes",
+        "gigazine"
+      ],
+      "limitations": "Near-imperceptible for sites that already use resets; no dedicated accessibility/contrast test evidence was gathered."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No API to adopt; the correct behavior is automatic and global at ship, and the legacy grey is already neutralized by widely used CSS resets. A developer adoption funnel is not measurable or meaningful here.",
+      "evidenceIds": [
+        "interop713",
+        "chromestatus-cached"
+      ],
+      "limitations": "N/A by design."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "Chrome now matches the WHATWG HTML rendering spec (no grey rule on table) and the CSS Backgrounds initial value (currentColor), and converges with Firefox (consistently correct) and WebKit (removed grey via commit 287861@main). This is genuine three-engine convergence, not Chrome-only behavior; WPT tests were nominated via Interop 2025 #713.",
+      "evidenceIds": [
+        "html-spec",
+        "interop713",
+        "webkit195016",
+        "webkit-commit",
+        "css-backgrounds-spec",
+        "chromestatus-cached"
+      ],
+      "limitations": "WebKit removal date not pinned; wpt.fyi pass/fail not read in detail."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Clean flag-gated implementation (commit b718ca72) with WPT marked true, a devtrial-to-ship progression (M148 flag devtrial -> M149 finch ship to all users on desktop/android/webview), and no known regressions. The fix is a one-line UA-stylesheet/rules change behind an established finch flag.",
+      "evidenceIds": [
+        "chromium-commit",
+        "chromestatus-cached",
+        "crbug-old"
+      ],
+      "limitations": "Full CL diff and test results were not independently read; security/privacy reviews were 'Pending' in the cache snapshot; the Android devtrial (M146) preceding desktop (M148) is unexplained."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Mostly accurate and well-documented (beta blog + stable release notes + PSA intent), but: (a) the ChromeStatus summary's 'Neither Firefox nor Webkit have this gray border color rule' is historically imprecise -- both Chromium and WebKit had it (Interop #713, WebKit 195016) and only Firefox was consistently correct, so the phrasing omits that Chrome was itself non-conformant and catching up; (b) a duplicate OBSOLETE ChromeStatus entry (5105915101577216) with 'no signals' exists; (c) the PSA left interop/compat/webview/debuggability sections as '_No information provided_'.",
+      "evidenceIds": [
+        "chromestatus-cached",
+        "chromestatuslite",
+        "interop713",
+        "webkit195016",
+        "obsolete-entry",
+        "intent-psa"
+      ],
+      "limitations": "None material."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public breakage or support reports found; structurally low risk. But no post-ship telemetry/monitoring/use-counter evidence is available to affirmatively confirm zero breakage.",
+      "evidenceIds": [
+        "gigazine",
+        "webstandards-dev",
+        "interop713"
+      ],
+      "limitations": "Absence of public reports is not confirmation of no breakage."
+    },
+    "overall": {
+      "status": "success",
+      "finding": "The launch achieved its goal: Chrome converged with the WHATWG HTML rendering spec and with Firefox and WebKit on currentColor for table borders, via a proportionate low-risk process, with no evidence of breakage. This overall rating does not hide the mixed evidenceAndCommunication dimension or the unscored adoption/support dimensions, which are recorded separately.",
+      "evidenceIds": [
+        "html-spec",
+        "interop713",
+        "webkit195016",
+        "chromium-commit",
+        "chrome149-beta",
+        "chrome149-releasenotes"
+      ],
+      "limitations": "See per-dimension limitations; post-ship monitoring and review completion are unconfirmed."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus-cached",
+      "url": "https://chromestatus.com/feature/5077341928816640",
+      "publisher": "Chrome Platform Status (cached snapshot)",
+      "publishedOrObservedAt": "2026-05-04",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: name, summary, motivation, owner masonf@chromium.org, feature_type 'No developer-visible change', finch TableDefaultBorderColorCurrentColor, rollout 'ship enabled for all users', breaking_change=false, all platforms, desktop/android/webview M149, iOS null, standards 'Published standard', FF/Safari 'Shipped/Shipping', webdev 'Positive', tag review 'Not applicable', security/privacy 'Pending', wpt=true, tracking bug 494554835"
+      ],
+      "limitations": "Cache accurate_as_of 2026-05-04 (pre-stable); security/privacy 'Pending' may have cleared after the snapshot."
+    },
+    {
+      "id": "chromestatuslite",
+      "url": "https://chromestatuslite.com/feature/5077341928816640",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-05-04",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, motivation, spec link, FF/Safari Shipped-Shipping, web developers Positive, tracking bug on the live server-rendered view"
+      ],
+      "limitations": "Same wording imprecision as the cached summary."
+    },
+    {
+      "id": "html-spec",
+      "url": "https://html.spec.whatwg.org/multipage/rendering.html#tables-2",
+      "publisher": "WHATWG (HTML Living Standard)",
+      "publishedOrObservedAt": "2026-07-13",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Section 15.3.8 Tables UA stylesheet has NO border-color: gray on table (only box-sizing, border-spacing, border-collapse, text-indent); border-color initial value derives from currentColor; confirms the spec basis for the fix"
+      ],
+      "limitations": "Rendering section is non-normative 'expected' behavior."
+    },
+    {
+      "id": "css-backgrounds-spec",
+      "url": "https://www.w3.org/TR/css-backgrounds-3/#border-color",
+      "publisher": "W3C (CSS Backgrounds and Borders Level 3)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "border-color initial value is currentColor (cited by Interop #713 as the spec basis for the expected table behavior)"
+      ],
+      "limitations": "Not read in full; referenced via Interop #713."
+    },
+    {
+      "id": "intent-psa",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/LwOCQA1pOVo",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "'Web-Facing Change PSA' intent; contact masonf@chromium.org; Blink>CSS; milestones desktop ship 149 / devtrial 148, android ship 149, webview ship 149; all six Blink platforms yes; FF Shipped/Shipping, WebKit Shipped/Shipping, webdev Positive; tracking bug 494554835"
+      ],
+      "limitations": "Interop/compat, WebView-risk, and Debuggability sections left as '_No information provided_'; exact post date not captured."
+    },
+    {
+      "id": "interop713",
+      "url": "https://github.com/web-platform-tests/interop/issues/713",
+      "publisher": "web-platform-tests/interop (GitHub)",
+      "publishedOrObservedAt": "2024-09-18T10:51:38Z",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Developer problem statement with screenshots; states BOTH Chromium and WebKit set grey table border (Firefox correct); nominates WPT tests table-border-3s.html and table-border-3q.html for Interop 2025; grey rule was in the HTML spec and removed in 2019 (whatwg/html#4398/#4391); CSS resets (modern-normalize, normalize.css) already force currentColor as workaround; links Blink and WebKit bugs"
+      ],
+      "limitations": "Filed 2024-09; describes the pre-fix state, not the post-2026 converged state."
+    },
+    {
+      "id": "webkit195016",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=195016",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Long-standing WebKit bug 'table border-color should be currentColor by default, not gray'; covers shared Blink/WebKit behavior; references Blink bug 935729 and the whatwg/html spec-change issue; reproduced in Safari 15.6.1 / STP 151 (grey outer border, black cells); reviewer 'Seems sensible to match the spec'"
+      ],
+      "limitations": "Exact filed/resolved dates and the fixing revision not captured from the page."
+    },
+    {
+      "id": "webkit-commit",
+      "url": "https://results.webkit.org/commit/next?repository_id=webkit&ref=a1fc5cb7c15cd65d8c5b784f8f0e6db3fb2df7df",
+      "publisher": "WebKit Results Database (commit 287861@main)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit removed 'border-color: gray' from the UA CSS (Source/WebCore/css/html.css) with LayoutTest rebaselining -- confirms WebKit converged to currentColor"
+      ],
+      "limitations": "Commit date not captured; full commit page read failed (provider error)."
+    },
+    {
+      "id": "chromium-commit",
+      "url": "https://chromium.googlesource.com/chromium/src/+/b718ca7251e1fd1fe498a16cca886583c6f55291",
+      "publisher": "Chromium source (googlesource)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Implementation CL: when TableDefaultBorderColorCurrentColor is enabled, default border-color of <table> resolves to currentColor (e.g. <table border='1'>); confirms flag-gated implementation"
+      ],
+      "limitations": "Full diff/test files not independently read (diff endpoint timed out); CL number and exact date not captured."
+    },
+    {
+      "id": "crbug-old",
+      "url": "https://issues.chromium.org/issues/40615503",
+      "publisher": "Chromium issue tracker (monorail/buganizer)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Long-standing Chromium bug 'Blink has special UA stylesheet rule to give table border-color grey'; notes Chrome uses grey on the table (not cells); Blink/WebKit shared behavior; predecessor context for tracking bug 494554835"
+      ],
+      "limitations": "Tracker requires sign-in; content taken from search snippet, not full page."
+    },
+    {
+      "id": "chrome149-beta",
+      "url": "https://developer.chrome.com/blog/chrome-149-beta",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-05-06",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 beta (May 6, 2026) documents the change under 'CSS and UI': removes erroneous border-color: gray from the table UA stylesheet so borders default to currentColor; states FF and WebKit do not have the grey rule, causing interop problems"
+      ],
+      "limitations": "Official DevRel communication; repeats the 'neither FF nor WebKit have it' wording."
+    },
+    {
+      "id": "chrome149-releasenotes",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 stable release date June 2, 2026; lists the change under 'CSS and UI' with tracking bug #494554835 and spec link; confirms stable shipment"
+      ],
+      "limitations": "Official source."
+    },
+    {
+      "id": "gigazine",
+      "url": "https://gigazine.net/gsc_news/en/20260603-google-chrome-149/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2026-06-03",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press lists the change only as a minor 'other update' (border-color: gray removed from table UA stylesheet, now based on currentColor) -- confirms low public profile; Chrome 150 due June 30, 2026"
+      ],
+      "limitations": "Secondary coverage; not technical depth."
+    },
+    {
+      "id": "webstandards-dev",
+      "url": "https://web-standards.dev/news/2026/06/chrome-149/",
+      "publisher": "Web Standards",
+      "publishedOrObservedAt": "2026-06-04",
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent Chrome 149 summary (2026-06-04) does NOT mention the table border-color change among the release's features -- consistent with its 'no developer-visible change' classification and minor profile"
+      ],
+      "limitations": "Absence of mention is interpretive."
+    },
+    {
+      "id": "obsolete-entry",
+      "url": "https://chromestatuslite.com/feature/5105915101577216",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "A duplicate '(OBSOLETE ENTRY) Remove explicit border color UA stylesheet rule for tables' exists as feature_type 'New or changed feature' with FF/Safari/webdev 'No signals' -- a process-hygiene artifact alongside the canonical 5077341928816640"
+      ],
+      "limitations": "Relationship/obsolescence reason not captured."
+    }
+  ],
+  "successes": [
+    "Proportionate lightweight process (PSA intent, 'No developer-visible change' type, flag devtrial at M148 -> finch ship to all users at M149) matched the low risk of a UA-stylesheet interop fix.",
+    "Rooted in a real, multi-year, community-validated problem (WHATWG spec removal ~2019, WebKit bug 195016, Blink bug 935729, Interop 2025 #713 with WPT tests) rather than a Chrome-invented need.",
+    "Genuine three-engine convergence: Firefox consistently correct, WebKit removed the grey rule (commit 287861@main), Chrome removed it in M149 -- a web-platform interop win, not Chrome-only adoption.",
+    "Documented in the Chrome 149 beta blog and stable release notes with spec and tracking-bug links; auto-mitigated for most sites by common CSS resets (modern-normalize, normalize.css)."
+  ],
+  "failures": [
+    "ChromeStatus summary wording is historically imprecise ('Neither Firefox nor Webkit have this gray border color rule') -- it understates that both Chromium and WebKit had it and that Chrome was itself catching up; only Firefox was consistently correct.",
+    "A duplicate OBSOLETE ChromeStatus entry (5105915101577216) with 'no signals' exists alongside the canonical entry -- a process-hygiene gap.",
+    "The PSA intent left Interoperability/Compatibility, WebView-risk, and Debuggability as '_No information provided_' instead of citing the WebKit/Firefox convergence and CSS-reset mitigation.",
+    "Security and Privacy review status were still 'Pending' in the pre-stable cache snapshot; public completion before the June 2 stable ship could not be confirmed."
+  ],
+  "counterfactuals": [
+    "Without the Interop 2025 issue #713 nominating this with WPT tests, this long-tail bug (open across WebKit/Blink since ~2019) might have remained low priority; the Interop focus likely accelerated the fix.",
+    "If WebKit had not also removed the grey rule, Chrome shipping alone would have left a Chrome-vs-Safari split rather than full convergence -- the interop success depends on WebKit's parallel removal.",
+    "A fuller Intent-to-Ship citing the other-engine convergence and the CSS-reset mitigations would have made the public record self-defending, though it likely would not have changed the outcome.",
+    "Earlier ChromeStatus accuracy about which engines had the legacy behavior would have let reviewers confirm the convergence claim from the record alone, without cross-referencing WebKit/Interop sources."
+  ],
+  "skillImprovements": [
+    "Add a phase-04 (wide review) / phase-06 (prepare-to-ship) checklist item: for interop/convergence fixes, require the ChromeStatus summary and release notes to distinguish 'never had' vs 'no longer has' the legacy behavior, with dated other-engine bug/commit citations, instead of blanket 'neither X nor Y have this rule' phrasing.",
+    "Add a process-hygiene rule/eval: detect duplicate or OBSOLETE ChromeStatus entries for the same change and require a single canonical entry before ship.",
+    "Add guidance that even 'no developer-visible change' PSA intents should include a one-line interop/convergence citation (other-engine bug/commit links) in the risk sections rather than '_No information provided_'.",
+    "Add a 'low-risk UA-stylesheet / rendering interop fix' template to launch-retrospective.md and the phase modules so these fixes get proportionate (lighter) but still evidence-grounded assessment, with explicit not-relevant rationale for OT/adoption rather than forcing the full enterprise-API review template.",
+    "Add a step to confirm and cite formal review (security/privacy) completion status as of stable ship, not just the pre-ship cache snapshot, for the public record."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Confirmation that Security and Privacy reviews cleared before the Chrome 149 stable ship (cache snapshot accurate_as_of 2026-05-04 showed both 'Pending'; the buganizer tracker required sign-in so the current status could not be confirmed).",
+      "Post-ship telemetry / Web Compat breakage data and any use-counter indicating the real-world impact of the grey->currentColor change (no public monitoring evidence available within the cutoff).",
+      "Full Chromium implementation CL diff and WPT pass/fail results (the googlesource diff read timed out; only the commit description and the wpt:true flag were confirmed).",
+      "Exact dates of the WHATWG HTML spec removal of the grey rule and of WebKit's removal (commit 287861@main / bug 195016 resolution)."
+    ],
+    "reviewedAt": "2026-07-20T13:30:00Z"
+  }
+}

@@ -1,0 +1,421 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5942637229113344,
+    "name": "Payment Request: Allow payment handlers to report back internal errors",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5942637229113344",
+    "category": "JavaScript",
+    "blinkComponents": [
+      "Blink>Payments"
+    ],
+    "featureType": "Chromium catches up",
+    "finchName": "PaymentRequestSupportReportingAppError",
+    "owners": [
+      "smcgruer@google.com",
+      "xuehuichen@google.com"
+    ],
+    "specLink": "https://w3c.github.io/payment-request/#payment-handler-indicates-an-internal-error-algorithm",
+    "trackingBug": "https://crbug.com/473478138",
+    "shippingYear": 2026,
+    "isReleasedAsOfCachedRecord": false,
+    "cachedRecordAccurateAsOf": "2026-05-25T17:03:15Z"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5942637229113344",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The developer problem is concrete, externally raised, and well-documented. PayPal's SDK team (dtjones404) opened w3c/payment-request#1040 on 2024-11-26 asking to distinguish a payment handler's internal failure from a user cancellation; today they hack around it by string-matching vendor-specific AbortError messages ('User closed the Payment Request UI.', etc.) which they note is fragile. ChromeStatus lists the explainer as that issue and marks Web-develop sentiment Positive ('Requested by both current + prospective payment handler adopters'). This is a real, named-adopter-driven problem, not a speculative capability.",
+      "evidenceIds": [
+        "s3",
+        "s1",
+        "s7"
+      ],
+      "limitations": "No quantitative measure of how many merchants hit this; evidence is qualitative (one detailed PayPal report plus ChromeStatus's generalised 'positive' signal)."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Spec design happened openly in the W3C Web Payments WG. The Payment Request spec gained a 'payment handler indicates an internal error algorithm' (PR w3c/payment-request#1050, reviewed by Marcos Cáceres of WebKit who is also implementing it), and the Web-Based Payment Handler spec was tracked in w3c/web-based-payment-handler#428 (opened 2026-03-03) to map respondWith rejection onto OperationError vs AbortError with explicit backwards-compatibility consideration. The design choice (a single OperationError vs arbitrary developer-error pass-through) was consciously debated with Apple and flagged for TAG follow-up because it also affects the Digital Credentials API.",
+      "evidenceIds": [
+        "s4",
+        "s5",
+        "s6",
+        "s7"
+      ],
+      "limitations": "Could not retrieve the full body/merge date of spec PR #1050 directly (reader timed out); its existence, review and intent are corroborated by the cached record, the intent thread and the WebKit standards-position request."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation was tracked under crbug 473478138 ('[Payment Handler] Payment apps are unable to indicate difference...') and Chrome source-level automated tests were added alongside manual WPTs. However the lifecycle was compressed: the ChromeStatus entry was created 2026-04-23 and the Intent to Ship mailed 2026-04-28 (5 days later), with no separate public Intent to Prototype thread (only the ship stage carries an intent_thread_url). The 'prototype' effectively coincided with spec finalisation rather than being a distinct, documented phase.",
+      "evidenceIds": [
+        "s1",
+        "s7",
+        "s13",
+        "s10"
+      ],
+      "limitations": "No public prototype/demo/explainer artifact beyond the GitHub issue; crbug body not read directly (only the cached link and search snippet). No public Intent to Prototype email found."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "Not applicable to this feature's lifecycle. There was no flag-based developer trial: flag_name is null, devtrial_instructions is null, and the stage of type 250 (dev trial/eval) carries no intent thread or dates. A minor, additive, backwards-compatible error outcome shipped directly to stable.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Marked not-relevant (not untested) because a developer trial was deliberately out of scope for a small additive change, not omitted through oversight."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Cross-implementation review was sought and largely positive: TAG was briefed informally at TPAC 2025 with 'no concern' (formal TAG review recorded N/A for this minor tweak); WebKit gave Positive via PR #1050 review and then an official 'position: support' in WebKit/standards-positions#655 (2026-04-29); Mozilla was notified via a comment on mozilla/standards-positions#23 but is structurally N/A because Firefox does not ship Payment Request or Payment Handler. Two material caveats: (1) the Intent to Ship explicitly states it was 'Sending before Privacy, WP Security, and Adoption approvals, due to short timeline to M149', and (2) the single-error-type vs generic-error question remains open and tagged for further TAG follow-up.",
+      "evidenceIds": [
+        "s7",
+        "s8",
+        "s11",
+        "s4",
+        "s1"
+      ],
+      "limitations": "Privacy, Web-Platform Security and Adoption approvals were knowingly deferred/skipped before the ship intent; their post-hoc outcome is not visible in the evidence. TAG review was informal (TPAC sidebar), not a formal request."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "Not applicable. There was no origin trial: origintrial is false and every ot_* field is null; the availability_expectation is direct shipment in Chromium (and Safari for the PR-level change). A trial would add little for an additive error value.",
+      "evidenceIds": [
+        "s1",
+        "s7"
+      ],
+      "limitations": "Marked not-relevant (not untested) because an origin trial was not part of the intended lifecycle; the change is additive and low-risk."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Intent to Ship (blink-dev, 2026-04-28, smcgruer) is complete and well-structured: motivation, spec link, explainer, WebKit/Mozilla positions, WebView-risk analysis (PaymentRequest is disabled-by-default in WebView), debuggability, and a named Finch flag (PaymentRequestSupportReportingAppError). It received three Blink API-owner LGTMs within ~24h (Alex Russell, Rick Byers, Chris Harrelson), and on Mike Taylor's prompting the author filed the formal WebKit (#655) and Mozilla (#23) position requests. Planned milestones: desktop/android/webview 149, iOS null (Payment Handler not on iOS).",
+      "evidenceIds": [
+        "s7",
+        "s8",
+        "s11",
+        "s1"
+      ],
+      "limitations": "Process shortcut: shipped before Privacy/WP-Security/Adoption sign-offs citing the M149 timeline. WPT coverage is acknowledged as not fully automated (see implementationQuality)."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Released as planned. Chrome 149 went stable on 2026-06-02 and the official Chrome for Developers release notes list the feature under Web APIs with an accurate one-paragraph description and correct tracking bug (#473478138), ChromeStatus entry and spec link. Shipped on desktop, Android and WebView (149); iOS null as scoped. ChromeStatus Finch name and rollout plan ('Will ship enabled for all users') are consistent with an unflagged, unstepped rollout. (The cached record shows is_released=false only because its accurate_as_of date, 2026-05-25, predates the 149 stable date.)",
+      "evidenceIds": [
+        "s9",
+        "s1",
+        "s2"
+      ],
+      "limitations": "No enterprise-policy or rollback evidence (none expected for an additive change). Confirmed via release notes rather than a live chromestatus.com status check (browser-only)."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Too early and not measurable. The feature shipped ~7 weeks before the evidence cutoff (2026-06-02 → 2026-07-20). No use counter is linked (webdx_usecounter_enum is null), no HTTP Archive/BigQuery or Web Platform Dashboard signal is available this soon, and targeted searches for PayPal/Google Pay/Stripe adoption of the new OperationError behaviour returned only generic troubleshooting noise. The motivating adopter (PayPal) has not published a confirmed switch from error.message string-matching to OperationError.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Absence of adoption evidence at 7 weeks post-ship is expected for a minor tweak and is not evidence of failure; it simply cannot be scored."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No post-ship support, regression or migration-friction evidence found in the ~7-week window since stable. No crbug regressions, no MDN/caniuse errata, and no community reports surfaced. This is consistent with an additive error value but is genuinely unscored rather than confirmed-clean.",
+      "evidenceIds": [
+        "s1",
+        "s9"
+      ],
+      "limitations": "Support burden cannot be assessed this early; a 6–12 month re-check is needed before scoring."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable. This is an additive new error outcome for an existing API, not a deprecation or removal; enterprise_impact is minimal (1), breaking_change is false, and there is no removal/removal-trial stage.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Included for completeness of the phase replay; no deprecation analysis applies."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The shipped design directly resolves the documented pain point: merchants can now branch PaymentRequest.show() rejection on error name (OperationError = internal app failure → retry/fallback; AbortError = user cancel → stop) instead of fragile, vendor-specific error.message string matching that PayPal explicitly called out as a maintainability risk. The problem was raised by a major real-world payment handler and the solution is the minimal interoperable fix. Limitation: expressive power is deliberately limited to a single OperationError (not arbitrary developer errors), so richer error signalling remains a future question.",
+      "evidenceIds": [
+        "s3",
+        "s9",
+        "s6",
+        "s7"
+      ],
+      "limitations": "Value is conditional on payment-handler and merchant adoption, which is not yet measurable."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "End-user benefit is indirect and adoption-dependent (fewer dead-ends when a payment app errors internally; cleaner cancellation handling). No evidence of actual improved user flows in production exists within the 7-week post-ship window, and the method forbids inferring impact from shipment or sentiment alone.",
+      "evidenceIds": [
+        "s9"
+      ],
+      "limitations": "Cannot be scored without post-ship merchant telemetry or case studies."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption signal exists 7 weeks after stable: no linked use counter, no published partner case study, and no framework/library integration evidence. Searches surfaced no confirmed production use of the new OperationError path.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Early-window absence is expected and is not negative evidence; re-evaluate at 6–12 months."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Mixed. Positive: the spec change is in the W3C Web Payments WG (Working Draft maturity), WebKit is positive and actively implementing (PR #1050 by Marcos; official 'support' position), and the Chromium intent explicitly expects the PR-level change in both Chromium and Safari. Negative/structural: Firefox does not ship Payment Request/Payment Handler at all, so the entire API family is non-Baseline (MDN marks PaymentRequest 'not Baseline'); and cross-browser automated test coverage is weak because Payment Request lacks the chromedriver automation needed for full WPT.",
+      "evidenceIds": [
+        "s6",
+        "s4",
+        "s8",
+        "s7",
+        "s12",
+        "s10"
+      ],
+      "limitations": "Baseline status is blocked by Firefox's non-shipment of the parent API, which is outside this feature's control."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Mixed. Tests exist: WPT PR #59002 ('Payment Handler: Add test for OperationError propagation') plus Chrome source-level automated tests, and standard DevTools debugging is available. But the feature is explicitly 'not fully tested by web-platform-tests' — only manual WPTs were possible because Payment Request/Web-based Payment Handler lack the necessary chromedriver automation, so there is no automated cross-browser regression guard for the new error path.",
+      "evidenceIds": [
+        "s10",
+        "s7",
+        "s1"
+      ],
+      "limitations": "Could not read the WPT PR diff directly; test existence and 'manual-only' scope are corroborated by the intent thread and the WPT merge-log search result."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Communication artifacts are accurate and consistent: the Chrome 149 release notes describe the feature correctly (AbortError vs OperationError, retry/fallback semantics), ChromeStatus carries a complete record (motivation, spec, WebView risk, finch name, milestones), and the Intent to Ship is thorough and transparent (including the explicit note about skipped approvals). No over-claiming of adoption or Baseline status was found.",
+      "evidenceIds": [
+        "s9",
+        "s1",
+        "s2",
+        "s7"
+      ],
+      "limitations": "The cached ChromeStatus record's is_released=false is a timing artefact (accurate_as_of predates stable), not a communication error."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support tickets, regressions or migration issues surfaced in the ~7 weeks since stable. Too early to score either way.",
+      "evidenceIds": [
+        "s9"
+      ],
+      "limitations": "Requires a longer post-ship window before a support-burden assessment is defensible."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, well-scoped, fast-track minor change: real externally-raised developer problem (PayPal), clean minimal interoperable fix, positive WebKit signal, accurate release communication, and on-time shipment in Chrome 149. It is held to 'mixed' rather than 'success' because (a) three outcome dimensions (end-user impact, adoption, support) are unscored this early, (b) interoperability is structurally limited by Firefox non-shipment of the parent API and by manual-only WPT coverage, and (c) the launch took a documented process shortcut (Privacy/WP-Security/Adoption approvals deferred for the M149 timeline). Overall status deliberately does not hide the unscored/mixed dimensions.",
+      "evidenceIds": [
+        "s3",
+        "s9",
+        "s7",
+        "s8",
+        "s6",
+        "s12"
+      ],
+      "limitations": "A definitive success/failure verdict requires post-ship adoption and support evidence not yet available."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5942637229113344",
+      "publisher": "Chrome Platform Status (authoritative cached record at evidence/chromestatus/features/5942637229113344.json, accurate_as_of 2026-05-25T17:03:15Z)",
+      "publishedOrObservedAt": "2026-05-25T17:03:15Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, motivation, spec link, finch name, milestones 149 desktop/android/webview, WebKit Positive, Firefox N/A, Web-dev Positive, tag_review N/A, security/privacy review Pending, is_released=false as of accurate_as_of, no origin trial, no flag, WPT false"
+      ],
+      "limitations": "accurate_as_of (2026-05-25) predates Chrome 149 stable (2026-06-02), hence is_released=false; live chromestatus.com not browser-checked."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5942637229113344",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-20T22:30:00Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Status 'Proposed', type 'Chromium catches up', summary, motivation, WebKit Positive, Firefox N/A, Web-dev Positive, tracking bug"
+      ],
+      "limitations": "Lite view still showed 'Proposed' status at retrieval, consistent with the cached record predating stable."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/w3c/payment-request/issues/1040",
+      "publisher": "W3C Web Payments WG (w3c/payment-request)",
+      "publishedOrObservedAt": "2024-11-26T22:49:52Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer/origin of the request: opened by dtjones404 (PayPal) 2024-11-26; PayPal SDK exposes onError/onCancel and currently distinguishes AbortError by vendor-specific error.message strings; wants a non-fragile solution; references earlier issue #871; assigned to rsolomakhin; closed"
+      ],
+      "limitations": "Only the issue body was retrieved; comment thread / resolution comment not captured."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/w3c/payment-request/pull/1050",
+      "publisher": "W3C Web Payments WG (w3c/payment-request)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec PR adding the 'payment handler indicates an internal error algorithm'; reviewed/being implemented by Marcos Cáceres (WebKit); cited as the WebKit Positive signal in ChromeStatus and the intent thread"
+      ],
+      "limitations": "Full PR body and merge date could not be retrieved (reader timed out twice); existence and WebKit review corroborated by s1, s7, s8."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/w3c/web-based-payment-handler/issues/428",
+      "publisher": "W3C Web Payments WG (w3c/web-based-payment-handler)",
+      "publishedOrObservedAt": "2026-03-03T17:30:36Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec-side change for the Web-Based Payment Handler: opened 2026-03-03 by stephenmcgruer; cross-references PR #1050 and issue #1040; maps respondWith rejection to AbortError vs OperationError with explicit backwards-compatibility consideration; closed"
+      ],
+      "limitations": "Resolution/diff not captured; issue body only."
+    },
+    {
+      "id": "s6",
+      "url": "https://w3c.github.io/payment-request/#payment-handler-indicates-an-internal-error-algorithm",
+      "publisher": "W3C (Payment Request API Editor's Draft)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Living spec defines the algorithm; show() step 24 references it as one of the ways the accept promise is settled; spec maturity 'Working draft' (under development in WG)"
+      ],
+      "limitations": "Full algorithm body beyond the 123KB-truncated fetch not captured; existence confirmed by cross-references and the show() method text."
+    },
+    {
+      "id": "s7",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/j8D3S2ZyozQ",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": "2026-04-28T07:53:10Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship by Stephen McGruer 2026-04-28; explicit note sent before Privacy/WP-Security/Adoption approvals due to M149 timeline; WebKit Positive (PR #1050, Marcos), Firefox N/A, Web-dev Positive; TAG N/A (brief TPAC 2025 discussion); WPT not fully automated (PR #59002 manual); WebView low risk (PaymentRequest disabled by default); Finch PaymentRequestSupportReportingAppError; milestones 149 desktop/android/webview; open design question on single OperationError vs generic error pass-through, TAG follow-up pending; LGTM1 Alex Russell, LGTM2 Rick Byers, LGTM3 Chris Harrelson (2026-04-29); Mozilla #23 and WebKit #655 filed on Mike Taylor's prompting"
+      ],
+      "limitations": "Thread content captured through 2026-04-29; any later messages not retrieved."
+    },
+    {
+      "id": "s8",
+      "url": "https://github.com/WebKit/standards-positions/issues/655",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2026-04-29T15:34:26Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Official WebKit position request filed 2026-04-29 by stephenmcgruer; resolved label 'position: support'; topic payments; venue W3C Web Payments WG; Marcos already involved in design+review"
+      ],
+      "limitations": "Closing comment text not captured; the 'support' label is definitive."
+    },
+    {
+      "id": "s9",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-02T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable release date 2026-06-02; feature listed under Web APIs with accurate description (AbortError vs OperationError, retry/fallback), tracking bug #473478138, ChromeStatus entry and spec link — confirms shipment"
+      ],
+      "limitations": "Release-notes summary only; not a per-page-usage or telemetry source."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/web-platform-tests/wpt/pull/59002",
+      "publisher": "web-platform-tests (WPT)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT PR titled 'Payment Handler: Add test for OperationError propagation' (merge log ~3 months before retrieval, consistent with early-2026); manual test, corroborating the intent thread's 'manual WPTs only' statement"
+      ],
+      "limitations": "Exact open/merge dates and diff not retrieved directly; title and recency confirmed via WPT merge-log search."
+    },
+    {
+      "id": "s11",
+      "url": "https://github.com/mozilla/standards-positions/issues/23",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position thread for the Payment Handler API where the author left a comment (per intent thread, comment 4345224553, 2026-04-29); Mozilla is structurally N/A because Firefox does not ship Payment Request/Payment Handler"
+      ],
+      "limitations": "Mozilla issue body/comment not read directly; relied on the intent thread's citation. Mozilla's non-shipment is independently corroborated by MDN (s12)."
+    },
+    {
+      "id": "s12",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/PaymentRequest",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "PaymentRequest is 'not Baseline because it does not work in some of the most widely-used browsers'; Firefox shows no support / disabled — confirming the parent API's non-Baseline status that bounds this feature's interoperability"
+      ],
+      "limitations": "MDN compat data observed via search snippet; live table not parsed cell-by-cell."
+    },
+    {
+      "id": "s13",
+      "url": "https://crbug.com/473478138",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug title '[Payment Handler] Payment apps are unable to indicate difference...'; description references identifying a spec-level error code for the 'app failed' case — the implementation work-item behind this feature"
+      ],
+      "limitations": "Bug body not read directly (login-gated); title/description captured via search snippet and the cached record."
+    }
+  ],
+  "successes": [
+    "Real, named-adopter (PayPal) developer problem validated in the open (w3c/payment-request#1040) before any implementation work, with a clean minimal fix that removes fragile vendor-specific error.message string matching.",
+    "Spec-first, multi-implementer design in the W3C Web Payments WG with an official WebKit 'support' position and WebKit actively co-implementing (PR #1050 / Marcos), plus explicit backwards-compatibility handling for the Web-Based Payment Handler (#428).",
+    "Accurate, on-time release communication: shipped in Chrome 149 (2026-06-02) on desktop/Android/WebView with a correct release-notes entry, complete ChromeStatus record, named Finch flag, and a transparent Intent to Ship.",
+    "Three Blink API-owner LGTMs and the formal WebKit/Mozilla position requests were completed within ~24h of the intent, despite the minor scope.",
+    "Implementation includes both Chrome source tests and a (manual) WPT for OperationError propagation (#59002)."
+  ],
+  "failures": [
+    "Process shortcut: the Intent to Ship was sent and approved before Privacy, Web-Platform Security, and Adoption sign-offs, explicitly citing the 'short timeline to M149'. For a payments/security-adjacent API this is a deviation from the standard gate sequence even if judged low-risk.",
+    "Test automation gap: the new error path is not covered by automated cross-browser WPT because Payment Request/Web-based Payment Handler lack the necessary chromedriver automation; only manual WPTs were possible, leaving no automated regression guard.",
+    "Outcome measurability: no use counter or adoption instrument is linked (webdx_usecounter_enum null), so post-ship success cannot be observed from Chrome telemetry, and 7 weeks after stable no adoption signal exists."
+  ],
+  "counterfactuals": [
+    "If Privacy/WP-Security/Adoption approvals had been completed before ship (per the normal gate), would any have surfaced a concern? The author expected none for an additive error value, but for a payments API the skipped gates are the kind of review a retrospective should not silently accept; running them would have removed the only process blemish at near-zero cost.",
+    "If Payment Request had chromedriver-based WPT automation, the feature could have shipped with fully automated cross-browser tests, materially strengthening the interoperability and implementation-quality dimensions instead of relying on manual tests + Chrome source tests.",
+    "If the design had chosen arbitrary developer-error pass-through (the option debated with Apple) instead of a single OperationError, it would have been more expressive for merchants but riskier to standardise and harder to keep interoperable; the conservative choice trades future flexibility for ship-ability, and the unresolved TAG follow-up suggests this trade-off may be revisited (with implications for the Digital Credentials API).",
+    "If a use counter had been added for the new OperationError outcome, post-ship adoption could be measured directly; its absence means the feature's real-world uptake is currently unknowable.",
+    "If the lifecycle had not been compressed to ~5 days (ChromeStatus creation → Intent to Ship), a distinct public Intent to Prototype and earlier dev feedback might have de-risked the design before the M149 deadline."
+  ],
+  "skillImprovements": [
+    "Add a phase rule that treats 'approvals skipped due to milestone timeline' as a flagged risk marker requiring an explicit recorded rationale (present here) AND a scheduled post-ship confirmation that the deferred reviews raised no issues — do not let it pass silently even for 'minor' changes.",
+    "Add an explicit WPT-automation-gap check: when a feature cannot be fully WPT-tested due to missing harness automation (e.g. Payment Request chromedriver), the phase packet should record this as a first-class interop/quality limitation and track the upstream automation bug, rather than only flipping 'wpt: false'.",
+    "For 'Chromium catches up' features driven by a named external adopter (PayPal here), add a skill prompt to capture a post-ship adoption confirmation from that adopter within a fixed window (e.g. 90 days), so developerValue can move from inferred to evidenced.",
+    "Add a Baseline-context rule: for any feature in the Payment Request / Payment Handler family, automatically surface that the parent API is non-Baseline (Firefox non-shipment) and score interoperability accordingly, so reviewers do not over-credit Chromium+WebKit agreement.",
+    "Add a 'measurability instrument' prompt at prepareToShip: if no use counter / adoption metric is linked, require the author to state how post-ship success will be observed, so outcome dimensions are not left permanently unscored.",
+    "Add an eval/regression case for fast-tracked minor changes (creation-to-Intent-to-Ship under ~2 weeks) to verify the compressed timeline still produced a distinct prototype/design record and did not skip external review."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-ship adoption/usage data: no use counter linked (webdx_usecounter_enum null); no HTTP Archive/BigQuery or Web Platform Dashboard signal available 7 weeks after stable; no confirmed PayPal/Google Pay/Stripe switch to OperationError.",
+      "Post-ship support/regression evidence: no crbug regressions, MDN/caniuse errata or community reports found in the ~7-week window; cannot be scored yet.",
+      "Full content and merge date of spec PR w3c/payment-request#1050 (reader timed out; corroborated but not directly read).",
+      "Outcome of the Privacy, Web-Platform Security and Adoption approvals that were deferred before the Intent to Ship.",
+      "Mozilla standards-positions issue #23 comment body (cited in the intent thread but not read directly).",
+      "Live chromestatus.com status (browser-only) to confirm post-stable release flags; relied on the cached record + official release notes instead."
+    ],
+    "reviewedAt": "2026-07-20T22:30:00Z"
+  }
+}

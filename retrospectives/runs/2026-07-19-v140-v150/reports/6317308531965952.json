@@ -95,7 +95,7 @@
     },
     "prepareToShip": {
       "status": "mixed",
-      "finding": "Intent to Ship posted 2025-10-31; rollout plan 'ship enabled for all users' across all six Blink platforms (desktop/Android/WebView/iOS = 144), Finch name MathMLOperatorRTLMirroring. Three API-owner LGTMs were given on 2025-11-05 (Chris Harrelson/Blink TL, Yoav Weiss, Philip Jägenstedt). MDN was updated. But the ship thread left Interoperability & Compatibility, WebView application risks, and Debuggability as 'No information provided', and the formal review bits remained incomplete/pending (see wideReview).",
+      "finding": "Intent to Ship posted 2025-10-31; rollout plan 'ship enabled for all users' across all six Blink platforms (desktop/Android/WebView/iOS = 144), Finch name MathMLOperatorRTLMirroring. Three API-owner LGTMs were given on 2025-11-05 (Chris Harrelson/Blink TL, Yoav Weiss, Philip Jägenstedt). MDN was updated. But the ship thread left Interoperability & Compatibility, WebView application risk, and Debuggability as 'No information provided', and the formal review bits remained incomplete/pending (see wideReview).",
       "evidenceIds": [
         "S1",
         "S9",
@@ -116,13 +116,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No defensible adoption evidence exists. The feature ships enabled-by-default but only activates when an author sets dir=\"rtl\" on math AND uses a math font carrying the rtlm feature (e.g. XITS); webdx_usecounter_enum is null in the record (no dedicated use counter for this sub-behavior), 'Web developers: No signals' throughout, and no partner/case-study evidence. General MathML momentum exists (Wikipedia transitioning to native MathML) but is not specific to RTL mirroring. Adoption cannot be scored from absence of signals.",
+      "finding": "No exact feature-level adoption signal exists, but a broader family counter is available. webdxUseCounterEnum is null for this feature, so RTL-operator-mirroring is not instrumented directly; the nearest proxy is the WebDX Mathml WebFeature counter (bucket 90), a 'declared-family' counter (mappingStatus web-feature-family-counter) that fires on any MathML usage. That family counter measured 0.00439008% of measured Chrome HTTP/HTTPS page loads at the M144 enabled-by-default stable (2026-01-13), climbed to a peak of 0.01514492% on 2026-02-26 (~6 weeks post-ship), and was 0.00304646% at the latest point (2026-07-21); at the M140 dev-trial stable (2025-09-02) it was 0.00300768%, with day90 (2025-12-01) at 0.0080926% and day180 (2026-03-01) at 0.00478925%. Because bucket 90 is a family counter it cannot be read as this feature's adoption: activation still requires dir=\"rtl\" on <math> plus a rtlm-capable math font (e.g. XITS), and default Android ships no bundled math font. 'Web developers: No signals' throughout, no partner/case-study, and no predeclared adoption target. With no exact feature counter and no threshold or corroborating production/retention evidence, adoption remains unscored and the family trend is described, not graded.",
       "evidenceIds": [
         "S1",
         "S9",
-        "S15"
+        "S15",
+        "S20"
       ],
-      "limitations": "No usage data, no attributable production deployment, no partner evidence. 'Enabled by default' must not be read as adoption given the narrow activation surface."
+      "limitations": "The Mathml family counter (bucket 90) is broader than this feature and does not measure RTL operator mirroring specifically; webdxUseCounterEnum is null. No unique-site, production-deployment, retention, task-success, user-benefit, or target evidence exists. 'Enabled by default' must not be read as feature adoption given the narrow activation surface. Telemetry collected 2026-07-22 (S20), after the 2026-07-19 corpus cutoff; informs the adoption outcome only, never the intake/review/ship decisions."
     },
     "support": {
       "status": "unknown",
@@ -161,12 +162,13 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No defensible adoption evidence: no use counter, no partner/case-study, 'Web developers: No signals', and activation requires dir=\"rtl\" + a rtlm font. Scored unscored, not success-from-shipment.",
+      "finding": "No exact adoption measurement exists for this feature. webdxUseCounterEnum is null (no dedicated counter), so the only available signal is the broader WebDX Mathml family counter (bucket 90), which fires on any MathML usage rather than specifically on RTL operator mirroring (which additionally requires dir=rtl + a rtlm font). That family counter measured 0.00439008% of measured Chrome HTTP/HTTPS page loads at M144 ship (2026-01-13), rose to a peak of 0.01514492% on 2026-02-26 (M144 day30 was 0.00696483% on 2026-02-12; day90 was 0.00671318% on 2026-04-13), then returned to 0.00304646% by 2026-07-21 (day180 after ship was 0.00240496% on 2026-07-12). The family trend is non-monotonic and small in absolute terms, and it is not this feature's trend. With no exact counter, no predeclared target, and no corroborating production/retention evidence, the outcome stays unscored; the measured family level/trend is described rather than scored. Scored unscored, not success-from-shipment.",
       "evidenceIds": [
         "S1",
-        "S9"
+        "S9",
+        "S20"
       ],
-      "limitations": "Absence of signals is not evidence of success or failure."
+      "limitations": "Family counter (bucket 90) is broader than the feature and is not exact feature adoption; no dedicated counter (webdxUseCounterEnum null). No unique-site, production, retention, or target evidence. Absence of an exact signal is not evidence of success or failure; 'mixed' is not used as a substitute for an absent threshold."
     },
     "interoperability": {
       "status": "success",
@@ -213,16 +215,17 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A strong interoperability success (Chrome+Firefox shipped near-simultaneously against an amended spec with WPT coverage, part of funded Interop 2025 work) implementing a correct, well-scoped fix to a real (if narrow) RTL-math correctness problem, with good implementer-driven communication. Offset by: no validated developer demand, no adoption/usage evidence, incomplete Chrome formal review process at ship (privacy/security/enterprise/debuggability/testing bits not requested and pending approaching ship), a thin ship evidence ledger, and conditional/narrow end-user activation. The mixed dimensions (demand, adoption, review process, support) are not hidden by the interop success.",
+      "finding": "A strong interoperability success (Chrome+Firefox shipped near-simultaneously against an amended spec with WPT coverage, part of funded Interop 2025 work) implementing a correct, well-scoped fix to a real (if narrow) RTL-math correctness problem, with good implementer-driven communication. Offset by: no validated developer demand, no exact feature-level adoption measurement (only a broader Mathml family counter, which is not this feature's adoption), incomplete Chrome formal review process at ship (privacy/security/enterprise/debuggability/testing bits not requested and pending approaching ship), a thin ship evidence ledger, and conditional/narrow end-user activation. The mixed or unevidenced dimensions (demand, adoption, review process, support) are not hidden by the interop success.",
       "evidenceIds": [
         "S1",
         "S5",
         "S9",
         "S11",
         "S15",
-        "S17"
+        "S17",
+        "S20"
       ],
-      "limitations": "Overall reflects the weighted mix above; adoption and support remain genuinely unevidenced."
+      "limitations": "Overall reflects the weighted mix above; feature-level adoption remains unscored (only a broader family counter exists) and support remains genuinely unevidenced."
     }
   },
   "sources": [
@@ -453,6 +456,21 @@
         "Igalia commissioned by Sovereign Tech Fund for Interop 2025 implementation/interoperability work including MathML"
       ],
       "limitations": "Summary via search snippet; positions the launch within a funded cross-engine program."
+    },
+    {
+      "id": "S20",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=90",
+      "publisher": "Chrome Platform Status (WebFeature usage timeline; bucket_id 90 = Mathml)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Cached Mathml WebFeature counter (bucket 90) timeline, mappingStatus web-feature-family-counter / confidence declared-family (derived from web-features-mappings chrome-use-counters, normalizing web_feature mathml to webfeature counter Mathml): 574 daily points from first-observed-positive 2024-08-01 (0.003194%) to latest 2026-07-21 (0.00304646%); peak 0.01514492% on 2026-02-26.",
+        "Launch-relative checkpoints for the M140 dev-trial stable (2025-09-02): atStable 0.00300768%, day30 (2025-10-02) 0.00435373%, day90 (2025-12-01) 0.0080926%, day180 (2026-03-01) 0.00478925%.",
+        "Launch-relative checkpoints for the M144 enabled-by-default stable (2026-01-13): atStable 0.00439008%, day30 (2026-02-12) 0.00696483%, day90 (2026-04-13) 0.00671318%, day180 (2026-07-12) 0.00240496%.",
+        "Interpretation per cached method: numerator = Chrome page loads on which the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads across official channels and platforms; not equivalent to unique developers, unique sites, unique users, successful task completion, developer satisfaction, or end-user benefit."
+      ],
+      "limitations": "Family/broader counter: Mathml (bucket 90) is the WebDX family counter for the whole mathml WebFeature, NOT an exact counter for this RTL-operator-mirroring feature; webdxUseCounterEnum is null for this feature, so the figures reflect any MathML usage and not this sub-behavior, which additionally requires dir=rtl on <math> plus a rtlm-capable math font (e.g. XITS). UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented; zero/missing/delayed points are not proof of zero real-world use, and counter instrumentation may include detection/probing. Timeline cached 2026-07-22, after the 2026-07-19 evidence cutoff of the rest of the corpus; it informs the adoption outcome only and must not be treated as known during intake/review/ship decisions."
     }
   ],
   "successes": [
@@ -465,7 +483,7 @@
   "failures": [
     "Chrome formal review-process gap: the Privacy, Security, Enterprise, Debuggability, and Testing review bits were never requested in the chromestatus entry at Intent to Ship; API owner Mike Taylor had to prompt for them on 2025-11-04, and the cached record (accurate_as_of 2026-01-05) still showed security_review_status and privacy_review_status 'Pending' eight days before the 2026-01-13 ship.",
     "Thin Intent-to-Ship evidence ledger: Interoperability & Compatibility, WebView application risks, and Debuggability were all left as 'No information provided' in the ship thread.",
-    "No validated developer demand or adoption measurement: 'Web developers: No signals' at prototype, dev-trial, and ship; no dedicated use counter (webdx_usecounter_enum null), no partner evidence, no case study.",
+    "No validated developer demand or exact feature adoption measurement: 'Web developers: No signals' at prototype, dev-trial, and ship; no dedicated use counter (webdxUseCounterEnum null), so this sub-behavior is uninstrumented and only a broader Mathml family counter (bucket 90) is available; no partner evidence, no case study.",
     "Developer-trials transition packet (cohort, methodology, task completion, attributable external signals) was effectively not exercised; participation reduced to a single Chromium-internal question."
   ],
   "counterfactuals": [
@@ -473,13 +491,13 @@
     "If the review bits had been requested at Intent to Ship, the security/privacy 'Pending' status approaching ship could have been avoided — a process gap independent of the feature's technical merit.",
     "If WebKit had shipped glyph-level mirroring concurrently, full three-engine parity (and Baseline-wide availability) would already hold; as of the cutoff WebKit remains the laggard, so the interop story is materially incomplete.",
     "If a structured developer cohort or OT had been run, the persistent 'Web developers: No signals' might have been replaced with attributable Arabic-math author feedback — though for an additive, WPT-covered, Firefox-matching correctness fix it probably would not have changed the ship decision.",
-    "Had adoption been instrumented against the true activation surface (dir=rtl math + rtlm-capable font), 'No signals' could have been interpreted correctly instead of being ambiguous between no-demand and no-measurement."
+    "Had adoption been instrumented against the true activation surface (dir=rtl math + rtlm-capable font), the ambiguous 'No signals' could have been resolved; the available broader Mathml family counter (bucket 90, ~0.0030–0.0151% of measured page loads) moves the signal from total absence to a family-level proxy but still cannot isolate this sub-behavior, so the no-demand vs no-measurement ambiguity persists at the feature level."
   ],
   "skillImprovements": [
     "Add a prepareToShip / launch-retrospective checkpoint that fails the phase to 'partial' when Privacy/Security/Enterprise/Debuggability/Testing review bits are not 'Requested' or not 'Completed' at Intent to Ship and remain pending within N weeks of the target ship date; require an explicit owner and resolution date before counting the phase complete. Directly targets the Mike-Taylor-had-to-ask pattern observed here.",
     "Add a rule for 'Chromium catches up' + fully-WPT-tested + additive rendering features: require an explicitly documented 'why no Origin Trial' rationale (or a recorded not-relevant decision) instead of leaving 'Goals for experimentation' blank, so the experiment-phase skip is a decision, not an absence.",
     "Add an evidence-source handling rule for retrospective jobs: treat Mozilla Bugzilla and Chromium Buganizer (issues.chromium.org) as frequently inaccessible to automated readers (sign-in walls, timeouts); require the job to record the attempted URL plus the failure mode and fall back to corroborating evidence (release notes, intent threads) rather than blocking or inventing.",
-    "Add an adoption-evidence expectation for enabled-by-default sub-behaviors: even when there is no separate use counter, capture the activation conditions (here: dir=rtl + rtlm-capable math font) and the nearest usage proxy, and require the retrospective to interpret 'No signals' against that true activation surface rather than treating absence as neutral.",
+    "Add an adoption-evidence expectation for enabled-by-default sub-behaviors: even when there is no separate use counter, capture the activation conditions (here: dir=rtl + rtlm-capable math font) and the nearest usage proxy (this revision captured the broader Mathml family counter, bucket 90), and require the retrospective to interpret that proxy strictly as a family-level share of measured page loads — not this feature's adoption — against the true activation surface, rather than treating absence or a broader-family signal as a feature-level verdict.",
     "Add a counterfactual-coverage rule: record funding/initiative context (e.g. Sovereign Tech Fund / Interop 2025) and spec-editor involvement as material explanatory variables for cross-engine interop outcomes, so retrospectives distinguish funded coordinated work from organic single-engine launches and do not over-credit the shipping engine.",
     "Add a launch-evidence-ledger lint: flag Intent-to-Ship threads where mandatory fields (Interoperability/Compatibility, WebView application risks, Debuggability) are 'No information provided', so the prepareToShip packet is completed before LGTM."
   ],
@@ -490,10 +508,10 @@
       "Mozilla Bugzilla bugs 945183 and 1994172 full comment/resolution history: repeatedly timed out; outcomes corroborated only via Firefox 146 release notes (S11) and intent threads.",
       "wpt.fyi cross-engine pass/fail matrix for the two mirroring tests: dashboard is JavaScript-rendered and returned no usable content; per-engine conformance not directly verified.",
       "w3c/mathml-core issue #67 full text and resolution: page timed out; only a search snippet was captured.",
-      "Post-ship adoption/usage evidence: no use counter, no partner/case-study, no attributable production-deployment evidence found; adoption dimension scored unscored.",
+      "Feature-level adoption: no dedicated use counter (webdxUseCounterEnum null); only a broader Mathml family counter (bucket 90, S20) is available, which does not isolate RTL operator mirroring (which requires dir=rtl + a rtlm-capable font). No unique-site, partner/case-study, production-deployment, retention, or target evidence exists; adoption dimension remains unscored and the family-level level/trend is described from cached telemetry rather than graded.",
       "Post-ship support/friction evidence: no public support-forum, crbug, or telemetry evidence located; support dimension scored unscored.",
       "Exact resolution date of the Chrome security/privacy/enterprise/debuggability/testing review bits relative to the 2026-01-13 ship: not verifiable from accessible sources (cached record still 'Pending' on 2026-01-05)."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

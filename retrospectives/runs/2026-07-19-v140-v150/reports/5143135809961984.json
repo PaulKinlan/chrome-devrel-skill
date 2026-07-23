@@ -19,7 +19,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T13:47:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:58Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -98,12 +98,13 @@
     },
     "adoption": {
       "status": "not-relevant",
-      "finding": "There is no adoption funnel for this change: it is an automatic behavior change to the existing View Transitions API with no feature-detection, opt-in, or new API surface for developers to adopt. The adjacent 2025 adoption context (same-document VT approaching Baseline Newly available; React core <ViewTransition> moving to canary) raises the profile of any VT behavior change but is not adoption of this specific timing fix.",
+      "finding": "There is no adoption funnel for this change: it is an automatic behavior change to the existing View Transitions API with no feature-detection, opt-in, or new API surface for developers to adopt (S1). The only mapped public counter is the broader WebDX family counter ViewTransitions (bucket_id 2; mappingStatus 'web-feature-family-counter'), which cannot be attributed to this timing fix; as family-level context it stood at 0.231316% of measured Chrome HTTP/HTTPS page loads at Chrome 140 stable (2025-09-02; day_percentage 0.00231316) and rose to 0.610281% by day 180 (2026-03-01; day_percentage 0.00610281), peaking at 0.758282% on 2026-04-04 (S12). The adjacent 2025 adoption context (same-document VT approaching Baseline Newly available; React core <ViewTransition> moving to canary) raises the profile of any VT behavior change but is not adoption of this specific timing fix (S8).",
       "evidenceIds": [
         "S1",
-        "S8"
+        "S8",
+        "S12"
       ],
-      "limitations": "Not-relevant because there is nothing to opt into; production impact is instead captured under implementationQuality/support via the reported regression."
+      "limitations": "No exact feature-level adoption counter maps to this fix — only the ViewTransitions WebDX family counter, which reflects overall View Transitions usage and cannot be attributed to the change; no unique-site, production, retention, or predeclared-target evidence exists. Not-relevant reflects the absence of an opt-in/funnel mechanism, not the absence of any usage data."
     },
     "support": {
       "status": "partial",
@@ -139,17 +140,19 @@
       "finding": "End users gain smoother end-of-transition visuals for the styles-transfer pattern (less flicker), but the same cleanup deferral produced a new transient glitch — removed items reappearing for one frame on Chrome 140 — which is a directly user-visible regression for the removal pattern. Net end-user impact is therefore mixed rather than purely positive.",
       "evidenceIds": [
         "S8",
-        "S9"
+        "S9",
+        "S12"
       ],
-      "limitations": "No telemetry or user-impact measurement was found; the regression's population impact is unknown."
+      "limitations": "No end-user-impact or regression-population measurement exists for this fix; the ViewTransitions family counter (S12) provides only rough scale-of-exposure context (family usage ~0.23-0.76% of measured Chrome page loads across the observation window) and cannot measure the fix's benefit or the one-frame regression's population impact."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "Not scorable as adoption: there is no opt-in, feature flag, or new API surface; the behavior applies automatically wherever View Transitions run. Measuring 'adoption' would conflate with general View Transitions usage, which is not attributable to this fix.",
+      "status": "unscored",
+      "finding": "Not directly scorable as adoption: there is no opt-in, feature flag, or new API surface, and no exact feature-level counter maps to this timing fix (S1). The only mapped public counter is the broader WebDX family counter ViewTransitions (bucket_id 2; mappingStatus 'web-feature-family-counter'; declared-family confidence), which fires wherever any View Transitions API is used and therefore cannot be attributed to this change (S12). As context for the surrounding family, the ViewTransitions counter stood at 0.231316% of measured Chrome HTTP/HTTPS page loads at Chrome 140 stable (2025-09-02; day_percentage 0.00231316), dipped to 0.165856% at day 30 (2025-10-02; day_percentage 0.00165856), then rose to 0.523687% at day 90 (2025-12-01; day_percentage 0.00523687) and 0.610281% at day 180 (2026-03-01; day_percentage 0.00610281), peaking at 0.758282% on 2026-04-04 (day_percentage 0.00758282) and most recently 0.527740% on 2026-07-20 (day_percentage 0.0052774) (S12). These launch-relative checkpoints describe the family's measured level and trend, not adoption of the finished-promise timing change; with no exact counter, no corroborating production/retention evidence, and no predeclared target to score against, the adoption outcome is unscored.",
       "evidenceIds": [
-        "S1"
+        "S1",
+        "S12"
       ],
-      "limitations": "No usage counter exists for this change; the relevant production-impact signal is the post-ship regression, scored under support/implementationQuality."
+      "limitations": "Counter is a WebDX family counter (view-transitions), not exact for this timing fix, so levels and trends cannot be attributed to the change; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence exists. Family usage is modest and grew after launch, but that growth cannot be credited to this fix, and low/high family usage is not by itself a success or failure verdict."
     },
     "interoperability": {
       "status": "mixed",
@@ -195,14 +198,15 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "Overall this is a well-motivated, well-reviewed, cleanly-communicated fix to a genuine developer papercut, backed by same-day Firefox/WebKit agreement and a formal CSSWG resolution, that shipped on schedule in Chrome 140. It is not an unqualified success: Chrome shipped ahead of the finalized spec text edit, a post-ship regression (removed elements reappearing for a frame) shows the change was validated mainly against its motivating pattern, and cross-engine implementation (notably Safari) and the regression's resolution remain unconfirmed. Net: mixed, leaning positive on intent and communication, with real implementation/interop caveats.",
+      "finding": "Overall this is a well-motivated, well-reviewed, cleanly-communicated fix to a genuine developer papercut, backed by same-day Firefox/WebKit agreement and a formal CSSWG resolution, that shipped on schedule in Chrome 140. It is not an unqualified success: Chrome shipped ahead of the finalized spec text edit, a post-ship regression (removed elements reappearing for a frame) shows the change was validated mainly against its motivating pattern, and cross-engine implementation (notably Safari) and the regression's resolution remain unconfirmed. Adoption is unscored: the only mapped counter is the broader ViewTransitions family counter (not attributable to this fix) and no predeclared target exists (S12). Net: mixed, leaning positive on intent and communication, with real implementation/interop caveats.",
       "evidenceIds": [
         "S1",
         "S4",
         "S5",
         "S7",
         "S8",
-        "S9"
+        "S9",
+        "S12"
       ],
       "limitations": "Three material unknowns prevent a 'success' or 'complete' verdict: (1) spec text edit merge status (#12957), (2) Safari implementation status, (3) regression resolution status on bug 430018991."
     }
@@ -360,6 +364,21 @@
         "MDN ViewTransition.finished describes the promise generically ('fulfills once the transition animation is finished') with no note about the Chrome 140 timing/cleanup-deferral change"
       ],
       "limitations": "Single-page spot check; does not rule out updates elsewhere in MDN's View Transitions material."
+    },
+    {
+      "id": "S12",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=2",
+      "publisher": "Chrome Platform Status (WebFeature popularity timeline, bucket_id 2 = ViewTransitions family counter)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:58Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX family counter ViewTransitions (bucket_id 2), mappingStatus 'web-feature-family-counter' (declared-family confidence); per web-features-mappings chrome-use-counters, ChromeStatus web_feature 'view-transitions' normalizes to this counter. It covers the broader View Transitions API family and is NOT an exact feature-level counter for the finished-promise timing change.",
+        "Launch-relative checkpoints for the Chrome 140 launch (stable 2025-09-02), as share of measured Chrome HTTP/HTTPS page loads where the counter fired: atStable 0.231316% (day_percentage 0.00231316), day30 2025-10-02 0.165856% (0.00165856), day90 2025-12-01 0.523687% (0.00523687), day180 2026-03-01 0.610281% (0.00610281).",
+        "Family counter trajectory: first observed positive 2024-06-10 at 0.0051% (0.000051); peaked 2026-04-04 at 0.758282% (0.00758282); latest 2026-07-20 at 0.527740% (0.0052774).",
+        "Interpretation: numerator = Chrome page loads where the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads; not equivalent to unique developers, unique sites, unique users, successful task completion, developer satisfaction, or end-user benefit."
+      ],
+      "limitations": "Family counter, not an exact feature-level counter for this timing fix — values reflect overall View Transitions usage and cannot be attributed to the finished-promise change; counter instrumentation may include detection/probing depending on the counter implementation, and UMA reflects participating Chrome clients (enterprise and opt-out populations may be underrepresented). No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence accompanies this counter."
     }
   ],
   "successes": [
@@ -394,8 +413,9 @@
       "Full Buganizer comment thread for bug 430018991, including the post-ship 'items reappear for a frame' regression's author, date, severity, and resolution/fix-CL status — not retrievable via the web reader; only a search-indexed snippet was available. This materially limits the support and implementationQuality scores.",
       "Whether the css-view-transitions-1 normative spec text edit (GitHub issue #12957 / the 'pending-done' algorithm) is merged; the CSSWG issue is still labeled 'Needs Edits'/Open and #12957 could not be retrieved (GitHub reader and API errors). This limits the interoperability and standards-maturity assessment.",
       "Whether Safari/WebKit shipped the matching finished-promise timing change; nt1m requested the spec edit to implement (2025-07-18) but deferred on 2025-10-02, and no WebKit shipping evidence was found via bounded search.",
-      "Gerrit review details for CL 6735828 (exact test files, reviewer objections) — page is JS-rendered and not extractable."
+      "Gerrit review details for CL 6735828 (exact test files, reviewer objections) — page is JS-rendered and not extractable.",
+      "No exact feature-level adoption counter for the finished-promise timing change exists — only the broader ViewTransitions WebDX family counter (S12), which cannot be attributed to this fix; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence exists. Adoption is therefore described (family-level usage context) but unscored."
     ],
-    "reviewedAt": "2026-07-22T13:47:00Z"
+    "reviewedAt": "2026-07-22T18:06:58Z"
   }
 }

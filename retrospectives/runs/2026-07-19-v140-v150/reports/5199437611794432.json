@@ -108,14 +108,15 @@
       "limitations": "The method-name drift (setImmediateData -> setImmediates) is inferred from the disagreement between the pre-ship record/explainer and the shipped blog/tutorial; the spec PR diff that would show the rename was not retrievable."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "No durable production-adoption evidence exists at the evidence cutoff (~19 days after stable ship). Signals of ecosystem interest but not integration: PlayCanvas opened engine issue #8917 to 'investigate support' for immediates, explicitly noting it 'shipped in Chrome 149/150'. No immediates-specific integration in Babylon.js, Three.js, ONNX Runtime, or Transformers.js was found. WebGPUFundamentals provides education enabling adoption. No Chrome use-counter/HTTP Archive/Baseline data for immediates was located.",
+      "status": "partial",
+      "finding": "A WebDX WebFeature-family use counter for 'Webgpu' (bucket 290) is the only Chrome usage telemetry mapped to this feature; it is a declared-family counter covering all WebGPU usage, NOT an immediates-specific counter, so immediates adoption is not directly measured. Observed share of measured Chrome HTTP/HTTPS page loads where the Webgpu counter fired: 0.01958135% at Chrome 150 stable (2026-06-30, atStable checkpoint), rising to 0.02295231% on 2026-07-20 (peak 0.02405413% on 2026-07-18); first positive observation 0.000304% on 2025-02-20; day30/day90/day180 launch checkpoints are null (~20 days post-stable). No immediates-specific Chrome use counter, HTTP Archive/Baseline, or confirmed production integration exists at the cutoff; ecosystem signals remain interest-stage (PlayCanvas engine issue #8917 to 'investigate support') plus educational material (WebGPUFundamentals).",
       "evidenceIds": [
+        "s15",
         "s10",
         "s9",
         "s8"
       ],
-      "limitations": "Too recent for usage/adoption metrics; the PlayCanvas issue page was not fully retrieved (snippet only), and no framework has confirmed shipping immediates support."
+      "limitations": "The only mapped counter is a WebDX family counter for Webgpu — broader than this launch and not exact immediates adoption. Values are the share of measured Chrome page loads where the counter fired at least once, not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit. No immediates-specific counter exists; day30/90/180 checkpoints are null at the cutoff; no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence."
     },
     "support": {
       "status": "unknown",
@@ -156,12 +157,13 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No durable production adoption at the cutoff. Only interest-stage ecosystem signal (PlayCanvas investigation) and educational material exist. Shipped ~19 days before the cutoff; too early for use counters or framework integration.",
+      "finding": "No predeclared adoption target exists in the cached record, and the only mapped Chrome usage telemetry is a WebDX WebFeature-family counter for 'Webgpu' (bucket 290) that measures all WebGPU usage, not immediates specifically; immediates-specific adoption is therefore unmeasured and the outcome is not scored against an absent threshold. For context, the family counter shows WebGPU at 0.01958135% of measured Chrome page loads at Chrome 150 stable (2026-06-30), 0.02295231% on 2026-07-20, peak 0.02405413% on 2026-07-18 (first positive 0.000304% on 2025-02-20); day30/90/180 checkpoints are not yet available. Production/retention evidence remains interest-stage only (PlayCanvas investigation) plus educational material; 'mixed' would substitute a threshold that was never declared.",
       "evidenceIds": [
+        "s15",
         "s10",
         "s9"
       ],
-      "limitations": "Adoption cannot be scored until frameworks integrate and usage data accumulates; do not infer adoption from the ship announcement."
+      "limitations": "No predeclared adoption target exists, and the only mapped counter is a WebGPU family counter (not immediates); with no immediates-specific production, retention, or unique-site evidence, the outcome stays unscored. Counter values are page-load share, not developers/sites/users/tasks/satisfaction/benefit; 'mixed' is not used as a substitute for an absent threshold."
     },
     "interoperability": {
       "status": "mixed",
@@ -209,7 +211,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-grounded, cleanly-communicated ship of a genuinely useful capability with the strongest possible cross-engine spec signal — but a very recent Chrome-only runtime launch with no adoption, usage, user-impact, or support evidence, a registry-of-record that is stale and inconsistent with shipped docs (method name, release status, tag review, samples), and no developer-trial or origin-trial evidence trail for the new API surface. Mixed dimensions are not hidden by the strong design and comms.",
+      "finding": "A well-grounded, cleanly-communicated ship of a genuinely useful capability with the strongest possible cross-engine spec signal — but a very recent Chrome-only runtime launch whose only mapped Chrome usage telemetry is a broader WebGPU family counter (no immediates-specific usage/adoption, user-impact, or support evidence), a registry-of-record that is stale and inconsistent with shipped docs (method name, release status, tag review, samples), and no developer-trial or origin-trial evidence trail for the new API surface. Mixed dimensions are not hidden by the strong design and comms.",
       "evidenceIds": [
         "s1",
         "s2",
@@ -218,7 +220,8 @@
         "s8",
         "s9",
         "s10",
-        "s11"
+        "s11",
+        "s15"
       ],
       "limitations": "Overall is constrained by recency; several dimensions are unscored rather than negative."
     }
@@ -407,6 +410,21 @@
         "Safari/WebKit position convention that spec approval is a positive signal (referenced via WebKit standards-positions #294 in the ChromeStatus record)"
       ],
       "limitations": "Wiki retrieved as a search snippet only; does not itemize immediates per engine."
+    },
+    {
+      "id": "s15",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=290",
+      "publisher": "Chrome Platform Status (UseCounter timeline, WebDX WebFeature family)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:22.611Z",
+      "sourceType": "usage",
+      "supports": [
+        "Mapped Chrome usage telemetry for this feature is a WebDX WebFeature-family counter 'Webgpu' (bucket 290); scope web-feature-family, confidence declared-family (ChromeStatus web_feature 'webgpu' normalizes to counter Webgpu via web-features-mappings chrome-use-counters).",
+        "Share of measured Chrome HTTP/HTTPS page loads where the Webgpu counter fired: 0.01958135% at Chrome 150 stable (2026-06-30, atStable checkpoint); 0.02295231% on 2026-07-20 (latest); peak 0.02405413% on 2026-07-18; first positive observation 0.000304% on 2025-02-20.",
+        "Launch checkpoints for milestone 150 (Enabled by default, stable 2026-06-30): atStable 0.01958135%; day30, day90, and day180 are null (not yet available, ~20 days post-stable).",
+        "Timeline series: 515 points; timelineSha256 6cf9777eb01b8bab93b638453a957497beb66e8737241a8c845f70221798f7f9."
+      ],
+      "limitations": "Family counter measures all WebGPU usage, NOT immediates specifically; it is broader than this ChromeStatus launch and is not exact immediates adoption. Values are the share of measured Chrome page loads where the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. day30/day90/day180 checkpoints are null at the cutoff. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; zero/missing/delayed points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -421,7 +439,7 @@
     "No public developer trial or origin trial was run for this new WGSL address space + encoder method; there is no attributable developer-evidence trail (cohort, friction, feedback) for the API surface before broad ship.",
     "TAG review status remained 'Pending' in the record at ship; the wide-review packet was not fully closed.",
     "Immediates shipped Chrome-only at the runtime layer; cross-engine runtime availability (Firefox/wgpu, Safari/WebKit) is unevidenced, so Baseline/interoperability is not yet established despite the positive spec positions.",
-    "No usage, adoption, user-impact, or support evidence exists at the cutoff because the feature is only ~19 days past stable."
+    "No immediates-specific usage, adoption, user-impact, or support evidence exists at the cutoff (~20 days past stable). A broader WebGPU family use counter is now cached (Webgpu bucket 290: 0.01958135% at Chrome 150 stable, 0.02295231% on 2026-07-20), but it measures all WebGPU usage, not immediates, and there is no immediates-specific counter, confirmed production integration, or measured user impact."
   ],
   "counterfactuals": [
     "A short flagged developer trial or small origin trial would have produced an attributable developer-evidence ledger and could have surfaced the setImmediateData->setImmediates naming drift and per-draw ergonomics feedback before broad ship.",
@@ -444,11 +462,11 @@
       "Chromium bug 366291600 content (reader 500) — implementation completeness, landed CLs, CTS linkage, regressions unverified.",
       "Spec PR #5423 diff (reader 500/timeout) — including the apparent setImmediateData->setImmediates rename.",
       "CTS immediates coverage (gpuweb/cts) — breadth and pass state not directly verified.",
-      "Post-ship adoption/usage data and framework integration — too recent (~19 days post-ship); only interest-stage signals exist.",
+      "Immediates-specific usage/adoption evidence and framework integration — no immediates-specific Chrome use counter exists; the only mapped counter is the broader WebGPU family counter (Webgpu bucket 290, now cited as s15). No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence exists at ~20 days post-stable; only interest-stage signals (PlayCanvas investigation) exist.",
       "Cross-engine runtime implementation/ship of immediates in Firefox (wgpu) and Safari (WebKit) — only spec-level Positive positions evidenced; Baseline not established.",
       "Post-ship support issues / regressions specific to immediates — none located; may not yet exist.",
       "Concrete measured performance/user-impact outcomes — none evidenced."
     ],
-    "reviewedAt": "2026-07-20T06:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:22.611Z"
   }
 }

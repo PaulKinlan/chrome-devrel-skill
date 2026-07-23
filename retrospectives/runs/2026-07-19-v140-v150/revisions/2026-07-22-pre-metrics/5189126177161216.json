@@ -1,0 +1,500 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5189126177161216,
+    "name": "CSS scroll-target-group property",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5189126177161216",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "featureType": "New or changed feature",
+    "specUrl": "https://drafts.csswg.org/css-overflow-5/#scroll-target-group",
+    "specMaturity": "Editor's Draft / Working Draft (CSS Overflow Module Level 5)",
+    "flagName": "CSSScrollTargetGroup",
+    "owners": [
+      "sakhapov@chromium.org"
+    ],
+    "specMentor": "flackr@google.com",
+    "created": "2025-06-16",
+    "note": "ChromeStatus status field reads 'Proposed' and is_released=false even though the feature shipped enabled by default in Chrome 140 (corroborated by MDN, Chrome DevRel, independent community, and Chrome release notes). The manifest launch event (M140 Enabled by default) is correct; the ChromeStatus status field is stale."
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5189126177161216",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "ChromeStatus entry created 2025-06-16 by sakhapov@chromium.org as a sub-feature of the broader CSS Overflow 5 'Carousels' effort (parent TAG review w3ctag/design-reviews#1037 opened 2025-01-09 by flackr). The motivating problem is real and pre-validated: carousels were listed among the top missing HTML/CSS elements in the 2023 State of HTML survey, and the Scrollspy/TOC pattern normally requires custom JavaScript. However the ChromeStatus record was created the SAME day as the Intent to Ship and the Mozilla/WebKit position requests, indicating a compressed intake for this specific property with no dedicated explainer (explainer_links empty).",
+      "evidenceIds": [
+        "src-cs-cache",
+        "src-tag"
+      ],
+      "limitations": "No dedicated scroll-target-group explainer on ChromeStatus; relies on the parent carousel-explainer.md referenced in the TAG review."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubation occurred primarily inside the parent CSS Overflow 5 / Carousels proposal in CSSWG (editors Florian Rivoal/Bloomberg, fantasai/Apple, Robert Flack/Google). For scroll-target-group specifically the explainer_links field is empty, the Mozilla and WebKit position issues both recorded 'Explainer URL: No response', and the parent TAG review (#1037) is still open and labeled 'Progress: pending external feedback'. Incubation for this single property is therefore thin and incomplete.",
+      "evidenceIds": [
+        "src-cs-cache",
+        "src-tag",
+        "src-mozilla",
+        "src-webkit",
+        "src-spec"
+      ],
+      "limitations": "No scroll-target-group-specific explainer or design-decision log was found; the property inherits design from the larger carousels effort."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation was underway by Jan 2025 per the parent TAG review ('Chromium comments: Positive, implementation is underway'), tracked under flag CSSScrollTargetGroup and review CL chromium-review/6607668. A CodePen demo was provided during the intent thread. But no public prototype friction logs, integration spikes, or representative samples are recorded (sample_links empty, devtrial_instructions null).",
+      "evidenceIds": [
+        "src-cs-cache",
+        "src-tag",
+        "src-intent"
+      ],
+      "limitations": "No documented prototype friction evidence or compatibility-matrix artifacts found."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "Developer trial ran on desktop and Android in Chrome 138 (confirmed by the stages data and the Intent to Ship text 'DevTrial on desktop 138, DevTrial on Android 138'). However there is no devtrial_instructions, no documented cohort/recruitment, and no published trial findings or feedback themes; the trial appears to have existed as a flag window without an evidenced developer-feedback process.",
+      "evidenceIds": [
+        "src-intent",
+        "src-cs-cache"
+      ],
+      "limitations": "No attributable developer-trial cohort, task completion, or feedback artifacts were found."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Wide review is materially incomplete. TAG review was marked 'Not applicable' for this sub-feature, deferring to the parent carousels review (#1037) which is STILL OPEN with 'pending external feedback' and a11y-tracker labels. Mozilla (#1251) is 'Needs proposed position' (no position), WebKit (#514) has no position and no assignee, and Web developers are recorded as 'No signals'. Security and privacy review states are 'Pending'. The Mozilla and WebKit standards-position issues were filed the SAME day (2025-06-16) as the Intent to Ship. The spec is an Editor's Draft. This is the weakest phase: the feature shipped with no other-engine signals and an open parent design review.",
+      "evidenceIds": [
+        "src-cs-cache",
+        "src-tag",
+        "src-mozilla",
+        "src-webkit",
+        "src-spec"
+      ],
+      "limitations": "Could not retrieve full comment threads on the Mozilla/WebKit/TAG issues (only the top-level state), so additional nuance in those threads is unobserved."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was conducted. The origin-trial stage (stage_type 150) is entirely null, origintrial=false, and the rollout plan is 'Will ship enabled for all users'. The feature went Developer Trial (M138) directly to ship (M140). This is not 'untested for an OT' — the dev-trial milestone served as the only field window; an OT was a deliberate non-choice for a small additive CSS property.",
+      "evidenceIds": [
+        "src-cs-cache",
+        "src-intent"
+      ],
+      "limitations": "Absence of an OT is by design for this feature class; not a gap per se."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (blink-dev, 2025-06-16) received the needed LGTMs: Alex Russell 'LGTM2, contingent on a good resolution of Jeffery's concern', with Yoav Weiss and Chris Harrelson involved and Jeffrey Yasskin's concern resolved by 2025-07-04. However API owners had to extract a usable explainer and code example mid-thread (Yoav Weiss requested an expanded explainer and example; Jeffrey Yasskin requested the explanation be moved into the spec rather than left in the email). The spec remained an Editor's Draft with no web-dev demand signals recorded at ship time.",
+      "evidenceIds": [
+        "src-intent",
+        "src-spec",
+        "src-cs-cache"
+      ],
+      "limitations": "The thread confirms approval but the ship materials (explainer, spec example) were demonstrably incomplete at Intent-to-Ship time."
+    },
+    "release": {
+      "status": "mixed",
+      "finding": "The feature shipped enabled by default in Chrome 140 (Early Stable 2025-08-27, Stable 2025-09-02) on desktop, Android, and WebView, corroborated by MDN ('Chrome - Full support Chrome 140'), Una Kravets (Chrome DevRel, published 2025-07-29), Sara Soueidan (2025-08-18), and Chrome 140 release notes. Chrome DevRel produced coordinated enablement (blog, YouTube, IO26 update). The negative signal: the ChromeStatus authoritative status field was never advanced from 'Proposed' and is_released remained false even months after stable, so the primary ChromeStatus record is misleading about its own shipped state.",
+      "evidenceIds": [
+        "src-chrome-relnotes",
+        "src-mdn",
+        "src-una",
+        "src-sara",
+        "src-io26",
+        "src-cs-live",
+        "src-cs-cache"
+      ],
+      "limitations": "The ship milestone is corroborated by multiple independent sources but contradicted by the ChromeStatus status field itself."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Strong awareness-stage community traction within weeks of Chrome 140 (Una Kravets, Sara Soueidan, rolandfranke.nl, CSS-Tricks, CodePen demos). However no evidence of production deployment by major sites, no framework/library integration (React/Vue/etc.), and no documented migration from the Bootstrap Scrollspy pattern the feature replaces. The feature is Chrome-only and was flagged as WCAG-violating at launch (Sara advised waiting for production), which gates real adoption on cross-browser support and the a11y fix. No public Chrome use-counter/usage numbers were found.",
+      "evidenceIds": [
+        "src-una",
+        "src-sara",
+        "src-mdn",
+        "src-caniuse"
+      ],
+      "limitations": "Quantitative usage/adoption data is not publicly available; absence of production-adoption evidence may reflect Chrome-only availability plus the launch a11y caveat rather than disinterest."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Active post-ship issue handling is visible. The WCAG 1.3.1 accessibility gap (no aria-current on the active :target-current anchor, found by Sara Soueidan 2025-08-18) was acknowledged, a Chromium patch was in progress by 2025-08-19, the question was escalated to the ARIA WG (w3c/aria#2710), and Chrome now automatically sets aria-current='true' (confirmed by the IO26 blog, 2026). Additional tracked issues include chromium#413645441 ('scroll-marker:target-current changes too early') and a 'scroll-target-group bug when an embedded CodePen is on the page' (Fixed). 11 WPT test files are listed. The feature shipped with a known Level-A accessibility defect that required a community JavaScript workaround at launch.",
+      "evidenceIds": [
+        "src-sara",
+        "src-io26",
+        "src-aria-issue",
+        "src-chromium-bugs",
+        "src-cs-cache"
+      ],
+      "limitations": "Chromium issue bodies were observed only via search snippets, not read in full, so exact resolution dates and severities are approximate."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "No deprecation or removal is contemplated; the feature is newly shipped and additive. This dimension does not apply to this feature at this time.",
+      "evidenceIds": [
+        "src-cs-cache"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer problem is real and validated (carousel/Scrollspy patterns normally require JavaScript; carousels were a top missing CSS feature in State of HTML 2023). The property genuinely reduces a scroll-spy/TOC or carousel-marker pattern to ~2 lines of CSS, and influential developers (Una Kravets, Sara Soueidan) were enthusiastic. Mixed because: it shipped Chrome-only (not usable cross-browser without progressive enhancement), and it shipped with a WCAG 1.3.1 gap that forced a JavaScript workaround at launch — undercutting the headline 'no JavaScript needed' value proposition for accessible sites.",
+      "evidenceIds": [
+        "src-tag",
+        "src-una",
+        "src-sara",
+        "src-mdn"
+      ],
+      "limitations": "No quantitative demand or task-success data; demand inferred from State of HTML and expert commentary."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "For sighted users on Chrome 140+, the active TOC/carousel-marker highlight is smoother and requires no JS. For screen-reader users and users who rely on programmatic state, the active state was NOT communicated at launch (no aria-current) — a WCAG 1.3.1 (Level A) regression in equity that Sara Soueidan documented with a DevTools screenshot. Resolved post-ship (Chrome now sets aria-current='true'). End-user benefit was real but was not equitably delivered at launch.",
+      "evidenceIds": [
+        "src-sara",
+        "src-io26",
+        "src-aria-issue"
+      ],
+      "limitations": "No direct user-testing data; impact inferred from the accessibility analysis of a recognized a11y expert."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible production-adoption, framework-integration, or usage evidence was found. Only tutorial/demo content exists. Given Chrome-only availability and the launch a11y caveat, this is expected, but the absence of evidence cannot be scored as success or failure.",
+      "evidenceIds": [
+        "src-mdn",
+        "src-caniuse"
+      ],
+      "limitations": "No public Chrome use-counter data was located for this property."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Chrome/Chromium-only (Chrome 140+). No Firefox, no Safari support. Mozilla position is still 'Needs proposed position' (issue #1251, assigned to emilio, no position taken in over a year). WebKit has no position (issue #514, no assignee). The parent TAG review (#1037) remains open with 'pending external feedback'. The spec is an Editor's Draft. MDN marks the feature 'Limited availability - not Baseline' and 'experimental'. This is the clearest single-dimensional failure: no movement toward cross-engine implementation as of the evidence cutoff (~11 months after ship).",
+      "evidenceIds": [
+        "src-mdn",
+        "src-mozilla",
+        "src-webkit",
+        "src-tag",
+        "src-caniuse",
+        "src-cs-cache"
+      ],
+      "limitations": "Other-engine roadmaps were not exhaustively searched, but the public standards-position trackers show no signal."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "A working implementation exists with 11 WPT test files and demonstrably active maintenance (aria-current gap fixed, chromium#413645441 timing bug, CodePen-embedding bug fixed). However it shipped with a Level-A accessibility defect (missing aria-current) caught by an external expert within days, and the active-marker algorithm (spec 3.1.8) is complex enough to have produced a 'changes too early' timing bug. Implementation quality is being actively improved but was not launch-complete.",
+      "evidenceIds": [
+        "src-sara",
+        "src-cs-cache",
+        "src-chromium-bugs",
+        "src-spec",
+        "src-io26"
+      ],
+      "limitations": "Live WPT pass/fail numbers could not be retrieved (the wpt.fyi dashboard is JavaScript-rendered and returned empty); only the test-file inventory is confirmed."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "MDN documentation is solid (last modified 2026-04-20, includes two worked examples and the scroll-marker-group distinction). Chrome DevRel produced strong coordinated content (Una's blog, YouTube, IO26 update). Negative signals: the Intent-to-Ship explainer was thin (API owners had to request an expanded explainer, a code example, and that the explanation be placed in the spec); the TAG review was marked 'Not applicable' for a shipping sub-feature while its parent review is open; and the ChromeStatus status field is out of sync with the actual shipped state ('Proposed' vs M140 shipped).",
+      "evidenceIds": [
+        "src-mdn",
+        "src-una",
+        "src-intent",
+        "src-cs-live",
+        "src-cs-cache",
+        "src-io26"
+      ],
+      "limitations": "No internal review artifacts (privacy/security gate results) are public beyond 'Pending' in the cached record."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "Same finding as the support phase: issues are being found and fixed (aria-current gap, timing bug, CodePen bug; 11 WPT tests), but the feature shipped with a known WCAG Level-A accessibility gap requiring a JavaScript workaround, which is a support burden handed to developers at launch.",
+      "evidenceIds": [
+        "src-sara",
+        "src-io26",
+        "src-aria-issue",
+        "src-chromium-bugs",
+        "src-cs-cache"
+      ],
+      "limitations": "Support-ticket volume and resolution-time denominators are not public."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A genuinely useful, well-motivated CSS primitive with real developer enthusiasm and active post-ship maintenance, but materially compromised at launch: Chrome-only with zero other-engine signals and an open parent TAG review; shipped with a WCAG 1.3.1 accessibility gap (later fixed); thin ship-time explainer; and a ChromeStatus record that misreports its own shipped state. Not a failure (real value, being actively improved, a11y now addressed) and not a success (Chromium-only, shipped with a Level-A a11y violation, no adoption evidence).",
+      "evidenceIds": [
+        "src-mdn",
+        "src-una",
+        "src-sara",
+        "src-mozilla",
+        "src-webkit",
+        "src-tag",
+        "src-intent",
+        "src-cs-cache",
+        "src-io26",
+        "src-chromium-bugs"
+      ],
+      "limitations": "No usage/adoption data; live WPT results unavailable; this is an early-stage retrospective of an ~11-month-old Chrome-only feature."
+    }
+  },
+  "sources": [
+    {
+      "id": "src-cs-cache",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/chromestatus/features/5189126177161216.json",
+      "publisher": "Chrome Platform Status (cached evidence for this run)",
+      "publishedOrObservedAt": "2025-08-25",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "ChromeStatus record (id, name, motivation, spec, stages, signals, WPT list of 11 tests, flag CSSScrollTargetGroup, dev-trial M138 desktop/Android, ship M140 desktop/Android/WebView)",
+        "No Mozilla/Safari/Web-dev signals",
+        "Security/privacy review Pending",
+        "is_released=false and status 'Proposed' despite M140 ship stage"
+      ],
+      "limitations": "accurate_as_of 2025-08-25; status field contradicts the actual shipped state corroborated by other sources."
+    },
+    {
+      "id": "src-cs-live",
+      "url": "https://chromestatuslite.com/feature/5189126177161216",
+      "publisher": "Chrome Platform Status (chromestatuslite server-rendered view)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Live ChromeStatus view still shows Status 'Proposed' (Chrome Proposed) and 'No signal' for Firefox/Safari long after the M140 ship"
+      ],
+      "limitations": "Confirms the status-field staleness; cannot be used alone to confirm shipment."
+    },
+    {
+      "id": "src-spec",
+      "url": "https://drafts.csswg.org/css-overflow-5/#scroll-target-group",
+      "publisher": "W3C CSSWG (Editors: Florian Rivoal/Bloomberg, fantasai/Apple, Robert Flack/Google)",
+      "publishedOrObservedAt": "2026-03-17",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "scroll-target-group: none|auto definition",
+        "Related ::scroll-marker-group, ::scroll-marker, :target-current/:target-before/:target-after, active-marker algorithm 3.1.8",
+        "Editor's Draft / Working Draft maturity",
+        "No aria-current behavior normatively required in the version read"
+      ],
+      "limitations": "Editor's Draft, 'may change at any moment'; publication is not endorsement."
+    },
+    {
+      "id": "src-intent",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/R_VD_FkYrF8/m/J8EnGU00CAAJ",
+      "publisher": "Chromium blink-dev (Intent to Ship thread)",
+      "publishedOrObservedAt": "2025-06-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship posted 2025-06-16 by sakhapov@chromium.org",
+        "DevTrial desktop/Android 138, ship plan enabled-for-all-users",
+        "Yoav Weiss requested expanded explainer + code example",
+        "Alex Russell 'LGTM2 contingent on Jeffrey's concern'; concern resolved 2025-07-04; Chris Harrelson involved",
+        "Thin ship-time explainer"
+      ],
+      "limitations": "Thread read via web reader; vote tally inferred from visible LGTMs, not a formal count."
+    },
+    {
+      "id": "src-tag",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1037",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": "2025-01-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Parent 'CSS Overflow Navigation Controls (Carousels)' TAG review opened 2025-01-09 by flackr",
+        "Still Open, 'Progress: pending external feedback', a11y-tracker, Venue: CSS WG",
+        "Chromium positive + Mozilla #1161 + WebKit #447 multi-stakeholder listed",
+        "User research: carousels among top missing elements (State of HTML 2023)",
+        "scroll-target-group itself marked TAG 'Not applicable'"
+      ],
+      "limitations": "Full comment timeline not exhaustively read; status labels observed at top level."
+    },
+    {
+      "id": "src-mozilla",
+      "url": "https://github.com/mozilla/standards-positions/issues/1251",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2025-06-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position request opened 2025-06-16 (same day as Intent to Ship)",
+        "Status 'Needs proposed position', assigned to emilio, no position taken as of retrieval",
+        "Explainer URL recorded as 'No response'"
+      ],
+      "limitations": "Issue body/top-level state read; no Mozilla position exists to analyze."
+    },
+    {
+      "id": "src-webkit",
+      "url": "https://github.com/WebKit/standards-positions/issues/514",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2025-06-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position request opened 2025-06-16",
+        "No assignee, no position taken; only a few thumbs-up reactions",
+        "Explainer URL recorded as 'No response'"
+      ],
+      "limitations": "Top-level state read; no WebKit position exists."
+    },
+    {
+      "id": "src-mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-target-group",
+      "publisher": "MDN Web Docs (Open Web Docs / BCD)",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "'Chrome - Full support Chrome 140'",
+        "'Limited availability - not Baseline' and 'Experimental technology'",
+        "scroll-target-group vs scroll-marker-group behavioral differences",
+        "Two worked examples (TOC scroll-spy and carousel markers)",
+        "Page last modified 2026-04-20"
+      ],
+      "limitations": "Full browser-compatibility matrix table not parsed from the reader output; Chrome-140 support and not-Baseline/experimental status are explicit in the page text."
+    },
+    {
+      "id": "src-una",
+      "url": "https://una.im/scroll-target-group/",
+      "publisher": "Una Kravets (Chrome DevRel)",
+      "publishedOrObservedAt": "2025-07-29",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "scroll-target-group shipped/landing in Chrome 140 (article published 2025-07-29, 'current Canary, stable next month')",
+        "Progressive-enhancement guidance via @supports",
+        "Author filed an 'invalidation error' bug when clicking side-nav links",
+        "Feature 'flew under the radar'",
+        "YouTube companion content exists"
+      ],
+      "limitations": "Author is Chrome DevRel (not fully independent); pre-stable publication."
+    },
+    {
+      "id": "src-sara",
+      "url": "https://www.sarasoueidan.com/blog/css-scrollspy/",
+      "publisher": "Sara Soueidan (independent accessibility engineer)",
+      "publishedOrObservedAt": "2025-08-18",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Confirms Chrome 140+ required to see HTML scroll markers",
+        "CRITICAL: Chrome did NOT set aria-current=true on the active :target-current anchor at launch -> WCAG 1.3.1 (Level A) violation",
+        "Author filed a Chromium issue; patch in progress by 2025-08-19",
+        "Author advised developers to add aria-current via JS or wait for production"
+      ],
+      "limitations": "Independent but single expert source; specific Chromium issue number not captured from the article text."
+    },
+    {
+      "id": "src-caniuse",
+      "url": "https://caniuse.com/#feat=css-scroll-target-group",
+      "publisher": "Can I use (Fyrd / community BCD-style data)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "scroll-target-group tracked as a CSS property with browser-support tables (separate entries for the property and its auto/none values)",
+        "Confirms feature is tracked but limited availability"
+      ],
+      "limitations": "Exact per-browser version numbers not parsed from the rendered search result."
+    },
+    {
+      "id": "src-chrome-relnotes",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers / Chrome Enterprise and Education release notes",
+      "publishedOrObservedAt": "2025-08-27",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 Early Stable 2025-08-27, Stable channel 2025-09-02 (Android, ChromeOS, Linux, macOS, Windows)",
+        "Establishes the milestone at which scroll-target-group became enabled by default"
+      ],
+      "limitations": "Release-notes page lists many features; the scroll-target-group ship is corroborated via MDN/community rather than a dedicated release-note line that was parsed."
+    },
+    {
+      "id": "src-io26",
+      "url": "https://developer.chrome.com/blog/new-in-web-ui-io26",
+      "publisher": "Chrome for Developers ('What's new in web UI', Google I/O 2026)",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Post-ship fix confirmed: 'By setting scroll-target-group: auto on a navigation list, the browser automatically sets aria-current=\"true\" and applies the :target-current...'",
+        "Ongoing Chrome DevRel promotion of the feature"
+      ],
+      "limitations": "Exact publish date approximated to Google I/O 2026 (~2026-05); read via search snippet, not full page."
+    },
+    {
+      "id": "src-aria-issue",
+      "url": "https://github.com/w3c/aria/issues/2710",
+      "publisher": "W3C ARIA Working Group",
+      "publishedOrObservedAt": "2025-08",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Standards-level follow-up to the launch a11y gap: 'Should :target-current pseudo class also imply aria-current=true on an active scroll marker?' discussed by the ARIA WG"
+      ],
+      "limitations": "Observed via search snippet only; exact open/resolved status and date not confirmed by reading the issue."
+    },
+    {
+      "id": "src-chromium-bugs",
+      "url": "https://issues.chromium.org/issues/413645441",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Active-marker timing bug: chromium#413645441 'scroll-marker:target-current changes too early' (fix changes default alignment for non-snap targets from 'nearest' to 'start')",
+        "A separate 'scroll-target-group bug when an embedded CodePen is on the page' is marked Fixed"
+      ],
+      "limitations": "Issue bodies observed via search snippets only; severities, exact dates, and final resolution states not confirmed by reading full issues."
+    }
+  ],
+  "successes": [
+    "Real, pre-validated developer problem (carousel/Scrollspy normally needs JS; carousels a top-missing element in State of HTML 2023) addressed with a minimal, composable CSS primitive.",
+    "Intent to Ship secured the needed LGTMs and the feature shipped on the planned milestone (M140, stable 2025-09-02).",
+    "Strong coordinated enablement within weeks from Chrome DevRel (Una Kravets blog + YouTube + IO26) and influential independent community (Sara Soueidan, CSS-Tricks, CodePen demos).",
+    "The launch WCAG 1.3.1 accessibility gap (missing aria-current) was acknowledged and fixed post-ship; the fix is now promoted in official Chrome content (IO26 blog) and tracked at the standards level (w3c/aria#2710).",
+    "11 WPT test files authored and active bug-fixing post-ship (timing bug, CodePen-embedding bug)."
+  ],
+  "failures": [
+    "Shipped Chromium-only with zero other-engine signals: Mozilla still 'Needs proposed position' and WebKit has no position more than a year after the position requests were filed (both filed the same day as the Intent to Ship).",
+    "TAG review marked 'Not applicable' for this shipping sub-feature while its parent carousels review (#1037) remains open with 'pending external feedback' and a11y-tracker labels.",
+    "Shipped with a WCAG 1.3.1 (Level A) accessibility gap (no aria-current on the active :target-current anchor), caught by an independent expert within days, forcing a JavaScript workaround at launch and undercutting the 'no JS needed' value proposition.",
+    "Explainer was thin at Intent-to-Ship time: API owners had to request an expanded explainer, a code example, and that the explanation be moved into the spec.",
+    "ChromeStatus authoritative record is out of sync: status stayed 'Proposed' and is_released stayed false long after the M140 ship, making the primary record misleading for ecosystem tracking and retrospective tooling."
+  ],
+  "counterfactuals": [
+    "A pre-ship AT/screen-reader verification of :target-current (visual highlight plus programmatic state) would almost certainly have caught the missing aria-current before Chrome 140 stable, avoiding a shipped Level-A violation and the post-ship patch plus community workaround advisory.",
+    "If the explainer/spec had contained at least one motivating end-to-end HTML+CSS example before Intent to Ship, the API-owner back-and-forth would have been avoided and MDN authors would have had better source material at launch.",
+    "If Mozilla and WebKit standards-position requests had been filed with meaningful lead time (not the same day as the Intent to Ship), the Chrome-only ship would have been a more deliberate, documented decision and might have surfaced interop/accessibility concerns earlier.",
+    "If the ChromeStatus status field were auto-synced with actual shipping state, retrospective and ecosystem tooling would not have to reconcile a contradiction between the manifest launch event (M140 enabled by default) and the ChromeStatus record ('Proposed', is_released=false).",
+    "If the TAG sub-feature review had been completed (rather than 'Not applicable' against an open parent), the unresolved a11y/design questions in the parent review could have been resolved before exposing the feature by default."
+  ],
+  "skillImprovements": [
+    "Add a launch-readiness gate (phase 06 prepare-to-ship / user-impact-and-review-rehearsal) requiring an assistive-technology verification (screen-reader programmatic-state check), not only a visual check, for any feature whose value proposition is 'the browser handles behavior/accessibility for the author' (scroll markers, :target-current, carousels, ::scroll-button). Capture the AT test as a required transition-packet artifact.",
+    "Add a ChromeStatus data-hygiene rule: flag any record where a ship-stage milestone (desktop_first/android_first/webview_first) has passed but the feature status field still reads 'Proposed'/lower-than-shipped or is_released is false; treat as a release-evidence defect that must be reconciled before scoring.",
+    "Add a wide-review rule: do not accept TAG review 'Not applicable' for a shipping sub-feature when its parent proposal's TAG review is still open; either run the sub-feature review or document the deferral with the open parent issue and an accepted-risk note.",
+    "Add a phase-04 wide-review rule: Mozilla/WebKit standards-position issues must be filed with a minimum lead time before Intent to Ship; same-day filing is a red flag requiring an explicit accepted-risk note in the transition packet.",
+    "Add a phase-06 checklist item: the explainer/spec must contain at least one motivating end-to-end example (HTML+CSS) before Intent to Ship is posted; an explainer that exists only inside the email thread is insufficient.",
+    "Add a retrospective regression eval that includes this feature (shipped-Chrome-only with a launch WCAG gap and a stale ChromeStatus record) as a weak/mixed case alongside strong cases, to verify the scorer returns mixed/failure rather than inferring success from shipment, DevRel sentiment, or absent criticism."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Live WPT pass/fail numerical results (wpt.fyi dashboard is JavaScript-rendered and returned empty; only the 11-test inventory is confirmed via ChromeStatus).",
+      "Quantitative Chrome use-counter / usage data for scroll-target-group (not publicly linked).",
+      "Production adoption or framework/library integration evidence (searched; none found; consistent with Chrome-only + launch a11y caveat but absence of evidence).",
+      "Full bodies of the Chromium issues (chromium#413645441 timing bug, CodePen-embedding bug) and w3c/aria#2710 (observed via search snippets only, so exact severities/dates/resolution states are approximate).",
+      "Full Mozilla/WebKit/TAG issue comment threads beyond top-level state."
+    ],
+    "reviewedAt": "2026-07-19T12:00:00Z"
+  }
+}

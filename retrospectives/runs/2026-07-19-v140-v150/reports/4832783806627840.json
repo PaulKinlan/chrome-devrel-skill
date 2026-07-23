@@ -20,10 +20,11 @@
     {
       "eventId": "150:In developer trial (Behind a flag):4832783806627840",
       "milestone": 150,
-      "category": "In developer trial (Behind a flag)"
+      "category": "In developer trial (Behind a flag)",
+      "date": "2026-06-30"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:30:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:20Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -59,12 +60,12 @@
     },
     "developerTrials": {
       "status": "partial",
-      "finding": "A developer trial is targeted for M150 (desktop_first and android_first both 150) behind the experimental flag. However devtrial_instructions is null, the only samples are WPT conformance pages (text-decoration-skip-spaces-001..004.html), and there is no announcement_url, feedback route, cohort, or onboarding kit. Because M150 is in the future relative to the 2026-07-20 evidence cutoff, this is a scheduled trial rather than a confirmed-realized one.",
+      "finding": "A developer trial is targeted for M150 (desktop_first and android_first both 150) behind the experimental flag. However devtrial_instructions is null, the only samples are WPT conformance pages (text-decoration-skip-spaces-001..004.html), and there is no announcement_url, feedback route, cohort, or onboarding kit. The assessment reflects the ChromeStatus record (accurate_as_of 2026-04-10), which describes a planned trial and does not evidence a recruited cohort, task completion, or developer feedback.",
       "evidenceIds": [
         "chromestatus-record",
         "wpt-pr-35780"
       ],
-      "limitations": "No evidence of recruited cohort, task completion, or feedback; whether the flag is actively available pre-M150 in Canary is not separately confirmed. WPT pages are conformance tests, not developer onboarding."
+      "limitations": "No evidence of recruited cohort, task completion, or feedback; whether the flag is actively available in Canary is not separately confirmed. WPT pages are conformance tests, not developer onboarding."
     },
     "wideReview": {
       "status": "partial",
@@ -96,29 +97,30 @@
     },
     "release": {
       "status": "unknown",
-      "finding": "No default-on shipment, no announcement, announced=false, is_releasenotes_publish_ready=false, is_releasenotes_content_reviewed=false. The sole recorded 'launch event' is a planned flag-based developer trial at a future milestone.",
+      "finding": "No default-on shipment, no announcement, announced=false, is_releasenotes_publish_ready=false, is_releasenotes_content_reviewed=false. The sole recorded 'launch event' is a flag-based developer trial at M150 behind enable-experimental-web-platform-features; the feature is not enabled by default in any channel.",
       "evidenceIds": [
         "chromestatus-record"
       ],
-      "limitations": "There is no release to assess; communication quality cannot be scored."
+      "limitations": "There is no default-on release to assess; communication quality cannot be scored."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Not shipped, so no adoption is possible or observable. The property is not tracked in Can I Use (0 results), has no MDN page, and shows no framework/library integration.",
+      "status": "unscored",
+      "finding": "The feature is not default-on shipped (is_released false; available only behind enable-experimental-web-platform-features), so direct adoption of the longhand is not meaningfully measurable. The only first-party Chrome use counter mapped for this feature is a WebDX/CSS property-family counter (text-decoration, bucket_id 129; mapping status web-feature-family-counter, confidence name-matched-family), not an exact counter for text-decoration-skip-spaces (webdxUseCounterEnum null, no origin-trial counters). That family counter fired on 0.82925652% of measured Chrome HTTP/HTTPS page loads at the M150 stable checkpoint (2026-06-30) and 0.831169% on 2026-07-20 (latest cached snapshot), against a long, essentially flat baseline (latest timeline point 0.83168186% on 2026-07-21; peak 1.99492455% in 2013; first positive 0.81% in 2013; 4410 points). Launch-relative checkpoints at M150: atStable = 0.82925652%; day30, day90, day180 are null (not reached at the 2026-07-22 collection). This measures the broad text-decoration family, not the behind-a-flag longhand. The property is not tracked in Can I Use (0 results), has no MDN page, and shows no framework/library integration.",
       "evidenceIds": [
         "chromestatus-record",
+        "metrics-css-text-decoration-family",
         "caniuse-skip-spaces",
         "mdn-skip-spaces-404"
       ],
-      "limitations": "Adoption is not yet measurable; the feature is behind a flag at a future milestone."
+      "limitations": "Only a property-family counter exists; there is no exact counter, unique-site, production-deployment, retention, task-success, user-benefit, or predeclared adoption-target evidence for the longhand, so adoption is described rather than scored. The family percentage cannot isolate or measure adoption of text-decoration-skip-spaces; UMA reflects participating Chrome clients and the dominant milestone."
     },
     "support": {
       "status": "unknown",
-      "finding": "Not shipped, so no Chrome-implementation-specific support burden or issue history is observable. Pre-existing community questions (SO, Reddit, CSSWG) concern the broader capability, not Chrome's implementation.",
+      "finding": "Not default-on shipped (behind a flag), so no Chrome-implementation-specific support burden or issue history is observable. Pre-existing community questions (SO, Reddit, CSSWG) concern the broader capability, not Chrome's implementation.",
       "evidenceIds": [
         "chromestatus-record"
       ],
-      "limitations": "Supportability is untestable pre-shipment."
+      "limitations": "Supportability is untestable pre-default-on-shipment."
     },
     "deprecation": {
       "status": "not-relevant",
@@ -141,26 +143,27 @@
         "csswg-issue-2885",
         "chromestatus-record"
       ],
-      "limitations": "Evidence is problem-validity and standards-demand, not measured use of the Chrome implementation, which has not shipped."
+      "limitations": "Evidence is problem-validity and standards-demand, not measured use of the Chrome implementation, which has not shipped default-on."
     },
     "endUserImpact": {
       "status": "unscored",
-      "finding": "Effect is minor and indirect (cleaner typographic decoration). There is no end-user exposure because the property is not shipped (behind a flag at a future milestone). No accessibility, privacy, or security user-impact evidence surfaced.",
+      "finding": "Effect is minor and indirect (cleaner typographic decoration). There is no meaningful end-user exposure because the property is not default-on shipped (behind the experimental flag). No accessibility, privacy, or security user-impact evidence surfaced.",
       "evidenceIds": [
         "chromestatus-record",
         "spec-css-text-decor-4"
       ],
-      "limitations": "Realized end-user impact cannot be assessed pre-shipment; expected magnitude is small given the additive, opt-in nature."
+      "limitations": "Realized end-user impact cannot be assessed pre-default-on-shipment; expected magnitude is small given the additive, opt-in nature."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No adoption is possible or observed: not shipped, not tracked in Can I Use, no MDN page, and no framework/library integration.",
+      "finding": "The longhand is not default-on shipped (behind enable-experimental-web-platform-features; is_released false), so its own adoption is not directly measurable. The only mapped Chrome use counter is a property-family counter (text-decoration, bucket_id 129), not an exact counter for text-decoration-skip-spaces; it fired on 0.82925652% of measured page loads at the M150 stable checkpoint (2026-06-30) and 0.831169% on 2026-07-20, essentially flat versus a multi-year baseline (latest 0.83168186% on 2026-07-21; peak 1.99492455% in 2013). Launch-relative checkpoints at M150: atStable = 0.82925652%; day30/day90/day180 null (not yet reached). This measures the broad text-decoration family, not the behind-a-flag longhand, so it is neither low nor high adoption of the feature. No predeclared adoption target exists and there is no corroborating production/retention evidence, so the outcome stays unscored; the family percentage is described as level/trend only and is not used as a threshold proxy. Can I Use does not track it (0 results), there is no MDN page, and no framework/library integration.",
       "evidenceIds": [
+        "metrics-css-text-decoration-family",
+        "chromestatus-record",
         "caniuse-skip-spaces",
-        "mdn-skip-spaces-404",
-        "chromestatus-record"
+        "mdn-skip-spaces-404"
       ],
-      "limitations": "Pre-release; adoption is not yet measurable and is not inferred from shipment or absence of criticism."
+      "limitations": "Family counter only; no exact counter, unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence for the longhand. Low or high family-counter values are not treated as feature failure or success; 'mixed' is not used as a substitute for an absent threshold."
     },
     "interoperability": {
       "status": "mixed",
@@ -172,7 +175,7 @@
         "mdn-skip-spaces-404",
         "chromestatus-record"
       ],
-      "limitations": "'No signal' is absence, not a negative position; the spec may stabilize and engines may converge, so this is high risk rather than a realized incompatibility, since nothing has shipped."
+      "limitations": "'No signal' is absence, not a negative position; the spec may stabilize and engines may converge, so this is high risk rather than a realized incompatibility, since nothing has shipped default-on."
     },
     "implementationQuality": {
       "status": "partial",
@@ -197,15 +200,15 @@
     },
     "support": {
       "status": "unscored",
-      "finding": "Not shipped; no implementation-specific support burden or issue history is observable. Community questions concern the broader capability, not Chrome's implementation.",
+      "finding": "Not default-on shipped; no implementation-specific support burden or issue history is observable. Community questions concern the broader capability, not Chrome's implementation.",
       "evidenceIds": [
         "chromestatus-record"
       ],
-      "limitations": "Supportability is untestable pre-shipment."
+      "limitations": "Supportability is untestable pre-default-on-shipment."
     },
     "overall": {
       "status": "mixed",
-      "finding": "A pre-release additive CSS property with a genuine, well-evidenced developer problem, real standards incubation, and WPT coverage, set against an unvetted spec section, no other-engine support or signal for the explicit longhand, an understated interop risk, an inaccurately 'catch up' classification, incomplete docs/reviews, and zero adoption. Strengths and concerns are both concrete, so the overall state is mixed rather than successful.",
+      "finding": "A pre-release additive CSS property with a genuine, well-evidenced developer problem, real standards incubation, and WPT coverage, set against an unvetted spec section, no other-engine support or signal for the explicit longhand, an understated interop risk, an inaccurately 'catch up' classification, incomplete docs/reviews, and no measurable feature-level adoption (the only Chrome use counter is a WebDX/CSS property-family counter that does not isolate the behind-a-flag longhand). Strengths and concerns are both concrete, so the overall state is mixed rather than successful.",
       "evidenceIds": [
         "chromestatus-record",
         "spec-css-text-decor-4",
@@ -214,9 +217,10 @@
         "mdn-skip-spaces-404",
         "so-72692992",
         "reddit-css-1oibhv4",
-        "csswg-issue-2885"
+        "csswg-issue-2885",
+        "metrics-css-text-decoration-family"
       ],
-      "limitations": "Pre-release; post-shipment outcomes (release, adoption, support, end-user impact) are unknown and not inferred. The M150 dev trial is scheduled, not realized, relative to the evidence cutoff."
+      "limitations": "M150 stable shipped 2026-06-30 per later cached telemetry, but the feature remains behind the experimental flag (not default-on), so post-default-on-shipment outcomes (release, support, end-user impact) remain largely unmeasured and are not inferred; this metrics revision adds a property-family use counter that does not isolate the longhand, so feature-level adoption stays unscored."
     }
   },
   "sources": [
@@ -363,6 +367,21 @@
         "The tracking bug for the feature, per the ChromeStatus bug_url field."
       ],
       "limitations": "Not directly loaded (the Chromium issue tracker frequently requires authentication and was not fetched); implementation status, regression history, and review comments are unverified beyond the record's reference."
+    },
+    {
+      "id": "metrics-css-text-decoration-family",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=129",
+      "publisher": "Chrome Platform Status (CSS popularity timeline, bucket_id 129 = text-decoration)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:20Z",
+      "sourceType": "usage",
+      "supports": [
+        "First-party Chrome usage telemetry mapped for this feature resolves to a WebDX/CSS property-family counter (bucket_id 129, property_name 'text-decoration'), NOT an exact counter for text-decoration-skip-spaces. mappingStatus 'web-feature-family-counter'; scope 'property-family'; confidence 'name-matched-family' (web_feature 'text-decoration' normalizes to css counter 'text-decoration'); webdxUseCounterEnum null; originTrialCounters empty. There is no exact feature counter.",
+        "The family counter fired on 0.82925652% of measured Chrome HTTP/HTTPS page loads at the M150 stable checkpoint (2026-06-30) and 0.831169% on 2026-07-20 (latest cached snapshot); latest timeline point 0.83168186% on 2026-07-21; peak 1.99492455% on 2013-09-15; first positive 0.81% on 2013-08-08; 4410 timeline points. Timeline SHA-256 5ad624cb5d77cfd4d9ef5b3e41af43e9ede8ee220c63ca17f280242724dd75b8.",
+        "Launch-relative checkpoints for M150 (stable 2026-06-30): atStable = 0.82925652%; day30, day90, day180 are null (not reached at the 2026-07-22 collection).",
+        "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once; they are NOT unique developers, unique sites, unique users, successful tasks, developer satisfaction, production deployment, or end-user benefit, and the family counter covers more behavior than the text-decoration-skip-spaces longhand."
+      ],
+      "limitations": "Property-family counter, not an exact counter for the text-decoration-skip-spaces longhand, which remains behind the enable-experimental-web-platform-features flag; the percentage reflects broad text-decoration-family usage and cannot isolate or measure adoption of the specific longhand. UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented; zero/missing/delayed points are not proof of zero real-world use. No predeclared adoption target is on record, so the value is descriptive only."
     }
   ],
   "successes": [
@@ -388,7 +407,8 @@
     "Phase-04 (wide review) regression check: when interop_compat_risks asserts 'minimal/additive' but the linked spec section is marked unvetted/rough-draft or an open issue questions the initial value, mark the interop claim 'contradicted' and require the open issue cited in the wide-review packet.",
     "Phase-03 (developer trials) artifact gate: a flag-based trial entry must list at least one developer-facing sample/demo and a feedback route distinct from WPT pages, or the trial is scored 'partial'; WPT pages are conformance evidence, not developer onboarding.",
     "Documentation-readiness signal: at dev-trial, check MDN page existence and Can I Use tracking as evidence indicators; absence is a flagged documentation gap, not an ignored detail.",
-    "Add a 'knowable-at-event-date' reminder to the retrospective template: when a launch event's milestone is in the future relative to the evidence cutoff, score realized-outcome phases (release, adoption, support) as 'unknown' explicitly and state that the event is scheduled, not realized."
+    "Add a 'knowable-at-event-date' reminder to the retrospective template: when a launch event's milestone is in the future relative to the evidence cutoff, score realized-outcome phases (release, adoption, support) as 'unknown' explicitly and state that the event is scheduled, not realized.",
+    "Use-counter mapping classification gate: when recording Chrome usage telemetry for a feature, classify the mapping as exact, broader WebDX/property-family, origin-trial, multiple, or absent, and cite the classification in the finding. A family/property/origin-trial counter must be reported at family level and never read as exact adoption of the specific launch; with no predeclared target and no corroborating production/retention evidence, the adoption outcome stays unscored and the level/trend is described rather than thresholded. Absence of an exact counter is a measurement gap, not proof of zero use."
   ],
   "completion": {
     "status": "partial",
@@ -396,9 +416,9 @@
       "Intent to Prototype thread content - the encoded msgid URL was rejected by the reader; only the authoritative record field is known, not the substance (motivation, scope, requested feedback).",
       "Chromium bug 40862777 detail and regression history - the issue tracker was not directly retrievable.",
       "Actual WPT pass/fail for text-decoration-skip-spaces across Chrome/Firefox/Safari - the wpt.fyi dashboard is JS-rendered and not readable; only test existence is confirmed via CSSWG #4653.",
-      "Any real-world developer usage, adoption, or support evidence - the feature is not shipped and the M150 dev trial is in the future relative to the 2026-07-20 cutoff.",
+      "An exact/feature-specific use counter for text-decoration-skip-spaces, and any unique-site, production-deployment, retention, task-success, user-benefit, or predeclared adoption-target evidence for the longhand: a WebDX/CSS property-family counter (text-decoration, bucket 129) is now cached and mapped, but it measures the broad text-decoration family and cannot isolate the behind-a-flag longhand, so the longhand's own adoption level remains unmeasured.",
       "Current Firefox/Safari positions on the explicit longhand beyond 'No signal' - no position is on record."
     ],
-    "reviewedAt": "2026-07-20T06:30:00Z"
+    "reviewedAt": "2026-07-22T18:06:20Z"
   }
 }

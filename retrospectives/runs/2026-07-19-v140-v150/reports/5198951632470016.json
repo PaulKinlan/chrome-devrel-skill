@@ -106,13 +106,22 @@
       "limitations": "Premature to assess release communication quality beyond the beta/OT notice."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Unknown as of cutoff: the feature is not shipped by default, so there is no production adoption to measure. The strongest adjacent signal is independent: dchest.com built mlkem-wasm/mldsa-wasm WebCrypto-compatible shims explicitly to migrate to native WebCrypto when it ships, and Node v24/Deno are adding PQC to their own WebCrypto implementations. These are ecosystem interest, not adoption of this Chrome feature.",
+      "status": "partial",
+      "finding": "Partial as of cutoff: Chrome usage telemetry now exists for this feature as exact-scope feature counters (mappingStatus multiple-counters; every mapped counter is scope=exact, confidence=exact — there is no broader WebDX family/property counter, and the origin-trial-tagged counter (bucket 5679, ML-DSA-44) is the same exact feature counter, not an OT-participation share). Twelve exact counters map to the feature — five 'New Method' counters (5830, 5831, 5832, 5833, 5901) and seven 'New Algorithm' counters (5678, 5679, 5680, 5681, 5682, 5683, 5898). Seven of the twelve have any timeline points and every observed point is 0% (the share of measured Chrome HTTP/HTTPS page loads on which the counter fired): ChaCha20-Poly1305 (5678), ML-DSA-65 (5680), ML-DSA-87 (5681), ML-KEM-768 (5682), and ML-KEM-1024 (5683) each read 0% on 2026-05-02; ML-DSA-44 (5679) reads 0% on 2026-05-17 (peak 0% on 2026-05-02); SubtleCryptoDecapsulateBits (5833) reads 0% on 2026-05-17. The remaining five counters (5830, 5831, 5832, 5898, 5901) have no timeline points. No counter has shown positive usage. The M150 launch-relative checkpoints (stableDate 2026-06-30) are all null (atStable, day30, day90, day180) because there is no default-on stable shipment to anchor them, and the latest observations (2026-05-02/05-17) predate both that stable date and the 2026-07-22 metrics cache. This measured-zero usage is consistent with a flag-gated DevTrial/early-OT and is not evidence of absent latent demand — a counter at 0% behind a flag measures the gate, not the need. The strongest adjacent signal remains independent ecosystem interest: dchest.com built mlkem-wasm/mldsa-wasm WebCrypto-compatible shims explicitly to migrate to native WebCrypto when it ships, and Node v24/Deno are adding PQC to their own WebCrypto implementations. No production deployments, framework/library integrations, or attributable partner usage of the Chrome implementation were found.",
       "evidenceIds": [
+        "s1",
         "s9",
-        "s13"
+        "s13",
+        "s16",
+        "s17",
+        "s18",
+        "s19",
+        "s20",
+        "s21",
+        "s22",
+        "s23"
       ],
-      "limitations": "No production deployments, framework integrations, or attributable partner usage of the Chrome implementation were found; the feature is gated behind a flag/OT."
+      "limitations": "Measured values are the share of measured Chrome HTTP/HTTPS page loads on which a counter fired — not unique developers, sites, users, successful tasks, satisfaction, or end-user benefit. All observed values are 0% behind a flag/OT, which measures gating rather than demand. Launch-checkpoint-aligned values are null; latest observations (2026-05-02/05-17) predate the M150 stable (2026-06-30) and the metrics cache (2026-07-22). No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared usage-target evidence exists; the feature is gated."
     },
     "support": {
       "status": "unknown",
@@ -134,15 +143,16 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "The developer value is strongly argued and independently corroborated (post-quantum app-layer crypto via a browser-provided, BoringSSL-backed, potentially FIPS-validated path; lets JS crypto libraries drop WASM/pure-JS workarounds; bundles the long-requested ChaCha20-Poly1305 and adds genuinely useful supports()/getPublicKey helpers). Cloudflare, dchest.com, and the Google Chrome post-quantum strategy all substantiate the underlying need. However there is no proposal-specific demand survey, ChromeStatus records 'Web developers: No signals', and actual adoption is unproven (feature unshipped by default).",
+      "finding": "The developer value is strongly argued and independently corroborated (post-quantum app-layer crypto via a browser-provided, BoringSSL-backed, potentially FIPS-validated path; lets JS crypto libraries drop WASM/pure-JS workarounds; bundles the long-requested ChaCha20-Poly1305 and adds genuinely useful supports()/getPublicKey helpers). Cloudflare, dchest.com, and the Google Chrome post-quantum strategy all substantiate the underlying need. However there is no proposal-specific demand survey, ChromeStatus records 'Web developers: No signals', and measured Chrome usage is 0% across all exact feature counters (consistent with flag-gating; no default-on shipment), so production adoption remains unproven.",
       "evidenceIds": [
         "s1",
         "s3",
         "s9",
         "s10",
-        "s11"
+        "s11",
+        "s16"
       ],
-      "limitations": "Strong problem-level evidence, but demand for this exact API shape and broad production uptake remain unmeasured."
+      "limitations": "Strong problem-level evidence, but demand for this exact API shape and broad production uptake remain unmeasured; measured page-load usage is 0% behind a flag (a gating signal, not demand) and no usage target exists."
     },
     "endUserImpact": {
       "status": "unscored",
@@ -155,14 +165,22 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Unscored because the feature is not shipped by default; it exists only as a Chrome 150 flag-gated DevTrial and a just-opened Chrome 151-154 Origin Trial. No production deployments, framework/library integrations, or attributable partner usage of the Chrome implementation were found. Independent WASM shims and Node/Deno implementations signal ecosystem readiness, not adoption of this feature.",
+      "finding": "Unscored: Chrome usage telemetry now exists for this feature as exact-scope feature counters, and every observed counter reads 0% of measured Chrome HTTP/HTTPS page loads — ML-KEM-768 (5682), ML-KEM-1024 (5683), ML-DSA-44 (5679), ML-DSA-65 (5680), ML-DSA-87 (5681), ChaCha20-Poly1305 (5678), and SubtleCryptoDecapsulateBits (5833) all at 0%, with latest observations between 2026-05-02 and 2026-05-17; five further counters (5830, 5831, 5832, 5898, 5901) have no timeline points; no counter has shown positive usage; the M150 launch-relative checkpoints (atStable, day30, day90, day180) are all null because there is no default-on stable shipment. This measured zero is consistent with flag-gating and is not itself an adoption verdict: 0% behind a flag/OT measures the gate, not demand, and the launch carried no predeclared usage target (the OT goals are bug-finding and performance evaluation, not an adoption threshold). With no target threshold and no corroborating production-deployment, unique-site, retention, task-success, or end-user-benefit evidence, the adoption outcome remains unscored — not mixed, not failure. Independent ecosystem readiness (dchest.com WASM shims intended to migrate to native WebCrypto; Node v24/Deno adding PQC to their WebCrypto) signals interest, not adoption of this Chrome feature.",
       "evidenceIds": [
         "s1",
         "s7",
         "s9",
-        "s13"
+        "s13",
+        "s16",
+        "s17",
+        "s18",
+        "s19",
+        "s20",
+        "s21",
+        "s22",
+        "s23"
       ],
-      "limitations": "Too early; revisit after stable default-on shipment."
+      "limitations": "Per the skill rule, absent a predeclared target and absent production/retention evidence, the adoption outcome is unscored rather than mixed; 0% is gated-behind-flag measurement, not a demand signal; no checkpoint-aligned, unique-site, production, retention, task-success, user-benefit, or target evidence exists; revisit after default-on stable shipment."
     },
     "interoperability": {
       "status": "mixed",
@@ -208,7 +226,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "Overall this is a well-motivated, soundly-engineered addition to a real, independently-validated gap, executed honestly so far through DevTrial (M150) and a properly-justified Origin Trial (M151-154). It does not conceal its limitations: it is single-engine, pre-standardization (WICG CG draft), and not Baseline, with TAG/security/privacy reviews still Pending. Many outcome dimensions (adoption, support, end-user impact) are unscored because the feature has not shipped by default, so this is a mid-experiment launch rather than a settled success or failure. The mixed verdict preserves the genuine tension between strong problem/engineering execution and open interoperability/standards gaps."
+      "finding": "Overall this is a well-motivated, soundly-engineered addition to a real, independently-validated gap, executed honestly so far through DevTrial (M150) and a properly-justified Origin Trial (M151-154). It does not conceal its limitations: it is single-engine, pre-standardization (WICG CG draft), and not Baseline, with TAG/security/privacy reviews still Pending. Many outcome dimensions (adoption, support, end-user impact) are unscored because the feature has not shipped by default — Chrome usage telemetry cached 2026-07-22 shows 0% across all exact feature counters (consistent with flag-gating), so adoption has a measured level but no predeclared target to score against — making this a mid-experiment launch rather than a settled success or failure. The mixed verdict preserves the genuine tension between strong problem/engineering execution and open interoperability/standards gaps."
     }
   },
   "sources": [
@@ -391,6 +409,102 @@
         "Single launch event for this feature within the run scope: 150:In developer trial (Behind a flag)"
       ],
       "limitations": "Run scoped to v140-v150, so the M151-154 Origin Trial events are out of scope and not listed here (captured via cached record + beta post instead)."
+    },
+    {
+      "id": "s16",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/evidence/metrics/features/5198951632470016.json",
+      "publisher": "Chrome usage telemetry (cached ChromeStatus feature-popularity metrics evidence)",
+      "publishedOrObservedAt": "2026-07-22T18:07:22Z",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "mappingStatus multiple-counters; all 12 mapped counters are scope=exact, confidence=exact (no broader WebDX family/property counter); five 'New Method' counters (5830, 5831, 5832, 5833, 5901) and seven 'New Algorithm' counters (5678, 5679, 5680, 5681, 5682, 5683, 5898); seven counters have timeline points and every observed point is 0%; five counters (5830, 5831, 5832, 5898, 5901) have zero timeline points; M150 DevTrial launch checkpoint stableDate 2026-06-30 with atStable/day30/day90/day180 all null; origin-trial counter mapping (stage 5130785803862016 -> bucket 5679) reuses the same exact feature counter; interpretation (numerator = Chrome page loads on which counter fired; denominator = measured Chrome HTTP/HTTPS page loads; not equivalent to unique developers/sites/users/success/satisfaction/benefit); cautions (zero/missing/delayed points are not proof of zero real-world use)."
+      ],
+      "limitations": "Cache assembled 2026-07-22 (after the 2026-07-19 run cutoff); per-counter observations date to 2026-05-02/05-17, before the M150 DevTrial stable (2026-06-30) and the cache; counters are exact feature counters behind a flag, so 0% measures gating not demand; no checkpoint-aligned values; no unique-site/production/retention/target evidence."
+    },
+    {
+      "id": "s17",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5833",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5833)",
+      "publishedOrObservedAt": "2026-05-17",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'SubtleCryptoDecapsulateBits' (bucket 5833, 'New Methods' group, popularity page /metrics/feature/timeline/popularity/5833): latest and peak value 0% of measured Chrome HTTP/HTTPS page loads, observed 2026-05-17 (1 timeline point); no positive points."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit; flag-gated, so 0% measures the gate not demand; single observed point predates the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
+    },
+    {
+      "id": "s18",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5678",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5678)",
+      "publishedOrObservedAt": "2026-05-02",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'CryptoAlgorithmChaCha20Poly1305' (bucket 5678, 'New Algorithms' group, popularity page /metrics/feature/timeline/popularity/5678): latest and peak value 0% of measured Chrome HTTP/HTTPS page loads, observed 2026-05-02 (1 timeline point); no positive points."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit; flag-gated, so 0% measures the gate not demand; single observed point predates the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
+    },
+    {
+      "id": "s19",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5679",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5679)",
+      "publishedOrObservedAt": "2026-05-17",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'CryptoAlgorithmMlDsa44' (bucket 5679, 'New Algorithms' group, popularity page /metrics/feature/timeline/popularity/5679), also registered as the origin-trial counter for OT stage 5130785803862016: latest value 0% on 2026-05-17, peak 0% on 2026-05-02 (2 timeline points); no positive points. Being OT-registered does not make this an OT-participation share — it is the same exact feature counter."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit, and not OT-participation share; flag-gated, so 0% measures the gate not demand; observed points (2026-05-02/05-17) predate the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
+    },
+    {
+      "id": "s20",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5680",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5680)",
+      "publishedOrObservedAt": "2026-05-02",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'CryptoAlgorithmMlDsa65' (bucket 5680, 'New Algorithms' group, popularity page /metrics/feature/timeline/popularity/5680): latest and peak value 0% of measured Chrome HTTP/HTTPS page loads, observed 2026-05-02 (1 timeline point); no positive points."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit; flag-gated, so 0% measures the gate not demand; single observed point predates the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
+    },
+    {
+      "id": "s21",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5681",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5681)",
+      "publishedOrObservedAt": "2026-05-02",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'CryptoAlgorithmMlDsa87' (bucket 5681, 'New Algorithms' group, popularity page /metrics/feature/timeline/popularity/5681): latest and peak value 0% of measured Chrome HTTP/HTTPS page loads, observed 2026-05-02 (1 timeline point); no positive points."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit; flag-gated, so 0% measures the gate not demand; single observed point predates the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
+    },
+    {
+      "id": "s22",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5682",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5682)",
+      "publishedOrObservedAt": "2026-05-02",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'CryptoAlgorithmMlKem768' (bucket 5682, 'New Algorithms' group, popularity page /metrics/feature/timeline/popularity/5682): latest and peak value 0% of measured Chrome HTTP/HTTPS page loads, observed 2026-05-02 (1 timeline point); no positive points."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit; flag-gated, so 0% measures the gate not demand; single observed point predates the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
+    },
+    {
+      "id": "s23",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5683",
+      "publisher": "Chrome Platform Status (feature-popularity timeline, bucket 5683)",
+      "publishedOrObservedAt": "2026-05-02",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter 'CryptoAlgorithmMlKem1024' (bucket 5683, 'New Algorithms' group, popularity page /metrics/feature/timeline/popularity/5683): latest and peak value 0% of measured Chrome HTTP/HTTPS page loads, observed 2026-05-02 (1 timeline point); no positive points."
+      ],
+      "limitations": "0% is the share of measured page loads on which the counter fired — not unique developers/sites/users/success/satisfaction/benefit; flag-gated, so 0% measures the gate not demand; single observed point predates the M150 stable (2026-06-30) and the 2026-07-22 cache; checkpoint values null."
     }
   ],
   "successes": [
@@ -420,7 +534,8 @@
     "Add a retrospective/evidence-validation rule that detects discrepancies between ChromeStatus standards-maturity metadata and the spec's self-described venue (WICG CG vs Working Group) and flags them as evidence-and-communication defects.",
     "Add a phase-03 (developer trials) checklist item distinguishing open-flag trials from recruited cohorts, requiring a cohort description and a findings-publication plan, and scoring 'No signals' as unknown rather than neutral.",
     "Add an interoperability scoring rule for early-stage security primitives that distinguishes 'single-engine, CG draft, openly accepted risk, multi-engine neutral+implementing' from genuinely stalled interop, so early features are scored without over-claiming future Baseline.",
-    "Add a source-retrievability rule: when msgid-form Google Groups intent URLs fail the reader, automatically fall back to the announcement_url (Ready for Developer Testing) and the cr-status.appspot.com gate page, and record attempted-but-unretrieved sources in completion.missingEvidence."
+    "Add a source-retrievability rule: when msgid-form Google Groups intent URLs fail the reader, automatically fall back to the announcement_url (Ready for Developer Testing) and the cr-status.appspot.com gate page, and record attempted-but-unretrieved sources in completion.missingEvidence.",
+    "Add a usage-telemetry handling rule: when cached Chrome usage telemetry exists but launch-relative checkpoints (atStable/day30/day90/day180) are null and the latest observations predate the relevant stable date, record the measured level explicitly (e.g., 0% behind a flag) rather than treating the feature as having no adoption data, and keep the adoption outcome unscored when there is no predeclared target — distinguishing measured-zero-behind-a-gate from absent telemetry."
   ],
   "completion": {
     "status": "partial",
@@ -431,8 +546,9 @@
       "Chromium tracking bug (issues.chromium.org/issues/450627017) detail and per-algorithm WPT pass/fail/regression data (bug requires authentication; wpt.fyi detail did not render).",
       "Developer-trial cohort, participation, task-completion, and published findings (none found; 'Web developers: No signals').",
       "Origin Trial participant denominator and interim/final results (OT just opened in Chrome 151 beta).",
-      "Adoption/production-deployment evidence, support-issue history, and end-user impact (feature not shipped by default)."
+      "Chrome usage telemetry now exists (exact-scope feature counters, cached 2026-07-22) and reads 0% across all observed counters, but launch-relative checkpoints are null and there is no unique-site, production-deployment, retention, task-success, user-benefit, or predeclared usage-target evidence (feature remains flag-gated/OT).",
+      "Support-issue history and end-user impact data (feature not shipped by default; no public support telemetry yet)."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:22Z"
   }
 }

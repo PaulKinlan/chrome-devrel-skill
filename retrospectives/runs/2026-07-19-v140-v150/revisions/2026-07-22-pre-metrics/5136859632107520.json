@@ -1,0 +1,520 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5136859632107520,
+    "name": "Web Speech API: On-Device Recognition Quality",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5136859632107520",
+    "webFeature": "speech-recognition",
+    "blinkComponent": "Blink>Speech",
+    "finchName": "OnDeviceWebSpeechQuality",
+    "owner": "evliu@google.com",
+    "specLink": "https://webaudio.github.io/web-speech-api",
+    "category": "Miscellaneous"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:Enabled by default:5136859632107520",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem, owner, and evidence inventory are clearly stated. The feature adds a `quality` enum ('command'/'dictation'/'conversation') to SpeechRecognitionOptions so on-device recognition (processLocally:true) can declare a semantic capability floor before falling back to cloud. Owner is evliu@google.com; tracking bug, explainer, spec, initial proposal, and TAG/Mozilla/WebKit review links all exist. Motivation is concrete: opaque on-device model capability forces apps like Meet to default to cloud, negating privacy/latency gains.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s2",
+        "s10"
+      ],
+      "limitations": "Intake treats the API shape as the solution; the named beneficiary (Google Meet) is first-party and was not independently validated at intake."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Problem/use-case articulation is strong and the alternatives analysis (rejecting raw WER for fingerprinting reasons; rejecting relative Low/Med/High for lacking an absolute floor) is defensible and privacy-aware. However, independent demand evidence is thin: Web developers = 'No signals', and the only named customer is first-party Google Meet. Adjacent-platform patterns (Android/ChromeOS on-device, native dictation) are referenced only implicitly; no public developer research, interviews, or co-design partners are documented.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s2",
+        "s9",
+        "s6"
+      ],
+      "limitations": "No public ecosystem/customer research ledger; 'meet.google.com requires this' is a commitment from the same company shipping the API, not independent demand."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A working implementation exists and ships in M150 desktop; the spec PR adding SpeechRecognitionQuality landed before stable. But the ChromeStatus record carries no samples, no docs, no devtrial instructions, and no friction logs; from the start the capability is desktop-only because Android/ChromeOS do not yet support on-device Web Speech. Feature detection via available() was praised by an API owner.",
+      "evidenceIds": [
+        "s1",
+        "s7",
+        "s9",
+        "s13"
+      ],
+      "limitations": "No observable task-based friction log, compatibility matrix, or representative-developer prototype evidence in the record."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial or origin trial was conducted for this feature (origintrial=false, no flag/OT stage, straight Intent to Prototype -> Intent to Ship). Rationale for not-relevant: there was no flag-gated or OT cohort to review, not merely that it was untested. Given the only customer is first-party, this skipped a stage that could have surfaced independent feedback and the spec algorithm gap.",
+      "evidenceIds": [
+        "s1",
+        "s8",
+        "s9"
+      ],
+      "limitations": "Risk: skipping trials is reasonable for a tightly-scoped first-party-driven additive enum, but it removed the main route to independent signal."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG reviewed it early (w3ctag/design-reviews#1189) and closed 'satisfied with concerns', explicitly tagging 'lack of multi-stakeholder support'; at TAG time Mozilla was 'unofficially favorable' and WebKit 'Not yet'. Mozilla's formal standards-position issue (#1375) is still Open / project status 'Needs proposed position' (assigned padenot), and WebKit's (#634) is Open with no assignee and 'WebKittens: No response'. The proposal-specific Web-developator view is 'No signals'. So review occurred but multi-stakeholder support is materially absent.",
+      "evidenceIds": [
+        "s6",
+        "s4",
+        "s5",
+        "s1"
+      ],
+      "limitations": "I could not read full position-comment bodies (GitHub issue rendering exposed only metadata), but labels/project-status are unambiguous."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial or field experiment was run (no OT stage, no hypotheses/metrics). Not-relevant because the feature did not pass through a field experiment, by design. This is defensible for a small additive enum but means no real-origin evidence exists on developer integration or model-availability behavior.",
+      "evidenceIds": [
+        "s1",
+        "s9"
+      ],
+      "limitations": "N/A — stage genuinely absent."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (May 5-13 2026) reached 3 LGTMs (Alex Russell, Vladimir Levin, Daniel Bratell) but only after senior API owners pushed back: Rick Byers asked 'do we know of any website who wants to use this API? … we don't ship APIs without known customers' and 'why not [WPT]?', and flagged that the spec PR was not yet landed; Alex Russell was 'surprising this didn't go through TAG review' (the template left TAG review blank). Evan's answers: only Google Meet needs it for M150; Android/ChromeOS unsupported so no WPT infra to mock hardware-dependent ML. Security_review_status and privacy_review_status were both 'Pending' at ship; rollout is desktop-only, 'enabled for all users'.",
+      "evidenceIds": [
+        "s9",
+        "s1",
+        "s7"
+      ],
+      "limitations": "The 3 LGTMs are real approvals, but the thread shows the ship decision rested on a single first-party customer and accepted no-WPT and pending privacy/security reviews."
+    },
+    "release": {
+      "status": "partial",
+      "finding": "Chrome 150 stable reached desktop on 2026-06-30, so the 'Enabled by default' event for this feature has occurred by the evidence cutoff (the cached ChromeStatus record still shows 'Proposed'/is_released:false only because accurate_as_of=2026-06-08 predates stable). No DevRel blog post, MDN page, sample, or docs specifically for the quality enum were found; official DevRel coverage exists only for the parent on-device feature (Chrome 139). The cached record is also not release-notes reviewed/publish-ready.",
+      "evidenceIds": [
+        "s15",
+        "s1",
+        "s17",
+        "s16"
+      ],
+      "limitations": "Could not confirm a dedicated release asset for this feature; absence of evidence is not proof of absence, but no independent source surfaced one."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Feature shipped ~3 weeks before the evidence cutoff. The only documented (planned) adopter is first-party Google Meet; no public production adoption, framework/library integration, or usage-counter data exists yet for the quality enum (no webdx UseCounter bucket linked).",
+      "evidenceIds": [
+        "s9",
+        "s1",
+        "s14"
+      ],
+      "limitations": "Too early to score adoption; independent (non-Google) production use is unobserved."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No post-ship support data exists yet for the quality enum. Contextual risk: the parent on-device feature already suffered a regression ('On-device Web Speech API broken as part of the .133 update', issue 444393111), and there is an open privacy/fingerprinting concern (issue 521896368: 'processLocally=false should not silently prefer on-device, and on-device routing bypasses available()'s fingerprinting protection') that affects the on-device path this feature extends. No MDN page for SpeechRecognitionQuality at cutoff.",
+      "evidenceIds": [
+        "s12",
+        "s11",
+        "s16"
+      ],
+      "limitations": "Issue 521896368 and tracking bug 476168420 could not be fully read (server 500 / URL rejected); only titles/metadata captured."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New additive capability, not a deprecation or removal. Nothing to migrate or remove.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "N/A."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Genuine, well-argued problem (opaque on-device model quality forces cloud fallback) and a clean, privacy-motivated design (semantic levels over raw WER to limit fingerprinting). But independent developer demand is unproven: the sole customer is first-party Google Meet and Web-developator signals are 'No signals'. available()/install() feature detection is a genuine usability win endorsed by an API owner.",
+      "evidenceIds": [
+        "s3",
+        "s9",
+        "s1",
+        "s6",
+        "s7"
+      ],
+      "limitations": "No survey/interview denominator; Meet is not independent."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "The feature is developer-facing metadata for choosing on-device vs cloud; no public end-user impact (e.g., observed Meet caption-quality improvement attributable to the hint) is measurable yet. Permissions-Policy gating ('on-device-speech-recognition', default 'self') is a reasonable user-control baseline. Insufficient evidence to score.",
+      "evidenceIds": [
+        "s7",
+        "s9"
+      ],
+      "limitations": "No end-user outcome data; shipped only weeks ago, desktop-only."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Shipped 2026-06-30; only first-party planned adopter (Meet); no public production adoption, framework integration, or usage data for the quality enum. Cannot defensibly score success or failure from shipment or its absence.",
+      "evidenceIds": [
+        "s15",
+        "s9",
+        "s1"
+      ],
+      "limitations": "Premature; no UseCounter/HTTP Archive/web-features data linked."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Low web-compat risk (additive enum with a default), and the surface lives in the shared Web Speech spec. But cross-engine reality is weak and explicitly so: Firefox will NOT implement/use the hint (it ships a single on-device LLM), WebKit has 'No signal' and no active Web Speech work, the TAG flagged 'lack of multi-stakeholder support', there is NO WPT coverage, and the feature is Chrome-desktop-only. Effectively a single-engine capability at ship.",
+      "evidenceIds": [
+        "s9",
+        "s1",
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "limitations": "Interop is latent rather than realized; a second engine could adopt the shared spec later."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Implementation ships on time in M150 desktop and the spec PR landed. Material quality gaps: (1) spec inconsistency — the §4.1.4 availability algorithm never references the `quality` field even though the available() description promises quality-aware behavior, so the normative steps don't actually enforce the floor; (2) no WPT (acknowledged, due to inability to mock hardware-dependent ML); (3) desktop-only because Android/ChromeOS lack on-device Web Speech; (4) privacy/security reviews 'Pending' at ship.",
+      "evidenceIds": [
+        "s7",
+        "s9",
+        "s1",
+        "s11"
+      ],
+      "limitations": "Could not read the tracking bug or fingerprinting issue bodies; spec-gap inference is from the rendered normative algorithm."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Strong artifacts (explainer, spec, TAG review, intent threads). But several accuracy problems: ChromeStatus records Firefox as 'Positive' despite the formal Mozilla position issue being Open/'Needs proposed position' and Mozilla stating it won't use the hint; the Intent-to-Ship template left 'TAG review' as 'No information provided', forcing API owners to discover TAG review #1189 mid-thread; cached spec maturity says 'Working draft / Working Group' while the document is a W3C Community Group draft; security/privacy reviews 'Pending'; record not release-notes reviewed.",
+      "evidenceIds": [
+        "s1",
+        "s9",
+        "s6",
+        "s4",
+        "s7"
+      ],
+      "limitations": "Some of these are process-data lags rather than misrepresentations, but they overstate multi-stakeholder readiness."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No post-ship support volume or recurrence data exists yet. Parent-feature regressions (444393111) and an open fingerprinting concern (521896368) indicate the on-device path carries support/security risk, but nothing specific to the quality enum is observable.",
+      "evidenceIds": [
+        "s12",
+        "s11",
+        "s16"
+      ],
+      "limitations": "Too early; relevant issue bodies unreadable."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A defensible, well-scoped, privacy-motivated additive capability shipped on schedule for a real (first-party) need, with an early TAG review and a landed spec. But it launched as a Chrome-desktop-only feature with no WPT, thin multi-stakeholder support (Firefox won't use it, WebKit no signal), an incomplete normative algorithm for the new option, pending privacy/security reviews, and no independent developer demand or post-ship adoption evidence. Net: sound direction, weak interoperability/evidence posture.",
+      "evidenceIds": [
+        "s9",
+        "s6",
+        "s7",
+        "s1",
+        "s4",
+        "s5",
+        "s15"
+      ],
+      "limitations": "Overall conflates a directionally sound design with weak cross-engine/evidence realization; post-ship outcomes remain unscored."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5136859632107520",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-06-08)",
+      "publishedOrObservedAt": "2026-06-08T17:49:28Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "feature metadata",
+        "single launch event (M150 Enabled by default)",
+        "desktop-only rollout",
+        "Firefox recorded as Positive, WebKit No signal, WebDev No signals",
+        "security/privacy review Pending",
+        "finch OnDeviceWebSpeechQuality"
+      ],
+      "limitations": "Record predates Chrome 150 stable (2026-06-30), so it still shows status 'Proposed'/is_released:false; spec maturity mislabeled as Working Group."
+    },
+    {
+      "id": "s2",
+      "url": "https://github.com/WebAudio/web-speech-api/issues/182",
+      "publisher": "WebAudio/web-speech-api (GitHub)",
+      "publishedOrObservedAt": "2026-01-12T22:23:27Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "initial public proposal",
+        "problem statement",
+        "named apps (Meet/Zoom) defaulting to cloud",
+        "WebIDL with command/dictation/conversation"
+      ],
+      "limitations": "Proposal issue body; comment thread not rendered."
+    },
+    {
+      "id": "s3",
+      "url": "https://github.com/WebAudio/web-speech-api/blob/main/explainers/quality-levels.md",
+      "publisher": "WebAudio/web-speech-api (Evan Liu, Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "explainer",
+        "alternatives rejected (raw WER fingerprinting; relative Low/Med/High)",
+        "privacy rationale for coarse buckets"
+      ],
+      "limitations": "Explainer's available() return type is inconsistent (boolean vs 'available' string); superseded by spec text."
+    },
+    {
+      "id": "s4",
+      "url": "https://github.com/mozilla/standards-positions/issues/1375",
+      "publisher": "Mozilla standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-03-17T17:08:07Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla review requested",
+        "Open / project status 'Needs proposed position'",
+        "assigned padenot",
+        "venue W3C CG"
+      ],
+      "limitations": "No posted position label/comment rendered; contradicts ChromeStatus 'Positive' record."
+    },
+    {
+      "id": "s5",
+      "url": "https://github.com/WebKit/standards-positions/issues/634",
+      "publisher": "WebKit standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-03-17T17:08:10Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit review requested",
+        "Open, no assignee, no labels",
+        "WebKittens: No response",
+        "TAG review #1189 cross-linked"
+      ],
+      "limitations": "No WebKit position posted."
+    },
+    {
+      "id": "s6",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1189",
+      "publisher": "W3C TAG design-reviews (GitHub)",
+      "publishedOrObservedAt": "2026-02-02T22:30:04Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG CG early review",
+        "Closed 'satisfied with concerns'",
+        "label 'lack of multi-stakeholder support'",
+        "Mozilla 'unofficially favorable', WebKit 'Not yet'",
+        "discussed at Audio WG / TPAC 2025"
+      ],
+      "limitations": "TAG comment detail not rendered beyond labels."
+    },
+    {
+      "id": "s7",
+      "url": "https://webaudio.github.io/web-speech-api/",
+      "publisher": "W3C Web Speech API (Editor: Evan Liu, Google)",
+      "publishedOrObservedAt": "2026-05-21",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Draft Community Group Report 21 May 2026 (not a Working Group spec)",
+        "SpeechRecognitionQuality enum + quality member present",
+        "available()/install() gated by Permissions-Policy 'on-device-speech-recognition' default 'self'",
+        "§4.1.4 availability algorithm omits the quality field"
+      ],
+      "limitations": "Snapshot; commit-specific revision not pinned."
+    },
+    {
+      "id": "s8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/kR1Q5pcrk1Y",
+      "publisher": "blink-dev (Chromestatus bot / Evan Liu)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype",
+        "summary, motivation, explainer/spec/bug links",
+        "no estimated milestones"
+      ],
+      "limitations": "Exact post date not captured; minimal discussion beyond the template."
+    },
+    {
+      "id": "s9",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/P8P-x7AnC6I",
+      "publisher": "blink-dev (Chromestatus, Rick Byers, Alex Russell, Reilly Grant, Evan Liu, Vladimir Levin, Daniel Bratell)",
+      "publishedOrObservedAt": "2026-05-05T19:48:15Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship M150 desktop",
+        "Rick Byers: no known customer concern, spec PR not landed, why no WPT",
+        "Alex Russell: 'surprising this didn't go through TAG review', naming concern",
+        "Evan: only Google Meet needs it for M150; Android/ChromeOS unsupported; spec PR landed; TAG #1189 satisfied-with-concerns",
+        "3 LGTMs",
+        "Gecko 'Positive (won't use the hint)', WebKit 'No signal', WebDev 'No signals'"
+      ],
+      "limitations": "Google Groups thread; some context (Jeff Yasskin feature-detection clarification) referenced but not directly rendered."
+    },
+    {
+      "id": "s10",
+      "url": "https://g-issues.chromium.org/issues/476168420",
+      "publisher": "Chromium issue tracker (Blink>Speech)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "tracking bug for the feature (per ChromeStatus)"
+      ],
+      "limitations": "Could not read body (server 500); existence/title only."
+    },
+    {
+      "id": "s11",
+      "url": "https://issues.chromium.org/issues/521896368",
+      "publisher": "Chromium issue tracker (Blink>Speech)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "support",
+      "supports": [
+        "privacy/fingerprinting concern: processLocally=false silently prefers on-device and on-device routing bypasses available()'s fingerprinting protection"
+      ],
+      "limitations": "Could not read body (server 500); title only; pertains to parent on-device path."
+    },
+    {
+      "id": "s12",
+      "url": "https://issues.chromium.org/issues/444393111",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "support",
+      "supports": [
+        "parent on-device Web Speech API regression ('broken as part of the .133 update')"
+      ],
+      "limitations": "Title/snippet only; body not read."
+    },
+    {
+      "id": "s13",
+      "url": "https://github.com/WebAudio/web-speech-api/blob/main/explainers/on-device-speech-recognition.md",
+      "publisher": "WebAudio/web-speech-api (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "parent on-device feature this depends on",
+        "supported languages list",
+        "privacy masking via Web Translation API techniques",
+        "Meet/Khan Academy use cases"
+      ],
+      "limitations": "Context/dependency evidence, not the quality feature itself."
+    },
+    {
+      "id": "s14",
+      "url": "https://medium.com/@roman_fedyskyi/on-device-speech-uis-in-chrome-139-4b9f0397b9c9",
+      "publisher": "Medium (Roman Fedytskyi)",
+      "publishedOrObservedAt": "2025-09-06T18:29:24Z",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "press",
+      "supports": [
+        "independent positive reception of parent on-device feature",
+        "fintech/e-commerce privacy rationale",
+        "notes smaller on-device vocab may require server fallback (validates the problem the quality feature addresses)"
+      ],
+      "limitations": "Covers the parent on-device feature (Chrome 139), not the quality enum; single third-party blog."
+    },
+    {
+      "id": "s15",
+      "url": "https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop_0175352312.html",
+      "publisher": "Chrome Releases blog / Chromium Dash",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chrome 150 stable for desktop promoted 2026-06-30 (Early Stable 2026-06-17)",
+        "confirms the M150 launch event has occurred by cutoff"
+      ],
+      "limitations": "Blog post body not directly read; corroborated by multiple search snippets (Chromium Dash, fosspost, eosl.date)."
+    },
+    {
+      "id": "s16",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/processLocally",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "support",
+      "supports": [
+        "MDN documents parent processLocally; no dedicated SpeechRecognitionQuality page referenced in Mozilla position issue (MDN URL: No response)"
+      ],
+      "limitations": "Indicates docs gap for the quality enum; not exhaustive MDN audit."
+    },
+    {
+      "id": "s17",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-139",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "press",
+      "supports": [
+        "official DevRel coverage of the parent on-device Web Speech feature (Chrome 139)"
+      ],
+      "limitations": "Snippet only; no equivalent DevRel asset found for the quality enum."
+    },
+    {
+      "id": "s18",
+      "url": "https://chromestatus.com/feature/6090916291674112",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T05:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "parent 'On-device Web Speech API' feature (shipped Chrome 139) that this quality feature extends"
+      ],
+      "limitations": "Detail not read; dependency referenced via search snippet."
+    }
+  ],
+  "successes": [
+    "Clean, privacy-motivated design: semantic quality levels (command/dictation/conversation) deliberately chosen over raw WER to reduce fingerprinting, with feature detection via available()/install() (s3, s7, s9).",
+    "Early TAG review obtained (Feb 2026) and resolved 'satisfied with concerns'; the spec PR adding the enum landed before Chrome 150 stable (s6, s9, s7).",
+    "Real production driver: first-party Google Meet needs the capability floor for on-device, privacy-preserving high-stakes transcription, giving a concrete ship rationale (s9, s13).",
+    "Low web-compat risk — additive enum with a sensible default and Permissions-Policy gating (s7, s1)."
+  ],
+  "failures": [
+    "Multi-stakeholder support is materially absent at ship: Firefox will not implement/use the hint, WebKit has 'No signal' and no active Web Speech work, Web developers 'No signals', and the TAG explicitly flagged 'lack of multi-stakeholder support' — effectively a Chrome-desktop-only feature (s9, s4, s5, s6, s1).",
+    "Evidence/communication accuracy gaps: ChromeStatus records Firefox as 'Positive' while the formal Mozilla position issue is Open/'Needs proposed position' and Mozilla says it won't use the hint; the Intent-to-Ship template left TAG review as 'No information provided'; cached spec maturity says 'Working Group/Working draft' but the document is a Community Group draft; security and privacy reviews are 'Pending' at ship (s1, s9, s4, s6, s7).",
+    "Spec/implementation quality gaps: the normative §4.1.4 availability algorithm never references the `quality` field (so the floor is not actually enforced in the spec's decision steps); no WPT coverage; desktop-only because Android/ChromeOS lack on-device Web Speech (s7, s9, s1).",
+    "Release enablement/documentation gaps: no DevRel blog, MDN page, sample, or docs found for the quality enum; record not release-notes reviewed/publish-ready (s16, s1, s17)."
+  ],
+  "counterfactuals": [
+    "If an origin trial or broader developer trial with non-Google partners had been run, the 'No signals' Web-developator view could have produced at least one independent customer and likely surfaced the spec availability-algorithm gap before ship (s9, s6).",
+    "If the Intent-to-Ship template had auto-linked the existing TAG review (#1189) and the open Mozilla/WebKit position issues, API owners would not have had to discover them mid-thread, and 'lack of multi-stakeholder support' would have been an explicit, accepted risk in the record (s9, s6, s4, s5).",
+    "If `quality` had been wired into the normative availability algorithm (and a WPT mock added), the feature would be independently implementable and conformance-testable as the TAG expects, instead of being advisory in the steps (s7).",
+    "If formal privacy/security reviews had completed before ship, the open fingerprinting concern (issue 521896368) could have been resolved or documented as accepted risk before an enum whose stated purpose includes fingerprinting mitigation shipped (s11, s1)."
+  ],
+  "skillImprovements": [
+    "prepare-to-ship packet: add a 'first-party-only customer' check that flags when the sole known customer is a Google product and Web-developator signals are 'No signals', requiring either an independent partner at the evidence-ladder 'trial commitment' stage or an explicitly accepted, recorded risk before LGTM.",
+    "ChromeStatus field-validation rule: a standards-position view must cite a posted formal position; 'unofficially favorable' or an Open/'Needs proposed position' issue must not be recorded as 'Positive'; spec maturity must be sourced from the spec's own Status section (Community Group vs Working Group).",
+    "intent-template completeness check: block 'No information provided' on TAG review / interoperability / WPT fields when a TAG review or standards-position issue already exists, and auto-link them.",
+    "spec-vs-explainer consistency check: detect when a newly added option (e.g. `quality`) is absent from the normative algorithm intended to consume it, and flag before ship.",
+    "additive-single-engine outcome regression: for features shipping in one engine only, require a WPT plan (or an explicit non-goal with rationale) and a re-evaluation trigger when a second engine ships the underlying capability.",
+    "release-comms gate: a feature marked 'Enabled by default' should require at least one shipped developer artifact (MDN/docs/sample/blog) or an accepted exception before counting as release-complete."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-ship adoption/usage data for the quality enum (no UseCounter/HTTP Archive/web-features bucket linked; feature shipped 2026-06-30).",
+      "Independent (non-Google) production adoption or partner commitment for this feature.",
+      "Full bodies of tracking bug 476168420 and privacy issue 521896368 (both returned server 500 / were unreadable; only titles/metadata captured).",
+      "A dedicated DevRel/MDN artifact for the quality enum (could not confirm one exists).",
+      "Post-ship support volume / recurrence data (too early)."
+    ],
+    "reviewedAt": "2026-07-20T06:00:00Z"
+  }
+}

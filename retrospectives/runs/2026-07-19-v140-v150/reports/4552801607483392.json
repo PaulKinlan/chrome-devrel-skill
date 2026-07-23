@@ -112,14 +112,15 @@
     },
     "adoption": {
       "status": "partial",
-      "finding": "Strong second-engine adoption: Firefox shipped highlightsFromPoint in Firefox 150 (Bugzilla 1917991 RESOLVED FIXED, release-noted; Firefox even helped drive the ranges() API change), and ecosystem education exists (MDN, CSS-Tricks, LogRocket, master.dev, a Reddit r/css syntax-highlighting post). However, there is no public Chrome use-counter or usage link (webdx_usecounter_enum is null), no attributable production case study for highlightsFromPoint itself, and the base Custom Highlight API only recently reached cross-engine Baseline (2025), so the addressable installed base was just emerging at ship.",
+      "finding": "Strong second-engine adoption: Firefox shipped highlightsFromPoint in Firefox 150 (Bugzilla 1917991 RESOLVED FIXED, release-noted; Firefox even helped drive the ranges() API change), and ecosystem education exists (MDN, CSS-Tricks, LogRocket, master.dev, a Reddit r/css syntax-highlighting post). A first-party Chrome usage source now exists as a WebDX 'Highlight' family counter (bucket_id 269, declared-family mapping; the ChromeStatus webdx_usecounter_enum field is null, so there is no exact per-feature counter). The family counter fired on 0.00045741 (~0.0457%) of measured Chrome page loads at Chrome 140 stable (2025-09-02), 0.00041832 (~0.0418%) at day30 (2025-10-02), 0.00041814 (~0.0418%) at day90 (2025-12-01), and 0.00026376 (~0.0264%) at day180 (2026-03-01); it peaked at 0.00070977 (~0.0710%) on 2026-04-15 and was 0.00056841 (~0.0568%) on 2026-07-20. Because this is the base Custom Highlight API family (first positive 2024-12-20, before highlightsFromPoint shipped), it cannot isolate highlightsFromPoint adoption; no attributable production case study for highlightsFromPoint itself exists, and the base Custom Highlight API only recently reached cross-engine Baseline (2025), so the addressable installed base was just emerging at ship.",
       "evidenceIds": [
         "S1",
         "S10",
         "S11",
-        "S17"
+        "S17",
+        "S18"
       ],
-      "limitations": "Site/production adoption is unmeasurable from public evidence; the community signals found are largely about the base Custom Highlight API rather than highlightsFromPoint specifically."
+      "limitations": "The only available Chrome counter is a WebDX family counter (Highlight property), broader than highlightsFromPoint, so highlightsFromPoint-specific site/production adoption remains unmeasurable. No predeclared adoption target exists, so the measured family level/trend is described rather than scored; 'mixed' is not substituted for an absent threshold. Community signals found are largely about the base Custom Highlight API rather than highlightsFromPoint specifically."
     },
     "support": {
       "status": "partial",
@@ -163,14 +164,15 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Engine adoption is positive (Chrome/Edge 140, Firefox 150) and education content exists, but there is no public usage metric for sites/developers (no Chrome use counter linked; webdx_usecounter_enum null) and no attributable production deployment of highlightsFromPoint. Per method, missing usage/adoption evidence remains unscored rather than inferred from engine ship or tutorial volume.",
+      "finding": "Engine adoption is positive (Chrome/Edge 140, Firefox 150) and education content exists. A first-party Chrome usage source now exists as a WebDX 'Highlight' family counter (bucket_id 269, declared-family mapping; ChromeStatus webdx_usecounter_enum is null, so there is no exact per-feature counter): the family fired on 0.00045741 (~0.0457%) of measured Chrome page loads at Chrome 140 stable (2025-09-02), 0.00041832 (~0.0418%) at day30, 0.00041814 (~0.0418%) at day90, declined to 0.00026376 (~0.0264%) at day180 (2026-03-01), peaked at 0.00070977 (~0.0710%) on 2026-04-15, and stood at 0.00056841 (~0.0568%) on 2026-07-20. Because this is the base Custom Highlight API family (first positive 2024-12-20, before highlightsFromPoint shipped), it is not an exact highlightsFromPoint signal, and no attributable production deployment or retention evidence exists. Per method, with no predeclared target and no corroborating production/retention evidence, the measured family level/trend is described rather than scored; the outcome remains unscored (not mixed).",
       "evidenceIds": [
         "S1",
         "S10",
         "S11",
-        "S17"
+        "S17",
+        "S18"
       ],
-      "limitations": "Adoption is unmeasurable from public evidence; only engine-level and educational signals exist."
+      "limitations": "The only Chrome counter is a broader family counter (Highlight property), not an exact highlightsFromPoint counter, so highlightsFromPoint site/developer adoption remains unmeasurable. No predeclared adoption target, production case study, unique-site count, retention, task-success, or end-user-benefit evidence exists."
     },
     "interoperability": {
       "status": "mixed",
@@ -196,14 +198,15 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Launch communication is coherent and multi-channel (Edge blog with demo + MDN, Chrome 140 release notes, MDN reference, transparent blink-dev I2S thread). But the explainer was initially criticized as an 'IDL anti-pattern' that did not outline the developer problem (later fixed); the TAG marked user research and security/privacy self-review as 'N/A'; ChromeStatus security/privacy reviews are 'Pending'; the WebKit 'Support' claim is not corroborated by an open/resolved issue or implementation; and the ~4x performance claim is the authors' own microbenchmark, not independently reproduced.",
+      "finding": "Launch communication is coherent and multi-channel (Edge blog with demo + MDN, Chrome 140 release notes, MDN reference, transparent blink-dev I2S thread). But the explainer was initially criticized as an 'IDL anti-pattern' that did not outline the developer problem (later fixed); the TAG marked user research and security/privacy self-review as 'N/A'; ChromeStatus security/privacy reviews are 'Pending'; the WebKit 'Support' claim is not corroborated by an open/resolved issue or implementation; and the ~4x performance claim is the authors' own microbenchmark, not independently reproduced. First-party usage telemetry is now available only at the WebDX family level (Highlight counter), which corroborates broad-family reach but not highlightsFromPoint-specific adoption.",
       "evidenceIds": [
         "S1",
         "S5",
         "S13",
-        "S15"
+        "S15",
+        "S18"
       ],
-      "limitations": "Several 'no risk' claims are self-assessments rather than closed independent reviews; performance and adoption claims lack independent corroboration."
+      "limitations": "Several 'no risk' claims are self-assessments rather than closed independent reviews; the performance claim lacks independent corroboration, and highlightsFromPoint-specific adoption remains uncorroborated (only a broader family counter exists)."
     },
     "support": {
       "status": "unscored",
@@ -216,15 +219,16 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-incubated, genuinely useful, low-risk additive API that shipped cleanly in Chrome/Edge 140 and gained a second engine (Firefox 150) with a transparent, self-correcting intent process. It does not qualify as an unqualified success: no developer trial/origin trial was run for an interaction API; the API shape changed late during I2S; synchronous layout-forcing and hit-test-semantics risks were acknowledged but deferred; Safari has not shipped it (Baseline blocked); ChromeStatus security/privacy reviews remain 'Pending'; and production adoption is unmeasurable. Several dimensions are unscored due to missing public evidence, so the overall cannot be raised above mixed.",
+      "finding": "A well-incubated, genuinely useful, low-risk additive API that shipped cleanly in Chrome/Edge 140 and gained a second engine (Firefox 150) with a transparent, self-correcting intent process. It does not qualify as an unqualified success: no developer trial/origin trial was run for an interaction API; the API shape changed late during I2S; synchronous layout-forcing and hit-test-semantics risks were acknowledged but deferred; Safari has not shipped it (Baseline blocked); ChromeStatus security/privacy reviews remain 'Pending'; and highlightsFromPoint-specific production adoption is unmeasurable (the only available Chrome counter is a broader WebDX 'Highlight' family counter, not an exact per-feature counter). Several dimensions are unscored due to missing public evidence, so the overall cannot be raised above mixed.",
       "evidenceIds": [
         "S1",
         "S8",
         "S10",
         "S11",
-        "S15"
+        "S15",
+        "S18"
       ],
-      "limitations": "Overall is deliberately conservative per the method: success is not inferred from shipment, engine adoption, press sentiment, or absent criticism."
+      "limitations": "Overall is deliberately conservative per the method: success is not inferred from shipment, engine adoption, press sentiment, family-level usage, or absent criticism."
     }
   },
   "sources": [
@@ -241,7 +245,7 @@
         "Spec + explainer + bug + WPT links, finch 'HighlightsFromPoint', no origin trial, all_platforms, webdx_usecounter_enum null",
         "security_review_status and privacy_review_status 'Pending' despite ship"
       ],
-      "limitations": "Cached snapshot accurate_as_of 2025-08-07; later outcomes (e.g., Firefox 150 ship) not reflected. WebKit 'Support' not corroborated by underlying issue state."
+      "limitations": "Cached snapshot accurate_as_of 2025-08-07; later outcomes (e.g., Firefox 150 ship) not reflected. WebKit 'Support' not corroborated by underlying issue state. A null webdx_usecounter_enum means no exact per-feature counter; it does not mean no Chrome usage telemetry exists (a WebDX family counter covers this feature; see S18)."
     },
     {
       "id": "S2",
@@ -453,6 +457,20 @@
         "Ecosystem interest and education in the CSS Custom Highlight API (syntax highlighting, tutorials, Q&A)"
       ],
       "limitations": "Signals are largely about the base Custom Highlight API, not highlightsFromPoint specifically; no attributable production deployment of highlightsFromPoint."
+    },
+    {
+      "id": "S18",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=269",
+      "publisher": "Chrome Platform Status - WebFeature popularity timeline (cached UMA timeline snapshot, bucket_id 269 'Highlight'; SHA-256 fbd9caf0b80013bd898bbec26791234eadf9c2fa6e73a46aaed273e3e82fd864)",
+      "publishedOrObservedAt": "2026-07-20T00:00:00Z",
+      "retrievedAt": "2026-07-22T18:06:14.671Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX 'Highlight' family counter (bucket_id 269, declared-family mapping; ChromeStatus web_feature 'highlight' normalizes to webfeature counter Highlight) - the only mapped Chrome usage counter for this feature; there is no exact per-feature highlightsFromPoint counter (webdx_usecounter_enum null)",
+        "Latest measured value 0.00056841 (~0.0568%) of measured Chrome page loads on 2026-07-20; peak 0.00070977 (~0.0710%) on 2026-04-15; first positive 0.000004 (~0.0004%) on 2024-12-20 (before highlightsFromPoint shipped 2025-09-02, confirming the counter tracks the broader Custom Highlight API family, not the method)",
+        "Launch-relative checkpoints at Chrome 140 stable (2025-09-02): atStable 0.00045741 (~0.0457%), day30 (2025-10-02) 0.00041832 (~0.0418%), day90 (2025-12-01) 0.00041814 (~0.0418%), day180 (2026-03-01) 0.00026376 (~0.0264%)"
+      ],
+      "limitations": "Counter measures the Highlight property family (base Custom Highlight API), which predates and is broader than highlightsFromPoint; first positive (2024-12-20) precedes highlightsFromPoint ship (2025-09-02), so the value is not isolated highlightsFromPoint adoption. Numerator is page loads on which the counter fired at least once; denominator is measured Chrome HTTP/HTTPS page loads across official channels/platforms - not equivalent to unique developers, sites, users, successful tasks, satisfaction, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented. Zero/missing/delayed points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -468,7 +486,7 @@
     "The synchronous layout-forcing hazard (raised by Alex Russell) was acknowledged but explicitly deferred rather than resolved for this API.",
     "The spec still leaves the exact hit-testing details out of scope and Section 7 (Event Handling) remains TBD - an interop risk acknowledged in the spec itself.",
     "WebKit 'Support' recorded in ChromeStatus is not corroborated by a resolved standards-position issue or a shipped implementation; Safari blocks Baseline (per web-platform-dx).",
-    "No public usage measurement exists (use-counter enum null); production adoption of highlightsFromPoint specifically is unmeasurable."
+    "No exact highlightsFromPoint adoption measurement exists: the only mapped Chrome counter is a WebDX 'Highlight' family counter (bucket_id 269, declared-family) that covers the base Custom Highlight API and predates highlightsFromPoint, so highlightsFromPoint-specific site/production adoption remains unmeasurable and no production case study exists."
   ],
   "counterfactuals": [
     "If a short behind-flag developer trial or a focused friction log with a representative editor/collaboration framework (e.g., CodeMirror, Monaco, or a Docs-like editor) had been run before Intent-to-Ship, the obscured-highlight semantics, the missing-Range gap, and the sub-range identification friction would likely have surfaced and been addressed in the explainer/spec before the ship thread - reducing late I2S churn and the post-I2S 'file a CSSWG issue for obscured highlights' work.",
@@ -481,13 +499,13 @@
     "Add a launch-readiness rule: ChromeStatus security_review_status and privacy_review_status must be non-'Pending' (or the gap explicitly justified) before 'prepare to ship' is reported as supported; treat a self-assessed 'N/A' in the TAG/Intent as partial, not as a closed review.",
     "Add an explainer-quality gate for Intent threads: explainers must lead with the developer problem and an integration example before IDL; flag 'explainer is mostly IDL' as a pre-Intent fix (operationalizes Russell's feedback).",
     "Add a standards-position corroboration rule: a ChromeStatus browser 'view' (e.g., WebKit 'Support') must be corroborated by the underlying standards-position issue state and/or a shipped implementation before it is reported as support in launch materials; otherwise report it as proposed/unconfirmed.",
-    "Add a measurement-planning prompt for niche additive APIs: when no use counter, Baseline path, or adoption instrument exists, explicitly mark adoption unscored and define the signal that would later move it (e.g., web-features Baseline, second/third-engine ship, framework integration).",
+    "Sharpen the measurement-planning rule for niche additive APIs: distinguish an EXACT per-feature counter (webdx_usecounter_enum) from a broader WebDX family/property counter, which is not feature adoption. When only a family counter exists (or none), and there is no predeclared target and no corroborating production/retention evidence, explicitly mark adoption unscored and describe the measured family level/trend; do not substitute 'mixed' for an absent threshold. Define the signal that would later move it (e.g., an exact counter, web-features Baseline, second/third-engine ship, framework integration).",
     "Add an interop-risk rehearsal item: when a spec explicitly defers semantics (e.g., 'hit testing out of scope'), surface this as a tracked interop risk in the wide-review and prepare-to-ship packets rather than burying it in a spec note."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "No public Chrome use-counter/usage data (webdx_usecounter_enum null); site/production adoption of highlightsFromPoint is unmeasurable.",
+      "No exact highlightsFromPoint counter exists (webdx_usecounter_enum null); the only mapped Chrome counter is a WebDX 'Highlight' family counter (bucket_id 269, declared-family) covering the base Custom Highlight API, so highlightsFromPoint-specific site/production adoption is unmeasurable. No unique-site count, production case study, retention, task-success, user-benefit, or predeclared adoption-target evidence exists.",
       "No attributable production case study for highlightsFromPoint; available community signals are largely about the base Custom Highlight API.",
       "ChromeStatus security_review_status and privacy_review_status are 'Pending' despite ship; formal security/privacy review completion cannot be confirmed from the public record.",
       "WebKit standards-position issue #394 comment-level position was not captured by the reader; ChromeStatus 'Support' is unconfirmed; Safari has not shipped highlightsFromPoint and blocks Baseline.",

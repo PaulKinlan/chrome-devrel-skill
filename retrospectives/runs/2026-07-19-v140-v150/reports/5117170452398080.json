@@ -20,7 +20,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T05:35:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:48Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -109,67 +109,79 @@
     },
     "adoption": {
       "status": "not-relevant",
-      "finding": "Adoption is not a meaningful dimension here. This is a forced security restriction that removes a capability (applying SVG reference filters to cross-origin/restricted iframes and plugins); there is nothing for developers to adopt or for Chrome to grow usage of. The 'web feature' svg-filters itself remains broadly shipped/supported; only its cross-origin/restricted application is narrowed. The relevant post-ship question is compatibility breakage and security efficacy, tracked under support/endUserImpact, not adoption. Not-relevant rather than untested: adoption funnels do not apply to a capability removal.",
+      "finding": "Developer adoption is not a meaningful dimension: this is a forced default-on security restriction that removes a capability (applying SVG reference filters to cross-origin/restricted iframes and plugins), so there is nothing for developers to adopt or for Chrome to grow usage of. The 'web feature' svg-filters remains broadly shipped/supported; only its cross-origin/restricted application is narrowed. The relevant post-ship signal is compatibility impact, which was instrumented via dedicated UseCounters and is now measurable: at Chrome 150 stable (2026-06-30) the SvgFilterPaintedOnRemoteFrame counter (5828, exact scope) fired on ~0.00026% (day_percentage 0.0000026) of measured Chrome HTTP/HTTPS page loads, and SvgFilterPaintedOnWebPlugin (5829, exact scope) on 0% (day_percentage 0). Counter 5828 has been positive since 2026-03-25 (~0.0001%, day_percentage 0.000001; peak ~0.0006% / day_percentage 0.000006 on 2026-03-30) and as of 2026-07-21 reads ~0.000272% (day_percentage 0.00000272) — a handful of page loads per million, with no clear post-ship drop; counter 5829 has been at or below the detection floor throughout (peak ~0.000002% / day_percentage 2e-8 on 2026-07-11). The measured blast radius is therefore tiny. Not-relevant rather than untested: an adoption funnel does not apply to a capability removal; the compatibility/breakage and security-efficacy questions are tracked under support and endUserImpact.",
       "evidenceIds": [
         "S1",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "None — applicability is the rationale, not test coverage."
+      "limitations": "The counters measure the share of measured page loads where the counter fired, not unique developers/sites/users or adoption of the restriction itself; they measure the restricted behavior (a compatibility denominator), not uptake of the fix. 'Remote frame' (out-of-process iframe under site isolation) is broader than the restriction's 'cross-origin/restricted frame' scope, so post-ship residual firing of 5828 cannot be cleanly attributed to preserved same-origin usage vs. incomplete finch rollout vs. fallback/attempt instrumentation without the counter's implementation. day30/day90/day180 launch-relative checkpoints are null (feature shipped 2026-06-30; latest data 2026-07-21)."
     },
     "support": {
-      "status": "unknown",
-      "finding": "Too early and no public evidence. Chrome 150 stable shipped 2026-06-30, ~3 weeks before the evidence cutoff; no public breakage reports, support tickets, or regression bugs surfaced via search, and the Chromium bug tracker content is inaccessible to the reader. The use counters cited for measurement (5828, 5829) could not be read (JS-rendered, no data). Unknown rather than not-relevant: support/breakage is a genuinely relevant dimension for a rendering-behavior change, but defensible post-ship data does not yet exist at scale.",
+      "status": "partial",
+      "finding": "Defensible compatibility telemetry now exists where it previously did not. The restricted behavior was already vanishingly rare at ship: at Chrome 150 stable (2026-06-30) SvgFilterPaintedOnRemoteFrame (5828, exact scope) fired on ~0.00026% (day_percentage 0.0000026) and SvgFilterPaintedOnWebPlugin (5829, exact scope) on 0% of measured page loads; 5828 has since held at ~0.00027% (2026-07-21) and 5829 at/below the detection floor. This is a strong but indirect indicator of a very small post-ship breakage surface: only a handful of page loads per million ever applied SVG filters to remote frames, and essentially none to web plugins. No public breakage reports, support tickets, or regression bugs surfaced via search at ~3 weeks post-stable, and the Chromium tracker remains inaccessible to the reader. Direct post-ship breakage evidence (support forums, crbug sweep) is still pending the day30 checkpoint (~2026-07-30).",
       "evidenceIds": [
         "S1",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "No post-release breakage/support telemetry retrievable; Chromium bug inaccessible; usage-counter trend data not extractable. Requires a 2-6 week post-stable recheck."
+      "limitations": "The counters measure the restricted behavior's prevalence (a breakage-risk denominator), not actual breakage or support volume; inferring low breakage from low prevalence is reasonable but indirect. The remote-frame counter (5828) over-counts relative to the restriction's cross-origin/restricted scope. Chromium bug 476646486 content is inaccessible to the reader. day30/day90/day180 breakage checkpoints are not yet available; no public breakage reports were found yet. Requires a 2-6 week post-stable recheck."
     },
     "deprecation": {
       "status": "partial",
-      "finding": "This is not a formal deprecation/removal (release notes: 'no deprecations and removals'; breaking_change=false; no reverse trial, no removal milestone). It is a behavior restriction with a graceful fallback (apply nearest non-filter ancestor effect) rather than silent breakage. However, deprecation-style impact analysis was thin: the Intent left 'WebView application risks' and 'Interoperability and Compatibility' as 'No information provided,' there is no published migration/detection guidance for the (presumably rare) sites that applied SVG filters to cross-origin iframes, and the researcher notes legitimate cross-origin framing exists (e.g., embeds, API endpoints, Google Docs) where this could alter appearance. Partial: the restriction is proportionate and low-risk by design, but the impact/migration analysis an admin or embed-vendor would want is absent.",
+      "finding": "This is not a formal deprecation/removal (release notes: 'no deprecations and removals'; breaking_change=false; no reverse trial, no removal milestone). It is a behavior restriction with a graceful fallback (apply nearest non-filter ancestor effect) rather than silent breakage. The impact can now be assessed against measurement (retrospectively — these values were not surfaced in the Intent at ship; see counterfactual): at Chrome 150 stable the restricted behavior appeared on ~0.00026% (day_percentage 0.0000026) of measured page loads for remote frames (5828) and ~0% for web plugins (5829) — a very small affected surface. However, deprecation-style guidance remains thin: the Intent left 'WebView application risks' and 'Interoperability and Compatibility' as 'No information provided,' there is no published migration/detection guidance for the (rare) sites that applied SVG filters to cross-origin iframes, and the researcher notes legitimate cross-origin framing exists (embeds, API endpoints, Google Docs) where appearance could change. Partial: the restriction is proportionate and now measurably low-risk, but the impact/migration analysis an admin or embed-vendor would want is absent.",
       "evidenceIds": [
         "S1",
         "S7",
         "S8",
         "S2",
-        "S9"
+        "S9",
+        "S13",
+        "S14"
       ],
-      "limitations": "No actual affected-site inventory (the cited UseCounters are the only denominator and their numbers were unreadable); migration/detection toolkit was not produced."
+      "limitations": "The counters measure page-load share, not distinct affected sites (no unique-site breakdown) or production/retention status, and the remote-frame counter over-counts relative to the cross-origin/restricted scope. No migration/detection toolkit was produced."
     }
   },
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "Mixed: strongly positive security value for end users, but neutral-to-negative for developers as a capability they did not request. Web developer signals are explicitly 'No signals,' and the change removes a legitimate (if rare) visual capability on cross-origin/restricted framed content. The CSSWG/researcher consensus to keep same-origin iframes unaffected limits the developer cost. This is a defensive restriction, not a developer-requested feature, so 'developer value' is best read as 'security correctness the platform owes users' rather than demand met.",
+      "finding": "Mixed: strongly positive security value for end users, but neutral-to-negative for developers as a capability they did not request. Web developer signals are explicitly 'No signals,' and the change removes a legitimate (if rare) visual capability on cross-origin/restricted framed content. The CSSWG/researcher consensus to keep same-origin iframes unaffected limits the developer cost. Newly measured telemetry confirms the aggregate developer cost is minimal: the restricted behavior appears on only ~0.00026% (day_percentage 0.0000026) of page loads for remote frames and ~0% for web plugins at M150 stable, so the removed capability is vanishingly rarely exercised. This is a defensive restriction, not a developer-requested feature, so 'developer value' is best read as 'security correctness the platform owes users' rather than demand met.",
       "evidenceIds": [
         "S1",
         "S4",
         "S7",
-        "S10"
+        "S10",
+        "S13",
+        "S14"
       ],
-      "limitations": "No developer-research evidence on how many sites legitimately apply SVG filters to cross-origin iframes; the 'No signals' may reflect low awareness rather than zero impact."
+      "limitations": "No developer-research evidence on how many sites legitimately apply SVG filters to cross-origin iframes; the 'No signals' may reflect low awareness rather than zero impact. The counters measure page-load share, not unique sites or developers."
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "Mixed but net-positive on the targeted vector. The change closes a real, demonstrated attack: the SVG-clickjacking technique (multi-step clickjacking, pixel reading, QR exfiltration, demonstrated against Google Docs for a $3133.70 VRP bounty) and the cross-origin pixel-stealing class it extends. Blocking SVG reference filters on cross-origin/restricted iframes directly removes the attacker's ability to run filter logic on victim-frame pixels. However, it is not a complete fix for the broader class: same-origin iframes keep filters (by consensus), the USENIX 2024 'Pixel Thief' cache side-channel and two-tab COOP/COEP bypass target same-origin and cross-origin paths not all closed by this change, and the researcher notes an HTML-injection-with-strict-CSP path remains. The visible benefit (security) is invisible to users while the visible cost (changed rendering of framed/plugin content) is mitigated by the fallback. The motivation's own claim to 'further restrict timing attacks' is only partially met since same-origin filter timing is untouched.",
+      "finding": "Mixed but net-positive on the targeted vector. The change closes a real, demonstrated attack: the SVG-clickjacking technique (multi-step clickjacking, pixel reading, QR exfiltration, demonstrated against Google Docs for a $3133.70 VRP bounty) and the cross-origin pixel-stealing class it extends. Blocking SVG reference filters on cross-origin/restricted iframes directly removes the attacker's ability to run filter logic on victim-frame pixels. However, it is not a complete fix for the broader class: same-origin iframes keep filters (by consensus), the USENIX 2024 'Pixel Thief' cache side-channel and two-tab COOP/COEP bypass target same-origin and cross-origin paths not all closed by this change, and the researcher notes an HTML-injection-with-strict-CSP path remains. The visible benefit (security) is invisible to users while the visible cost (changed rendering of framed/plugin content) is mitigated by the fallback and, per newly measured telemetry, affects a vanishingly small share of page loads (~0.00026% remote frames, ~0% web plugins at M150 stable). The motivation's own claim to 'further restrict timing attacks' is only partially met since same-origin filter timing is untouched.",
       "evidenceIds": [
         "S2",
         "S9",
         "S11",
         "S1",
-        "S10"
+        "S10",
+        "S13",
+        "S14"
       ],
-      "limitations": "No post-release measurement of attack-surface reduction or of any rendering regressions users experienced; security efficacy is reasoned, not measured."
+      "limitations": "No post-release measurement of attack-surface reduction or of actual rendering regressions users experienced; the counters measure the restricted behavior's prevalence (a blast-radius denominator), not security efficacy or user-experienced regressions, which remain reasoned."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "Not applicable: this is a forced capability removal/security tightening, not an adoptable developer feature. The svg-filters web feature remains supported; only its cross-origin/restricted application is narrowed. There is no adoption funnel to evaluate. (Rationale, not 'untested'.)",
+      "status": "unscored",
+      "finding": "Unscored: this is a forced capability removal/security tightening, not an adoptable developer feature, and there is no predeclared adoption target for the restriction. The available counters measure the restricted behavior (a compatibility denominator), not adoption of the fix: at Chrome 150 stable (2026-06-30) the restricted behavior appeared on ~0.00026% (day_percentage 0.0000026) of measured page loads for remote frames (5828) and ~0% for web plugins (5829); 5828 has held at ~0.00026–0.0006% since first observed positive (2026-03-25) with no clear post-ship drop (latest 2026-07-21 ~0.000272% / day_percentage 0.00000272), and 5829 has stayed at/below the detection floor (peak ~0.000002% / day_percentage 2e-8). Because there is no target threshold and no corroborating production/retention evidence of the restriction's adoption, the outcome is described rather than scored; the tiny measured level indicates a very small compatibility surface but is not, by itself, success or failure of the security intervention. (Adoption-outcome status changed from not-relevant to unscored now that a measured level/trend exists.)",
       "evidenceIds": [
         "S1",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "None."
+      "limitations": "The counters measure page-load share, not unique sites/developers/users or adoption of the restriction; the remote-frame counter (5828) over-counts relative to the restriction's cross-origin/restricted scope, confounding any efficacy read from its trend. day30/day90/day180 launch-relative checkpoints are unavailable. No unique-site, production, or retention evidence for the restriction."
     },
     "interoperability": {
       "status": "mixed",
@@ -209,16 +221,18 @@
     },
     "support": {
       "status": "unscored",
-      "finding": "Unscored: Chrome 150 shipped 2026-06-30, only ~3 weeks before cutoff; no public support tickets, breakage reports, or regressions surfaced, and the Chromium tracker and use-counter trends are inaccessible/unreadable. The dimension is genuinely relevant for a rendering-behavior change but defensible evidence does not yet exist.",
+      "finding": "Unscored: Chrome 150 shipped 2026-06-30, ~3 weeks before the evidence cutoff; no public support tickets, breakage reports, or regressions surfaced. The restricted behavior's measured prevalence is tiny (~0.00026% / day_percentage 0.0000026 of page loads for remote frames, ~0% for web plugins at M150 stable), indicating a very small potential breakage surface, but this is an indirect risk indicator rather than direct support-volume evidence. The dimension is genuinely relevant for a rendering-behavior change but defensible post-ship breakage data does not yet exist at scale (day30 pending).",
       "evidenceIds": [
         "S1",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "Requires a 2-6 week post-stable recheck of crbug, support forums, and use-counter deltas."
+      "limitations": "The counters measure restricted-behavior prevalence, not support volume or actual breakage; the remote-frame counter over-counts relative to the restriction's scope. Requires a 2-6 week post-stable recheck of crbug, support forums, and breakage deltas; day30/day90/day180 not yet available."
     },
     "overall": {
       "status": "mixed",
-      "finding": "Overall mixed: a timely, well-motivated security response to a real and demonstrated cross-origin attack, converging Chrome with Safari's existing posture and supported by CSS-WG/researcher consensus on scope (cross-origin/restricted only). Weaknesses are concentrated in process and evidence rather than the core decision: the spec shipped unmerged, both other-engine standards positions remain unresolved (TAG review skipped), the cited evidence under-references current academic research, several Intent risk fields were blank, reviews were 'open' in the cached record at ship, release communication is minimal, and all post-ship outcomes (breakage, security efficacy, support burden) are too early to score. The choice to ship a blunt default-on restriction as an interim patch is defensible but leaves a known residual attack surface and an unmerged spec to close out.",
+      "finding": "Overall mixed: a timely, well-motivated security response to a real and demonstrated cross-origin attack, converging Chrome with Safari's existing posture and supported by CSS-WG/researcher consensus on scope (cross-origin/restricted only). Newly available first-party telemetry now confirms a very small compatibility surface: the restricted behavior (SVG filters on remote frames) appeared on ~0.00026% (day_percentage 0.0000026) of measured Chrome page loads at M150 stable and ~0% on web plugins, with no public breakage reports surfaced in the first ~3 weeks post-ship — reinforcing that the blunt default-on restriction is low-risk to the web. Weaknesses remain concentrated in process and evidence rather than the core decision: the spec shipped unmerged, both other-engine standards positions remain unresolved (TAG review skipped), the cited evidence under-references current academic research, several Intent risk fields were blank, reviews were 'open' in the cached record at ship, release communication is minimal, and the security-efficacy and support-burden outcomes are still too early to score (day30 pending). The choice to ship a blunt default-on restriction as an interim patch is defensible but leaves a known residual attack surface and an unmerged spec to close out.",
       "evidenceIds": [
         "S1",
         "S2",
@@ -229,9 +243,11 @@
         "S7",
         "S8",
         "S9",
-        "S11"
+        "S11",
+        "S13",
+        "S14"
       ],
-      "limitations": "Composite of the dimension-level limitations above; not inferable as success from shipment, press, or absent criticism."
+      "limitations": "Composite of the dimension-level limitations above; not inferable as success from shipment, press, or absent criticism. Adoption is unscored (no target; counters measure the removed behavior, not adoption of the fix); support remains too early to score beyond the measured tiny blast radius."
     }
   },
   "sources": [
@@ -245,7 +261,7 @@
       "supports": [
         "Feature identity, motivation, owners, finch name kPreventSvgFilterPaint, ship stage desktop/android/webview=150, security+privacy review 'Issues open' as of cache, breaking_change=false, enterprise notify M149, 'No signals' webdev, WebKit 'Shipped/Shipping'/Gecko 'Under consideration', measurement counters 5828/5829"
       ],
-      "limitations": "Record is stale vs. actual release (is_released=false, status 'Proposed' in cache though feature shipped M150 stable 2026-06-30). Use-counter links are JS-rendered and yield no numeric data."
+      "limitations": "Record is stale vs. actual release (is_released=false, status 'Proposed' in cache though feature shipped M150 stable 2026-06-30). The chromestatus metrics timeline pages are JS-rendered; numeric values for the cited counters 5828/5829 are provided by the cached timelines (S13, S14)."
     },
     {
       "id": "S2",
@@ -378,6 +394,36 @@
         "Foundational timing-based pixel-stealing via SVG filters cited in the ChromeStatus motivation; motivates the 'further restrict timing attacks' clause"
       ],
       "limitations": "Referenced in the record's motivation but the PDF itself was not retrieved/verified; pre-dates modern mitigations by 13 years."
+    },
+    {
+      "id": "S13",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5828",
+      "publisher": "Chrome Platform Status — UseCounter feature-popularity timeline (bucket 5828, SvgFilterPaintedOnRemoteFrame; cached)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope (dedicated, non-family) counter for the restricted behavior: SVG reference filters painted on a remote (out-of-process) iframe. Corresponds to the popularity/5828 timeline cited in the feature's measurement field.",
+        "At Chrome 150 stable (2026-06-30, launch checkpoint atStable) the counter fired on ~0.00026% (day_percentage 0.0000026) of measured Chrome HTTP/HTTPS page loads.",
+        "Timeline: first observed positive 2026-03-25 (~0.0001%, day_percentage 0.000001); peak 2026-03-30 (~0.0006%, day_percentage 0.000006); latest 2026-07-21 (~0.000272%, day_percentage 0.00000272); 120 points. No clear post-ship drop.",
+        "day30/day90/day180 launch-relative checkpoints null (feature shipped 2026-06-30; latest data 2026-07-21)."
+      ],
+      "limitations": "Measures the share of measured Chrome page loads on which the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. 'Remote frame' (out-of-process iframe under site isolation) is broader than the restriction's 'cross-origin/restricted iframe' scope, so post-ship residual firing cannot be cleanly attributed to preserved same-origin usage vs. incomplete finch rollout vs. fallback/attempt instrumentation without the counter's implementation. UMA reflects participating Chrome clients; enterprise/opt-out populations may be underrepresented. Zero/low values are not proof of zero real-world use."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5829",
+      "publisher": "Chrome Platform Status — UseCounter feature-popularity timeline (bucket 5829, SvgFilterPaintedOnWebPlugin; cached)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope (dedicated, non-family) counter for the restricted behavior: SVG reference filters painted on a web plugin. Corresponds to the popularity/5829 timeline cited in the feature's measurement field.",
+        "At Chrome 150 stable (2026-06-30, atStable) the counter fired on 0% (day_percentage 0) of measured Chrome HTTP/HTTPS page loads.",
+        "Timeline: first observed positive 2026-05-23 (~0.000001%, day_percentage 1e-8); peak 2026-07-11 (~0.000002%, day_percentage 2e-8); latest 2026-07-21 (0%, day_percentage 0); 78 points.",
+        "day30/day90/day180 launch-relative checkpoints null."
+      ],
+      "limitations": "Measures share of measured page loads, not unique developers/sites/users or adoption of the restriction. Values are at or below the detection floor (peak ~0.000002%); zero/rounding-to-zero is not proof of zero real-world use. day30/day90/day180 checkpoints null. UMA reflects participating Chrome clients; enterprise/opt-out may be underrepresented."
     }
   ],
   "successes": [
@@ -385,7 +431,8 @@
     "Timely security response: from disclosure (2025-12-04) to ChromeStatus entry (2026-04-28) to ship (2026-06-30) is a fast cycle for a default-on restriction, addressing a demonstrated, bounty-awarded attack.",
     "Convergence with an existing engine posture (Safari/WebKit) and a defensible fallback algorithm (apply nearest non-filter ancestor) that avoids silent breakage.",
     "Reasonable use of the forced-restriction pattern (no OT, no reverse trial, enterprise notify at M149) appropriate to a security tightening with breaking_change=false.",
-    "Owner transparency on blink-dev about the existence of alternative solutions and the rationale for the interim blunt patch."
+    "Owner transparency on blink-dev about the existence of alternative solutions and the rationale for the interim blunt patch.",
+    "Measurably small compatibility blast radius: first-party UseCounter telemetry (now cached) shows the restricted behavior — SVG filters painted on remote frames — appeared on only ~0.00026% (day_percentage 0.0000026) of measured Chrome page loads at Chrome 150 stable (~0% on web plugins, counter 5829), with no public breakage reports surfaced in the first ~3 weeks post-ship, confirming the default-on restriction touches a vanishingly small slice of the web."
   ],
   "failures": [
     "Shipped with an unmerged spec: CSSWG PR #13846 still open at retrieval; both other-engine standards positions unresolved (Mozilla 'Needs proposed position', WebKit issue open), and TAG review skipped by self-classification.",
@@ -399,7 +446,7 @@
     "If the CSSWG PR had been merged (or at least had resolved Mozilla/WebKit positions) before default-on ship, the interop/Baseline story and Firefox convergence path would be far stronger and the 'Not in a spec' risk closed.",
     "If a short dev-trial or interop spike had run, the owner-flagged difficulty of building matching cross-browser reference tests (Safari/Firefox apply/unapply differently) could have been worked out before ship rather than noted as a known gap.",
     "If a published threat-model had contrasted this restriction against the community's X-Frame-Options/CSP-sufficiency argument (and the researcher's framing-required and HTML-injection rebuttals), the launch would have pre-empted the main public criticism.",
-    "If a compatibility/impact analysis had been published (who applies SVG filters to cross-origin iframes today, via the cited use counters), the 'No information provided' risk fields and the missing migration toolkit would be replaced with a defensible denominator.",
+    "A defensible compatibility denominator now exists in the cached telemetry — the restricted behavior appears on ~0.00026% (day_percentage 0.0000026) of measured page loads (remote frames) and ~0% (web plugins) at M150 stable — but it was not surfaced in the Intent at ship; had it been, the 'No information provided' interop/compat and WebView-risk fields and the missing migration toolkit would have rested on measured ground rather than assertion.",
     "If the security/privacy reviews had been closed (not 'Issues open') before default-on ship, the launch record would not contradict the shipped state."
   ],
   "skillImprovements": [
@@ -408,18 +455,19 @@
     "Add a gate for default-on security restrictions: warn when shipping with an unmerged spec AND unresolved other-engine standards positions AND skipped TAG review; require an explicit accepted-risk note rather than 'Not applicable.'",
     "Add a record-freshness check: surface when cached ChromeStatus is_released/status/review-state contradicts the manifest launch event (e.g., 'Proposed'/is_released=false vs. M150 'Enabled by default'), so the report distinguishes cached state from actual shipment.",
     "Add a release-communication minimum for behavior-changing security interventions: require (a) a one-paragraph threat-model explainer, (b) a developer detection/migration note, and (c) a link to the spec PR's open issues — beyond a single release-note line.",
-    "Treat 'adoption' as auto not-relevant (with rationale) for capability-removal/security restrictions, and route the relevant post-ship questions to a 'compatibility breakage + security efficacy' dimension that requires a 2-6 week post-stable recheck (use-counter deltas, crbug breakage sweep, support forums)."
+    "Treat 'adoption' as auto not-relevant (with rationale) for capability-removal/security restrictions, and route the relevant post-ship questions to a 'compatibility breakage + security efficacy' dimension that requires a 2-6 week post-stable recheck (use-counter deltas, crbug breakage sweep, support forums).",
+    "For capability-removal/security restrictions, require the retrospective to disambiguate a behavior-prevalence counter (measures the removed behavior) from an adoption counter (measures uptake of the new behavior), and to flag when the counter's scope is broader than the restriction's scope (here 'remote/out-of-process frame' vs. 'cross-origin/restricted iframe'): a post-ship counter that keeps firing (5828 held at ~0.00027% / day_percentage 0.00000272 three weeks after ship) cannot be read as efficacy failure without ruling out preserved same-origin usage, incomplete finch rollout, or fallback/attempt instrumentation. Record the counter's implementation note when available."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
       "Chromium tracking bug 476646486 content: bugs.chromium.org / issues.chromium.org consistently returned 500/timeout to the reader (Monorail pages not renderable); implementation detail, perf cost of effect-tree traversal, and any pre/post-ship regressions not independently verifiable.",
       "Related March 2025 Chromium timing bug (401081629, reportedly 'won't fix'): same reader limitation; only indirectly corroborated via The Register and the HN summary.",
-      "Usage-counter trend numbers (chromestatus metrics 5828, 5829): pages are JS-rendered and returned no numeric data; compatibility denominator unknown.",
+      "No unique-site breakdown for counters 5828/5829 (they measure page-load share, not distinct sites), and no production/retention evidence for the restriction's adoption; the remote-frame counter (5828) over-counts relative to the restriction's cross-origin/restricted scope, so its post-ship residual firing cannot be cleanly attributed to efficacy.",
       "Full text of several Intent-to-Ship replies (Philip Jägenstedt, Dan Clark, Chris Harrelson, Daniel Bratell) was truncated by the Google Groups reader; complete review/LGTM wording not captured.",
       "caniuse / Web Platform Dashboard interop data: JS-rendered, not extractable.",
-      "Post-release breakage/support evidence: Chrome 150 stable 2026-06-30 is only ~3 weeks before cutoff; targeted one-month recency searches timed out and no public breakage reports surfaced. Requires a 2-6 week post-stable recheck."
+      "Post-release breakage/support evidence: Chrome 150 stable 2026-06-30 is only ~3 weeks before cutoff; the restricted behavior's measured prevalence is tiny (~0.00026% / day_percentage 0.0000026 remote frames, ~0% web plugins at stable) but direct breakage/support evidence (crbug sweep, support forums) is still pending; day30/day90/day180 checkpoints not yet available. Requires a 2-6 week post-stable recheck."
     ],
-    "reviewedAt": "2026-07-20T05:35:00Z"
+    "reviewedAt": "2026-07-22T18:06:48Z"
   }
 }

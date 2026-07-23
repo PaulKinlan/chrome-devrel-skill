@@ -24,7 +24,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T15:30:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -113,13 +113,14 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "The stated adoption expectation is deliberately narrow ('very small number of large partners... within 12 months'). No public usage data was retrievable: the Chrome use counter (bucket 380, WebDXFeature::kCrashReportStorageAPIInitialize) is not publicly exposed; webstatus.dev lists the feature ('reporting-crashes-storage') as Chrome-available/Safari-unavailable but yields no numeric adoption; no framework/library integration, attributable production deployment, or case study was found. The only adoption signal is the single first-party partner, which was reportedly late to implement during the OT.",
+      "finding": "The stated adoption expectation is deliberately narrow ('very small number of large partners... within 12 months'). A first-party Chrome usage-counter mapping now exists: the origin-trial stage (stageId 5079993981599744) maps to use-counter bucket 380 (counter WebDXFeature::kCrashReportStorageAPIInitialize; scope origin-trial, nominal confidence 'exact'), and the public ChromeStatus feature-popularity timeline for bucket 380 is cached. However, that timeline resolves to property_name 'PrefixedTouchRotationAngle' (an unrelated prefixed touch API) with data history beginning 2014-05-02 (3e-8% of measured Chrome HTTP/HTTPS page loads) and peaking 2015-03-15 (0.00056335%) — both predating this feature — and every launch-relative checkpoint is null: M140 Origin trial (stable 2025-09-02) and M145 Enabled by default (stable 2026-02-10) each have null at-stable, day30, day90, and day180. The latest bucket-380 point (2026-07-15) is 0% of measured Chrome HTTP/HTTPS page loads under the 'PrefixedTouchRotationAngle' property name. Because the mapped bucket's public property_name does not match this feature and shows pre-feature history (webdxUseCounterEnum is empty; webFeature is a 'kDRAFT_' value), the cached telemetry confirms a counter mapping exists but yields no defensible, attributable adoption percentage for the Crash Reporting key-value API itself. webstatus.dev still lists the feature ('reporting-crashes-storage') as Chrome-available/Safari-unavailable with no numeric adoption, and no framework/library integration, attributable production deployment, or case study was found. The only adoption signal remains the single first-party partner, which was reportedly late to implement during the OT.",
       "evidenceIds": [
         "S1",
         "S12",
-        "S7"
+        "S7",
+        "S19"
       ],
-      "limitations": "Per the method, missing adoption evidence is scored unknown, not inferred from shipment or absence of criticism. No defensible production-adoption denominator exists."
+      "limitations": "The bucket-380 public timeline is not attributable to this feature (property_name 'PrefixedTouchRotationAngle' + 2014–2015 pre-feature history) and all M140/M145 launch checkpoints are null, so adoption stays unknown/unscored rather than inferred as zero. No unique-site, production, retention, task-success, user-benefit, or predeclared numeric-target evidence exists. An origin-trial-scope counter is not exact feature adoption."
     },
     "support": {
       "status": "unknown",
@@ -164,13 +165,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No public production-adoption evidence: no usage numbers, no attributable non-Google deployment, no framework/library integration, no case study. The only signal is the single first-party partner, who was late to implement during the OT.",
+      "finding": "No attributable production-adoption percentage is available. A first-party Chrome usage-counter mapping exists (origin-trial stage 5079993981599744 → use-counter bucket 380, counter WebDXFeature::kCrashReportStorageAPIInitialize; scope origin-trial, nominal confidence 'exact'), and the public ChromeStatus feature-popularity timeline for bucket 380 is now cached (S19). But that timeline resolves to property_name 'PrefixedTouchRotationAngle' (an unrelated prefixed touch API) with history beginning 2014-05-02 and peaking 2015-03-15 at 0.00056335% of measured Chrome HTTP/HTTPS page loads — both predating this feature — and every launch-relative checkpoint is null: M140 (stable 2025-09-02) and M145 (stable 2026-02-10) each have null at-stable, day30, day90, and day180; the latest bucket-380 point (2026-07-15) is 0% under the 'PrefixedTouchRotationAngle' name. The mapped bucket's public property_name does not match this feature (webdxUseCounterEnum empty; webFeature 'kDRAFT_'), so the cached telemetry does not yield a defensible adoption share for the Crash Reporting key-value API itself. The stated adoption expectation is deliberately narrow ('very small number of large partners... within 12 months') with no predeclared numeric target, and no corroborating unique-site, production, retention, task-success, user-benefit, or case-study evidence exists. The only qualitative signal is the single first-party partner, who was late to implement during the OT. Per the method, adoption is therefore kept unscored — not inferred as zero, not as a target miss, and not promoted to 'mixed' to fill an absent threshold.",
       "evidenceIds": [
         "S1",
         "S12",
-        "S7"
+        "S7",
+        "S19"
       ],
-      "limitations": "Chrome use-counter bucket 380 is not publicly accessible; webstatus.dev confirms Chrome-only availability but not usage volume."
+      "limitations": "The mapped use-counter's public timeline is not attributable to this feature (property_name 'PrefixedTouchRotationAngle' + 2014–2015 pre-feature history); all M140/M145 launch checkpoints null. Origin-trial-scope counter is not exact feature adoption. No predeclared numeric adoption target and no unique-site/production/retention/task-success/user-benefit evidence."
     },
     "interoperability": {
       "status": "failure",
@@ -218,7 +220,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "Overall: mixed. Genuine, well-scoped developer problem with an engaged first-party partner, a responsive design loop (TAG/community feedback incorporated), a conservative trial-first rollout, on-time M145 shipment, and post-ship MDN coverage. Set against: an unproven single-partner Origin Trial extended because the partner was late (its stated crash-rate-reduction success criterion is unevidenced), Chromium-only interoperability with WebKit blocked and Mozilla unscreened (built on an un-adopted base API), formal security/privacy reviews still 'Pending' at ship, open design questions (eviction, multi-iframe scoping, incomplete security/privacy), a mid-trial interface rename, thin external demand evidence, and an incomplete documentation/demo set (canonical reference doc not updated). Not a clean success; several dimensions remain unknown rather than demonstrated.",
+      "finding": "Overall: mixed. Genuine, well-scoped developer problem with an engaged first-party partner, a responsive design loop (TAG/community feedback incorporated), a conservative trial-first rollout, on-time M145 shipment, and post-ship MDN coverage. Set against: an unproven single-partner Origin Trial extended because the partner was late (its stated crash-rate-reduction success criterion is unevidenced), Chromium-only interoperability with WebKit blocked and Mozilla unscreened (built on an un-adopted base API), formal security/privacy reviews still 'Pending' at ship, open design questions (eviction, multi-iframe scoping, incomplete security/privacy), a mid-trial interface rename, thin external demand evidence, and an incomplete documentation/demo set (canonical reference doc not updated). On adoption, a first-party use-counter mapping now exists but its public timeline resolves to a different property name ('PrefixedTouchRotationAngle') with null launch checkpoints, so no attributable adoption percentage is available and adoption remains unscored. Not a clean success; several dimensions remain unknown rather than demonstrated.",
       "evidenceIds": [
         "S1",
         "S7",
@@ -227,9 +229,10 @@
         "S9",
         "S13",
         "S14",
-        "S17"
+        "S17",
+        "S19"
       ],
-      "limitations": "Overall deliberately does not mask the unknown adoption/end-user-impact/support dimensions. A higher confidence overall would require public usage, partner outcome, and completed formal reviews."
+      "limitations": "Overall deliberately does not mask the unscored adoption/end-user-impact/support dimensions. A higher confidence overall would require attributable public usage (a counter mapping exists but its public timeline is not attributable to this feature), partner outcome, and completed formal reviews."
     }
   },
   "sources": [
@@ -504,6 +507,22 @@
         "merged (CrashReportContext interface)"
       ],
       "limitations": "PR body/diff NOT directly retrieved: the Z.AI web reader returned repeated 500 network errors for this URL. Existence, title, and merge are corroborated by S10 (TAG review references and Feb-2 merge mention), S11 (MDN spec link), S4 (explainer), and S16/#15 (closed-by #37)."
+    },
+    {
+      "id": "S19",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=380",
+      "publisher": "Chrome Platform Status (feature-popularity timeline for use-counter bucket 380)",
+      "publishedOrObservedAt": "2026-07-15",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "origin-trial stage 5079993981599744 use-counter mapping to bucket 380 (counter WebDXFeature::kCrashReportStorageAPIInitialize); scope origin-trial, nominal confidence 'exact'",
+        "public feature-popularity timeline for bucket 380 resolves to property_name 'PrefixedTouchRotationAngle'",
+        "timeline history: firstObservedPositive 2014-05-02 (3e-8% of measured Chrome HTTP/HTTPS page loads); peak 2015-03-15 (0.00056335%); latest 2026-07-15 (0%) — all under property_name 'PrefixedTouchRotationAngle'",
+        "launch checkpoints null: M140 Origin trial (stable 2025-09-02) and M145 Enabled by default (stable 2026-02-10) each have null at-stable, day30, day90, day180",
+        "values are the share of measured Chrome HTTP/HTTPS page loads where bucket 380 fired; not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit"
+      ],
+      "limitations": "Cached snapshot: evidence/metrics/timelines/feature-380.json (sha256 50bb41187266c2e7aa3aa87db83c30e9fab11dd853e3236dd6ab6873eeeb4b65). The timeline property_name 'PrefixedTouchRotationAngle' is an unrelated prefixed touch API whose 2014–2015 history predates this feature, indicating a bucket/property collision or an unfinalized draft mapping (webdxUseCounterEnum empty; webFeature 'kDRAFT_CrashReportStorageAPIInitialize'); the day_percentage and launch checkpoints are therefore NOT attributable to the Crash Reporting key-value API. Origin-trial-scope counter, not exact feature adoption. Zero/null points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -517,7 +536,7 @@
     "Interoperability: shipped Chromium-only with WebKit blocked and Mozilla unscreened, no Baseline, built on an un-adopted base API (S8, S9, S12, S14).",
     "Formal security_review_status and privacy_review_status were still 'Pending' at the 2026-02-13 ChromeStatus snapshot, ~ship date (S1).",
     "Documentation gap: the canonical Reporting API reference doc (last updated 2021) does not cover window.crashReport, and no dedicated demo/sample for the new key-value API exists (S14, S15).",
-    "Thin launch evidence ledger: intent threads lacked populated goals/milestones/signals, no origin_trial_feedback_url, no public usage/adoption/case-study evidence (S6, S7, S1)."
+    "Thin launch evidence ledger: intent threads lacked populated goals/milestones/signals, no origin_trial_feedback_url, no attributable public usage percentage (the mapped bucket-380 timeline resolves to a different property_name and all M140/M145 launch checkpoints are null), and no case-study evidence (S6, S7, S1, S19)."
   ],
   "counterfactuals": [
     "If a real multi-partner/broad developer-demand study (rather than a single internal partner) had been run before the OT, the thin demand picture and the 'partner was late' outcome could have surfaced earlier - enabling either a more representative trial cohort or a decision to keep incubating.",
@@ -534,19 +553,21 @@
     "Release/docs completeness check: require the canonical reference doc (not only release notes + MDN) to cover the new surface, and require at least one runnable demo/sample of the new API; flag when only the base infrastructure has a demo.",
     "Naming-stability alert: if the public web-facing interface name changes after an OT starts, require partner migration notes and synchronize the ChromeStatus display/finch name to avoid divergence.",
     "Adoption-evidence rule for 'very small number of large partners' features: require at least one attributable production deployment (not OT registration/intent) before scoring adoption success; otherwise mark unscored.",
-    "Add an automated-reader fallback for groups.google.com msgid URLs (rejected by the Z.AI reader's URL validator) so intent threads do not require a full browser session to retrieve."
+    "Add an automated-reader fallback for groups.google.com msgid URLs (rejected by the Z.AI reader's URL validator) so intent threads do not require a full browser session to retrieve.",
+    "Counter-mapping integrity check for adoption telemetry: when a cached use-counter timeline resolves to a property_name that differs from the feature (e.g., bucket 380 -> 'PrefixedTouchRotationAngle') or shows history predating the feature's incubation, flag a bucket/property collision or an unfinalized draft mapping (empty webdxUseCounterEnum / 'kDRAFT_' webFeature) and do NOT treat the timeline day_percentage or launch checkpoints as this feature's adoption; record the mapping as ambiguous/not-attributable rather than 'exact', and keep the adoption outcome unscored unless a corroborating unique-site/production/retention signal exists."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
       "Spec PR #37 body/diff: Z.AI web reader returned repeated 500 errors; design confirmed only indirectly via explainer, MDN, TAG review, and naming commits (S18).",
       "Intent to Ship (blink-dev 69723029) and Intent to Extend OT (68e67fd8) thread bodies: groups.google.com msgid URLs are rejected by the automated reader; only the cached ship-stage data and the experiment-extension reason were available.",
-      "Public adoption/usage data: Chrome use counter bucket 380 (WebDXFeature::kCrashReportStorageAPIInitialize) is not publicly exposed; webstatus.dev is JS-rendered and yielded no numeric usage.",
+      "Cached usage telemetry (S19): the origin-trial-scope counter mapping for bucket 380 (WebDXFeature::kCrashReportStorageAPIInitialize) is confirmed and the public ChromeStatus timeline is cached, but the timeline resolves to property_name 'PrefixedTouchRotationAngle' (an unrelated prefixed touch API) with 2014–2015 pre-feature history, and all M140/M145 launch checkpoints (at-stable/day30/day90/day180) are null — so no attributable adoption percentage for this feature is derivable. webstatus.dev remains JS-rendered with no numeric usage.",
+      "Unique-site, production-deployment, retention, task-success, and user-benefit adoption evidence: none found; only a single first-party partner (reportedly late to implement during the OT).",
       "Mozilla base position mozilla/standards-positions#288 (overall Crash Reporting infrastructure): retrieval timed out; Mozilla's stance inferred only from #1271 and ChromeStatus notes.",
       "Quantitative Origin Trial outcome (partner crash-rate reduction, registration/activation counts): no origin_trial_feedback_url and no public readout found.",
       "Post-ship support burden, issue recurrence, and DevTools-integration status: not public.",
       "Formal security/privacy review final state: recorded 'Pending' at the 2026-02-13 snapshot; current state not confirmed."
     ],
-    "reviewedAt": "2026-07-22T15:30:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

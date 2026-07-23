@@ -1,0 +1,452 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6210047134400512,
+    "name": "Propagate Viewport overscroll-behavior from Root",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6210047134400512"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:6210047134400512",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T15:45:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Well-scoped interoperability/correctness fix, not a new API (feature_type 'No developer-visible change', category CSS, Blink>Scroll). The ChromeStatus record and its motivation clearly frame the problem: Blink propagated overscroll-behavior from <body> to the viewport while Firefox/WebKit propagate from <html>, so the spec's own motivating example (html { overscroll-behavior-y: contain }) silently failed in Chrome. The underlying tracking bug was filed in 2019 by an external web developer and confirmed as a bug by the overscroll-behavior author (majidvp), establishing a genuine, long-standing developer problem rather than a vendor-preference change.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-bug-41453796",
+        "src-spec"
+      ],
+      "limitations": "No public explainer/design doc; the feature relies on the spec and the tracking bug for problem framing."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Problem and solution shape were well-established before shipping. The CSS Working Group resolved on 2021-04-08 (F2F) to propagate scrollbar-gutter from root, to NOT propagate scrollbar-gutter from body, that 'no future properties should propagate from <body> to the ICB or viewport', and to 'deprecate any existing use of body propagation'; during that discussion iank_ noted 'Overscroll behavior does [propagate from body]' and emilio that scroll-snap/similar 'only work on the root'. A follow-up CSSWG issue (#6406, 2021) explicitly asked whether non-auto overscroll-behavior should propagate from either root or body and listed affected sites (Spotify, Reddit mobile, Tumblr, TikTok, Redfin, Tinder, Tesla, Pinterest); that issue remained Open, so Chrome shipped against the existing spec (root-only) rather than a newly-amended one.",
+      "evidenceIds": [
+        "src-csswg-f2f",
+        "src-csswg-6406",
+        "src-spec",
+        "src-bug-41453796"
+      ],
+      "limitations": "CSSWG issue #6406's 'either root or body' question was unresolved at ship, leaving a latent spec-design question that the launch did not close."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Implementation and measurement instrumentation predate this ChromeStatus entry by years. UseCounter/UMA for the observable-behavior-difference case was added in late 2020 (CL e70da10, Nov 26 2020) and refined in 2021 (split into two cases: html-auto/body-non-auto = would-break vs html-non-auto/body-auto = would-fix, CL 20ef9da May 18 2021). The property author (majidvp) identified the fix location (document.cc viewport propagation logic, related to crbug 952711) as early as 2019. The fix path was therefore understood well before the 2025 ChromeStatus entry.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-chromestatus"
+      ],
+      "limitations": "No public explainer or design doc is linked from ChromeStatus; prototype rationale lives in the bug and code review."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "No formal developer trial or cohort was run (no devtrial stage; feature_type is 'No developer-visible change'). The risk substitute was a manual inspection of 20 of the most-affected popular sites (bit.ly/4ecLqQi), comparing Chrome's behavior with and without the fix against Firefox/Safari, concluding the change is low-risk. This is a reasonable substitute for a behavior fix with no new API surface, but it is a 20-site author-side inspection, not a representative developer cohort, and it is the primary basis for the 'low risk' claim.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-intent-2025",
+        "src-bug-41453796"
+      ],
+      "limitations": "The 20-site inspection document (bit.ly/4ecLqQi) could not be retrieved (likely access-restricted Google Doc), so the methodology and site list could not be independently verified."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Broad standards and cross-engine alignment existed and was actively reinforced. CSSWG resolved on the propagation principle (2021 F2F). Firefox (Gecko) already propagates only from root and Mozilla engineers engaged directly in the Chromium bug (emilio/bb...@mozilla, Oct 2023) clarifying that Chrome ignores overscroll-behavior:contain on <html>. Safari/WebKit are recorded as 'Shipped/Shipping' for the behavior, and a WebKit bug (240183) shows WebKit actively working overscroll-behavior semantics. The topic was accepted as an Interop 2025 'Web compat' focus area with a dedicated proposal ('overscroll-behavior on the root scroller'), providing shared WPT tests and cross-vendor accountability. TAG review was recorded 'Not applicable', consistent with a spec-aligned behavior fix.",
+      "evidenceIds": [
+        "src-csswg-f2f",
+        "src-bug-41453796",
+        "src-interop-2025-readme",
+        "src-interop-560",
+        "src-interop-858",
+        "src-webkit-240183",
+        "src-chromestatus"
+      ],
+      "limitations": "'No signals' from web developers is recorded on ChromeStatus; the developer signal that exists is the original 2019 bug report rather than attributable demand for the change at ship time."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run and none was warranted: this is a behavior-correctness fix for an already-shipped, Baseline property (overscroll-behavior shipped Chrome 63/Firefox 59/Safari 16), not a new API needing real-origin field evidence. The runtime-flag (Finch 'PropagateOverscrollBehaviorFromRoot') gating, the long-running UseCounter, and the manual 20-site inspection served the risk-assessment role that an OT would otherwise fill. Marked not-relevant because a field experiment would not have answered a question the UseCounter/manual-inspection evidence could not.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-intent-2025",
+        "src-bug-41453796",
+        "src-baseline"
+      ],
+      "limitations": "Not-relevant here means no OT was justified; it does not mean the behavior change was untested (it was gated behind a flag and UseCounter-assessed)."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Prepare-to-ship artifacts were coherent and transparent. A 'Web-Facing Change PSA' was posted to blink-dev (thread an611rpPxLQ) by the owner (awogbemila) listing spec, tracking bug, WPT results link, Finch name, rollout plan ('Will ship enabled for all users'), platform support (all six Blink platforms), and explicit interop risk framing. Enterprise was notified from milestone 139 (first_enterprise_notification_milestone=139), consistent with an enterprise_impact=1 (low) change that nonetheless alters observable gesture behavior. The ChromeStatus record documents the UseCounter (>1% of page loads) and the 20-site manual inspection transparently rather than hiding the compat risk.",
+      "evidenceIds": [
+        "src-intent-2025",
+        "src-chromestatus"
+      ],
+      "limitations": "The PSA's estimated milestones were Desktop/Android/WebView 139, but the feature shipped in 140 (see release phase) — a one-milestone slip not reconciled in the PSA text."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled-by-default in Chrome 140 stable (release date September 2, 2025) across Desktop, Android, and WebView (iOS null). The Chrome 140 release notes include an accurate, concise section explaining the root-vs-body propagation change and that it makes Chrome 'comply with the specification and become interoperable with other implementations'. Chrome Enterprise and Education release notes also document the change. MDN's overscroll-behavior page (last modified 2026-04-20) was updated so its guidance/examples target the root (<html>) element, reflecting the shipped behavior. The fix was enabled via CL 6732448 ('Enable overscroll-behavior fix', Jul 14 2025) and the bug marked Fixed Aug 28 2025.",
+      "evidenceIds": [
+        "src-relnotes-140",
+        "src-enterprise-notes",
+        "src-mdn",
+        "src-bug-41453796",
+        "src-chromestatus"
+      ],
+      "limitations": "Actual ship milestone (140) is one later than the PSA estimate (139); the slip is minor and not material to the outcome, but indicates the PSA's milestone estimate was not updated."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "As a behavior fix to an existing property, 'adoption' maps to absence of meaningful breakage rather than uptake of a new API. No independent post-launch breakage, regression, or WebCompat reports attributable to this change were found across targeted searches ~10 months after stable. This is consistent with the pre-launch 'low risk' assessment and the fact that the new behavior matches Firefox/Safari, but absence of found breakage reports is not affirmative evidence of zero breakage and must not be scored as success.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-chromestatus"
+      ],
+      "limitations": "No independent post-stable breakage/usage-shift data located; the UseCounter (popularity/3736) current value and any post-launch WebCompat/crbug regressions could not be independently captured (chromestatus metrics and wpt.fyi are JS-rendered and not extractable by the reader)."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support issues, support-pack artifacts, or recurring question patterns specifically attributable to this behavior change were located. The tracking bug is closed as Fixed with no open regression sub-issues visible. The feature has no dedicated docs/sample links on ChromeStatus (consistent with 'No developer-visible change'), so there is no public support surface to assess.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-chromestatus"
+      ],
+      "limitations": "Support burden for a behavior fix is often invisible in public trackers; absence of found issues is not evidence of low burden."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This feature is not a Chrome deprecation or removal. The only deprecation framing is at the standards level: the CSSWG resolved (2021) to 'deprecate any existing use of body propagation' as a general principle, but Chrome shipped a behavior alignment, not a removal path, reverse trial, or enterprise policy. There is no deprecation calendar entry, no removal milestone, and no migration toolkit to assess.",
+      "evidenceIds": [
+        "src-csswg-f2f",
+        "src-chromestatus",
+        "src-relnotes-140"
+      ],
+      "limitations": "Not-relevant means deprecation process does not apply; the latent CSSWG 'deprecate body propagation' principle could surface as future guidance work but did not gate this launch."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The change addresses a real, validated, long-standing developer problem: Chrome's body-propagation made the spec's own motivating example (overscroll-behavior on <html>) fail silently since the property shipped in Chrome 63 (2017). The original report was filed by an external developer in 2019 citing the spec, the property author confirmed it as a bug, and the divergence caused documented cross-engine confusion (Gecko bug discussions referenced). Aligning Chrome to root-propagation makes the property behave as authored across all three engines.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-spec",
+        "src-csswg-f2f",
+        "src-mdn"
+      ],
+      "limitations": "ChromeStatus records 'No signals' from web developers at ship; the developer value is evidenced primarily through the original bug and cross-engine standards work rather than broad attributable demand at launch."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "The change alters observable end-user gesture behavior: pull-to-refresh (mobile) and forward/backward swipe navigation (desktop) may begin or stop occurring on pages where overscroll-behavior was set on <body> but not <html>. The owner's pre-launch manual inspection of 20 popular sites assessed this as low-risk and noted the new behavior mostly matches Firefox/Safari. However, no independent post-launch user-impact measurement (telemetry on pull-to-refresh/swipe-nav incidence, user-reported regressions) was located, so end-user impact cannot be defensibly scored.",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-bug-41453796",
+        "src-mdn"
+      ],
+      "limitations": "Pre-launch risk assessment is owner-authored (20-site inspection, not independently reproduced); no post-launch end-user telemetry or regression reports were found. Not scored per the rule against inferring success from absence of criticism."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "For a behavior-correctness fix, durable production adoption is best measured by absence of breakage and continued correct operation. No post-stable breakage or regression evidence was found ~10 months after the September 2025 stable release, which is consistent with the low-risk assessment but does not constitute affirmative proof. The UseCounter that motivated caution oscillated over the project lifetime (~2% in 2021, ~0.38% in Oct 2021, ~0.82% in Jun 2023, '>1%' in the 2025 record), so residual compat exposure plausibly remains.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-chromestatus"
+      ],
+      "limitations": "Current UseCounter value and any post-launch breakage dashboards could not be independently read (JS-rendered). Scored unscored, not success, because shipment + absent criticism is insufficient to claim adoption success."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "This is the feature's explicit and achieved goal. After the fix, Chrome propagates overscroll-behavior from the root like Firefox (Gecko) and Safari (WebKit), closing a multi-year three-engine divergence. The topic was accepted into Interop 2025 as part of the 'Web compat' focus area with a dedicated proposal and WPT coverage (overscroll-behavior-root.html), Mozilla engineers engaged constructively in the bug, and the CSSWG resolution underpins the chosen behavior. The underlying property is Baseline Widely Available (since 2025-03-12); this fix removes the last engine-specific quirk in its viewport semantics.",
+      "evidenceIds": [
+        "src-interop-2025-readme",
+        "src-interop-560",
+        "src-interop-858",
+        "src-csswg-f2f",
+        "src-bug-41453796",
+        "src-baseline",
+        "src-chromestatus"
+      ],
+      "limitations": "Specific WPT pass-rate numbers per engine could not be captured from the live wpt.fyi dashboard (JS-rendered); Interop 2025 inclusion and the referenced test confirm coverage exists."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "The fix landed cleanly: three code reviews (CL 6546636 'Propagate overscroll-behavior from the root element to the viewport', May 14 2025; CL 6635849 'Fully fix propagating overscroll-behavior from root', Jun 11 2025; CL 6732448 'Enable overscroll-behavior fix', Jul 14 2025) by the owner (David Awogbemila), reviewed by Blink>Scroll owners. It shipped behind a Finch flag (PropagateOverscrollBehaviorFromRoot) for rollout control, is covered by a referenced WPT test, and the risk was assessed via a long-running UseCounter plus targeted manual inspection rather than asserted. The bug was closed Fixed (Aug 28 2025) with no visible open regressions.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-intent-2025",
+        "src-chromestatus",
+        "src-interop-399102343"
+      ],
+      "limitations": "Independent WPT pass-rate verification and any post-stable regression scan could not be performed from public dashboards via automated retrieval."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Launch communication was accurate, consistent, and transparent across channels. ChromeStatus, the blink-dev PSA, the Chrome 140 developer release notes, and the Chrome Enterprise release notes all describe the same root-vs-body change and cite the CSSWG resolution. The ChromeStatus record transparently discloses the >1% UseCounter and the manual 20-site inspection rather than presenting the change as risk-free. MDN guidance was updated to target the root element, matching shipped behavior. The only blemish is a minor milestone-estimate slip (PSA said 139; shipped 140).",
+      "evidenceIds": [
+        "src-chromestatus",
+        "src-intent-2025",
+        "src-relnotes-140",
+        "src-enterprise-notes",
+        "src-mdn"
+      ],
+      "limitations": "The 20-site inspection methodology underlying the 'low risk' public claim is not independently verifiable (access-restricted doc)."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support artifacts, known-issues material, or recurring-issue patterns attributable to this change were located, and the feature has no dedicated public docs/samples on ChromeStatus (consistent with 'No developer-visible change'). The tracking bug is closed with no visible open regression. Without a public support surface or post-launch issue data, support burden cannot be defensibly assessed.",
+      "evidenceIds": [
+        "src-bug-41453796",
+        "src-chromestatus"
+      ],
+      "limitations": "Support load for silent behavior fixes is often absorbed in private channels; absence of public issues is not evidence of low support burden."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A successful interoperability outcome on a clean, well-instrumented implementation, with accurate cross-channel communication — but an outcome assessment that cannot be called an unqualified success because the end-user-impact, adoption/breakage, and support dimensions lack independent post-launch evidence. The core goal (three-engine alignment, reinforced by Interop 2025 and a CSSWG resolution) was achieved on a 6-year-old, externally-reported, author-confirmed bug; the residual risk dimensions remain unscored rather than confirmed-safe.",
+      "evidenceIds": [
+        "src-interop-2025-readme",
+        "src-csswg-f2f",
+        "src-bug-41453796",
+        "src-relnotes-140",
+        "src-chromestatus"
+      ],
+      "limitations": "Overall is mixed because success is established for interoperability/implementation/communication but unscored for end-user impact, adoption, and support; the method prohibits inferring overall success from shipment, usage, or absent criticism."
+    }
+  },
+  "sources": [
+    {
+      "id": "src-chromestatus",
+      "url": "https://chromestatus.com/feature/6210047134400512",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-07-28",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, ship milestones (Desktop/Android/WebView 140), finch name PropagateOverscrollBehaviorFromRoot, UseCounter >1% + 20-site manual inspection, ff/safari=Shipped, webdev=No signals, spec link, enterprise notification M139"
+      ],
+      "limitations": "Cached record accurate_as_of 2025-07-28; the live chromestatus.com/metrics popularity/3736 value is JS-rendered and was not independently captured."
+    },
+    {
+      "id": "src-spec",
+      "url": "https://drafts.csswg.org/css-overscroll-behavior-1",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec defines overscroll-behavior and its motivating example using html { overscroll-behavior-y: contain }, which Chrome's body-propagation violated"
+      ],
+      "limitations": "Working Draft maturity (val 4); specific propagation normative text not re-extracted in this retrieval."
+    },
+    {
+      "id": "src-intent-2025",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/an611rpPxLQ",
+      "publisher": "blink-dev (David Awogbemila)",
+      "publishedOrObservedAt": "2025-06",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "'Web-Facing Change PSA' for the launch; spec/tracking bug/WPT link; Finch name; rollout 'ship enabled for all users'; estimated milestones Desktop/Android/WebView 139; interop risk framing"
+      ],
+      "limitations": "Exact post date not extracted from the page; estimated ~2025-06 from feature creation date. This is a PSA, not a full Intent to Ship."
+    },
+    {
+      "id": "src-intent-2021",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/cdBnv0-iYZs/m/L4IsN5NGAwAJ",
+      "publisher": "blink-dev (Xida Chen)",
+      "publishedOrObservedAt": "2021-02-16",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Prior 2021 Intent to Ship for the same fix (old feature 5734614437986304, crbug 954423) was put ON HOLD by API owner Daniel Bratell because ~2% page-load impact was too high and could not be driven down; documents the earlier abandoned attempt and the reason"
+      ],
+      "limitations": "Historical (2021) attempt; superseded by the 2025 PSA, but explains the multi-year delay."
+    },
+    {
+      "id": "src-bug-41453796",
+      "url": "https://issues.chromium.org/issues/41453796",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2025-08-28",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug filed 2019-04-19 by external developer jonjohnjohnson; confirmed a bug by property author majidvp (2019); UseCounter added 2020-2021; usage trajectory ~2%(2021)/0.38%(Oct2021)/0.82%(Jun2023)/>1%(2025); Mozilla engagement Oct 2023 (emilio/bb...@mozilla); fixed 2025 by David Awogbemila via CLs 6546636/6635849/6732448; Status Fixed, P2, S4, 9 votes, Hotlist-Interop; OS Android/Mac/ChromeOS"
+      ],
+      "limitations": "Full comment thread read via browser snapshot; some Monorail-migration comments empty. Migrated from crbug 954423 in Jan 2024."
+    },
+    {
+      "id": "src-interop-399102343",
+      "url": "https://issues.chromium.org/issues/399102343",
+      "publisher": "Chromium Issue Tracker (Interop tracking)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Chromium Interop-2025 tracking issue for the same fix ('We have a fix which is behind an [experimental flag]')"
+      ],
+      "limitations": "Full page could not be retrieved (reader network error); claim from search-result snippet only."
+    },
+    {
+      "id": "src-csswg-f2f",
+      "url": "https://lists.w3.org/Archives/Public/www-style/2021May/0012.html",
+      "publisher": "W3C CSS Working Group (minutes by Dael Jackson)",
+      "publishedOrObservedAt": "2021-05-24",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "CSSWG Virtual F2F 2021-04-08 Overflow agenda: RESOLVED propagate scrollbar-gutter from root to viewport; RESOLVED scrollbar-gutter does not propagate from <body>; RESOLVED no future properties propagate from <body> to ICB/viewport; RESOLVED deprecate any existing use of body propagation. During discussion iank_ noted 'Overscroll behavior does [propagate from body]' and emilio that scroll-snap etc. 'only work on the root'."
+      ],
+      "limitations": "Resolutions were on scrollbar-gutter/general propagation principle; the specific overscroll-behavior resolution referenced in the feature (issue 6079 comment 816307011) is this same F2F's general body-propagation decision."
+    },
+    {
+      "id": "src-csswg-6406",
+      "url": "https://github.com/w3c/csswg-drafts/issues/6406",
+      "publisher": "W3C CSS Working Group",
+      "publishedOrObservedAt": "2021-06-23",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Open CSSWG issue asking whether non-auto overscroll-behavior should propagate from either root or body; lists affected sites (open.spotify.com, reddit.com mobile, tumblr.com, tiktok.com, redfin.com, tinder.com, tesla.com, pinterest.com); confirms the long-tail compat concern Chrome accepted by shipping root-only"
+      ],
+      "limitations": "Issue body only (reader did not extract comments); status Open at retrieval, i.e. the spec-design question remains unresolved."
+    },
+    {
+      "id": "src-interop-2025-readme",
+      "url": "https://github.com/web-platform-tests/interop/blob/main/2025/README.md",
+      "publisher": "web-platform-tests Interop project (Apple, Bocoup, Google, Igalia, Microsoft, Mozilla)",
+      "publishedOrObservedAt": "2025",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Interop 2025 'Web compat' focus area explicitly includes 'overscroll-behavior on the root scroller' with a dedicated focus-area proposal and tests, selected on evidence of real-world developer/end-user divergence"
+      ],
+      "limitations": "README does not state per-engine pass rates; focus-area acceptance confirms the divergence is recognized industry-wide."
+    },
+    {
+      "id": "src-interop-560",
+      "url": "https://github.com/web-platform-tests/interop/issues/560",
+      "publisher": "web-platform-tests/interop",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Issue documenting the root-scroller implementation divergence: 'Gecko only respects it on the <html> element. Blink only respects it on [the body]'"
+      ],
+      "limitations": "Reader returned page chrome rather than full comment thread; core claim captured from issue description/metadata."
+    },
+    {
+      "id": "src-interop-858",
+      "url": "https://github.com/web-platform-tests/interop/issues/858",
+      "publisher": "web-platform-tests/interop",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Focus-area proposal 'overscroll-behavior on the root scroller for inclusion in Interop 2025' — 'accepted as part of the Web Compat focus area'"
+      ],
+      "limitations": "Claim captured from search-result snippet; full issue not directly read."
+    },
+    {
+      "id": "src-baseline",
+      "url": "https://web-platform-dx.github.io/web-features-explorer/features/overscroll-behavior/",
+      "publisher": "Web Platform DX (web-features)",
+      "publishedOrObservedAt": "2025-03-12",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "overscroll-behavior property is Baseline Widely Available since 2025-03-12 (Chrome 63, Firefox 59, Safari 16); included in Interop 2022 and 2023"
+      ],
+      "limitations": "Baseline applies to the property's existence, not specifically to this root-propagation correctness fix, which post-dates the Baseline 'widely available' date."
+    },
+    {
+      "id": "src-mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overscroll-behavior",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "research",
+      "supports": [
+        "MDN guidance/examples now target the root element (html { overscroll-behavior: none }) consistent with the shipped behavior; notes iframe guidance to set on both html and body"
+      ],
+      "limitations": "MDN page last modified after the M140 ship date; reflects post-ship docs state."
+    },
+    {
+      "id": "src-relnotes-140",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 140 stable release date September 2, 2025; dedicated section 'Propagate viewport overscroll-behavior from root' stating the change makes Chrome 'comply with the specification and become interoperable with other implementations'; tracking bug #41453796"
+      ],
+      "limitations": "Release-notes entry is concise; does not quantify breakage risk to end users."
+    },
+    {
+      "id": "src-enterprise-notes",
+      "url": "https://support.google.com/chrome/a/answer/10314655",
+      "publisher": "Google Chrome Enterprise and Education Help",
+      "publishedOrObservedAt": "2025",
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Enterprise release notes document the overscroll-behavior root-vs-body change, consistent with first_enterprise_notification_milestone 139 and enterprise_impact=1"
+      ],
+      "limitations": "Exact enterprise-note publication/revision date not captured."
+    },
+    {
+      "id": "src-webkit-240183",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=240183",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T15:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WebKit actively working overscroll-behavior semantics ('CSS overscroll-behavior-x: contain does not disable history navigation'), corroborating that the property's gesture semantics are a live cross-engine concern"
+      ],
+      "limitations": "Found via search; full bug not read. Tangential to the root-propagation change but evidences WebKit engagement with the property."
+    }
+  ],
+  "successes": [
+    "Resolved a six-year (2019–2025) three-engine interoperability divergence that the property's own author had confirmed was a bug, achieving the feature's explicit goal: Chrome now propagates overscroll-behavior from the root like Firefox and Safari.",
+    "Strong, transparent risk instrumentation: a long-running UseCounter plus a targeted 20-site manual inspection (with the >1% figure disclosed on ChromeStatus) substituted appropriately for an Origin Trial on a behavior fix to an already-Baseline property.",
+    "Accurate, consistent cross-channel communication: ChromeStatus, the blink-dev PSA, Chrome 140 developer release notes, Chrome Enterprise release notes, and an updated MDN page all describe the same change and cite the CSSWG resolution.",
+    "Industry reinforcement: the change shipped into an accepted Interop 2025 'Web compat' focus area with shared WPT coverage and constructive Mozilla engagement, rather than as a unilateral Chrome decision."
+  ],
+  "failures": [
+    "Outcome evidence is thin: no independent post-launch breakage/regression, user-impact, or support-burden data was located ~10 months after stable, so the end-user-impact, adoption, and support dimensions cannot be defensibly scored (the retrospective cannot claim the change was harmless, only that it aligned the engines).",
+    "A latent spec-design question (CSSWG issue #6406, 'propagate non-auto overscroll-behavior from either root or body') remained open at ship; Chrome shipped against the existing spec rather than resolving the ambiguity, leaving a residual risk for the long-tail of sites that set the property on <body>.",
+    "Minor process inconsistency: the blink-dev PSA estimated ship at milestone 139 but the feature shipped in 140; the estimate was not reconciled in the PSA."
+  ],
+  "counterfactuals": [
+    "The 2021 attempt was correctly put on hold when the UseCounter showed ~2% page-load impact that could not be driven down; shipping then without Interop 2025's forcing function and cross-engine alignment could have caused widespread, hard-to-attribute changes to pull-to-refresh and swipe-navigation gestures. The ~4-year wait was defensible risk management, not inaction.",
+    "If the team had driven the open CSSWG question (#6406, either-root-or-body) to a resolution before shipping, the long-tail compat risk for body-set sites (Spotify, Reddit mobile, Tumblr, TikTok, etc.) could have been removed by spec change rather than accepted — at the cost of delaying alignment further.",
+    "If a post-launch monitoring plan (telemetry on pull-to-refresh/swipe-nav incidence, a WebCompat/crbug regression watch) had been defined at ship, this retrospective could have scored end-user impact and adoption instead of leaving them unscored; its absence is the main thing preventing an unqualified success verdict.",
+    "Mozilla's 2023 question (is the html-propagation half low-risk even if the body-removal half is not?) suggests a staged option — propagate from html first, deprecate body later — that could have de-risked rollout, though it would have prolonged divergence."
+  ],
+  "skillImprovements": [
+    "Add a lifecycle rule for 'No developer-visible change' features that nonetheless alter observable behavior (gestures, navigation, focus): treat them as behavior changes requiring a pre-ship risk assessment AND a defined post-stable monitoring plan, not as invisible fixes. This feature's end-user impact remains unscored precisely because no such monitoring was evident.",
+    "For high-UseCounter behavior fixes, require a refreshed UseCounter reading taken close to ship date (this one oscillated 2%→0.38%→0.82%→>1%) and require the record to state why the current value is acceptable, with the inspection methodology reproducible (the 20-site doc is access-restricted and unverifiable).",
+    "Add a phase check: do not ship a behavior change against an open spec-design question (CSSWG #6406) without either resolving it or explicitly recording the accepted residual risk and the affected-site class.",
+    "Add a release-comms accuracy check that reconciles PSA/intent milestone estimates with the actual ship milestone (PSA said 139, shipped 140) and updates the estimate, so historical launch records stay accurate.",
+    "Add a retrospective evidence step that captures post-stable signals (crbug regressions, WebCompat issues, support-forum themes, UseCounter deltas) 1–2 milestones after a behavior change lands, so end-user impact and adoption can be scored rather than left unknown."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Current UseCounter (chromestatus.com/metrics/feature/timeline/popularity/3736) value — page is JS-rendered and not extractable by the reader; only historical values from the bug thread are available.",
+      "Post-launch independent breakage/regression evidence (crbug, WebCompat, support forums) attributable to the M140 change — none located ~10 months after stable; absence is not affirmative evidence.",
+      "End-user-impact telemetry (pull-to-refresh / swipe-navigation incidence changes) — not publicly available.",
+      "WPT pass-rate numbers per engine for overscroll-behavior-root.html from wpt.fyi — dashboard is JS-rendered; only test existence and Interop-2025 coverage are confirmed.",
+      "Contents of the 20-site manual inspection document (bit.ly/4ecLqQi) — access-restricted Google Doc; methodology and site list could not be independently verified.",
+      "Full text of Chromium Interop issue 399102343 — reader returned a network error; only a search-snippet claim is available."
+    ],
+    "reviewedAt": "2026-07-22T15:45:00Z"
+  }
+}

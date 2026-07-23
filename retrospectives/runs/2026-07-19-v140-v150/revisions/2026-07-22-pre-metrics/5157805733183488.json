@@ -1,0 +1,600 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5157805733183488,
+    "name": "CSS Gap Decorations",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5157805733183488",
+    "webFeature": "gap-decorations",
+    "category": "CSS",
+    "blinkComponents": [
+      "Blink>Layout"
+    ],
+    "owners": [
+      "samomekarajr@microsoft.com",
+      "almaher@microsoft.com",
+      "kbabbitt@microsoft.com",
+      "javiercon@microsoft.com"
+    ],
+    "creator": "samomekarajr@microsoft.com",
+    "spec": "https://drafts.csswg.org/css-gaps-1",
+    "finchName": "CSSGapDecoration",
+    "flag": "enable-experimental-web-platform-features",
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5157805733183488",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The ChromeStatus entry (created 2024-08-06 by samomekarajr@microsoft.com) is a well-classified new CSS feature with a clear problem statement, named owners, a tracking bug, explainer, spec, and a sample. Microsoft is both spec author (Kevin Babbitt) and Chromium implementer (Sam Davis Omekara), with Google Chrome DevRel co-owning communication. Intake artifacts (problem, users, workaround evidence) were present from the start; the bug reference and the column-rule/multicol analogy anchor the proposal.",
+      "evidenceIds": [
+        "cs_record",
+        "explainer",
+        "bug"
+      ],
+      "limitations": "No internal owner/decision or stakeholder map is exposed publicly; the launch_bug_url is null in the record."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "The developer problem is genuinely recurring and well-evidenced: CSSWG issue #2748 (long-standing request for rules in grid/flex), multiple StackOverflow questions cited in the explainer, and 'gap decorations' surfacing as a top missing feature in State of CSS 2023. The explainer states goals/non-goals (no tables, no images yet), collects use cases, considers alternatives (Mats Palmgren/Mozilla's 2021 draft; pseudo-elements) and explicitly drops logical properties based on CSSWG #10393 feedback. Incubation moved to the CSSWG venue (css-gaps-1) and the explainer was archived once adopted there.",
+      "evidenceIds": [
+        "explainer",
+        "spec",
+        "csswg",
+        "socs2023",
+        "cs_record"
+      ],
+      "limitations": "Demand evidence is qualitative/anecdotal (issues, surveys, articles) rather than usage-based; no attributable customer/partner commitments are cited. CSSWG #10393 full thread could not be read live (two timeouts); reliance on explainer + cached-record references."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A Chromium implementation exists behind the 'Enable Experimental Web Platform Features' flag (finch name CSSGapDecoration; bug 357648037 'Implement CSS Gap Decorations' with parsing CLs), an Intent to Prototype thread was filed, and the explainer/spec were iterated. However, detailed prototype-phase artifacts (task-based friction logs, explainer/spec/implementation divergence reports, compatibility matrices) were not independently available; the bug tracker is auth-gated/JS-rendered and could not be read in full.",
+      "evidenceIds": [
+        "cs_record",
+        "bug",
+        "i2p",
+        "explainer",
+        "spec"
+      ],
+      "limitations": "Could not read the live Chromium bug (auth-gated) or any prototype friction log; only the existence of the implementation and intent thread is confirmed."
+    },
+    "developerTrials": {
+      "status": "supported",
+      "finding": "A developer trial shipped in Chrome/Edge 139 behind a flag with a dedicated blog ('A new way to style gaps in CSS', 2025-06-11), an interactive playground and demos (burger menu, notebook, Daily CSS news/sudoku), an explicit call for feedback, and honest disclosure of current limitations (animating decorations; very large grid tracks). Independent community coverage followed (CSS-Tricks, 2025-07-01). The ChromeStatus record's web-developor notes document substantial post-trial enthusiasm across social media and articles, and the dev-trial goals stage explicitly sought feedback on API intuitiveness and gaps. The trial clearly informed pre-ship changes (property renames, added visibility/animation).",
+      "evidenceIds": [
+        "blog_devtrial",
+        "csstricks",
+        "cs_record",
+        "sample"
+      ],
+      "limitations": "No published structured-cohort report, methodology, task-completion metrics, or participant denominator was found; feedback appears informal (social media, Chromium issues). Trial cohort representativeness across frameworks/devices/regions is not documented."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Standards engagement was broad and early: TAG review requested 2025-01-07 (#1035) with a security/privacy self-review and multi-stakeholder links; ChromeStatus records the TAG review as 'Issues addressed'. Mozilla returned a Positive position (#1158, assigned dholbert, team: Layout). The spec is a CSSWG Working Draft (First Public WD 2025-04-17). However, WebKit has given 'No response'/No signal (#444, opened same day, still open), and the ChromeStatus-tracked security_review_status and privacy_review_status both read 'Pending' at a feature that has already shipped — a documented review-gate gap (possibly stale fields).",
+      "evidenceIds": [
+        "tag",
+        "moz",
+        "webkit",
+        "spec",
+        "cs_record"
+      ],
+      "limitations": "TAG review comments/resolution could not be read in full (issue body only); security/privacy review gates show Pending in the record; WebKit's silence is genuine (no position), not tacit approval."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was used: origintrial is false, no OT stage/id or trial token exists in the record, and the trial path was flag-based dev trial (M139) -> ship (M149). The TAG request body mentioned hoping to start OTs around June 2025, but the team proceeded without one. Rationale for not-relevant: this is a progressive-enhancement-only CSS visual feature with no server-side, permission, user-consent, or origin-specific setup that requires field conditions to evaluate; dev-trial-behind-flag was a sufficient evidence path. Not-relevant here means genuinely not used, not 'untested'.",
+      "evidenceIds": [
+        "cs_record",
+        "blog_devtrial",
+        "tag"
+      ],
+      "limitations": "If real-origin production integration evidence had been desired, an OT was the available instrument that was not exercised; the choice is defensible but undocumented as a decision."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "An Intent to Ship thread was filed, the spec stabilized as a CSSWG Working Draft with a large WPT test inventory, MDN documentation was being added around ship (mdn/content #44435), demos/playground existed, and the stable blog documented explicit API finalization (renames: column-rule-outset/row-rule-outset -> *-inset; added *-rule-visibility-items; added animation). Progressive-enhancement fallback ('in browsers without support, gaps render normally') and a planned polyfill were communicated. The team disclosed remaining limitations.",
+      "evidenceIds": [
+        "i2s",
+        "spec",
+        "blog_stable",
+        "mdn_issue",
+        "sample",
+        "cs_record"
+      ],
+      "limitations": "API was still churning late (property/value renames between dev trial and stable), and the ChromeStatus record was not updated to reflect ship or the resolved animation limitation (see evidenceAndCommunication)."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Release communication was coordinated and multi-channel across both implementers: 'Gap decorations: Now available in Chromium' (developer.chrome.com, 2026-05-15), 'New in Chrome 149' (2026-06-02) and Chrome 149 release notes (stable 2026-06-02), plus Microsoft's own 'New in Edge for developers' (blogs.windows.com, 2026-07-07). Coverage spanned Chrome/Edge first-party blogs with many localized editions, demos, independent press (Gigazine 2026-06-03; web-standards.dev), and community roundups. Claims matched the progressive-enhancement reality and disclosed Chromium-only availability. The single run launch event (149:Enabled by default) is corroborated by independent sources.",
+      "evidenceIds": [
+        "blog_stable",
+        "blog_newin149",
+        "rn149",
+        "edge_blog",
+        "gigazine",
+        "webstandards",
+        "webstatus"
+      ],
+      "limitations": "The authoritative ChromeStatus status field was not flipped to 'Enabled by default'/is_released after ship (see evidenceAndCommunication), so a release check relying only on ChromeStatus would have misfired."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Only ~6-7 weeks elapsed between Chrome/Edge 149 stable (2026-06-02) and the evidence cutoff. No usage telemetry is linked (webdx_usecounter_enum is null), no attributable production case studies with outcomes were found, and no framework/library integration (e.g. Tailwind, design-system components) was evidenced. Browser availability is ~98% on the Chromium engine but cross-engine availability is zero, so real-web adoption is structurally limited. Community enthusiasm and articles exist but are not adoption. Adoption remains unknown.",
+      "evidenceIds": [
+        "cs_record",
+        "webstatus",
+        "wpd_explorer",
+        "csstricks"
+      ],
+      "limitations": "Absence of adoption evidence is partly timing (very recent ship) and partly the null UseCounter; cannot distinguish 'low adoption' from 'too early to tell'."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "The Chromium tracking bug (357648037) remains open and a feedback route is published, but the feature is too new and single-engine for recurring support/issue patterns, regression trends, or resolution-time data to have materialized. No public support-health dashboard or known-issues page was found.",
+      "evidenceIds": [
+        "bug",
+        "cs_record",
+        "blog_stable"
+      ],
+      "limitations": "Could not read live bug/issue counts (auth-gated); no post-ship support telemetry is public."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a brand-new additive CSS feature, not a deprecation, removal, reverse trial, or restriction. No migration, enterprise policy, or removal timeline applies; there is no replacement story because nothing is being removed. Not-relevant reflects that the deprecation/removal lifecycle does not apply.",
+      "evidenceIds": [
+        "cs_record"
+      ],
+      "limitations": "None; the feature is additive and progressive-enhancement-only."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The feature targets a real, long-standing, broadly felt developer problem (styling grid/flex gaps without structural hacks) with strong, independent demand evidence predating the proposal (CSSWG #2748 since 2019; State of CSS 2023 missing-feature; cited StackOverflow questions; documented workaround costs including accessibility and performance). The shipped API directly solves the stated jobs and was refined via dev-trial feedback. This success is on problem validity and fit, not inferred from shipment or sentiment.",
+      "evidenceIds": [
+        "explainer",
+        "csswg",
+        "socs2023",
+        "blog_devtrial",
+        "csstricks",
+        "blog_stable"
+      ],
+      "limitations": "Demand evidence is qualitative; no proposal-specific survey with published methods."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "End-user impact is indirect and positive in direction: cleaner visual structure and a credible accessibility benefit (the blogs argue native gap rules remove extra, a11y-tree-polluting DOM nodes and pseudo-elements used in workarounds). There is no resource, privacy, or control cost to end users. However, no end-user research or measured end-user outcomes exist, and the benefit is contingent on authors using the feature well. Net modest, unmeasured, and gated on cross-engine availability.",
+      "evidenceIds": [
+        "blog_stable",
+        "blog_devtrial",
+        "csstricks"
+      ],
+      "limitations": "No end-user studies; benefit is author-mediated and unmeasured."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No defensible adoption signal exists within the evidence window: no UseCounter bucket is linked, no attributable production deployments or framework integrations were evidenced, and the feature is Chromium-only (Baseline Limited Availability). Per the method, shipment, usage, and press enthusiasm must not be read as adoption. Scored unscored rather than inferred.",
+      "evidenceIds": [
+        "cs_record",
+        "webstatus",
+        "wpd_explorer"
+      ],
+      "limitations": "A null UseCounter means even future usage cannot be read from Chrome telemetry until a bucket is added; too recent for HTTP Archive/web-features usage."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Standards process was strong (CSSWG Working Draft, TAG review 'Issues addressed', Mozilla Positive, extensive WPT tests, security/privacy self-review), and the team's pre-ship interop-risk assessment ('no major concerns') was reasonable. But the operative interoperability outcome at ship is single-engine: WebKit has given No signal (#444, open) and Mozilla's Positive position (#1158) is not accompanied by a shipped Firefox implementation. Consequently web-features/webstatus.dev classify the feature as Baseline Limited Availability (Chromium ~98%, other engines 0%). A positive standards position is not Baseline.",
+      "evidenceIds": [
+        "moz",
+        "webkit",
+        "tag",
+        "spec",
+        "interop1102",
+        "wpd_explorer",
+        "webstatus",
+        "cs_record"
+      ],
+      "limitations": "Live WPT cross-engine pass rates could not be read (JS dashboard); only one implementation exists, so cross-engine conformance is untestable today."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The implementation shipped with a large, spec-aligned WPT test inventory (flex/grid/subgrid/multicol gap-decorations plus computed/valid/invalid/shorthand tests) and the team disclosed and then resolved a key limitation (animation) between dev trial and stable. Counter-signals: late API churn (outset->inset; gap-rule-paint-order->rule-overlap; a 'spanning-item' break value) shortly before ship, and disclosed residual limitations (fragmentation across paged/multicol; practical grid-size scaling limits). Single-engine, so interop-grade implementation quality is not yet demonstrable.",
+      "evidenceIds": [
+        "spec",
+        "blog_stable",
+        "blog_devtrial",
+        "cs_record",
+        "wpt"
+      ],
+      "limitations": "Live WPT pass/fail and Chromium regression/bug counts could not be independently verified; residual limitations may or may not still apply at ship."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Developer communication was a clear strength (dev-trial and stable blog posts by named authors, New in Chrome 149, Edge dev blog, localized editions, interactive playground, demos, explicit progressive-enhancement guidance). However, the authoritative ChromeStatus record is materially stale after ship: as of accurate_as_of 2026-07-02 (after the 2026-06-02 stable) and again in the live chromestatuslite view it still reads Status 'In development' with is_released=false, and ongoing_constraints still lists animation as not implemented despite the stable blog (2026-05-15) confirming animation shipped. security_review_status/privacy_review_status also read 'Pending'. A retrospective or partner depending solely on ChromeStatus would wrongly conclude the feature had not shipped and lacked animation.",
+      "evidenceIds": [
+        "cs_record",
+        "blog_stable",
+        "blog_newin149",
+        "edge_blog",
+        "rn149"
+      ],
+      "limitations": "The stale fields may be a record-keeping lag rather than missing work; cannot confirm whether security/privacy reviews actually completed."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too little time and too narrow availability (Chromium-only, ~6-7 weeks) to establish support burden, recurrence, or resolution patterns. Feedback route is published; no public support health data exists.",
+      "evidenceIds": [
+        "bug",
+        "blog_stable"
+      ],
+      "limitations": "No post-ship support telemetry is public; cannot score."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Overall: a genuinely requested, well-incubated CSS feature that shipped on schedule (Chrome/Edge 149) via strong Microsoft-Google collaboration, with broad standards engagement, a CSSWG Working Draft, extensive tests, and high-quality multi-channel DevRel communication. The binding constraints are cross-engine interoperability (Chromium-only; Baseline Limited Availability; WebKit no signal; Mozilla positive but unshipped) and a stale ChromeStatus record (status/is_released/ongoing_constraints not updated post-ship). Durable adoption, production use, and support outcomes are not yet knowable. Honest overall score is mixed; it must not hide the single-engine availability or the absent adoption/support evidence.",
+      "evidenceIds": [
+        "blog_stable",
+        "blog_newin149",
+        "edge_blog",
+        "spec",
+        "moz",
+        "webkit",
+        "webstatus",
+        "cs_record"
+      ],
+      "limitations": "Overall conflates a successful launch-of-process with as-yet-unknown post-launch outcomes; revisit at the next milestone once usage/support data and other-engine movement exist."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs_record",
+      "url": "https://chromestatus.com/feature/5157805733183488",
+      "publisher": "Chrome Platform Status (cached record accurate_as_of 2026-07-02 + chromestatuslite.com live view)",
+      "publishedOrObservedAt": "2026-07-02T21:16:05Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners (Microsoft), stages (dev trial desktop 139; ship desktop/android/webview 149), FF Positive, Safari No signal, web-dev Positive, ongoing constraints, finch name CSSGapDecoration, tag review 'Issues addressed', security/privacy review 'Pending', web-dev enthusiasm links, star_count 92, is_released=false, status 'In development'"
+      ],
+      "limitations": "Stale post-ship: status 'In development' and is_released=false despite M149 stable on 2026-06-02; ongoing_constraints lists animation as unimplemented though the stable blog confirms it shipped; security/privacy review show Pending."
+    },
+    {
+      "id": "spec",
+      "url": "https://drafts.csswg.org/css-gaps-1/",
+      "publisher": "W3C CSS Working Group (Editor: Kevin Babbitt, Microsoft)",
+      "publishedOrObservedAt": "2026-06-24T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "CSS Gaps Module Level 1 Editor's Draft; previous WDs 2026-06-24, 2026-02-27, 2025-04-17 (First Public WD); full property set; large WPT test inventory; Privacy and Security Considerations sections; Interpolation of list values"
+      ],
+      "limitations": "Editor's Draft is non-normative/work-in-progress; live cross-engine test results read from wpt.fyi separately."
+    },
+    {
+      "id": "explainer",
+      "url": "https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/CSSGapDecorations/explainer.md",
+      "publisher": "Microsoft Edge (MSEdgeExplainers)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Goals/non-goals (no tables, no images yet), user research from CSSWG #2748/#5080/#6748/#9482, considered alternatives (Mats Palmgren/Mozilla 2021 draft; pseudo-elements), dropped logical properties per #10393 feedback, key scenarios; archived (work moved to CSSWG css-gaps-1)"
+      ],
+      "limitations": "Author Kevin Babbitt (Microsoft); no explicit publication date; archived doc."
+    },
+    {
+      "id": "i2p",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/MOZHKdD61uI",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: CSS Gap Decoration thread exists"
+      ],
+      "limitations": "Google Groups thread not read in full; existence confirmed via search + cached record intent_thread_url."
+    },
+    {
+      "id": "i2s",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/x6pObJjIUdg",
+      "publisher": "blink-dev (Chromium)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship: CSS Gap Decorations thread exists"
+      ],
+      "limitations": "Google Groups thread not read in full; existence confirmed via search; cached record stage 160 intent_thread_url corroborates ship intent."
+    },
+    {
+      "id": "tag",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1035",
+      "publisher": "W3C TAG (design-reviews)",
+      "publishedOrObservedAt": "2025-01-07T22:12:46Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review requested 2025-01-07 by kbabbitt; security/privacy self-review linked; multi-stakeholder (Chromium positive, Mozilla #1158, WebKit #444); cached record marks 'Issues addressed'"
+      ],
+      "limitations": "Only the issue body was read, not the full comment/resolution thread; the 'Issues addressed' status is taken from the cached ChromeStatus record."
+    },
+    {
+      "id": "moz",
+      "url": "https://github.com/mozilla/standards-positions/issues/1158",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2025-01-07T22:10:31Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Closed; label position: positive; team: Layout; assigned dholbert; venue W3C CSSWG"
+      ],
+      "limitations": "Position is 'proposed/positive' as recorded; does not imply a shipped Firefox implementation."
+    },
+    {
+      "id": "webkit",
+      "url": "https://github.com/WebKit/standards-positions/issues/444",
+      "publisher": "WebKit (standards-positions)",
+      "publishedOrObservedAt": "2025-01-07T22:10:51Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Open; WebKittens 'No response' (No signal); topic css; venue W3C CSS WG; from Microsoft"
+      ],
+      "limitations": "'No signal' is genuine absence of a position, not opposition or approval; could not read any later comments."
+    },
+    {
+      "id": "csswg",
+      "url": "https://github.com/w3c/csswg-drafts/issues/10393",
+      "publisher": "W3C CSSWG (csswg-drafts)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Initial public proposal venue for css-gaps-1; feedback that led to dropping logical properties (per explainer)"
+      ],
+      "limitations": "Thread timed out twice on the reader; relied on explainer + cached-record references rather than full content."
+    },
+    {
+      "id": "bug",
+      "url": "https://issues.chromium.org/issues/357648037",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "'Implement CSS Gap Decorations' tracking bug; implementation CLs (e.g., parsing color/style/width); cached record notes 18 developer upvotes"
+      ],
+      "limitations": "Live issue is auth-gated/JS-rendered and could not be read; star/upvote counts not independently re-verified."
+    },
+    {
+      "id": "wpt",
+      "url": "https://wpt.fyi/results/css/css-gaps",
+      "publisher": "web-platform-tests / wpt.fyi",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Dedicated css/css-gaps WPT directory referenced by the spec and ChromeStatus"
+      ],
+      "limitations": "Dashboard is JS-rendered and could not be read live; live pass/fail counts not verified; test inventory is confirmed via the spec's test lists instead."
+    },
+    {
+      "id": "blog_devtrial",
+      "url": "https://developer.chrome.com/blog/gap-decorations",
+      "publisher": "Chrome for Developers (Sam Davis Omekara, Patrick Brosset)",
+      "publishedOrObservedAt": "2025-06-11T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Developer trial announcement for Chrome/Edge 139 behind flag; problem framing; demos (playground, burger, notebook, Daily CSS news/sudoku); call for feedback; disclosed limitations (animation, large grid tracks); feedback via Chromium bug"
+      ],
+      "limitations": "First-party announcement; no participant cohort/denominator or published structured findings."
+    },
+    {
+      "id": "blog_stable",
+      "url": "https://developer.chrome.com/blog/gap-decorations-stable",
+      "publisher": "Chrome for Developers (Javier Contreras, Sam Davis Omekara)",
+      "publishedOrObservedAt": "2026-05-15T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Ship announcement for Chrome/Edge 149; Microsoft Edge + Google Chrome collaboration; API finalization (outset->inset rename; added *-rule-visibility-items; added animation); progressive enhancement + planned polyfill; demos at Edge demo site; limitations"
+      ],
+      "limitations": "First-party; pre-dates stable (2026-06-02) by ~2.5 weeks; not independent corroboration on its own."
+    },
+    {
+      "id": "blog_newin149",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-149",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-02T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable 2026-06-02; gap decorations listed as a release highlight; progressive-enhancement framing"
+      ],
+      "limitations": "First-party highlight summary, not a deep technical reference."
+    },
+    {
+      "id": "rn149",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers (Release notes)",
+      "publishedOrObservedAt": "2026-06-02T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable release date 2026-06-02; CSS gap decorations listed"
+      ],
+      "limitations": "Release-notes page not read in full; stable date + feature inclusion confirmed via search snippet."
+    },
+    {
+      "id": "edge_blog",
+      "url": "https://blogs.windows.com/msedgedev/2026/07/07/new-in-edge-for-developers-style-layout-gaps-improve-keyboard-accessibility-and-migrate-your-pwa-to-a-new-origin/",
+      "publisher": "Microsoft Edge Blog (Patrick Brosset)",
+      "publishedOrObservedAt": "2026-07-07T16:04:36Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Microsoft's own 'New in Edge for developers' confirming Edge shipped gap decorations; co-implementer/partner DevRel communication; links to playground"
+      ],
+      "limitations": "First-party; published ~5 weeks after Chrome's stable blog."
+    },
+    {
+      "id": "sample",
+      "url": "https://microsoftedge.github.io/Demos/css-gap-decorations",
+      "publisher": "Microsoft Edge Demos",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Official interactive demos/playground referenced by both Chrome and Edge blog posts"
+      ],
+      "limitations": "Demo page not read in full; existence and cross-referencing confirmed via blog posts."
+    },
+    {
+      "id": "mdn_issue",
+      "url": "https://github.com/mdn/content/issues/44435",
+      "publisher": "MDN Web Docs (content)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN documentation being added: 'CSS gap decoration is shipping in chromium-based browsers starting with Edge and Chrome 149'"
+      ],
+      "limitations": "Issue not read in full; confirms doc-creation activity around ship, not doc completeness."
+    },
+    {
+      "id": "interop1102",
+      "url": "https://github.com/web-platform-tests/interop/issues/1102",
+      "publisher": "web-platform-tests/interop",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "CSS Gap Decorations Baseline status recorded as 'Limited Availability'"
+      ],
+      "limitations": "Issue not read in full; Baseline classification confirmed via search snippet; not necessarily an Interop focus area."
+    },
+    {
+      "id": "wpd_explorer",
+      "url": "https://web-platform-dx.github.io/web-features-explorer/limited-availability/",
+      "publisher": "web-platform-dx (web-features)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "'Gap decorations. Limited availability.' listed in the web-features Baseline explorer"
+      ],
+      "limitations": "Page is a dynamic explorer; classification confirmed via search snippet."
+    },
+    {
+      "id": "webstatus",
+      "url": "https://webstatus.dev/features/gap-decorations",
+      "publisher": "Web Platform Status (webstatus.dev)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Gap decorations: Limited availability; ~98.0% available since 2026 (Chromium engine); not cross-browser"
+      ],
+      "limitations": "Page is JS-rendered; figures confirmed via search snippet, not a full read."
+    },
+    {
+      "id": "csstricks",
+      "url": "https://css-tricks.com/the-gap-strikes-back-now-stylable/",
+      "publisher": "CSS-Tricks (Patrick Brosset)",
+      "publishedOrObservedAt": "2025-07-01T06:42:38Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent-style developer article during the dev trial; documents workarounds' drawbacks (a11y, markup pollution); 'only available in Chromium-based browsers'; tutorial + demo; uses pre-rename property names (column-rule-outset) confirming late API churn"
+      ],
+      "limitations": "Author is a Microsoft Edge engineer, so partially first-party despite the independent outlet; written mid-2025 (pre-stable API)."
+    },
+    {
+      "id": "gigazine",
+      "url": "https://gigazine.net/gsc_news/en/20260603-google-chrome-149/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2026-06-03T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press coverage: 'Google Chrome 149 stable version released, now supports CSS gap decorations' on 2026-06-03, corroborating the stable date and ship"
+      ],
+      "limitations": "Press summary repeating the official announcement; limited independent technical depth."
+    },
+    {
+      "id": "webstandards",
+      "url": "https://web-standards.dev/news/2026/06/chrome-149/",
+      "publisher": "Web Standards (community news)",
+      "publishedOrObservedAt": "2026-06-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent community roundup of Chrome 149 including CSS gap decorations"
+      ],
+      "limitations": "Aggregation/roundup; not original reporting."
+    },
+    {
+      "id": "socs2023",
+      "url": "https://2023.stateofcss.com/en-US/usage/#css_missing_features",
+      "publisher": "State of CSS 2023 (annual developer survey)",
+      "publishedOrObservedAt": "2023-12-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Gap/column-rule decorations surfaced among most-requested missing CSS features (cited in the ChromeStatus record and explainer as demand evidence)"
+      ],
+      "limitations": "Could not re-verify the live survey page this run (relied on cached-record + explainer citations); survey has known self-selection/methodology limits and measures category interest, not API-specific demand."
+    }
+  ],
+  "successes": [
+    "Genuinely developer-requested feature with multi-year demand evidence (CSSWG #2748, State of CSS 2023, StackOverflow) - the problem validity is well-supported, not inferred from shipment.",
+    "Exemplary cross-company collaboration: Microsoft authored the spec (Kevin Babbitt) and implemented in Chromium (Sam Davis Omekara) while Google Chrome DevRel co-communicated; both Chrome and Edge shipped together in 149.",
+    "Strong standards hygiene: same-day TAG/Mozilla/WebKit position requests, a security/privacy self-review, a CSSWG Working Draft, and a very large WPT test inventory.",
+    "Honest pre-ship disclosure of limitations in the dev-trial blog, with the most important one (animation) actually resolved before stable.",
+    "High-quality, multi-channel, multi-language DevRel communication with working demos and an interactive playground, framed correctly as progressive enhancement.",
+    "Progressive-enhancement-friendly design materially lowers interop/rollback risk for a Chromium-only launch."
+  ],
+  "failures": [
+    "Authoritative ChromeStatus record is materially stale after ship: Status 'In development' and is_released=false as of 2026-07-02 (and in the live view) despite Chrome/Edge 149 stable on 2026-06-02; ongoing_constraints still lists animation as unimplemented though the stable blog (2026-05-15) confirms it shipped.",
+    "security_review_status and privacy_review_status read 'Pending' in the record at/after ship - an undocumented review-gate state (possibly stale, but not evidenced as complete).",
+    "Cross-engine availability is absent at ship: WebKit No signal (#444, open), Mozilla Positive but unshipped; Baseline = Limited Availability. The web feature is Chromium-only.",
+    "No usage telemetry is wired up (webdx_usecounter_enum null), so even future adoption cannot be read from Chrome's own counters.",
+    "Late API churn shortly before stable (outset->inset; gap-rule-paint-order->rule-overlap; a spanning-item break value), indicating the surface was still in flux late in the cycle."
+  ],
+  "counterfactuals": [
+    "Had the team run the Origin Trial hinted in the TAG request (around June 2025) instead of the flag-based dev trial, they would have gathered real-origin integration evidence - but for a progressive-enhancement CSS visual feature with no server/permission/consent setup, the dev-trial path was plausibly sufficient and an OT likely would not have changed the outcome; the choice is defensible though undocumented.",
+    "Had Microsoft not co-driven the work (spec editor + Chromium implementer + DevRel), this would likely have remained a long-standing unmet request; Microsoft's investment was decisive to it shipping at all.",
+    "The binding constraint on Baseline/newly-available status is a second engine: a Mozilla Positive position without a Firefox implementation, plus Safari silence, means the feature stays Limited Availability regardless of Chrome execution. Earlier or stronger WebKit engagement could have changed this, though Safari's 'no signal' is not a block.",
+    "Had a retrospective or partner trusted the ChromeStatus status/is_released/ongoing_constraints fields alone, it would have wrongly concluded the feature had not shipped and lacked animation - a concrete example of why primary release signals must be cross-checked.",
+    "Adding a UseCounter bucket before/at ship would have allowed adoption to be measured from Chrome telemetry; its absence leaves adoption structurally unscorable."
+  ],
+  "skillImprovements": [
+    "Add a retrospective rule + regression eval: never trust ChromeStatus status/is_released/ongoing_constraints fields alone; cross-check against independent release signals (Chrome release notes, 'New in Chrome' blog, webstatus.dev/web-features Baseline) and record staleness as an evidence-quality finding.",
+    "Add a rule: when a newer primary source contradicts a ChromeStatus free-text field (e.g., stable blog says animation shipped while ongoing_constraints says not implemented), the newer source wins and the discrepancy is logged, not silently resolved.",
+    "Add outcome-dimension guidance: for cross-engine-sensitive CSS features, score interoperability on actual multi-engine availability + Baseline status, not on positive standards positions. A Mozilla 'Positive' position is not Baseline.",
+    "Add an eval: treat dev-trial enthusiasm (social media, articles) as distinct from durable adoption (UseCounter, attributable production case studies, framework integration); require the latter before scoring adoption above 'unknown'.",
+    "Add a phase check: features with webdx_usecounter_enum=null have no usage telemetry and must have adoption scored unscored, with a recommendation to add a UseCounter bucket.",
+    "Add a not-relevant guard: when marking the experiment (Origin Trial) phase not-relevant, require explicit rationale and confirmation that no OT was actually run, so 'not-relevant' never masks an untested field path.",
+    "Add a release-phase checklist item: confirm the ChromeStatus status/is_released flip as a closeout task alongside the 'New in Chrome' post and release notes."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Durable adoption/usage telemetry: webdx_usecounter_enum is null; no UseCounter, HTTP Archive, or attributable production case studies found (feature is ~6-7 weeks post-ship and Chromium-only).",
+      "Cross-engine implementation: no Firefox or Safari implementation; Baseline Limited Availability; interoperability beyond standards positions cannot be evidenced.",
+      "Post-ship support/issue patterns and regression/bug counts: too recent and the Chromium bug is auth-gated; no public support-health data.",
+      "Live WPT pass/fail and live Chromium bug details: dashboards are JS-rendered/auth-gated and could not be read; only the spec's test inventory and bug existence were confirmed.",
+      "Full CSSWG #10393 and TAG #1035 resolution threads: timed out / only issue bodies read; relied on explainer and cached-record status references.",
+      "Published structured dev-trial cohort methodology and findings: none found; feedback evidence is informal."
+    ],
+    "reviewedAt": "2026-07-20T22:00:00Z"
+  }
+}

@@ -24,7 +24,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T14:40:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:58Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -104,11 +104,12 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No use counter or adoption metric exists for a UA-stylesheet behavior change, so adoption of the new behavior cannot be measured. The wider View Transitions ecosystem is healthy (React core <ViewTransition>, same-document VT nearing Baseline Newly available in Firefox 144), but that is not adoption of this specific change.",
+      "finding": "A public Chrome usage counter exists but maps to the broader WebDX View Transitions family (ChromeStatus web_feature 'view-transitions' normalizes to webfeature property 'ViewTransitions', bucket_id 2; mappingStatus 'web-feature-family-counter', confidence 'declared-family'), not to this specific UA-stylesheet behavior change. No exact counter for 'inherit more animation properties' can fire by design, so adoption of the new behavior itself remains unmeasured; the family counter provides surrounding context for the View Transitions API family as a whole. Interpreted as the share of measured Chrome HTTP/HTTPS page loads where the family counter fired, it stood at 0.00231316% at Chrome 140 stable (2025-09-02), dipped to 0.00165856% at day 30 (2025-10-02), then rose to 0.00523687% at day 90 (2025-12-01) and 0.00610281% at day 180 (2026-03-01); latest point 0.0052774% (2026-07-20), peak 0.00758282% (2026-04-04). The counter's first positive reading (2024-06-10) predates this feature, confirming it measures the wider family. No predeclared adoption target was stated for this feature, so the family level/trend is described rather than scored.",
       "evidenceIds": [
-        "s8"
+        "s8",
+        "s12"
       ],
-      "limitations": "No defensible adoption signal by design; removal of the manual animation-*: inherit boilerplate is unmeasured."
+      "limitations": "Family/property counter, not exact adoption of this change; the counter reflects the whole View Transitions API family. No exact-feature counter is possible by design. No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence exists for this specific change."
     },
     "support": {
       "status": "unknown",
@@ -148,9 +149,11 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Not measurable for a UA-stylesheet behavior change (no use counter exists by design).",
-      "evidenceIds": [],
-      "limitations": "No adoption signal exists by design."
+      "finding": "A ViewTransitions family counter exists but is not exact adoption of this UA-stylesheet behavior change (no distinct counter can fire by design). Interpreted as the share of measured Chrome HTTP/HTTPS page loads where the family counter fired, it stood at 0.00231316% at Chrome 140 stable (2025-09-02), 0.00165856% at day 30 (2025-10-02), 0.00523687% at day 90 (2025-12-01), and 0.00610281% at day 180 (2026-03-01); latest 0.0052774% (2026-07-20), peak 0.00758282% (2026-04-04). With no predeclared target and no exact-feature, unique-site, production, or retention evidence, the adoption outcome for this specific change stays unscored; the measured family level is low but trended upward over the post-launch window. Low usage is not treated as failure and high usage is not treated as success; there is simply no threshold to compare against.",
+      "evidenceIds": [
+        "s12"
+      ],
+      "limitations": "Family/property counter only; not equivalent to unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit, and not exact adoption of this change. No predeclared target. 'Low but trended upward' describes the family counter, not a verdict on this behavior change."
     },
     "interoperability": {
       "status": "success",
@@ -193,16 +196,17 @@
     },
     "overall": {
       "status": "success",
-      "finding": "A textbook small CSS interop fix that achieved its core goals - eliminating a real developer pain and converging on an interoperable behavior - with spec + WPT + two engines shipping near-simultaneously and no reported failures. Success is grounded in outcome evidence (interoperability, developer value, implementation quality), not shipment alone; adoption, support and end-user-impact remain unmeasured and are reported as such.",
+      "finding": "A textbook small CSS interop fix that achieved its core goals - eliminating a real developer pain and converging on an interoperable behavior - with spec + WPT + two engines shipping near-simultaneously and no reported failures. Success is grounded in outcome evidence (interoperability, developer value, implementation quality), not shipment alone; adoption of the specific change has no exact counter (a ViewTransitions family counter exists as surrounding context but is not exact adoption), and support and end-user-impact remain unmeasured and are reported as such.",
       "evidenceIds": [
         "s3",
         "s4",
         "s5",
         "s6",
         "s7",
-        "s8"
+        "s8",
+        "s12"
       ],
-      "limitations": "Small-scope change; several process sources were unreadable."
+      "limitations": "Small-scope change; several process sources were unreadable; the only usage counter is a family counter, not exact adoption."
     }
   },
   "sources": [
@@ -214,7 +218,7 @@
       "retrievedAt": "2026-07-22T14:40:00Z",
       "sourceType": "chromestatus",
       "supports": [
-        "Feature metadata, owner (vmpstr@google.com), category CSS, six lifecycle stages, intent_thread_url (stage 160/intent_stage 5), finch_name ViewTransitionInheritAnimationProperties, spec and WPT links, tracking bug 427741151, Safari Shipped/Shipping, Firefox No signal, desktop/android/webview first = 140"
+        "Feature metadata, owner (vmpstr@google.com), category CSS, six lifecycle stages, intent_thread_url (stage 160/intent_stage 5), finch_name ViewTransitionInheritAnimationProperties, spec and WPT links, tracking bug 427741151, Safari Shipped/Shipping, Firefox No signal, desktop/android/webview first = 140, web_feature 'view-transitions'"
       ],
       "limitations": "accurate_as_of 2025-07-21; is_released=false in snapshot (pre-ship); security/privacy review Pending in snapshot."
     },
@@ -337,6 +341,18 @@
         "Directly analogous animation-delay inheritance feature cited as the template; per the cached record it shipped in Firefox, de-risking the follow-on"
       ],
       "limitations": "Separate feature; not independently deep-read in this report."
+    },
+    {
+      "id": "s12",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=2",
+      "publisher": "Chrome Platform Status webfeature popularity timeline (bucket_id 2 = webfeature property 'ViewTransitions', the WebDX View Transitions family counter; cached at evidence/metrics/timelines/webfeature-2.json, sha256 0d7ee6d0c10d1499e28574e0cf0f3cad5658a433f370cfdee0f5366295fd6100)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:58Z",
+      "sourceType": "usage",
+      "supports": [
+        "A public Chrome usage counter exists for the broader View Transitions family (ChromeStatus web_feature 'view-transitions' normalizes to webfeature property 'ViewTransitions', bucket_id 2; mappingStatus 'web-feature-family-counter', confidence 'declared-family'). Interpreted as the share of measured Chrome HTTP/HTTPS page loads where the counter fired, the daily percentage was 0.00231316% at Chrome 140 stable (2025-09-02), 0.00165856% at day 30 (2025-10-02), 0.00523687% at day 90 (2025-12-01), and 0.00610281% at day 180 (2026-03-01); latest 0.0052774% (2026-07-20); peak 0.00758282% (2026-04-04); first positive 0.000051% (2024-06-10). 578 timeline points."
+      ],
+      "limitations": "Family/property counter, not exact adoption of this specific UA-stylesheet behavior change (which cannot fire a distinct counter); the counter reflects the whole View Transitions API family and predates this feature. Values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired; not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone, with enterprise/opt-out populations possibly underrepresented. Zero or delayed points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -363,7 +379,8 @@
     "Record known-unreachable source families (groups.google.com blink-dev intent threads fail the Z.AI reader's URL validation; bugs.chromium.org/issuetracker times out) and route them to the browser step instead of marking reports blocked; the skill currently permits the browser only for chromestatus.com - extend that allowance to blink-dev intent threads and the Chromium issue tracker.",
     "Add a rule that down-weights a missing Firefox 'signal' when (a) a CSSWG resolution exists and (b) a directly analogous feature already shipped in Firefox, to avoid over-penalizing low-risk interop fixes.",
     "Encourage a one-line motivation and a docs/sample link even on tiny features, so the ChromeStatus record is not the weak link in an otherwise clean launch.",
-    "Add a regression eval case based on this feature: a tiny UA-stylesheet interop fix should score success on interoperability/developerValue/implementationQuality, unscored on adoption/end-user-impact, and partial on completion due to unreadable process sources - not blocked."
+    "Add a regression eval case based on this feature: a tiny UA-stylesheet interop fix should score success on interoperability/developerValue/implementationQuality, unscored on adoption/end-user-impact, and partial on completion due to unreadable process sources - not blocked.",
+    "Distinguish 'no exact-feature counter' from 'no public usage counter at all.' The original draft of this report asserted 'no use counter exists for a UA-stylesheet behavior change,' but a declared WebDX family counter (ViewTransitions, bucket_id 2) was always available. The skill should fetch any mapped family/property counter, record its exact scope (exact vs. WebDX family/property vs. origin-trial-only), and report the measured level/trend as unscored context with explicit caveats - never claim 'no adoption data exists' when only the exact counter is absent."
   ],
   "completion": {
     "status": "partial",
@@ -371,10 +388,11 @@
       "Intent to Ship thread body and LGTM count (groups.google.com URL rejected by the Z.AI reader; not retrieved).",
       "Exact CSSWG resolution text (comment #3005503138 / issue #12498; comment fetch returned no reader data, though the resolution's existence is multiply-confirmed by the ChromeStatus entry and the WebKit commit).",
       "Chromium tracking bug 427741151 details/status (repeated reader timeouts).",
-      "Adoption/usage data (no use counter exists for a UA-stylesheet behavior change; not retrievable by design).",
+      "Exact-feature adoption counter for this specific UA-stylesheet behavior change (none exists by design; the only public counter is the broader ViewTransitions family counter).",
+      "Unique-site, production-deployment, retention, task-success, and user-benefit evidence for this specific change (none found).",
       "MDN documentation of this specific inheritance behavior (pseudo-element pages exist but the specific rule was not confirmed).",
       "Post-ship regressions/support issues (none found, but absence of findings is not evidence of none)."
     ],
-    "reviewedAt": "2026-07-22T14:40:00Z"
+    "reviewedAt": "2026-07-22T18:06:58Z"
   }
 }

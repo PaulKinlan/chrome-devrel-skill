@@ -1,0 +1,449 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6282804208992256,
+    "name": "Popover=hint behavior changes",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6282804208992256",
+    "webFeature": "popover-hint",
+    "blinkComponent": "Blink>DOM",
+    "owner": "masonf@chromium.org",
+    "creator": "masonfreed@google.com",
+    "finchName": "PopoverHintNewBehavior",
+    "breakingChange": false,
+    "enterpriseImpact": 1,
+    "trackingBug": "https://crbug.com/499019927",
+    "specLink": "https://github.com/whatwg/html/pull/12345",
+    "initialPublicProposal": "https://github.com/whatwg/html/issues/12304",
+    "category": "DOM",
+    "isOfficialWebFeature": true
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):6282804208992256",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "150:Enabled by default:6282804208992256",
+      "milestone": 150,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T07:05:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Entry was correctly classified as a standards-driven behavior change to an already-shipped feature (popover=hint, originally Chrome 133). The ChromeStatus record (created 2026-04-23 by masonfreed@google.com) states a concrete problem (counterintuitive stacking interactions between popover=hint and popover=auto), names the affected constituency (developers building nested tooltips/menus), cites the upstream trigger (Mozilla review, whatwg/html#12304), and sets a defensible evidence boundary (0.025% usage, breaking_change=false, Blink>DOM, target M150). Owner and decision are clear (masonf@chromium.org). The intake did not mistake the requested ship date for the lifecycle stage.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S5"
+      ],
+      "limitations": "No standalone explainer was filed (intent 'Explainer: No information provided'); the design rationale is distributed across the spec PR and the earlier Feb-2025 blog. Cache snapshot is 2026-06-01, before the M150 stable ship."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "The problem and use cases are grounded in independent cross-engine review, not assertion. Jake Archibald filed whatwg/html#12304 (2026-03-23) with five reproducible 'weirdnesses' (hint closing unrelated autos; inconsistent hint-on-hint; light-dismiss gaps; hiding auto hiding unrelated hints; broken auto-in-hint state) plus concrete proposals that map directly onto the shipped change. Mozilla originated the spec change and WebKit reviewed positively. Alternatives were considered and rejected in favor of graceful 'downgrade' of nested auto-in-hint rather than throwing. The motivating jobs (ephemeral tooltips/hovercards coexisting with persistent menus; customizable-select inside popover=hint) are explicit.",
+      "evidenceIds": [
+        "S2",
+        "S5",
+        "S6",
+        "S4"
+      ],
+      "limitations": "Incubation was condensed and triggered post-ship; no formal OpenUI re-incubation artifact or customer-research ledger was located. This is a refinement, so broad demand research was not repeated."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An implementation exists behind the PopoverHintNewBehavior Finch flag with WPT coverage (wpt=true) and a tracking bug (crbug 499019927), addressing all five weirdnesses plus tightening beforetoggle reentrancy to throw InvalidStateError more reliably. The change is small and the design (downgrade + ancestral-hide rules) is well-scoped to the documented corner cases.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "limitations": "No public friction log, framework-integration spike, or compatibility matrix was found. The tracking bug and CLs could not be read directly (provider errors), and no explainer documents the prototype hypotheses/stop conditions."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "A DevTrial ran at M149 (desktop + Android, behind flag), but the Intent to Ship records 'Web developers: No signals.' No cohort, recruitment, task-completion, or friction findings are evident. Per the method, absent developer signals cannot be treated as neutral or positive, so trial learning is unknown rather than validated.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "No attributable developer feedback, survey, or office-hours record was located for the M149 trial; the corner-case-heavy change was not validated by representative developers before ship."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Wide review is the strongest phase. Positions are explicit and dated: Gecko Positive ('Proposed changes came from Mozilla', linked to PR #12345); WebKit Positive (PR review #4114820129); TAG 'Not applicable'. Independent expert Jake Archibald and Blink API owners (Alex Russell, Chris Harrelson, Dan Clark) reviewed on blink-dev with substantive critique rather than rubber-stamping. Spec is under active development in a Working Group; WPT is enabled.",
+      "evidenceIds": [
+        "S2",
+        "S5",
+        "S1"
+      ],
+      "limitations": "The spec PR #12345 itself could not be retrieved (provider 500/timeout), so Mozilla/WebKit positions and merge status are known only transitively via the intent. 'Web developers: No signals' leaves the developer/framework review axis empty. Security and privacy review were 'Pending' at cache (2026-06-01)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial was run or warranted. The record's stage 150 (intent_stage 3) has all origin-trial fields null, and the intent states 'Goals for experimentation: None'. For a small, well-understood, low-usage (0.025%), non-breaking behavior change, a flag DevTrial sufficed; no explicit uncertainty required field/real-origin evidence. Used not-relevant because no field experiment was needed, not because it was untested.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "If post-ship regressions appear in nested-stack sites, this judgment should be revisited; no field data exists to confirm zero real-world impact."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (2026-04-24) was approved with three API-owner LGTMs (Alex Russell 'grudgingly LGTM1', Chris Harrelson, Dan Clark). Finch (PopoverHintNewBehavior), rollout ('Will ship enabled for all users'), all-platform support, and milestones (M150 ship desktop/Android/WebView, M149 DevTrial) are specified and reconcile with the manifest and release notes. Ship brief is evidence-backed and honestly caveated ('very unlikely to cause behavioral changes', 'will monitor').",
+      "evidenceIds": [
+        "S2",
+        "S1",
+        "S3"
+      ],
+      "limitations": "Security_review_status and privacy_review_status were both 'Pending' at the 2026-06-01 cache, ~29 days before stable ship; their resolution is unconfirmed (possible data lag). No standalone explainer. Tag review 'Not applicable' is defensible but unverified. Web-developer evidence is absent."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "The change shipped in Chrome 150 stable on 2026-06-30 and is documented in the Chrome 150 release notes with a description consistent with the intent and implementation (downgrade of nested auto-in-hint, ancestral-hide rules, beforetoggle InvalidStateError tightening, tracking bug 499019927). Release communication was on time and claims match the shipped behavior; motivation was stated honestly, including the self-critique that the original detailed review came late.",
+      "evidenceIds": [
+        "S3",
+        "S2",
+        "S1"
+      ],
+      "limitations": "The primary conceptual tutorial (Feb-2025 'Popover = hint' blog) was not updated to cover the M150 refinements (downgrade behavior, beforetoggle errors); only the release notes cover them. No standalone launch article, demo, or FAQ for the behavior change was located."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Adoption cannot be assessed. The feature shipped 2026-06-30 and the underlying popover=hint attribute has only ~0.025% page usage; popover-hint is not yet in Baseline (~68.6% global support per secondary dashboard, no Safari shipped). Dominant tooltip/popover libraries (Tippy.js, Floating UI/Popper) remain JavaScript-based and do not target native popover=hint. No case studies or production-adoption evidence exist for the behavior change.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S8",
+        "S10",
+        "S11"
+      ],
+      "limitations": "Too recent and too low-usage to measure; adoption-stage evidence (awareness/evaluation/production) is absent by construction, not by failure to search."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Support burden is unknown. The change shipped 2026-06-30; no regression, compat, or support-issue reports for the behavior change were located. The intent commits to monitoring crbug reports, and the change resolves the originally reported friction (issues #12304/#12305). Absence of reports at this date must not be read as success.",
+      "evidenceIds": [
+        "S3",
+        "S2",
+        "S5"
+      ],
+      "limitations": "Tracking bug crbug 499019927 could not be read directly; no post-ship issue taxonomy, recurrence, or sentiment data exists yet."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not applicable. This is a behavior refinement to an existing feature, not a deprecation or removal: breaking_change=false, enterprise_impact is low, no reverse trial, and no migration is required (0.025% usage; changes are characterized as strict improvements to corner cases). Used not-relevant with rationale, not to mean untested.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "If real sites depended on the prior force-hide semantics, a deprecation-style communication path could become relevant; none was indicated."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "The change removes concrete, independently-verified developer pain: a leading web expert (Jake Archibald) could not rationalize popover=hint's behavior and documented five broken/counterintuitive states with reproductions. The shipped model (hints no longer close unrelated autos; safe auto-in-hint downgrade enabling customizable-select in a hint; reliable beforetoggle reentrancy errors) directly resolves those states and was positively received by the reporter and API owners.",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S2",
+        "S3"
+      ],
+      "limitations": "Value is asserted by the proposer and validated by one expert plus standards reviewers; 'Web developers: No signals' means it is not yet validated by broader developer adoption or task-based trials."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Direct end-user impact is intentionally minimal and unmeasured: ~0.025% usage, corner-case scope, non-breaking. Indirectly positive (more predictable tooltips/menus), but no end-user or accessibility impact data for the change exists. Scored unscored rather than success.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "No telemetry, a11y audit, or user-impact measurement specific to the change; near-zero impact is an assertion, not a measured outcome."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Too new and too low-usage to score. Shipped 2026-06-30; underlying popover=hint is ~0.025% usage, not yet Baseline, absent in Safari, one milestone behind in Firefox (151). No production adoption, framework integration, or case-study evidence for the behavior change.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S8",
+        "S10",
+        "S11"
+      ],
+      "limitations": "Cannot be scored at the evidence cutoff; revisit after Safari/Firefox ship and usage matures."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Strong spec-level consensus (Mozilla proposed the change; WebKit Positive review) and a converging second implementation (Firefox 151), which is the best possible interop trajectory for a behavior change. However, the underlying popover=hint is not yet shipped in Safari and is not in Baseline (~68.6% global), so the new model is currently Chrome+Firefox-only; WebKit's Positive standards position does not equal shipped interoperability. The broader popover family also carries a separate interop wrinkle (Safari's aria-translation convention).",
+      "evidenceIds": [
+        "S2",
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "limitations": "Spec PR #12345 unreadable; Firefox/Safari ship status from secondary dashboards/snippets, not vendor release pages directly. Baseline/global-support figures are approximate."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Shipped on schedule (M150, 2026-06-30) with WPT coverage, a dedicated Finch flag, and three API-owner LGTMs; the beforetoggle reentrancy hardening is a quality positive. However, post-ship regression/quality data is absent, the tracking bug and CLs could not be directly verified, and security/privacy review were 'Pending' at cache pre-ship. The intent itself hedges the reentrancy fix ('should more reliably throw').",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S12"
+      ],
+      "limitations": "No post-ship stability metrics; review-gate resolution unconfirmed; crbug detail not directly readable."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Claims are accurate and consistent across ChromeStatus, the intent, and the release notes, and the motivation is unusually honest ('unfortunate that this detailed review didn't happen at the time of the landing'). Risk statements are properly caveated. But several evidence families are thin: 'Web developers: No signals', security/privacy 'Pending', no standalone explainer, and the canonical tutorial (Feb-2025 blog) was not updated for the M150 refinements.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S1",
+        "S4",
+        "S5"
+      ],
+      "limitations": "Primary spec/bug sources could not be retrieved, so some claims rest on transitive corroboration; developer evidence is explicitly absent."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No support data yet. Feature shipped 2026-06-30; no regression, compat, or issue-volume evidence. The change resolves the originally reported friction and the team committed to monitor crbug, but support burden cannot be scored at cutoff.",
+      "evidenceIds": [
+        "S3",
+        "S2",
+        "S5"
+      ],
+      "limitations": "Too early; crbug not directly readable."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A clearly-correct, low-risk fix to a real, independently-verified problem, executed with strong cross-engine spec consensus, WPT coverage, and multi-LGTM approval, and shipped on schedule. The outcome is mixed rather than successful because several material dimensions are unscored (end-user impact, adoption, support - all too new / 0.025% usage / no Safari), interoperability is Chrome+Firefox-only pending Safari, web-developer signals are absent, and key gates (security/privacy review) were pending at cache. The retrospective lesson - a detailed behavior review should have happened before the original Chrome 133 ship - is explicitly acknowledged by the reporter and an API owner.",
+      "evidenceIds": [
+        "S2",
+        "S3",
+        "S5",
+        "S1",
+        "S7"
+      ],
+      "limitations": "Overall deliberately does not mask the unscored dimensions; success cannot be inferred from shipment, low usage, or absence of criticism."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6282804208992256",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-06-01",
+      "retrievedAt": "2026-07-20T06:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, Blink>DOM, owner masonf, finch PopoverHintNewBehavior, M149 DevTrial / M150 ship desktop+Android+WebView",
+        "Gecko Positive / WebKit Positive / Web developers No signals",
+        "Usage ~0.025% (counter 4480), breaking_change=false, enterprise_impact low",
+        "Tracking bug 499019927, spec PR #12345, initial proposal #12304",
+        "Security and privacy review 'Pending' as of accurate_as_of 2026-06-01; is_released=false at cache"
+      ],
+      "limitations": "Cache snapshot 2026-06-01, predates the 2026-06-30 stable ship; review 'Pending' fields may be data lag."
+    },
+    {
+      "id": "S2",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/QkVJ1GYjLKk/m/Z5kwcNs0BgAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-04-24",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship by Mason Freed 2026-04-24; motivation, milestones M149/M150, Finch, all platforms",
+        "Gecko Positive (Mozilla proposed it), WebKit Positive (PR review), Web developers No signals, TAG Not applicable",
+        "Three API-owner LGTMs: Alex Russell (grudging, with process critique), Chris Harrelson, Dan Clark",
+        "Retrospective critique by Jake Archibald ('failure is in review by others') and Alex Russell ('API OWNERS should discuss how these gaps were missed')",
+        "Usage 0.025% and 'will monitor' risk framing"
+      ],
+      "limitations": "Google Groups thread; reply bodies of Harrelson and Clark were not fully captured; explainer marked 'No information provided'."
+    },
+    {
+      "id": "S3",
+      "url": "https://developer.chrome.com/release-notes/150",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2026-06-30",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 150 stable release date 2026-06-30",
+        "popover=hint behavior changes shipped: downgrade of nested auto-in-hint, ancestral-hide rules, beforetoggle InvalidStateError tightening, customizable-select-in-hint use case",
+        "Tracking bug 499019927 referenced; description matches intent"
+      ],
+      "limitations": "Official release communications; no adoption metrics or post-ship quality data."
+    },
+    {
+      "id": "S4",
+      "url": "https://developer.chrome.com/blog/popover-hint",
+      "publisher": "Chrome for Developers (Keith Cirkel, Mason Freed)",
+      "publishedOrObservedAt": "2025-02-26",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Original popover=hint rationale and history (Popover API Chrome 114; popover=hint Chrome 133)",
+        "Two stacking contexts (persistent=auto, ephemeral=hint), use cases, hover/Interest Invokers context"
+      ],
+      "limitations": "Published 2025-02-26; predates and does not cover the M150 behavior-change refinements; describes the earlier force-hide model in part."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/whatwg/html/issues/12304",
+      "publisher": "WHATWG (GitHub, jakearchibald)",
+      "publishedOrObservedAt": "2026-03-23",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Initial public proposal; five documented popover=hint 'weirdnesses' with reproducible demos and concrete proposals",
+        "Independently verifies the developer problem the change fixes; reviewers cc'd (@mfreed7 @josepharhar @keithamus)"
+      ],
+      "limitations": "Issue body only; full comment timeline/resolution not read."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/whatwg/html/issues/12305",
+      "publisher": "WHATWG (GitHub, jakearchibald)",
+      "publishedOrObservedAt": "2026-03-23",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Documents auto-inside-hint broken state (motivates the downgrade fix)",
+        "Closed as duplicate of #12304"
+      ],
+      "limitations": "Duplicate issue; no separate resolution detail."
+    },
+    {
+      "id": "S7",
+      "url": "https://basewatch.dev/feature/mdn_api_HTMLElement_popover_hint",
+      "publisher": "BaseWatch (Filippo Tinnirello)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "popover-hint ~68.6% global browser support, not yet in Baseline",
+        "Full support Chrome 150, Firefox 151, Edge 149; no Safari yet"
+      ],
+      "limitations": "Figure from a search-result snippet only; the page is a JS-rendered SPA and could not be loaded directly; aggregates CanIUse/BCD/Baseline (secondary)."
+    },
+    {
+      "id": "S8",
+      "url": "https://web-platform-dx.github.io/web-features-explorer/limited-availability/",
+      "publisher": "web-platform-dx (W3C Web-Platform-DX community group)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "popover=hint classified as 'limited availability' in web-features"
+      ],
+      "limitations": "Search-result snippet only; exact availability status not read in full."
+    },
+    {
+      "id": "S9",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1867743",
+      "publisher": "Mozilla (Bugzilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla implementing popover=hint against the spec; corroborates Gecko Positive position and a converging second implementation"
+      ],
+      "limitations": "Search-result snippet only; not read directly."
+    },
+    {
+      "id": "S10",
+      "url": "https://usertourkit.com/blog/best-tooltip-libraries-react-2026",
+      "publisher": "UserTourKit",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "General Popover API 'shipped in all major browsers in 2024' and 'ready for production in 2026'"
+      ],
+      "limitations": "Third-party marketing blog; concerns the Popover API broadly, not popover=hint or the behavior change specifically."
+    },
+    {
+      "id": "S11",
+      "url": "https://atomiks.github.io/tippyjs/",
+      "publisher": "Tippy.js (atomiks)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "A leading tooltip/popover/dropdown library is JavaScript/Popper-based rather than native popover=hint, indicating ecosystem reliance on JS libs for this UX"
+      ],
+      "limitations": "Project homepage; indirect ecosystem signal, not usage telemetry."
+    },
+    {
+      "id": "S12",
+      "url": "https://issues.chromium.org/issues/499019927",
+      "publisher": "Chromium (Monorail)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Referenced as the tracking bug in the intent and the Chrome 150 release notes (existence and role corroborated)"
+      ],
+      "limitations": "Page could NOT be retrieved (Z.AI reader returned HTTP 500 network error); content known only transitively."
+    },
+    {
+      "id": "S13",
+      "url": "https://github.com/whatwg/html/pull/12345",
+      "publisher": "WHATWG (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T07:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Referenced as the spec change and the source of Gecko/WebKit positions (corroborated via the intent)"
+      ],
+      "limitations": "Page could NOT be retrieved (Z.AI reader returned HTTP 500 / request timeout across multiple attempts); Mozilla/WebKit positions and merge status not directly verified."
+    }
+  ],
+  "successes": [
+    "Cross-engine spec collaboration: Mozilla originated the change, WebKit reviewed positively, and Firefox (151) is converging on the same model - the ideal interop trajectory for a behavior change.",
+    "Honest, evidence-based motivation that named the real problem (reproducible weirdnesses in whatwg/html#12304) and openly self-critiqued the original review lapse rather than framing the change as routine.",
+    "Low-risk, well-scoped intervention (0.025% usage, breaking_change=false, graceful downgrade instead of throwing) shipped on schedule (M150, 2026-06-30) with three API-owner LGTMs and WPT coverage.",
+    "beforetoggle reentrancy hardening (more reliable InvalidStateError) improves robustness beyond the visible stacking fixes.",
+    "Strong wide-review participation: an independent expert and multiple API owners engaged substantively, yielding a better result (Jake Archibald: 'really happy how this has turned out')."
+  ],
+  "failures": [
+    "The original popover=hint spec (Chrome 133, Feb 2025) shipped with non-trivial behavioral bugs that went uncaught for ~13 months until an outside expert reviewed them; the reporter and an API owner explicitly label this a review-process failure ('the failure here is entirely in review by others'; 'API OWNERS should likely discuss how these gaps were missed').",
+    "Developer trial produced no attributable signals ('Web developers: No signals') despite a corner-case-heavy change; no cohort, task-completion, or friction evidence existed before ship.",
+    "Documentation drift: the canonical conceptual tutorial (Feb-2025 blog) was not updated for the M150 refinements (downgrade behavior, beforetoggle errors); only the release notes cover them.",
+    "Process-gate gap: security and privacy review were both 'Pending' at the 2026-06-01 cache, ~29 days before stable ship (resolution unconfirmed; may be data lag).",
+    "Evidence-resilience gap: the two most authoritative primary sources for the change (spec PR #12345, tracking bug crbug 499019927) could not be retrieved via the reader, forcing reliance on transitive corroboration."
+  ],
+  "counterfactuals": [
+    "If a reproducible, two-engine behavior matrix for the top-layer/stacking model had been a required wide-review gate for the original popover=hint landing (Chrome 133), the five weirdnesses would likely have been caught pre-ship, avoiding a post-ship behavior change ~13 months later.",
+    "If the M149 DevTrial had recruited an attributable cohort (tooltip-library maintainers such as Tippy.js/Floating UI, plus framework authors) with task-based feedback, the 'No signals' gap would not exist and ergonomic edge cases would be validated.",
+    "If a single source-of-truth doc were updated at ship, the Feb-2025 tutorial would not describe a now-superseded corner-case model.",
+    "If the skill treated 'No signals' from web developers as a blocking unknown (never neutral), prepareToShip would have required explicit risk acceptance or an extended trial before counting the phase supported.",
+    "If review-gate status (security/privacy) were reconciled to non-Pending before Intent to Ship approval, the pre-ship process gap would be closed."
+  ],
+  "skillImprovements": [
+    "Add a phase-04/phase-06 checklist rule: for any feature touching the top layer, popover stacking, or beforetoggle/toggle lifecycle, require a reproducible behavior matrix tested against at least two engines before Intent to Ship, attached to the transition packet.",
+    "Add a rule that 'No signals' from web developers must never be scored neutral/positive; it forces developerTrials/prepareToShip to 'unknown' and requires either an attributable dev-trial cohort or explicit, recorded risk acceptance.",
+    "Require an explainer or design doc as a mandatory transition-packet artifact (this feature's explainer was 'No information provided').",
+    "Add a docs-sync rule: shipping a behavior change to an already-shipped feature requires the canonical tutorial/blog to be updated in the same milestone or explicitly flagged stale.",
+    "Add a prepareToShip gate reminder: security_review_status and privacy_review_status must be reconciled to a non-Pending state before the phase can be 'supported'.",
+    "Add an evidence-resilience procedure: when a primary URL (spec PR, crbug) is unreadable, record the attempted URL plus retrieval error, fall back to transitively-corroborated claims, and set completion to 'partial' rather than aborting or inventing.",
+    "Add a regression eval for stacking/top-layer features that includes both the original strong case (clean ship) and weak cases (post-ship behavior-change rescues like this one)."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Direct content of spec PR #12345 (unreadable via reader; Mozilla/WebKit positions known only transitively from the intent)",
+      "Direct content of tracking bug crbug 499019927 (unreadable via reader; role corroborated by intent + release notes)",
+      "Any post-ship adoption, usage-trend, or case-study data (feature shipped 2026-06-30; underlying usage ~0.025%)",
+      "Attributable web-developer signals (intent explicitly states 'No signals')",
+      "Resolution of security/privacy review (both 'Pending' at the 2026-06-01 cache)",
+      "Rendered BaseWatch / global-support and Baseline figures (only search-result snippets obtained; SPA not directly loadable)"
+    ],
+    "reviewedAt": "2026-07-20T07:05:00Z"
+  }
+}

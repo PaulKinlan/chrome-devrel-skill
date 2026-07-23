@@ -19,7 +19,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:22Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -97,14 +97,15 @@
       "limitations": "The Chrome blog bundles this property with the sibling 'Inherit more animation properties' change (feature 5154752085884928, also Chrome 140), so release communication does not isolate this feature's rollout."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "No isolable adoption signal exists. webdx_usecounter_enum is null and this is a UA-stylesheet nicety absorbed into general View Transitions usage, so there is no dedicated UseCounter for 'developers relying on inherited animation-delay'. The original reporter (Bramus) and the Chrome blog demonstrate the workflow the feature serves, but neither constitutes measured adoption. General View Transitions adoption is rising (React core support, Interop 2025 focus, Firefox 144 Baseline Oct 2025) but cannot be attributed to this single property.",
+      "status": "partial",
+      "finding": "A broader WebDX family usage signal now exists, but no exact/dedicated counter isolates this feature. The cached ChromeStatus timeline maps web_feature 'view-transitions' to the WebFeature property 'ViewTransitions' (bucket_id 2), a declared-family counter (mappingStatus 'web-feature-family-counter'; webdxUseCounterEnum is null, so there is no counter specific to inherited animation-delay). It reports the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once: first positive 2024-06-10 (~0.0051%), ~0.2313% at the 140 'Enabled by default' checkpoint (2025-09-02), a dip to ~0.1659% at day30 (2025-10-02), then ~0.5237% at day90 (2025-12-01), ~0.6103% at day180 (2026-03-01), a peak of ~0.7583% (2026-04-04), and ~0.5277% at the latest point (2026-07-20) — a generally rising trend in overall View Transitions page-load presence since ship. Because this is the family counter for all View Transitions usage (including cross-document VT and the sibling 'Inherit more animation properties' change, feature 5154752085884928), none of the measured share can be attributed to animation-delay inheritance specifically. The original reporter (Bramus) and the Chrome blog demonstrate the workflow the feature serves, but neither constitutes measured adoption of this property.",
       "evidenceIds": [
         "S-CS",
+        "S-METRICS-VT",
         "S-BLOG2025",
         "S-CSSWG"
       ],
-      "limitations": "Adoption of a UA-stylesheet inheritance rule is structurally unmeasurable in isolation; scored unknown, not failure."
+      "limitations": "No exact/dedicated UseCounter for this feature (webdxUseCounterEnum null); the only available counter is the broader ViewTransitions family counter, which cannot isolate animation-delay inheritance adoption. No unique-site, production, retention, task-success, user-benefit, or predeclared target evidence. Scored partial (directional family-level telemetry is present but does not measure this feature's own adoption), not success or failure."
     },
     "support": {
       "status": "unknown",
@@ -131,9 +132,10 @@
       "evidenceIds": [
         "S-CSSWG",
         "S-BLOG2025",
-        "S-MDN"
+        "S-MDN",
+        "S-METRICS-VT"
       ],
-      "limitations": "Modest, ergonomic improvement rather than a capability unlock; no usage data to quantify how many developers rely on it."
+      "limitations": "Modest, ergonomic improvement rather than a capability unlock; the broader ViewTransitions family counter (rising from ~0.2313% at the Chrome 140 checkpoint to ~0.5277% of measured page loads at the latest point, peaking ~0.7583%) provides directional context for the feature area but cannot quantify how many developers rely on inherited animation-delay specifically (no exact/dedicated counter)."
     },
     "endUserImpact": {
       "status": "unscored",
@@ -146,12 +148,13 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Unscored because adoption is not independently measurable: no dedicated UseCounter (webdx_usecounter_enum null) and the behavior is a UA default absorbed into general View Transitions usage. Rising ecosystem support for View Transitions overall (React core, Interop 2025, Firefox Baseline) provides favorable context but is not adoption of this property.",
+      "finding": "Unscored because there is no predeclared adoption target in the launch record and no corroborating production/retention evidence. The only telemetry is the broader ViewTransitions family counter (bucket_id 2; webdxUseCounterEnum null, so no exact counter for this feature). That counter — the share of measured Chrome HTTP/HTTPS page loads on which it fired at least once — moved from ~0.2313% at the Chrome 140 'Enabled by default' checkpoint (2025-09-02) through a day30 dip (~0.1659%, 2025-10-02) to ~0.5237% at day90 (2025-12-01), ~0.6103% at day180 (2026-03-01), a peak of ~0.7583% (2026-04-04), and ~0.5277% at the latest point (2026-07-20). This describes a generally rising level of overall View Transitions page-load presence but cannot attribute any share to inherited animation-delay specifically, and without a target it neither confirms success nor failure. Favorable ecosystem context (React core support, Interop 2025 focus, Firefox 144 Baseline Oct 2025) is context for the feature area, not adoption of this property.",
       "evidenceIds": [
         "S-CS",
+        "S-METRICS-VT",
         "S-BLOG2025"
       ],
-      "limitations": "Structural measurement gap, not a finding of non-adoption."
+      "limitations": "No exact/dedicated UseCounter isolates this feature (webdxUseCounterEnum null); the family counter is broader and cannot attribute usage to animation-delay inheritance. No predeclared target, and no unique-site, production, retention, task-success, user-benefit, or end-user-benefit evidence. Outcome kept unscored (not success, failure, or mixed) absent a threshold."
     },
     "interoperability": {
       "status": "success",
@@ -201,16 +204,17 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A small, well-scoped, low-risk 'Chromium catches up' fix that solves a real (if modest) developer problem and shipped in healthy three-engine convergence, executed quickly and correctly. The overall is mixed rather than success because of a reviewer-flagged documentation gap at launch, an imprecise spec_link (L2 vs L1), stale launch-record review fields, no isolable adoption signal, and two material interop/test artifacts (live WPT, the cited shipping comment) that could not be directly re-verified. None of these threaten the feature; they lower evidence/communication quality.",
+      "finding": "A small, well-scoped, low-risk 'Chromium catches up' fix that solves a real (if modest) developer problem and shipped in healthy three-engine convergence, executed quickly and correctly. The overall is mixed rather than success because of a reviewer-flagged documentation gap at launch, an imprecise spec_link (L2 vs L1), stale launch-record review fields, and two material interop/test artifacts (live WPT, the cited shipping comment) that could not be directly re-verified. Adoption telemetry now exists at the broader ViewTransitions family level (generally rising from ~0.2313% to ~0.5277% of measured page loads from the Chrome 140 checkpoint to latest, peaking ~0.7583%), but there is no exact counter isolating this feature and no predeclared target, so adoption remains unscored rather than counted as a success signal. None of the gaps threaten the feature; they lower evidence/communication quality.",
       "evidenceIds": [
         "S-CSSWG",
         "S-INTENT",
         "S-SPEC1",
         "S-CS",
         "S-BLOG2025",
-        "S-MDN"
+        "S-MDN",
+        "S-METRICS-VT"
       ],
-      "limitations": "Adoption is structurally unmeasurable for this change type; direct WPT/CL/ship-comment verification incomplete."
+      "limitations": "Adoption is measurable only at the broader ViewTransitions family level (no exact counter; webdxUseCounterEnum null), so this feature's own adoption remains unisolated; direct WPT/CL/ship-comment verification incomplete."
     }
   },
   "sources": [
@@ -227,7 +231,7 @@
         "Gecko and WebKit marked Shipped/Shipping (citing issuecomment-2994352828); Web developers 'No signals'",
         "Interop-risk rationale, all-platforms, WPT link, feature_type 'Chromium catches up'"
       ],
-      "limitations": "Cache is 2025-07-28, ~one month before stable; security_review_status/privacy_review_status 'Pending' and overall status 'Proposed' are stale relative to the shipped state; webdx_usecounter_enum is null."
+      "limitations": "Cache is 2025-07-28, ~one month before stable; security_review_status/privacy_review_status 'Pending' and overall status 'Proposed' are stale relative to the shipped state; webdx_usecounter_enum is null in this cached record (a separate WebFeature family counter for ViewTransitions is available — see S-METRICS-VT)."
     },
     {
       "id": "S-CSLITE",
@@ -370,6 +374,20 @@
         "Per the cached ChromeStatus record and the Intent to Ship, a WPT test for VT style inheritance exists and WebKit recently added an animation-delay subtest"
       ],
       "limitations": "The live wpt.fyi page timed out twice and was not directly retrieved; pass/fail status across Chrome/Gecko/WebKit is second-hand from ChromeStatus/intent, not independently verified."
+    },
+    {
+      "id": "S-METRICS-VT",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=2",
+      "publisher": "Chrome Platform Status (WebFeature popularity timeline, bucket_id 2 — ViewTransitions)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Cached ChromeStatus timeline maps web_feature 'view-transitions' to WebFeature/UseCounter property 'ViewTransitions' (bucket_id 2); mappingStatus 'web-feature-family-counter', a broader WebDX family counter, NOT an exact/dedicated counter for animation-delay inheritance (webdxUseCounterEnum null)",
+        "Reports the share of measured Chrome HTTP/HTTPS page loads where the ViewTransitions counter fired at least once: first positive 2024-06-10 (~0.0051%); ~0.2313% at the Chrome 140 'Enabled by default' checkpoint (2025-09-02), ~0.1659% at day30 (2025-10-02), ~0.5237% at day90 (2025-12-01), ~0.6103% at day180 (2026-03-01), peak ~0.7583% (2026-04-04), ~0.5277% at latest (2026-07-20); 578 timeline points, content sha256 0d7ee6d0c10d1499e28574e0cf0f3cad5658a433f370cfdee0f5366295fd6100",
+        "Generally rising trend in View Transitions page-load presence from the Chrome 140 ship checkpoint to the latest measurement, but the counter is broader than this feature and cannot attribute any share to inherited animation-delay specifically"
+      ],
+      "limitations": "Family counter (web-feature-family), not exact feature adoption; covers any View Transitions usage, including cross-document VT and the sibling 'Inherit more animation properties' change (feature 5154752085884928). Numerator is page loads where the counter fired at least once (detection/probing may count); denominator is measured Chrome HTTP/HTTPS page loads across official channels/platforms (UMA reflects participating clients and the dominant milestone; enterprise/opt-out populations may be underrepresented). Launch checkpoints are anchored to the metrics 'Enabled by default' date 2025-09-02, ~6 days after the Chrome 140 stable channel release (2025-08-27). Not equivalent to unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit; zero/missing/delayed points are not proof of zero use."
     }
   ],
   "successes": [
@@ -383,7 +401,7 @@
     "Documentation gap at launch: a reviewer flagged missing MDN/inheritance documentation during the LGTM and the owner acknowledged and deferred it, so the property shipped without dedicated docs; MDN was updated only later (last modified 2026-04-17).",
     "Spec-link imprecision: ChromeStatus points to css-view-transitions-2, but the normative animation-delay:inherit UA rule lives in css-view-transitions-1 §5.",
     "Launch-record staleness: the cached record (accurate_as_of 2025-07-28) shows security/privacy reviews 'Pending' and overall status 'Proposed' one month before stable, so the record does not evidence the completed launch state.",
-    "No isolable usage/adoption signal (webdx_usecounter_enum null); the value of this nicety cannot be measured in isolation."
+    "No exact/dedicated usage counter isolates this feature (webdxUseCounterEnum null); only the broader ViewTransitions family counter is available, which cannot attribute any measured share (~0.2313%→~0.5277% of page loads from the Chrome 140 checkpoint to latest, peaking ~0.7583%) to inherited animation-delay specifically, and there is no unique-site, production, retention, or predeclared target evidence."
   ],
   "counterfactuals": [
     "If animation-delay had shipped together with the sibling 'Inherit more animation properties' set (also Chrome 140) under one feature entry, the two ChromeStatus records (5424291457531904 and 5154752085884928) and docs would be less likely to diverge and the L2-vs-L1 spec-link mismatch might have been caught.",
@@ -396,7 +414,7 @@
     "Add a phase-04/06 (wide review / prepare-to-ship) 'documentation readiness' gate requiring either an MDN/data row or an explicit 'docs deferred: owner + due date' entry before ship, so reviewer-flagged doc gaps are tracked to closure rather than verbally deferred.",
     "Add a data-freshness rule: when a cached ChromeStatus record's accurate_as_of precedes the stable ship date, mark review-status fields (security/privacy 'Pending', status 'Proposed') as stale and do not score against them; annotate or fetch the live record.",
     "Add a source-robustness eval: for interop claims hinging on a single GitHub comment anchor or a JS-heavy dashboard (WPT), require at least two independent corroborating retrievals; label the claim 'supported-but-not-directly-re-verified' when those fail.",
-    "Add guidance: for UA-stylesheet niceties with no dedicated UseCounter, score adoption as unscored (not failure) and explain why it is structurally unmeasurable, so retrospectives neither over- nor under-claim.",
+    "Add guidance: when no exact/dedicated UseCounter exists but a broader WebDX family counter does, report the family-level trend (with its scope limitation) as directional context while keeping the adoption outcome unscored if there is no predeclared target and no corroborating production/retention evidence; distinguish 'no exact counter for this feature' from 'no Chrome usage telemetry exists' so retrospectives neither over- nor under-claim.",
     "Encourage bundling closely related, same-milestone, same-component CSS changes (animation-delay + 'inherit more animation properties') into a coherent feature/narrative grouping to reduce record and documentation divergence."
   ],
   "completion": {
@@ -404,10 +422,10 @@
     "missingEvidence": [
       "Live WPT.fyi pass/fail for css/css-view-transitions/style-inheritance.html across Chrome/Gecko/WebKit (page timed out twice; relied on cached record + intent)",
       "The specific GitHub comment (csswg-drafts#9817 issuecomment-2994352828) cited as the Gecko/WebKit 'Shipped/Shipping' evidence (not present in the retrieved issue render)",
-      "Isolable usage/adoption data (no dedicated UseCounter; webdx_usecounter_enum null — structurally unmeasurable for a UA-stylesheet nicety)",
+      "Exact/dedicated usage data isolating this feature (webdxUseCounterEnum null); a broader ViewTransitions family counter is now available (S-METRICS-VT) but cannot attribute any share to inherited animation-delay. No unique-site, production, retention, task-success, user-benefit, or predeclared adoption-target evidence",
       "The Chromium implementation CL/crbug and confirmation that security/privacy reviews completed before stable (cached record showed 'Pending' at 2025-07-28)",
       "Exact Safari and Firefox version numbers in which the animation-delay:inherit UA rule first shipped"
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:22Z"
   }
 }

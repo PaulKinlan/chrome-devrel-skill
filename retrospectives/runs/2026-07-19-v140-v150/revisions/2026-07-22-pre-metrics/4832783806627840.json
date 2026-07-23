@@ -1,0 +1,404 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4832783806627840,
+    "name": "CSS4 text-decoration-skip-spaces",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4832783806627840",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owner": "perryuwang@gmail.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "text-decoration",
+    "specLink": "https://drafts.csswg.org/css-text-decor-4/#text-decoration-skip-spaces-property",
+    "bugUrl": "https://issues.chromium.org/issues/40862777",
+    "isReleased": false,
+    "shippingYear": 2026,
+    "flagName": "enable-experimental-web-platform-features",
+    "finchName": "CSSTextDecorationSkipSpaces"
+  },
+  "launchEvents": [
+    {
+      "eventId": "150:In developer trial (Behind a flag):4832783806627840",
+      "milestone": 150,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T06:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Filed as a 'Chromium catches up' CSS property (Blink>CSS) with a named owner, motivation, spec link, tracking bug, and a plausible developer job: there is no standard way to suppress text decoration over leading/trailing whitespace. The problem statement is concrete and the ChromeStatus record is internally consistent. Note that the 'catch up' classification overstates what other engines actually ship (see interoperability).",
+      "evidenceIds": [
+        "chromestatus-record",
+        "so-72692992",
+        "reddit-css-1oibhv4"
+      ],
+      "limitations": "Problem validity is supported by independent demand signals, not by attributable partner or cohort evidence."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "The developer problem and use cases are validated across independent sources (navigation menus, links with word-spacing, <del>/<ins> strikethrough). Existing alternatives are insufficient: the old text-decoration-skip shorthand was removed from Chrome (MDN: supported M57-63 only) and authors fall back to background-gradient hacks. Standards incubation is real and long-running: CSSWG resolved the central default-behavior question (#4653, 2022) and WPT tests were added before the Chrome dev trial.",
+      "evidenceIds": [
+        "csswg-issue-4653",
+        "so-72692992",
+        "reddit-css-1oibhv4",
+        "csswg-issue-2885",
+        "spec-css-text-decor-4",
+        "mdn-skip-shorthand"
+      ],
+      "limitations": "Incubation evidence is standards-level (CSSWG) and community-level; no Chrome-side co-design cohort, survey, or partner trial commitment is on record."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An implementation exists behind the enable-experimental-web-platform-features flag with a finch name (CSSTextDecorationSkipSpaces) and a tracking bug, and WPT conformance tests are in place. No explainer artifact is present (explainer_links is empty), so the prototype's design rationale and open questions are not documented in the record.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "wpt-pr-35780"
+      ],
+      "limitations": "No friction log or framework-integration evidence; the Chromium bug/regression history was not directly inspectable, so prototype quality beyond 'it exists with WPT' is unverified."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial is targeted for M150 (desktop_first and android_first both 150) behind the experimental flag. However devtrial_instructions is null, the only samples are WPT conformance pages (text-decoration-skip-spaces-001..004.html), and there is no announcement_url, feedback route, cohort, or onboarding kit. Because M150 is in the future relative to the 2026-07-20 evidence cutoff, this is a scheduled trial rather than a confirmed-realized one.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "wpt-pr-35780"
+      ],
+      "limitations": "No evidence of recruited cohort, task completion, or feedback; whether the flag is actively available pre-M150 in Canary is not separately confirmed. WPT pages are conformance tests, not developer onboarding."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Tag review is recorded 'Not applicable' (defensible for a CSS-WG property) and the central CSSWG issue #4653 was resolved in 2022 with tests filed against all three engines. But FF and Safari are both 'No signal' on the explicit longhand, security_review_status and privacy_review_status are 'Pending', and the linked spec section 2.10 is explicitly an unvetted 'rough draft' with an open question on the initial value. The record's claim of 'Minimal risks; purely additive' is contradicted by this open web-compat question.",
+      "evidenceIds": [
+        "csswg-issue-4653",
+        "spec-css-text-decor-4",
+        "chromestatus-record"
+      ],
+      "limitations": "'No signal' from other engines is an absence, not a position; formal security/privacy review completion cannot be confirmed; the spec section has not been vetted by the CSSWG."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial; the feature went to a flag-based developer trial. Rationale (not 'untested'): the mechanism is purely additive and degrades gracefully, and the residual uncertainty is default/initial-value interop, which standards convergence plus WPT addresses better than a field origin trial.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "spec-css-text-decor-4"
+      ],
+      "limitations": "If later adoption-side or resource uncertainty emerged, an origin trial could become relevant; this assessment is specific to an additive, opt-in typographic property."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Not reached. is_released is false, the ship-stage (intent_stage 5) is an empty placeholder with no intent_thread_url, security/privacy reviews are Pending, and there is no rollout/finch plan beyond the finch_name. Only an Intent to Prototype thread is referenced.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "intent-to-prototype-thread"
+      ],
+      "limitations": "Premature by design at this stage; the ship gates are incomplete rather than failed."
+    },
+    "release": {
+      "status": "unknown",
+      "finding": "No default-on shipment, no announcement, announced=false, is_releasenotes_publish_ready=false, is_releasenotes_content_reviewed=false. The sole recorded 'launch event' is a planned flag-based developer trial at a future milestone.",
+      "evidenceIds": [
+        "chromestatus-record"
+      ],
+      "limitations": "There is no release to assess; communication quality cannot be scored."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Not shipped, so no adoption is possible or observable. The property is not tracked in Can I Use (0 results), has no MDN page, and shows no framework/library integration.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "caniuse-skip-spaces",
+        "mdn-skip-spaces-404"
+      ],
+      "limitations": "Adoption is not yet measurable; the feature is behind a flag at a future milestone."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Not shipped, so no Chrome-implementation-specific support burden or issue history is observable. Pre-existing community questions (SO, Reddit, CSSWG) concern the broader capability, not Chrome's implementation.",
+      "evidenceIds": [
+        "chromestatus-record"
+      ],
+      "limitations": "Supportability is untestable pre-shipment."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive CSS property, not a deprecation or removal. Rationale (not 'untested'): there is no existing API, behavior, or compatibility path being restricted or removed.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "spec-css-text-decor-4"
+      ],
+      "limitations": "None material; if a default rendering behavior were later changed web-compatibly, a deprecation-style assessment could apply, but that is not the case here."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a genuine, recurring developer job: suppressing underlines/line-throughs over leading/trailing and inter-word whitespace in links, navigation, and <del>/<ins>. Multiple independent demand signals predate and are independent of the Chrome implementation, so the value is not invented.",
+      "evidenceIds": [
+        "so-72692992",
+        "reddit-css-1oibhv4",
+        "csswg-issue-4653",
+        "csswg-issue-2885",
+        "chromestatus-record"
+      ],
+      "limitations": "Evidence is problem-validity and standards-demand, not measured use of the Chrome implementation, which has not shipped."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Effect is minor and indirect (cleaner typographic decoration). There is no end-user exposure because the property is not shipped (behind a flag at a future milestone). No accessibility, privacy, or security user-impact evidence surfaced.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "spec-css-text-decor-4"
+      ],
+      "limitations": "Realized end-user impact cannot be assessed pre-shipment; expected magnitude is small given the additive, opt-in nature."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption is possible or observed: not shipped, not tracked in Can I Use, no MDN page, and no framework/library integration.",
+      "evidenceIds": [
+        "caniuse-skip-spaces",
+        "mdn-skip-spaces-404",
+        "chromestatus-record"
+      ],
+      "limitations": "Pre-release; adoption is not yet measurable and is not inferred from shipment or absence of criticism."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Mechanically additive and low-risk, but the interoperability picture is weak and the 'catch up' label is misleading. The linked spec section 2.10 is an explicitly unvetted 'rough draft'; the property's initial value has an open web-compat question; and no engine ships the explicit text-decoration-skip-spaces longhand. Other engines only exhibit divergent default trailing-space behavior (Chrome behaves as 'none', Safari/Firefox as a 'magic-end' variant), per CSSWG #4653. ChromeStatus records FF/Safari as 'No signal' on the property itself.",
+      "evidenceIds": [
+        "spec-css-text-decor-4",
+        "csswg-issue-4653",
+        "caniuse-skip-spaces",
+        "mdn-skip-spaces-404",
+        "chromestatus-record"
+      ],
+      "limitations": "'No signal' is absence, not a negative position; the spec may stabilize and engines may converge, so this is high risk rather than a realized incompatibility, since nothing has shipped."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "An implementation exists behind the experimental flag with a finch name and tracking bug, and WPT conformance tests are present (wpt PR #35780, commit 249e1eb8e6, matching the ChromeStatus WPT SHA).",
+      "evidenceIds": [
+        "chromestatus-record",
+        "csswg-issue-4653",
+        "wpt-pr-35780",
+        "chromium-bug-40862777"
+      ],
+      "limitations": "The Chromium bug/regression history was not directly retrievable; actual WPT pass/fail across engines could not be read (the wpt.fyi dashboard is JS-rendered); the chosen default/initial behavior remains an open spec question, so the implementation may need revision."
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "The ChromeStatus record carries motivation, spec link, bug, WPT, and samples, and an Intent to Prototype thread is referenced. But devtrial_instructions, doc_links, and explainer_links are empty; security and privacy reviews are 'Pending'; there is no announcement; samples are WPT pages only; and there is no MDN page.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "intent-to-prototype-thread",
+        "mdn-skip-spaces-404"
+      ],
+      "limitations": "The Intent-to-Prototype thread content could not be loaded (the msgid URL was rejected by the reader); its substance is inferred solely from the authoritative record field."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Not shipped; no implementation-specific support burden or issue history is observable. Community questions concern the broader capability, not Chrome's implementation.",
+      "evidenceIds": [
+        "chromestatus-record"
+      ],
+      "limitations": "Supportability is untestable pre-shipment."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A pre-release additive CSS property with a genuine, well-evidenced developer problem, real standards incubation, and WPT coverage, set against an unvetted spec section, no other-engine support or signal for the explicit longhand, an understated interop risk, an inaccurately 'catch up' classification, incomplete docs/reviews, and zero adoption. Strengths and concerns are both concrete, so the overall state is mixed rather than successful.",
+      "evidenceIds": [
+        "chromestatus-record",
+        "spec-css-text-decor-4",
+        "csswg-issue-4653",
+        "caniuse-skip-spaces",
+        "mdn-skip-spaces-404",
+        "so-72692992",
+        "reddit-css-1oibhv4",
+        "csswg-issue-2885"
+      ],
+      "limitations": "Pre-release; post-shipment outcomes (release, adoption, support, end-user impact) are unknown and not inferred. The M150 dev trial is scheduled, not realized, relative to the evidence cutoff."
+    }
+  },
+  "sources": [
+    {
+      "id": "chromestatus-record",
+      "url": "https://chromestatus.com/feature/4832783806627840",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-04-10",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata; 'Chromium catches up' type; owner perryuwang@gmail.com; motivation; spec link; bug 40862777; finch name CSSTextDecorationSkipSpaces; flag enable-experimental-web-platform-features; WPT true; dev trial targeted M150 desktop+android; Intent to Prototype thread (stage 220); tag review 'Not applicable'; security/privacy 'Pending'; FF/Safari 'No signal'; webdev 'No signals'; is_released false; interop_compat_risks 'Minimal risks; purely additive'."
+      ],
+      "limitations": "Authoritative cached record accurate_as_of 2026-04-10, updated 2026-05-19. Reflects ChromeStatus self-report, not independent verification of review states."
+    },
+    {
+      "id": "spec-css-text-decor-4",
+      "url": "https://drafts.csswg.org/css-text-decor-4/#text-decoration-skip-spaces-property",
+      "publisher": "W3C CSS Working Group (Editors: E. Etemad/fantasai, Koji Ishii)",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "text-decoration-skip-spaces defined in CSS Text Decoration Level 4 section 2.10.3; value 'none | all | [ start || end ]'; initial value 'start end'; section 2.10 (text-decoration-skip shorthand and sub-properties) is explicitly a 'rough draft ... not yet vetted by the CSSWG'; open question on whether initial value should be 'none' for web-compat, referencing Issue 4653."
+      ],
+      "limitations": "Editor's Draft, not a stable Recommendation; the property's normative text and initial value are still subject to change."
+    },
+    {
+      "id": "csswg-issue-4653",
+      "url": "https://github.com/w3c/csswg-drafts/issues/4653",
+      "publisher": "W3C CSSWG (GitHub issue by frivoal/Florian Rivoal)",
+      "publishedOrObservedAt": "2020-01-07",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Opened 2020-01-07, resolved 2020-05-06, closed 2022-09-05: Safari and Firefox have divergent built-in default behavior 'sort of like text-decoration-skip-spaces: end' but differing from the spec and each other; initial-value disagreement (Chrome behaves as 'none', Safari/Firefox as 'magic-end', spec says 'start end'); CSSWG resolved to keep the spec and file bugs; bugs filed (Mozilla 1789266, WebKit 244813, Chromium 1360067); WPT test added via web-platform-tests/wpt#35780 at commit 249e1eb8e6."
+      ],
+      "limitations": "Issue documents engine default behaviors and the standards resolution, not explicit longhand shipping status; bug contents not individually inspected."
+    },
+    {
+      "id": "wpt-pr-35780",
+      "url": "https://github.com/web-platform-tests/wpt/pull/35780",
+      "publisher": "web-platform-tests (referenced via CSSWG issue #4653; commit 249e1eb8e6)",
+      "publishedOrObservedAt": "2022-09-05",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "WPT conformance test 'Add test for underline edge skipping' added as per csswg-drafts#4653 at commit 249e1eb8e6, which matches the ChromeStatus wpt_descr SHA, confirming these are the tests linked from the feature record."
+      ],
+      "limitations": "PR/commit referenced via the CSSWG issue rather than loaded directly; per-test pass/fail across engines could not be read from the JS-rendered wpt.fyi dashboard."
+    },
+    {
+      "id": "caniuse-skip-spaces",
+      "url": "https://caniuse.com/text-decoration-skip-spaces",
+      "publisher": "Can I use (Alexis Deveria / community, StatCounter data June 2026)",
+      "publishedOrObservedAt": "2026-06-01",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Zero results / '0 results found' for text-decoration-skip-spaces: the property is not tracked in Can I Use, indicating it is not recognized as shipped in any browser as of the June 2026 data snapshot."
+      ],
+      "limitations": "Absence from Can I Use is strong evidence the explicit longhand is not shipped, but Can I Use coverage is community-maintained and not exhaustive of every prefixed/experimental path."
+    },
+    {
+      "id": "mdn-skip-spaces-404",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-skip-spaces",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "The dedicated MDN page for text-decoration-skip-spaces returns 'Page not found' (404): no MDN reference documentation exists for the longhand property, confirming a documentation gap at the time of the dev-trail target."
+      ],
+      "limitations": "A 404 is a point-in-time absence; MDN pages can be created quickly. Does not imply the property will never be documented."
+    },
+    {
+      "id": "mdn-skip-shorthand",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-skip",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Historical context: text-decoration-skip shorthand is deprecated; Chrome supported it only M57-63 ('No support' now), Safari shipped a prefixed version from Safari 8+. Confirms the 'catch up' lineage (Chrome removed the old shorthand and is reimplementing the split-out longhand)."
+      ],
+      "limitations": "Compatibility detail taken from the search-result snippet; the full MDN page was not loaded directly, so exact version numbers should be re-verified."
+    },
+    {
+      "id": "so-72692992",
+      "url": "https://stackoverflow.com/questions/72692992/can-i-exclude-spaces-from-text-decoration",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": "2022-06-30",
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent developer demand: an author struggling to exclude spaces and &nbsp; from a line-through on <del>, reporting that text-decoration-skip: spaces is 'not supported by most browsers' and that there is no pure-CSS cross-browser solution. Pre-dates and is independent of the Chrome implementation."
+      ],
+      "limitations": "Full page load failed (transient 500); finding supported by the search snippet and title. Exact asker date and accepted-answer status not verified."
+    },
+    {
+      "id": "reddit-css-1oibhv4",
+      "url": "https://www.reddit.com/r/css/comments/1oibhv4/how_do_i_get_rid_of_this_underine_from_the_blank/",
+      "publisher": "Reddit r/css",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Recurring developer friction: an author trying to remove an underline drawn across blank space/word-spacing in a link, with no clean CSS solution. Corroborates the developer job independently of the SO question."
+      ],
+      "limitations": "Snippet-only; thread content, date, and resolution not loaded directly."
+    },
+    {
+      "id": "csswg-issue-2885",
+      "url": "https://github.com/w3c/csswg-drafts/issues/2885",
+      "publisher": "W3C CSSWG (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Standards-level discussion of using text-decoration-skip-* properties (including trailing-spaces) to selectively turn off underlining on particular elements, confirming the use case is recognized by the CSSWG."
+      ],
+      "limitations": "Snippet-only; issue status and resolution not loaded directly."
+    },
+    {
+      "id": "intent-to-prototype-thread",
+      "url": "https://groups.google.com/a/chromium.org/d/msgid/blink-dev/69d8f543.050a0220.1c79a0.1352.GAE%40google.com",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "An Intent to Prototype thread URL is present in the ChromeStatus record (stage 220, intent_stage 1), indicating the formal Blink prototyping intent was filed."
+      ],
+      "limitations": "Direct load failed: the reader rejected the encoded msgid URL. Substantive content (motivation, scope, requested feedback) is NOT verified; only the existence of the field in the authoritative record is known."
+    },
+    {
+      "id": "chromium-bug-40862777",
+      "url": "https://issues.chromium.org/issues/40862777",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T06:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "The tracking bug for the feature, per the ChromeStatus bug_url field."
+      ],
+      "limitations": "Not directly loaded (the Chromium issue tracker frequently requires authentication and was not fetched); implementation status, regression history, and review comments are unverified beyond the record's reference."
+    }
+  ],
+  "successes": [
+    "Genuine, recurring developer problem with multiple independent pre-implementation demand signals (Stack Overflow #72692992, Reddit r/css, CSSWG #4653/#2885) - the value is not invented demand.",
+    "Real standards incubation: CSSWG resolved the central default-behavior question (#4653, 2022) and WPT conformance tests (commit 249e1eb8e6, wpt#35780) predate the Chrome dev trial; the ChromeStatus WPT SHA matches that test commit.",
+    "Clean progressive-enhancement story: the property is purely additive and degrades gracefully to current rendering, and cross-platform intent is declared (desktop_first + android_first = 150).",
+    "Honest recording of other-engine states as 'No signal' rather than implying support, and 'Not applicable' tag review appropriate for a CSS-WG property."
+  ],
+  "failures": [
+    "Misleading 'Chromium catches up' framing: no engine ships the explicit text-decoration-skip-spaces longhand and the spec section is an unvetted 'rough draft'; the real situation is Chrome leading on an unstable spec, not catching up to a shipped interop target.",
+    "Interop risk understated: the record says 'Minimal risks; purely additive', but the property's initial value has an open web-compat question and engines have divergent default trailing-space behavior (Chrome ~ 'none' vs Safari/Firefox ~ a 'magic-end' variant).",
+    "Under-prepared developer trial: no developer-facing samples (only WPT conformance pages), no dev-trial instructions, no feedback route or cohort, and no announcement - the trial is effectively a flag toggle, not a structured developer trial.",
+    "Documentation ecosystem absent: no MDN page (404), not tracked in Can I Use, and security/privacy reviews still 'Pending' at the time of the milestone-targeted trial."
+  ],
+  "counterfactuals": [
+    "Had the record's interop section flagged the #4653 default-value divergence and the unvetted spec section instead of 'minimal/purely additive', the wide-review packet would have foregrounded the real interop risk and likely prompted direct Firefox/WebKit coordination before a milestone-targeted trial.",
+    "Had a developer-facing demo and feedback route accompanied the M150 flag (rather than only WPT conformance pages), the trial could have gathered evidence on the preferred default behavior - which is precisely the open spec question.",
+    "Had MDN and Can I Use entries been prepared in parallel, the trial would have been discoverable; their absence at a planned trial milestone is a reversible but real readiness gap.",
+    "Had the feature been classified as a new/de-novo standard rather than 'catch up', the (justifiably) lighter catch-up process would not have been applied to a property with no interoperable prior implementation."
+  ],
+  "skillImprovements": [
+    "Add a retrospective rule: for 'Chromium catches up' features, require evidence of what is being caught up to - another engine's shipped explicit feature versus divergent default behavior. If only divergent defaults exist and the spec section is unvetted, force interop to be scored at least 'partial' and reclassify the feature away from 'catch up'.",
+    "Phase-04 (wide review) regression check: when interop_compat_risks asserts 'minimal/additive' but the linked spec section is marked unvetted/rough-draft or an open issue questions the initial value, mark the interop claim 'contradicted' and require the open issue cited in the wide-review packet.",
+    "Phase-03 (developer trials) artifact gate: a flag-based trial entry must list at least one developer-facing sample/demo and a feedback route distinct from WPT pages, or the trial is scored 'partial'; WPT pages are conformance evidence, not developer onboarding.",
+    "Documentation-readiness signal: at dev-trial, check MDN page existence and Can I Use tracking as evidence indicators; absence is a flagged documentation gap, not an ignored detail.",
+    "Add a 'knowable-at-event-date' reminder to the retrospective template: when a launch event's milestone is in the future relative to the evidence cutoff, score realized-outcome phases (release, adoption, support) as 'unknown' explicitly and state that the event is scheduled, not realized."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Prototype thread content - the encoded msgid URL was rejected by the reader; only the authoritative record field is known, not the substance (motivation, scope, requested feedback).",
+      "Chromium bug 40862777 detail and regression history - the issue tracker was not directly retrievable.",
+      "Actual WPT pass/fail for text-decoration-skip-spaces across Chrome/Firefox/Safari - the wpt.fyi dashboard is JS-rendered and not readable; only test existence is confirmed via CSSWG #4653.",
+      "Any real-world developer usage, adoption, or support evidence - the feature is not shipped and the M150 dev trial is in the future relative to the 2026-07-20 cutoff.",
+      "Current Firefox/Safari positions on the explicit longhand beyond 'No signal' - no position is on record."
+    ],
+    "reviewedAt": "2026-07-20T06:30:00Z"
+  }
+}

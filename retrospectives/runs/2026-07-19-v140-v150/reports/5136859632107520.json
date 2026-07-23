@@ -18,7 +18,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:55Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -106,14 +106,15 @@
       "limitations": "Could not confirm a dedicated release asset for this feature; absence of evidence is not proof of absence, but no independent source surfaced one."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Feature shipped ~3 weeks before the evidence cutoff. The only documented (planned) adopter is first-party Google Meet; no public production adoption, framework/library integration, or usage-counter data exists yet for the quality enum (no webdx UseCounter bucket linked).",
+      "status": "partial",
+      "finding": "Feature shipped 2026-06-30 (~3 weeks before this revision's cutoff). A Chrome usage counter IS now mapped — the SpeechRecognition WebFeature counter (webfeature bucket_id 63) — but its scope is web-feature-family (confidence: declared-family), so it is NOT an exact counter for the quality enum. It aggregates all SpeechRecognition interface usage (legacy cloud Web Speech, the Chrome 139 on-device parent, and this quality option), and the counter has been positive since 2024-06-10 (0.000285), long before the quality enum was proposed (Jan 2026); it therefore cannot isolate this launch's adoption. Observed share of measured Chrome HTTP/HTTPS page loads where the counter fired: 0.00033809 (≈0.034%) at M150 stable (2026-06-30) and 0.00029795 (≈0.030%) on 2026-07-20 (latest) — flat-to-slightly-declining around launch, and well below the counter's own 2024-12-10 peak of 0.00139551 (≈0.14%), which predates the quality enum. Launch-relative day30/day90/day180 checkpoints are null at cutoff (too early). The only documented planned adopter remains first-party Google Meet; no independent (non-Google) production adoption, framework/library integration, or exact-feature usage is observed.",
       "evidenceIds": [
         "s9",
         "s1",
-        "s14"
+        "s14",
+        "s19"
       ],
-      "limitations": "Too early to score adoption; independent (non-Google) production use is unobserved."
+      "limitations": "Family counter over-counts relative to the quality enum and cannot isolate this launch; day30/90/180 not yet available; no unique-site, production, retention, task-success, or user-benefit data; independent adoption unobserved."
     },
     "support": {
       "status": "unknown",
@@ -158,13 +159,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Shipped 2026-06-30; only first-party planned adopter (Meet); no public production adoption, framework integration, or usage data for the quality enum. Cannot defensibly score success or failure from shipment or its absence.",
+      "finding": "Shipped 2026-06-30. The only mapped Chrome usage counter is the SpeechRecognition WebFeature family/property counter (bucket_id 63, web-feature-family scope, declared-family confidence) — not exact-feature adoption, so it over-counts the quality enum. Measured share of Chrome HTTP/HTTPS page loads where it fired: 0.00033809 (≈0.034%) at M150 stable (2026-06-30) and 0.00029795 (≈0.030%) on 2026-07-20 (latest) — a low, flat-to-slightly-declining level that is also below the counter's own Dec-2024 peak (0.00139551, ≈0.14%). No predeclared adoption target/threshold appears in the launch record, and no independent production/retention/task-success evidence corroborates adoption of the quality enum itself. With no threshold and only a non-exact family counter, the adoption outcome remains unscored; the observed family-counter level is low and not yet trend-resolvable past launch (day30/90/180 null).",
       "evidenceIds": [
         "s15",
         "s9",
-        "s1"
+        "s1",
+        "s19"
       ],
-      "limitations": "Premature; no UseCounter/HTTP Archive/web-features data linked."
+      "limitations": "No predeclared target; family counter is not exact and over-counts; no unique-site/production/retention/task-success/user-benefit data; only first-party Meet planned; day30/90/180 null."
     },
     "interoperability": {
       "status": "mixed",
@@ -213,7 +215,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A defensible, well-scoped, privacy-motivated additive capability shipped on schedule for a real (first-party) need, with an early TAG review and a landed spec. But it launched as a Chrome-desktop-only feature with no WPT, thin multi-stakeholder support (Firefox won't use it, WebKit no signal), an incomplete normative algorithm for the new option, pending privacy/security reviews, and no independent developer demand or post-ship adoption evidence. Net: sound direction, weak interoperability/evidence posture.",
+      "finding": "A defensible, well-scoped, privacy-motivated additive capability shipped on schedule for a real (first-party) need, with an early TAG review and a landed spec. But it launched as a Chrome-desktop-only feature with no WPT, thin multi-stakeholder support (Firefox won't use it, WebKit no signal), an incomplete normative algorithm for the new option, pending privacy/security reviews, and no independent developer demand. Post-ship adoption is only family-scoped: the SpeechRecognition WebFeature counter (bucket_id 63) shows a low, flat-to-slightly-declining level (0.00033809 of page loads at M150 stable vs 0.00029795 on 2026-07-20), but it is not an exact measure of the quality enum and no target exists to judge it against. Net: sound direction, weak interoperability/evidence posture.",
       "evidenceIds": [
         "s9",
         "s6",
@@ -221,9 +223,10 @@
         "s1",
         "s4",
         "s5",
-        "s15"
+        "s15",
+        "s19"
       ],
-      "limitations": "Overall conflates a directionally sound design with weak cross-engine/evidence realization; post-ship outcomes remain unscored."
+      "limitations": "Overall conflates a directionally sound design with weak cross-engine/evidence realization; post-ship adoption is family-scoped and exact adoption remains unscored."
     }
   },
   "sources": [
@@ -478,6 +481,22 @@
         "parent 'On-device Web Speech API' feature (shipped Chrome 139) that this quality feature extends"
       ],
       "limitations": "Detail not read; dependency referenced via search snippet."
+    },
+    {
+      "id": "s19",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=63",
+      "publisher": "Chrome Platform Status (WebFeature popularity timeline, cached snapshot)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:55Z",
+      "sourceType": "usage",
+      "supports": [
+        "SpeechRecognition WebFeature counter (webfeature bucket_id 63) timeline; mapping status web-feature-family-counter, scope web-feature-family, confidence declared-family",
+        "share of measured Chrome HTTP/HTTPS page loads where the counter fired: 0.00033809 (≈0.034%) at M150 stable 2026-06-30; 0.00029795 (≈0.030%) on 2026-07-20 (latest)",
+        "counter positive since firstObservedPositive 2024-06-10 (0.000285), predating the quality enum (proposed Jan 2026); peak 0.00139551 (≈0.14%) on 2024-12-10",
+        "launch-relative day30/day90/day180 checkpoints null at cutoff (too early)",
+        "no exact webdxUseCounterEnum mapped for the quality enum (enum is null)"
+      ],
+      "limitations": "Family/property counter for the SpeechRecognition interface, not an exact counter for the quality enum or this ChromeStatus feature; it aggregates legacy cloud Web Speech, the Chrome 139 on-device parent, and the quality option, so it over-counts and cannot isolate this launch; numerator/denominator is page loads where the counter fired / measured Chrome HTTP/HTTPS page loads — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit; UMA reflects participating Chrome clients and the dominant milestone; 578 timeline points cached."
     }
   ],
   "successes": [
@@ -509,12 +528,14 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Post-ship adoption/usage data for the quality enum (no UseCounter/HTTP Archive/web-features bucket linked; feature shipped 2026-06-30).",
+      "Exact-feature adoption counter for the quality enum itself (only a broader WebDX SpeechRecognition family/property counter, webfeature bucket_id 63, is mapped; scope web-feature-family, confidence declared-family, so it over-counts and cannot isolate this launch).",
+      "Unique-site, production, retention, task-success, and end-user-benefit adoption evidence for the quality enum; launch-relative day30/day90/day180 checkpoints are null at cutoff (too early).",
+      "A predeclared adoption target/threshold in the launch record against which the observed family-counter level could be judged success or failure.",
       "Independent (non-Google) production adoption or partner commitment for this feature.",
       "Full bodies of tracking bug 476168420 and privacy issue 521896368 (both returned server 500 / were unreadable; only titles/metadata captured).",
       "A dedicated DevRel/MDN artifact for the quality enum (could not confirm one exists).",
       "Post-ship support volume / recurrence data (too early)."
     ],
-    "reviewedAt": "2026-07-20T06:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:55Z"
   }
 }

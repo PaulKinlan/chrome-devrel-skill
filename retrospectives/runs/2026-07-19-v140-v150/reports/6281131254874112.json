@@ -23,7 +23,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T16:30:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -113,15 +113,16 @@
       "limitations": "The ChromeStatus source-of-truth itself lagged: status remained 'Proposed' and is_released=false as of accurate_as_of 2025-08-27, despite the manifest launch event. No dedicated developer.chrome.com blog article was found (DevRel via release notes + MDN + LinkedIn social, not an in-depth article)."
     },
     "adoption": {
-      "status": "partial",
-      "finding": "Interoperability-driven adoption is forming: caniuse global support ~81.32% (Chrome/Edge 140+, Firefox 133+, Safari 18.2+, Opera 124+), Baseline newly-available Sept 2025, and Node.js 25 gains it via V8 14.1 (server-side). Third-party tutorials are appearing. However no public production-usage figure exists (Chrome use counters are internal), and there are ecosystem gaps: caniuse reports Samsung Internet 29 still unsupported plus QQ/UC unsupported, and shows Chrome-for-Android at 147 versus the ChromeStatus android_first=140.",
+      "status": "supported",
+      "finding": "Adoption is now measurable via the public ChromeStatus WebFeature timeline for the Uint8arrayBase64Hex counter (bucket 334; 439 daily points). Mapping status is web-feature-family-counter (name-matched-family), so this is a family/property counter, NOT exact per-feature adoption; values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once. The counter first went positive 2025-05-09 at 0.000003% (during the M138 behind-flag developer-trial / pre-stable channel period). Launch-relative checkpoints for the M140 'Enabled by default' stable date (2025-09-02): atStable 0.00818% (2025-09-02); day30 0.0098755% (2025-10-02); day90 0.01265235% (2025-12-01); day180 0.01748351% (2026-03-01). It peaked at 0.03369807% (2026-05-26) and stood at 0.02833843% on 2026-07-21 (latestSnapshot 0.02839661% on 2026-07-20) - a sustained ~3.5x rise from stable over ~10.5 months, slightly off the May 2026 peak but still above the day180 level; absolute level remains low (hundredths of a percent of page loads). Interoperability-driven availability is broad: caniuse global ~81.32% (Chrome/Edge 140+, Firefox 133+, Safari 18.2+, Opera 124+), Baseline newly-available Sept 2025, and Node.js 25 gains it via V8 14.1 (server-side). Ecosystem gaps persist: caniuse shows Samsung Internet 29 unsupported plus QQ/UC unsupported, and Chrome-for-Android at 147 versus ChromeStatus android_first=140.",
       "evidenceIds": [
+        "S22",
         "S10",
         "S9",
         "S16",
         "S7"
       ],
-      "limitations": "No public usage/adoption percentage; no attributable case studies or framework 'we adopted this' statements; Android Chromium-derived browser support is incomplete."
+      "limitations": "Family-level counter (Uint8arrayBase64Hex, name-matched-family), not exact per-feature adoption; share of page loads, not unique developers/sites/users, task success, satisfaction, or end-user benefit; counter instrumentation may include detection or probing; UMA reflects participating Chrome clients and the dominant milestone (enterprise and opt-out populations may be underrepresented); zero/missing/delayed points are not proof of zero use; no unique-site, production-deployment, retention, or predeclared-target evidence; Android Chromium-derived browser support is incomplete."
     },
     "support": {
       "status": "unknown",
@@ -158,25 +159,26 @@
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "End-user benefit is real but indirect and unmeasured: a native, optimized codec can reduce bundle size (fewer base64 libraries), speed decode/encode, and simplify binary handling. There is no direct end-user-facing capability, control, or consent dimension, and no attributable end-user outcome data.",
+      "finding": "End-user benefit is real but indirect and unmeasured: a native, optimized codec can reduce bundle size (fewer base64 libraries), speed decode/encode, and simplify binary handling. There is no direct end-user-facing capability, control, or consent dimension, and no attributable end-user outcome data. The measured use counter is a page-load share, not an end-user benefit measure.",
       "evidenceIds": [
         "S3",
         "S20",
         "S14",
-        "S19"
+        "S19",
+        "S22"
       ],
-      "limitations": "No measured end-user outcome (perf, payload, battery); benefit is inferred from the primitive's nature, not demonstrated."
+      "limitations": "No measured end-user outcome (perf, payload, battery); benefit is inferred from the primitive's nature, not demonstrated; the Uint8arrayBase64Hex counter explicitly does not measure end-user benefit."
     },
     "adoption": {
-      "status": "mixed",
-      "finding": "Broad engine/runtime alignment (Baseline Sept 2025; Chrome/Edge/Firefox/Safari all shipped; Node.js 25) but durable production adoption is unproven: no public usage %, no case studies, and material Android ecosystem gaps (Samsung Internet unsupported per caniuse).",
+      "status": "unscored",
+      "finding": "The only public adoption measure is the Uint8arrayBase64Hex family counter (name-matched-family, not exact per-feature adoption; share of measured Chrome HTTP/HTTPS page loads where the counter fired): 0.00818% at the M140 stable date (2025-09-02), day30 0.0098755% (2025-10-02), day90 0.01265235% (2025-12-01), day180 0.01748351% (2026-03-01), peak 0.03369807% (2026-05-26), latest 0.02833843% (2026-07-21) - a sustained ~3.5x rise over ~10.5 months at a low absolute level. No launch-time adoption target or expectation was recorded, and there is no corroborating unique-site, production-deployment, or retention evidence. With no predeclared threshold and no production/retention corroboration, the adoption outcome is kept unscored and the measured level/trend is described, not judged success or failure; 'mixed' is not used as a substitute for an absent threshold.",
       "evidenceIds": [
+        "S22",
         "S10",
         "S9",
-        "S16",
-        "S7"
+        "S16"
       ],
-      "limitations": "Usage tracked internally via use counters (S6) but not published; cannot score adoption as success from Baseline/interop alone."
+      "limitations": "Family counter, not exact feature adoption; share of page loads, not unique developers/sites/users, task success, satisfaction, or end-user benefit; no predeclared adoption target; no unique-site, production-deployment, or retention evidence; cannot score without a threshold plus corroborating production/retention evidence."
     },
     "interoperability": {
       "status": "success",
@@ -224,15 +226,16 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A low-risk, well-justified interoperability catch-up that shipped cleanly with strong developer value and same-month Baseline status. Overall is mixed rather than success because durable adoption (no public usage), end-user impact (indirect/unmeasured), and support remain unknown or partial, and the method forbids inferring overall success from shipment, interop, or press sentiment alone.",
+      "finding": "A low-risk, well-justified interoperability catch-up that shipped cleanly with strong developer value and same-month Baseline status. Adoption is now measurable (Uint8arrayBase64Hex family counter: 0.00818% of page loads at M140 stable, rising to 0.02833843% by 2026-07-21, peak 0.03369807%), but with no predeclared target and no production/retention corroboration it stays unscored rather than a success signal. End-user impact remains indirect/unmeasured (the counter explicitly does not measure end-user benefit) and support remains unscored. Overall stays mixed because the method forbids inferring overall success from shipment, interop, Baseline, or raw usage alone.",
       "evidenceIds": [
         "S1",
         "S7",
         "S10",
         "S9",
-        "S3"
+        "S3",
+        "S22"
       ],
-      "limitations": "Honest unknowns in adoption/support prevent a 'success' overall score despite strong interop and problem validity."
+      "limitations": "Adoption is measurable but unscored (no target, no production/retention); end-user impact and support unknowns remain; overall success cannot be inferred from interop or usage alone."
     }
   },
   "sources": [
@@ -487,6 +490,21 @@
         "V8/Chrome JavaScript+WebAssembly feature shipping process; explains the flag->trial->default path used for TC39 features"
       ],
       "limitations": "Process documentation, not feature-specific evidence."
+    },
+    {
+      "id": "S22",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=334",
+      "publisher": "Chrome Platform Status (Google) - WebFeature use-counter timeline",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Public ChromeStatus WebFeature popularity timeline for the Uint8arrayBase64Hex counter (bucket 334); mapping status web-feature-family-counter (name-matched-family), a WebDX family/property counter, NOT exact per-feature adoption.",
+        "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once; counter first went positive 2025-05-09 at 0.000003% (during the M138 behind-flag developer-trial / pre-stable channel period).",
+        "Launch-relative checkpoints for the M140 'Enabled by default' stable date 2025-09-02: atStable 0.00818% (2025-09-02); day30 0.0098755% (2025-10-02); day90 0.01265235% (2025-12-01); day180 0.01748351% (2026-03-01).",
+        "Peak 0.03369807% (2026-05-26); latest 0.02833843% (2026-07-21); latestSnapshot 0.02839661% (2026-07-20); 439 daily data points."
+      ],
+      "limitations": "Cached timeline snapshot at evidence/metrics/timelines/webfeature-334.json (sha256 83c428c6c3c87b06664b1403fb953caa9cb8be4f9e7ca87ac1b479761b39aab0). Name-matched-family counter, not exact feature adoption - a WebDX family counter may cover more behavior than this ChromeStatus launch; share of page loads, not unique developers/sites/users, task success, satisfaction, or end-user benefit; counter instrumentation may include detection or probing; UMA reflects participating Chrome clients and the dominant milestone (enterprise and opt-out populations may be underrepresented); zero/missing/delayed points are not proof of zero use."
     }
   ],
   "successes": [
@@ -495,13 +513,13 @@
     "Strong cross-engine interoperability from launch day, yielding Baseline 'newly available' in the same month Chrome shipped (September 2025).",
     "Thoughtful, well-incubated API design (alphabet/lastChunkHandling/omitPadding, zero-copy setFrom* returning {read,written}, hex parity, deliberate whitespace/padding semantics) - the payoff of TC39 rather than Chrome-only incubation.",
     "Clean release execution: feature explicitly listed in Chrome 140 release notes, full MDN coverage for all six methods, Baseline alignment, and DevRel promotion.",
-    "Implementation tracked to completion (bug 42204568 Fixed) with WebDX use counters added for post-ship measurement."
+    "Implementation tracked to completion (bug 42204568 Fixed) with WebDX use counters added, and those counters now produce a measurable, growing public adoption signal (Uint8arrayBase64Hex family counter: 0.00818% of page loads at M140 stable rising to 0.02833843% by 2026-07-21), enabling the post-ship measurement that was previously unavailable."
   ],
   "failures": [
     "Chrome shipped a TC39 proposal still at Stage 3 (Stage 4 was reached October 2025, after the August/September 2025 ship). Low-risk given identical Firefox/Safari behavior, but a standards-maturity-at-ship caveat.",
     "ChromeStatus source-of-truth data lagged at ship time: status stayed 'Proposed' and is_released=false as of accurate_as_of 2025-08-27, and 'Web developers: No signals' materially understates overwhelming external demand - misleading for downstream tooling and decision-makers.",
     "Thin Chrome-side developer-trial packet (no documented trial instructions, cohort, task completion, or findings), acceptable for a catch-up JS builtin but below the phase module's evidence bar.",
-    "No public adoption measurement: Chrome use counters exist internally (bug 42204568) but no usage figure is published, leaving adoption partially unscoreable; Samsung Internet (a major Android browser) remained unsupported per caniuse.",
+    "Adoption is only partially measurable and untargeted: the sole public figure is the Uint8arrayBase64Hex family counter (a name-matched-family counter, not exact per-feature adoption; 0.00818% of page loads at M140 stable, ~0.028% by 2026-07-21, peak ~0.034%); there is no predeclared adoption target and no unique-site/production/retention breakdown; Samsung Internet (a major Android browser) remained unsupported per caniuse.",
     "No attributable production case studies or framework/runtime adoption statements (beyond Node.js 25 via V8) were found.",
     "Intent-to-Ship body, LGTM count, and explicit review matrix were not independently retrievable, weakening the prepare-to-ship evidence ledger."
   ],
@@ -509,14 +527,14 @@
     "If Chrome had waited for TC39 Stage 4 (October 2025) instead of shipping at Stage 3 (August/September 2025), it would have removed the standards-maturity caveat at the cost of ~2 extra months of non-interoperability with Firefox/Safari - likely the wrong trade given both engines had already shipped identical behavior.",
     "If Chrome had populated the 'Web developers' signal field with the available external demand evidence (Stack Overflow, npm, forum friction) and recorded a dev-trial findings packet, the ChromeStatus record would have reflected real demand instead of the misleading 'No signals'.",
     "If a dedicated developer.chrome.com article (beyond release notes + MDN + a LinkedIn post) had accompanied ship, awareness among Chrome-centric developers would likely be higher, though adoption of a low-level primitive is driven more by Baseline/interoperability than by content.",
-    "If Chrome had published the use-counter adoption curve and a conformance/WPT interop dashboard result, this retrospective could score adoption and implementation quality concretely instead of partial/mixed.",
+    "If Chrome had also published a per-feature (non-family) adoption figure alongside the now-available public family counter timeline (Uint8arrayBase64Hex bucket 334), declared an adoption target at launch, and exposed a conformance/test262 or WPT interop dashboard result, this retrospective could score adoption and implementation quality concretely instead of unscored/mixed.",
     "If the 'disable web tests to ship base64 in V8' step had a public rationale, the implementation-quality assessment would not hinge on an unexplained CL snippet."
   ],
   "skillImprovements": [
     "Add a phase-module rule (and a retrospective fast-path) for TC39/ECMA-262 language features: TAG/security/privacy reviews and Origin Trials are structurally 'Not applicable'; conformance is test262 (not WPT); cross-engine consensus is measured by Firefox/Safari shipping and TC39 stage, not W3C signals. The process must not penalize these as gaps.",
     "Add a ChromeStatus data-quality check to prepare-to-ship and release phases: flag when status/is_released contradict a manifest launch event, and when 'Web developers: No signals' coexists with strong external demand evidence (Stack Overflow duplication, npm packages, forum threads).",
     "Add a standards-maturity-at-ship capture: record the TC39/W3C stage or maturity at the ship date separately from current state, so a later Stage-4 is never conflated with ship-time Stage-3.",
-    "Add an adoption-evidence requirement for shipped primitives: require caniuse global %, Baseline status, other-engine versions, major Chromium-derived browser gaps (Samsung Internet, QQ, UC), and runtime support (Node/Bun/Deno); score usage as unknown when only internal use counters exist.",
+    "Add an adoption-evidence requirement for shipped primitives that captures the public ChromeStatus WebFeature/CSS counter timelines as first-party usage, recording scope explicitly (exact vs WebDX family/property vs origin-trial vs absent) and never treating a family counter as exact feature adoption; require caniuse global %, Baseline status, other-engine versions, major Chromium-derived browser gaps (Samsung Internet, QQ, UC), and runtime support (Node/Bun/Deno); when only a family counter exists and there is no predeclared target plus no production/retention corroboration, keep the adoption outcome unscored and describe the measured level/trend rather than scoring 'mixed'.",
     "Add a regression eval for 'low-risk catch-up' features: high interop + high problem validity + no end-user-facing change must still require measured adoption and support evidence before an overall 'success' score, preventing over-scoring from shipment or Baseline alone.",
     "Record attempted-but-failed evidence sources (e.g., Google Groups intent body, Chromium CL bodies) in the evidence ledger so a failed provider can resume without re-deriving the target URLs."
   ],
@@ -524,12 +542,12 @@
     "status": "partial",
     "missingEvidence": [
       "Intent to Ship thread body, LGTM count, and explicit review/position matrix (Google Groups page timed out repeatedly; only existence/title confirmed).",
-      "Public Chrome usage/adoption percentage (use counters exist internally via bug 42204568 but are not published).",
+      "Exact per-feature (non-family) Chrome usage percentage: only the family-level Uint8arrayBase64Hex counter is public (0.00818% at M140 stable rising to 0.02833843% by 2026-07-21, peak 0.03369807%); no unique-site, production-deployment, retention, or predeclared-target breakdown.",
       "Support-issue / regression telemetry (no public Chromium or V8 support data retrieved).",
       "Full detail and rationale of the 'Disable web tests to ship base64 in V8' CL (severity unconfirmed).",
       "Resolution of the Chrome-for-Android version discrepancy (caniuse 147 vs ChromeStatus android_first 140) and Samsung Internet support status.",
       "Any attributable production case studies or framework/runtime adoption statements beyond Node.js 25/V8 14.1."
     ],
-    "reviewedAt": "2026-07-22T16:30:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

@@ -1,0 +1,464 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5100036528275456,
+    "name": "ScrollIntoView container option",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5100036528275456",
+    "webFeature": "scroll-into-view",
+    "owner": "flackr@chromium.org (Robert Flack, Google)",
+    "blinkComponent": "Blink>Scroll",
+    "specLink": "https://drafts.csswg.org/cssom-view/#dom-scrollintoviewoptions-container",
+    "finchName": "ScrollIntoViewNearest"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:5100036528275456",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T13:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Problem is well-defined and externally validated. scrollIntoView() scrolling every ancestor scroller to the viewport is a long-standing pain for component authors (carousels, menus), documented in CSSWG issue #9452 (opened Oct 10 2023) with concrete production cases from argyleink and bakura10 (Shopify themes, RTL scroll-snap carousels). The ChromeStatus motivation and a jsbin sample articulate the before/after. The one weakness at intake was the absence of a standalone explainer doc; the motivating example lived only inline in the GitHub issue.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S8"
+      ],
+      "limitations": "No standalone explainer artifact existed; the explainer was effectively the GitHub issue. explainer_links in the ChromeStatus record is empty."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Standards design converged on the string-only `container: \"nearest\" | \"all\"` dictionary member (added to cssom-view via PR #11673) and won TAG/Mozilla/WebKit approval. However the merged spec text was internally inconsistent: issue #12260 (filed Jun 2 2025 by zcorpan) found artifacts of the earlier element-based design (incomplete sentences, ambiguous 'this element' reference, an unaddressed 'what if the nearest scrolling box is a viewport?' case). Spec maturity at ship remained 'Working draft'.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S14",
+        "S5"
+      ],
+      "limitations": "The merged spec needed a clarity follow-up; #12260 was still open at observation time with no linked resolving PR in its metadata."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "Clean, single-author Chromium implementation tracked in bug 391627364 (filed Feb 13 2025). The implementing CL (May 9 2025) was reviewed by Vladimir Levin, added the runtime-enabled feature, a web-platform test (css/cssom-view/scrollIntoView-container.html), and a use counter (ScrollIntoViewContainerNearest). The Intent to Ship self-assessment stated the feature is fully covered by WPT and ships on all six Blink platforms. No regression or bug evidence found.",
+      "evidenceIds": [
+        "S9",
+        "S8"
+      ],
+      "limitations": "wpt.fyi pass/fail detail could not be retrieved directly (page timed out); only test authorship and the self-assessment of coverage are confirmed."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial ran behind the 'Experimental web platform features' flag on desktop and Android at M138 (enabled via CL May 12 2025), with a jsbin sample provided. However the ChromeStatus record has no devtrial_instructions and no dev-trial feedback URL, and no collected dev-trial feedback is evidenced. The TAG/Mozilla/WebKit positions were filed only on May 30 2025, after the trial had already begun.",
+      "evidenceIds": [
+        "S1",
+        "S9",
+        "S3"
+      ],
+      "limitations": "No documented dev-trial feedback collection; the trial appears to have been quiet."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Wide review was sought and was positive: TAG design review #1105 was opened May 30 2025 and closed with 'Progress: review complete' / 'Resolution: satisfied'; Mozilla standards-positions #1237 = Positive; WebKit standards-positions #502 = Support. Multi-stakeholder signals are on record. Counterbalancing evidence-quality issues: the Intent to Ship template (Jun 19 2025) still reported 'Gecko: No signal', 'WebKit: No signal', 'Web developers: No signals', and 'TAG review status: Pending' despite the positions being on record since May 30; and as of Dec 2025 neither Firefox nor Safari has shipped (see interoperability).",
+      "evidenceIds": [
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S11"
+      ],
+      "limitations": "Positive positions have not translated to cross-engine shipment ~4 months after Chrome stable. The I2S template understated the on-record positions."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial (origintrial=false; all OT fields null). Appropriate for a small, additive, low-risk CSSOM delta that the author describes as usable as a progressive enhancement with polyfill fallback to scrollTo, and for which feature detection is possible via a position:fixed DOM probe.",
+      "evidenceIds": [
+        "S1",
+        "S8"
+      ],
+      "limitations": "Not-relevant reflects that an OT was not warranted for this feature class, not that it was untested."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship was posted Jun 19 2025. The API-OWNER review loop functioned correctly: Alex Russell pushed back ('Is there an explainer or a motivating example anywhere?') on Jun 25; Robert Flack added the carousel before/after motivating example the same day; LGTM1 (Russell, Jul 2) was explicitly 'contingent on there being a stand-alone explainer and example code'; LGTM3 (Bratell, Jul 2) followed; the ship flag was enabled via CL Jul 7. The review caught a real gap. But the gap was only partially closed (the motivating example went into the ChromeStatus motivation field and the GitHub issue; explainer_links stayed empty and the I2S still showed 'Explainer: None'), and the I2S signals/TAG-status fields were inaccurate.",
+      "evidenceIds": [
+        "S8",
+        "S1",
+        "S9"
+      ],
+      "limitations": "No standalone explainer document was ever produced; the 'explainer' remained the inline GitHub issue."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped enabled by default in Chrome 140 stable (Sep 2 2025) on desktop, Android and WebView (iOS null), enabled by CL Jul 7 2025 (Finch feature ScrollIntoViewNearest). Chrome for Developers Chrome 140 release notes cover it under CSS with a code snippet and ChromeStatus/Spec links; Gigazine provided independent press coverage the next day. Note an evidence-quality defect: the cached ChromeStatus snapshot (accurate_as_of 2025-08-11, pre-ship) is internally inconsistent — top-level status 'Proposed', is_released=false, intent_stage 'None' — even though the ship stage records M140; the authoritative ship fact is confirmed by the release notes and the Web Platform DX support table.",
+      "evidenceIds": [
+        "S10",
+        "S13",
+        "S11",
+        "S1",
+        "S9"
+      ],
+      "limitations": "DevRel coverage was release-notes-level only (one paragraph); no dedicated learn/blog article or sample tying the feature to the Chrome 135+ 'Carousels with CSS' narrative. The ChromeStatus record snapshot was stale relative to the ship milestone."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Qualitative developer demand is real and pre-dates the ship (CSSWG #9452: 10 thumbs-up plus argyleink and bakura10 production use cases; web-platform-dx developer-signals #463 open to collect signals; positive comments from kurtextrem on the I2S thread). However no quantitative usage data is available in the evidence set — the use counter ScrollIntoViewContainerNearest exists but public UMA/histogram figures were not retrievable, the feature is single-engine and only ~4 months past stable, and the rules forbid inferring adoption from demand, shipment, or sentiment alone.",
+      "evidenceIds": [
+        "S3",
+        "S11",
+        "S8",
+        "S1"
+      ],
+      "limitations": "No Chrome use-counter percentages, HTTP Archive/webstatus.dev telemetry, or framework/library integration evidence retrieved. Durable production adoption cannot be confirmed."
+    },
+    "support": {
+      "status": "partial",
+      "finding": "MDN documents the `container` option (values all/nearest, default all) and the author (Robert Flack) is responsive. But support friction is evidenced: a developer's feature-detection question on the I2S thread (kurtextrem, Jul 28 2025) went unanswered for ~2 months and was re-asked Sep 23 2025 (after stable shipped Sep 2) before Flack provided a non-trivial position:fixed DOM-probe detection snippet — indicating feature detection is awkward with no clean capability check. Separately the spec-clarity issue #12260 (Jun 2 2025) remained open.",
+      "evidenceIds": [
+        "S12",
+        "S8",
+        "S4"
+      ],
+      "limitations": "No captured support-ticket volume; only the public I2S thread exchange and the open spec issue are evidenced."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new additive option on an existing API (feature_type 'New or changed feature'); there is no deprecation or removal path to review.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not-relevant because the feature is additive, not a removal."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a well-validated, long-standing developer problem (scrollIntoView hijacking ancestor scrollers in components) with an ergonomic one-option API and concrete before/after examples; strong independent demand from component/carousel authors. The only developer-facing friction is awkward feature detection.",
+      "evidenceIds": [
+        "S3",
+        "S8",
+        "S12"
+      ],
+      "limitations": "Feature detection has no clean probe (requires a DOM scroll test); this mildly limits progressive-enhancement ergonomics."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "The feature is developer-facing; end-user impact is indirect and by-design (less disruptive scroll behaviour inside carousels/menus). No accessibility, privacy, or measured end-user study evidence exists, and the rules forbid inferring end-user benefit from the API design.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No end-user or accessibility research; impact is plausible-by-design only."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Real qualitative demand but no quantitative usage/production-adoption evidence in the set; feature is single-engine and ~4 months past stable.",
+      "evidenceIds": [
+        "S3",
+        "S11",
+        "S1"
+      ],
+      "limitations": "Use-counter numbers, HTTP Archive, and framework integration data not retrieved."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Currently Chromium-line only: shipped in Chrome 140 (Sep 2 2025) and Edge 140 (Sep 5 2025); Firefox and Safari are explicitly 'not supported' as of the Dec 2025 Web Platform DX support table, despite Mozilla 'Positive' and WebKit 'Support' positions from May 2025. The feature is therefore Baseline-newly-available (limited), not widely available. Trajectory is positive (positions + WPT test) but no other-engine implementation signals found.",
+      "evidenceIds": [
+        "S11",
+        "S6",
+        "S7",
+        "S9"
+      ],
+      "limitations": "No Firefox/Safari implementation bugs or ETAs retrieved; interop outcome may improve as the feature ages."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Clean, reviewed Chromium implementation with WPT coverage and a use counter; tidy CL sequence; no regression or compat-breakage evidence; progressive-enhancement compatible.",
+      "evidenceIds": [
+        "S9",
+        "S8"
+      ],
+      "limitations": "wpt.fyi results page not directly retrievable; quality inferred from authorship, review, and self-assessment."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Multiple evidence/communication defects: (a) ChromeStatus cached record internally inconsistent (status 'Proposed', is_released=false, intent_stage 'None' despite a recorded M140 ship stage); (b) the I2S template reported 'No signal' for Gecko/WebKit and 'TAG review status: Pending' despite their on-record positions and an in-flight TAG review; (c) no standalone explainer (explainer_links empty; 'Explainer: None'), motivating example only inline; (d) DevRel coverage release-notes-level only. Partially offset by an eventually-documented motivation, MDN docs, and release-notes + press coverage.",
+      "evidenceIds": [
+        "S1",
+        "S8",
+        "S10",
+        "S12"
+      ],
+      "limitations": "These are process/evidence-quality gaps, not API-correctness defects."
+    },
+    "support": {
+      "status": "mixed",
+      "finding": "MDN documentation exists and the author is responsive, but feature-detection guidance was slow (a developer question unanswered ~2 months spanning the stable ship) and the recommended detection is an awkward DOM probe; the spec-clarity issue #12260 remained open.",
+      "evidenceIds": [
+        "S12",
+        "S8",
+        "S4"
+      ],
+      "limitations": "No support-volume metrics; only public thread and issue evidence."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, cleanly implemented, low-risk progressive-enhancement delta that shipped on schedule (M140) with positive TAG/Mozilla/WebKit signals and an API-owner review loop that caught the missing-explainer gap. Offsetting issues: it is currently single-engine (Chrome/Edge only, ~4 months post-stable), never produced a standalone explainer, left a spec-clarity defect (#12260), carried inaccurate intent-record signals and a stale ChromeStatus snapshot, shipped only release-notes-level DevRel coverage, and has no quantitative adoption data.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "limitations": "Overall is deliberately mixed because interoperability, adoption, and end-user-impact dimensions are unscored/unachieved while developer-value and implementation-quality are strong."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5100036528275456",
+      "publisher": "Chrome Platform Status (cached record at evidence/chromestatus/features/5100036528275456.json, accurate_as_of 2025-08-11)",
+      "publishedOrObservedAt": "2025-08-11",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, owner, components, spec link, stages, dev trial M138, ship stage M140, finch name, use counter name, sample link",
+        "Cached record internally inconsistent: status 'Proposed', is_released=false, intent_stage 'None' despite M140 ship stage"
+      ],
+      "limitations": "Pre-ship snapshot; top-level status/is_released/intent_stage fields are stale relative to the recorded ship milestone."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5100036528275456",
+      "publisher": "chromestatuslite.com (server-rendered ChromeStatus mirror)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Summary, motivation, standards/signals (Firefox Positive, Safari Support, Web developers No signals), sample link"
+      ],
+      "limitations": "Mirror view; does not expose full stage/intent metadata."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/w3c/csswg-drafts/issues/9452",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2023-10-10",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Original problem proposal and explainer by flackr",
+        "Independent developer demand: argyleink (carousel demo avoiding scrollIntoView due to hijacking), bakura10 (Shopify-theme RTL scroll-snap carousel production case, prefers a boundary/element form)",
+        "10 thumbs-up reactions"
+      ],
+      "limitations": "Issue is the de-facto explainer; no separate explainer document exists."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/w3c/csswg-drafts/issues/12260",
+      "publisher": "W3C CSS Working Group (csswg-drafts)",
+      "publishedOrObservedAt": "2025-06-02",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Post-merge spec clarity defect: container dictionary member text mixed element-based and string-based designs; incomplete sentences; unaddressed viewport edge case",
+        "Filed by zcorpan after PR #11673 added the member"
+      ],
+      "limitations": "Issue metadata shows no linked resolving PR; status open at observation time (author commented uncertainties were addressed)."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/w3ctag/design-reviews/issues/1105",
+      "publisher": "W3C Technical Architecture Group (design-reviews)",
+      "publishedOrObservedAt": "2025-05-30",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "TAG design review requested by flackr",
+        "Closed: 'Progress: review complete', 'Resolution: satisfied', 'Review type: small delta', 'Topic: CSS'"
+      ],
+      "limitations": "TAG self-review for security/privacy marked N/A by the author."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1237",
+      "publisher": "Mozilla (standards-positions)",
+      "publishedOrObservedAt": "2025-05-30",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla position: Positive (label position: positive; assigned zcorpan)",
+        "Notes that there is a need for this and the API seems reasonable"
+      ],
+      "limitations": "Position is a signal; does not constitute Firefox shipment."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/502",
+      "publisher": "WebKit (standards-positions)",
+      "publishedOrObservedAt": "2025-05-30",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position: Support (label position: support; topic: css; venue: W3C CSS WG)"
+      ],
+      "limitations": "Position is a signal; does not constitute Safari shipment."
+    },
+    {
+      "id": "S8",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/bfnPvqLfVi4",
+      "publisher": "blink-dev (Chromium Intent to Ship: ScrollIntoView container option)",
+      "publishedOrObservedAt": "2025-06-19",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship posted Jun 19 2025 by flackr; estimated milestones desktop/Android/WebView=140, devtrial=138",
+        "I2S template inaccurately shows Gecko/WebKit 'No signal' and TAG 'Pending' despite on-record positions",
+        "API-owner review: Alex Russell pushed back on missing explainer (Jun 25); Flack added motivating example; LGTM1 contingent on standalone explainer (Jul 2); LGTM3 Bratell (Jul 2)",
+        "Post-ship feature-detection Q&A: kurtextrem asked Jul 28 2025, re-asked Sep 23 2025; Flack provided position:fixed DOM-probe detection snippet Sep 23 2025",
+        "Activation/progressive-enhancement + feature-detection rationale; WPT link; Finch name ScrollIntoViewNearest; use counter ScrollIntoViewContainerNearest"
+      ],
+      "limitations": "Intent to Prototype thread (msgid URL) could not be read by the reader (URL format rejected); only the Intent to Ship thread was retrieved."
+    },
+    {
+      "id": "S9",
+      "url": "https://issues.chromium.org/issues/391627364",
+      "publisher": "Chromium issue tracker (bug 391627364)",
+      "publishedOrObservedAt": "2025-02-13",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Implementation bug filed Feb 13 2025, assigned to flackr",
+        "Impl CL May 9 2025 (reviewed Vladimir Levin): added container option, runtime-enabled feature, WPT test css/cssom-view/scrollIntoView-container.html",
+        "CL May 12 2025: enable with experimental flag (dev trial); CL May 12 2025: use-count scrollIntoView with container: nearest",
+        "Bug marked fixed May 21 2025; ship CL Jul 7 2025 'Enable ScrollIntoViewNearest' referencing I2S bfnPvqLfVi4"
+      ],
+      "limitations": "Does not surface post-ship regressions if any; only the linked CLs are evidenced."
+    },
+    {
+      "id": "S10",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (official Chrome 140 release notes)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 stable date Sep 2 2025",
+        "ScrollIntoView container option documented under CSS with code snippet and ChromeStatus/Spec links"
+      ],
+      "limitations": "Coverage is a single release-notes paragraph; no dedicated learn/blog article found."
+    },
+    {
+      "id": "S11",
+      "url": "https://github.com/web-platform-dx/developer-signals/issues/463",
+      "publisher": "Web Platform DX (developer-signals)",
+      "publishedOrObservedAt": "2025-12-12",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Authoritative current browser support: Chrome 140 (Sep 2 2025), Chrome Android 140, Edge 140 (Sep 5 2025) shipped; Firefox, Firefox Android, Safari, Safari iOS NOT supported as of Dec 2025",
+        "Issue collects web-developer signals for the feature"
+      ],
+      "limitations": "Does not provide quantitative usage percentages; signals-collection counts not captured here."
+    },
+    {
+      "id": "S12",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-07-08",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN documents the container option (values all/nearest, default all) for scrollIntoView()"
+      ],
+      "limitations": "Page covers the whole scrollIntoView() method; per-sub-feature compat rows not individually parsed."
+    },
+    {
+      "id": "S13",
+      "url": "https://gigazine.net/gsc_news/en/20250903-google-chrome-140/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2025-09-03",
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press coverage of Chrome 140 noting the ScrollIntoView container option"
+      ],
+      "limitations": "Single secondary press item; mostly restates the release notes."
+    },
+    {
+      "id": "S14",
+      "url": "https://drafts.csswg.org/cssom-view/#dom-scrollintoviewoptions-container",
+      "publisher": "W3C CSSWG (CSSOM View Module editor's draft)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Specification defines the container member (referenced by ChromeStatus, TAG, Mozilla, WebKit)"
+      ],
+      "limitations": "Editor's draft could not be fully fetched by the reader (timed out); spec text defects documented via #12260 (S4). Maturity: Working draft."
+    },
+    {
+      "id": "S15",
+      "url": "https://caniuse.com/wf-scroll-into-view-container",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T13:30:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "A dedicated caniuse table exists for scrollIntoView() container describing nearest vs all behaviour"
+      ],
+      "limitations": "Full support table not retrieved by the reader (timed out); only the search-result summary was available. Authoritative support taken from S11 instead."
+    }
+  ],
+  "successes": [
+    "Well-validated problem with independent production demand (argyleink, bakura10 Shopify RTL carousel case) pre-dating the ship.",
+    "Clean, reviewed Chromium implementation with WPT coverage and a use counter; tidy CL sequence; no regression evidence.",
+    "Positive multi-stakeholder signals: TAG review satisfied; Mozilla Positive; WebKit Support.",
+    "Shipped on schedule in Chrome 140 (Sep 2 2025) with release-notes coverage and independent press coverage.",
+    "The API-owner review loop worked: Alex Russell's pushback caught the missing standalone explainer before LGTM, and it was resolved enough to proceed."
+  ],
+  "failures": [
+    "Not yet interoperable: Firefox and Safari have not shipped as of Dec 2025 (Chrome/Edge only), so the feature is Baseline-newly-available rather than widely available despite positive May 2025 positions.",
+    "No standalone explainer was ever produced; the motivating example remained inline in the ChromeStatus motivation field and GitHub issue (explainer_links empty; I2S 'Explainer: None').",
+    "Spec clarity defect post-merge (#12260): merged text mixed the abandoned element-based design with the string-based one, with incomplete sentences and an unaddressed viewport edge case.",
+    "Feature detection is awkward (no clean capability check; requires a position:fixed DOM scroll probe), and a developer's detection question sat unanswered ~2 months spanning the stable ship.",
+    "ChromeStatus intent-record evidence-quality gaps: the I2S template reported 'No signal' for Gecko/WebKit and 'TAG Pending' despite on-record positions; the cached record's top-level status/is_released/intent_stage fields are stale relative to the recorded M140 ship."
+  ],
+  "counterfactuals": [
+    "A standalone explainer with a runnable motivating example at Intent to Prototype would have avoided Alex Russell's pushback and the ~2-week delay before LGTM at Intent to Ship.",
+    "Proof-reading the CSSWG spec PR for element-vs-string artifacts before merge would have prevented issue #12260 and given other-engine implementers clearer text, possibly accelerating Firefox/Safari implementation.",
+    "If the Intent to Ship template had reflected the actual Gecko/WebKit positions (or the positions had been filed earlier than May 30), the multi-stakeholder support would have been visible at intent time rather than recorded as 'No signal'.",
+    "A clean feature-detection primitive (e.g. a CSS/IDL supports probe) instead of a DOM scroll probe would have lowered adoption friction and avoided the unanswered support question.",
+    "DevRel tying the feature to the Chrome 135+ 'Carousels with CSS' narrative with a dedicated blog/sample would have improved discoverability beyond a single release-notes paragraph.",
+    "Tracking cross-engine shipment (not just positive positions) as a post-ship monitoring signal would have set correct expectations that this is Chromium-only at launch."
+  ],
+  "skillImprovements": [
+    "Codify an intake/prototype gate requiring a standalone explainer plus a runnable motivating example before Intent to Prototype (API owners enforce this ad hoc today; make it a phase packet artifact).",
+    "Add an evidence-consistency lint for Intent threads: the ff/safari/webdev signal lines and TAG review status must match the on-record standards positions and review state; flag mismatches at intent time.",
+    "Add a spec-readiness pre-flight before ship: the merging spec PR must be self-consistent (no leftover artifacts from alternative designs) and free of incomplete/ambiguous sentences; run a 'spec clarity' check.",
+    "Require every new option/property ship to include a documented, copy-pasteable feature-detection recipe, and prefer a clean supports check where the platform offers one.",
+    "Add an interop-expectation field distinguishing 'positive position' from 'shipped', and a post-ship monitoring alert that fires when other-engine positions are positive but shipment is absent after N months.",
+    "Add a post-ship monitoring alert for unanswered developer questions on intent threads so support gaps (e.g., the ~2-month feature-detection question) are caught promptly.",
+    "Add a release-comms expectation that features tied to an existing DevRel narrative (e.g., carousels) get a dedicated learn/blog/sample, not only a release-notes paragraph."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Quantitative Chrome use-counter usage for ScrollIntoViewContainerNearest (UMA/chromestatus histogram not retrievable).",
+      "HTTP Archive / webstatus.dev adoption telemetry post-ship.",
+      "Intent to Prototype thread content (Google Groups msgid URL rejected by the reader; only the Intent to Ship thread was retrieved).",
+      "wpt.fyi pass/fail detail (page timed out; only test authorship and self-assessed coverage confirmed via the chromium bug and I2S).",
+      "Firefox/Safari implementation tracking bugs or ETAs (positions positive but no public implementation signals found).",
+      "End-user impact / accessibility studies (none exist for this developer-facing API)."
+    ],
+    "reviewedAt": "2026-07-22T13:30:00Z"
+  }
+}

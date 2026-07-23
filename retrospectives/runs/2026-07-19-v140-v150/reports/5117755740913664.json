@@ -1,0 +1,523 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5117755740913664,
+    "name": "WebMCP",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5117755740913664",
+    "category": "Miscellaneous",
+    "component": "Blink>Agentic Platform>WebMCP",
+    "spec": "https://webmachinelearning.github.io/webmcp",
+    "standardsMaturity": "Specification being incubated in a Community Group (W3C Web Machine Learning CG, CG-DRAFT)",
+    "summary": "Web API that lets web pages expose agent-callable tools (imperative navigator.modelContext.registerTool and a declarative form-based variant) so browser/site agents actuate pages via app-controlled UI with shared context.",
+    "owners": [
+      "khushalsagar@chromium.org",
+      "skmanickam@chromium.org",
+      "bengr@chromium.org",
+      "masonf@chromium.org",
+      "dom@chromium.org",
+      "mfoltz@chromium.org"
+    ],
+    "shippingYear": 2026,
+    "isReleased": false,
+    "plannedShipMilestone": {
+      "desktop": 157,
+      "android": 157,
+      "webview": 157
+    }
+  },
+  "launchEvents": [
+    {
+      "eventId": "146:In developer trial (Behind a flag):5117755740913664",
+      "milestone": 146,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "149:Origin trial:5117755740913664",
+      "milestone": 149,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "A clear, well-scoped developer problem is stated: AI agents increasingly drive the web, and the human-first UI is a brittle, token-heavy actuation surface; web pages need a way to declare agent-callable actions. The ChromeStatus entry was created 2025-07-08 and the explainer co-authored by Microsoft (Walderman/Lee/Nolan) and Google (Bokan/Sagar/Van Opstal) with Dominic Farolino driving the spec, then unified from two earlier proposals (Google 'Script Tools' and Microsoft 'Web Model Context') plus the community MCP-B project. The 'is browser/platform intervention the right layer?' question is, however, contested from the start: the proposal presumes a client-side API where critics and another engine argue server-side MCP or a browser-synthesized accessibility/AX layer is the better intervention. No public intake artifact or stakeholder scan was found.",
+      "evidenceIds": [
+        "cs-record",
+        "cs-lite",
+        "repo",
+        "newstack",
+        "chawla-critique"
+      ],
+      "limitations": "No public intake/stakeholder document; problem framing is vendor-led; the 'why this layer' counterposition existed before incubation but is not reflected in the ChromeStatus motivation."
+    },
+    "incubation": {
+      "status": "mixed",
+      "finding": "Genuine multi-stakeholder incubation in the W3C Web Machine Learning CG: cross-org authorship (Microsoft + Google), the independent MCP-B author (Alex Nahas) joined the group, and the GitHub repo shows high engagement (2.8k stars, 182 forks, 102 open issues, 3 PRs). Use cases are documented (commerce, productivity, creative tools, developer/code-review flows) and alternatives are listed (backend MCP, static manifests, event-based execution). However, the venue/use-case fit is disputed: WebKit applied 'concerns: use cases' and 'concerns: venue' labels, and an analytical critique argues the alternatives analysis understates server-side MCP and the browser-as-bridge (AX Tree/WebDriver BiDi/AOM) path. Incubation has not produced consensus that this is the right shape or venue.",
+      "evidenceIds": [
+        "spec",
+        "repo",
+        "webkit-670",
+        "newstack",
+        "chawla-critique"
+      ],
+      "limitations": "CG-DRAFT only; no Working Group; no evidence of a public, representative developer research plan with methodology and limitations."
+    },
+    "prototype": {
+      "status": "mixed",
+      "finding": "A working implementation exists behind a flag with real engineering depth: a dedicated WebMCP Chrome DevTools Protocol domain (list/invoke tools, log agent calls), Audits-domain reporting for declarative registration errors, a use counter (kModelContextRegisterTool, bucket 5791) for measurement, WPT coverage of IDL/basic usage, Permissions Policy gating ('tools'), and origin-isolation requirements. But the spec entering the dev trial is materially incomplete: the declarative API is 'entirely a TODO', the synthesize-declarative-JSON-Schema algorithm is unspecified, ModelContextClient.requestUserInteraction steps are 'TODO: fill this out', and the normative Security and Privacy Considerations sections are empty headers. Demos (zaMaker imperative, a React travel demo, Le Petit Bistro declarative) and an inspector extension exist.",
+      "evidenceIds": [
+        "cs-record",
+        "spec",
+        "docs"
+      ],
+      "limitations": "No public friction-log or integration-spike report; iOS/Webkit-equivalent portability not evidenced; declarative path unspecified at the time it was advertised in docs."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial shipped in Chrome 146 (desktop + android). ChromeStatus records strong interest: a rising star-history graph, ~9 Chrome Web Store extensions with 'WebMCP' in the title (4+ stars), and npm type definitions (webmcp-types). Independent third-party blog/tutorial coverage (Nearform, Zuplo, byteiota, Medium) appeared. These are interest/early-evaluation signals, not validated developer task success: no public cohort report, recruitment representativeness, task-completion denominator, survey methodology, or published friction findings were found. The 'great deal of interest' claim on ChromeStatus is supported only by vanity metrics (stars, extension count).",
+      "evidenceIds": [
+        "cs-record",
+        "cs-lite",
+        "repo",
+        "docs"
+      ],
+      "limitations": "Interest signals (stars, extension count) cannot establish that representative developers completed realistic tasks; no public trial methodology or findings."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Wide review is materially incomplete and contradicted at the evidence cutoff. TAG review status is Pending; feature-level Security review is Pending; feature-level Privacy review is Pending. WebKit has a formal standards-positions request (#670, opened 2026-05-28) to which opposition was recorded, with concern labels spanning API design, duplication, internationalization, portability, privacy, security, use cases, and venue, plus a 'meaningful user consent' topic label. Mozilla has an open position issue (#1412); ChromeStatus records Firefox 'No signal' and Safari 'No signal'. The Origin Trial therefore began (M149) before TAG/security/privacy completion and against an opposing engine position. There is no Baseline/other-engine path: WebMCP is currently a Chromium-only capability despite 'open web standard' messaging.",
+      "evidenceIds": [
+        "cs-record",
+        "cs-lite",
+        "webkit-670",
+        "mozilla-1412"
+      ],
+      "limitations": "The full text of the WebKit and Mozilla position comments was not retrieved (GitHub reads timed out); opposition is evidenced by the search-indexed position summary, the applied concern labels, and the existence of the Mozilla issue. The 'No signal' values on ChromeStatus understate the actual WebKit opposition."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "An Origin Trial is properly structured and live: Chrome 149 desktop/android/webview, third-party support enabled, trial id 4163014905550602241, OT owner bengr@, an 8-milestone window (M149-M156), a feedback submission URL, and an experiment_risks statement asserting no data loss and graceful fallback (browser agents keep simulating user behavior). Hypotheses are stated (API ergonomics for agentic workflows across commerce/productivity; tool-usage and latency metrics). As of the cutoff (~6 weeks into the trial) there is no public interim readout, participant denominator, measured activation (vs token registration), or decision record, so the trial's questions are open rather than answered. The OT owner team is broad (pjmclachlan, bengr, skmanickam, mfoltz, khushalsagar, domfarolino).",
+      "evidenceIds": [
+        "cs-record",
+        "blog-ot",
+        "docs"
+      ],
+      "limitations": "No published results yet; registrations-vs-use distinction unverified; experiment started before completion of TAG/security/privacy review."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "Not yet reached. Default-enablement (Intent to Ship) is planned for M157 (desktop/android/webview), which is after the evidence cutoff; no prepare-to-ship transition packet, final review matrix, or rollout plan is public. Assessed as not-relevant because the feature has not entered the prepare-to-ship phase at the cutoff, not because it was untested.",
+      "evidenceIds": [
+        "cs-record"
+      ],
+      "limitations": "Ship plan and formal review states are future-dated and unverifiable at cutoff."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "No stable/default-availability release has occurred; the only launch events in scope are the M146 developer trial (behind a flag) and the M149 origin trial, which are developer-trials and experiment-phase communications, not the release-communication phase. Developer-facing communication artifacts for the OT (developer.chrome.com docs published 2026-05-18, OT blog 2026-06-09, demos, inspector extension, early-preview program) are accurate and consistent with an experimental capability. Assessed not-relevant because there is no stable release to communicate.",
+      "evidenceIds": [
+        "docs",
+        "blog-ot",
+        "cs-record"
+      ],
+      "limitations": "Cannot assess coordinated stable-release communication quality because no stable release has shipped."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "Broad/default-available adoption cannot be scored because the capability is not yet available by default (M149 origin trial only; M157 default-availability is after the cutoff); the adoption phase presupposes a default-available capability, so it is not-relevant. Later Chrome usage telemetry (collected 2026-07-22; latest data 2026-07-20/21, i.e. after the decision-phase cutoff) now exists for the dev trial and OT and is described here for current state only — it is trial-era usage, not broad/default-available adoption, and is not treated as if known during any intake/review/ship decision. Mapping is multiple-counters: (a) an EXACT origin-trial counter kModelContextRegisterTool (bucket 5791, OT stage 5111811472621568) and (b) a BROADER WebDX/property-family counter DocumentModelcontext (bucket 427, web_feature document-modelcontext; declared-family, not exact adoption for this launch). On the exact OT counter, the share of measured Chrome HTTP/HTTPS page loads where the counter fired (counter day_percentage) was 0.000002 at M146 dev-trial stable (2026-03-10), 0.000001 at dev-trial day-30 (2026-04-09), 0.00000668 at dev-trial day-90 (2026-06-08), 0.00000143 at M149 OT stable (2026-06-02), and 0.0000134 at OT day-30 (2026-07-02); it peaked at 0.00726857 on 2026-07-16 and was 0.00038953 on 2026-07-21 (latest); OT day-90/day-180 are not yet available. The family counter follows the same shape (dev-trial day-90 0.00000667; OT day-30 0.0000133; peak 0.00725595 on 2026-07-16; latest 0.000098 on 2026-07-20) but is a declared-family mapping whose property_name changed over time (DRAFT_WebMCP -> NavigatorModelcontext -> DocumentModelcontext), so it may capture more than registerTool and is not exact adoption for this launch. Leading interest indicators (GitHub 2.8k stars, ~9 CWS extensions, npm types, tutorials, demos) remain positive in direction but are not corroborated by substantial steady-state measured counter firing. No attributable production deployment, partner ship commitment, default-availability usage, unique-site, retention, task-success, or end-user-benefit evidence exists, and none can before M157 ship.",
+      "evidenceIds": [
+        "repo",
+        "cs-record",
+        "cs-lite",
+        "docs",
+        "metrics-feature-5791",
+        "metrics-webfeature-427"
+      ],
+      "limitations": "Counter firing is the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; the family counter is broader than this launch and the OT counter measures tool registration, not successful task completion; counter instrumentation may include detection/probing and UMA reflects participating Chrome clients and the dominant milestone; only registered OT origins can fire the OT counter, so a single large origin or probing burst can dominate the series (the 2026-07-16 spike and subsequent decline illustrate this); no default-availability/production usage, unique-site, retention, task-success, or target evidence exists."
+    },
+    "support": {
+      "status": "not-relevant",
+      "finding": "No shipped capability means no broad support burden yet. Trial-era support routing exists: a Chromium bug component (Blink>Agentic Platform>WebMCP) and an OT feedback submission URL, plus devtrial instructions and a 'WebMCP for testing' flag. No public issue taxonomy, recurrence data, or resolution-time evidence. Assessed not-relevant because the support-and-iteration phase has not begun for a generally-available capability.",
+      "evidenceIds": [
+        "cs-record",
+        "docs"
+      ],
+      "limitations": "Cannot assess support burden or issue patterns pre-ship."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "WebMCP is a new feature with no removal/deprecation in scope; an origin-trial wind-down (M156) is a planned experiment end, not a feature deprecation, and the experiment_risks state that registered tools continue to be available in Chrome stable with browser agents able to actuate sites as before. Assessed not-relevant because there is no deprecation/removal trajectory.",
+      "evidenceIds": [
+        "cs-record"
+      ],
+      "limitations": "None; phase does not apply to a new, not-yet-shipped capability."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer value proposition is plausible and generated real interest, but it is contested. Proponents argue WebMCP gives developers reliable, low-token control over how agents actuate their pages and reuses existing client-side code; vendor-cited pilots report large gains (~67% token reduction, ~98% task accuracy). A substantial critical strand, including another browser engine and an independent analysis, argues the value is mis-located: sites willing to invest should expose server-side MCP (the source of truth), and the rest of the web is better served by a browser-synthesized AX/semantic layer, with WebMCP demanding maintenance effort (UI/tool-contract drift) for a 'second-class copy' that history (ARIA, Schema.org minimum-viable adoption) suggests the long tail will not maintain. Net: promising for a narrow set of complex, human-in-the-loop enterprise flows; uncertain and possibly net-negative for the broad web.",
+      "evidenceIds": [
+        "spec",
+        "repo",
+        "cs-record",
+        "webkit-670",
+        "chawla-critique",
+        "newstack"
+      ],
+      "limitations": "Pilot performance figures are vendor-cited and repeated by press without independent replication; no validated developer task-success denominator at scale."
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact is unevidenced: the feature is not shipped and the only exposure is via opted-in OT origins. The spec's user-consent/interaction primitive (ModelContextClient.requestUserInteraction) is unspecified ('TODO: fill this out'), the Security and Privacy Considerations sections are empty, and the ChromeStatus security_risks and activation_risks place the consent/safeguard burden on agents (prompt-injection safeguards, sensitive-information handling) rather than defining platform guarantees. No user-control, accessibility, consent-UX, privacy, or hostile-use evidence exists at the cutoff.",
+      "evidenceIds": [
+        "spec",
+        "cs-record",
+        "webkit-670"
+      ],
+      "limitations": "No end-user study or shipped exposure; user-impact dimensions are unresolved in the spec rather than measured."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Unscored. The capability is pre-default-availability and the report records no predeclared adoption target/threshold against which to judge the measured level, so 'mixed' is not used as a substitute for an absent threshold; the measured level/trend is described, not scored. Later Chrome usage telemetry (collected 2026-07-22, after the decision-phase cutoff; used for outcome/current-state only) now provides a measured level/trend. Mapping is multiple-counters: an EXACT origin-trial counter kModelContextRegisterTool (bucket 5791, OT stage 5111811472621568) and a BROADER WebDX/property-family counter DocumentModelcontext (bucket 427, web_feature document-modelcontext; declared-family, not exact adoption for this launch). On the exact OT counter, the share of measured Chrome HTTP/HTTPS page loads where the counter fired (counter day_percentage) was 0.000002 at M146 dev-trial stable (2026-03-10), 0.000001 at dev-trial day-30 (2026-04-09), 0.00000668 at dev-trial day-90 (2026-06-08), 0.00000143 at M149 OT stable (2026-06-02), and 0.0000134 at OT day-30 (2026-07-02); peak 0.00726857 on 2026-07-16; latest 0.00038953 on 2026-07-21; OT day-90/day-180 not yet available. The family counter follows the same shape (peak 0.00725595 on 2026-07-16; latest 0.000098 on 2026-07-20) but is a declared-family mapping (property_name DRAFT_WebMCP -> NavigatorModelcontext -> DocumentModelcontext) that may capture more than registerTool. Steady-state level is very low and the series is dominated by a single mid-July spike followed by a decline to the latest value. This is neither success nor failure: there is no predeclared target, low usage is not automatically failure and high usage is not automatically success, and there is no corroborating production or retention evidence. No attributable production deployment, framework/tool integration shipped to end users, default-availability usage, unique-site, retention, task-success, or end-user-benefit evidence exists; none can before M157 ship.",
+      "evidenceIds": [
+        "repo",
+        "cs-record",
+        "cs-lite",
+        "metrics-feature-5791",
+        "metrics-webfeature-427"
+      ],
+      "limitations": "Default-availability adoption is undefined pre-ship; the measured counter is trial-era usage only. Counter firing is the share of measured Chrome HTTP/HTTPS page loads where the counter fired — not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; the family counter is broader than this launch and the OT counter measures tool registration, not successful task completion; counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; only registered OT origins can fire the OT counter, so a single large origin or probing burst can dominate the series. No predeclared target and no corroborating production/retention evidence, so the outcome stays unscored."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "The interoperability outcome is currently a failure against the 'open web standard' framing. WebKit formally opposes the proposal (8 concern categories incl. duplication, privacy, security, portability, i18n, venue); Mozilla has an open position with 'No signal' on ChromeStatus; TAG, Security, and Privacy reviews are Pending at the feature level; and the capability is shipping into an origin trial as Chromium-only. There is no Baseline trajectory and no evidence of a second-engine implementation path. The ChromeStatus interop display (Safari 'No signal') materially understates the recorded WebKit opposition.",
+      "evidenceIds": [
+        "cs-record",
+        "cs-lite",
+        "webkit-670",
+        "mozilla-1412"
+      ],
+      "limitations": "Exact WebKit/Mozilla position text not fully retrieved; positions can change, but at cutoff no positive other-engine signal exists."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Engineering quality is uneven. Strong: a purpose-built DevTools Protocol domain, Audits-domain declarative-error reporting, use-counter instrumentation, WPT IDL coverage, Permissions-Policy ('tools') and origin-isolation gating, and third-party/iframe exposure controls (exposedTo). Weak: the declarative API and its JSON-Schema synthesis algorithm are unspecified ('entirely a TODO'); ModelContextClient.requestUserInteraction is undefined; the normative Security and Privacy Considerations sections are empty; platform coverage is desktop/android/webview with no iOS. The spec is a CG-DRAFT still undergoing design churn (many open issues: multimodal I/O, output schema, service-worker integration, native-agent exposure keyword).",
+      "evidenceIds": [
+        "cs-record",
+        "spec",
+        "repo"
+      ],
+      "limitations": "No conformance/regression or mobile-friction report found; spec maturity is below what is typical for an entering-OT capability."
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "Developer communication is comparatively strong and consistent for an experimental feature: a single source-of-truth docs page (published 2026-05-18, updated 2026-06-09), an OT launch blog, imperative+declarative demos with source, a Model Context Tool Inspector extension, npm types, best-practices and tool-security guidance references, and an early-preview program. Weaknesses: the press narrative is heavily positive and largely repeats the same vendor announcement and the same un-replicated benchmark (~67% token reduction), so it is one underlying source, not independent validation; and ChromeStatus's browser-signal fields under-report the actual WebKit opposition, which would mislead anyone relying on the record for interop risk.",
+      "evidenceIds": [
+        "docs",
+        "blog-ot",
+        "eweek",
+        "winbuzzer",
+        "newstack",
+        "cs-record",
+        "webkit-670"
+      ],
+      "limitations": "Benchmark lineage traces to a single vendor source; the WebMCP tool-security doc could not be retrieved (timed out)."
+    },
+    "support": {
+      "status": "not-relevant",
+      "finding": "No shipped capability means no support outcome to score. Trial-era routing (bug component, OT feedback URL, flag, devtrial instructions) exists. Assessed not-relevant, not untested.",
+      "evidenceIds": [
+        "cs-record",
+        "docs"
+      ],
+      "limitations": "Pre-ship; no support telemetry."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Too early to call success or failure, with genuinely mixed evidence. Positive: multi-stakeholder W3C-CG incubation, strong developer interest, real engineering investment (DevTools, measurement, security-gating primitives), and a properly structured origin trial with explicit hypotheses. Negative: the feature has entered an origin trial as Chromium-only against a formal WebKit opposition, with TAG/security/privacy reviews pending and core spec sections (declarative API, security, privacy, user-interaction primitive) still unspecified; the developer-value thesis is contested on 'wrong-layer' grounds; and the positive press is largely a single vendor source repeated. On adoption, later Chrome usage telemetry shows the exact origin-trial counter (kModelContextRegisterTool) fired on only a small share of measured Chrome HTTP/HTTPS page loads (counter day_percentage 0.0000134 at OT day-30 2026-07-02; latest 0.00038953 on 2026-07-21; the broader WebDX family counter DocumentModelcontext at the same low steady-state level with a sharp mid-July spike then decline), but with no predeclared target and no corroborating production/retention evidence this is neither success nor failure and the adoption outcome remains unscored. Overall outcome is indeterminate and hinges on unresolved interop, design, and end-user/privacy questions, not on shipment.",
+      "evidenceIds": [
+        "cs-record",
+        "spec",
+        "repo",
+        "webkit-670",
+        "mozilla-1412",
+        "chawla-critique",
+        "newstack",
+        "docs",
+        "metrics-feature-5791",
+        "metrics-webfeature-427"
+      ],
+      "limitations": "Feature is mid-origin-trial and pre-ship; several outcome dimensions are unscoreable by nature at the cutoff."
+    }
+  },
+  "sources": [
+    {
+      "id": "cs-record",
+      "url": "https://chromestatus.com/feature/5117755740913664",
+      "publisher": "Chrome Platform Status (cached record at evidence/chromestatus/features/5117755740913664.json)",
+      "publishedOrObservedAt": "2026-06-04",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, motivation, owners, stages, OT configuration (id 4163014905550602241, M149-156, third-party, use counter kModelContextRegisterTool), experiment goals/risks, devtrial M146 desktop+android, planned ship M157, browser signals (Firefox/Safari 'No signal'), review statuses (TAG/Security/Privacy Pending), webdev interest notes, debuggability, spec link"
+      ],
+      "limitations": "accurate_as_of stamp is 2025-07-08 while fields updated through 2026-06-04; browser-signal fields under-report actual WebKit opposition; the record itself embeds no usage series (usage comes from the separate ChromeStatus timeline endpoints)."
+    },
+    {
+      "id": "cs-lite",
+      "url": "https://chromestatuslite.com/feature/5117755740913664",
+      "publisher": "chromestatuslite.com (server-rendered ChromeStatus mirror)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Status 'Proposed', Firefox/Safari 'No signal', webdev 'No signals' with interest notes (star-history, ~9 CWS extensions), spec/explainer/doc links"
+      ],
+      "limitations": "Server-rendered snapshot; duplicates ChromeStatus data including the under-reported interop signals."
+    },
+    {
+      "id": "spec",
+      "url": "https://webmachinelearning.github.io/webmcp",
+      "publisher": "W3C Web Machine Learning Community Group (CG-DRAFT, Bikeshed)",
+      "publishedOrObservedAt": "2026-04-23",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "navigator.modelContext.registerTool imperative API, ModelContextTool/ToolAnnotations/ModelContextClient IDL, permissions-policy/iframe/exposedTo design, observation model for browser agents, declarative API marked 'entirely a TODO', requestUserInteraction steps 'TODO', empty Security/Privacy Considerations sections, acknowledgements (Microsoft+Google authors, Farolino driving)"
+      ],
+      "limitations": "CG-DRAFT, non-normative; revision a99ffd25; significant sections unspecified."
+    },
+    {
+      "id": "repo",
+      "url": "https://github.com/webmachinelearning/webmcp",
+      "publisher": "webmachinelearning/webmcp (GitHub)",
+      "publishedOrObservedAt": "2025-08-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Explainer/README (motivation, goals/non-goals, use cases, alternatives, open questions), explainer first published 2025-08-13, Microsoft+Google authorship, MCP-B author joined, 2.8k stars / 182 forks / 102 issues / 3 PRs, npm webmcp-types"
+      ],
+      "limitations": "Star/issue counts are vanity/engagement signals, not adoption; README is a living document subject to change."
+    },
+    {
+      "id": "docs",
+      "url": "https://developer.chrome.com/docs/ai/webmcp",
+      "publisher": "Chrome for Developers (Alexandra Klepper)",
+      "publishedOrObservedAt": "2026-05-18",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Official developer documentation, OT from Chrome 149, local flag chrome://flags/#enable-webmcp-testing, imperative+declarative APIs, demos (zaMaker, React travel, Le Petit Bistro), Model Context Tool Inspector extension, limitations (browsing-context required, headless unsupported), origin-isolation + 'tools' Permissions Policy"
+      ],
+      "limitations": "Vendor-authored; updated 2026-06-09; does not surface other-engine opposition."
+    },
+    {
+      "id": "blog-ot",
+      "url": "https://developer.chrome.com/blog/ai-webmcp-origin-trial",
+      "publisher": "Chrome for Developers (Alexandra Klepper)",
+      "publishedOrObservedAt": "2026-06-09",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Origin trial announcement for Chrome 149, use cases, framing as 'any browser with agentic capabilities can implement', feedback/issue routes, Google I/O 2026 tie-in"
+      ],
+      "limitations": "Vendor announcement; 'any browser can implement' claim not evidenced by any other-engine commitment."
+    },
+    {
+      "id": "webkit-670",
+      "url": "https://github.com/WebKit/standards-positions/issues/670",
+      "publisher": "WebKit standards-positions (issue opened by domfarolino)",
+      "publishedOrObservedAt": "2026-05-28",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Formal WebKit review request for WebMCP; opposition recorded (search-indexed position summary 'WebKit is opposed to this proposal...'); concern labels: API design, duplication, internationalization, portability, privacy, security, use cases, venue; topic labels incl. 'meaningful user consent'; venue W3C Web Machine Learning CG; cross-references Mozilla standards-positions #1412"
+      ],
+      "limitations": "Full position comment text not retrieved (GitHub read timed out); opposition evidenced by indexed summary + applied labels; position could evolve."
+    },
+    {
+      "id": "mozilla-1412",
+      "url": "https://github.com/mozilla/standards-positions/issues/1412",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2026-05",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla has an open standards-position issue for WebMCP; ChromeStatus records Firefox 'No signal'"
+      ],
+      "limitations": "Position content/label not retrieved (read timed out); exact open date and Mozilla's verdict (if any) unconfirmed at cutoff."
+    },
+    {
+      "id": "newstack",
+      "url": "https://thenewstack.io/how-webmcp-lets-developers-control-ai-agents-with-javascript/",
+      "publisher": "The New Stack (Richard MacManus)",
+      "publishedOrObservedAt": "2025-09-30",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "WebMCP unified from Microsoft 'Web Model Context' + Google 'Script Tools'; W3C WebML WG involvement; MCP-B (Alex Nahas) joined the group; interview with Kyle Pflug (Microsoft Edge); 'built in' to browser intent; comparable-API and NLWeb positioning"
+      ],
+      "limitations": "Press interview with a proponent; predates dev trial and OT; no independent technical validation."
+    },
+    {
+      "id": "eweek",
+      "url": "https://www.eweek.com/news/google-webmcp-chrome-ai-web-standard-preview/",
+      "publisher": "eWeek (Aminu Abdullahi)",
+      "publishedOrObservedAt": "2026-02-16",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome early preview (Chrome 146 Canary, 'WebMCP for testing' flag), navigator.modelContext 'Tool Contract', Microsoft co-development, W3C WebML CG incubation, WebMCP vs Anthropic MCP distinction, mid-to-late-2026 formal-announcement expectation"
+      ],
+      "limitations": "Trade press repeating Google announcement (André Cipriani Bandarra); no independent benchmarks."
+    },
+    {
+      "id": "winbuzzer",
+      "url": "https://https-winbuzzer-com-s.nhcf.dev/2026/02/13/google-chrome-webmcp-early-preview-ai-agents-xcxwbn/",
+      "publisher": "Winbuzzer",
+      "publishedOrObservedAt": "2026-02-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome early preview Feb 2026; vendor-cited ~67% computational-overhead reduction and ~98% task accuracy; server-side vs client-side MCP framing"
+      ],
+      "limitations": "Press repeating vendor figures; benchmark provenance unverified."
+    },
+    {
+      "id": "venturebeat",
+      "url": "https://venturebeat.com/infrastructure/google-chrome-ships-webmcp-in-early-preview-turning-every-website-into-a",
+      "publisher": "VentureBeat",
+      "publishedOrObservedAt": "2026-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 'ships' WebMCP early preview framing; token-consumption cost-reduction narrative"
+      ],
+      "limitations": "Only search snippet retrieved, not full article; date approximate; press repeating vendor narrative."
+    },
+    {
+      "id": "chawla-critique",
+      "url": "https://https-manveerc-substack-com-s.nhcf.dev/p/webmcp-false-economy-server-side-mcp-browser-apis",
+      "publisher": "Manveer Chawla (Substack)",
+      "publishedOrObservedAt": "2026-02-13",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "'Wrong layer' critique: server-side MCP (source of truth) vs browser-as-bridge (AX Tree/ARIA/Schema/WebDriver BiDi/AOM/ElementInternals) vs WebMCP; UI/tool-contract drift; ARIA/Schema minimum-viable adoption history; two-tier-web concentration risk; Chromium-only without Mozilla/Apple; pilot gains measured against worst-case scraping baseline; accessibility crowd-out; AMP parallel"
+      ],
+      "limitations": "Single independent analyst; cites the same vendor pilot numbers it critiques; no primary research of its own."
+    },
+    {
+      "id": "hn",
+      "url": "https://news.ycombinator.com/item?id=46969572",
+      "publisher": "Hacker News",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Community awareness and discussion of WebMCP early preview/OT; flag requirement (Chrome 146+, 'WebMCP for testing'); mixed developer reception"
+      ],
+      "limitations": "Thread comments not fully retrieved (JS-rendered); anecdotal, self-selected; not adoption evidence."
+    },
+    {
+      "id": "sagar-talk",
+      "url": "https://www.youtube.com/watch?v=p1l8nkQAoUw",
+      "publisher": "YouTube (Khushal Sagar, Chrome Staff Software Engineer)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Primary engineering talk 'Don't let AI agents push your buttons - use webMCP instead!' by a named Chrome owner; confirms the actuation-reliability motivation"
+      ],
+      "limitations": "Talk transcript/date not retrieved; proponent primary source."
+    },
+    {
+      "id": "ppc-land",
+      "url": "https://ppc.land/chrome-149-origin-trial-puts-webmcp-in-developers-hands-at-last/",
+      "publisher": "PPC Land",
+      "publishedOrObservedAt": "2026-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 origin trial coverage; structured-tools-replacing-scraping framing"
+      ],
+      "limitations": "Search snippet only; trade press; date approximate."
+    },
+    {
+      "id": "metrics-feature-5791",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5791",
+      "publisher": "Chrome Platform Status / UMA feature timeline for origin-trial counter kModelContextRegisterTool (OT stage 5111811472621568, bucket 5791; cached at evidence/metrics/timelines/feature-5791.json, sha256 125e339900a4c91c7a0776549108265e09c3bc8e12a84a1a2dbd4b97e3bc79e0)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:48.875Z",
+      "sourceType": "usage",
+      "supports": [
+        "EXACT origin-trial use counter kModelContextRegisterTool (scope origin-trial, confidence exact); share of measured Chrome HTTP/HTTPS page loads where the counter fired (counter day_percentage).",
+        "Launch-relative checkpoints: M146 dev-trial stable 2026-03-10 day_percentage 0.000002; dev-trial day-30 (2026-04-09) 0.000001; dev-trial day-90 (2026-06-08) 0.00000668; M149 OT stable 2026-06-02 day_percentage 0.00000143; OT day-30 (2026-07-02) 0.0000134; OT day-90/day-180 not yet available.",
+        "Trend: first positive 2026-02-27 (day_percentage 0.000002); peak 0.00726857 on 2026-07-16; latest 0.00038953 on 2026-07-21."
+      ],
+      "limitations": "Origin-trial counter measures registration of a tool (navigator.modelContext.registerTool firing), not successful task completion, unique developers/sites/users, production deployment, retention, or end-user benefit; only registered OT origins can fire it, so a single large origin or probing burst can dominate the series (the 2026-07-16 spike and subsequent decline illustrate this); counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; zero/missing/delayed points are not proof of zero real-world use."
+    },
+    {
+      "id": "metrics-webfeature-427",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=427",
+      "publisher": "Chrome Platform Status / UMA WebFeature timeline for property DocumentModelcontext (web_feature document-modelcontext, bucket 427; cached at evidence/metrics/timelines/webfeature-427.json, sha256 f33c1c3b80447dc0d1e3a6eb83cef00b0dc37c1f4e8f3925cf877a0cd9d2dd55)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:48.875Z",
+      "sourceType": "usage",
+      "supports": [
+        "BROADER WebDX/property-family counter (scope web-feature-family, confidence declared-family); NOT exact adoption for this individual ChromeStatus launch.",
+        "Share of measured Chrome HTTP/HTTPS page loads where the counter fired (counter day_percentage). Launch-relative checkpoints: M146 dev-trial stable 2026-03-10 day_percentage 0.000002 (then-named DRAFT_WebMCP); dev-trial day-30 (2026-04-09) 0.000001; dev-trial day-90 (2026-06-08) 0.00000667; M149 OT stable 2026-06-02 day_percentage 0.00000143; OT day-30 (2026-07-02) 0.0000133.",
+        "Trend: first positive 2026-02-27 (day_percentage 0.000002); peak 0.00725595 on 2026-07-16; latest 0.000098 on 2026-07-20. property_name changed DRAFT_WebMCP -> NavigatorModelcontext -> DocumentModelcontext over the series."
+      ],
+      "limitations": "Family/property counter, not exact adoption for this launch (declared-family mapping; may capture more than registerTool; property_name re-scoped over time); counter firing is not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit; counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone; a single-day spike (2026-07-16) may reflect a few origins or probing rather than broad adoption."
+    }
+  ],
+  "successes": [
+    "Genuine multi-stakeholder incubation under a W3C Community Group, with cross-org authorship (Microsoft + Google) and the independent community author of MCP-B joining the effort, rather than a single-vendor push.",
+    "Strong and rapid developer interest signals: 2.8k GitHub stars within ~10 months, ~9 Chrome Web Store extensions, npm type definitions, and independent tutorials, indicating the problem space resonates.",
+    "Serious engineering investment beyond a toy API: a dedicated WebMCP Chrome DevTools Protocol domain, Audits-domain error reporting, a use counter (kModelContextRegisterTool) for measurement, WPT IDL coverage, Permissions-Policy ('tools') gating, and origin-isolation requirements.",
+    "A properly structured Origin Trial with explicit hypotheses (API ergonomics across commerce/productivity, tool-usage and latency metrics), third-party support, a long (M149-M156) window, named owners, and feedback routing.",
+    "Coherent developer enablement for an experimental feature: docs, an OT launch blog, imperative+declarative demos with source, an inspector extension, and an early-preview program that accurately frames the capability as experimental."
+  ],
+  "failures": [
+    "Interoperability failure at cutoff: WebKit formally opposes WebMCP (8 concern categories) and Mozilla has no positive signal, yet the feature entered an origin trial as Chromium-only while being communicated as an 'open web standard'; TAG, Security, and Privacy reviews are still Pending at the feature level.",
+    "The ChromeStatus record materially under-represents interop risk: Safari and Firefox are shown as 'No signal' despite an active WebKit standards-positions opposition and an open Mozilla issue, which would mislead anyone relying on the record.",
+    "Spec immaturity for an entering-OT capability: the declarative API is 'entirely a TODO', the synthesize-JSON-Schema algorithm is unspecified, ModelContextClient.requestUserInteraction steps are undefined, and the normative Security and Privacy Considerations sections are empty.",
+    "Developer-trial evidence conflates interest with success: the 'great deal of interest' claim rests on vanity metrics (stars, extension count) with no public cohort, task-completion denominator, methodology, or friction findings — and later Chrome usage telemetry is consistent with that gap rather than closing it, as the exact origin-trial counter (kModelContextRegisterTool) fired on only a counter day_percentage of 0.0000134 at OT day-30 (2026-07-02) and 0.00038953 at latest (2026-07-21), so the interest signals are not corroborated by substantial steady-state measured usage (low measured usage is not itself a failure, but it does not support an interest-equals-adoption claim).",
+    "Positive press is largely a single vendor source repeated: the ~67% token-reduction / ~98% task-accuracy figures trace to Google's announcement and are reproduced without independent replication, so they cannot support a success claim.",
+    "The core value thesis is contested on first principles (wrong-layer argument) by both another engine and independent analysis, and the proposal has not publicly resolved the server-side-MCP vs browser-as-bridge vs WebMCP tradeoff before shipping into a trial."
+  ],
+  "counterfactuals": [
+    "If TAG review had been completed and the WebKit opposition surfaced and addressed before the M149 origin trial, the trial could have been framed as resolving standards/interop risk rather than presuming standardization; entering the OT against a recorded engine opposition is an accepted risk that is not documented publicly.",
+    "If the spec's Security/Privacy sections, the declarative API, and the requestUserInteraction consent primitive had been specified before the OT, the privacy/security/portability/i18n/consent concerns now recorded by WebKit would be partly pre-empted.",
+    "If this retrospective had relied solely on the ChromeStatus record (Safari/Firefox 'No signal'), it would have scored interoperability far more favorably than the recorded WebKit opposition warrants; cross-checking against the engine's own standards-positions repo changed the conclusion.",
+    "If the ~67% benchmark had been benchmarked against a well-implemented AX-Tree or server-side-MCP baseline (rather than worst-case scraping), the marginal-benefit case for a new developer-maintained layer would be substantially weaker, per the independent critique.",
+    "If the developer trial had published a cohort report with task-completion denominators and representativeness, the OT rationale ('explicit uncertainties requiring field evidence') would be defensible on its own terms rather than resting on interest metrics.",
+    "If this retrospective had relied only on the ChromeStatus interest notes (star-history, ~9 extensions, npm types) and the 'great deal of interest' framing, it would have over-stated real measured usage; the cached telemetry shows the exact origin-trial counter (kModelContextRegisterTool) fired on a counter day_percentage of 0.0000134 at OT day-30 (2026-07-02) and 0.00038953 at latest (2026-07-21) — with the broader WebDX family counter (DocumentModelcontext) at the same low steady-state level — rather than the broad uptake the interest metrics imply."
+  ],
+  "skillImprovements": [
+    "Add a launch-retrospective / wide-review rule: a feature must not be scored as interoperability-'supported' while any target engine's standards-positions repo records opposition; ChromeStatus 'No signal' is not authoritative and must be cross-checked against WebKit/ Mozilla standards-positions and W3C position trackers before scoring.",
+    "Add a phase-05 (experiment) gate: an Origin Trial should not be scored 'supported' when TAG, Security, or Privacy review is Pending AND another engine has opposed; record the accepted-risk decision explicitly, or mark the phase partial/blocked.",
+    "Add a spec-maturity baseline for entering-OT capabilities: empty normative Security/Privacy sections, unspecified core algorithms (declarative synthesis), or undefined consent primitives (requestUserInteraction) should flag implementationQuality as partial and trigger a wide-review rehearsal.",
+    "Add a press-decoupling rule for retrospectives: vendor-cited benchmarks reproduced across multiple press outlets count as ONE underlying source, not independent adoption or outcome evidence; trace benchmark lineage before citing.",
+    "Add an AI/agentic-API lens to the incubation and wide-review phase modules: explicitly rehearse the 'wrong layer' counterposition (server-side MCP, browser-as-bridge / AX Tree / WebDriver BiDi / AOM) and require the explainer to answer it with evidence, not assertion.",
+    "Add a developer-trials evidence standard: interest metrics (stars, extension counts, registrations) must not be cited as trial success without a task-completion denominator and cohort representativeness; otherwise score the phase partial.",
+    "Add a metrics-caching and scope-mapping step to the adoption and experiment phase modules: before scoring adoption, pull and cache the ChromeStatus feature and webfeature timelines plus the origin-trial counter mapping, record mappingStatus and scope (exact vs broader WebDX/property family vs origin-trial vs multiple), never treat a family/property counter as exact feature adoption, and cite launch-relative checkpoints (at-stable, day-30/90/180) with the latest/peak counter day_percentage interpreted strictly as the share of measured Chrome HTTP/HTTPS page loads where the counter fired (not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit); treat a single-day spike as plausibly one large origin or probing unless corroborated."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Mozilla standards-positions #1412 position label/text (GitHub read timed out); Mozilla's actual verdict unconfirmed.",
+      "Full text of the WebKit opposition position comment in standards-positions #670 (only the indexed summary and applied concern labels were retrieved).",
+      "TAG review content (status is Pending at cutoff; no TAG review exists yet).",
+      "Intent to Experiment thread content (groups.google.com URL captured from ChromeStatus; thread body not retrieved).",
+      "Origin Trial interim/final readout: participant denominator, activation-vs-registration analysis, measured tool-usage/latency, and decision record (trial began ~June 2026, ~6 weeks before cutoff; no public results). The later cached OT counter (kModelContextRegisterTool, bucket 5791) provides a measured-activation signal (share of measured page loads where registerTool fired) but not a participant denominator, an activation-vs-registration split, latency, or a decision record.",
+      "The original 'Script Tools' explainer (github.com/explainers-by-googlers/script-tools) and the WebMCP tool-security doc (developer.chrome.com/docs/ai/webmcp/tool-security) both timed out and were not retrieved.",
+      "Chrome usage telemetry for the dev trial and origin trial is now cached (exact OT counter kModelContextRegisterTool, bucket 5791; WebDX family counter DocumentModelcontext, bucket 427; latest data 2026-07-20/21). Still missing: default-availability/production usage (none can exist before the M157 default-availability ship), unique-site adoption, retention/durable-use, task-success, and end-user-benefit evidence, and any predeclared adoption target/threshold against which to score the measured level.",
+      "End-user impact evidence (user-control/consent UX, privacy, accessibility, hostile use): unresolved in the spec rather than measured."
+    ],
+    "reviewedAt": "2026-07-22T18:06:48.875Z"
+  }
+}

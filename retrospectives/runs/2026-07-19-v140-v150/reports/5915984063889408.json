@@ -24,7 +24,7 @@
       "category": "In developer trial (Behind a flag)"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:40:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -110,15 +110,16 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "Not scorable for Chrome: the feature is in dev trial and is no-op-by-default, so there is no stable adoption or usage to measure. The adoption expectation/plan is documented (sites with a valid sensor need, e.g. games, will call the API; Chrome will eventually move to ASK-by-default). The iOS 13 precedent is the strongest forward-looking signal: when Safari gated sensors by default, it forced widespread requestPermission() adoption across panorama tools (Pannellum, krpano, Garden Gnome Software), 3D/creative frameworks (Babylon.js, p5.js), and generated large volumes of developer Q&A.",
+      "finding": "Not scorable for requestPermission() specifically: the API is in dev trial (M150) and no-op-by-default, and no exact use counter for requestPermission() exists in the mapped Chrome telemetry. A WebDX family counter is available — 'DeviceOrientationEvents' (bucket 102, web-feature-family scope, declared-family confidence) — which covers the broader device-orientation-events family rather than the permission API exactly. Across 571 timeline points it fired on 0.06043637% of measured Chrome HTTP/HTTPS page loads on 2026-07-21 (latest), 0.06094759% at the M150 launch checkpoint (2026-06-30, the dev-trial date), with a peak / first-observed-positive of 0.087135% on 2024-09-01 — i.e. a small, modestly declining baseline of underlying sensor-event usage that corroborates the relevance of the privacy intervention but cannot isolate requestPermission() uptake (day30/day90/day180 post-launch checkpoints are null; launch too recent). The recorded adoption plan ('sites with a valid sensor need, e.g. games, will call the API'; Chrome will eventually move to ASK-by-default) states no quantitative target. The iOS 13 precedent remains the strongest forward-looking signal: when Safari gated sensors by default it forced widespread requestPermission() adoption across panorama tools (Pannellum, krpano, Garden Gnome Software), 3D/creative frameworks (Babylon.js, p5.js), and generated large volumes of developer Q&A.",
       "evidenceIds": [
         "s1",
         "s4",
         "s8",
         "s9",
-        "s10"
+        "s10",
+        "s15"
       ],
-      "limitations": "Zero Chrome usage/adoption data exists; the iOS precedent is a different engine and a different (gate-by-default) phase than Chrome's current no-op trial."
+      "limitations": "No exact requestPermission() counter (only a declared-family counter), so requestPermission() adoption — no-op in the dev trial — cannot be isolated; no unique-site, production-deployment, retention, task-success, or predeclared-target evidence; the iOS precedent is a different engine and a different (gate-by-default) phase than Chrome's current no-op trial."
     },
     "support": {
       "status": "unknown",
@@ -169,12 +170,13 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Feature not shipped to stable and no-op by default; no defensible Chrome adoption or usage data exists. Unscored rather than failed because absence of data is inherent to a dev trial of a no-op API, not evidence of failure.",
+      "finding": "Unscored (not failed, not mixed): no exact counter for requestPermission() exists and the recorded adoption plan states no quantitative target, so there is no threshold to score against; with no predeclared target and no corroborating production/retention evidence the outcome stays unscored rather than substituting 'mixed' for an absent threshold. The only mapped Chrome telemetry is a WebDX declared-family counter — 'DeviceOrientationEvents' (bucket 102) — covering the broader device-orientation-events family, not requestPermission() exactly. It fired on 0.06043637% of measured Chrome HTTP/HTTPS page loads on 2026-07-21 (latest of 571 points), 0.06094759% at the M150 dev-trial checkpoint (2026-06-30), and a peak / first-observed 0.087135% on 2024-09-01 — a small, modestly declining baseline of underlying sensor-event usage (~0.06–0.09% of page loads) that corroborates the intervention's relevance but does not measure permission-API uptake (the API is no-op-by-default in the dev trial; day30/day90/day180 checkpoints are null). Unscored rather than failed because absence of exact data is inherent to a no-op dev trial of a family-countered capability, not evidence of failure.",
       "evidenceIds": [
         "s1",
-        "s4"
+        "s4",
+        "s15"
       ],
-      "limitations": "Will require re-scoring after stable ship and after any ASK-by-default transition; use counters referenced in the 2022 intent were not located as readable data."
+      "limitations": "No exact requestPermission() counter (only a declared-family counter); no unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence; day30/day90/day180 post-launch checkpoints are null (launch 2026-06-30 too recent); will require re-scoring after stable ship and after any ASK-by-default transition."
     },
     "interoperability": {
       "status": "mixed",
@@ -224,13 +226,14 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A legitimate, long-overdue privacy/security alignment with Safari parity, a mature spec, and a pragmatic phased (no-op-first) rollout that deliberately avoids the iOS-13-style breakage. But it is advancing against 'No signals' from web developers, a disputed/unresolved Mozilla position, pending security and privacy reviews, a non-public design doc, API-shape dissent that was not routed to TAG, and zero post-ship outcome evidence (dev trial only). A seven-year history with a stalled prior attempt and duplicate ChromeStatus entries reflects process friction. Strongest positives: problem validity, Safari parity, spec maturity; strongest concerns: review rigor, evidence accuracy, and communication.",
+      "finding": "A legitimate, long-overdue privacy/security alignment with Safari parity, a mature spec, and a pragmatic phased (no-op-first) rollout that deliberately avoids the iOS-13-style breakage. But it is advancing against 'No signals' from web developers, a disputed/unresolved Mozilla position, pending security and privacy reviews, a non-public design doc, API-shape dissent that was not routed to TAG, and no exact post-ship adoption evidence (dev trial only; a family-level DeviceOrientationEvents usage baseline of ~0.06% of measured Chrome page loads is available but does not measure requestPermission() uptake, and adoption is unscored with no declared target). A seven-year history with a stalled prior attempt and duplicate ChromeStatus entries reflects process friction. Strongest positives: problem validity, Safari parity, spec maturity; strongest concerns: review rigor, evidence accuracy, and communication.",
       "evidenceIds": [
         "s1",
         "s2",
         "s4",
         "s5",
-        "s7"
+        "s7",
+        "s15"
       ],
       "limitations": "Overall must not hide that adoption/support/end-user-impact are unscored because the feature is not yet shipped to stable."
     }
@@ -426,6 +429,22 @@
         "Reference documentation for the requestPermission() static method exists on MDN"
       ],
       "limitations": "Referenced via search result; full MDN content not re-read."
+    },
+    {
+      "id": "s15",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=102",
+      "publisher": "Chrome Platform Status – WebFeature popularity timeline (Google)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Mapped Chrome use counter for the device-orientation-events web feature: WebFeature 'DeviceOrientationEvents', bucket_id 102, web-feature-family scope, declared-family confidence (per web-features-mappings chrome-use-counters and ChromeStatus web_feature normalization)",
+        "Timeline of 571 points; counter fired on 0.06043637% of measured Chrome HTTP/HTTPS page loads on 2026-07-21 (latest)",
+        "At the M150 launch checkpoint (2026-06-30, the dev-trial date) the family counter fired on 0.06094759% of measured page loads; day30/day90/day180 post-launch checkpoints are null",
+        "Peak / first-observed-positive 0.087135% on 2024-09-01; baseline of underlying sensor-event usage is small and modestly declining (~0.06–0.09% of page loads), corroborating the relevance of the privacy intervention",
+        "No exact requestPermission() counter is mapped; this family counter does not measure requestPermission() adoption"
+      ],
+      "limitations": "Declared-family (web-feature-family) counter, not an exact requestPermission() adoption counter; covers the broader DeviceOrientationEvents behavior that is universally supported and predates requestPermission(), so it cannot isolate requestPermission() uptake — which is no-op-by-default in the M150 dev trial; the counter may fire on detection/probing; numerator is measured Chrome page loads on which the counter fired, not unique sites, developers, users, successful tasks, satisfaction, production deployment, or end-user benefit; UMA reflects participating Chrome clients (enterprise/opt-out populations may be underrepresented); zero/missing/delayed points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -459,12 +478,14 @@
     "Phase 00 (intake/classification): add a duplicate-detection step that searches for existing ChromeStatus entries for the same capability and reconciles or marks them superseded before creating a new one.",
     "Phase 03/07: require a public release-communication artifact (blog/MDN/sample) for any capability with a known ecosystem-breakage precedent, even for a dev trial.",
     "Phase 06: add an evidence-ledger reconciliation check so the design doc linked in ChromeStatus matches the design doc referenced in the intent thread.",
-    "Add a regression eval case: a long-dormant, revived, spec-mandated security feature with Safari parity, 'No signals' from web devs, and an unresolved 3rd-engine position — to test that the reviewer scores it mixed (not success from parity/shipment alone) and demands current position verification."
+    "Add a regression eval case: a long-dormant, revived, spec-mandated security feature with Safari parity, 'No signals' from web devs, and an unresolved 3rd-engine position — to test that the reviewer scores it mixed (not success from parity/shipment alone) and demands current position verification.",
+    "Phase 08 (adoption/outcomes): before recording 'no Chrome usage telemetry exists,' always attempt to map the feature's web_feature to a WebDX use counter (exact, family/property, origin-trial, or multiple) via the web-features-mappings chrome-use-counters and the ChromeStatus WebFeature timeline, and record the mapping scope/confidence; a family/property counter is usage evidence for the broader family but is not exact feature adoption and must not be reported as 'no data'."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Feature is in dev trial (M150), not shipped to stable; adoption, end-user-impact, and support outcomes are inherently unscored at this milestone rather than fully evidenced.",
+      "Feature is in dev trial (M150), not shipped to stable; end-user-impact and support outcomes are inherently unscored at this milestone, and adoption is unscored because no exact requestPermission() counter exists and no quantitative target was declared.",
+      "No exact Chrome use counter for requestPermission(): the only mapped telemetry is a declared-family counter (DeviceOrientationEvents, bucket 102) that cannot isolate the permission API; consequently there is no unique-site, production-deployment, retention, or task-success adoption evidence, and the day30/day90/day180 post-launch checkpoints are null (launch 2026-06-30 is too recent).",
       "WPT actual pass/fail results could not be verified (wpt.fyi dashboard is JS-rendered and returned no test data via the reader).",
       "Implementation detail bugs (crbug 947112, Monorail 40094424) are auth-gated and unreadable.",
       "Design doc(s) are non-public; content could not be assessed (two different doc IDs appear).",
@@ -472,6 +493,6 @@
       "No public dev-trial cohort, feedback report, or Chrome release-communication artifact was found.",
       "The older related ChromeStatus entry (5051845089689600) repeatedly returned HTTP 500 via the reader and could not be read directly (its 2022 Intent to Prototype thread stands in as proxy)."
     ],
-    "reviewedAt": "2026-07-20T06:40:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

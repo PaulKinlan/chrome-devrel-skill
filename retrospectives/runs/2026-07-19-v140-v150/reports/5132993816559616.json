@@ -1,0 +1,420 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5132993816559616,
+    "name": "Inline script cache",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5132993816559616",
+    "category": "JavaScript",
+    "blinkComponent": "Blink>HTML>Script",
+    "featureType": "No developer-visible change",
+    "owner": "tnak@chromium.org (Takashi Nakayama)",
+    "summary": "Caches compiled bytecode for inline scripts to reduce script compilation overhead and improve page load performance; cache entries keyed by SHA256 of script source and the document network isolation key."
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):5132993816559616",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus entry is complete and internally consistent: JavaScript category, Blink>HTML>Script, feature_type 'No developer-visible change', owner tnak@chromium.org (Takashi Nakayama), tracking bug crbug/488755561, public design doc linked, all six Blink platforms, dev-trial milestones desktop+android M149, status 'Proposed'. Lifecycle correctly diagnosed as a performance optimization at prototype/early-dev-trial stage. The 'no developer-visible change' classification is accurate for this core caching mechanism; the developer-facing cachehint attribute is a separate feature (4891009419968512).",
+      "evidenceIds": [
+        "s1",
+        "s2",
+        "s3",
+        "s5"
+      ],
+      "limitations": "Motivation field is null and motivation/launch plan are internal-only (go/inline-script-cache); no separate public Intent-to-Prototype thread found (intent_thread_url null). The listed spec (HTML LS) is context only - the feature makes no spec change."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The problem is real and long-documented: V8/Chrome code-cache inline scripts only by attaching cache to the HTML document resource, so caches depend on the whole document not changing and are not shared across pages; the standing V8 advice has been to avoid inline scripts. A public 'Feature Request: cachehint attribute on script element for inline scripts' and an inline-script performance-regression item exist in the Blink>HTML>Script tracker. The design (new source-hash + network-isolation-key cache layer, min-length threshold, lookup-timeout guard) is documented in a public design doc and the sibling explainer; alternatives (extract inline scripts to external files) are understood.",
+      "evidenceIds": [
+        "s4",
+        "s8",
+        "s9",
+        "s10",
+        "s13"
+      ],
+      "limitations": "Motivation and launch plan are internal-only; no public developer-research methodology, segment map, or attributable demand evidence ('Web developers: No signals'). Demand signals are anecdotal issue snippets without IDs, dates, or counts."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A working implementation exists behind the inline-script-cache flag (Finch name InlineScriptCache) and reached M149 dev trial on desktop+android. Feature params show deliberate engineering: kInlineScriptCacheMinScriptLength (min byte threshold), kInlineScriptCacheTimeout (safety guard against cache-backend freeze/worker-thread crash), kInlineScriptCacheEnabledForDefaultHint, and an IsInlineScriptCacheEnabled() accessor. Browser tests validate cache hits/misses across hint configurations; the cachehint CL was reviewed by multiple domain owners (Hiroshige, Rakina, Kouhei).",
+      "evidenceIds": [
+        "s1",
+        "s5",
+        "s6"
+      ],
+      "limitations": "At least one crash (SourceKeyedCachedMetadataHandler / CodeCacheHost unavailable when an inline script removes its frame) was found and fixed. No public friction log, performance measurement, or explainer/spec/docs divergence comparison. Security/privacy pre-review 'Pending'."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A 'Ready for Developer Testing: Inline script cache' announcement was posted to blink-dev, flagging inline-script-cache for M149 desktop+android. This is the active phase.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "No public trial kit, cohort/recruitment plan, feedback instrument, learning questions, or findings. 'Web developers: No signals' and no attributable developer evidence. Risk of the phase's common failure (vanity participation / no reusable learning) unless a trial methodology and feedback route are added."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Scoped appropriately for a no-API optimization: tag review 'Not applicable'; Firefox/Safari 'N/A'; the companion cachehint attribute has 'No signal' from FF/Safari/webdev. The design addresses cross-origin safety in the explainer (cache partitioned per top-level site and frame origin, mirroring HTTP cache partitioning; no cross-origin caching).",
+      "evidenceIds": [
+        "s1",
+        "s9",
+        "s10"
+      ],
+      "limitations": "Security review and privacy review are 'Pending' - material wide-review gates are initiated but incomplete. No TAG or other-engine engagement on the cachehint attribute, where interop would actually matter."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial is configured (all OT fields null) and rollout_plan is 'Will ship enabled for all users'; for a 'no developer-visible change' optimization an OT adds no developer-testable surface, so a flag-based dev trial is the chosen vehicle.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "Not-relevant because no OT is planned - distinct from 'untested'. No public field/Finch measurement plan was found to validate the performance win before broad rollout; that measurement gap should be closed by prepare-to-ship."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "The feature has not transitioned to prepare-to-ship: status 'Proposed', active intent stage prototyping, security/privacy 'Pending', is_released false, no rollout milestone set.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Not-relevant because the lifecycle has not reached this phase (not 'untested'). Prerequisites when reached: completed security/privacy review and a public/reviewable performance readout."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "No release has occurred: the only availability is an opt-in behind-flag dev trial (M149); is_released is false. No stable/beta default-on ship, release notes, or coordinated launch communication found. M149 stable shipped 2026-06-02 and M150 is now current.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s11"
+      ],
+      "limitations": "Not-relevant because no release phase has occurred (not 'untested')."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "Not shipped by default; there is no production availability to adopt. The only 'use' is developers opting into a flag for testing.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "Not-relevant because adoption cannot have occurred (not 'untested')."
+    },
+    "support": {
+      "status": "not-relevant",
+      "finding": "No production support burden yet; feature not shipped by default.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Not-relevant because the support phase has not been entered (not 'untested'). When shipped, watch for compat regressions and perf-regression support cases (inline-script timing changes; code-cache deserialization cost)."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new capability, not a deprecation or removal.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Structurally inapplicable."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "unscored",
+      "finding": "Problem validity is strongly supported (documented inline-script caching gap and standing 'avoid inline scripts' advice; developer requests) and the design plausibly closes that gap. However the feature is not shipped by default and no public performance measurement exists, so realized developer value cannot be scored.",
+      "evidenceIds": [
+        "s4",
+        "s8",
+        "s13",
+        "s1"
+      ],
+      "limitations": "No telemetry/benchmark readout; the value claim ('reduce compilation overhead, improve page load') is asserted, not yet evidenced."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Not shipped; no measured end-user impact. Theoretical benefit is faster repeat-visit page loads / lower CPU, but unmeasured.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "No RUM/Core Web Vitals or device-class impact data."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Not shipped by default; only an opt-in flag dev trial. No registration, usage, or production-deployment data.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "Inherent to the unshipped state."
+    },
+    "interoperability": {
+      "status": "not-relevant",
+      "finding": "This feature is 'No developer-visible change' with no web-facing API or behavior surface to standardize; cross-engine/Baseline interoperability is structurally inapplicable for this entry (FF/Safari 'N/A' is appropriate). The companion cachehint attribute (4891009419968512) is where interop work is actually needed and is currently 'No signal'.",
+      "evidenceIds": [
+        "s1",
+        "s9"
+      ],
+      "limitations": "not-relevant because there is no interop surface on this feature - not 'untested'. Caveat: even no-API perf changes can cause compat issues if timing/behavior shifts; ChromeStatus marks interop_compat_risks 'N/A' and the design is intended to be transparent."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Solid engineering foundation: real flag with deliberate params (min-length threshold, lookup-timeout safety guard, default-hint toggle) and an IsInlineScriptCacheEnabled() accessor; browser tests for cache hits/misses; multi-reviewer review (Hiroshige, Rakina, Kouhei); cache partitioned per top-level site+frame origin for privacy. Open items: at least one crash found and fixed (CodeCacheHost unavailable when an inline script removes its frame); security and privacy reviews 'Pending'; no performance validation yet.",
+      "evidenceIds": [
+        "s5",
+        "s6",
+        "s7",
+        "s10",
+        "s1"
+      ],
+      "limitations": "Single-CL plus flag-declaration view; full implementation breadth, telemetry, and test coverage not assessed publicly. A known V8 risk (code-cache deserialization can be slower than compiling) is unaddressed in public evidence."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Public evidence exists and is largely accurate: a public technical design doc, a blink-dev 'Ready for Developer Testing' post, a detailed ChromeStatus entry, and a public sibling explainer. Gaps: motivation and launch plan are internal-only (go/inline-script-cache); no public performance measurement backs the value claim; security/privacy reviews 'Pending'; the dev-trial post had a 'Design docs: No information provided' formatting quirk before listing the doc; the name 'Inline script cache' collides with V8's 'inline cache' concept and dominates search results; no public Intent-to-Prototype thread.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s9",
+        "s10"
+      ],
+      "limitations": "Design-doc body is JS-rendered and not extractable (only title/description/OG retrieved)."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Not shipped; no support issues or burden observed.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Inherent to the unshipped state."
+    },
+    "overall": {
+      "status": "unscored",
+      "finding": "A credible, well-scoped performance optimization at an early behind-flag dev trial: validated problem, active and reviewed implementation, public design and explainer. Cannot be scored as success/failure because it is not shipped, value/adoption/impact are unmeasured, and security/privacy review is incomplete.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s5",
+        "s8"
+      ],
+      "limitations": "Must not infer success from the dev-trial shipment, the active implementation, or absence of criticism."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5132993816559616",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-04-16",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: JavaScript, Blink>HTML>Script, 'No developer-visible change', owner tnak@chromium.org, status 'Proposed', dev trial M149 desktop+android, all six platforms, SHA256+network isolation key, security/privacy 'Pending', tag review 'Not applicable', FF/Safari 'N/A', webdev 'No signals', spec html.spec.whatwg.org, tracking bug crbug/488755561, rollout 'Will ship enabled for all users', is_released false"
+      ],
+      "limitations": "Read from the immutable cached evidence file (accurate_as_of 2026-04-16) and confirmed via chromestatuslite; several fields null (intent_thread_url, motivation, devtrial_instructions, experiment fields)."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5132993816559616",
+      "publisher": "Chrome Platform Status (chromestatuslite)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered confirmation of summary, status 'Proposed', spec, tracking bug, and design doc link"
+      ],
+      "limitations": "Server-rendered subset; mirrors the cached record."
+    },
+    {
+      "id": "s3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/COlhss8fxuI",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-04",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "'Ready for Developer Testing: Inline script cache' announcement; contact tnak@chromium.org; flag inline-script-cache; Finch InlineScriptCache; all six platforms yes; dev-trial M149 desktop+android; risks N/A; FF/Safari 'N/A'; webdev 'No signals'; tracking bug; design doc link"
+      ],
+      "limitations": "Exact post date not in retrieved content (record window 2026-04-16 to 2026-04-30); no replies captured; no performance data; a 'Design docs: No information provided' line appears before the doc link."
+    },
+    {
+      "id": "s4",
+      "url": "https://docs.google.com/document/d/1pVFb79e5vkKJI7nZ15BXZFbNji_mB2Y8eZPGhEpK3jE/edit?tab=t.0",
+      "publisher": "Google Docs (Chrome)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Public technical design doc titled '[PUBLIC] Inline Script Caching'; 'outlines the technical design of a new dedicated caching layer for inline scripts'; motivation and launch plan are internal-only (go/inline-script-cache)"
+      ],
+      "limitations": "Document body is JS-rendered; only title/description/OG metadata retrieved, not the full design."
+    },
+    {
+      "id": "s5",
+      "url": "https://chromium.googlesource.com/chromium/src/+/84b2e0b559a53246eb6589098a4a6ebdb37cee8d",
+      "publisher": "Chromium source (Gitiles)",
+      "publishedOrObservedAt": "2026-04-27",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Commit 'inline-script-cache: implement cachehint attribute behavior' by Takashi Nakayama (tnak@chromium.org), 2026-04-27; cachehint values never/eager/default; enable_for_default_hint param; browser tests for cache hits/misses; reviewed by Hiroshige Hayashizaki, Rakina Zata Amni, Kouhei Ueno; sibling bug 505063237"
+      ],
+      "limitations": "A single CL; does not show full implementation breadth or performance results."
+    },
+    {
+      "id": "s6",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/heads/main/third_party/blink/public/common/features.h",
+      "publisher": "Chromium source (Gitiles)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Flag kInlineScriptCache; params kInlineScriptCacheMinScriptLength (minimum byte length to cache), kInlineScriptCacheTimeout (lookup timeout safety guard for cache-backend freeze/worker-thread crash), kInlineScriptCacheEnabledForDefaultHint (cache scripts with cachehint=default); 'Always use IsInlineScriptCacheEnabled()' accessor"
+      ],
+      "limitations": "Header declarations only (default values live in features.cc); output truncated."
+    },
+    {
+      "id": "s7",
+      "url": "https://chromiumdash.appspot.com/commit/56daed33732747da6cd8b97e2963a6c31d867265",
+      "publisher": "ChromiumDash",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Commit 'inline-script-cache: Fix crash when CodeCacheHost gets unavailable' in SourceKeyedCachedMetadataHandler, e.g. when an inline script removes its frame; confirms use of a source-keyed metadata handler"
+      ],
+      "limitations": "Only the search snippet was retrieved (full page timed out); no author/date captured."
+    },
+    {
+      "id": "s8",
+      "url": "https://v8.dev/blog/code-caching-for-devs",
+      "publisher": "V8 (v8.dev)",
+      "publishedOrObservedAt": "2019-04-08",
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Documents the inline-script caching gap: 'Chrome does try to cache inline scripts, by attaching their cache to the HTML document's resource, but these caches then become dependent on the entire HTML document not changing, and are not shared between pages'; advice 'Avoid inline scripts'; code-cache 1 KiB minimum; cold/warm/hot runs; Isolate in-memory cache ~80% hit rate"
+      ],
+      "limitations": "2019-era background on V8/Chrome code caching, not the feature itself; heuristics may have changed since."
+    },
+    {
+      "id": "s9",
+      "url": "https://chromestatuslite.com/feature/4891009419968512",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Sibling feature 'cachehint attribute of script element' (Miscellaneous, 'New or changed feature', status 'Proposed'); 'Chrome has some compilation caching layer for inline scripts, which identifies the cache-eligible scripts by heuristics'; cachehint gives explicit control; sibling tracking bug crbug/505063237; explainer link; FF/Safari/webdev 'No signal'"
+      ],
+      "limitations": "Separate feature from the one under review; dates not captured."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/explainers-by-googlers/inline-script-cache-hint",
+      "publisher": "explainers-by-googlers (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "cachehint attribute applies to inline scripts only; security/privacy: caching must not expose cross-origin data; 'current implementation in Chromium isolates cache per top-level site and frame origin, mirroring HTTP cache partitioning'; not applicable to resource scripts"
+      ],
+      "limitations": "README partially retrieved (intro/goals truncated); describes the sibling attribute with inline-script-cache as the substrate."
+    },
+    {
+      "id": "s11",
+      "url": "https://www.superchargebrowser.com/library/chrome-149-whats-coming-tab-users/",
+      "publisher": "superchargebrowser.com",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 shipped 2026-06-02 and was superseded by Chrome 150 on 2026-06-30 (timeline context only)"
+      ],
+      "limitations": "Third-party source used only for milestone dating."
+    },
+    {
+      "id": "s12",
+      "url": "https://crbug.com/488755561",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug crbug/488755561 exists and is referenced by ChromeStatus and the dev-trial post (ID/URL provenance only)"
+      ],
+      "limitations": "Content unreachable via the Z.AI reader (HTTP 500/timeout on four attempts as of 2026-07-20); no body, telemetry, implementation-status detail, or launch plan retrieved. Listed for traceability only."
+    },
+    {
+      "id": "s13",
+      "url": "https://issues.chromium.org/issues?q=status:open%20componentid:1456357",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer-raised items in Blink>HTML>Script: a 'Feature Request: cachehint attribute on script element for inline scripts' and an 'inline script performance regression between chrome 80 and 81'"
+      ],
+      "limitations": "Only search snippets retrieved; no issue IDs, dates, or counts; anecdotal demand signal."
+    },
+    {
+      "id": "s14",
+      "url": "https://bugs.chromium.org/p/chromium/issues/detail?id=1428605",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Known V8 risk: code-cache deserialization can be 2-4x slower than compiling a raw uncached script on the fly in some cases - caching is not always a net win"
+      ],
+      "limitations": "Search snippet only; older, general V8 code-cache bug, not specific to inline-script-cache."
+    }
+  ],
+  "successes": [
+    "Problem validity is well-evidenced by independent primary sources (V8 blog documents the inline-script caching gap and the 'avoid inline scripts' advice; developer requests appear in the Blink>HTML>Script tracker).",
+    "Scope discipline: the core mechanism is correctly classified 'No developer-visible change', and the developer-facing cachehint attribute is tracked as a separate feature with its own explainer.",
+    "Engineering rigor is visible in the flag design (min-length threshold, lookup-timeout safety guard, default-hint toggle, IsInlineScriptCacheEnabled() accessor) and in browser tests for cache hits/misses with multi-reviewer code review.",
+    "Privacy-by-design: cache keyed by SHA256(source) + network isolation key and partitioned per top-level site and frame origin, mirroring HTTP cache partitioning; no cross-origin caching."
+  ],
+  "failures": [
+    "No public performance measurement (LCP/Speedometer/script-compile-ms) backs the central value claim; the win is asserted, not evidenced.",
+    "Security and privacy reviews are still 'Pending' while the feature is already in an M149 dev trial - material launch gates are incomplete.",
+    "The dev trial has no visible trial kit, cohort, feedback instrument, or learning questions, risking a no-reusable-learning outcome.",
+    "Motivation and launch plan are internal-only (go/inline-script-cache) and the public design-doc body is not machine-extractable, weakening external evidence quality."
+  ],
+  "counterfactuals": [
+    "If the core 'no developer-visible change' entry were reviewed in isolation, reviewers would miss the developer-facing cachehint surface and its standards/interop implications; reviewing both entries together would improve launch coherence.",
+    "If a cross-origin cache-leak or code-cache-deserialization security issue surfaced after default-on rollout, shipping without completed security/privacy review would be a preventable risk; completing those reviews before prepare-to-ship is the guardrail.",
+    "If V8 code-cache deserialization proves slower than compiling for some inline scripts (as observed generally in bug 1428605), the cache could be a net negative for those cases; a pre-ship telemetry readout would catch this before broad rollout.",
+    "If the dev trial ships no methodology or feedback route, it produces no attributable evidence for an eventual Intent-to-Ship; adding a trial kit and feedback route converts the trial into evidence.",
+    "A more distinctive name (or explicit disambiguation from V8 'inline cache') would reduce developer search confusion."
+  ],
+  "skillImprovements": [
+    "Add a cross-feature coherence check: for 'No developer-visible change' features, detect and link any sibling feature that carries the developer-visible surface, and review them together.",
+    "Add a dev-trial transition-packet gate: a 'Ready for Developer Testing' post must link a public trial kit, feedback route, and learning questions; absence is a packet gap, not a missing doc.",
+    "Add a measurement requirement for performance-optimization features: a public or reviewable benchmark/telemetry readout is required before prepare-to-ship; distinguish 'asserted win' from 'measured win'.",
+    "Add a counterfactual/search-resilience rule: when a primary bug URL is unreachable after N retries via the reader, explicitly mark it missing and fall back to commit/CL/feature-flag evidence (as done here).",
+    "Add an intake naming-collision check: search-collide a new feature name against existing platform terms (e.g. V8 'inline cache') and require disambiguation in docs.",
+    "Treat security/privacy review status as a launch-blocking signal surfaced in the evidence/communication dimension, not just a metadata field."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Primary tracking bug body (crbug/488755561 / issues.chromium.org/issues/488755561) unreachable via the reader after multiple attempts (500/timeout); implementation-status detail, telemetry, and launch plan not retrieved.",
+      "No public performance measurement (LCP/Speedometer/compile-time) for the value claim.",
+      "Security and privacy review outcomes ('Pending') - material launch gates incomplete.",
+      "No dev-trial cohort, methodology, or findings (active phase, no public learning yet).",
+      "Public design-doc body not machine-extractable; motivation/launch plan internal-only.",
+      "Realized adoption, end-user impact, and support data - inherent to the unshipped state."
+    ],
+    "reviewedAt": "2026-07-20T22:00:00Z"
+  }
+}

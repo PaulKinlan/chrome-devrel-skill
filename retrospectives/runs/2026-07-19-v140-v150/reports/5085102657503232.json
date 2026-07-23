@@ -82,13 +82,13 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "An Origin Trial ran in Chrome and Edge M140-M142 (2025-09-02 to 2025-12-02), trial ID 137922738588221441, non-critical, third-party support false, with use counter kClipboardChangeEventAddListener (bucket 5586). The Intent to Experiment states clear goals (validate design, track engagement metrics, ergonomics, adoption patterns) and experiment risks as 'None'. No public interim/final readout, participant denominator, or measured results exist; origin_trial_feedback_url is null in the cached record.",
+      "finding": "An Origin Trial ran in Chrome and Edge M140-M142 (2025-09-02 to 2025-12-02), trial ID 137922738588221441, non-critical, third-party support false, with use counter kClipboardChangeEventAddListener (bucket 5586). The Intent to Experiment states clear goals (validate design, track engagement metrics, ergonomics, adoption patterns) and experiment risks as 'None'. No public interim/final readout, participant denominator, or measured OT engagement/ergonomics/adoption-pattern results exist; origin_trial_feedback_url is null in the cached record. (A post-OT Chrome use-counter timeline now exists — see the adoption phase and outcomes — but that later telemetry is not OT-time knowledge and does not substitute for the never-published OT readout.)",
       "evidenceIds": [
         "S1",
         "S14",
         "S11"
       ],
-      "limitations": "No published OT results, participant count, or activation-vs-use data; the OT goals (engagement metrics, adoption patterns) were never reported back publicly."
+      "limitations": "No published OT readout, participant count, or activation-vs-use data; the OT goals (engagement metrics, adoption patterns) were never reported back publicly."
     },
     "prepareToShip": {
       "status": "mixed",
@@ -114,13 +114,13 @@
       "limitations": "No MDN or caniuse confirmation retrieved; the release-notes entry is terse and the Chrome Releases blog page was only located via search summary, not read in full."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "No defensible adoption evidence was retrieved: no use-counter/telemetry figures, no production case studies, no framework/library integration, and no attributable deployments. adoption_expectation and adoption_plan are null in the cached record. The kClipboardChangeEventAddListener counter exists but no public usage figure was located. The only demand signals remain interest-grade (stars, upvotes, questions).",
+      "status": "partial",
+      "finding": "The only mapped Chrome usage signal is the origin-trial use counter kClipboardChangeEventAddListener (bucket 5586); no general (non-OT) WebDX feature counter exists (webdxUseCounterEnum null, mappingStatus 'origin-trial-counter'), so exact feature adoption is not directly measurable. The cached timeline (335 daily points, first positive 2025-08-05) shows measurable but extraordinarily low usage. At the M140 origin-trial stable (2025-09-02) the counter fired on 0.000058% of measured Chrome HTTP/HTTPS page loads, dropping to 0% at day30 (2025-10-02) and 1e-8% at day90 (2025-12-01), then 0.00000675% at day180 (2026-03-01). At the M144 default-on ship (2026-01-13) it read 0%, rising to 5.8e-7% at day30 (2026-02-12), 0.00000601% at day90 (2026-04-13), and 0.00003546% at day180 (2026-07-12). Usage peaked at 0.00021848% on 2026-06-08 and stood at 0.00013597% on 2026-07-21 (latest) — on the order of 1–2 page loads per million. No production case studies, framework/library integration, or attributable deployments corroborate this; adoption_expectation and adoption_plan are null in the cached record, so there is no predeclared threshold to score against. The counter is the share of measured page loads where addEventListener('clipboardchange') fired at least once — not unique developers, sites, users, successful tasks, satisfaction, or end-user benefit.",
       "evidenceIds": [
         "S1",
-        "S11"
+        "S19"
       ],
-      "limitations": "Genuine evidence gap; webstatus.dev and WPT usage dashboards were JS-rendered/timed out and yielded no numeric usage."
+      "limitations": "Metric scope is origin-trial counter, not exact feature adoption; no general WebDX feature counter is mapped. No unique-site, production, retention, task-success, end-user-benefit, or target evidence; zero/near-zero points are not proof of zero real-world use."
     },
     "support": {
       "status": "unknown",
@@ -162,12 +162,12 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No adoption evidence of any kind was retrieved (no usage numbers, case studies, framework/tool integration, or attributable production use).",
+      "finding": "Chrome usage telemetry is now available but is extraordinarily low and uncorroborated by production evidence. The origin-trial counter kClipboardChangeEventAddListener (bucket 5586) fired on 0.00003546% of measured Chrome HTTP/HTTPS page loads at M144 day180 (2026-07-12), peaked at 0.00021848% on 2026-06-08, and read 0.00013597% on 2026-07-21 (latest) — on the order of 1–2 page loads per million. There is no predeclared adoption target or expectation in the cached record (adoption_expectation/adoption_plan null), and no production, retention, case-study, or framework-integration evidence of durable use. With no threshold and no corroborating production/retention evidence the adoption outcome remains unscored; the measured level is very low and the post-M144 trend rose modestly from a near-zero base before easing from its June peak.",
       "evidenceIds": [
         "S1",
-        "S11"
+        "S19"
       ],
-      "limitations": "Genuine evidence gap; the feature is recent (shipped 2026-01-13) but no early-adoption signal was located."
+      "limitations": "No predeclared target; metric scope is origin-trial counter, not exact feature adoption; counter measures page-load share where it fired, not unique developers/sites/users/success/satisfaction/benefit; no production, retention, or task-success evidence."
     },
     "interoperability": {
       "status": "failure",
@@ -214,7 +214,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A competently executed Chrome/Edge launch of a feature that addresses a real problem: early TAG review drove a genuine privacy improvement (types-only, no permission), DevRel comms were accurate and honest, and the progressive-enhancement framing limits web-compat harm. However it shipped single-engine against active Mozilla opposition (an open issue to remove the event) and zero WebKit engagement, with formal security/privacy reviews still 'Pending' at the last pre-ship snapshot and no public adoption, usage, or OT-readout evidence. The headline remote-desktop use case remains unserved by the event alone."
+      "finding": "A competently executed Chrome/Edge launch of a feature that addresses a real problem: early TAG review drove a genuine privacy improvement (types-only, no permission), DevRel comms were accurate and honest, and the progressive-enhancement framing limits web-compat harm. However it shipped single-engine against active Mozilla opposition (an open issue to remove the event) and zero WebKit engagement, with formal security/privacy reviews still 'Pending' at the last pre-ship snapshot. Newly available Chrome usage telemetry shows extraordinarily low measured usage (the origin-trial counter kClipboardChangeEventAddListener peaked at 0.00021848% of page loads on 2026-06-08 and read 0.00013597% on 2026-07-21, ~1–2 page loads per million) with no predeclared target to score against, and no OT readout, production, or framework-integration evidence corroborates durable adoption. The headline remote-desktop use case remains unserved by the event alone."
     }
   },
   "sources": [
@@ -433,6 +433,18 @@
         "Tracking bug referenced across ChromeStatus, release notes, and intents"
       ],
       "limitations": "Content requires auth/JS and was not retrieved; upvote count (34+) taken from the ChromeStatus webdev-notes field, not verified against the bug directly."
+    },
+    {
+      "id": "S19",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5586",
+      "publisher": "Chrome Platform Status (ChromeStatus metrics timeline)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:32Z",
+      "sourceType": "usage",
+      "supports": [
+        "Origin-trial use counter kClipboardChangeEventAddListener (bucket 5586) daily timeline, 335 points, first positive 2025-08-05 at 0.000002%; M140 OT stable (2025-09-02) 0.000058%, day30 (2025-10-02) 0%, day90 (2025-12-01) 1e-8%, day180 (2026-03-01) 0.00000675%; M144 default-on stable (2026-01-13) 0%, day30 (2026-02-12) 5.8e-7%, day90 (2026-04-13) 0.00000601%, day180 (2026-07-12) 0.00003546%; peak 0.00021848% on 2026-06-08; latest 0.00013597% on 2026-07-21"
+      ],
+      "limitations": "Scope is origin-trial counter (mappingStatus 'origin-trial-counter', webdxUseCounterEnum null), not an exact general feature-adoption counter; measures share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once, dominated by the participating milestone; not equivalent to unique developers/sites/users/success/satisfaction/benefit; zero or near-zero points are not proof of zero real-world use."
     }
   ],
   "successes": [
@@ -449,11 +461,11 @@
     "The headline remote-desktop clipboard-sync use case is not actually solved by clipboardchange alone (it still needs gesture-free clipboard read), so the feature's flagship motivation is only partially addressed."
   ],
   "counterfactuals": [
-    "If an attributable partner (a named remote-desktop vendor, or Excel/Google Sheets engineering) had publicly committed during incubation, the developer-value and adoption dimensions would be defensible instead of unknown; the record only asserts 'interest'.",
+    "If an attributable partner (a named remote-desktop vendor, or Excel/Google Sheets engineering) had publicly committed during incubation, the developer-value and adoption dimensions would be defensible instead of resting on interest-grade signals; the record only asserts 'interest'.",
     "If TAG review had been requested late (near ship) rather than 14 months early, the original contents-exposing design might have shipped, creating a real privacy regression — early wide review was load-bearing here.",
     "If a prepare-to-ship transition packet had required non-'Pending' security/privacy review status, the 2026-01 ship would have been gated until those gates closed, removing the current ambiguity.",
     "If the wide-review matrix had required an actual Mozilla standards-position value (rather than treating 'No signal' plus an open removal issue as non-opposition), the 'Gecko not objecting' claim in the spec PR could not have been made, and the interoperability risk would have been surfaced explicitly before ship.",
-    "If the OT results (engagement metrics, adoption patterns) had been published as promised, adoption could be scored today instead of remaining unknown."
+    "If the OT readout (participant denominator, activation patterns, qualitative findings) had been published as promised, the near-zero OT-window counter readings (0% at M140 day30 on 2025-10-02; 1e-8% at day90 on 2025-12-01) could be contextualized against actual participant behavior; as it stands a counter timeline now exists, but — with no predeclared target and no production/retention evidence — adoption outcome remains unscored rather than unknown."
   ],
   "skillImprovements": [
     "Add a prepare-to-ship transition-packet check that blocks 'complete' when security_review_status or privacy_review_status is 'Pending' on ChromeStatus for any feature touching a sensitive surface (clipboard, camera, microphone, identity).",
@@ -467,14 +479,16 @@
     "status": "partial",
     "missingEvidence": [
       "Intent-to-Ship (blink-dev) thread content and API-owner LGTM conditions — Google Groups msgid URL is JS-rendered and timed out.",
-      "Chrome UseCounter/telemetry usage figures for kClipboardChangeEventAddListener — no public number retrieved; webstatus.dev full page timed out.",
-      "Origin Trial readout / participant denominator / measured engagement — never published.",
+      "No general (non-origin-trial) WebDX feature use counter is mapped for clipboardchange (webdxUseCounterEnum null); only the origin-trial counter kClipboardChangeEventAddListener (bucket 5586) exists, so exact feature adoption and unique-site/production/retention usage are not directly measurable from public Chrome telemetry.",
+      "No predeclared adoption target or expectation (adoption_expectation/adoption_plan null) — the adoption outcome cannot be scored against a threshold.",
+      "Origin Trial readout / participant denominator / measured OT engagement — never published.",
       "Cross-browser WPT pass rates for the tentative test — wpt.fyi page and API are JS-rendered and returned only the dashboard shell.",
       "Confirmation that security_review_status and privacy_review_status were completed before the 2026-01-13 default-on ship (both 'Pending' at the 2025-12-01 snapshot).",
       "Production case studies, framework/library integration, or attributable deployments — none located.",
+      "No unique-site, retention, task-success, or end-user-benefit evidence — the origin-trial counter measures only page-load share where the counter fired.",
       "The claimed Editing WG resolution and the 27 review comments on spec PR #239 — review-comment bodies not retrieved.",
       "Chromium tracking bug 41442253 content (requires auth/JS) — not retrieved; upvote count taken indirectly from ChromeStatus."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:32Z"
   }
 }

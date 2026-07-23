@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5146265241387008,
+    "name": "Clip Text overflow on user interaction",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5146265241387008",
+    "category": "CSS",
+    "featureType": "Chromium catches up",
+    "webFeature": "custom-ellipses",
+    "specLink": "https://www.w3.org/TR/css-overflow-3/#ellipsis-interaction",
+    "owners": [
+      "shwetabindal@microsoft.com",
+      "ragoulik@microsoft.com"
+    ],
+    "shippingYear": 2026
+  },
+  "launchEvents": [
+    {
+      "eventId": "147:In developer trial (Behind a flag):5146265241387008",
+      "milestone": 147,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "149:Enabled by default:5146265241387008",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T21:45:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "Clearly scoped 'Chromium catches up' behavior change driven by Microsoft (Edge) owners: extend the existing <input>/<textarea> 'clip-on-focus' behavior to all elements so caret navigation/editing in text-overflow:ellipsis content reveals hidden text. Problem statement is concrete and matches a long-standing user pain. However the ChromeStatus record carried no explainer, no initial public proposal, no tag review, and the feature is recorded as 'Chromium catches up' to Firefox rather than as a new capability.",
+      "evidenceIds": [
+        "s_cs",
+        "s_intent"
+      ],
+      "limitations": "No explainer_links and initial_public_proposal_url were null in the authoritative record; intake artifacts (one-page diagnosis, owner map) are not publicly visible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The underlying problem is real, recurring and long-standing: a 2017 WebKit bug (169972) and a 2014 Stack Overflow report describe caret/typing being hidden behind the ellipsis in contenteditable, and Firefox already ships the desired reveal-on-interaction behavior. But for THIS specific intervention there were 'No signals' from web developers and no explainer; an API owner (Alex Russell) had to ask the team to enunciate the problem and get developer input. Solution demand for the exact behavior was effectively untested.",
+      "evidenceIds": [
+        "s_webkit_bug",
+        "s_so_2014",
+        "s_moz_bug",
+        "s_intent"
+      ],
+      "limitations": "No attributable developer/framework signal was collected for the proposal; adjacent-platform analysis is not applicable to a rendering bugfix."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "Implementation work is tracked in Chromium bug 40731275 ('text-overflow ellipsis not working for contenteditable elements...'), and the behavior was demonstrable behind a flag (Vladimir Levin tested Firefox vs Chrome-with-flag for API owners). No public explainer, design doc, or friction log was found, and the full bug page could not be retrieved to confirm prototype iteration history.",
+      "evidenceIds": [
+        "s_crbug",
+        "s_intent"
+      ],
+      "limitations": "Chromium bug 40731275 full content/regression history not retrievable (repeated reader failures); no public prototype/design artifacts."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial behind a flag shipped in M147 (manifest event) and the behavior was exercised under the flag during review. However no public cohort, recruitment, task-based findings, friction report, or feedback methodology was published; the only recorded 'trial' evidence is the flag milestone and an API owner's manual comparison.",
+      "evidenceIds": [
+        "s_cs",
+        "s_intent"
+      ],
+      "limitations": "No attributable developer-trial feedback or cohort/denominator; learnings, if any, stayed internal."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Specification basis exists (css-overflow-3 #ellipsis-interaction) and Gecko has shipped the behavior, but wide review was thin: TAG review 'Not applicable', Web developers 'No signals', WebKit took no position (issue closed as invalid / not actionable), and the Intent's interop/compat, WebView-risk, debuggability and anticipated-spec-changes fields were all left as 'No information provided'. The normative spec text is permissive ('the user agent MAY treat...'), which explicitly licenses divergence and was acknowledged in-review as producing Firefox-vs-Chrome differences.",
+      "evidenceIds": [
+        "s_spec",
+        "s_intent",
+        "s_webkit_pos",
+        "s_moz_bug"
+      ],
+      "limitations": "'No signal' must not be read as neutral support; the permissive 'may' language means the spec under-determines the exact behavior."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial or field experiment was run or warranted. This is an unconditional UA rendering behavior (no author API, no opt-in, webdx_usecounter_enum null) catching Chrome up to an already-shipped Firefox behavior, so field experiment evidence was not the relevant instrument. Marked not-relevant on those grounds, not to mean untested: behavior was validated behind the M147 flag and via WPT.",
+      "evidenceIds": [
+        "s_cs"
+      ],
+      "limitations": "If the team believed real-origin evidence was needed it was not collected; absence of an OT is consistent with a bugfix, not evidence of validation."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "Intent to Ship (2026-03-09) reached 3 LGTMs but the packet was materially incomplete: no explainer, 'No signals' from web developers (flagged by Alex Russell), multiple blank risk fields, WPT coverage absent at intent time (Philip Jägenstedt made LGTM3 conditional on tests, which the owner added 2026-03-12), and all-platform support initially answered 'No' then corrected. Security and privacy review were still 'Pending' in the cached record. Estimated ship milestone (148) slipped to 149.",
+      "evidenceIds": [
+        "s_intent",
+        "s_cs",
+        "s_crbug"
+      ],
+      "limitations": "Formal review gate states in the cached record are 'Pending' (security/privacy) as of 2026-04-27; final review closure not verified."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped as described in Chrome 149 stable (2026-06-02), documented in the Chrome 149 release notes and surfaced in the 148 beta (original target) and 149 beta. Finch feature 'TextOverflowClipWithSelection', rollout 'Will ship enabled for all users'. Communication accurately matched what shipped; the only deviation was a one-milestone slip from 148 to 149.",
+      "evidenceIds": [
+        "s_relnotes149",
+        "s_beta148",
+        "s_cs"
+      ],
+      "limitations": "Release-notes text is summary-level; iOS availability is not listed in the 149 stable notes and is ambiguous in the cached record (ios null)."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Adoption is not meaningfully measurable for this feature: it is an unconditional UA behavior with no author opt-in and no use counter, so there is no adoption funnel to observe. At ~7 weeks post-ship only thin independent evidence exists (one developer blog, one secondary social clip).",
+      "evidenceIds": [
+        "s_jp_blog",
+        "s_ig",
+        "s_cs"
+      ],
+      "limitations": "No usage/telemetry denominator applies; post-ship observation window is short."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "One concrete support/discoverability signal exists: an independent developer encountered the shipped behavior ~3 weeks post-ship and initially believed it was a bug, then found the release notes. No public support-issue dashboard, known-issues list, or triage trend was found.",
+      "evidenceIds": [
+        "s_jp_blog"
+      ],
+      "limitations": "Single anecdotal data point; no public support telemetry accessible."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Not a deprecation or removal; this introduces a rendering behavior. Deprecation phase does not apply.",
+      "evidenceIds": [],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Real value: solves a long-standing, corroborated usability problem (caret/typing hidden behind ellipsis in editable non-form-control elements) and aligns Chrome with Firefox, matching a user-expressed preference. But value is undercut by (a) no gathered developer demand for the exact behavior, (b) an unconditional change with no author opt-out, forcing developers who relied on persistent ellipsis to use workarounds (line-clamp, or user-select:none which harms accessibility), and (c) a web-observable behavior change shipped on permissive spec language.",
+      "evidenceIds": [
+        "s_webkit_bug",
+        "s_so_2014",
+        "s_intent",
+        "s_jp_blog"
+      ],
+      "limitations": "No quantitative developer-value measurement; demand was inferred from the problem's longevity and Firefox precedent, not from proposal-specific signals."
+    },
+    "endUserImpact": {
+      "status": "success",
+      "finding": "Directionally a clear end-user win: editing/selecting ellipsed text now reveals hidden content, matching the Firefox behavior a WebKit user explicitly called 'the most sensible for the user' and improving access to otherwise-truncated content during interaction. This is inferred from corroborated user-expressed preference and the Firefox precedent, not from shipment or press sentiment.",
+      "evidenceIds": [
+        "s_webkit_bug",
+        "s_moz_bug",
+        "s_jp_blog"
+      ],
+      "limitations": "No quantitative user-impact study; at least one developer was surprised by the change, indicating the benefit is not self-evidently communicated."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Not applicable as an adoption metric: unconditional UA behavior with no author API, no opt-in and no use counter, so there is no denominator for awareness/evaluation/production use. No usage data exists or is expected.",
+      "evidenceIds": [
+        "s_cs",
+        "s_jp_blog"
+      ],
+      "limitations": "Concept of 'adoption' does not map to this feature; left unscored rather than inferred."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Two of three engines now ship a broadly similar behavior (Gecko long-standing; Chrome from 149), but with acknowledged detail differences. Safari/WebKit has not implemented it and took no standards position (issue closed as invalid / not actionable; WebKit bug 169972 still open). The normative text is permissive ('may'), which the spec editors left as UA discretion, so the behavior is under-determined and not Baseline-wide.",
+      "evidenceIds": [
+        "s_spec",
+        "s_intent",
+        "s_webkit_pos",
+        "s_moz_bug"
+      ],
+      "limitations": "Exact Firefox-vs-Chrome behavioral deltas (e.g., cmd-a select-all, scrolling reveal on overflow:clip) were noted in-review but not exhaustively documented; Baseline status for this specific behavior is not separately tracked."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Shipped across desktop/Android/WebView in Chrome 149 with WPT coverage added to satisfy an LGTM condition. Against this: an in-review edge case (cmd-a/select-all not switching to clip on macOS) was flagged as possibly buggy, the full bug/regression history could not be retrieved, iOS ship status is ambiguous, and the post-ship window is only ~7 weeks so regression stability is unproven.",
+      "evidenceIds": [
+        "s_intent",
+        "s_crbug",
+        "s_relnotes149"
+      ],
+      "limitations": "Chromium bug 40731275 full content not retrievable; no independent conformance/interop dashboard consulted."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Multiple material evidence/communication defects despite accurate release notes: (1) ChromeStatus labels the spec 'Final published standard' when css-overflow-3 is a Working Draft; (2) web_feature 'custom-ellipses' denotes the unrelated text-overflow string-value capability; (3) WebKit's position is recorded as 'Closed Without a Position' while the actual issue was closed as 'invalid / not an actionable request' with no WebKit reasoning (the intent text itself said 'No signal'); (4) the Intent had many blank risk fields and no explainer; (5) MDN's text-overflow page (2025-07-14) does not document the behavior, and a developer discovered it post-ship and thought it was a bug.",
+      "evidenceIds": [
+        "s_cs",
+        "s_spec",
+        "s_mdn",
+        "s_intent",
+        "s_webkit_pos",
+        "s_devsignals",
+        "s_jp_blog"
+      ],
+      "limitations": "Defects are documented; their downstream effect on adoption/support is inferred, not measured."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Insufficient evidence to score: ~7 weeks post-ship, one discoverability complaint ('I thought it was a bug'), no public support dashboard or issue taxonomy accessible.",
+      "evidenceIds": [
+        "s_jp_blog"
+      ],
+      "limitations": "No public support telemetry; scored unscored rather than inferred."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A reasonable, low-risk bugfix that catches Chrome up to Firefox on a genuine long-standing usability problem and shipped cleanly in Chrome 149. Balanced against weak developer-demand evidence, no author control, mislabeled metadata (spec maturity, web-feature mapping, WebKit position), a non-normative/under-determined spec, Safari's absence, and a post-ship discoverability gap. Net: modest real value with several process, evidence and communication weaknesses.",
+      "evidenceIds": [
+        "s_relnotes149",
+        "s_intent",
+        "s_spec",
+        "s_webkit_pos",
+        "s_jp_blog",
+        "s_cs"
+      ],
+      "limitations": "Overall is a judgment over mixed dimensions; not inferred from shipment, usage or press sentiment alone."
+    }
+  },
+  "sources": [
+    {
+      "id": "s_cs",
+      "url": "https://chromestatus.com/feature/5146265241387008",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-04-27T09:04:47Z",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Authoritative cached feature record: stages, FF=Shipped, Safari=Closed Without a Position, web devs=No signals, web_feature=custom-ellipses, spec link, Microsoft owners, security/privacy review Pending, is_official_web_feature"
+      ],
+      "limitations": "accurate_as_of 2026-04-27 predates Chrome 149 stable (2026-06-02), so is_released=false and status=Proposed in the cache; standards.maturity mislabeled vs the actual Working Draft."
+    },
+    {
+      "id": "s_cslite",
+      "url": "https://chromestatuslite.com/feature/5146265241387008",
+      "publisher": "Chrome Platform Status (server-rendered view)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Corroborates cached record: summary, FF Shipped/Shipping, Safari Closed Without a Position, Web developers No signals, spec link"
+      ],
+      "limitations": "Same underlying data source as the cached record; server-rendered snapshot."
+    },
+    {
+      "id": "s_spec",
+      "url": "https://www.w3.org/TR/css-overflow-3/#ellipsis-interaction",
+      "publisher": "W3C / CSS Working Group",
+      "publishedOrObservedAt": "2025-10-07",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Normative basis is section 5.1 'user interaction with ellipsis': 'the user agent MAY treat text-overflow: ellipsis as text-overflow: clip'; document is a W3C Working Draft (2025-10-07), not a Recommendation; editors fantasai (Apple), Florian Rivoal"
+      ],
+      "limitations": "'may' is non-normative UA discretion; does not precisely define cmd-a/select-all or scroll-reveal on overflow:clip."
+    },
+    {
+      "id": "s_intent",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/6SIztVcyJ7k",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": "2026-03-09",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship by Shweta Bindal (Microsoft) 2026-03-09; 3 LGTMs (Vladimir Levin, Alex Russell, Philip Jagenstedt); Alex Russell flagged no developer signals and no explainer; Philip conditioned LGTM3 on WPT tests (added 2026-03-12); Vladimir noted a cmd-a edge case and Firefox-vs-Chrome differences; estimated ship 148 (slipped to 149); many 'No information provided' fields; WebKit listed as 'No signal' linking issue 624; Finch TextOverflowClipWithSelection; 'ship enabled for all users'"
+      ],
+      "limitations": "Reflects review-time state; some fields corrected in-thread after LGTMs."
+    },
+    {
+      "id": "s_webkit_pos",
+      "url": "https://github.com/WebKit/standards-positions/issues/624",
+      "publisher": "WebKit/standards-positions (GitHub)",
+      "publishedOrObservedAt": "2026-03-02",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Issue opened 2026-03-02 by the feature owner; 'Closed as not planned'; labeled 'invalid - Not an actionable request'; no substantive WebKit position or rationale given"
+      ],
+      "limitations": "Closed as invalid, so WebKit neither supported nor opposed on the merits; ChromeStatus encodes this as 'Closed Without a Position'."
+    },
+    {
+      "id": "s_webkit_bug",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=169972",
+      "publisher": "WebKit Bugzilla",
+      "publishedOrObservedAt": "2017-03-22",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing (since 2017) report that contenteditable+ellipsis uses truncated text when editing; a comment comparing Safari/Firefox/Chrome concludes 'The Firefox behavior seems to be the most sensible for the user'; indicates Safari still lacks the behavior"
+      ],
+      "limitations": "Bug tracker, not a standards position; precise date of the comparison comment not captured."
+    },
+    {
+      "id": "s_crbug",
+      "url": "https://issues.chromium.org/issues/40731275",
+      "publisher": "Chromium issue tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug; title 'text-overflow ellipsis not working for contenteditable elements with...'; snippet notes 'text-overflow ellipsis was converted to clip for focused input elements and placeholders to avoid rendering ellipsis during editing'"
+      ],
+      "limitations": "Full page could not be retrieved (three reader failures: network/timeout); only search snippet and intent-thread references available; regression/triage detail unverified."
+    },
+    {
+      "id": "s_relnotes149",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable released 2026-06-02; 'Clip text overflow on user interaction' shipped; changes apply to Android/ChromeOS/Linux/macOS/Windows (iOS not listed); tracking bug 40731275"
+      ],
+      "limitations": "Release-notes summary, not deep documentation; iOS availability ambiguous."
+    },
+    {
+      "id": "s_beta148",
+      "url": "https://developer.chrome.com/blog/chrome-148-beta",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-04-08",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Feature listed in Chrome 148 beta (published 2026-04-08), the original ship target; corroborates the one-milestone slip 148 to 149"
+      ],
+      "limitations": "Beta blog, not the final stable ship."
+    },
+    {
+      "id": "s_jp_blog",
+      "url": "https://yend.dev/posts/2026-06-25-text-overflow-ellipsis-clip-on-selection/",
+      "publisher": "YEND.DEV",
+      "publishedOrObservedAt": "2026-06-25",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent developer encountered the shipped behavior ~3 weeks post-ship and initially thought it was a bug; confirmed via Chrome 149 release notes; notes the spec uses 'may' (UA discretion, unclear if other browsers follow); documents workarounds (line-clamp, user-select:none) and that user-select:none harms accessibility; observes there is no author opt-out"
+      ],
+      "limitations": "Single developer, anecdotal, Japanese-language source."
+    },
+    {
+      "id": "s_mdn",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2025-07-14",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "text-overflow property is Baseline 'Widely available' since 2015; the page (last modified 2025-07-14) does not document the clip-on-interaction behavior; page notes the spec was 'demoted to the Working Draft level'"
+      ],
+      "limitations": "Page predates the Chrome 149 ship; Baseline refers to the property, not the interaction behavior."
+    },
+    {
+      "id": "s_moz_bug",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=312156",
+      "publisher": "Bugzilla@Mozilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox's long-standing text-overflow:ellipsis implementation; comments note that selecting/triple-clicking reveals text behind the ellipsis, i.e., Gecko ships the interaction behavior"
+      ],
+      "limitations": "Only search snippet retrieved; confirms directionally that Gecko ships the behavior."
+    },
+    {
+      "id": "s_devsignals",
+      "url": "https://github.com/web-platform-dx/developer-signals/issues/21",
+      "publisher": "web-platform-dx/developer-signals (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "web-features 'Custom ellipses' is defined as the text-overflow string-value capability, a different feature from the clip-on-interaction behavior mapped to web_feature 'custom-ellipses' in the ChromeStatus record"
+      ],
+      "limitations": "Only search snippet retrieved; mapping is inferred from the issue description."
+    },
+    {
+      "id": "s_ig",
+      "url": "https://www.instagram.com/reel/DZH56zwP9y2/",
+      "publisher": "Instagram",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Secondary community/press coverage of the Chrome 149 change, describing it as useful"
+      ],
+      "limitations": "Weak, secondary content syndicated from developer.chrome.com; not independent primary evidence."
+    },
+    {
+      "id": "s_so_2014",
+      "url": "https://stackoverflow.com/questions/25175627/text-is-missing-when-i-use-ellipsis-incontent-editable-div-in-google-chrome",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": "2014",
+      "retrievedAt": "2026-07-20T21:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "2014 report of the exact problem (text missing/hidden when editing ellipsed contenteditable in Chrome), evidence the problem is real, recurring and long-standing"
+      ],
+      "limitations": "Anecdotal, single Q&A; only snippet retrieved."
+    }
+  ],
+  "successes": [
+    "Correctly identified and fixed a genuine, long-standing usability problem (caret/typing hidden behind ellipsis in editable non-form-control elements), catching Chrome up to Firefox; corroborated by the 2017 WebKit bug and a 2014 Stack Overflow report.",
+    "A specification basis existed (css-overflow-3 #ellipsis-interaction) and a shipping Firefox implementation reduced directional interop risk.",
+    "API owners applied proportionate scrutiny: Alex Russell flagged the missing developer signals and explainer; Philip Jagenstedt conditioned LGTM3 on WPT tests, which the owner then added; all-platform support was confirmed.",
+    "Shipped accurately and as described in Chrome 149 (2026-06-02) release notes, with a clear Finch name and 'ship enabled for all users' rollout."
+  ],
+  "failures": [
+    "The Intent to Ship was materially incomplete: numerous 'No information provided' fields (interop/compat, WebView risks, debuggability, anticipated spec changes), no explainer, no initial public proposal, and no TAG review.",
+    "No web-developer signals were gathered for a feature that changes observable rendering; an API owner had to request them during the intent.",
+    "ChromeStatus metadata defects overstated standardization: spec maturity labeled 'Final published standard' when css-overflow-3 is a Working Draft; web_feature 'custom-ellipses' denotes the unrelated string-value capability; WebKit recorded as 'Closed Without a Position' while the actual issue was closed as 'invalid / not an actionable request' (the intent text itself said 'No signal').",
+    "The behavior is unconditional with no author opt-out; a developer encountered it post-ship and initially thought it was a bug, resorting to line-clamp or user-select:none workarounds, the latter harming accessibility.",
+    "The normative spec language is permissive ('may'), leaving behavior underdetermined, producing acknowledged Firefox-vs-Chrome detail differences and an in-review cmd-a edge case; Safari has not implemented or positioned the feature.",
+    "Schedule slipped one milestone (148 intent to 149 stable) and iOS ship status is ambiguous between the cached record (ios null) and the 149 stable notes (iOS not listed).",
+    "MDN's text-overflow page (2025-07-14) does not document the new behavior, contributing to the post-ship discoverability gap."
+  ],
+  "counterfactuals": [
+    "If a short explainer plus a developer-signals solicitation (e.g., web-platform-dx/developer-signals or the CSS WG) had preceded the intent, the 'no signals' gap Alex Russell flagged would have been closed and the author-control question tested before ship.",
+    "If the spec language had been tightened from 'may' toward normative guidance (or a CSSWG issue opened) before ship, the Firefox-vs-Chrome detail divergence and the cmd-a edge case would likely have been resolved at the spec layer, reducing interop risk and giving Safari a clearer implementation target.",
+    "If an author opt-out had been considered (e.g., a CSS toggle or behavior gated on a condition), the post-ship 'I thought it was a bug' discoverability problem and the need for accessibility-harming user-select:none workarounds would have been avoided.",
+    "If ChromeStatus metadata validation had cross-checked spec maturity against the actual document, verified the web-feature mapping, and distinguished 'closed as invalid' from a substantive position, the public record would not overstate standardization.",
+    "If reference docs (MDN) and a discoverable explainer had been updated to coincide with the 149 ship, the discoverability gap evidenced by the surprised developer would have been reduced."
+  ],
+  "skillImprovements": [
+    "Add a prepare-to-ship check that flags any ChromeStatus record whose standards.maturity is 'Published standard' (val 5) while the linked spec is verifiably a Working Draft/Editor's Draft; require the spec status to be confirmed against the actual document.",
+    "Add a check that the web_feature mapping matches the shipped capability (compare the web-features feature description against the ChromeStatus summary); flag mismatches such as clip-on-interaction vs custom-ellipses (string value).",
+    "Add a WebKit/standards-position verification step that reads the linked position issue and distinguishes 'closed as invalid / not actionable' (no position) from a substantive support/oppose; never render 'Closed Without a Position' as neutral.",
+    "Add an 'author control / opt-out' prompt for any unconditional UA rendering-behavior change that alters web-observable output, requiring the team to justify shipping without an author escape hatch.",
+    "Add a 'developer signals required for observable behavior changes' rule: for non-bugfix behavior changes affecting rendering, require at least one attributable developer/framework signal or an explicit accepted-risk note, even when the feature is 'Chromium catches up'.",
+    "Add a 'post-ship discoverability' check: confirm MDN/reference docs and a discoverable explainer are updated for behavior changes, and monitor for 'is this a bug?' reports in the first weeks after stable.",
+    "Make the WPT-coverage-at-ship gate standing (not left to an individual LGTM condition), and verify tests landed in the same release.",
+    "Add a completion gate that distinguishes 'concept does not apply' (e.g., adoption/OT for unconditional UA behavior) from 'untested', so reports do not silently drop inapplicable dimensions."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Full Chromium bug 40731275 content/regression history (page not retrievable; three reader failures).",
+      "Quantitative usage or user-impact data (not applicable/available for an unconditional UA behavior with no use counter).",
+      "iOS ship confirmation (ambiguous between cached record and Chrome 149 stable notes).",
+      "Post-ship support-issue dashboard / known-issues telemetry (not publicly accessible).",
+      "Safari/WebKit implementation status (still absent; only 'closed as invalid' position available).",
+      "Final security/privacy review closure states (cached record shows 'Pending' as of 2026-04-27)."
+    ],
+    "reviewedAt": "2026-07-20T21:45:00Z"
+  }
+}

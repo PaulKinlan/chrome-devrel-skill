@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5989275208253440,
+    "name": "Gamepad Event-Driven Input API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5989275208253440",
+    "category": "Device",
+    "blinkComponent": "Blink>GamepadAPI",
+    "summary": "Extends the Gamepad API with an event-driven model (gamepadrawinputchanged / GamepadRawInputChangeEvent) so latency-sensitive apps can react to per-HID-report state changes instead of polling navigator.getGamepads().",
+    "ownerOrgs": "Microsoft Edge (Agarwal, Becker, Brito) with Chromium spec-mentor Matt Reynolds (Google)",
+    "shippingYear": 2025,
+    "isReleased": false
+  },
+  "launchEvents": [
+    {
+      "eventId": "147:In developer trial (Behind a flag):5989275208253440",
+      "milestone": 147,
+      "category": "In developer trial (Behind a flag)"
+    },
+    {
+      "eventId": "149:Origin trial:5989275208253440",
+      "milestone": 149,
+      "category": "Origin trial"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Well-bounded device-input problem: the Gamepad API is the only web input API that requires polling, which adds ~half-the-polling-interval of latency and can miss updates on cloud-gaming/latency-sensitive workloads. ChromeStatus entry created 2018-06-28 by mattreynolds@chromium.org, building on an earlier Chromium design doc, and explicitly targets cloud gaming. w3c/gamepad#4 (opened 2015) documents long-standing developer demand for events. The current proposal is a 2025 Microsoft Edge revival of the dormant Google proposal.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-explainer",
+        "s-w3c-issue4",
+        "s-intent-prototype"
+      ],
+      "limitations": "Top-level intent_stage in the cached record ('Start incubating', val 7) conflicts with the active Origin Trial stage (intent_stage 3). Internal intake artifacts (stakeholder/owner map) are not public."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Strong, dated developer demand (2015 w3c issue, Stack Overflow thread, community libraries gamecontroller.js and Gamepad-Controller) and a clear jobs/use-case framing in the explainer. Adjacent platforms already use event/callback models (Apple Game Controller callbacks, Microsoft GameInput 'readings'). But the API shape is explicitly 'not its final form'; there is a ~7-year gap between the 2018 Google 'Button and Axis Events' proposal (with getCoalescedEvents()) and the 2025 Microsoft 'raw input, no coalescing' revival; and the cross-org handoff (Google spec-mentor → Microsoft Edge team) is not publicly documented.",
+      "evidenceIds": [
+        "s-explainer",
+        "s-w3c-issue4",
+        "s-intent-prototype",
+        "s-firefox-webidl",
+        "s-intent-experiment"
+      ],
+      "limitations": "No public developer interviews, surveys, or partner letters specific to this proposal; demand evidence is largely pre-2020 and not proposal-specific."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Implementation exists behind #gamepad-raw-input-change-event (dev trial M147 on desktop and Android; finch GamepadRawInputChangeEvent). A public sample/demo exists. But the only public sample is a single event-log test page (not task-based), no framework-integration spikes are public, no friction logs are published, and WPT is explicitly deferred ('will be added with the prototype implementation') and not yet present.",
+      "evidenceIds": [
+        "s-demo",
+        "s-intent-experiment",
+        "s-chromestatus",
+        "s-explainer"
+      ],
+      "limitations": "No compatibility matrix, friction report, or test-strategy artifact is public."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "Dev trial shipped M147 behind a flag with a public feedback channel (GitHub issue template on the explainer repo) and a hosted demo that documents the 'gamepad user gesture' requirement and feature detection. However, no cohort recruitment, representativeness report, task-completion metrics, or trial findings have been published.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-intent-experiment",
+        "s-explainer",
+        "s-demo"
+      ],
+      "limitations": "Participation counts and structured findings are not public; trial support appears to run through the explainer repo rather than a dedicated channel."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Weakest phase. The only TAG review (#662, 2020, by Matt Reynolds/James Hollyer, Google) covers the ORIGINAL coalesced shape (gamepadinputchange + getCoalescedEvents()) and explicitly raised the event-spamminess risk (DualShock 4 at 1000 Hz ⇒ up to 4000 events/s). The CURRENT Microsoft 'raw input, no coalescing' shape has NO TAG review filed — both the WebKit and Mozilla position issues list 'TAG Design Review URL: No response'. Firefox and Safari are 'No signal'; their position issues were opened only 2026-04-08 and remain Open/unassigned ('Needs assignees' on the Mozilla side). Firefox's only related artifact is an experimental, never-shipped WebIDL (GamepadButtonEvent/GamepadAxisMoveEvent). Per the method, 'No signal' must not be treated as neutral or positive support.",
+      "evidenceIds": [
+        "s-tag-662",
+        "s-webkit-647",
+        "s-mozilla-1389",
+        "s-explainer",
+        "s-firefox-webidl"
+      ],
+      "limitations": "Positions may still evolve; 'No signal' reflects non-engagement at the evidence cutoff, not recorded opposition. A future TAG review for the current shape could change this assessment."
+    },
+    "experiment": {
+      "status": "partial",
+      "finding": "Origin Trial is active M149→M154 (desktop + Android), OT id 3118179792000647169, finch GamepadRawInputChangeEvent, use counter kGamepadRawInputChangeEventListener (bucket 5732). The Intent to Experiment states explicit, honest hypotheses: measure latency/performance for cloud gaming across many devices, watch for negative impact on low-powered devices, and explicitly warns 'the current API shape is NOT its final form'. Fallback is documented (feature-detect 'GamepadRawInputChangeEvent' in window). However, ~2 milestones in there is no pre-registered analysis plan, no participant/partner ledger, and no interim readout published.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-intent-experiment",
+        "s-origintrials-list",
+        "s-explainer"
+      ],
+      "limitations": "OT latency/performance outcome not yet published; no named cloud-gaming partner (Xbox/Luna/GeForce Now/Boosteroid) is publicly participating; no interim readout."
+    },
+    "prepareToShip": {
+      "status": "not-relevant",
+      "finding": "No Intent to Ship; feature is explicitly not shipping in this window. rollout_plan is 'Will ship enabled for all users' as a stated intent but no ship milestone is set and the team frames the API shape as not final.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-intent-experiment"
+      ],
+      "limitations": "Not-relevant because the feature has not entered this phase; not a substitute for an untested ship decision."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "No 'Enabled by default' launch event exists; the feature is not released. The only release-like communication is the Chrome for Developers Origin Trials listing and a May 2025 press item; there is no stable-release communication, release notes, or DevRel article.",
+      "evidenceIds": [
+        "s-origintrials-list",
+        "s-windowslatest-press",
+        "s-chromestatus"
+      ],
+      "limitations": "Not-relevant because no GA/release milestone has occurred; the OT public listing is not a stable release."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Status reflects partial adoption EVIDENCE (a measured but near-zero origin-trial counter signal), not partial adoption itself. First-party Chrome usage telemetry now exists and is mapped: bucket kGamepadRawInputChangeEventListener (5732) is an origin-trial counter (stage 6492294438453248) — counter-firing confidence 'exact', but scope is origin-trial, NOT exact feature adoption. Over 194 timeline points it fired on a measurable but extremely small share of measured Chrome HTTP/HTTPS page loads: latest snapshot 1.4e-7 (2026-07-20, ~0.000014%); last timeline point 1.5e-7 (2026-07-21); peak 4e-6 (2026-06-23, ~0.0004%); first positive 2.3e-7 (2026-01-20). Launch-relative checkpoints: M147 dev trial (stable 2026-04-07) atStable 1.1e-7, day30 (2026-05-07) 6e-8, day90 (2026-07-06) 1e-6, day180 null; M149 origin trial (stable 2026-06-02) atStable 1.4e-7, day30 (2026-07-02) 1.2e-7, day90/day180 null. This level is consistent with the author demo and a handful of opt-in OT-token sites; the only named public consumer remains the author's event-log demo. No production adoption, framework/library integration, cloud-gaming partner uptake, or attributable case study was found.",
+      "evidenceIds": [
+        "s-origintrials-list",
+        "s-demo",
+        "s-usage-counter-5732"
+      ],
+      "limitations": "Origin-trial counter, not exact feature adoption and not translatable to unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit; may include detection/probing and reflects participating Chrome clients (enterprise/opt-out underrepresented); zero/missing/delayed points are not proof of zero use. No unique-site breakdown, production, retention, partner, or predeclared usage-target evidence."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support issues, migration friction, or incidents specific to this feature were found. One tangential Chromium issue (392661398) concerns the unrelated Chrome 117 Gamepad backend change (XInput → Windows.Gaming.Input), not this API.",
+      "evidenceIds": [
+        "s-crbug-392661398"
+      ],
+      "limitations": "Feature is not shipped, so real support burden is not yet observable."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "Additive new feature. The explainer explicitly states the existing polling mechanism will NOT be deprecated and applications may choose either model. No removal path applies.",
+      "evidenceIds": [
+        "s-explainer",
+        "s-intent-experiment"
+      ],
+      "limitations": "Not-relevant by design; not a substitute for an untested removal."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Real, long-standing, well-documented developer problem (polling latency for latency-sensitive/cloud gaming) backed by a 2015 W3C issue, community libraries, and Stack Overflow, plus a high-quality explainer. But no outcome is validated yet: the OT has not concluded, no measured latency improvement is published, and the API shape is explicitly unstable.",
+      "evidenceIds": [
+        "s-explainer",
+        "s-w3c-issue4",
+        "s-intent-experiment",
+        "s-stackoverflow"
+      ],
+      "limitations": "Per method, neither shipment nor sentiment implies success; with the OT ongoing and no measured benefit, success cannot be claimed."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Intended end-user benefit (lower input latency in browser/cloud games) is plausible and well-motivated but entirely unmeasured. No end-user study and no shipped product demonstrate an improvement.",
+      "evidenceIds": [
+        "s-explainer",
+        "s-windowslatest-press"
+      ],
+      "limitations": "No user-impact evidence available; unscored rather than inferred from the latency rationale. Page-load usage telemetry is not end-user benefit."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Origin Trial active. First-party usage telemetry now exists: the OT use-counter bucket 5732 (kGamepadRawInputChangeEventListener), origin-trial scope, fired on a measurable but extremely small share of measured Chrome HTTP/HTTPS page loads — latest snapshot 1.4e-7 (2026-07-20), last point 1.5e-7 (2026-07-21), peak 4e-6 (2026-06-23) — and shows no growth across the M149 origin-trial window (atStable 1.4e-7 → day30 1.2e-7) or from the M147 dev-trial baseline (atStable 1.1e-7). The Intent to Experiment declares latency/performance hypotheses but no usage/adoption target, and no production adoption, framework integration, partner case study, or retention evidence exists. With no predeclared threshold and no corroborating production/retention evidence, adoption remains unscored; the measured level is extremely low and flat-to-declining rather than growing, but low usage is not by itself a failure verdict.",
+      "evidenceIds": [
+        "s-origintrials-list",
+        "s-demo",
+        "s-usage-counter-5732"
+      ],
+      "limitations": "No predeclared usage target; no unique-site, production, retention, partner, task-success, or user-benefit evidence. Origin-trial counter is not exact feature adoption and cannot be read as unique developers/sites/users, satisfaction, or successful tasks."
+    },
+    "interoperability": {
+      "status": "failure",
+      "finding": "Currently a single-engine experiment with no path to Baseline. Firefox 'No signal' (only an experimental, unshipped WebIDL), Safari 'No signal', no TAG review for the current shape, no merged spec text (spec PR #152 was for the prior coalesced shape), and no WPT. Both engine positions were opened only 2026-04-08 and remain unassigned. The 2020 TAG review's spamminess concern applies to the reintroduced no-coalescing design.",
+      "evidenceIds": [
+        "s-webkit-647",
+        "s-mozilla-1389",
+        "s-tag-662",
+        "s-firefox-webidl",
+        "s-explainer"
+      ],
+      "limitations": "Failure reflects the state at the evidence cutoff; evolving positions or a future TAG review could change it, but today interop is the dominant unaddressed risk."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Working implementation behind a flag and in OT on desktop and Android; clean WebIDL in the explainer; explicit, honest non-goals (no coalescing, no alignment) and a documented fallback. But no WPT, explicit 'No' to full six-platform Blink coverage (iOS/WebView/ChromeOS not covered), requires_embedder_support=true, and OT feedback runs through a GitHub issue template rather than a dedicated channel.",
+      "evidenceIds": [
+        "s-intent-experiment",
+        "s-explainer",
+        "s-chromestatus",
+        "s-demo"
+      ],
+      "limitations": "No public conformance/friction report; backend remains poll-based (the intent notes a full event-based backend is blocked on platform/device support)."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Explainer and ChromeStatus record are thorough and honest (explicit non-goals, alternatives considered, security/privacy/a11y, and an explicit 'API shape not final' caveat before OT). But the top-level intent_stage is stale ('Start incubating') while the active stage is an Origin Trial; 'No signal' engine positions are listed without flagging them as an interop risk; and the only TAG review is for a superseded shape.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-chromestatus-lite",
+        "s-explainer",
+        "s-intent-experiment"
+      ],
+      "limitations": "Communication quality is high at the artifact level but the risk framing in the record understates the interop gap."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Not yet observable; feature is not shipped and no support traffic exists for it.",
+      "evidenceIds": [
+        "s-crbug-392661398"
+      ],
+      "limitations": "Cannot be scored until the feature ships or the OT generates public support signal."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A legitimately motivated, well-documented additive experiment that is correctly still in Origin Trial with honest uncertainty framing — but interoperability is the dominant, currently-unaddressed risk, and no outcome dimension is yet validated. First-party usage telemetry now shows the OT counter firing on a measurable but extremely small and flat share of Chrome page loads (latest 1.4e-7, peak 4e-6); with no predeclared target and no production/retention evidence, adoption stays unscored rather than being read as success or failure. Per the method, shipment, usage, press sentiment, and absent criticism cannot imply success; with the feature mid-OT and single-engine, 'mixed' (leaning unscored on adoption/impact/support) is the defensible overall call.",
+      "evidenceIds": [
+        "s-explainer",
+        "s-intent-experiment",
+        "s-webkit-647",
+        "s-mozilla-1389",
+        "s-tag-662",
+        "s-usage-counter-5732"
+      ],
+      "limitations": "Overall will remain mixed/unscored until the OT concludes with measured results and at least one other engine engages."
+    }
+  },
+  "sources": [
+    {
+      "id": "s-chromestatus",
+      "url": "https://chromestatus.com/feature/5989275208253440",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-04-28T17:17:17Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, stages, OT id 3118179792000647169 (M149-154 desktop+Android), finch GamepadRawInputChangeEvent, use counter bucket 5732, owner/editors, engine positions (Firefox/Safari 'No signal', WebDev 'Positive'), tracking bug, sample, explainer",
+        "Created 2018-06-28 by mattreynolds@chromium.org; last updated 2026-04-28 by gabrielbrito@microsoft.com"
+      ],
+      "limitations": "Cached snapshot dated 2026-04-28; top-level intent_stage 'Start incubating' conflicts with active OT stage (intent_stage 3). Live chromestatus.com is browser-only and was not rendered in this run."
+    },
+    {
+      "id": "s-chromestatus-lite",
+      "url": "https://chromestatuslite.com/feature/5989275208253440",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-20T22:45:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Status 'In development', category Device, spec link, Firefox/Safari 'No signal', Web developers 'Positive', tracking bug and sample links"
+      ],
+      "limitations": "Lite view omits full stage history and OT metadata present in the cached record."
+    },
+    {
+      "id": "s-explainer",
+      "url": "https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/GamepadEventDrivenInputAPI/explainer.md",
+      "publisher": "Microsoft Edge (Sneha Agarwal, Steve Becker, Gabriel Brito)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "API shape (gamepadrawinputchanged / GamepadRawInputChangeEvent), input-frame model, goals and non-goals (no coalescing/alignment by design), alternatives (gamepadinputchange+getCoalescedEvents from prior Chromium work), accessibility/privacy/security (gamepad user gesture required, no new state vs polling), proposed WebIDL, stakeholder positions"
+      ],
+      "limitations": "Explainer status 'Active'; expected venue W3C Web Apps WG; not yet merged into the spec. No revision dates captured in the rendered page."
+    },
+    {
+      "id": "s-w3c-issue4",
+      "url": "https://github.com/w3c/gamepad/issues/4",
+      "publisher": "W3C Gamepad WG / AshleyScirra",
+      "publishedOrObservedAt": "2015-01-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing developer demand for event-driven Gamepad input; gamepads are the only web input API relying on polling; user-gesture features unusable with gamepad alone"
+      ],
+      "limitations": "Opened 2015; not specific to the current raw-input shape; reader returned navigation chrome, body reconstructed from og:description and search snippet."
+    },
+    {
+      "id": "s-webkit-647",
+      "url": "https://github.com/WebKit/standards-positions/issues/647",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2026-04-08T22:22:33Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Safari position is Open / 'No signal'; issue opened 2026-04-08 by gabrielsanbrito; TAG Design Review URL is 'No response'"
+      ],
+      "limitations": "Open and unassigned; 'No signal' may change; labels indicate 'from: Microsoft' and 'venue: Edge Explainers'."
+    },
+    {
+      "id": "s-mozilla-1389",
+      "url": "https://github.com/mozilla/standards-positions/issues/1389",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2026-04-08T22:23:59Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Firefox position is Open / 'No signal' / project status 'Needs assignees'; references Firefox experimental GamepadButtonEvent/GamepadAxisMoveEvent WebIDL; TAG Design Review URL not provided"
+      ],
+      "limitations": "Open and unassigned; 'No signal' may change."
+    },
+    {
+      "id": "s-tag-662",
+      "url": "https://github.com/w3ctag/design-reviews/issues/662",
+      "publisher": "W3C TAG / Matt Reynolds (nondebug)",
+      "publishedOrObservedAt": "2020-02-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "TAG review of the ORIGINAL coalesced proposal (gamepadinputchange + getCoalescedEvents), spec PR w3c/gamepad#152; explicit event-spamminess concern (DualShock 4 at 1000 Hz ⇒ up to 4000 events/s); mitigations discussed (per-frame combination, getCoalescedEvents)",
+        "This review does NOT cover the current Microsoft raw-input/no-coalescing shape"
+      ],
+      "limitations": "Stale relative to the shipped OT shape; exact open date inferred (~2020) from request-id; full comment thread not retrieved."
+    },
+    {
+      "id": "s-intent-experiment",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/pZZLH85rNP8",
+      "publisher": "blink-dev (Gabriel Brito / Microsoft)",
+      "publishedOrObservedAt": "2026-04-28T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment; OT goals (measure performance/latency for cloud gaming across devices; low-powered-device risk); explicit 'API shape is NOT its final form'; flag #gamepad-raw-input-change-event; finch GamepadRawInputChangeEvent; dev trial M147 desktop+Android; no full six-platform support; WPT to be added with prototype; backend remains poll-based"
+      ],
+      "limitations": "Google Groups reader returned rendered text; exact post date inferred from ChromeStatus update (2026-04-28); full review/LGTM tally not captured."
+    },
+    {
+      "id": "s-intent-prototype",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/VOM5imqAPlU",
+      "publisher": "blink-dev (Matt Reynolds / Google)",
+      "publishedOrObservedAt": "2020-02-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Original 'Intent to Prototype: Gamepad Button and Axis Events' (Google, ~2020) with coalesced shape; claimed Mozilla public support and a Firefox prototype implementation at that time"
+      ],
+      "limitations": "Snippet only; full thread and date not captured; concerns the prior shape, not the current OT."
+    },
+    {
+      "id": "s-demo",
+      "url": "https://gabrielsanbrito.github.io/gamepad-raw-input-events",
+      "publisher": "Gabriel Brito (Microsoft)",
+      "publishedOrObservedAt": "2026-07-20T22:45:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Public sample/test page; requires flag or OT token + a gamepad user gesture; renders an event log of gamepadrawinputchanged events"
+      ],
+      "limitations": "Single event-log demo, not a task-based sample; no framework integration; works only with a connected gamepad."
+    },
+    {
+      "id": "s-crbug-40582297",
+      "url": "https://issues.chromium.org/40582297",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2018-06-28T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Tracking bug 'Add events for gamepad button and axis inputs'; references spec issue w3c/gamepad#4"
+      ],
+      "limitations": "Z.AI web reader returned HTTP 500 twice; body not directly retrieved. Title and purpose confirmed only via search snippet; status/milestone/linked CLs not verified."
+    },
+    {
+      "id": "s-origintrials-list",
+      "url": "https://developer.chrome.com/origintrials/",
+      "publisher": "Chrome for Developers",
+      "publishedOrObservedAt": "2026-07-20T22:45:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "OT publicly listed as 'Gamepad Raw Input Event' with the documented description"
+      ],
+      "limitations": "Listing does not expose activation counts, participants, or interim results."
+    },
+    {
+      "id": "s-windowslatest-press",
+      "url": "https://www.windowslatest.com/2025/05/27/microsoft-wants-to-make-gamepad-gaming-faster-on-chrome-for-windows-11/",
+      "publisher": "Windows Latest",
+      "publishedOrObservedAt": "2025-05-27T00:00:00Z",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent community/press coverage attributing the work to Microsoft; reports the shift from polling to a rawgamepadinputchange event to reduce latency on Chrome/Windows"
+      ],
+      "limitations": "Single secondary outlet; largely restates the explainer; not a primary source for technical claims or adoption."
+    },
+    {
+      "id": "s-firefox-webidl",
+      "url": "https://searchfox.org/mozilla-central/source/dom/webidl/GamepadButtonEvent.webidl",
+      "publisher": "Mozilla (Searchfox)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Firefox has experimental GamepadButtonEvent and GamepadAxisMoveEvent WebIDL (prototype only, never shipped)"
+      ],
+      "limitations": "Prototype WebIDL; no shipping signal; cited via the Mozilla position issue rather than read directly."
+    },
+    {
+      "id": "s-stackoverflow",
+      "url": "https://stackoverflow.com/questions/72294832/using-gamepad-api-via-events-rather-than-polling",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer frustration with the lack of native gamepad events and workarounds, cited as the WebDev 'Positive' evidence in ChromeStatus"
+      ],
+      "limitations": "Cited via ChromeStatus; not retrieved in full; anecdotal community signal, not proposal-specific demand."
+    },
+    {
+      "id": "s-crbug-392661398",
+      "url": "https://issues.chromium.org/issues/392661398",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Tangential context: Chrome 117 switched the Gamepad API backend from XInput to Windows.Gaming.Input, affecting background gamepad input listening"
+      ],
+      "limitations": "Not this feature's bug; included only for adjacent implementation context."
+    },
+    {
+      "id": "s-usage-counter-5732",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5732",
+      "publisher": "Chrome Platform Status (feature-popularity timeline)",
+      "publishedOrObservedAt": "2026-07-21T00:00:00Z",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Origin-trial use-counter bucket kGamepadRawInputChangeEventListener (5732), stage 6492294438453248, mappingStatus origin-trial-counter, counter-firing confidence 'exact'; 194 timeline points. Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once. firstObservedPositive 2.3e-7 (2026-01-20); peak 4e-6 (2026-06-23); latest snapshot 1.4e-7 (2026-07-20); last point 1.5e-7 (2026-07-21).",
+        "Launch-relative checkpoints — M147 dev trial (stable 2026-04-07): atStable 1.1e-7, day30 (2026-05-07) 6e-8, day90 (2026-07-06) 1e-6, day180 null; M149 origin trial (stable 2026-06-02): atStable 1.4e-7, day30 (2026-07-02) 1.2e-7, day90 null, day180 null.",
+        "Scope is origin-trial (opt-in OT-token page loads), NOT exact feature adoption. UMA reflects participating Chrome clients across official channels/platforms per the use-counter wiki."
+      ],
+      "limitations": "Origin-trial counter, not exact feature adoption and not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit; may include detection/probing; enterprise/opt-out clients underrepresented; zero/missing/delayed points are not proof of zero use. day180 (both launches) and M149 day90 checkpoints are null (not yet observed)."
+    }
+  ],
+  "successes": [
+    "Honest, high-quality explainer with explicit goals, non-goals, alternatives, and security/privacy/accessibility considerations, plus an explicit 'API shape is NOT its final form' caveat before opening the Origin Trial.",
+    "Correctly scoped as an Origin Trial with explicit, measurable hypotheses (cloud-gaming latency across devices; low-powered-device risk) and a documented fallback (feature-detect 'GamepadRawInputChangeEvent' in window; polling not deprecated).",
+    "Cross-org continuity: Microsoft Edge team driving the revival with Google/Chromium spec-mentor (Matt Reynolds) on the same 2018 tracking bug (crbug 40582297).",
+    "Public demo, public OT feedback channel (explainer repo issue template), and a Chrome for Developers Origin Trials listing are in place.",
+    "Security/privacy posture is conservative: events require a 'gamepad user gesture' and expose no state beyond what polling already exposes."
+  ],
+  "failures": [
+    "No TAG review for the current 'raw input, no coalescing' API shape; the only TAG review (#662, 2020) covers a superseded coalesced design and flagged the exact spamminess risk the new shape reintroduces.",
+    "Engine positions (Firefox, Safari) were requested only on 2026-04-08 and remain 'No signal'/unassigned, yet are presented in the record without flagging them as an interop risk.",
+    "No pre-registered OT analysis plan, participant/partner ledger, or interim readouts have been published ~2 milestones into the OT (M149→M154).",
+    "~7-year dormancy (2018 Google proposal → 2025 Microsoft revival) with shape churn (coalesced+getCoalescedEvents → raw/no-coalescing) and no public decision log bridging the two shapes.",
+    "No task-based sample or framework-integration evidence; the only public sample is a single event-log test page.",
+    "Implementation is not on all six Blink platforms (no iOS/WebView/ChromeOS), and WPT is still absent despite the intent saying it would accompany the prototype."
+  ],
+  "counterfactuals": [
+    "If a fresh TAG review had been filed for the no-coalescing shape before the OT, the 2020 spamminess objection would have been re-tested against the design actually being trialled, likely surfacing throttling/coalescing guidance earlier.",
+    "If Firefox and Safari positions had been requested before the M149 OT opened (rather than April 2026), the interop risk would have entered the OT entry packet instead of being discovered mid-trial.",
+    "If the OT had a pre-registered latency benchmark, a declared usage/latency target, and named cloud-gaming partners (Xbox/Luna/GeForce Now/Boosteroid) publicly participating, the now-available OT-counter telemetry (measured but extremely low and flat: latest 1.4e-7, peak 4e-6) could be scored against a threshold instead of leaving adoption unscored.",
+    "If the 2018 Google proposal had been carried forward rather than parked and later revived by Microsoft in 2025, the multi-year dormancy and shape churn might have been avoided.",
+    "If the Chromium tracking bug body had been retrievable (web reader 500s), implementation/test/CL evidence could be cited directly rather than via search snippet."
+  ],
+  "skillImprovements": [
+    "Phase 04 (wide review) rule: a new API shape requires a fresh TAG/vendor review even if a prior shape was reviewed; 'No signal' from any engine must be recorded as an open interop risk and never as neutral or positive support, and must be surfaced in the ship/trial entry packet.",
+    "Phase 05 (experiment) rule: any Intent to Experiment that states 'the API shape is NOT its final form' must attach a pre-registered analysis plan, a named-partner ledger, and a per-milestone interim-readout commitment before the OT opens.",
+    "Add a cross-org-handoff/continuity check for long-dormant ChromeStatus entries revived by a different organization; require a public decision log bridging the prior and current shapes (e.g., coalesced → raw).",
+    "Add a regression eval where the only 'Positive web-dev' evidence is a >5-year-old issue plus Stack Overflow plus toy libraries; require recent, proposal-specific demand and at least one attributable partner before an OT.",
+    "Add a check that the sample inventory includes task-based (not only event-log) samples and at least one framework-integration spike before OT or ship.",
+    "Add a schema/validation check that flags a stale top-level intent_stage that conflicts with the active stage, and that requires WPT status to be reconciled against any 'WPT will be added with the prototype' claim before an OT opens.",
+    "Add an evidence-retrieval resilience note: when a primary URL (e.g., issues.chromium.org) fails the reader twice, record the failure in missingEvidence and fall back to a bounded search snippet rather than aborting the feature job.",
+    "Add a usage-telemetry rule: before asserting a use-counter/OT counter is 'not publicly retrievable' or that 'no adoption data exists,' the retrospective must consult the cached ChromeStatus feature-popularity timeline plus the web-features/Chrome use-counter and origin-trial-counter mappings, and record the observed day-share, launch-relative checkpoints (atStable/day30/day90/day180), counter scope (exact / WebDX family / property / origin-trial), and interpretation (share of measured Chrome page loads, not unique devs/sites/users). 'No mapped public counter found' must never be asserted while a cached timeline exists, and an origin-trial/family counter must never be reported as exact feature adoption."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Origin Trial interim/final findings and measured latency/performance results — OT is active (M149-M154) and not concluded.",
+      "Production adoption and cloud-gaming partner case studies (Xbox Cloud Gaming, Luna, GeForce Now, Boosteroid) — none found.",
+      "OT-counter usage (bucket 5732) is now measured via the cached ChromeStatus timeline, but no unique-site breakdown, production/retention evidence, or predeclared usage target exists to score adoption; origin-trial scope, not exact feature adoption.",
+      "A TAG design review for the current 'raw input, no coalescing' shape — none filed (only the 2020 review of the superseded coalesced shape exists).",
+      "Definitive Firefox and Safari positions — both opened 2026-04-08, still 'No signal' / unassigned.",
+      "Chromium tracking bug 40582297 body — Z.AI web reader returned HTTP 500 twice; only title/purpose confirmed via search snippet.",
+      "Full revision history and decision log bridging the 2018 Google proposal and the 2025 Microsoft revival — not public."
+    ],
+    "reviewedAt": "2026-07-22T18:07:24Z"
+  }
+}

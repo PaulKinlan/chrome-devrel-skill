@@ -36,7 +36,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:30:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:23Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -133,13 +133,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Too early and evidence too thin to score. Fluent UI Web Components maintainers intend to integrate focusgroup in V3 (commitment, not verified). The @microsoft/focusgroup-polyfill is at v1.5.0 (published ~2026-05) with only 1 npm dependent; the cached record notes ~400 weekly polyfill downloads two weeks after release. A Chrome use counter (kFocusgroup) exists but no public usage numbers, case studies, or verified production deployments were found.",
+      "finding": "The Focusgroup counter (bucket 4243) is a web-feature-family counter (scope: web-feature-family; mapping confidence: exact - ChromeStatus web_feature 'focusgroup' maps one-to-one to counter 'Focusgroup'), so it may cover more behavior than this individual launch and is not exact feature adoption. It reports the share of measured Chrome HTTP/HTTPS page loads where the counter fired at least once. First positive reading: 0.0001% on 2022-08-05 (earlier broad proposal). At the M146 dev-trial/origin-trial stable date (2026-03-10): 0.000026%; day-30 (2026-04-09): 0.000022%; day-90 (2026-06-08, ~3 weeks before M150 ship): 0.0026% - a clear pre-ship uptick from near-zero. At the M150 ship stable date (2026-06-30): 0.0156%, having peaked at 0.0163% on 2026-06-29 (the day before stable); latest observed point: 0.0108% (2026-07-21, ~3 weeks post-ship). M150 day-30/90/180 checkpoints are not yet available. Fluent UI Web Components V3 integration remains intended (commitment, not verified) and the @microsoft/focusgroup-polyfill has 1 dependent. With no predeclared usage target and no verified production/retention evidence, the adoption phase is described, not scored.",
       "evidenceIds": [
         "cs-record",
+        "cs-timeline-4243",
         "polyfill",
         "rfc-blog"
       ],
-      "limitations": "Per the method, shipment, polyfill downloads, and partner intent are not scored as adoption success; no attributable production deployment or usage denominator is available."
+      "limitations": "The counter is page-load share, not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit; a web-feature-family counter may cover more behavior than this launch, so it is not exact feature adoption. No predeclared usage target exists to interpret the low level; no production deployment, case study, or retention evidence corroborates it; low usage is not scored as failure without a target."
     },
     "support": {
       "status": "unscored",
@@ -175,24 +176,25 @@
     },
     "endUserImpact": {
       "status": "mixed",
-      "finding": "Potential positive end-user impact (standardized arrow navigation, guaranteed single tab stop, last-focused memory, APG-aligned role inference) is plausible but unmeasured. Independent accessibility experts raised real misuse risks: Eggert warned that generalising arrow navigation invites over-eager misuse analogous to tabindex/ARIA abuse, and Frenzel flagged unclear menu-vs-navigation distinction and missing JAWS/NVDA feedback in the chatbot pattern. No production user-impact data exists.",
+      "finding": "Potential positive end-user impact (standardized arrow navigation, guaranteed single tab stop, last-focused memory, APG-aligned role inference) is plausible but unmeasured. Independent accessibility experts raised real misuse risks: Eggert warned that generalising arrow navigation invites over-eager misuse analogous to tabindex/ARIA abuse, and Frenzel flagged unclear menu-vs-navigation distinction and missing JAWS/NVDA feedback in the chatbot pattern. No production user-impact data exists; the available Chrome telemetry is page-load usage, not end-user or AT-user benefit.",
       "evidenceIds": [
         "explainer",
         "eggert",
         "frenzel",
         "rfc-blog"
       ],
-      "limitations": "No measured end-user or assistive-technology user impact; risk of developer misuse is expert-judged, not observed at scale."
+      "limitations": "No measured end-user or assistive-technology user impact; risk of developer misuse is expert-judged, not observed at scale. Page-load share is not end-user-benefit evidence."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Evidence is commitment-stage and thin: Fluent UI V3 integration is intended, the polyfill has minimal dependents (1), and no verified production deployment, case study, or public usage number is available. Shipped only weeks before cutoff.",
+      "finding": "Measured Chrome usage now exists but remains unscored. The Focusgroup web-feature-family counter (bucket 4243; exact one-to-one mapping from ChromeStatus web_feature 'focusgroup') fired on 0.0156% of measured Chrome HTTP/HTTPS page loads at the M150 ship date (2026-06-30), up from 0.0026% at the M146 day-90 checkpoint (2026-06-08) and ~0.000026% at OT start (2026-03-10); it peaked at 0.0163% (2026-06-29) and reads 0.0108% at the latest point (2026-07-21). This is the share of page loads where the counter fired - not unique developers, sites, users, successful tasks, or verified production deployment. Fluent UI V3 integration is still commitment-stage and the polyfill has 1 dependent. With no predeclared usage target and no production/retention corroboration, the low measured level cannot be interpreted as success or failure; it is described, not scored.",
       "evidenceIds": [
         "cs-record",
+        "cs-timeline-4243",
         "polyfill",
         "rfc-blog"
       ],
-      "limitations": "Do not infer adoption success from shipment, press, or absent criticism; insufficient evidence to score."
+      "limitations": "No predeclared usage target/threshold; the web-feature-family counter is page-load share (not unique-site/developer/user, production, retention, task-success, or user-benefit evidence) and may cover more behavior than this launch. Low usage is not scored as failure without a target; measured usage is not scored as success without production evidence."
     },
     "interoperability": {
       "status": "mixed",
@@ -243,7 +245,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, genuinely cross-venue-incubated accessibility primitive that responded to prior criticism by re-scoping, with accurate release communication and a positive Mozilla position. But it shipped Chrome-only with WebKit unresolved and TAG/security/privacy reviews Pending, no second implementation or confirmed Baseline path, an Origin Trial that left no public readout, adoption only at commitment stage, and unresolved expert concerns about developer misuse. Net: a credible start with material interop, evidence, and adoption risks still open.",
+      "finding": "A well-motivated, genuinely cross-venue-incubated accessibility primitive that responded to prior criticism by re-scoping, with accurate release communication and a positive Mozilla position. But it shipped Chrome-only with WebKit unresolved and TAG/security/privacy reviews Pending, no second implementation or confirmed Baseline path, an Origin Trial that left no public readout, adoption now measurable but low (Focusgroup counter fired on 0.0156% of Chrome page loads at the M150 ship date and 0.0108% at the latest point, 2026-07-21) yet unscored for lack of a predeclared target and production corroboration, and unresolved expert concerns about developer misuse. Net: a credible start with material interop, evidence, and adoption risks still open.",
       "evidenceIds": [
         "cs-record",
         "rfc-blog",
@@ -254,9 +256,10 @@
         "cr150-notes",
         "eggert",
         "frenzel",
-        "polyfill"
+        "polyfill",
+        "cs-timeline-4243"
       ],
-      "limitations": "Overall is mixed, not success or failure; key dimensions (adoption, support, end-user impact) remain unscored for insufficient evidence."
+      "limitations": "Overall is mixed, not success or failure; adoption now has measured page-load telemetry (low) but remains unscored without a target or production evidence, and support and end-user impact remain unscored for insufficient evidence."
     }
   },
   "sources": [
@@ -272,6 +275,20 @@
         "Launch milestones (dev trial M146, OT M146-M149, ship M150), review statuses Pending"
       ],
       "limitations": "ChromeStatus UI is JS-rendered; the authoritative cached JSON (accurate_as_of 2026-06-26) was used. tag_review_status/security_review_status/privacy_review_status shown as Pending."
+    },
+    {
+      "id": "cs-timeline-4243",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=4243",
+      "publisher": "ChromeStatus feature-popularity timeline (cached; Chromium UseCounter UMA)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:23Z",
+      "sourceType": "usage",
+      "supports": [
+        "Focusgroup web-feature-family counter (bucket 4243; ChromeStatus web_feature 'focusgroup' maps one-to-one to counter 'Focusgroup', confidence exact): share of measured Chrome HTTP/HTTPS page loads where the counter fired >=1x",
+        "Launch-relative checkpoints - M146 dev-trial/OT stable 2026-03-10: 0.000026%; day-30 (2026-04-09): 0.000022%; day-90 (2026-06-08): 0.0026%; M150 enabled-by-default stable 2026-06-30: 0.0156% (M150 day-30/90/180 not yet available)",
+        "Trajectory: first positive 2022-08-05 (0.0001%, earlier broad proposal); peak 2026-06-29 (0.0163%); latest 2026-07-21 (0.0108%); 1477 data points"
+      ],
+      "limitations": "Value is the share of measured Chrome page loads where the counter fired - NOT unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. Scope is web-feature-family (may cover more behavior than this ChromeStatus launch), so it is not exact feature adoption though the feature-to-counter mapping is one-to-one (confidence exact). UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented; zero/missing/delayed points are not proof of zero real-world use. Timeline cached 2026-07-22 (SHA-256 edada440267415ad0163ea7691650da3045a46ad9d8020a04484f6dfdd8d7ea7)."
     },
     {
       "id": "manifest",
@@ -530,7 +547,7 @@
     "Shipped Chrome-only in M150 while TAG, security, and privacy reviews were all still Pending, with no accepted-risk note recorded.",
     "Origin Trial (M146-M149) left no public readout: no experiment_risks, no feedback_url, no hypotheses/metrics/participant denominator or findings - the ship-decision evidence is not independently auditable.",
     "No second engine has implemented; Baseline is blocked and WebKit remains 'Needs position', so the feature launches with an unconfirmed cross-engine path for a new web-facing HTML attribute.",
-    "Adoption evidence is commitment-stage only (Fluent UI V3 'expected'); the polyfill has just 1 dependent and no verified production deployments, case studies, or public usage numbers exist.",
+    "Adoption evidence is commitment-stage only (Fluent UI V3 'expected'); the polyfill has just 1 dependent and no verified production deployments or case studies exist. The Focusgroup web-feature-family counter now shows measurable but low Chrome page-load share (0.0156% at the M150 ship date, 0.0108% as of 2026-07-21), but with no predeclared usage target the level cannot be contextualised.",
     "Reference/docs gaps: no MDN or caniuse entry at launch; intent threads are not machine-readable."
   ],
   "counterfactuals": [
@@ -538,13 +555,13 @@
     "Had TAG/security/privacy reviews been resolved (or an explicit accepted-risk recorded) before M150 ship, the Chrome-only launch of a new web-facing attribute would carry materially less review risk.",
     "Had WebKit's accessibility/venue position been formally updated to positive before ship, the Baseline path would be credible; instead the feature ships with no confirmed second implementation.",
     "The earlier (2022-23) broad proposal would likely have stayed blocked on venue had the team not re-scoped to enumerated behavior tokens and moved incubation to WHATWG - the re-scope was load-bearing for the revival.",
-    "A production deployment or use-counter readout by ship would have converted adoption from unscored to evidence-backed; its absence leaves the strongest outcome dimension unknown."
+    "A use-counter readout is now available (Focusgroup fired on 0.0156% of Chrome page loads at the M150 ship date, 0.0108% at the latest point), yet adoption remains unscored because there is no predeclared usage target and no verified production/retention evidence to interpret the low level; had a target been declared at launch, the measured page-load share could have been scored."
   ],
   "skillImprovements": [
     "Add a phase-05 (Experiment) eval gate: an Origin Trial may only be marked 'supported' when a readout (hypotheses, participant denominator, measured outcomes, limitations) is linked or explicitly marked missing; forbid marking experiment 'supported' on setup-status alone.",
     "Add a wide-review/ship gate check that flags any feature shipping while tag_review_status, security_review_status, or privacy_review_status are 'Pending', requiring an explicit accepted-risk note before the release phase can be 'supported'.",
     "Add an interop/Baseline regression eval for new web-facing attributes: require current Mozilla and WebKit position URLs with dates and a Baseline-path statement; treat 'No signal' as a flagged risk, never as neutral/positive.",
-    "Strengthen the adoption-evidence-ladder check to distinguish 'expected framework integration' from 'verified production deployment' and forbid promoting commitment to deployment without an attributable source.",
+    "Strengthen the adoption-evidence-ladder check to (a) distinguish 'expected framework integration' from 'verified production deployment' and forbid promoting commitment to deployment without an attributable source, and (b) require a predeclared usage target/threshold before a use-counter readout (page-load share) can score adoption - a counter alone, without a target or production/retention evidence, leaves adoption unscored (as demonstrated by Focusgroup, where measured telemetry exists but no target leaves the outcome unscored).",
     "Add a source-retrievability rule: capture Google Groups intent-thread content and JS-only dashboards (wpt.fyi, chromestatus.com) into the cached evidence or require a server-rendered fallback (e.g., chromestatuslite) before counting a phase as evidenced.",
     "Add a misuse-risk lens for accessibility primitives: when independent a11y experts raise over-eager-misuse concerns, require a documented authoring-guidance/escape plan before scoring end-user impact as success."
   ],
@@ -553,12 +570,13 @@
     "missingEvidence": [
       "Origin Trial readout: hypotheses, participant denominator, measured outcomes, and findings are not public (no experiment_risks, no origin_trial_feedback_url in the cached record; no published readout located).",
       "Intent-to-Ship and Intent-to-Experiment thread contents could not be retrieved (Google Groups URLs failed the reader); ship rationale not independently auditable.",
-      "Usage data: kFocusgroup use counter exists but no public usage numbers, HTTP Archive / web-features adoption counts, or Chrome UX evidence located.",
-      "Verified production adoption: no case studies or confirmed deployments beyond Fluent UI V3 intent (commitment-stage).",
+      "Usage telemetry scope: the Focusgroup web-feature-family counter (bucket 4243) gives Chrome page-load share only - not unique-site, unique-developer, or unique-user counts, and a family counter may cover more behavior than this individual launch; no HTTP Archive/web-features adoption counts or Chrome UX evidence located.",
+      "Predeclared usage target: no launch-time usage target/threshold exists to interpret the measured low page-load share, so adoption remains unscored despite available telemetry.",
+      "Verified production adoption: no case studies or confirmed deployments beyond Fluent UI V3 intent (commitment-stage); no retention/task-success/user-benefit evidence.",
       "Cross-engine WPT conformance: wpt.fyi dashboard is JS-only and returned no readable per-engine results.",
       "Other-engine implementation: no Firefox or Safari implementation; Baseline blocked - confirmed indirectly, not via a direct web-features row read.",
       "MDN/caniuse reference entries absent at launch."
     ],
-    "reviewedAt": "2026-07-20T06:30:00Z"
+    "reviewedAt": "2026-07-22T18:07:23Z"
   }
 }

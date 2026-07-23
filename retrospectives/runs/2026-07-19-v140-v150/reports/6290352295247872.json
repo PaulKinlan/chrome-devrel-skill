@@ -28,7 +28,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:50:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -40,13 +40,15 @@
     },
     "incubation": {
       "status": "partial",
-      "finding": "The problem (same-origin data leakage via BroadcastChannel/LocalStorage/IndexedDB) and the spec anchor (HTML worker settings, Step 3) are clear, and the underlying standards question is long-standing (WHATWG html#1319, 2016). However there is no explainer, no use-case brief, no developer research, and the intent explicitly states it is 'currently unclear how many developers intentionally rely on the existing non-standard origin inheritance behavior.' The compatibility denominator was left unresolved until the ship review.",
+      "finding": "The problem (same-origin data leakage via BroadcastChannel/LocalStorage/IndexedDB) and the spec anchor (HTML worker settings, Step 3) are clear, and the underlying standards question is long-standing (WHATWG html#1319, 2016). However there is no explainer, no use-case brief, no developer research, and the intent explicitly states it is 'currently unclear how many developers intentionally rely on the existing non-standard origin inheritance behavior.' The page-load affected surface is now exactly measured (counter 5568 DataUrlDedicatedWorker at 0.00116307 (0.116%) and 5569 DataUrlSharedWorker at 0.00016675 (0.0167%) of measured page loads at M150 stable), confirming the owner's order-of-magnitude estimates; both counters have declined from 2025 peaks (dedicated 0.340% in 2025-06; shared 0.0531% in 2025-05), so the affected surface was shrinking as ship approached. But these counters fire on creation of a data: URL worker regardless of origin behavior, so they quantify the affected surface, not intentional reliance on creator-origin inheritance; that denominator was left unresolved at incubation and remained so through ship.",
       "evidenceIds": [
         "S1",
         "S2",
-        "S6"
+        "S6",
+        "S13",
+        "S14"
       ],
-      "limitations": "No explainer or public incubation venue; reliance on the non-standard behavior was never measured, only inferred from page-load use counters."
+      "limitations": "No explainer or public incubation venue; the page-load affected surface is now exactly measured but intentional reliance on the non-standard behavior was never measured, only bounded above by page-load use-counter prevalence."
     },
     "prototype": {
       "status": "partial",
@@ -91,13 +93,15 @@
     },
     "prepareToShip": {
       "status": "supported",
-      "finding": "The Intent to Ship provides motivation, interop/compat/security analysis, activation risks, debuggability, measurement counters (5568/5569), an all-six-Blink-platform statement, a rollout plan ('ship enabled for all users'), a feature flag and a temporary enterprise escape hatch. Unusually for a change this small, the author then tested ~182 sites using data: URL workers (63 with no worker started, 119 with no detected BroadcastChannel/localStorage/IndexedDB/self.origin issues; dynamic trap injection on more than half), which satisfied reviewers. Estimated milestones (desktop/Android/WebView = 150) match the actual ship.",
+      "finding": "The Intent to Ship provides motivation, interop/compat/security analysis, activation risks, debuggability, measurement counters (5568/5569), an all-six-Blink-platform statement, a rollout plan ('ship enabled for all users'), a feature flag and a temporary enterprise escape hatch. Unusually for a change this small, the author then tested ~182 sites using data: URL workers (63 with no worker started, 119 with no detected BroadcastChannel/localStorage/IndexedDB/self.origin issues; dynamic trap injection on more than half), which satisfied reviewers. Estimated milestones (desktop/Android/WebView = 150) match the actual ship. The page-load affected-surface figures underpinning the 'moderate' compatibility rating (~0.13% dedicated / ~0.01% shared as cited by the owner) are now independently confirmed by the cached timelines (0.116% dedicated / 0.0167% shared at M150 stable).",
       "evidenceIds": [
         "S1",
         "S2",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "Formal tag/security/privacy review statuses are all 'Pending' in the cached record at ship time; the site test was the author's own (not independently reproduced)."
+      "limitations": "Formal tag/security/privacy review statuses are all 'Pending' in the cached record at ship time; the site test was the author's own (not independently reproduced). The confirmed page-load figures measure worker creation (the affected surface), not intentional reliance."
     },
     "release": {
       "status": "supported",
@@ -113,21 +117,25 @@
     },
     "adoption": {
       "status": "not-relevant",
-      "finding": "'Adoption' is not a meaningful dimension here: this is a default-on security/conformance behavior change, not a developer-facing capability with an adoption funnel. Developers do not opt into it; the relevant post-ship question is compatibility/breakage, assessed under support/implementationQuality.",
+      "finding": "'Adoption' is not a meaningful lifecycle phase here: this is a default-on security/conformance behavior change, not a developer-facing capability with an adoption funnel, so no adoption phase or developer trial was run. First-party Chrome usage telemetry does exist for the affected surface — counters 5568 (DataUrlDedicatedWorker) and 5569 (DataUrlSharedWorker), mapping multiple-counters with each counter scope exact — but they fire whenever a data: URL dedicated/shared worker is created, regardless of its origin, so they measure the page-load population the change affects, not adoption of the opaque-origin default. At Chrome 150 stable (2026-06-30) that affected surface was 0.00116307 (0.116%) of measured page loads for dedicated workers and 0.00016675 (0.0167%) for shared workers; day30/day90/day180 launch-relative checkpoints are null (only ~3 weeks post-stable). The relevant post-ship question remains compatibility/breakage, assessed under support/implementationQuality.",
       "evidenceIds": [
         "S1",
-        "S3"
+        "S3",
+        "S13",
+        "S14"
       ],
-      "limitations": "Not-relevant by design (not 'untested'); no adoption metrics apply."
+      "limitations": "Not-relevant by design (not 'untested'): Chrome usage telemetry exists for the affected surface but it is not adoption telemetry for a default-on behavior change. No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared adoption-target evidence exists."
     },
     "support": {
       "status": "unknown",
-      "finding": "Only about three weeks have elapsed since Chrome 150 stable (2026-06-30) at the evidence cutoff, and no support-issue patterns, regressions or breakage reports attributable to this change were found in search. The known debuggability risk (BroadcastChannel fails silently; storage throws SecurityError; self.origin returns null) is acknowledged but unmitigated in product for the silent case.",
+      "finding": "About three weeks have elapsed since Chrome 150 stable (2026-06-30); no support-issue patterns, regressions or breakage reports attributable to this change were found in the search performed at the prior cutoff (2026-07-20). The cached usage counters (5568/5569) are the only newer evidence: post-stable worker-creation prevalence is roughly flat to slightly down (dedicated 0.00116307 on 2026-06-30 to 0.00115679 on 2026-07-21; shared 0.00016675 to 0.0001523), but because the counters fire on worker creation regardless of origin behavior, they are orthogonal to breakage from the origin change and neither confirm nor refute it. The known debuggability risk (BroadcastChannel fails silently; storage throws SecurityError; self.origin returns null) is acknowledged but unmitigated in product for the silent case.",
       "evidenceIds": [
         "S2",
-        "S3"
+        "S3",
+        "S13",
+        "S14"
       ],
-      "limitations": "Too early to assess support burden; absence of public breakage reports is not confirmation of none. The crbug/issue tracker could not be retrieved directly to check for post-ship reports."
+      "limitations": "Too early to assess support burden; the breakage search was not refreshed after 2026-07-20, and absence of public breakage reports plus flat worker-creation counters are not confirmation of no breakage (the counters are insensitive to origin-behavior failures). The crbug/issue tracker could not be retrieved directly to check for post-ship reports."
     },
     "deprecation": {
       "status": "partial",
@@ -143,15 +151,17 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "Mixed. Developers gain cross-browser consistency (Chrome now matches Firefox, Safari and the HTML spec) and removal of a same-origin data-leakage footgun, but there is no new capability; the small set relying on same-origin data: URL workers faces a forced migration to postMessage() or regular script URLs, with BroadcastChannel breakage being silent.",
+      "finding": "Mixed. Developers gain cross-browser consistency (Chrome now matches Firefox, Safari and the HTML spec) and removal of a same-origin data-leakage footgun, but there is no new capability; the population creating data: URL workers is now exactly measured as small (0.116% dedicated / 0.0167% shared of measured page loads at M150 stable), yet the subset intentionally relying on same-origin inheritance — which faces a forced migration to postMessage() or regular script URLs, with BroadcastChannel breakage being silent — was never measured.",
       "evidenceIds": [
         "S1",
         "S2",
         "S4",
         "S5",
-        "S7"
+        "S7",
+        "S13",
+        "S14"
       ],
-      "limitations": "Net value depends on how many relied on the old behavior intentionally, which was never measured."
+      "limitations": "Net value depends on how many relied on the old behavior intentionally, which remains unmeasured; the measured 0.116%/0.0167% is worker-creation prevalence (affected surface), not reliance."
     },
     "endUserImpact": {
       "status": "mixed",
@@ -161,16 +171,18 @@
         "S2",
         "S3"
       ],
-      "limitations": "Security benefit is reasoned rather than measured; post-ship user-facing impact data is not yet available."
+      "limitations": "Security benefit is reasoned rather than measured; post-ship user-facing impact data is not yet available; the usage counters measure worker creation and are insensitive to origin-behavior breakage, so they do not inform end-user impact directly."
     },
     "adoption": {
-      "status": "not-relevant",
-      "finding": "Not applicable: a default-on security/conformance behavior change has no adoption funnel. See phaseReview.adoption.",
+      "status": "unscored",
+      "finding": "Unscored. This default-on security/conformance behavior change has no adoption funnel and no predeclared adoption target, and the mapped usage counters (5568/5569, scope exact, mapping multiple-counters) are not adoption telemetry: they fire on creation of a data: URL worker regardless of origin, measuring the page-load population the change affects. That affected surface is small and now exactly measured — 0.00116307 (0.116%) dedicated-worker and 0.00016675 (0.0167%) shared-worker page loads at M150 stable (2026-06-30), roughly flat to slightly down through 2026-07-21 (0.00115679 / 0.0001523); day30/day90/day180 checkpoints are not yet available. With no target, no production-deployment or retention evidence, and counters that quantify affected surface rather than adoption of the default, adoption is not scored. Low affected-surface prevalence is not treated as failure (it is a compatibility-denominator signal, not an adoption result), and high prevalence would not be success either.",
       "evidenceIds": [
         "S1",
-        "S3"
+        "S3",
+        "S13",
+        "S14"
       ],
-      "limitations": "Dimension does not apply; not used to mean untested."
+      "limitations": "Not scoreable: no predeclared adoption target and no unique-site/production/retention/task-success/user-benefit evidence; the counters measure worker-creation prevalence (affected surface), not adoption of the opaque-origin behavior. 'Unscored' (not 'not-relevant' and not 'mixed') is used because usage telemetry now exists even though it is not adoption telemetry and no threshold was declared."
     },
     "interoperability": {
       "status": "success",
@@ -188,48 +200,56 @@
     },
     "implementationQuality": {
       "status": "mixed",
-      "finding": "Mixed. Strong mitigation: implemented in shared core worker infra (uniform across all six Blink platforms), guarded by feature flag + temporary enterprise policy, backed by a WPT test, and supported by pre-ship site testing on ~182 sites. Weaknesses: formal tag/security/privacy review statuses are all 'Pending' at ship, and there is no post-ship conformance/regression evidence yet.",
+      "finding": "Mixed. Strong mitigation: implemented in shared core worker infra (uniform across all six Blink platforms), guarded by feature flag + temporary enterprise policy, backed by a WPT test, and supported by pre-ship site testing on ~182 sites; the page-load affected surface underpinning the 'moderate' compatibility rating is now exactly measured (0.116% dedicated / 0.0167% shared at M150 stable), confirming the owner's estimates. Weaknesses: formal tag/security/privacy review statuses are all 'Pending' at ship, intentional reliance on the non-standard behavior (the true breakage denominator) remains unmeasured, and there is no post-ship conformance/regression evidence yet — and the usage counters are insensitive to origin-behavior breakage, so they cannot substitute for it.",
       "evidenceIds": [
         "S1",
         "S2",
         "S5",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "Reviews pending in the record; conformance verified via one WPT file; no independent regression run observed."
+      "limitations": "Reviews pending in the record; conformance verified via one WPT file; no independent regression run observed; the page-load affected surface is now exactly measured but reliance and breakage are not."
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Mixed. The intent-thread Q&A was unusually thorough for a change of this size (explicit failure-mode analysis, site-testing results, 4 LGTMs) and the release-notes entry is accurate. But there is no explainer, no TAG review, no developer migration doc/sample, web-develop signals are explicitly 'No signals,' and the compatibility denominator (intentional reliance) is an unmeasured upper bound. An ADMX policy mirror states milestone 149 while authoritative sources say 150.",
+      "finding": "Mixed. The intent-thread Q&A was unusually thorough for a change of this size (explicit failure-mode analysis, site-testing results, 4 LGTMs) and the release-notes entry is accurate; moreover the owner's pre-ship use-counter citations (~0.13% dedicated / ~0.01% shared page loads) are now independently confirmed by the cached timelines (0.116% dedicated / 0.0167% shared at M150 stable), validating the telemetry basis for the compatibility rating. But there is no explainer, no TAG review, no developer migration doc/sample, web-develop signals are explicitly 'No signals,' the true compatibility denominator (intentional reliance on creator-origin inheritance) is an unmeasured upper bound, and the owner-cited BroadcastChannel counter 5856 is not present in the feature's cached measurement set. An ADMX policy mirror states milestone 149 while authoritative sources say 150.",
       "evidenceIds": [
         "S1",
         "S2",
         "S3",
         "S8",
-        "S9"
+        "S9",
+        "S13",
+        "S14"
       ],
-      "limitations": "Reliance estimate is the author's own use-counter reading; a documentation/source-consistency drift exists in policy mirrors."
+      "limitations": "Page-load affected surface is now exactly measured, but the reliance estimate remains the author's own upper bound; the BroadcastChannel-specific counter 5856 is owner-cited and unverified; a documentation/source-consistency drift exists in policy mirrors."
     },
     "support": {
       "status": "unscored",
-      "finding": "Unscored. Only ~3 weeks post-stable at the cutoff; no attributable support issues, regressions or breakage reports found. The acknowledged silent-failure mode for BroadcastChannel is an open support risk.",
+      "finding": "Unscored. Only ~3 weeks post-stable at the cutoff; no attributable support issues, regressions or breakage reports found in the search performed at the prior cutoff (2026-07-20). The cached usage counters (5568/5569) are the only newer evidence and show roughly flat worker-creation prevalence post-stable, but they fire on worker creation regardless of origin behavior and are therefore insensitive to breakage from the origin change, so they neither confirm nor refute compatibility. The acknowledged silent-failure mode for BroadcastChannel is an open support risk.",
       "evidenceIds": [
         "S2",
-        "S3"
+        "S3",
+        "S13",
+        "S14"
       ],
-      "limitations": "Insufficient elapsed time and no retrievable tracker data to score support burden or issue resolution."
+      "limitations": "Insufficient elapsed time and no retrievable tracker data to score support burden or issue resolution; the breakage search was not refreshed after 2026-07-20 and the usage counters cannot stand in for breakage evidence."
     },
     "overall": {
       "status": "mixed",
-      "finding": "Mixed overall. A well-justified, low-risk spec-alignment security fix that closes an interop outlier (success on interoperability), with strong pre-ship site testing and layered mitigation; but it ships with pending formal reviews, no developer migration artifact, an unmeasured compatibility denominator, an unmitigated silent-failure path, and no post-ship outcome evidence yet. Shipment is appropriate; success is not inferred from shipment.",
+      "finding": "Mixed overall. A well-justified, low-risk spec-alignment security fix that closes an interop outlier (success on interoperability), with strong pre-ship site testing and layered mitigation; the page-load population the change affects is now exactly measured as small (0.116% dedicated / 0.0167% shared at M150 stable). But it ships with pending formal reviews, no developer migration artifact, an unmeasured intentional-reliance denominator, an unmitigated silent-failure path, and no post-ship breakage/outcome evidence yet (the usage counters are insensitive to origin-behavior breakage). Shipment is appropriate; success is not inferred from shipment.",
       "evidenceIds": [
         "S1",
         "S2",
         "S3",
         "S4",
         "S5",
-        "S8"
+        "S8",
+        "S13",
+        "S14"
       ],
-      "limitations": "Cannot be scored success until post-ship breakage/support evidence and the M157 policy-removal deprecation are observed."
+      "limitations": "Cannot be scored success until post-ship breakage/support evidence and the M157 policy-removal deprecation are observed; the small measured affected surface bounds compatibility risk but does not measure reliance or confirm absence of breakage."
     }
   },
   "sources": [
@@ -255,7 +275,7 @@
       "supports": [
         "Intent to Ship 2026-04-30 by Yoshisato Yanagisawa; motivation; interop low/compat moderate risk; ~0.13% page loads data: URL dedicated workers, 0.01% shared workers; feature flag + enterprise escape hatch; ~182-site test (63 no worker, 119 no issues, dynamic trap on >half); failure modes (Storage SecurityError, BroadcastChannel silent, self.origin null); 4 LGTMs (Harrelson, Levin, Taylor, Byers) by 2026-05-07; WPT test confirmation"
       ],
-      "limitations": "Reliance/site-test figures are the author's self-reported analysis; BroadcastChannel-specific prevalence cited via metric 5856 not independently verified."
+      "limitations": "Reliance/site-test figures are the author's self-reported analysis; BroadcastChannel-specific prevalence cited via metric 5856 not independently verified (and 5856 is not in the feature's cached measurement set)."
     },
     {
       "id": "S3",
@@ -283,7 +303,7 @@
     },
     {
       "id": "S5",
-      "url": "https://https://raw.githubusercontent.com/web-platform-tests/wpt/master/webmessaging/broadcastchannel/opaque-origin.html",
+      "url": "https://raw.githubusercontent.com/web-platform-tests/wpt/master/webmessaging/broadcastchannel/opaque-origin.html",
       "publisher": "web-platform-tests (WPT)",
       "publishedOrObservedAt": null,
       "retrievedAt": "2026-07-20T06:50:00Z",
@@ -343,7 +363,7 @@
     },
     {
       "id": "S10",
-      "url": "https://https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop_0175352312.html",
+      "url": "https://chromereleases.googleblog.com/2026/06/stable-channel-update-for-desktop_0175352312.html",
       "publisher": "Chrome Releases (stable channel update)",
       "publishedOrObservedAt": "2026-06",
       "retrievedAt": "2026-07-20T06:50:00Z",
@@ -368,14 +388,38 @@
     {
       "id": "S12",
       "url": "https://chromestatus.com/metrics/feature/timeline/popularity/5568",
-      "publisher": "Chrome Platform Status (use counters)",
+      "publisher": "Chrome Platform Status (use counters, popularity chart page)",
       "publishedOrObservedAt": null,
       "retrievedAt": "2026-07-20T06:50:00Z",
       "sourceType": "usage",
       "supports": [
-        "Data: URL dedicated/shared worker prevalence (~0.13% / ~0.01% page loads) and BroadcastChannel-in-this-case prevalence (counter 5856) as cited by the feature owner; the basis for the 'moderate' compatibility rating"
+        "The page-load affected-surface figures the owner relied on for the 'moderate' compatibility rating, and the owner-cited BroadcastChannel-specific counter 5856"
       ],
-      "limitations": "JS-rendered metric charts could not be retrieved directly; values are taken from the cached record and the owner's intent-thread statement rather than independently observed, and page-load prevalence is an upper bound on reliance, not measured reliance on the non-standard behavior."
+      "limitations": "The JS-rendered popularity chart page was not directly scraped at intake; the underlying 5568/5569 timeline data is now independently cached and observed (S13/S14). Counter 5856 (BroadcastChannel-in-data: URL-worker prevalence) is cited only by the feature owner in the intent thread and is NOT present in the feature's cached ChromeStatus measurement set, so it remains unverified. Page-load prevalence is an upper bound on reliance, not measured reliance."
+    },
+    {
+      "id": "S13",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5568",
+      "publisher": "Chrome Platform Status (DataUrlDedicatedWorker use-counter timeline, cached)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Counter 5568 DataUrlDedicatedWorker, scope exact (mapping multiple-counters with 5569). At Chrome 150 stable (2026-06-30) the counter fired on 0.00116307 (0.116%) of measured Chrome HTTP/HTTPS page loads; latest point 0.00115679 (0.116%) on 2026-07-21; first positive 0.000013 on 2025-05-15; peak 0.003403 (0.340%) on 2025-06-05; day30/day90/day180 launch-relative checkpoints are null (only ~3 weeks post-stable)."
+      ],
+      "limitations": "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. The counter fires on creation of a data: URL dedicated worker regardless of its origin, so it quantifies the page-load population the change affects (the compatibility denominator), not adoption of the opaque-origin default and not breakage from it. Cached timeline snapshot (evidence/metrics/timelines/feature-5568.json, sha256 e01959597d050d6a6d3a41e7a70baad3f45bcd422f9c6593af46134ddb84c12d), not live; UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5569",
+      "publisher": "Chrome Platform Status (DataUrlSharedWorker use-counter timeline, cached)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Counter 5569 DataUrlSharedWorker, scope exact (mapping multiple-counters with 5568). At Chrome 150 stable (2026-06-30) the counter fired on 0.00016675 (0.0167%) of measured Chrome HTTP/HTTPS page loads; latest point 0.0001523 (0.0152%) on 2026-07-21; first positive 0.000001 on 2025-05-18; peak 0.000531 (0.0531%) on 2025-05-27; day30/day90/day180 launch-relative checkpoints are null (only ~3 weeks post-stable)."
+      ],
+      "limitations": "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once — not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. The counter fires on creation of a data: URL shared worker regardless of its origin, so it quantifies the page-load population the change affects (the compatibility denominator), not adoption of the opaque-origin default and not breakage from it. Cached timeline snapshot (evidence/metrics/timelines/feature-5569.json, sha256 70375db30f05c63cf35958e5b9ee147cf7de9a87788e2880af823d51e3df944f), not live; UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented."
     }
   ],
   "successes": [
@@ -383,25 +427,27 @@
     "Correctly identified Chrome as the interop outlier and aligned to the HTML spec and to Firefox/Safari, which already ship opaque origins for data: URL workers.",
     "Layered mitigation before stable: feature flag (kDataUrlWorkerOpaqueOrigin), a temporary enterprise escape-hatch policy (DataUrlInWebWorkerOpaqueOriginEnabled), documented per-API failure modes, and uniform implementation across all six Blink platforms.",
     "Clear and accurate Chrome 150 release-notes entry naming the behavior change, spec and tracking bug.",
-    "The WPT test (opaque-origin.html) already encoded the spec-correct expectation, giving a concrete conformance anchor."
+    "The WPT test (opaque-origin.html) already encoded the spec-correct expectation, giving a concrete conformance anchor.",
+    "The feature owner's pre-ship use-counter citations (~0.13% dedicated / ~0.01% shared page loads) are independently confirmed by the cached ChromeStatus timelines (0.116% dedicated / 0.0167% shared at M150 stable), validating the telemetry basis for the 'moderate' compatibility rating."
   ],
   "failures": [
     "TAG review was not completed at ship (status Pending); for a change justified primarily as spec alignment, standards-venue confirmation was absent.",
     "No explainer and no developer migration artifact (e.g., a postMessage() migration sample) shipped alongside the change.",
-    "Web-develop signals were explicitly 'No signals,' and the number of developers intentionally relying on same-origin data: URL workers was never measured — compatibility risk was rated on page-load prevalence (an upper bound) only.",
+    "Web-develop signals were explicitly 'No signals,' and the number of developers intentionally relying on same-origin data: URL workers was never measured — compatibility risk was rated on page-load prevalence (now exactly measured at 0.116% dedicated / 0.0167% shared at M150 stable, but still only an upper bound on reliance), not on measured intentional reliance.",
     "The BroadcastChannel failure path is silent (no console/devtools signal), an acknowledged debuggability weakness left unmitigated in product.",
     "A third-party enterprise-policy mirror states the default change as 'milestone 149' while authoritative Chrome sources say 150, a source-consistency drift that could mislead admins relying on the escape hatch.",
-    "No post-ship breakage or support evidence is available yet (only ~3 weeks since stable)."
+    "No post-ship breakage or support evidence is available yet (only ~3 weeks since stable); the cached usage counters are insensitive to origin-behavior breakage and so cannot substitute for it."
   ],
   "counterfactuals": [
-    "Measuring *intentional* reliance on same-origin data: URL workers (not just use-counter page-load %) before ship would have made the 'moderate' compatibility rating defensible instead of an explicitly 'unclear' denominator; the owner's site testing partially compensated but did not replace it.",
+    "Measuring *intentional* reliance on same-origin data: URL workers (not just use-counter page-load %, which is now exactly measured at 0.116% dedicated / 0.0167% shared at M150 stable) before ship would have made the 'moderate' compatibility rating defensible instead of an explicitly 'unclear' denominator; the owner's site testing partially compensated but did not replace it.",
     "Publishing a short developer migration note (move BroadcastChannel traffic to postMessage() or a regular script URL) before stable would have reduced the impact of the one silent-failure path, which is otherwise hard for developers to diagnose.",
     "Completing a TAG review before ship would have converted the interop claim from 'Firefox/Safari already ship + a WPT test' into a standards-venue confirmation, strengthening the weakest review dimension.",
     "Reconciling the enterprise-policy mirror text ('milestone 149') with the authoritative Chrome Enterprise page (150) before launch would have avoided confusing admins who depend on the escape hatch.",
     "Tracking the M157 removal of DataUrlInWebWorkerOpaqueOriginEnabled as an explicit deprecation milestone at ship time would prevent the escape hatch from quietly expiring without a re-check of remaining breakage."
   ],
   "skillImprovements": [
-    "Add a retrospective rule for default-on behavior changes that close a security hole: explicitly distinguish (a) page-load prevalence of the affected API from (b) measured reliance on the *non-standard* behavior being changed, and treat (a) only as an upper-bound denominator.",
+    "Add a retrospective rule for default-on behavior changes that close a security hole: explicitly distinguish (a) page-load prevalence of the affected API (here now exactly measured at 0.116% dedicated / 0.0167% shared at M150 stable) from (b) measured reliance on the *non-standard* behavior being changed (still unmeasured), and treat (a) only as an upper-bound denominator — and never let an affected-surface counter stand in for breakage evidence, since for an origin-behavior change the worker is created either way.",
+    "Add a rule that for default-on behavior changes (as opposed to new opt-in capabilities), a use counter that fires on API usage regardless of the changed behavior measures the affected/compatibility surface, not adoption and not breakage; the retrospective must state this explicitly rather than implying the counter gauges the change's success.",
     "Add a 'silent-failure debuggability' gate: when a change makes an API silently no-op (here BroadcastChannel) versus throw (Storage) versus change a return value (self.origin), require a pre-ship console/DevTools signal or a migration doc, because silent failure is the hardest path for developers to diagnose.",
     "Require cross-checking any third-party enterprise-policy mirror against the authoritative chromeenterprise.google.com policy page before counting the escape hatch as launch-ready, to catch milestone/wording drift.",
     "For spec-alignment interop claims, require a direct link to the standards-venue position or to a passing/failing WPT test rather than relying solely on ChromeStatus ff_views/safari_views fields.",
@@ -411,13 +457,13 @@
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Post-ship breakage/support/regression evidence: only ~3 weeks elapsed since Chrome 150 stable (2026-06-30) and no attributable reports found; cannot score support burden or confirm the compatibility assumption held.",
-      "Measured denominator of developers intentionally relying on same-origin data: URL workers (was explicitly 'unclear' at ship and never resolved).",
-      "Live use-counter chart values (metrics 5568/5569/5856) not independently retrievable; values taken from the owner's statement and cached record.",
+      "Post-ship breakage/support/regression evidence: only ~3 weeks elapsed since Chrome 150 stable (2026-06-30) and no attributable reports found in the search performed at the prior cutoff (2026-07-20); the cached usage counters (5568/5569) are insensitive to origin-behavior breakage and cannot substitute for breakage evidence, so support burden remains unscorable and the compatibility assumption is unconfirmed.",
+      "Measured denominator of developers intentionally relying on same-origin data: URL workers (was explicitly 'unclear' at ship and never resolved); the page-load affected surface is now exactly measured (0.116% dedicated / 0.0167% shared at M150 stable) but that is an upper bound on reliance, not measured reliance.",
+      "Counter 5856 (BroadcastChannel-in-data: URL-worker prevalence), cited by the feature owner for the BroadcastChannel-specific risk, is NOT present in the feature's cached ChromeStatus measurement set and remains unverified; only counters 5568/5569 are independently cached and observed (S13/S14).",
       "TAG review (Pending at ship) and attributable Mozilla/WebKit position documents (only ChromeStatus fields + WPT test available).",
       "Direct crbug 40051700 / issue-tracker content could not be retrieved (reader errors), so internal implementation/test/regression detail and any post-ship comments are unverified.",
       "The M157 removal of the enterprise escape hatch is a future outcome not yet observable at the cutoff."
     ],
-    "reviewedAt": "2026-07-20T06:50:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

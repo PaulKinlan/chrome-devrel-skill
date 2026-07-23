@@ -29,7 +29,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:38Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -133,15 +133,16 @@
         "s22",
         "s27"
       ],
-      "limitations": "Only about 3 weeks post-stable at the evidence cutoff; no usage/support outcome data yet; MDN and CanIUse remain absent [s19,s20]."
+      "limitations": "About 3 weeks post-stable; early usage telemetry is now available (see the adoption phase; s28) but support/regression data is still pending; MDN and CanIUse remain absent [s19,s20]."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Too early to assess. The feature has been stable for roughly 3 weeks at cutoff; no public Chrome use-counter/usage data, framework/library integration evidence, or attributable case studies or production deployments were found [s1].",
+      "status": "partial",
+      "finding": "Early but measurable adoption. The `text-fit` CSS property use counter (bucket 924; property-scope; exact-title match to the feature; no WebDX feature/use-counter-enum mapping or origin-trial counter exists) first recorded a positive value on 2026-01-23 at 0.000003 (0.0003%) of measured page loads — before M150 stable, consistent with pre-stable channel availability and/or counter detection of the property token [s28]. It peaked at 0.003303 (0.3303%) on 2026-06-03 (~4 weeks before stable), then measured 0.00058 (0.058%) at M150 stable (2026-06-30) [s28]. By the latest point (2026-07-21, ~3 weeks post-stable) it had risen to 0.00091596 (0.0916%) [s28]. The post-stable share has trended up (~+58% relative versus the at-stable point) but remains below the pre-stable peak and below 0.1% of measured page loads; day30/day90/day180 checkpoints are not yet available [s28]. No framework/library integration, attributable production deployment, or case study has been found [s1].",
       "evidenceIds": [
-        "s1"
+        "s1",
+        "s28"
       ],
-      "limitations": "Temporal gap; reassess after usage data and at least one Baseline/other-engine cycle."
+      "limitations": "Property-scope counter: it fires on any measured page load where `text-fit` is used or detected and is not equivalent to unique sites, developers, users, successful tasks, production deployment, or end-user benefit [s28]. Only ~3 weeks post-stable; the pre-stable peak (0.3303%) is unexplained and may reflect pre-stable-channel experimentation, a transient demo/probe, or low-volume noise. No predeclared adoption target exists, so the level is described, not judged; Baseline/other-engine cycle still pending."
     },
     "support": {
       "status": "unknown",
@@ -187,11 +188,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Only about 3 weeks in stable; no usage, framework, or production-adoption evidence is available [s1]. Cannot be scored.",
+      "finding": "Unscored: no predeclared adoption target appears in the explainer, the Intent to Prototype/Ship, or the launch materials, and no unique-site, production-deployment, retention, or case-study evidence has been found [s1,s2,s6]. The only available signal is the property-scope CSS use counter (bucket 924): 0.00058 (0.058%) of measured Chrome page loads at M150 stable (2026-06-30) and 0.00091596 (0.0916%) at the latest point (2026-07-21, ~3 weeks post-stable), with day30/day90/day180 checkpoints pending [s28]. The post-stable trend is upward but the level is low and the pre-stable peak (0.003303 / 0.3303% on 2026-06-03) is unexplained. With no threshold and no corroborating production/retention evidence, the adoption outcome is described, not scored.",
       "evidenceIds": [
-        "s1"
+        "s1",
+        "s2",
+        "s6",
+        "s28"
       ],
-      "limitations": "Temporal; too early for use-counter or Baseline movement."
+      "limitations": "Property-scope counter only; not unique sites, developers, users, successful tasks, satisfaction, or end-user benefit [s28]. ~3 weeks post-stable; no declared target; no production/retention/case-study evidence; day30/90/180 pending."
     },
     "interoperability": {
       "status": "mixed",
@@ -256,7 +260,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, well-documented, compat-safe CSS feature with strong developer demand and clean launch communication, but it shipped Chromium-only (no Gecko/WebKit signal, unclosed TAG review, not Baseline), with an open multi-WG accessibility issue and no default safeguard, unresolved design disagreements with its own proposer/co-editor, no formal developer or origin trial, and missing MDN/CanIUse at stable. Adoption and user-impact outcomes cannot yet be scored; the overall status deliberately does not hide the mixed interop, accessibility, and documentation dimensions.",
+      "finding": "A well-motivated, well-documented, compat-safe CSS feature with strong developer demand and clean launch communication, but it shipped Chromium-only (no Gecko/WebKit signal, unclosed TAG review, not Baseline), with an open multi-WG accessibility issue and no default safeguard, unresolved design disagreements with its own proposer/co-editor, no formal developer or origin trial, and missing MDN/CanIUse at stable. Adoption telemetry now exists but is unscored (no predeclared target): the `text-fit` property counter measured 0.00058 (0.058%) of page loads at M150 stable and 0.00091596 (0.0916%) ~3 weeks later, with day30/90/180 pending [s28]; end-user impact remains mixed on an open accessibility risk. The overall status deliberately does not hide the mixed interop, accessibility, and documentation dimensions, nor the unscored adoption and end-user-impact outcomes.",
       "evidenceIds": [
         "s1",
         "s3",
@@ -266,9 +270,10 @@
         "s9",
         "s11",
         "s13",
-        "s19"
+        "s19",
+        "s28"
       ],
-      "limitations": "Post-launch outcome dimensions are unscored due to recency; this is a launch-time assessment."
+      "limitations": "Post-launch outcome dimensions remain early: adoption is measurable but unscored (no target), and this is still substantially a launch-time assessment."
     }
   },
   "sources": [
@@ -583,6 +588,18 @@
         "Chrome 150 stable/Android/ChromeOS desktop updates rolling out in July 2026, confirming stable availability"
       ],
       "limitations": "Release blog; does not discuss this feature specifically."
+    },
+    {
+      "id": "s28",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=924",
+      "publisher": "ChromeStatus / Chromium (CSS property popularity timeline, bucket 924)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:38Z",
+      "sourceType": "usage",
+      "supports": [
+        "CSS property `text-fit` use counter (bucket 924; property-scope; exact-title match): first positive value on 2026-01-23 at 0.000003 (0.0003%) of measured page loads; peak 0.003303 (0.3303%) on 2026-06-03; 0.00058 (0.058%) at M150 stable (2026-06-30); 0.00091596 (0.0916%) at the latest point 2026-07-21; 180 timeline points; day30/day90/day180 launch checkpoints not yet available. Numerator = Chrome page loads on which the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads across official channels and platforms."
+      ],
+      "limitations": "Property-scope counter that fires on any measured page load where the property is used or detected; not equivalent to unique developers, sites, users, successful task completion, satisfaction, production deployment, or end-user benefit. No WebDX feature/use-counter-enum mapping and no origin-trial counter exist for this feature; this property counter is the sole public telemetry and the closest available measurement, not exact feature adoption. Pre-stable positive values and the pre-stable peak (0.3303% on 2026-06-03) are unexplained (possible pre-stable-channel use, probing/detection, or low-volume noise). UMA reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented. Cached timeline SHA-256 5400d1f3a6b12d21b1f900a8295f444139fb16a75cb452eff895709097331c42."
     }
   ],
   "successes": [
@@ -610,18 +627,21 @@
     "Release-readiness gate for headline CSS features: require an MDN reference page and CanIUse entry to exist (or be tracked-to-close with a named owner) before stable; absence is a documented gap, not silent.",
     "Prepare-to-ship 'accepted open issue' protocol: when shipping with a known unresolved cross-WG issue, the ChromeStatus entry must capture the accepted-risk rationale, monitoring plan, owner, and trigger conditions for a post-ship behavior change by default, not only when an API owner asks.",
     "Experiment-phase decision prompt: for additive low-risk features, make the 'trial vs skip' decision explicit and record what field evidence is foregone and how it will be recovered post-launch (telemetry/accessibility monitoring).",
-    "Add a retrospective regression eval case for 'shipped Chromium-only with an open accessibility issue and unclosed TAG review' to verify reports do not infer success from shipment, usage, or press sentiment and do flag missing cross-engine and accessibility evidence."
+    "Add a retrospective regression eval case for 'shipped Chromium-only with an open accessibility issue and unclosed TAG review' to verify reports do not infer success from shipment, usage, or press sentiment and do flag missing cross-engine and accessibility evidence.",
+    "Adoption-evidence rule: before a retrospective states a feature has 'no usage/adoption telemetry,' it must cache and cite the relevant ChromeStatus timeline(s) — CSS property popularity (matched by property/title token), WebDX/WebFeature popularity, legacy UseCounters, and origin-trial counters — and record the mapping status (exact / property-or-family / origin-trial / absent). The only honest negative claim is 'no mapped public counter found,' never 'no usage data exists.'"
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Post-stable usage/adoption data (Chrome use counter) not yet available roughly 3 weeks after M150 stable.",
       "Framework/library integration and production case studies: none found yet.",
       "Support-issue taxonomy and regression/compatibility reports: too early to observe.",
       "Other-engine (Gecko/WebKit) position or implementation: still 'No signal'.",
       "Detailed WPT pass/fail and tracking-bug (417306102) contents: pages are JavaScript-rendered or auth-gated and could not be retrieved.",
-      "MDN reference page and CanIUse entry: confirmed absent at retrieval."
+      "MDN reference page and CanIUse entry: confirmed absent at retrieval.",
+      "Unique-site, production-deployment, retention, and task-success breakdowns are not available; the only public telemetry is the property-scope `text-fit` CSS counter (bucket 924) [s28].",
+      "No predeclared adoption target in the explainer, intents, or launch materials, so the adoption outcome remains unscored despite available usage telemetry [s1,s2,s6].",
+      "day30/day90/day180 launch checkpoints for the property counter are not yet available (only ~3 weeks post-stable) [s28]."
     ],
-    "reviewedAt": "2026-07-19T00:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:38Z"
   }
 }

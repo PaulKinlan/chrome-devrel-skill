@@ -1,0 +1,521 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5172217778405376,
+    "name": "image-rendering: crisp-edges",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5172217778405376",
+    "category": "CSS",
+    "featureType": "Chromium catches up",
+    "blinkComponent": "Blink>CSS",
+    "owner": "gman@chromium.org",
+    "specLink": "https://www.w3.org/TR/css-images/#ref-for-valdef-image-rendering-crisp-edges",
+    "trackingBug": "https://issues.chromium.org/issues/41073066"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5172217778405376",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T18:07:07Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The problem was clear, specific, and long-documented: Chrome parsed `image-rendering: crisp-edges` as an invalid value (only `pixelated` worked), leaving an interop gap versus Firefox and Safari that had shipped the value for years. The tracking bug was filed 2013-11-12 and carried a 'Hotlist-Recharge-Cold' label, i.e. a 12+ year dormant request. Attributable developer demand spans multiple domains: a design-tools team ('software for design teams... would help a lot'), a medical-CT viewer author, and pixel-art/HTML5-game developers. Friction is independently documented in MDN browser-compat-data and Stack Overflow. Browser intervention was the correct layer (a spec-defined CSS value with dual prior implementation).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S7",
+        "S8",
+        "S10",
+        "S14",
+        "S15"
+      ],
+      "limitations": "No formal Chrome intake artifact is public; intake is reconstructed from the tracking bug and ecosystem friction evidence. Demand is anecdotal/issue-based, not survey-quantified."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubation was correctly near-zero because the design was already locked by a published W3C standard (CSS Images, maturity 'published standard') and by two engines shipping it identically. The only design decision was to treat `crisp-edges` as a synonym of `pixelated` (nearest-neighbor), matching Firefox and Safari; this is explicitly documented in the ChromeStatus summary and confirmed by the Chrome 149 release notes. Catch-up scoping was appropriate and honestly framed in the Intent to Ship as 'uncontroversial' after '7+ years' in other browsers.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S6",
+        "S12"
+      ],
+      "limitations": "No separate explainer or design doc exists (explainer_links empty); for a synonym of an already-shipped value this is defensible but means there is no authored design rationale to audit."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public prototype, explainer, sample, or friction artifact exists for this re-implementation. Functionally the prototype is the already-shipped `pixelated` nearest-neighbor path (in tree since ~2014), so verification likely reused existing rendering/tests rather than a distinct prototype phase. The history matters: an earlier `crisp-edges` attempt was unshipped/reverted due to a canvas/compositor-layer bug (referenced via bug 317991 and the Chrome 'pixelated' blog), so implementation verification genuinely had risk. No evidence confirms a distinct prototype/friction phase for this attempt.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S13",
+        "S18"
+      ],
+      "limitations": "Cannot confirm or deny a prototype phase from public sources; the bug transitioned from cold to Fixed without a visible prototype artifact."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "A developer trial would reveal no new information: the value is a deterministic synonym of `pixelated` (already shipped in Chrome for ~12 years) and of `crisp-edges` in Firefox (since 2019, standard) and Safari (since 2016). The non_finch_justification explicitly states it is 'just a synonym... been shipping in Firefox and Safari for many years so websites that would be affected are already affected.' No cohort, task, or field signal could distinguish Chrome's behavior from the already-existing identical behavior.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S5"
+      ],
+      "limitations": "not-relevant is used because there is no design/ergonomics uncertainty for a trial to resolve, not because the behavior was untested; the behavior is already exercised by the shipped pixelated path and by two other engines."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Standards and other-engine positions were already settled and are recorded honestly: spec is a published W3C standard; Firefox 'Shipped/Shipping' (bugzilla 1496617); Safari 'Shipped/Shipping' (WebKit commit). tag_review, security_review, and privacy_review are all 'Not applicable', which is appropriate for a CSS value synonym catching up to a final standard. 'Web developers: No signals' is recorded openly rather than hidden. For a catch-up synonym, the absence of new web-dev signals is not a blocker because the value already works for the developers who use it in Firefox/Safari.",
+      "evidenceIds": [
+        "S1",
+        "S16",
+        "S17"
+      ],
+      "limitations": "Mozilla bugzilla and WebKit commit URLs are taken from the ChromeStatus record; their content was not independently retrieved. No fresh TAG/vendor review was conducted because the standard was already final."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No field experiment was warranted. There is no probabilistic or privacy-sensitive behavior to measure: crisp-edges is a deterministic synonym of pixelated. origintrial is false and no Origin Trial stage exists. The non_finch_justification documents why no gradual rollout/finch was needed. An Origin Trial here would have been 'customary, not because field evidence is needed'.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "not-relevant is justified by the absence of field uncertainty, not by lack of testing."
+    },
+    "prepareToShip": {
+      "status": "supported",
+      "finding": "Ship preparation was aligned: an Intent to Ship thread exists (blink-dev) framing the change as uncontroversial 7+ year catch-up; spec, implementation, and WPT tests (three parsing/computed/typed-OM files) are referenced; rollout is 'enabled for all users' across desktop/Android/WebView at milestone 149 with a reasoned non-Finch justification; the tracking bug is marked Fixed with code change 7585405. The Chrome 149 release notes describe the behavior accurately (synonym, nearest-neighbor).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "limitations": "The Intent to Ship thread body was only partially retrieved (snippet); full thread not read. Live WPT pass-state for the three referenced files was not independently verified. The cached ChromeStatus snapshot (accurate_as_of 2026-05-07) still showed status 'Proposed' / is_released=false, i.e. pre-stable; the ship itself is confirmed post-snapshot by the release notes."
+    },
+    "release": {
+      "status": "success",
+      "finding": "Chrome 149 stable shipped 2026-06-02 and lists `image-rendering: crisp-edges` under 'CSS and UI' with tracking bug, ChromeStatus entry, and spec link. The published description matches the implementation ('Chrome, Firefox, and Safari treat crisp-edges and pixelated as synonyms and implement both using nearest-neighbor scaling'). caniuse was updated to mark Chrome as supporting the value. No release-communication inaccuracy or overclaim was found; the feature was not singled out in security/press coverage (appropriately, given its size).",
+      "evidenceIds": [
+        "S4",
+        "S5"
+      ],
+      "limitations": "No dedicated DevRel article/blog for crisp-edges was found (consistent with a minor catch-up); discoverability depends on the release-notes line and caniuse/MDN updates."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Chrome usage telemetry now exists, but only at the property-family level, not for this value. The CSS property-family counter for 'image-rendering' (bucket_id 82; scope 'property-family'; confidence 'name-matched-family') fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02), 0.06813463% at the day-30 checkpoint (2026-07-02), and 0.06947455% on the latest observed day (2026-07-21); day90 and day180 checkpoints are not yet observed. The counter was first positive on 2013-08-08 (0.05%) and peaked 2018-05-19 (0.22060595%), both before this launch, because pixelated and other image-rendering values already existed — so the family level cannot isolate crisp-edges adoption attributable to this ship. webdx_usecounter_enum is null (no value-level/WebDX counter), and no HTTP Archive, unique-site, or production-deployment measurement is linked; adoption_expectation/plan are empty (no predeclared target). The caniuse global 'usage_perc_y: 96.53%' remains a browser-support share (StatCounter), not adoption. Because crisp-edges is a synonym of the already-shipped pixelated, incremental page-level adoption from the launch is plausible but not separable from the family counter. This telemetry is post-launch outcome evidence (cached 2026-07-22) and is not treated as known during intake/review/ship.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S20"
+      ],
+      "limitations": "The only public Chrome telemetry is a property-family counter, not an exact crisp-edges counter; the ~0.07% figure reflects any image-rendering value firing and cannot be attributed to this launch. webdx_usecounter_enum remains null. No unique-site, production, retention, task-success, user-benefit, or target evidence exists, and there is no predeclared adoption target, so adoption cannot be defensibly scored from this counter alone."
+    },
+    "support": {
+      "status": "supported",
+      "finding": "No crisp-edges-specific support issue, regression, or compatibility report was found in the ~6-week post-stable window before cutoff. The underlying nearest-neighbor rendering path is mature (pixelated shipped ~2014). Adjacent image-smoothing blurriness regressions exist in the broader GPU-raster area (e.g. macOS GPU rasterization regressions, TensorBoard upscaled-image blurriness) but none are attributed to crisp-edges. Support burden for a synonym of an existing value is expected to be minimal.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S19"
+      ],
+      "limitations": "Post-ship observation window is short (~6 weeks). Adjacent regressions were identified via search snippets, not full triage of the Blink>CSS component."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This feature ADDS a CSS value; nothing is removed or deprecated, so there is no migration, reverse-trial, or removal path. The legacy prefixed `-webkit-optimize-contrast` remains but is outside this feature's scope.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "not-relevant because there is no removal; not used to evade testing."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Closes a real, long-standing developer papercut with attributable demand across design-tooling, medical imaging, and pixel-art/game development. Pages that specified only `crisp-edges` now render crisply in Chrome instead of falling back to smooth scaling, and authors can drop `-webkit-optimize-contrast`/`pixelated` fallbacks. The incremental capability is modest (interop parity, a synonym of already-shippable behavior) but it is exactly what a 'Chromium catches up' feature should deliver.",
+      "evidenceIds": [
+        "S3",
+        "S7",
+        "S8",
+        "S10",
+        "S14",
+        "S15"
+      ],
+      "limitations": "Success is not inferred from shipment alone; it rests on documented multi-domain demand (S3) and independently reported friction (S7, S8). Incremental value is small relative to a genuinely new capability."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Logical end-user direction is positive (pixel art / line art / CT-style imagery renders crisply where authors asked), but no end-user impact measurement exists. Because most affected pages already carried a pixelated fallback, the incremental visible change for typical users is likely small. Per method, success is not inferred from shipment or from absence of criticism.",
+      "evidenceIds": [
+        "S4",
+        "S5"
+      ],
+      "limitations": "No end-user impact data (A/B, telemetry, accessibility) is public; outcome unscored rather than assumed."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Chrome now publishes a CSS property-family counter for 'image-rendering' (bucket_id 82; scope 'property-family'; confidence 'name-matched-family'), which fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02), 0.06813463% at the day-30 checkpoint (2026-07-02), and 0.06947455% on the latest observed day (2026-07-21) — essentially flat around the launch (day90/day180 not yet observed). This is a property-family counter, not an exact crisp-edges counter: it was already positive in 2013 because pixelated and other image-rendering values existed, so it cannot isolate adoption attributable to this launch, and webdx_usecounter_enum remains null. There is no predeclared adoption target/expectation and no corroborating production, retention, or unique-site evidence. Per method, with no threshold and no corroborating production signal, the adoption outcome remains unscored; the measured family level (~0.07%, flat) and trend are described, not judged, and 'mixed' is not used as a substitute for an absent threshold.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S20"
+      ],
+      "limitations": "Unscored because there is no predeclared target and the only Chrome telemetry is a property-family counter that cannot isolate crisp-edges (webdx_usecounter_enum null). No unique-site, production, retention, task-success, or user-benefit evidence exists. Per method, low family-level share (~0.07%) is not judged as failure and would not be judged as success without a target."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "The headline win. Before: Chrome rejected `crisp-edges` as invalid while Firefox (standard since v65/2019; -moz-crisp-edges far earlier) and Safari (since v10/2016) shipped it. After Chrome 149: all three engines treat crisp-edges and pixelated as nearest-neighbor synonyms, matching the published spec, and caniuse marks all engines 'y'. This moves the feature to effectively Baseline-wide availability and removes a Chrome-specific compatibility wart that MDN/caniuse had to caveat for years.",
+      "evidenceIds": [
+        "S5",
+        "S7",
+        "S10",
+        "S4"
+      ],
+      "limitations": "Success is supported by per-engine version data (S5) and the pre-ship incompatibility record (S7, S10), not by sentiment. Minor caniuse-vs-Chrome milestone discrepancy (caniuse 148 vs official 149) does not affect the interop conclusion."
+    },
+    "implementationQuality": {
+      "status": "success",
+      "finding": "Implementation reuses the proven pixelated nearest-neighbor path; WPT parsing/computed/typed-OM tests are referenced; the tracking bug is Fixed (code change 7585405); no crisp-edges-specific regressions appeared in the post-stable window. The team was demonstrably cautious given an earlier crisp-edges attempt had been unshipped over a canvas/compositor bug, so reusing the mature path was the right engineering call.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S13",
+        "S18"
+      ],
+      "limitations": "Live WPT pass-state not independently verified (wpt.fyi not fetched). Post-ship window ~6 weeks. Success rests on test-file references + Fixed status + no-regression search, not a full conformance audit."
+    },
+    "evidenceAndCommunication": {
+      "status": "success",
+      "finding": "Communication was accurate and honest. ChromeStatus explicitly records 'Web developers: No signals' (not hidden), documents the synonym decision, and states interop timing ('Safari since 2016, Firefox since 2019') that matches caniuse. The non_finch_justification is well-reasoned. Chrome 149 release notes describe behavior correctly. The Intent to Ship frames it honestly as uncontroversial catch-up. No overclaim found.",
+      "evidenceIds": [
+        "S1",
+        "S4",
+        "S6"
+      ],
+      "limitations": "'Firefox since 2019' is slightly simplified (prefixed -moz-crisp-edges existed much earlier; 2019 = unprefixed/standard at v65), but the Shipped/Shipping signal and direction are correct. Intent thread body only partially retrieved."
+    },
+    "support": {
+      "status": "success",
+      "finding": "No crisp-edges-specific support burden or regression identified post-ship; the reused rendering path is mature. Adjacent GPU-raster blurriness regressions exist in the broader image-scaling area but are not attributed to this feature.",
+      "evidenceIds": [
+        "S3",
+        "S19"
+      ],
+      "limitations": "Short observation window; no full support-ticket triage possible from public sources."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Clean execution of a low-risk catch-up: developerValue, interoperability, implementationQuality, evidenceAndCommunication, and support are all success, and the launch event (Chrome 149, 2026-06-02) landed without drama. Overall is mixed rather than success because two material outcome dimensions remain unscored: endUserImpact (no user-benefit measurement) and adoption (a property-family image-rendering counter now exists at ~0.07% of measured page loads — 0.06893917% at stable, 0.06813463% at day-30, 0.06947455% latest — flat across the launch, but it cannot isolate crisp-edges, webdx_usecounter_enum is null, and there is no predeclared target or corroborating production evidence to score against). Declaring blanket success would overclaim. Net direction is unambiguously positive with acknowledged unknowns.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S20"
+      ],
+      "limitations": "Mixed reflects unscored impact/adoption, not any negative evidence. The available Chrome telemetry is a property-family counter, not feature-level adoption; a value-level (webdx) counter and/or a predeclared target would be needed to move adoption off unscored."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5172217778405376",
+      "publisher": "Chrome Platform Status (chromestatus.com)",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature type 'Chromium catches up'; CSS/Blink>CSS; owner gman@chromium.org",
+        "Ship stage desktop/android/webview first = 149; rollout 'enabled for all users'; non_finch_justification (synonym of pixelated, already in FF/Safari)",
+        "Spec = W3TR css-images (published standard, maturity 5); WPT test files listed",
+        "Firefox Shipped/Shipping (bugzilla 1496617); Safari Shipped/Shipping (WebKit commit); 'Web developers: No signals'",
+        "interop_compat_risks: Safari since 2016, Firefox since 2019; tag/security/privacy review 'Not applicable'",
+        "webdx_usecounter_enum null (no WebDX/value-level use-counter)"
+      ],
+      "limitations": "Cached snapshot accurate_as_of 2026-05-07, pre-stable (status 'Proposed', is_released false). Primary input; treated as read-only."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5172217778405376",
+      "publisher": "Chrome Platform Status (chromestatuslite.com mirror)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered view mirrors cached record (summary, signals, spec, tracking bug)"
+      ],
+      "limitations": "No additional fields beyond S1."
+    },
+    {
+      "id": "S3",
+      "url": "https://issues.chromium.org/issues/41073066",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": "2013-11-12",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Bug filed 2013-11-13 ('CSS is upgrading image-rendering to support crisp-edges; We should support this!'); Status Fixed; Component Blink>CSS; code change 7585405",
+        "Label 'Hotlist-Recharge-Cold' = long-dormant 12+ year request",
+        "Attributable developer demand: design-tools team, medical-CT viewer author",
+        "Implementation history: earlier crisp-edges attempt was unshipped over a canvas/compositor-layer bug (refs 317991, 106662, 260739, 134040)"
+      ],
+      "limitations": "Issue body/comments partially rendered; some comment text retrieved via search snippet. Exact fix milestone inferred from release notes, not a milestone field on the bug."
+    },
+    {
+      "id": "S4",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers (developer.chrome.com)",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable release date 2026-06-02 (Android, ChromeOS, Linux, macOS, Windows)",
+        "Feature listed under 'CSS and UI': 'image-rendering: crisp-edges' with tracking bug 41073066, ChromeStatus entry, spec",
+        "Accurate behavior description: 'Chrome, Firefox, and Safari treat crisp-edges and pixelated as synonyms and implement both using nearest-neighbor scaling'"
+      ],
+      "limitations": "Release-notes line is brief (appropriate for a minor catch-up); no dedicated crisp-edges article linked."
+    },
+    {
+      "id": "S5",
+      "url": "https://raw.githubusercontent.com/Fyrd/caniuse/main/features-json/css-crisp-edges.json",
+      "publisher": "Can I Use (Fyrd/caniuse, GitHub)",
+      "publishedOrObservedAt": "2026-06",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Per-engine support: Chrome v41-147 = 'y #4' (pixelated only, NOT crisp-edges); Chrome v148-153 = 'y' (both values); note #4 dropped at 148",
+        "Firefox standard/unprefixed since v65 (2019); -moz-crisp-edges since v3.6; Safari 'y' since v10 (2016)",
+        "status 'cr'; global usage_perc_y 96.53% = browser SUPPORT share (StatCounter June 2026), not property adoption",
+        "Links original Chromium bug 317991 ('Implement image-rendering:crisp-edges') and Firefox bug 856337"
+      ],
+      "limitations": "caniuse marks Chrome support starting at 148 while Chrome release notes/ChromeStatus attribute the ship to 149; minor third-party discrepancy, not affecting conclusions. usage_perc_y is support share, deliberately not treated as adoption."
+    },
+    {
+      "id": "S6",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/dqAs7zmriQQ/m/tmK5bJ9sBQAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship: image-rendering: crisp-edges; frames change as uncontroversial, 'shipping over 7 years in other browsers'"
+      ],
+      "limitations": "Thread body retrieved only via search snippet; full page timed out on the reader, so review comments/LGTMs not captured."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/mdn/browser-compat-data/issues/28529",
+      "publisher": "MDN browser-compat-data (GitHub)",
+      "publishedOrObservedAt": "2026",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Developer-reported friction: Chrome reported crisp-edges as invalid (e.g. Chrome 142.0.7444.175) despite compat tables implying support",
+        "Chrome only exposed crisp-edges via the non-standard -webkit-optimize-contrast alias before this ship"
+      ],
+      "limitations": "Issue text retrieved via search snippet; exact filing date and resolution status not fully captured."
+    },
+    {
+      "id": "S8",
+      "url": "https://stackoverflow.com/questions/68770680/image-rendering-crisp-edges-and-smooth-values-report-invalid-property-value-in",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": "2021-08",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Friction evidence: as of Chrome 92 (2021) crisp-edges reported as invalid property value while pixelated worked"
+      ],
+      "limitations": "Snapshot of one Q&A; representative but not exhaustive."
+    },
+    {
+      "id": "S9",
+      "url": "https://stackoverflow.com/questions/20678639/image-rendering-crisp-edges-vs-pixelated",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing developer confusion over crisp-edges vs pixelated semantics and engine divergence"
+      ],
+      "limitations": "Old thread; reflects historical state."
+    },
+    {
+      "id": "S10",
+      "url": "https://auroratide.com/posts/pixelart-and-the-image-rendering-paradox",
+      "publisher": "Auroratide (blog)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent community documentation of the Chrome(no crisp-edges)/Firefox(no pixelated) paradox driving authors to specify both values"
+      ],
+      "limitations": "Personal blog; date unknown; secondary community source."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/image-rendering",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Reference docs describe crisp-edges semantics (nearest-neighbor-ish, preserves contrast/edges) and the historical cross-browser behavior"
+      ],
+      "limitations": "Living doc; exact revision date not captured."
+    },
+    {
+      "id": "S12",
+      "url": "https://www.w3.org/TR/css-images/#ref-for-valdef-image-rendering-crisp-edges",
+      "publisher": "W3C (CSS Image Module)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "crisp-edges is defined in a published W3C standard (maturity 5 in ChromeStatus), justifying low incubation/review burden"
+      ],
+      "limitations": "Spec text not re-fetched verbatim; relied on ChromeStatus spec maturity field."
+    },
+    {
+      "id": "S13",
+      "url": "https://developer.chrome.com/blog/pixelated/",
+      "publisher": "Chrome for Developers (blog)",
+      "publishedOrObservedAt": "2014",
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Historical context: when Chrome shipped pixelated (~2014), bug 317991 was explicitly left open for the crisp-edges value, documenting why the gap persisted"
+      ],
+      "limitations": "Old post; retrieved via search snippet."
+    },
+    {
+      "id": "S14",
+      "url": "https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look",
+      "publisher": "MDN Web Docs (Game development)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Canonical cross-browser guidance instructs authors to specify both crisp-edges and pixelated, evidencing real workflow impact of Chrome's gap for game/pixel-art devs"
+      ],
+      "limitations": "Living guide; date unknown."
+    },
+    {
+      "id": "S15",
+      "url": "https://phaser.discourse.group/t/strange-effect-with-pixelart/10490",
+      "publisher": "Phaser framework (Discourse)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Framework-integration evidence: Phaser's pixelArt:true plus layered crisp-edges/-moz-crisp-edges CSS in real game projects"
+      ],
+      "limitations": "Single forum thread; not exhaustive of framework behavior."
+    },
+    {
+      "id": "S16",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1496617",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Firefox position 'Shipped/Shipping' (recorded in ChromeStatus)"
+      ],
+      "limitations": "URL taken from ChromeStatus; bug content not independently retrieved."
+    },
+    {
+      "id": "S17",
+      "url": "https://github.com/WebKit/WebKit/commit/31e3ae4099568fbdc594a95d9de4f7c226a8ded0",
+      "publisher": "WebKit (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Safari/WebKit position 'Shipped/Shipping' (recorded in ChromeStatus)"
+      ],
+      "limitations": "URL taken from ChromeStatus; commit content not independently retrieved."
+    },
+    {
+      "id": "S18",
+      "url": "https://bugs.chromium.org/p/chromium/issues/detail?id=317991",
+      "publisher": "Chromium (legacy bug tracker)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Original 'Implement image-rendering: crisp-edges' request; referenced by caniuse (S5) and the Chrome pixelated blog (S13) as the long-open implementation bug"
+      ],
+      "limitations": "Referenced via secondary sources (S5, S13) and S3's blocking list; primary bug page not directly retrieved (legacy tracker)."
+    },
+    {
+      "id": "S19",
+      "url": "https://issuetracker.google.com/issues/402547567",
+      "publisher": "Google Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T12:00:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Adjacent (not crisp-edges-specific) image-scaling blurriness regressions attributed to GPU rasterization on macOS (Chromium 134+); confirms the broader image-rendering area carries raster risk but no crisp-edges attribution"
+      ],
+      "limitations": "Search-snippet only; TensorBoard issue #4208 (upscaled-image blurriness) is a related adjacent signal also seen in search but not separately cited. Not attributed to this feature."
+    },
+    {
+      "id": "S20",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=82",
+      "publisher": "Chrome Platform Status — CSS popularity timeline (chromestatus.com)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:07Z",
+      "sourceType": "usage",
+      "supports": [
+        "CSS property-family counter bucket_id 82 ('image-rendering'); scope 'property-family'; confidence 'name-matched-family' — covers the whole image-rendering property, NOT the crisp-edges value (webdx_usecounter_enum remains null)",
+        "Fired on 0.06893917% of measured Chrome HTTP/HTTPS page loads at Chrome 149 stable (2026-06-02); day-30 checkpoint 2026-07-02 = 0.06813463%; latest observed 2026-07-21 = 0.06947455%; day90 and day180 checkpoints not yet observed",
+        "Counter first positive 2013-08-08 (0.05%) and peaked 2018-05-19 (0.22060595%), both before this launch, because pixelated and other image-rendering values already existed",
+        "Numerator = Chrome page loads on which the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads across official channels/platforms; not equivalent to unique developers, sites, users, successful tasks, satisfaction, or end-user benefit"
+      ],
+      "limitations": "Property-family scope, not an exact crisp-edges counter (webdx_usecounter_enum null; no value-level counter), so the percentage cannot isolate adoption attributable to this launch. UMA reflects participating/opt-in Chrome clients; enterprise and opt-out populations may be underrepresented. Timeline cached at SHA-256 0cc9f6472f32778072fa4972823eaee55fd826a00cb8557862ef7afaf9d838ef; day90/day180 checkpoints pending. This is post-launch outcome evidence (cached 2026-07-22) and must not be treated as known during intake/review/ship."
+    }
+  ],
+  "successes": [
+    "Closed a 12+ year interop gap (bug filed 2013-11-12, Fixed) with the correct, low-risk design: treat crisp-edges as a nearest-neighbor synonym of the already-shipped pixelated, matching Firefox and Safari and the published spec (S1, S3, S4, S5).",
+    "Honest ChromeStatus record: 'Web developers: No signals' is stated openly; interop timing and the synonym decision are documented; non_finch_justification is well-reasoned (S1).",
+    "Accurate, non-overclaiming release communication: Chrome 149 release notes describe the synonym/nearest-neighbor behavior correctly and link bug/ChromeStatus/spec (S4).",
+    "Right-sized process: correctly skipped developer trial and Origin Trial for a deterministic synonym with no field uncertainty, avoiding 'customary OT' waste (S1, phaseReview).",
+    "Engineering caution was warranted and applied: an earlier crisp-edges attempt had been unshipped over a canvas/compositor bug, so reusing the mature pixelated path was the sound choice; no crisp-edges-specific regressions in the post-stable window (S3, S13, S19)."
+  ],
+  "failures": [
+    "No exact feature-level measurement of crisp-edges adoption exists: webdx_usecounter_enum is null and the only public Chrome telemetry is a property-family 'image-rendering' counter (bucket_id 82, ~0.07% of page loads, flat across the launch) that cannot isolate this value; no end-user impact measurement was established either, so adoption and endUserImpact remain unscored (S1, S5, S20).",
+    "A 12+ year latency between request and fix (bug carried 'Hotlist-Recharge-Cold') indicates the gap was under-prioritized for a long time despite recurring, attributable developer demand (S3, S7, S8, S13).",
+    "Minor third-party data inconsistency: caniuse records Chrome support at 148 while official Chrome/ChromeStatus attribute the ship to 149; not material but reflects imprecise external tracking of a small feature (S4, S5)."
+  ],
+  "counterfactuals": [
+    "A coarse property-family figure for image-rendering now exists (bucket_id 82, ~0.07% of page loads), but only a value-level counter (webdx enum) could isolate crisp-edges adoption; with neither that nor a predeclared target recorded at ship, adoption stays unscored. A feature-level counter plus a target would have let adoption be judged rather than merely described.",
+    "If the original 2013-era crisp-edges implementation (bug 317991) had not been blocked/unshipped by the canvas/compositor regression, Chrome might have shipped parity years earlier, removing a decade of fallback CSS and MDN/caniuse caveats.",
+    "A short friction-log across canvas/WebGL/pixel-art and design-tooling pages before ship would have cheaply confirmed the synonym behaves identically to pixelated on compositor layers (the historical failure mode) and de-risked the prototype phase, which is currently 'unknown' for lack of a visible artifact.",
+    "Treating crisp-edges as a literal synonym (rather than the spec's broader 'preserves contrast/edges' allowance) is interoperable with Firefox/Safari today, but if either engine later shipped a distinct non-nearest-neighbor crisp-edges algorithm, Chrome's synonym choice would need revisiting."
+  ],
+  "skillImprovements": [
+    "Add a 'catch-up / synonym' fast-path to the intake and wide-review phase packets so that spec-final, dual-engine-shipped, deterministic-synonym features are explicitly cleared to skip prototype/developer-trial/experiment with a documented rationale (preventing reviewers from treating 'not-relevant' as evasion and preventing teams from running customary-but-useless OTs).",
+    "Add an 'evidence-of-impact by default' prompt for even tiny CSS value additions: require either a value-level (webdx) counter, an HTTP Archive query that isolates the value, or an explicit 'property-family counter only — adoption unscored' decision recorded at ship, so that a family counter (which crisp-edges now has) is not mistaken for feature-level adoption.",
+    "Add a regression-history check to the prototype/prepare-to-ship packets: search the component for prior unship/revert records (e.g. the crisp-edges canvas/compositor revert) and require a friction-log on the historically failing surface before declaring the reused path safe.",
+    "Add a 'cross-source milestone reconciliation' step to launch-retrospective: when ChromeStatus/official release notes and third-party trackers (caniuse/MDN BCD) disagree on the ship milestone, record the discrepancy and the authoritative source rather than silently picking one.",
+    "Add an eval/regression case to the launch-retrospective skill using this feature: a low-risk, long-delayed catch-up where execution is clean and a property-family counter exists (~0.07%, flat) but no value-level counter or target exists, to verify the scorer keeps adoption 'unscored' (not 'mixed'), overall 'mixed' (not 'success'), and completion 'partial' (not 'complete')."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Live WPT pass-state for the three referenced test files (image-rendering-computed.html, image-rendering-valid.html, image-rendering.html on wpt.fyi) was not independently retrieved; only the test-file references in ChromeStatus were captured.",
+      "A CSS property-family counter for 'image-rendering' (bucket_id 82) is now available (~0.07% of measured page loads, flat around launch), but there is no exact feature-level counter for the crisp-edges value (webdx_usecounter_enum null), no unique-site/HTTP Archive/production/retention adoption data, and no predeclared target, so the adoption outcome remains unscored.",
+      "No end-user impact measurement (telemetry, A/B, accessibility) is public, leaving the endUserImpact outcome unscored.",
+      "Full body of the Intent to Ship blink-dev thread (review comments, LGTMs, dates) was not retrieved; only a search snippet was captured.",
+      "Mozilla bugzilla 1496617 and WebKit commit 31e3ae40 contents were taken from the ChromeStatus record, not independently retrieved.",
+      "Resolution of the caniuse-148 vs Chrome-149 milestone discrepancy could not be confirmed from primary sources.",
+      "day90 and day180 launch-relative checkpoints for the image-rendering property-family counter (bucket_id 82) are not yet observed; only atStable and day30 are available."
+    ],
+    "reviewedAt": "2026-07-22T18:07:07Z"
+  }
+}

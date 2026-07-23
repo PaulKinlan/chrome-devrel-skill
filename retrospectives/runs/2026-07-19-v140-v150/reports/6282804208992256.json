@@ -29,7 +29,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T07:05:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -111,16 +111,17 @@
       "limitations": "The primary conceptual tutorial (Feb-2025 'Popover = hint' blog) was not updated to cover the M150 refinements (downgrade behavior, beforetoggle errors); only the release notes cover them. No standalone launch article, demo, or FAQ for the behavior change was located."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Adoption cannot be assessed. The feature shipped 2026-06-30 and the underlying popover=hint attribute has only ~0.025% page usage; popover-hint is not yet in Baseline (~68.6% global support per secondary dashboard, no Safari shipped). Dominant tooltip/popover libraries (Tippy.js, Floating UI/Popper) remain JavaScript-based and do not target native popover=hint. No case studies or production-adoption evidence exist for the behavior change.",
+      "status": "partial",
+      "finding": "Adoption of the behavior change specifically cannot be isolated, but the broad popover-hint family usage is now measured and low. The cached WebDX/declared-family counter 'PopoverHint' (ChromeStatus webfeature timeline, bucket_id 296, mapped from web_feature popover-hint) fires on any popover=hint use and first turned positive 2025-03-14 (Chrome 133 era), so it predates and does not isolate this M150 change. It measured 0.00420382 (~0.42%) of measured Chrome HTTP/HTTPS page loads on 2026-07-21 and was essentially flat across the launch: 0.00445785 (~0.45%) at the M149 DevTrial stable (2026-06-02) and 0.00397717 (~0.40%) at its day-30 (2026-07-02); 0.00401361 (~0.40%) at the M150 stable (2026-06-30); peak 0.00458217 (~0.46%) on 2026-06-09. No surge is attributable to the behavior change, and the family level is an upper bound on the population that could exercise it. popover-hint is not yet in Baseline (~68.6% global support, no Safari shipped). Dominant tooltip/popover libraries (Tippy.js, Floating UI/Popper) remain JavaScript-based and do not target native popover=hint. No case studies or production-adoption evidence exist for the behavior change.",
       "evidenceIds": [
+        "S14",
         "S1",
         "S7",
         "S8",
         "S10",
         "S11"
       ],
-      "limitations": "Too recent and too low-usage to measure; adoption-stage evidence (awareness/evaluation/production) is absent by construction, not by failure to search."
+      "limitations": "The declared-family counter measures the broader popover-hint attribute (in use since Chrome 133), not the M150 corner-case refinements (nested auto-in-hint downgrade, beforetoggle reentrancy); it is an upper bound, not exact adoption. M150 day30/day90/day180 checkpoints are not yet available (~3 weeks post-stable at cutoff). No unique-site, production, retention, task-success, user-benefit, or predeclared adoption-target evidence."
     },
     "support": {
       "status": "unknown",
@@ -156,24 +157,26 @@
     },
     "endUserImpact": {
       "status": "unscored",
-      "finding": "Direct end-user impact is intentionally minimal and unmeasured: ~0.025% usage, corner-case scope, non-breaking. Indirectly positive (more predictable tooltips/menus), but no end-user or accessibility impact data for the change exists. Scored unscored rather than success.",
+      "finding": "Direct end-user impact is intentionally minimal and unmeasured: corner-case scope, non-breaking. The broader popover-hint family counter (PopoverHint, bucket_id 296) fires on ~0.42% of measured page loads (0.00420382 on 2026-07-21) but does not isolate the behavior change, so the end-user surface affected by this change is a small subset of an already-niche feature. Indirectly positive (more predictable tooltips/menus), but no end-user or accessibility impact data for the change exists. Scored unscored rather than success.",
       "evidenceIds": [
+        "S14",
         "S1",
         "S2"
       ],
-      "limitations": "No telemetry, a11y audit, or user-impact measurement specific to the change; near-zero impact is an assertion, not a measured outcome."
+      "limitations": "No a11y audit or user-impact measurement specific to the change; the family counter is not a behavior-change-specific signal, so near-zero end-user impact remains an assertion, not a measured outcome."
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Too new and too low-usage to score. Shipped 2026-06-30; underlying popover=hint is ~0.025% usage, not yet Baseline, absent in Safari, one milestone behind in Firefox (151). No production adoption, framework integration, or case-study evidence for the behavior change.",
+      "finding": "No predeclared adoption target exists for this behavior refinement, and the only available usage signal is a broader family counter rather than exact behavior-change adoption, so adoption remains unscored. The cached WebDX/declared-family counter 'PopoverHint' (bucket_id 296; fires on any popover=hint use, first positive 2025-03-14) measured 0.00420382 (~0.42%) of page loads on 2026-07-21 and was essentially flat across the M150 ship - 0.00401361 (~0.40%) at M150 stable (2026-06-30), 0.00445785 (~0.45%) at M149 stable (2026-06-02), peak 0.00458217 (~0.46%) on 2026-06-09 - with no surge attributable to the behavior change. The separate legacy counter 4480 cited at intake measured ~0.025% (a narrower snapshot, not contradicted by the family counter). popover-hint is not yet Baseline (~68.6% global support), absent in Safari, one milestone behind in Firefox (151). No production adoption, framework integration, case-study, or retention evidence for the behavior change.",
       "evidenceIds": [
+        "S14",
         "S1",
         "S7",
         "S8",
         "S10",
         "S11"
       ],
-      "limitations": "Cannot be scored at the evidence cutoff; revisit after Safari/Firefox ship and usage matures."
+      "limitations": "Unscored because no adoption target was predeclared and no production/retention evidence corroborates the broad usage level; the family counter is an upper bound, not exact adoption, and behavior-change-specific adoption is unmeasured. M150 day30/day90/day180 not yet available. Revisit after Safari/Firefox ship and usage matures."
     },
     "interoperability": {
       "status": "mixed",
@@ -221,15 +224,16 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A clearly-correct, low-risk fix to a real, independently-verified problem, executed with strong cross-engine spec consensus, WPT coverage, and multi-LGTM approval, and shipped on schedule. The outcome is mixed rather than successful because several material dimensions are unscored (end-user impact, adoption, support - all too new / 0.025% usage / no Safari), interoperability is Chrome+Firefox-only pending Safari, web-developer signals are absent, and key gates (security/privacy review) were pending at cache. The retrospective lesson - a detailed behavior review should have happened before the original Chrome 133 ship - is explicitly acknowledged by the reporter and an API owner.",
+      "finding": "A clearly-correct, low-risk fix to a real, independently-verified problem, executed with strong cross-engine spec consensus, WPT coverage, and multi-LGTM approval, and shipped on schedule. The outcome remains mixed rather than successful because several material dimensions are unscored (end-user impact, adoption, support): adoption has no predeclared target and the only usage signal is a broader family counter (~0.42% of page loads, flat across the M150 ship; behavior-change-specific adoption unmeasured), end-user impact is unmeasured, and support data is too new; interoperability is Chrome+Firefox-only pending Safari; web-developer signals are absent; and key gates (security/privacy review) were pending at cache. The retrospective lesson - a detailed behavior review should have happened before the original Chrome 133 ship - is explicitly acknowledged by the reporter and an API owner.",
       "evidenceIds": [
         "S2",
         "S3",
         "S5",
         "S1",
-        "S7"
+        "S7",
+        "S14"
       ],
-      "limitations": "Overall deliberately does not mask the unscored dimensions; success cannot be inferred from shipment, low usage, or absence of criticism."
+      "limitations": "Overall deliberately does not mask the unscored dimensions; success cannot be inferred from shipment, low/flat broad usage, or absence of criticism."
     }
   },
   "sources": [
@@ -247,7 +251,7 @@
         "Tracking bug 499019927, spec PR #12345, initial proposal #12304",
         "Security and privacy review 'Pending' as of accurate_as_of 2026-06-01; is_released=false at cache"
       ],
-      "limitations": "Cache snapshot 2026-06-01, predates the 2026-06-30 stable ship; review 'Pending' fields may be data lag."
+      "limitations": "Cache snapshot 2026-06-01, predates the 2026-06-30 stable ship; review 'Pending' fields may be data lag. Legacy counter 4480 (~0.025%) is a different, narrower measurement than the WebDX family counter 296 (S14)."
     },
     {
       "id": "S2",
@@ -402,12 +406,27 @@
         "Referenced as the spec change and the source of Gecko/WebKit positions (corroborated via the intent)"
       ],
       "limitations": "Page could NOT be retrieved (Z.AI reader returned HTTP 500 / request timeout across multiple attempts); Mozilla/WebKit positions and merge status not directly verified."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=296",
+      "publisher": "Chrome Platform Status (Chrome Use Counter / WebFeature popularity timeline)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX/declared-family counter 'PopoverHint' (ChromeStatus webfeature timeline, bucket_id 296), mapped from ChromeStatus web_feature popover-hint; this is a broader family counter and NOT exact adoption of the M150 behavior change",
+        "Counter fired on 0.00420382 (~0.42%) of measured Chrome HTTP/HTTPS page loads on 2026-07-21 (latest of 495 points); first observed positive 2025-03-14 at 0.000001 (Chrome 133 era, predating this change)",
+        "Launch-relative checkpoints for the family counter: M149 DevTrial atStable 2026-06-02 = 0.00445785, day30 2026-07-02 = 0.00397717; M150 Enabled-by-default atStable 2026-06-30 = 0.00401361; peak 0.00458217 on 2026-06-09; M150 day30/day90/day180 not yet available",
+        "Broad popover-hint family usage is low (<1% of page loads) and essentially flat across the M150 ship, with no surge attributable to the behavior change"
+      ],
+      "limitations": "Declared-family counter measures the broader popover-hint attribute (in use since Chrome 133); it fires on any popover=hint use and does NOT isolate the M150 corner-case refinements (nested auto-in-hint downgrade, beforetoggle reentrancy), so it is an upper bound on, not a measure of, behavior-change adoption. Share of measured Chrome HTTP/HTTPS page loads where the counter fired - not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented. Mapping provenance: web-features-mappings chrome-use-counters.json (PopoverHint)."
     }
   ],
   "successes": [
     "Cross-engine spec collaboration: Mozilla originated the change, WebKit reviewed positively, and Firefox (151) is converging on the same model - the ideal interop trajectory for a behavior change.",
     "Honest, evidence-based motivation that named the real problem (reproducible weirdnesses in whatwg/html#12304) and openly self-critiqued the original review lapse rather than framing the change as routine.",
-    "Low-risk, well-scoped intervention (0.025% usage, breaking_change=false, graceful downgrade instead of throwing) shipped on schedule (M150, 2026-06-30) with three API-owner LGTMs and WPT coverage.",
+    "Low-risk, well-scoped intervention shipped on schedule (M150, 2026-06-30) with three API-owner LGTMs and WPT coverage; broad popover-hint family usage is low (~0.42% of measured page loads, flat across the ship) and breaking_change=false with graceful downgrade instead of throwing, consistent with a non-disruptive refinement (behavior-change-specific adoption unmeasured).",
     "beforetoggle reentrancy hardening (more reliable InvalidStateError) improves robustness beyond the visible stacking fixes.",
     "Strong wide-review participation: an independent expert and multiple API owners engaged substantively, yielding a better result (Jake Archibald: 'really happy how this has turned out')."
   ],
@@ -432,18 +451,19 @@
     "Add a docs-sync rule: shipping a behavior change to an already-shipped feature requires the canonical tutorial/blog to be updated in the same milestone or explicitly flagged stale.",
     "Add a prepareToShip gate reminder: security_review_status and privacy_review_status must be reconciled to a non-Pending state before the phase can be 'supported'.",
     "Add an evidence-resilience procedure: when a primary URL (spec PR, crbug) is unreadable, record the attempted URL plus retrieval error, fall back to transitively-corroborated claims, and set completion to 'partial' rather than aborting or inventing.",
-    "Add a regression eval for stacking/top-layer features that includes both the original strong case (clean ship) and weak cases (post-ship behavior-change rescues like this one)."
+    "Add a regression eval for stacking/top-layer features that includes both the original strong case (clean ship) and weak cases (post-ship behavior-change rescues like this one).",
+    "Add a mandatory metrics step to the retrospective flow: for every feature with any mapped Chrome use counter (legacy HTML/JS, WebDX/WebFeature family, CSS, or origin-trial), cache the ChromeStatus timeline and counter-mapping provenance, cite it as a dated source, and label the scope (exact vs broader family/property vs origin-trial vs multiple). Never assert 'no Chrome usage telemetry exists' without first checking the cached counter inventory, and never equate a family/property counter (or any counter share) with exact feature adoption or with unique developers, sites, users, successful tasks, satisfaction, or end-user benefit."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
       "Direct content of spec PR #12345 (unreadable via reader; Mozilla/WebKit positions known only transitively from the intent)",
       "Direct content of tracking bug crbug 499019927 (unreadable via reader; role corroborated by intent + release notes)",
-      "Any post-ship adoption, usage-trend, or case-study data (feature shipped 2026-06-30; underlying usage ~0.025%)",
+      "Exact behavior-change adoption and deeper adoption evidence: the cached signal is a broader popover-hint family counter (PopoverHint, bucket_id 296), not adoption of the M150 refinements; no unique-site, production, retention, task-success, user-benefit, or predeclared adoption-target evidence, and M150 day30/day90/day180 checkpoints are not yet available",
       "Attributable web-developer signals (intent explicitly states 'No signals')",
       "Resolution of security/privacy review (both 'Pending' at the 2026-06-01 cache)",
       "Rendered BaseWatch / global-support and Baseline figures (only search-result snippets obtained; SPA not directly loadable)"
     ],
-    "reviewedAt": "2026-07-20T07:05:00Z"
+    "reviewedAt": "2026-07-22T18:07:24Z"
   }
 }

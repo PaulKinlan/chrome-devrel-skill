@@ -23,7 +23,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T14:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:00Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -118,14 +118,15 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "No defensible adoption evidence. The feature is counted as a CSS property for UseCounter purposes, but no public usage numbers were retrievable. No attributable production case studies or verified deployments evidence was found. Adoption is structurally constrained by Chrome-only availability: as of mid-2026 (~10 months post-ship) caniuse (MDN browser-compat-data) shows support only in Chromium browsers (Chrome/Edge/Opera/Chrome-Android/Android-Browser); Firefox, Safari, Samsung Internet, and Firefox-for-Android are all 'Not supported'. Community/educational content exists (bram.us, LogRocket, piccalil.li, YouTube '089: View transitions') but is not adoption evidence. React core added a <ViewTransition> component, but for base view transitions, not nested groups specifically.",
+      "finding": "Nested-groups-specific adoption remains unmeasurable, but a Chrome usage source now exists for the surrounding capability family. The only mapped counter is the WebFeature 'view-transitions' family counter ViewTransitions (bucket_id 2), mapping scope web-feature-family (confidence: declared-family) — NOT an exact counter for nested view transition groups. Critically, it was already firing before nested groups shipped (first observed positive 2024-06-10 at 0.000051%), so it cannot isolate nested-groups adoption from base view-transitions usage; it is an upper bound only. As family-level context, the counter fired on the following share of measured Chrome HTTP/HTTPS page loads: at M140 stable (2025-09-02) 0.00231316%, day30 (2025-10-02) 0.00165856%, day90 (2025-12-01) 0.00523687%, day180 (2026-03-01) 0.00610281%, peaking 0.00758282% (2026-04-04), latest 0.0052774% (2026-07-20). None of this is nested-groups adoption, unique-site reach, production deployment, task success, satisfaction, or end-user benefit. There is still no exact counter, no attributable production case study, and no predeclared adoption target. Adoption is structurally constrained by Chrome-only availability (caniuse/MDN browser-compat-data mid-2026: Chromium-only). Community/educational content (bram.us, LogRocket, piccalil.li, YouTube '089: View transitions') and React core's <ViewTransition> (base VT, not nested groups) are not adoption evidence.",
       "evidenceIds": [
         "s-caniuse",
         "s-devrel-blog",
         "s-chromestatus",
-        "s-i2ship"
+        "s-i2ship",
+        "s-wf-family-counter"
       ],
-      "limitations": "Chrome UseCounter data is internal/not publicly queryable; HTTP Archive/Web Almanac figures for this specific property were not found. Cannot infer adoption from shipment, community posts, or Chrome-only availability."
+      "limitations": "Only a family counter is mapped; nested-groups-specific adoption cannot be isolated (the counter predates and subsumes the feature). No exact counter, no unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence. Cannot infer adoption from shipment, community posts, family-level percentages, or Chrome-only availability."
     },
     "support": {
       "status": "unknown",
@@ -174,13 +175,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Cannot be scored from available evidence. No public UseCounter numbers, no attributable production case studies, no framework/tool integration specific to nested groups. Chrome-only availability (per caniuse mid-2026) makes broad adoption structurally unlikely so far, but absence of evidence is not evidence of absence. Scored unscored rather than success or failure per the method (do not infer from shipment, usage alone, or press sentiment).",
+      "finding": "Unscored. No predeclared adoption target exists (I2Ship measurement is 'Use counted as a CSS property' with no threshold), and there is no corroborating production or retention evidence, so per the method the outcome is not scored as success, failure, or mixed. The only telemetry is the WebFeature view-transitions family counter (bucket_id 2), which is an upper bound, not a nested-groups measurement — it was firing before nested groups shipped (first positive 2024-06-10). For context the family counter was ~0.0023% of measured Chrome HTTP/HTTPS page loads at M140 stable (2025-09-02), ~0.0017% at day30, ~0.0052% at day90, ~0.0061% at day180, peaking ~0.0076% (2026-04-04), latest ~0.0053% (2026-07-20) — low single-digit-thousandths of a percent, generally trending up for the family. These bound but do not quantify nested-groups adoption; per the method low or high family usage is not, by itself, success or failure for the feature, and mixed is not a substitute for an absent threshold. Chrome-only availability (caniuse mid-2026) makes broad adoption structurally unlikely so far. Scored unscored rather than success/failure/mixed (do not infer from shipment, usage alone, or press sentiment).",
       "evidenceIds": [
         "s-caniuse",
         "s-i2ship",
-        "s-chromestatus"
+        "s-chromestatus",
+        "s-wf-family-counter"
       ],
-      "limitations": "Internal Chrome telemetry and HTTP Archive data not accessible; would change the score if available."
+      "limitations": "No exact nested-groups counter; the family counter is an upper bound that predates the feature. No predeclared target, no unique-site, production, retention, task-success, or user-benefit evidence. Family-level telemetry would not, by itself, justify a score."
     },
     "interoperability": {
       "status": "failure",
@@ -243,9 +245,10 @@
         "s-webkit466",
         "s-caniuse",
         "s-devrel-blog",
-        "s-chrome140-release"
+        "s-chrome140-release",
+        "s-wf-family-counter"
       ],
-      "limitations": "Adoption and support dimensions are unscored due to inaccessible internal data; the interop and process conclusions are defensible from public primary sources."
+      "limitations": "Adoption is unscored because the only mapped Chrome usage telemetry is the broader view-transitions family counter (not exact for nested groups, and firing before the feature shipped) with no predeclared target or production/retention evidence; support is unscored due to the auth-gated tracking bug. The interop and process conclusions are defensible from public primary sources."
     }
   },
   "sources": [
@@ -452,6 +455,21 @@
         "Exactly one launch event for this feature: eventId 140:Enabled by default:5162799714795520, milestone 140, category 'Enabled by default'; no DT/OT/stepped-rollout/deprecation events"
       ],
       "limitations": "Manifest defines the fixed inventory only."
+    },
+    {
+      "id": "s-wf-family-counter",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=2",
+      "publisher": "Chrome Platform Status — WebFeature popularity timeline (Chrome UseCounter / UMA), property ViewTransitions, bucket_id 2",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Mapping is web-feature-family (confidence: declared-family) for web_feature 'view-transitions' normalizing to WebFeature counter ViewTransitions (bucket_id 2) — NOT an exact counter for nested view transition groups; it is the broader view-transitions family counter.",
+        "Counter was already positive before nested groups shipped: first observed positive 2024-06-10 at 0.000051% day_percentage, so the timeline cannot isolate nested-groups adoption from base view-transitions usage (upper bound only).",
+        "Launch-relative checkpoints (M140 Enabled by default, stable 2025-09-02), day_percentage = share of measured Chrome HTTP/HTTPS page loads where the counter fired: atStable 0.00231316% (2025-09-02); day30 0.00165856% (2025-10-02); day90 0.00523687% (2025-12-01); day180 0.00610281% (2026-03-01).",
+        "Peak 0.00758282% (2026-04-04); latest 0.0052774% (2026-07-20); 578 timeline points. Timeline cached with sha256 0d7ee6d0c10d1499e28574e0cf0f3cad5658a433f370cfdee0f5366295fd6100."
+      ],
+      "limitations": "Family counter, not exact nested-groups adoption — provides an upper bound only and was firing before the feature shipped, so it is non-informative about nested-groups adoption specifically. Values are the share of measured Chrome HTTP/HTTPS page loads where the counter fired, not unique developers/sites/users, not task success, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise and opt-out populations may be underrepresented. Counter instrumentation may include detection/probing. Retrieved after the main 14:00Z evidence cutoff but all data points predate it (latest 2026-07-20)."
     }
   ],
   "successes": [
@@ -481,12 +499,14 @@
     "prototype/prepareToShip: add a WPT test-quality checklist item — tests for a feature layered on another feature must assert the underlying feature is supported before asserting the layered behaviour (avoid false-pass on unsupported engines). Add this as a regression eval.",
     "Retrospective method: treat I2Ship-estimated milestone vs. actual ship milestone as a launch-quality signal; flag slips >=2 milestones for explanation in the report.",
     "release module: add an MDN/documentation-readiness check (canonical reference page exists for the shipped property/API before/at ship) to the prepare-to-ship and release packets.",
-    "incubation module: encourage earlier (pre-spec) cross-engine position requests for features that extend a recently-Baselined capability, to reduce Chrome-only periods."
+    "incubation module: encourage earlier (pre-spec) cross-engine position requests for features that extend a recently-Baselined capability, to reduce Chrome-only periods.",
+    "measurement/prepareToShip: when an I2Ship states measurement 'Use counted as a CSS property', confirm at ship time whether the mapped UseCounter/WebFeature counter is exact for the shipped feature or a broader WebDX family/property counter. If only a family counter exists (especially one that predates the feature), record that the feature's specific adoption will be unmeasurable from public telemetry and, where feasible, propose a feature-specific counter; in retrospectives treat a family counter that predates the feature as no adoption signal for the specific feature."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Chrome UseCounter / actual usage numbers for view-transition-group (internal, not publicly queryable) — adoption dimension remains unscored.",
+      "No exact/public counter for nested view transition groups: the only mapped Chrome usage telemetry is the broader WebFeature 'view-transitions' family counter (ViewTransitions, bucket_id 2), which was firing before the feature shipped and provides only an upper bound — so nested-groups-specific adoption is unmeasurable from public telemetry and the adoption outcome stays unscored.",
+      "No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared adoption-target evidence for nested groups.",
       "Tracking bug issuetracker.google.com/399431227 content (auth-gated; not retrievable) — support dimension remains unscored.",
       "Live WPT pass-rate matrix (wpt.fyi dashboard is JS-rendered; only a shell was retrieved). The I2Ship qualitative WPT caveat is used as the primary test-quality signal.",
       "Intent to Prototype Google Groups thread body (repeated reader timeouts/network errors); only its existence and cross-reference from the I2Ship are confirmed. CSSWG/WPT-commit evidence covers the prototype phase.",

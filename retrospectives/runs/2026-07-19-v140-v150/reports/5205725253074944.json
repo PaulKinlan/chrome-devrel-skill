@@ -81,15 +81,15 @@
     },
     "experiment": {
       "status": "partial",
-      "finding": "Origin Trial is the active phase. Intent to Experiment (2026-05-20) was approved (LGTM M150-M153 by API owner Yoav Weiss, conditional on merging explainers + a debuggability review); OT began ~2026-06-30 in M150 desktop (record shows desktop_first 150 / desktop_last 156). Strong experiment design: five explicit hypotheses, use counter 5916, UMA Blink.Evp.* metrics, third-party support. Genuinely seeded with issuers (Gmail at OT maturity; Hello exploratory) and a second Chromium-based browser OT (Edge). As of cutoff (~3 weeks in) no interim readout or results exist.",
+      "finding": "Origin Trial is the active phase. Intent to Experiment (2026-05-20) was approved (LGTM M150-M153 by API owner Yoav Weiss, conditional on merging explainers + a debuggability review); OT began ~2026-06-30 in M150 desktop (record shows desktop_first 150 / desktop_last 156). Strong experiment design: five explicit hypotheses, use counter 5916, UMA Blink.Evp.* metrics, third-party support. Genuinely seeded with issuers (Gmail at OT maturity; Hello exploratory) and a second Chromium-based browser OT (Edge). As of cutoff (~3 weeks in) no interim OT readout exists; the public ChromeStatus usage timeline now shows a near-zero measured page-load share (USAGE-1), but no OT-specific adoption/task-completion results.",
       "evidenceIds": [
         "INTENT-2",
         "CS-1",
         "DEVREL-1",
         "SPEC-1",
-        "METRIC-1"
+        "USAGE-1"
       ],
-      "limitations": "No OT results/adoption/task-completion yet; desktop-only; OT registration does not equal production use."
+      "limitations": "No OT-specific results/adoption/task-completion yet (the cached ChromeStatus telemetry in USAGE-1 is all-Chrome page-load share, not OT adoption); desktop-only; OT registration does not equal production use."
     },
     "prepareToShip": {
       "status": "not-relevant",
@@ -112,13 +112,13 @@
     },
     "adoption": {
       "status": "unknown",
-      "finding": "Too early to assess. The OT started ~3 weeks before cutoff; no verifier (website) production adoption, framework/library/tool integration, or case-study evidence was found. Use counter 5916 returned no usable data.",
+      "finding": "Production adoption remains unassessable, though first-party Chrome usage telemetry is now cached. Use counter 5916 (kEmailVerificationProtocol) is an exact, single-feature mapping (scope=exact, confidence=exact; also registered as the M150 OT-stage counter, but the cached series is the all-Chrome feature-popularity timeline). The cached timeline (22 points) shows the counter fired on a near-zero and declining share of measured Chrome HTTP/HTTPS page loads: first/peak day_percentage 0.000001 on 2026-06-19 (pre-OT; likely Canary/flag/devtrial usage), 0 at the M150 Origin-Trial stable checkpoint (2026-06-30), and latest day_percentage 1e-8 on 2026-07-21. Launch-relative checkpoints for the M150 Origin trial (stable 2026-06-30): atStable day_percentage 0; day30, day90, day180 all null (too early). This page-load share is not production verifier adoption, unique sites, users, task success, or end-user benefit, and no production verifier deployment, framework/library integration, case study, predeclared adoption target, or retention evidence exists, so production adoption cannot be scored.",
       "evidenceIds": [
-        "METRIC-1",
-        "DEVREL-1",
-        "CS-1"
+        "USAGE-1",
+        "CS-1",
+        "DEVREL-1"
       ],
-      "limitations": "No adoption data exists yet; cannot score."
+      "limitations": "Cached usage telemetry (USAGE-1) reports the share of measured Chrome page loads where the counter fired; counter instrumentation may include detection/probing and reflects the desktop-dominant OT milestone with enterprise/opt-out populations underrepresented. Near-zero page-load share is not zero real-world use and is not production adoption. No unique-site, production-verifier-deployment, retention, task-success, user-benefit, or predeclared-target evidence; cannot score production adoption."
     },
     "support": {
       "status": "unknown",
@@ -163,14 +163,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "OT just started. Issuer-side seeding is real (Gmail at OT maturity; Hello exploratory) and there is a second Chromium browser OT (Edge), but no measurable verifier production adoption, use-counter data, or framework/library integration exists. is_official_web_feature=false / web_feature=Missing feature (not yet in web-features/Baseline tracking).",
+      "finding": "Unscored: there is no predeclared adoption target and no corroborating production/retention evidence, so the measured level/trend is described rather than verdicted. Issuer-side seeding is real (Gmail at OT maturity; Hello exploratory) and a second Chromium-based browser OT (Edge) is running, but measured Chrome usage is near-zero and declining: exact use counter 5916 (kEmailVerificationProtocol, scope=exact) first/peak day_percentage 0.000001 on 2026-06-19, 0 at the M150 Origin-Trial stable checkpoint (2026-06-30), latest day_percentage 1e-8 on 2026-07-21; atStable 0; day30/day90/day180 null. This page-load share is not unique sites, users, production verifier deployment, task success, or end-user benefit. No production verifier adoption, framework/library integration, case study, retention, or predeclared target. is_official_web_feature=false / web_feature=Missing feature (not yet in web-features/Baseline tracking).",
       "evidenceIds": [
-        "METRIC-1",
+        "USAGE-1",
         "DEVREL-1",
         "SPEC-1",
         "CS-1"
       ],
-      "limitations": "No adoption data yet; Edge is Chromium-based, not an independent engine."
+      "limitations": "USAGE-1 is page-load share where counter 5916 fired, not production adoption; near-zero is not automatically failure and there is no predeclared target to compare against, so the outcome is unscored (not mixed). Counter instrumentation may include detection/probing and reflects the desktop-dominant OT milestone. Edge is Chromium-based, not an independent engine. No unique-site, production, retention, task-success, user-benefit, or target evidence."
     },
     "interoperability": {
       "status": "mixed",
@@ -200,14 +200,14 @@
     },
     "evidenceAndCommunication": {
       "status": "mixed",
-      "finding": "Primary documentation is strong and accurate (detailed explainer, IETF I-D, W3C browser API, devtrial HOWTO, OT blog with demos and stated limitations), corroborated by independent press. But the ChromeStatus Positive webdev signal rests on an unnamed-partner devtrial; the two explainers diverged at Intent time (flagged by the API owner, later merged); the use-counter page is non-functional/ambiguous; and no public OT readout/dashboard exists at cutoff.",
+      "finding": "Primary documentation is strong and accurate (detailed explainer, IETF I-D, W3C browser API, devtrial HOWTO, OT blog with demos and stated limitations), corroborated by independent press. The first-party ChromeStatus usage timeline for counter 5916 is now cached and renders a usable near-zero, declining page-load-share series. But the ChromeStatus Web developers: Positive signal rests on an unnamed-partner devtrial; the two explainers diverged at Intent time (flagged by the API owner, later merged); and no public interim OT readout (adoption counts, task completion, partner outcomes, prompt-acceptance) or OT dashboard exists at cutoff.",
       "evidenceIds": [
         "EXP-1",
         "SPEC-1",
         "DEVREL-1",
         "PRESS-1",
         "INTENT-2",
-        "METRIC-1"
+        "USAGE-1"
       ],
       "limitations": "Vendor-authored primary docs; limited independent validation of claims."
     },
@@ -221,12 +221,12 @@
     },
     "overall": {
       "status": "unscored",
-      "finding": "Overall outcome is not yet scorable. This is a well-motivated, thoughtfully-designed early Origin Trial (real problem, multi-party activation economics, progressive enhancement, active standards engagement, genuine issuer/browser seeding) that is pre-shipment (~3 weeks into a desktop-only OT) with no measured adoption, end-user-impact, or support data, no independent-engine support, and non-supportive Mozilla/TAG/WebKit signals with a pending Mozilla re-review. Per the scoring rules, success cannot be inferred from the OT launch, vendor comms, or absent criticism; and most outcome dimensions are unscored.",
+      "finding": "Overall outcome is not yet scorable. This is a well-motivated, thoughtfully-designed early Origin Trial (real problem, multi-party activation economics, progressive enhancement, active standards engagement, genuine issuer/browser seeding) that is pre-shipment (~3 weeks into a desktop-only OT). First-party Chrome usage telemetry now exists and shows a near-zero, declining measured page-load share (counter 5916; USAGE-1), but with no predeclared target and no production/retention evidence the adoption outcome remains unscored; there is still no measured end-user-impact or support data, no independent-engine support, and non-supportive Mozilla/TAG/WebKit signals with a pending Mozilla re-review. Per the scoring rules, success cannot be inferred from the OT launch, vendor comms, near-zero telemetry, or absent criticism; and most outcome dimensions are unscored.",
       "evidenceIds": [
         "CS-1",
         "INTENT-2",
         "DEVREL-1",
-        "METRIC-1",
+        "USAGE-1",
         "MOZ-1",
         "WK-1",
         "TAG-1",
@@ -416,16 +416,19 @@
       "limitations": "Secondary press largely summarizing the announcement."
     },
     {
-      "id": "METRIC-1",
-      "url": "https://chromestatus.com/metrics/feature/timeline/popularity/5916",
-      "publisher": "Chrome Platform Status (use counter 5916)",
-      "publishedOrObservedAt": "2026-07-19",
-      "retrievedAt": "2026-07-19T00:00:00Z",
+      "id": "USAGE-1",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5916",
+      "publisher": "Chrome Platform Status (ChromeStatus feature-popularity timeline; use-counter bucket 5916 kEmailVerificationProtocol)",
+      "publishedOrObservedAt": "2026-07-22",
+      "retrievedAt": "2026-07-22T18:07:22Z",
       "sourceType": "usage",
       "supports": [
-        "No usable usage/adoption data observable as of cutoff (OT just started; page returned errors/ambiguous feature-name mapping)"
+        "Exact, single-feature use-counter mapping: bucket 5916 kEmailVerificationProtocol maps to this ChromeStatus feature (scope=exact, confidence=exact); not a broader WebDX family/property or origin-trial-only counter (also registered as the M150 OT-stage counter, but the cached series is the all-Chrome feature-popularity timeline).",
+        "Cached timeline (22 points; SHA256 2295144eaf3aa1fcfd920275514859b2c3452b2c1b62c695f103509df18a73b7) shows the counter fired on a near-zero, declining share of measured Chrome HTTP/HTTPS page loads: first/peak day_percentage 0.000001 on 2026-06-19 (pre-OT; likely Canary/flag/devtrial), 0 at the M150 Origin-Trial stable checkpoint (2026-06-30), and latest day_percentage 1e-8 on 2026-07-21.",
+        "Launch-relative checkpoints for the M150 Origin trial (stable 2026-06-30): atStable day_percentage 0; day30, day90, day180 all null (too early).",
+        "Interpretation: numerator = Chrome page loads on which counter 5916 fired at least once; denominator = measured Chrome HTTP/HTTPS page loads across official channels and platforms."
       ],
-      "limitations": "Page failed to render data; no adoption data exists yet for this pre-shipment feature."
+      "limitations": "Post-cutoff usage-telemetry supplement collected 2026-07-22 (data first observed 2026-06-19 through 2026-07-21), appended to the 2026-07-19-scoped retrospective; used only for the adoption-phase and adoption-outcome findings (and reflected where METRIC-1 was previously cited), never for the intake/review/ship-decision phases. day_percentage is the share of measured Chrome page loads where the counter fired - not unique developers, sites, users, successful tasks, satisfaction, production verifier deployment, or end-user benefit. Counter instrumentation may include detection/probing; reflects participating Chrome clients and the dominant milestone (desktop OT), with enterprise/opt-out populations underrepresented. Near-zero or delayed points are not proof of zero real-world use."
     },
     {
       "id": "IMPL-1",
@@ -466,34 +469,35 @@
     "Substantive TAG (Mozilla/Martin Thomson) critique that the three-party model, key binding and attestations are unjustified complexity, not yet publicly refuted.",
     "Implementation shipped into the OT with open gaps: desktop-only; fenced frames and cross-origin documents temporarily disabled; debuggability still in development; no web-platform-tests; live spec divergence where the browser API uses a request format the I-D marks deprecated.",
     "Coverage gap not yet addressed in-trial: requires a logged-in webmail cookie session, excluding native-mail-client users (e.g. Thunderbird), flagged by Chrome engineers during Intent to Prototype.",
-    "No public interim OT readout or measurement dashboard as of the cutoff, leaving adoption/end-user/support outcomes unscored."
+    "No public interim OT readout (adoption counts, task completion, partner outcomes, prompt-acceptance) as of cutoff; the public ChromeStatus usage timeline (USAGE-1) now exists but shows near-zero measured page-load share and is not an OT readout, so adoption/end-user/support outcomes remain unscored."
   ],
   "counterfactuals": [
     "If the team had published the devtrial cohort, methodology, denominators and task-completion before the Intent to Experiment, the Web developers: Positive signal would be auditable and Mozilla's insufficient-detail deferral might have been faster to resolve.",
     "If the W3C browser-API and IETF protocol had aligned on the request format before the OT, the deprecated-format divergence flagged in draft-01 would not be shipping in the trial.",
     "If Android and native-mail-client (no-webmail-cookie) coverage had been in OT scope, the coverage gap raised internally (Reilly Grant/Daniel Bratell) would now have real-world test data.",
-    "If a public interim OT readout and measurement dashboard existed at cutoff, adoption/end-user/support outcomes would be scorable instead of unscored.",
+    "Public ChromeStatus usage telemetry now exists (USAGE-1) but adoption is still unscored: page-load share is not production adoption, and without a predeclared adoption target plus unique-site/production/retention evidence, a counter timeline alone would not have made adoption scorable - a target declared before the OT, with production/retention readouts, would have.",
     "If Mozilla/WebKit had been co-designing (not only giving directional guidance) before the OT, the ambivalent/Defer/No-signal interop picture might differ; the team is now re-opening Mozilla."
   ],
   "skillImprovements": [
     "Phase 03 (developer trials): add a rule that a Web developers: Positive ChromeStatus signal may not be cited as sufficient evidence in an Intent to Experiment without published cohort, methodology, denominators and task-completion; treat unnamed-partner claims as partial.",
     "Phase 04 (wide review): add a non-supportive-peer-engine rule - if Mozilla or WebKit is not positive at OT start, interoperability must start at mixed-or-below and the report must surface the specific objections (venue, design complexity) rather than treating No signal as neutral.",
     "Add a split-spec alignment gate: an Origin Trial must not ship a request format the normative spec already marks deprecated; add an automated explainer<->spec divergence check.",
-    "Phase 05 (experiment): add an artifact template requiring a public interim readout + measurement dashboard + extension rationale; mark reports partial/blocked if an OT has run >2 weeks with no readout.",
+    "Phase 05 (experiment): add an artifact template requiring a public interim readout (unique-site reach, production verifier deployment, retention, task-completion, prompt-acceptance - not just the ChromeStatus counter page-load-share timeline) + measurement dashboard + extension rationale; mark reports partial/blocked if an OT has run >2 weeks with no readout.",
     "Add a coverage/activation check that scores users reachable (e.g. native-mail-client users without webmail cookies) so coverage gaps are visible rather than hidden by desktop first.",
-    "Add a regression eval including an early-OT case (mostly unscored outcomes) to train the model not to infer success from vendor blog claims or press sentiment."
+    "Add a telemetry-interpretation rule for adoption scoring: a cached ChromeStatus feature-popularity timeline reports the share of measured Chrome HTTP/HTTPS page loads where a counter fired (only 'exact' when the mapping is exact, not a broader WebDX family/property or origin-trial-only counter); it must not be read as production verifier adoption, unique-site reach, retention, task success, or end-user benefit, and near-zero values must not be scored as failure where there is no predeclared target - the adoption outcome stays unscored and describes the measured level/trend instead.",
+    "Add a regression eval including an early-OT case (mostly unscored outcomes) to train the model not to infer success from vendor blog claims, press sentiment, or near-zero telemetry."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
       "No Origin Trial readout (adoption counts, task completion, partner outcomes, prompt-acceptance) - OT began ~2026-06-30, only ~3 weeks before cutoff; no interim/final readout published.",
       "No measurable end-user impact (no user study, conversion data, prompt-UX acceptance data).",
-      "No use-counter/usage data for metric 5916 (page non-functional; no stable rollout yet).",
+      "ChromeStatus usage telemetry for counter 5916 is now cached (USAGE-1) and shows near-zero measured page-load share, but no unique-site, production-verifier-deployment, retention, task-success, user-benefit, or predeclared-adoption-target evidence exists (page-load share is not production adoption or a target).",
       "No support/issue taxonomy or known-issues history (too early).",
       "No framework/library/tool integration or production verifier case studies (too early).",
       "No independent-engine implementation or Baseline/web-features progress; Mozilla and WebKit positions unresolved.",
       "Did not retrieve full IETF dispatch discussion or individual Chromium commits/crbug regressions."
     ],
-    "reviewedAt": "2026-07-19T00:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:22Z"
   }
 }

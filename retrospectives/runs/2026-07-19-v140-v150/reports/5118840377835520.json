@@ -22,7 +22,7 @@
       "category": "Origin trial"
     }
   ],
-  "evidenceCutoff": "2026-07-20T07:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:48Z",
   "phaseReview": {
     "intake": {
       "status": "partial",
@@ -104,13 +104,14 @@
       "limitations": "Release communication phase does not apply until default shipment."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "The OT only just began (Chrome 150, mid-2026); no public usage, UseCounter telemetry, or production case study of the measurement API (getSpeculations) exists. Broad adoption of the parent Speculation Rules API (WordPress core, Ray-Ban, Shopify case studies) validates latent demand but is not adoption of THIS measurement surface.",
+      "status": "partial",
+      "finding": "Cached ChromeStatus feature-popularity telemetry now exists for this feature's origin-trial counter (UseCounter bucket 5897, kSpeculationMeasurement; origin-trial scope, exact mapping — this is the feature's own counter, not a broader WebDX/property family, and there is no WebFeature/WebDX enum mapping). Across 9 daily points the counter fired on ~0.24% (0.00237957) of measured Chrome HTTP/HTTPS page loads at its first positive observation (2026-07-13, ~13 days after the Chrome 150 / Origin Trial stable checkpoint of 2026-06-30), peaked at ~0.59% (0.00592547) on 2026-07-18, and was ~0.51% (0.00514134) at the latest point (2026-07-21); the day30/day90/day180 launch-relative checkpoints are not yet available. This is an origin-trial counter (the share of page loads on which the OT counter fired), not unique-site or production adoption of the measurement surface. Broad adoption of the parent Speculation Rules API (WordPress core, Ray-Ban, Shopify case studies) validates latent demand but is not adoption of THIS measurement API.",
       "evidenceIds": [
         "s1",
-        "s14"
+        "s14",
+        "s16"
       ],
-      "limitations": "No OT participant count, activation telemetry, or production deployment of the measurement API is public."
+      "limitations": "Origin-trial counter only; reflects page loads on which the OT counter fired, not unique developers/sites/users, production deployments, successful tasks, satisfaction, or end-user benefit. No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence. Only 9 daily points; day30/90/180 launch-relative checkpoints not yet reached."
     },
     "support": {
       "status": "partial",
@@ -156,11 +157,12 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No public adoption or usage data for getSpeculations; OT is in its early weeks (Chrome 150, mid-2026).",
+      "finding": "Cached ChromeStatus feature-popularity telemetry is now available for the origin-trial counter (UseCounter bucket 5897 / kSpeculationMeasurement; origin-trial scope, exact mapping — the feature's own counter, not a broader family). Across 9 daily points the counter fired on ~0.24% (0.00237957) of measured Chrome HTTP/HTTPS page loads at its first positive observation (2026-07-13, ~13 days after the Chrome 150 / Origin Trial stable checkpoint of 2026-06-30), peaked at ~0.59% (0.00592547) on 2026-07-18, and stood at ~0.51% (0.00514134) on the latest point (2026-07-21). No predeclared adoption target or threshold is recorded for this feature, and there is no unique-site, production-deployment, retention, task-success, or end-user-benefit evidence to corroborate the counter trend; the day30/day90/day180 launch-relative checkpoints are not yet available. Per the interpretation rule low or high usage is not scored as success or failure absent a target, so the adoption outcome remains unscored; the measured level is a small but non-zero and slightly rising share of OT-enabled page loads in early OT.",
       "evidenceIds": [
-        "s1"
+        "s1",
+        "s16"
       ],
-      "limitations": "Usage/adoption of this specific API is unknown; cannot be inferred from parent-feature adoption."
+      "limitations": "Origin-trial counter only; reflects page loads on which the OT counter fired, not unique developers/sites/users, production deployments, successful tasks, satisfaction, or end-user benefit. No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence. Only 9 daily points; day30/90/180 launch-relative checkpoints not yet reached."
     },
     "interoperability": {
       "status": "failure",
@@ -204,16 +206,17 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, properly-configured Origin Trial for a real developer problem, with genuine external developer engagement. However it is early-stage with thin independent research, no other-engine signal, pending formal reviews, known API coverage gaps, and an API-naming inconsistency. Outcomes are not yet measurable.",
+      "finding": "A well-motivated, properly-configured Origin Trial for a real developer problem, with genuine external developer engagement. However it is early-stage with thin independent research, no other-engine signal, pending formal reviews, known API coverage gaps, and an API-naming inconsistency. Outcomes are largely unmeasurable; the one dimension with new data is adoption, where the origin-trial counter (bucket 5897) is firing on roughly ~0.24–0.59% of measured Chrome page loads in early OT but cannot be scored against a predeclared target.",
       "evidenceIds": [
         "s1",
         "s2",
         "s4",
         "s8",
         "s9",
-        "s11"
+        "s11",
+        "s16"
       ],
-      "limitations": "Overall outcome cannot be judged beyond OT setup quality until usage, interop, and field results exist."
+      "limitations": "Overall outcome cannot be judged beyond OT setup quality; adoption is now partly observed via an origin-trial counter (no target to score against), while interop, implementation-quality, and field-result evidence remain outstanding."
     }
   },
   "sources": [
@@ -396,6 +399,20 @@
         "Independent testing of parent Speculation Rules API effect on page speed (prerender ~47% reduction in one test)"
       ],
       "limitations": "Search snippet only; parent feature; single-test methodology."
+    },
+    {
+      "id": "s16",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5897",
+      "publisher": "Chrome Platform Status — feature popularity timeline (UseCounter bucket 5897, kSpeculationMeasurement)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:48Z",
+      "sourceType": "usage",
+      "supports": [
+        "Origin-trial counter (bucket 5897 / kSpeculationMeasurement) usage timeline: first positive observation 2026-07-13 at ~0.24% (0.00237957) of measured Chrome HTTP/HTTPS page loads, peak 2026-07-18 at ~0.59% (0.00592547), latest 2026-07-21 at ~0.51% (0.00514134); 9 daily points.",
+        "Launch checkpoint: Chrome 150 Origin trial stable 2026-06-30; atStable (first positive) 2026-07-13; day30/day90/day180 not yet available.",
+        "Mapping: origin-trial scope, exact mapping (this feature's own counter, not a broader WebDX/property family); webFeature 'Missing feature', no WebFeature/WebDX enum mapping."
+      ],
+      "limitations": "Origin-trial counter: counts page loads on which the OT counter fired, not unique developers/sites/users, production deployments, successful tasks, satisfaction, or end-user benefit; reflects OT-enabled page loads on participating Chrome clients / dominant milestone. Only 9 daily points; day30/90/180 launch-relative checkpoints not yet reached. Cached snapshot (timeline SHA-256 4064a0887d7e39c24b971c6713073eaddd85aef5182484d700e2dc73b90c12bc); raw timeline at evidence/metrics/timelines/feature-5897.json."
     }
   ],
   "successes": [
@@ -428,13 +445,16 @@
     "missingEvidence": [
       "Intent to Prototype thread body (msgid URL rejected by the Z.AI reader; only existence and stage confirmed via ChromeStatus; not directly retrieved).",
       "Chromium tracking bug 481590676 contents (reader timed out; not retrieved).",
-      "Public usage/UseCounter telemetry or OT participant/activation data for getSpeculations (none published; OT in early weeks).",
+      "Unique-site, production-deployment, retention, task-success, and user-benefit evidence for the measurement API (none public; only an origin-trial counter share is available).",
+      "Origin-Trial participant/activation counts for the measurement API (not published; only the aggregate origin-trial counter share is available).",
+      "Predeclared adoption target or threshold for the measurement API (none recorded in ChromeStatus or the record).",
+      "day30/day90/day180 launch-relative adoption checkpoints (not yet reached in the cached timeline as of 2026-07-21).",
       "Mozilla/WebKit standards position on the measurement API specifically (none found; consistent with ChromeStatus 'No signal').",
       "tag/security/privacy review outcomes (all 'Pending' in ChromeStatus at retrieval).",
       "Public experiment protocol and interim Origin Trial findings (not published).",
       "Framework/library integration of getSpeculations (none found; OT-stage).",
       "Chrome Origin Trials listing full content and inline comments on the WICG issues (JS-rendered/not captured by reader)."
     ],
-    "reviewedAt": "2026-07-20T07:00:00Z"
+    "reviewedAt": "2026-07-22T18:06:48Z"
   }
 }

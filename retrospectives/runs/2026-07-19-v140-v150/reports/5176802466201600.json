@@ -21,7 +21,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:09Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -105,17 +105,18 @@
         "chrome150-releasenotes",
         "chrome150-beta"
       ],
-      "limitations": "Only ~3 weeks post-stable; no post-ship telemetry, regression, or incident data is available yet."
+      "limitations": "Only ~3 weeks post-stable; property-family usage telemetry is now available (see adoption), but no regression, performance, or incident data specific to this release is available yet."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Adoption of the 'chain' value is unknown (it has shipped for under one month). Context: the base overscroll-behavior property is Baseline / widely available across all engines since September 2022 and is well-documented and discussed (MDN, CSS-Tricks, Ahmad Shadeed, Ben Nadel, Stack Overflow questions, and a Figma feature request for scroll-chaining control), indicating a mature, understood property - but no Chrome use-counter or adoption data specific to the 'chain' keyword was found.",
+      "status": "partial",
+      "finding": "No value-specific use counter exists for the 'chain' keyword; the only mapped Chrome usage telemetry is a property-family CSS use counter for the whole overscroll-behavior property (WebDX bucket 585; ChromeStatus web_feature 'overscroll-behavior' normalizes to this counter; mappingStatus 'web-feature-family-counter'). It fired on 0.18929231% of measured Chrome page loads at M150 stable (2026-06-30), 0.19409725% on 2026-07-21, and peaked at 0.20866975% on 2026-07-11, across 3091 daily points since first observed 2017-08-19 (as 'scroll-boundary-behavior'). The base property is Baseline / widely available across all engines since September 2022 and is well-documented and discussed (MDN, CSS-Tricks, Ahmad Shadeed, Ben Nadel, Stack Overflow questions, and a Figma feature request for scroll-chaining control), indicating a mature, understood property. Because the counter is property-family, it cannot isolate 'chain' adoption; day30/day90/day180 launch checkpoints are null (the value is ~3 weeks in stable).",
       "evidenceIds": [
         "mdn",
         "caniuse",
-        "ecosystem"
+        "ecosystem",
+        "chromestatus-csspopularity-585"
       ],
-      "limitations": "No chain-specific usage metric was retrievable."
+      "limitations": "Property-family scope: the counter fires for any use of overscroll-behavior (Baseline since Sep 2022), not specifically for the new 'chain' value, so it cannot isolate and overstates any chain-specific figure; no value-specific counter was mapped. Percentage is the share of measured Chrome HTTP/HTTPS page loads on which the counter fired - not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone. day30/day90/day180 checkpoints null. No unique-site, production, retention, task-success, user-benefit, or predeclared-target evidence."
     },
     "support": {
       "status": "unknown",
@@ -154,12 +155,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "No chain-specific adoption is measurable at under one month in stable; only base-property adoption context exists.",
+      "finding": "No 'chain'-value-specific counter exists; the only mapped telemetry is the property-family overscroll-behavior counter (bucket 585), which fired on 0.18929231% of measured Chrome page loads at M150 stable (2026-06-30), 0.19409725% on 2026-07-21, and peaked at 0.20866975% on 2026-07-11 (level/trend stable-to-slightly-rising around ~0.19% since stable). No adoption target was predeclared - the Intent-to-Ship framed the goal only as completing the overscroll-behavior value set - and there is no production, retention, or unique-site evidence to corroborate 'chain' use. With no threshold and no corroborating production/retention evidence, the adoption outcome remains unscored; the property-family level/trend is reported descriptively, not as value adoption.",
       "evidenceIds": [
         "mdn",
-        "ecosystem"
+        "ecosystem",
+        "chromestatus-csspopularity-585",
+        "intent-ship"
       ],
-      "limitations": "Too new to assess."
+      "limitations": "Property-family counter does not isolate 'chain'; it overstates value adoption because it counts any overscroll-behavior use (Baseline property since 2022). Figures are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired - not unique developers/sites/users, task success, satisfaction, production deployment, or end-user benefit. No predeclared adoption target; no unique-site, production, or retention evidence; day30/day90/day180 checkpoints null (feature ~3 weeks in stable)."
     },
     "interoperability": {
       "status": "mixed",
@@ -202,15 +205,16 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A fast, low-risk, standards-blessed addition to a Baseline property with strong test coverage and positive Mozilla/TAG signals - but it cannot be scored a success: it shipped before its TAG review formally closed with an unresolved naming concern, ChromeStatus review fields were stale, MDN was not updated, and adoption/end-user-impact/support remain unknown because the value is under one month old. Known dimensions are mixed; post-ship outcome dimensions are unscored.",
+      "finding": "A fast, low-risk, standards-blessed addition to a Baseline property with strong test coverage and positive Mozilla/TAG signals - but it cannot be scored a success: it shipped before its TAG review formally closed with an unresolved naming concern, ChromeStatus review fields were stale, MDN was not updated, and the 'chain' value's own adoption/end-user-impact/support remain unscored. Property-family usage telemetry now exists (~0.19% of measured page loads for the base overscroll-behavior property, not value-isolated), but no value-specific counter, production, or retention evidence isolates 'chain'. Known dimensions are mixed; post-ship outcome dimensions are unscored.",
       "evidenceIds": [
         "chromestatus",
         "tag-tracker",
         "spec",
         "chrome-releases",
-        "wpt-59792"
+        "wpt-59792",
+        "chromestatus-csspopularity-585"
       ],
-      "limitations": "Overall is dominated by post-ship unknowns."
+      "limitations": "Overall is dominated by post-ship unknowns; property-family counter does not isolate the 'chain' value."
     }
   },
   "sources": [
@@ -342,7 +346,7 @@
       "retrievedAt": "2026-07-20T06:00:00Z",
       "sourceType": "intent",
       "supports": [
-        "Intent to Ship exists; summary matches 'new value to complete the set: chain: propagation, no local effect ... side menus'"
+        "Intent to Ship exists; summary matches 'new value to complete the set: chain: propagation, no local effect ... side menus'; no numeric adoption target stated"
       ],
       "limitations": "msgid URL rejected by the reader; content confirmed only via search snippet, full body (LGTMs, exact review states) not retrieved."
     },
@@ -453,6 +457,18 @@
         "mature developer understanding and demand for overscroll-behavior / scroll-chaining control for the base property"
       ],
       "limitations": "Coverage concerns the base property, not the new 'chain' value."
+    },
+    {
+      "id": "chromestatus-csspopularity-585",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=585",
+      "publisher": "Chrome Platform Status - CSS popularity timeline (WebDX CSS use-counter bucket 585, overscroll-behavior property family)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:09Z",
+      "sourceType": "usage",
+      "supports": [
+        "Property-family CSS use counter for the whole overscroll-behavior property (ChromeStatus web_feature 'overscroll-behavior' normalizes to css counter bucket 585; mappingStatus 'web-feature-family-counter'). Fired on 0.18929231% of measured Chrome page loads at M150 stable (2026-06-30), 0.19409725% on 2026-07-21, peak 0.20866975% on 2026-07-11; 3091 daily points since first observed 2017-08-19 (as 'scroll-boundary-behavior'). day30/day90/day180 launch checkpoints null."
+      ],
+      "limitations": "Property-family scope: fires for any use of overscroll-behavior (Baseline since Sep 2022), not specifically the new 'chain' value, so it cannot isolate and overstates chain adoption. Percentage is the share of measured Chrome HTTP/HTTPS page loads on which the counter fired - not unique developers, sites, users, successful tasks, satisfaction, production deployment, or end-user benefit. UMA reflects participating Chrome clients and the dominant milestone; enterprise/opt-out populations may be underrepresented. Cached timeline (sha256 9c6eea5c365909dcb8cdb5a3e4ea284e49d6af59a7e7e5da87ad49cdefec2b0e) retrieved 2026-07-22."
     }
   ],
   "successes": [
@@ -466,7 +482,7 @@
     "Explainer too thin: no accessibility, internationalization, or considered-impacts sections (TAG flagged this); the Intent-to-Prototype thread even listed 'No information provided' for explainer/spec.",
     "ChromeStatus review/browser fields were stale and inaccurate at ship (Mozilla 'No signal' vs actual 'positive'; tag/security/privacy 'Pending' despite active review), understating interoperability support in launch materials.",
     "MDN (canonical reference) and caniuse were not updated with 'chain' at ship, leaving the value discoverable only via Chrome's own channels.",
-    "No developer-trial cohort, friction evidence, or post-ship adoption/support measurement is in place (the latter is partly a function of age)."
+    "No developer-trial cohort or friction evidence; post-ship measurement is only a property-family overscroll-behavior use counter (~0.19% of measured page loads, WebDX bucket 585) that cannot isolate the 'chain' value - there is no value-specific counter, production/retention evidence, or support telemetry for 'chain' itself (partly a function of age: ~3 weeks in stable)."
   ],
   "counterfactuals": [
     "Had the team waited for (or pre-emptively chased) the TAG's written resolution before the M150 branch, the 'chain' naming question could have been settled with CSSWG/TAG before the keyword became permanent, avoiding a hard-to-reverse rename risk.",
@@ -479,17 +495,18 @@
     "Add a release-readiness checklist item: reconcile ChromeStatus browser-position and review-status fields against the live Mozilla/WebKit/TAG issues within 14 days of ship; flag any 'Pending'/'No signal' that contradicts an actual resolved position.",
     "Add a documentation-readiness gate for CSS value additions: require a filed/merged MDN and caniuse update in the same milestone as ship.",
     "Add an explainer-quality regression eval enforcing accessibility, i18n, security, privacy, and alternatives sections (explicit 'none' allowed) per repeated TAG feedback; weak case = this feature's explainer.",
-    "Add a phase-02 prompt to generate a one-task friction log (including RTL and mobile) for even 'trivial' CSS additions, so user-impact questions have evidence rather than 'N/A'."
+    "Add a phase-02 prompt to generate a one-task friction log (including RTL and mobile) for even 'trivial' CSS additions, so user-impact questions have evidence rather than 'N/A'.",
+    "Add a measurement-readiness note for CSS keyword-value additions: a new value under an existing Baseline property is typically covered only by that property's family-level CSS use counter, which cannot isolate the new value. For such launches, state up front that adoption is measurable only at property granularity and never cite the property-family percentage as value adoption (regression case = overscroll-behavior: chain)."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
       "crbug 499018879 body (issues.chromium.org returned HTTP 500 on multiple read attempts) - implementation/bug detail unverified.",
       "Intent to Ship (blink-dev) full body - msgid URL rejected by the reader; existence/content confirmed only via a search snippet (LGTMs and exact review states at ship not captured).",
-      "Chrome use-counter / adoption metric for the 'chain' keyword specifically.",
-      "Post-ship regression, performance, and support telemetry (the feature is under one month in stable).",
+      "No 'chain'-value-specific use counter, unique-site, production, or retention adoption evidence; only the property-family overscroll-behavior counter (bucket 585, ~0.19% of measured page loads) exists, which cannot isolate the new value.",
+      "Post-ship regression, performance, and support telemetry for 'chain' (the feature is ~3 weeks in stable).",
       "Exact date Mozilla applied/closed its 'position: positive' label, to pin interop-support timing relative to ship."
     ],
-    "reviewedAt": "2026-07-20T06:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:09Z"
   }
 }

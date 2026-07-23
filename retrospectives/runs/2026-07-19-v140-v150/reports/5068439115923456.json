@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5068439115923456,
+    "name": "Disconnect WebSockets on BFCache entry",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5068439115923456",
+    "category": "Miscellaneous",
+    "featureType": "No developer-visible change",
+    "blinkComponent": "Blink>Network>WebSockets",
+    "finchName": "DisconnectWebSocketOnBFCache",
+    "owners": [
+      "annasato@google.com",
+      "fergal@google.com",
+      "gilbertoc@google.com",
+      "denomoto@google.com"
+    ],
+    "enterprisePolicy": "BackForwardCacheForWebSocketsAllowed"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5068439115923456",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T21:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "success",
+      "finding": "The developer problem was empirically established before intake. The ChromeStatus motivation states any active WebSocket forced the browser to discard a page on navigation, blocking BFCache, and that closing connections on entry mirrors WebTransport. socket.io#5232 (opened 2024-11-19) quantified the problem from HTTP Archive: ~71% of socket.io sites (73k of 103k) had BFCache unavailable because of open WebSockets, with no documented best practice in the library. Gilberto Cocchi's pre-launch LinkedIn awareness post reinforced that WebSocket usage was penalising Core Web Vitals via BFCache. The Wix signal (cited in ChromeStatus web-dev views) tied chat-widget WebSockets to a CWV pass-rate rise from 61% to 75%. Clear, evidenced problem with a named precedent (WebTransport) and an enterprise escape hatch.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-socketio",
+        "s-gilberto-li",
+        "s-wix"
+      ],
+      "limitations": "Wix figure is referenced second-hand via the ChromeStatus web-dev signal; the underlying LinkedIn post could not be independently retrieved (reader failures)."
+    },
+    "incubation": {
+      "status": "success",
+      "finding": "Incubation was done in the open via WHATWG HTML. Issue #12085 (opened 2026-01-14) frames the problem as divergent browser behaviour (Chrome+Mozilla evict; WebKit closes on entry), proposes auto-disconnecting active WebSockets on bfcache entry, and explicitly sought feedback on error handling (onerror before onclose, wasClean=false, client code 1006 Abnormal Closure, server Close frame 1001) to avoid clients mistaking it for a server-initiated clean close. The standards-position issues for Mozilla (#1390) and WebKit (#648) were filed the same day the ChromeStatus record was created (2026-04-13).",
+      "evidenceIds": [
+        "s-whatwg-issue",
+        "s-mozilla-pos",
+        "s-webkit-pos",
+        "s-chromestatus"
+      ],
+      "limitations": "Issue #12085 does not link a separate explainer (explainer_links empty in ChromeStatus); the proposal issue itself serves as the explainer."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Prototype/implementation is evidenced by a defined finch flag (DisconnectWebSocketOnBFCache), a tentative WPT upstreamed (websockets/back-forward-cache-closes-open-websocket-connection.tentative.window.html) intended to replace the prior test that asserted WebSockets block BFCache, and a concrete spec change in whatwg/html#12349 (when document is salvageable, run context cleanup steps on each WebSocket instead of making the document unsalvageable). ChromeStatus stage 330 (Start prototyping) is present. However the WPT is marked tentative with results not yet visible on wpt.fyi, and the Chromium tracking bug / implementation CLs could not be read directly (reader failures).",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-whatwg-pr",
+        "s-blinkdev-psa"
+      ],
+      "limitations": "Chromium tracking bug 467838624 and the implementation CLs were not directly retrievable; tentative WPT pass/fail state not confirmed."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial behind a flag and no origin trial were run. This is consistent with the declared feature_type 'No developer-visible change' (a behaviour change to BFCache eligibility, not a new API), and the validation was instead a data-driven analysis of real WebSocket scripts. A flag-based dev trial is not applicable to this change class.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-blinkdev-psa"
+      ],
+      "limitations": "Surrogate validation (HTTP Archive analysis of most-used WebSocket scripts by Gilberto Cocchi in the blink-dev thread) substituted for a formal trial."
+    },
+    "wideReview": {
+      "status": "mixed",
+      "finding": "Mixed. WebKit alignment is strong and explicit: WebKit/standards-positions#648 states Safari already allows pages with active WebSockets to enter BFCache by closing connections on entry, so the change converges Chrome with Safari. The blink-dev Web-Facing Change PSA (2026-04-17) drew substantive review: Yoav Weiss asked whether pages that do not reconnect on pageshow would break, and Adam Rice (WebTransport owner) plus Gilberto Cocchi provided compatibility analysis concluding robust WebSocket users already handle close/error. However Mozilla's position is overstated in ChromeStatus: the record records ff_views='Positive' while the public Mozilla standards-position tracker (#1390) still shows 'Needs proposed position' and the PSA itself recorded 'Gecko: No signal'. TAG review is marked Not applicable; Security review is 'Pending' and Privacy 'Not applicable' as of the cached record (accurate_as_of 2026-07-03).",
+      "evidenceIds": [
+        "s-webkit-pos",
+        "s-mozilla-pos",
+        "s-blinkdev-psa",
+        "s-chromestatus"
+      ],
+      "limitations": "Mozilla position discrepancy unresolved; security review outcome unknown at cutoff; TAG review consciously skipped."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial was run or appropriate. The change is a non-API behaviour shift validated via data analysis and an enterprise escape hatch rather than a gated field experiment. Marking not-relevant rather than untested: the rationale (no developer-visible API, low surface area) is defensible.",
+      "evidenceIds": [
+        "s-chromestatus"
+      ],
+      "limitations": "No OT feedback URL exists; no field experiment to evaluate."
+    },
+    "prepareToShip": {
+      "status": "success",
+      "finding": "Prepare-to-ship artifacts were thorough: first enterprise notification at milestone 148, an enterprise escape-hatch policy (BackForwardCacheForWebSocketsAllowed=Disabled reverts to the old block behaviour for legacy apps lacking reconnection logic), rollout plan 'Will ship enabled for all users', ships all six platforms at 149, finch-gated (DisconnectWebSocketOnBFCache), and breaking_change=false. Providing an enterprise reversion path for a behaviour change with acknowledged breakage risk is a notable positive.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-cs-lite"
+      ],
+      "limitations": "No launch_bug_url or rollout_details text were populated in the cached record."
+    },
+    "release": {
+      "status": "success",
+      "finding": "Shipped in Chrome 149 on desktop, Android, WebView and iOS. Corroborated independently by the 'New in Chrome 149' blog (2026-06-02, Rachel Andrew), which lists 'Disconnect WebSockets on bfcache entry' as a key release feature, and by the web.dev/bfcache article (last updated 2026-07-02) which states 'Chrome (as of 149) and Safari do not block on open WebSockets but other browsers do.' The manifest records a single 'Enabled by default' launch event at milestone 149.",
+      "evidenceIds": [
+        "s-nic149",
+        "s-webdev-bfcache",
+        "s-chromestatus",
+        "s-cs-lite"
+      ],
+      "limitations": "The cached ChromeStatus record still shows is_released=false and status='Proposed' as of accurate_as_of 2026-07-03, inconsistent with the confirmed 149 shipment; this is a record-staleness issue, not a shipment issue."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Directional adoption evidence is strong but unquantified. socket.io#5232 was closed with the comment that 'Chrome browser is now automatically disconnecting the WebSocket Connection at pagehide, similar to what Safari is doing', i.e. the dominant WebSocket library's broad BFCache-incompatibility problem (affecting the majority of its ~103k sites) is resolved without developers changing code. The Wix CWV signal validates the third-party/chat-widget use case. web.dev updated its guidance to reflect the new behaviour. However no Chrome use-counter, BFCache-eligibility uplift telemetry, or durable production metric was found to quantify impact.",
+      "evidenceIds": [
+        "s-socketio",
+        "s-wix",
+        "s-webdev-bfcache",
+        "s-nic149"
+      ],
+      "limitations": "No Chrome telemetry/use-counter for BFCache eligibility uplift retrieved; adoption inferred from ecosystem reactions, not measured."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Owners and devrel are clearly listed (Blink>Network>WebSockets; devrel-chromestatus-all). No broad post-launch breakage reports were found in support channels (targeted search returned empty). Issue-tracker/chromium searches surfaced open BFCache-component bugs referencing WebSocket lifecycle on restore (e.g. 'WebSockets stay OPEN during restore, via zombie connections' / 'missing timeout in BarrierClosure'), but the snippets are inconsistent and could not be verified by reading the actual issues (reader failures). A related follow-up, Chromium 40268684 ('Do not BFCache CCNS page if WebSocket/WebTransport is used'), shows ongoing interaction complexity with the parallel Cache-Control: no-store bfcache work.",
+      "evidenceIds": [
+        "s-ccns-bug",
+        "s-issuetracker-bfcache",
+        "s-chromestatus"
+      ],
+      "limitations": "Specific post-launch WebSocket/BFCache restore bugs unverified; severity and link to this feature unconfirmed. Treat as unverified signal, not confirmed defect."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is not a deprecation or removal; the implicit 'WebSockets block BFCache' behaviour is replaced, with BackForwardCacheForWebSocketsAllowed as a temporary enterprise reversion path rather than a deprecation timeline. The deprecation phase does not apply.",
+      "evidenceIds": [
+        "s-chromestatus"
+      ],
+      "limitations": "None; phase genuinely out of scope for this change type."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Addresses a large, empirically documented developer problem where third-party/chat-widget WebSockets blocked BFCache outside developers' control, by making BFCache work automatically with no code change for robust clients. Confirmed ecosystem resolution (socket.io closure) and convergence with Safari's existing behaviour. The design deliberately fires error+close so existing reconnection logic is reused.",
+      "evidenceIds": [
+        "s-socketio",
+        "s-wix",
+        "s-whatwg-issue",
+        "s-chromestatus"
+      ],
+      "limitations": "No quantified developer-satisfaction or before/after BFCache-eligibility metric."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Clear directional benefit: instant back/forward restores for a large class of previously-uncacheable pages. Acknowledged failure mode (raised by Yoav Weiss, addressed by Adam Rice): pages that do not handle unexpected WebSocket close/error will appear disconnected/stale after restore and require a manual reload. Convergence with Safari (which already behaves this way) and near-universal onError handling (per Gilberto's HTTP Archive analysis) limit the blast radius, but no measured end-user metric (reload rate, CWV delta attributable to this change) was found.",
+      "evidenceIds": [
+        "s-blinkdev-psa",
+        "s-socketio",
+        "s-webdev-bfcache",
+        "s-wix"
+      ],
+      "limitations": "No end-user-level measurement (reload-after-restore, CWV uplift attribution) retrieved."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Strong qualitative adoption signal (socket.io issue closed citing the new behaviour; web.dev guidance updated; Wix case) but no Chrome telemetry or durable production metric quantifying BFCache-eligibility uplift. Adoption is real but unmeasured.",
+      "evidenceIds": [
+        "s-socketio",
+        "s-webdev-bfcache",
+        "s-wix",
+        "s-nic149"
+      ],
+      "limitations": "Absence of a use-counter/eligibility metric means adoption cannot be scored a clean success."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Convergence with Safari is achieved (WebKit position Shipped/Shipping; Safari already disconnected on entry). Firefox/Mozilla still blocks on open WebSockets: no published positive Mozilla position exists (tracker shows 'Needs proposed position'; PSA recorded 'Gecko: No signal'), so ChromeStatus's 'Positive' is uncorroborated. The WHATWG HTML behaviour is standardised via a Draft PR (#12349) with a tentative WPT; final interop is partial (2 of 3 engines ship the new behaviour).",
+      "evidenceIds": [
+        "s-webkit-pos",
+        "s-mozilla-pos",
+        "s-whatwg-pr",
+        "s-webdev-bfcache",
+        "s-chromestatus"
+      ],
+      "limitations": "Draft spec not yet merged; Mozilla behaviour unchanged; tentative WPT results not confirmed."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Positives: finch-gated, ships all six platforms at 149, tentative WPT upstreamed, spec change authored, enterprise escape hatch provided. Gaps: security review still 'Pending' at the cached cutoff, the spec is a Draft PR, tentative tests not yet showing results on wpt.fyi, and open BFCache-component bugs reference WebSocket-on-restore edge cases that could not be verified.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-whatwg-pr",
+        "s-blinkdev-psa",
+        "s-issuetracker-bfcache"
+      ],
+      "limitations": "Implementation CLs and tracking bug not directly readable; edge-case bug severity unverified; security review outcome unknown."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Communication was clear and prominent: New in Chrome 149 feature highlight and an updated web.dev/bfcache article. But the ChromeStatus record itself has internal inconsistencies as of the cached snapshot: is_released=false and status='Proposed' despite confirmed 149 shipment; ff_views='Positive' not corroborated by Mozilla's public position (PSA said 'No signal'); standards maturity recorded as a final 'Published standard' while the actual normative change is a Draft PR; security review 'Pending'. These are evidence-quality defects in the system of record.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-cs-lite",
+        "s-nic149",
+        "s-mozilla-pos",
+        "s-webdev-bfcache"
+      ],
+      "limitations": "Inconsistencies may partly reflect record staleness (accurate_as_of 2026-07-03) rather than errors at intent time."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Insufficient verified evidence. Owners/devrel are listed and no broad breakage was found, but the only post-launch signals are unverified issue-tracker snippets about WebSocket lifecycle on restore and a known interaction with the CCNS bfcache work (Chromium 40268684). Cannot score support burden without confirmed issue data.",
+      "evidenceIds": [
+        "s-issuetracker-bfcache",
+        "s-ccns-bug",
+        "s-chromestatus"
+      ],
+      "limitations": "No confirmed support-ticket volume, regression, or SLO data retrieved."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-motivated, well-incubated, interoperability-positive behaviour change that shipped cleanly at 149, demonstrably unblocked a large class of sites (socket.io ecosystem, third-party chat widgets), and converged Chrome with Safari. Scored down to mixed because material evidence remains incomplete or inconsistent: unverified post-launch stability/edge-case bugs, a Draft (unmerged) spec, a Pending security review at cutoff, an uncorroborated Mozilla 'Positive' position, a stale is_released/status in ChromeStatus, and no quantified adoption/end-user metric.",
+      "evidenceIds": [
+        "s-chromestatus",
+        "s-whatwg-issue",
+        "s-whatwg-pr",
+        "s-blinkdev-psa",
+        "s-webkit-pos",
+        "s-mozilla-pos",
+        "s-nic149",
+        "s-webdev-bfcache",
+        "s-socketio",
+        "s-wix"
+      ],
+      "limitations": "See per-dimension limitations; overall cannot be raised above mixed without verified support/stability evidence and a confirmed Mozilla position."
+    }
+  },
+  "sources": [
+    {
+      "id": "s-chromestatus",
+      "url": "https://chromestatus.com/feature/5068439115923456",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-07-03)",
+      "publishedOrObservedAt": "2026-07-03T06:42:42Z",
+      "retrievedAt": "2026-07-20T21:25:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata: ships desktop/android/webview/iOS at 149; finch DisconnectWebSocketOnBFCache; feature_type 'No developer-visible change'; enterprise policy BackForwardCacheForWebSocketsAllowed; first enterprise notification M148; security review Pending; privacy Not applicable; tag review Not applicable; ff_views Positive; safari Shipped/Shipping; webdev Positive (Wix); spec whatwg/html#12349; tentative WPT; is_released=false/status Proposed (stale)"
+      ],
+      "limitations": "Cached snapshot; release/status fields stale relative to confirmed 149 shipment; Mozilla 'Positive' not corroborated by Mozilla's public tracker."
+    },
+    {
+      "id": "s-cs-lite",
+      "url": "https://chromestatuslite.com/feature/5068439115923456",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-07-20T21:25:00Z",
+      "retrievedAt": "2026-07-20T21:25:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, motivation, Firefox Positive, Safari Shipped/Shipping, web-dev Positive (Wix 61%->75% CWV), spec link, tracking bug"
+      ],
+      "limitations": "Server-rendered mirror of the same record."
+    },
+    {
+      "id": "s-whatwg-issue",
+      "url": "https://github.com/whatwg/html/issues/12085",
+      "publisher": "WHATWG HTML (proposal issue by llannasatoll/Anna Sato)",
+      "publishedOrObservedAt": "2026-01-14T09:36:51Z",
+      "retrievedAt": "2026-07-20T21:18:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Problem framing (Chrome+Mozilla evict vs WebKit closes on entry); proposed behaviour; error-handling design (onerror before onclose, wasClean=false, client 1006, server Close 1001); compatibility rationale"
+      ],
+      "limitations": "No separate explainer; issue body only."
+    },
+    {
+      "id": "s-whatwg-pr",
+      "url": "https://github.com/whatwg/html/pull/12349",
+      "publisher": "WHATWG HTML (Draft pull request)",
+      "publishedOrObservedAt": "2026-04-13T04:36:57Z",
+      "retrievedAt": "2026-07-20T21:24:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec diff: when document is salvageable, run context cleanup steps on each WebSocket instead of making the document unsalvageable; status is Draft (per WebKit standards-position citation)"
+      ],
+      "limitations": "PR metadata page not directly retrievable; diff retrieved via patch-diff mirror; merge state unconfirmed."
+    },
+    {
+      "id": "s-blinkdev-psa",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/52nlr8z3Png",
+      "publisher": "blink-dev (Web-Facing Change PSA, posted by Chromestatus)",
+      "publishedOrObservedAt": "2026-04-17T05:17:23Z",
+      "retrievedAt": "2026-07-20T21:17:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "PSA intent to ship at 149 all platforms; Gecko 'No signal'; WebKit Shipped/Shipping; WPT upstreamed (tentative); review by Yoav Weiss (breakage question) and Adam Rice (reconnection compatibility); Gilberto Cocchi HTTP Archive analysis of WebSocket reconnection handling; original estimated shipping milestone 148"
+      ],
+      "limitations": "Thread is a PSA, not a full Intent to Ship with LGTMs."
+    },
+    {
+      "id": "s-mozilla-pos",
+      "url": "https://github.com/mozilla/standards-positions/issues/1390",
+      "publisher": "Mozilla standards-positions (issue #1390)",
+      "publishedOrObservedAt": "2026-04-13T04:41:44Z",
+      "retrievedAt": "2026-07-20T21:18:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Standards-position review opened 2026-04-13; project status 'Needs proposed position'; assigned to zcorpan; no published Mozilla position visible; contradicts ChromeStatus ff_views 'Positive' and PSA 'No signal'"
+      ],
+      "limitations": "Only issue body/metadata retrieved; any position posted in comments not captured."
+    },
+    {
+      "id": "s-webkit-pos",
+      "url": "https://github.com/WebKit/standards-positions/issues/648",
+      "publisher": "WebKit standards-positions (issue #648)",
+      "publishedOrObservedAt": "2026-04-13T04:36:57Z",
+      "retrievedAt": "2026-07-20T21:20:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit position Shipped/Shipping; Safari already allows pages with active WebSockets to enter BFCache by closing connections on entry; cites whatwg/html#12349 (Draft) and mozilla/standards-positions#1390"
+      ],
+      "limitations": "Issue body only; no labels/position field beyond textual claim."
+    },
+    {
+      "id": "s-webdev-bfcache",
+      "url": "https://web.dev/articles/bfcache",
+      "publisher": "web.dev (Philip Walton, Barry Pollard)",
+      "publishedOrObservedAt": "2026-07-02T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:16:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Confirms Chrome (as of 149) and Safari do not block on open WebSockets while other browsers do; documents recommended close-on-pagehide / reconnect-on-pageshow pattern"
+      ],
+      "limitations": "Last-updated date is article-level, not change-specific."
+    },
+    {
+      "id": "s-nic149",
+      "url": "https://developer.chrome.com/blog/new-in-chrome-149",
+      "publisher": "Chrome for Developers (Rachel Andrew)",
+      "publishedOrObservedAt": "2026-06-02T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:21:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Confirms shipment in Chrome 149; 'Disconnect WebSockets on bfcache entry' listed as a key release feature; describes proactive close-on-entry behaviour"
+      ],
+      "limitations": "Marketing/blog framing."
+    },
+    {
+      "id": "s-socketio",
+      "url": "https://github.com/socketio/socket.io/issues/5232",
+      "publisher": "socket.io (issue #5232, Gilberto Cocchi)",
+      "publishedOrObservedAt": "2024-11-19T14:10:21Z",
+      "retrievedAt": "2026-07-20T21:22:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Pre-launch: ~71% of socket.io sites (73k of 103k) blocked from BFCache by open WebSockets (HTTP Archive); post-launch: issue closed because Chrome now auto-disconnects WebSocket at pagehide, similar to Safari"
+      ],
+      "limitations": "Closure comment observed via search snippet; the closure timestamp and full closing comment not directly captured."
+    },
+    {
+      "id": "s-wix",
+      "url": "https://www.linkedin.com/feed/update/urn:li:activity:7376981348709756928",
+      "publisher": "Wix (referenced via ChromeStatus web-developer signal; LinkedIn post not independently retrievable)",
+      "publishedOrObservedAt": "2025-01-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:25:00Z",
+      "sourceType": "case-study",
+      "supports": [
+        "Web-developer Positive signal: BFCache helped raise Wix global Core Web Vitals pass rate from 61% to 75%; chat-widget WebSockets identified as a key BFCache blocker"
+      ],
+      "limitations": "Second-hand via ChromeStatus; LinkedIn post could not be read directly (reader 500/timeout); date approximate."
+    },
+    {
+      "id": "s-gilberto-li",
+      "url": "https://www.linkedin.com/posts/gilbertococchi_bfcache-websocket-activity-7371472969610575872-aca9",
+      "publisher": "Gilberto Cocchi (LinkedIn)",
+      "publishedOrObservedAt": "2025-01-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:25:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Pre-launch developer-awareness work that WebSocket usage prevents BFCache restoration and penalises Core Web Vitals"
+      ],
+      "limitations": "Post not read directly; date approximate; observed via search snippet."
+    },
+    {
+      "id": "s-mdn-nrr",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Monitoring_bfcache_blocking_reasons",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-07-20T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:25:00Z",
+      "sourceType": "other",
+      "supports": [
+        "'websocket' remains a documented NotRestoredReasons value; historical blocking context the feature removes"
+      ],
+      "limitations": "Generic documentation; not feature-specific."
+    },
+    {
+      "id": "s-ccns-bug",
+      "url": "https://issues.chromium.org/issues/40268684",
+      "publisher": "Chromium Issue Tracker (BFCache component)",
+      "publishedOrObservedAt": "2026-01-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:23:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Follow-up interaction: do not BFCache a Cache-Control: no-store page when WebSocket/WebTransport is used; shows ongoing interaction complexity with the parallel CCNS bfcache work"
+      ],
+      "limitations": "Issue body not directly read; title/blocking list observed via search."
+    },
+    {
+      "id": "s-issuetracker-bfcache",
+      "url": "https://issuetracker.google.com/issues?q=status:open%20componentid:1457076",
+      "publisher": "Google Issue Tracker / Chromium (BFCache component searches)",
+      "publishedOrObservedAt": "2026-07-20T00:00:00Z",
+      "retrievedAt": "2026-07-20T21:23:00Z",
+      "sourceType": "support",
+      "supports": [
+        "Open BFCache-component bugs reference WebSocket lifecycle on restore (e.g. 'WebSockets stay OPEN during restore, via zombie connections'; 'missing timeout in BarrierClosure'); one snippet claims authenticated command execution - UNVERIFIED and inconsistent"
+      ],
+      "limitations": "Search snippets only; actual issues not readable; severity and link to this feature unconfirmed; security framing uncorroborated and treated as unreliable."
+    }
+  ],
+  "successes": [
+    "Empirically grounded problem statement (HTTP Archive via socket.io#5232: ~71% of socket.io sites blocked) made the developer value case concrete before implementation.",
+    "Open incubation in WHATWG HTML (#12085) with explicit, compatibility-focused error-handling design (onerror before onclose, 1006/1001, wasClean=false) and a Draft spec change (#12349).",
+    "Genuine inter-engine convergence: change aligns Chrome with Safari's already-shipped behaviour (WebKit position Shipped/Shipping).",
+    "Substantive blink-dev review (Yoav Weiss breakage question; Adam Rice + Gilberto Cocchi compatibility analysis) rather than rubber-stamping.",
+    "Enterprise escape hatch (BackForwardCacheForWebSocketsAllowed) shipped with first notification at M148, ahead of the M149 behaviour change - appropriate risk mitigation for an acknowledged breakage mode.",
+    "Confirmed ecosystem resolution: socket.io#5232 closed because Chrome now auto-disconnects on pagehide 'similar to Safari'.",
+    "Clear, prominent release communication (New in Chrome 149 highlight + web.dev/bfcache update)."
+  ],
+  "failures": [
+    "ChromeStatus record inaccuracies as of cutoff: is_released=false and status='Proposed' despite confirmed 149 shipment; ff_views='Positive' uncorroborated by Mozilla's public 'Needs proposed position'; standards maturity recorded as a final 'Published standard' while the normative change is a Draft PR.",
+    "Security review still 'Pending' at the cached cutoff (2026-07-03) for a web-facing behaviour change with authentication-adjacent implications (WebSocket lifecycle).",
+    "Spec not merged at ship time (Draft PR); final WHATWG wording and WPT results not yet settled.",
+    "Mozilla/Firefox did not converge: Firefox still blocks on open WebSockets, so interop is 2 of 3 engines."
+  ],
+  "counterfactuals": [
+    "If Mozilla had been engaged to a published position before ship (rather than ChromeStatus recording 'Positive' while the PSA said 'No signal'), the interoperability score and the spec's path to non-tentative WPT would be stronger and the evidence record self-consistent.",
+    "If a security review had been completed and recorded before the M149 ship (instead of Pending), the WebSocket-on-restore edge-case reports later seen in issue-tracker searches could have been triaged earlier and would not appear as unverified risk in a retrospective.",
+    "If Chrome had shipped a non-tentative WPT (or waited for wpt.fyi results) and a use-counter for BFCache-eligibility uplift, adoption and implementation-quality could have been scored from data rather than inferred from ecosystem reactions.",
+    "If the team had linked the implementation CL(s) and a populated launch bug / rollout details in ChromeStatus, post-launch stability could be verified instead of remaining unknown.",
+    "If the change had been paired with explicit guidance (in New in Chrome 149 / web.dev) that non-robust clients will need a manual reload after restore - the acknowledged failure mode Yoav Weiss raised - end-user-impact risk would be better communicated."
+  ],
+  "skillImprovements": [
+    "Add a retrospective check that flags ChromeStatus fields inconsistent across sources: is_released vs manifest launch events; ff/safari/webdev views vs the actual standards-position trackers and the PSA's recorded signals; standards maturity vs the actual PR state (Draft vs merged).",
+    "Add a phase-rule for web-facing behaviour changes (even 'No developer-visible change') requiring a completed (not Pending) security review before the ship-stage intent, with an exception process if consciously deferred.",
+    "Add an adoption-evidence requirement: for BFCache-eligibility / perf-behaviour changes, require (or explicitly mark missing) a Chrome use-counter / BFCache NotRestoredReasons telemetry delta, so adoption is scored from data not press sentiment.",
+    "Add a WPT-readiness gate: tentative WPTs are acceptable to ship but the retrospective should record wpt.fyi pass state and tentative->stable transition; never score implementationQuality 'success' on a tentative test alone.",
+    "Teach the launcher phase to record the real Mozilla position from mozilla/standards-positions rather than inferring 'Positive' from issue existence or Chrome-internal expectation.",
+    "Add a counterfactual prompt for interop: for changes claimed to converge engines, record each engine's actual shipped behaviour and position with dates, and score interop by engine count, not by sentiment."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Chromium tracking bug 467838624 and implementation CL(s) not directly retrievable (reader timeouts/500s) - prototype and implementation-quality assessed from intent thread, finch name, and spec diff only.",
+      "Open BFCache-component WebSocket-on-restore bugs unverified: only inconsistent search snippets obtained; severity, reproduction, and link to this feature could not be confirmed (one snippet's 'authenticated command execution' framing is uncorroborated and treated as unreliable).",
+      "No Chrome use-counter / BFCache-eligibility uplift telemetry or CrUX metric found - adoption and end-user impact scored qualitatively only.",
+      "WHATWG HTML PR #12349 merge state and final (non-tentative) WPT results on wpt.fyi not confirmed.",
+      "Mozilla position not confirmed: public tracker shows 'Needs proposed position'; ChromeStatus 'Positive' uncorroborated.",
+      "Wix case study and Gilberto Cocchi LinkedIn posts not independently retrievable (LinkedIn reader failures); relied on second-hand ChromeStatus signal and search snippets.",
+      "Security review final outcome unknown (Pending at cached cutoff)."
+    ],
+    "reviewedAt": "2026-07-20T21:30:00Z"
+  }
+}

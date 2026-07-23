@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6024844719947776,
+    "name": "WebAssembly Custom Descriptors",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6024844719947776",
+    "category": "WebAssembly",
+    "blinkComponent": "Blink>JavaScript>WebAssembly",
+    "owners": [
+      "tlively@google.com",
+      "ecmziegler@chromium.org",
+      "jkummerow@chromium.org"
+    ],
+    "standardsMaturity": "Incubation (WebAssembly CG, Phase 3)",
+    "isReleased": false
+  },
+  "launchEvents": [
+    {
+      "eventId": "141:Origin trial:6024844719947776",
+      "milestone": 141,
+      "category": "Origin trial",
+      "date": "2025-09-30"
+    },
+    {
+      "eventId": "149:Origin trial:6024844719947776",
+      "milestone": 149,
+      "category": "Origin trial",
+      "date": "2026-06-02"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
+  "phaseReview": {
+    "intake": {
+      "status": "partial",
+      "finding": "ChromeStatus entry created 2025-03-10 by tlively@google.com, categorized WebAssembly / Blink>JavaScript>WebAssembly with explainer, spec, initial-proposal and a tracking bug (403372470). Problem is stated (WasmGC objects carry a separate per-object reference to type data; no JS method-call interop on Wasm objects) and owners identified. But the record carries no developer-research, partner, or end-user evidence; motivation is technical, not problem/user-validated, and tag/security/privacy review fields are 'Pending'.",
+      "evidenceIds": [
+        "s_chromestatus",
+        "s_launchbug"
+      ],
+      "limitations": "No public intake artifact beyond ChromeStatus; no developer-research ledger."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Incubated in the WebAssembly CG repo (custom-descriptors) with a detailed Overview (custom descriptor types, exact types, new instructions struct.new_desc/ref.get_desc/ref.cast_desc_eq, JS prototypes, declarative prototype init). Use cases (memory savings for GC languages; JS method-call interop) discussed at CG-05-20, where Phase 2 passed (SF9/F13/N4) after TL reported ~9-10% wasm-heap savings measured for Sheets. Alternatives (JS wrapper objects) acknowledged as non-polyfillable today. But developer/customer research, a segment map, and a formal alternatives/adjacent-platform analysis are not evidenced; incubation is engineering-led.",
+      "evidenceIds": [
+        "s_repo",
+        "s_spec",
+        "s_cg_phase2"
+      ],
+      "limitations": "No public developer-research or partner evidence ledger; demand is inferred from toolchain (j2cl) interest."
+    },
+    "prototype": {
+      "status": "contradicted",
+      "finding": "A V8 prototype existed and produced a quantified hypothesis (~9-10% wasm-heap savings for Sheets-like workloads). However prototype/soundness validation was contradicted by a V8 type-confusion bug (chromium 446113731) introduced by the custom-descriptors commit and a spec-level unsoundness (446113732/446124893) that 'any runtime implementing the same spec faithfully will have [hit]', forcing OT1 to be disabled after ~3 weeks. Validation was insufficient before field exposure.",
+      "evidenceIds": [
+        "s_cg_phase2",
+        "s_bug_v8",
+        "s_bug_spec_1",
+        "s_bug_spec_2",
+        "s_intent_ot"
+      ],
+      "limitations": "Full bug contents are security-restricted; precise root-cause and fix details not publicly readable."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "No evidence of a separate flag-based developer trial. ChromeStatus shows flag_name=null and the intent form states 'Flag name on about://flags: None'; the origin trial was the first external developer exposure. Any pre-OT developer cohort, recruitment, friction logs, or feedback instrument is not evidenced.",
+      "evidenceIds": [
+        "s_chromestatus",
+        "s_intent_ot"
+      ],
+      "limitations": "Any developer validation (e.g. with j2cl) was internal and not publicly documented."
+    },
+    "wideReview": {
+      "status": "contradicted",
+      "finding": "Standards process followed: CG Phase 2 (2025-05-20) and Phase 3 (2026-01-27) votes passed with multi-engine discussion; Mozilla (Ryan Hunt) expressed interest with partial wasm-tools + WIP SpiderMonkey patches. BUT the proposal is still Phase 3 (not Phase 4/5/standardized), TAG review is 'None/Pending', and a spec-level unsoundness was found after OT launch. ChromeStatus browser signals are stale/inaccurate (FF 'No signal', Safari 'No signal', WebDev 'No signals') despite active Mozilla CG engagement and partial implementation; tag/security/privacy review all 'Pending'; no WebKit signal.",
+      "evidenceIds": [
+        "s_cg_phase2",
+        "s_cg_phase3",
+        "s_bug_spec_1",
+        "s_chromestatus"
+      ],
+      "limitations": "No TAG review on record; no WebKit/Safari position; post-fix spec soundness not fully verifiable from public sources."
+    },
+    "experiment": {
+      "status": "mixed",
+      "finding": "Two origin trials. OT1 (M141-147, token WebAssemblyCustomDescriptors) approved 2025-08-19 and launched, then disabled in early October 2025 after ~3 weeks due to the security bugs. Goals were explicit and falsifiable (heap usage, OOM rate, performance; JS interop explicitly out of scope). 'Take 2' OT (M149-155, token WebAssemblyCustomDescriptorsV2) approved 2026-03-11 after fixes and improved fuzzing, running through ~mid-2026 (Edge mirror expires 2026-06-15). OT1 disabling was openly disclosed in the OT2 request. BUT no published results readout from either trial; OT1 never answered its heap/OOM/performance goals; participant denominator/exposure not public. Origin-trial counter usage is now visible (see adoption) but does not answer the stated goals.",
+      "evidenceIds": [
+        "s_intent_ot",
+        "s_chromestatus",
+        "s_edge_ot",
+        "s_bug_v8",
+        "s_usage_ot_counter"
+      ],
+      "limitations": "No published OT results readout (heap/OOM/perf goals unanswered); registration vs actual-use and current OT2 enrollment not disclosed as actual use; origin-trial counter usage now visible but is not a goal result."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Not reached. No Intent to Ship; ChromeStatus status 'Proposed', is_released=false; tag/security/privacy reviews all 'Pending'; no rollout milestone set; standards still Phase 3.",
+      "evidenceIds": [
+        "s_chromestatus",
+        "s_cg_phase3"
+      ],
+      "limitations": "Ship readiness cannot be assessed; phase not entered."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "Feature has not shipped to stable (is_released=false; no 'Enabled by default' launch event). Release phase not reached in this feature's lifecycle.",
+      "evidenceIds": [
+        "s_chromestatus"
+      ],
+      "limitations": "Phase not reached."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "No production adoption (feature not shipped), but origin-trial UseCounter telemetry (bucket 5651, kV8WasmCustomDescriptors; mappingStatus=origin-trial-counter, scope=origin-trial, exact counter mapping rather than a broader WebDX family counter) is now available and shows measurable but extremely low usage confined to the OT window. For the M141 OT1 (stable 2025-09-30) the counter read 0% at the day90 (2026-01-09) and day180 (2026-04-05) checkpoints (atStable/day30 not recorded), consistent with OT1 being disabled after ~3 weeks. The counter first went positive on 2026-05-19 at 0.000001% (preceding the M149 stable date), then for the M149 OT2 (stable 2026-06-02) read 0.000769% at stable and 0.00246044% at day30 (2026-07-02); it peaked at 0.00265781% on 2026-07-09 and stood at 0.00251702% on 2026-07-21 (84 timeline points). All values are shares of measured Chrome HTTP/HTTPS page loads where the counter fired (OT-participating loads only). This level/trend is consistent with single-toolchain (j2cl) experimentation: Kotlin/Dart are prospective, C/C++/Rust unlikely to use it. The mozaic Google I/O 2026 (ep207) mention remains unverified against the cached record, which still shows OT/not-released.",
+      "evidenceIds": [
+        "s_intent_ot",
+        "s_mozaic",
+        "s_chromestatus",
+        "s_usage_ot_counter"
+      ],
+      "limitations": "Origin-trial counter only; not exact general feature adoption and not unique-site, unique-developer, production-deployment, retention, task-success, or end-user-benefit evidence; no predeclared adoption target to score against. I/O 2026 mention unverified."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Early. OT feedback routed to the proposal GitHub issues (14 open) and a feedback URL; no support-burden, issue-taxonomy, or resolution-time data. The security incident was handled privately then disclosed.",
+      "evidenceIds": [
+        "s_chromestatus",
+        "s_repo",
+        "s_intent_ot"
+      ],
+      "limitations": "No public support-health metrics; too early."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New feature still in incubation/experiment; no deprecation path. Phase not reached.",
+      "evidenceIds": [
+        "s_chromestatus"
+      ],
+      "limitations": "Phase not reached."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "Real but narrow value proposition: ~10% wasm-heap reduction for managed-memory GC workloads (measured for Sheets) and ergonomic JS method-call interop for WasmGC structs. BUT the CG chair (Conrad Watt) judged the core-wasm-only performance/footprint numbers 'not really that exciting for the complexity' and said he would not want the proposal to move forward without JS interop; only one toolchain (j2cl) is validating; JS interop is WIP and out of the initial OT; C/C++/Rust excluded by design.",
+      "evidenceIds": [
+        "s_cg_phase2",
+        "s_cg_phase3",
+        "s_intent_ot"
+      ],
+      "limitations": "Unproven end-developer value; no production evidence."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "No measurable end-user impact yet. The initial OT is a compiler-internal memory optimization (no new developer-facing API, per TL); any end-user benefit (reduced memory/OOM for sites using GC-on-Wasm) is not yet demonstrated or measured in public. The origin-trial counter (see adoption) measures page-load reach of the counter, not end-user benefit.",
+      "evidenceIds": [
+        "s_intent_ot",
+        "s_chromestatus"
+      ],
+      "limitations": "No user-impact data; cannot score."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No predeclared adoption target and no corroborating production/retention evidence, so the adoption outcome stays unscored; the measured level/trend is described instead. Origin-trial counter telemetry (bucket 5651, kV8WasmCustomDescriptors; origin-trial scope, exact counter mapping) shows measurable but extremely low usage growing within the M149 OT2 window: 0% through the M141 OT1 measured checkpoints (day90 2026-01-09 and day180 2026-04-05), first positive 2026-05-19 (0.000001%), M149 OT2 atStable 0.000769% (2026-06-02) rising to day30 0.00246044% (2026-07-02), peaking at 0.00265781% (2026-07-09) and most recently 0.00251702% (2026-07-21). These are shares of measured Chrome HTTP/HTTPS page loads where the counter fired (OT-participating loads only), not unique sites/developers/users, production deployment, or retention; consistent with single-toolchain (j2cl) use and, without a target, neither success nor failure.",
+      "evidenceIds": [
+        "s_intent_ot",
+        "s_chromestatus",
+        "s_usage_ot_counter"
+      ],
+      "limitations": "No predeclared adoption target; no unique-site, production, retention, task-success, or end-user-benefit evidence; feature not shipped."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Mixed and immature. Positive: Mozilla (SpiderMonkey) engaged with partial wasm-tools + WIP SpiderMonkey patches; proposal advanced CG Phase 2 to Phase 3 with multi-engine discussion; Edge mirrors the OT. Negative: spec-level unsoundness found (446113732/446124893); no WebKit/Safari signal; only Chromium-family engines in OT; not Baseline-eligible (still CG incubation, Phase 3); ChromeStatus signals stale.",
+      "evidenceIds": [
+        "s_cg_phase2",
+        "s_cg_phase3",
+        "s_bug_spec_1",
+        "s_bug_spec_2",
+        "s_edge_ot",
+        "s_chromestatus"
+      ],
+      "limitations": "Standards outcome pending; no WebKit position."
+    },
+    "implementationQuality": {
+      "status": "failure",
+      "finding": "A V8 type-confusion security bug (446113731) and at least two spec-level unsoundness issues (446113732, 446124893) reached a live Origin Trial and were caught only by an external researcher after ~3 weeks, forcing OT1 to be disabled. The team responded with fixes and improved fuzzing, but the validation gap before field exposure is a clear quality failure.",
+      "evidenceIds": [
+        "s_bug_v8",
+        "s_bug_spec_1",
+        "s_bug_spec_2",
+        "s_intent_ot"
+      ],
+      "limitations": "Full bug/fix detail security-restricted; cannot verify completeness of fixes."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Transparent and honest: intent threads state explicit goals/scope and the OT2 request openly discloses the OT1 disabling, cause, and timeline; API owners (Mike Taylor) engaged. BUT no published OT results readout of the stated heap/OOM/performance goals; intent-form data quality issues (dead explainer link, 'all six platforms: No' and 'WPT: No' wrongly filled, corrected only in-thread); ChromeStatus browser signals inaccurate; no docs/samples beyond the spec.",
+      "evidenceIds": [
+        "s_intent_ot",
+        "s_chromestatus"
+      ],
+      "limitations": "Internal comms not visible; no published experiment results for the stated goals."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too early to score; minimal public support footprint; security handling was private-then-disclosed.",
+      "evidenceIds": [
+        "s_intent_ot",
+        "s_repo"
+      ],
+      "limitations": "No support metrics."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "An early-stage, honestly-run experiment whose defining event so far is a security failure (live-OT type confusion + spec unsoundness) that disabled the first trial after ~3 weeks. Standards are progressing but immature (Phase 3, not Baseline), developer/end-user value is plausible but unproven and partly contested, and only one toolchain (j2cl) is validating; origin-trial counter usage is now measurable but extremely low (~0.0025% of measured Chrome page loads at peak) and confined to the OT window. Too early to call success or failure; the security incident is the dominant risk signal.",
+      "evidenceIds": [
+        "s_bug_v8",
+        "s_bug_spec_1",
+        "s_intent_ot",
+        "s_cg_phase3",
+        "s_usage_ot_counter"
+      ],
+      "limitations": "Feature mid-experiment; outcomes contingent on OT2 results and Phase 4."
+    }
+  },
+  "sources": [
+    {
+      "id": "s_chromestatus",
+      "url": "https://chromestatus.com/feature/6024844719947776",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2026-05-08T11:38:29Z",
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owners, two OT stages (M141-147 token WebAssemblyCustomDescriptors; M149-155 token WebAssemblyCustomDescriptorsV2), status Proposed, is_released=false, FF/Safari/WebDev 'No signal(s)', tag/security/privacy review Pending, no flag, motivation, spec/explainer links, bug 403372470"
+      ],
+      "limitations": "accurate_as_of 2025-09-18 with later stage edits through 2026-05-08; browser-signal fields appear stale vs. CG engagement."
+    },
+    {
+      "id": "s_intent_ot",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/_uPKlWwz_Lw/m/8qu70HJPCgAJ",
+      "publisher": "blink-dev (Thomas Lively; replies from Mike Taylor, Jakob Kummerow, Daniel Bratell)",
+      "publishedOrObservedAt": "2025-08-11T00:00:00Z",
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Experiment (covers both OT1 and the 'Take 2' request); OT1 approved 2025-08-19; OT1 disabled early October 2025 after ~3 weeks due to security bugs reported by external researcher; OT2 (M149-155) approved 2026-03-11; experiment goals (heap/OOM/perf, JS interop out of scope); j2cl is first toolchain; Java/Kotlin/Dart target segment, C/C++/Rust unlikely"
+      ],
+      "limitations": "Thread is the primary source but OT1's own launch thread not separately fetched; internal discussion not captured."
+    },
+    {
+      "id": "s_spec",
+      "url": "https://github.com/WebAssembly/custom-descriptors/blob/main/proposals/custom-descriptors/Overview.md",
+      "publisher": "WebAssembly Community Group (Thomas Lively et al.)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Detailed proposal: custom descriptor types (descriptor/describes clauses), exact heap types, struct.new_desc/struct.new_default_desc/ref.get_desc/ref.cast_desc_eq, JS prototype association via [[GetPrototypeOf]], declarative wasm:js-prototypes configureAll builtin, binary format"
+      ],
+      "limitations": "Living document; revision history/dates not pinned; 'Type Section Field Deduplication' and error details still TODO."
+    },
+    {
+      "id": "s_repo",
+      "url": "https://github.com/WebAssembly/custom-descriptors",
+      "publisher": "WebAssembly Community Group",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Public incubation venue; ~8 stars, 18 watchers, 14 open issues, 2 open PRs; CI for spec/interpreter/tests; contributors include tlively, rossberg, aheejin, lukewagner, sbc100"
+      ],
+      "limitations": "Star/issue counts are a weak engagement proxy; not adoption."
+    },
+    {
+      "id": "s_cg_phase2",
+      "url": "https://github.com/WebAssembly/meetings/blob/main/main/2025/CG-05-20.md",
+      "publisher": "WebAssembly CG (minutes)",
+      "publishedOrObservedAt": "2025-05-20T00:00:00Z",
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Phase 2 vote passed (SF9/F13/N4/A0/SA0); ~9-10% wasm-heap savings measured for Sheets; Mozilla (Ryan Hunt) interested, cares about JS interop, no impl plans yet; Deepti Gandluri broadly in favor; polyfillability discussion (not polyfillable today); Andreas Rossberg on non-JS memory use cases"
+      ],
+      "limitations": "Meeting minutes; informal positions, not formal standards positions; no WebKit voice recorded."
+    },
+    {
+      "id": "s_cg_phase3",
+      "url": "https://github.com/WebAssembly/meetings/blob/main/main/2026/CG-2026-01-27.md",
+      "publisher": "WebAssembly CG (minutes)",
+      "publishedOrObservedAt": "2026-01-27T00:00:00Z",
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Phase 3 vote passed (SF8/F14/N12/A0/SA0) with many neutrals; Conrad Watt: perf/footprint 'not really that exciting for the complexity', would not advance without JS interop; TL: benefit comes from JS interop, still WIP in toolchains (j2cl), CD part ready; Ryan Hunt: partial SpiderMonkey + wasm-tools patches, validation edge cases hard, would not go Phase 4 without toolchain support; ~10% memory saving, slightly higher fixed cost (less Binaryen type merging); Andreas Rossberg concerns on spec factoring"
+      ],
+      "limitations": "Informal CG positions; Phase 3 is 'implementation phase', not standardized; no formal engine positions filed."
+    },
+    {
+      "id": "s_bug_v8",
+      "url": "https://issues.chromium.org/issues/446113731",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "V8 Wasm type confusion introduced by the custom descriptors commit, on Origin Trials from M141; reported privately by an external researcher; referenced 14-day disclosure deadline for the spec unsoundness"
+      ],
+      "limitations": "Security-restricted; full content not readable; root-cause/fix detail inferred from tracker snippets and the intent thread."
+    },
+    {
+      "id": "s_bug_spec_1",
+      "url": "https://issues.chromium.org/issues/446113732",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Spec-level unsoundness: 'Any runtime implementing the same spec faithfully will have the same bug'; reported privately"
+      ],
+      "limitations": "Security-restricted; full content not readable."
+    },
+    {
+      "id": "s_bug_spec_2",
+      "url": "https://issues.chromium.org/issues/446124893",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Second spec-level unsoundness tracker: 'Any runtime implementing the same spec faithfully will have the same bug'"
+      ],
+      "limitations": "Security-restricted; full content not readable; relationship to 446113732 not fully clear from public snippets."
+    },
+    {
+      "id": "s_launchbug",
+      "url": "https://g-issues.chromium.org/issues/403372470",
+      "publisher": "Chromium Issue Tracker",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Launch/tracking bug for the feature (Blink>JavaScript>WebAssembly)"
+      ],
+      "limitations": "Internal tracker; not directly read."
+    },
+    {
+      "id": "s_edge_ot",
+      "url": "https://developer.microsoft.com/microsoft-edge/origin-trials/trials/f1227421-7d96-4380-b588-cbe9806aa7a3",
+      "publisher": "Microsoft Edge Origin Trials",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Microsoft Edge mirrors the Chromium origin trial for the feature; trial expiration ~2026-06-15/16, indicating the second OT window"
+      ],
+      "limitations": "Edge is Chromium-based, so this is not an independent-engine (Gecko/WebKit) signal; exact enrollment not disclosed."
+    },
+    {
+      "id": "s_mozaic",
+      "url": "https://mozaic.fm/episodes/186/monthly-platform-202509.html",
+      "publisher": "mozaic.fm (Monthly Platform roundup)",
+      "publishedOrObservedAt": "2025-09-01T00:00:00Z",
+      "retrievedAt": "2026-07-20T15:20:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Secondary roundup coverage: ep186 (Sept 2025) lists the feature among intents; ep207 (May 2026) mentions it in a 'New in Chrome at Google I/O 2026' context"
+      ],
+      "limitations": "Podcast roundups; ep207 I/O-2026 mention is unverified against the cached record (which still shows OT/not-released) and not relied upon for any scored outcome."
+    },
+    {
+      "id": "s_usage_ot_counter",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5651",
+      "publisher": "Chrome Platform Status (Google) — UseCounter feature-popularity timeline",
+      "publishedOrObservedAt": "2026-07-21T00:00:00Z",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Origin-trial UseCounter kV8WasmCustomDescriptors (bucket 5651), exactly mapped to this feature's two OT stages (stage 5887652056006656 = M141; stage 5165343515475968 = M149); mappingStatus=origin-trial-counter, scope=origin-trial, confidence=exact counter mapping (not a broader WebDX family counter; webdxUseCounterEnum='Missing feature').",
+        "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once: M141 OT1 (stable 2025-09-30) day90 (2026-01-09) and day180 (2026-04-05) both 0% (atStable/day30 not recorded); first positive 2026-05-19 at 0.000001%; M149 OT2 (stable 2026-06-02) atStable 0.000769% and day30 (2026-07-02) 0.00246044%; peak 0.00265781% (2026-07-09); latest 0.00251702% (2026-07-21); 84 timeline points."
+      ],
+      "limitations": "Origin-trial counter scoped to OT-participating page loads, so it is not exact general feature adoption and not unique sites, developers, users, production deployment, retention, task success, satisfaction, or end-user benefit; UMA reflects participating Chrome clients and the dominant milestone, with enterprise/opt-out possibly underrepresented; zero/null points are not proof of zero real-world use. Cached at evidence/metrics/timelines/feature-5651.json (SHA-256 cbce15912992620c384fd2c28de55830fd6d6f5291e7b1c1b8abee7d1c0e442f)."
+    }
+  ],
+  "successes": [
+    "Transparent experiment governance: explicit, falsifiable OT goals (heap usage, OOM rate, performance) with JS interop explicitly scoped out; the OT1 disabling and its cause were openly disclosed in the OT2 intent request with a timeline.",
+    "Standards process engagement: CG Phase 2 (2025-05-20) and Phase 3 (2026-01-27) votes with multi-engine participation; a quantified memory hypothesis (~9-10% heap for Sheets) gave a concrete thing to validate.",
+    "External security research improved the proposal: the spec-level unsoundness was caught and (per the team) fixed before broader deployment, and fuzzing was strengthened for the re-trial.",
+    "Clear scope discipline: keeping JS interop out of the initial OT to isolate the core-wasm memory hypothesis."
+  ],
+  "failures": [
+    "Spec-level unsoundness and a V8 type-confusion bug reached a live Origin Trial and were caught only by an external researcher after ~3 weeks, disabling OT1 — a pre-OT soundness/fuzzing validation gap.",
+    "Stale/inaccurate ChromeStatus readiness signals: FF/Safari 'No signal' and WebDev 'No signals' despite active Mozilla CG engagement and partial SpiderMonkey implementation; tag/security/privacy reviews still 'Pending'.",
+    "No published results readout: OT1 ran ~3 weeks and never answered its stated goals; no interim/final findings linked from the feature record.",
+    "Intent-form data quality: dead explainer link, 'all six platforms: No' and 'WPT: No' filled incorrectly (corrected only in thread replies).",
+    "Narrow developer reach: only j2cl (Google's Java-to-JS/Wasm compiler) as first user; no broad framework/library engagement evidenced; C/C++/Rust excluded by design; no pre-OT developer-trial cohort."
+  ],
+  "counterfactuals": [
+    "A pre-OT spec-soundness red-team of the new type-system rules (exact types + describes/descriptor subtyping + struct.new_desc operands) plus targeted fuzzing would likely have caught the type-confusion and spec-unsoundness bugs before live exposure.",
+    "Completing TAG review and a formal cross-implementation soundness check before OT1 would likely have prevented shipping a spec-unsound proposal to a trial.",
+    "Keeping ChromeStatus browser-signal fields reconciled with current CG positions would have reflected Mozilla's engagement and avoided an inaccurate readiness picture.",
+    "Requiring a published results readout and a representative developer cohort before the 'Take 2' OT would give clearer demand/usage evidence than the origin-trial counter alone provides now.",
+    "Conrad Watt's stated reluctance to advance without JS interop implies bundling core-wasm-only descriptors into an OT before JS-interop value is validated risks shipping contested-benefit complexity."
+  ],
+  "skillImprovements": [
+    "experiment/prepare-to-ship module: add a mandatory pre-OT spec-soundness red-team + targeted fuzzing artifact for new Wasm type-system proposals, and treat 'external researcher found a live-OT bug' as a regression signal in the transition packet.",
+    "wide-review module: add a ChromeStatus browser-signal reconciliation step that cross-checks FF/Safari/WebDev fields against current CG meeting positions and other-engine implementation status, flagging stale 'No signal' entries when CG discussion exists.",
+    "experiment module: make a published results readout a hard exit artifact; an OT disabled early must produce a linked written postmortem in the feature record.",
+    "intake/intent module: add an intent-form data-quality gate (no dead explainer links; correct all-platforms/WPT answers) enforced in the ChromeStatus record, not only in thread replies.",
+    "adoption module: add a 'toolchain-internal feature' classifier (no new developer-facing API) requiring at least two toolchains evaluating before developer-value can be scored; record origin-trial counter scope explicitly so OT-only reach is not read as general adoption."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Full security bug contents (446113731/446113732/446124893) are security-restricted; root-cause and fix-completeness not publicly verifiable.",
+      "No published Origin Trial results readout (OT1 ran ~3 weeks; OT2 heap/OOM/perf goal results not public); participant denominator/exposure not disclosed as actual use.",
+      "No WebKit/Safari position; no TAG review on record.",
+      "No attributable production adoption, unique-site usage, retention, task-success, or user-impact evidence (feature not shipped); no predeclared adoption target. Origin-trial counter reach is available but is not production deployment or unique-site evidence.",
+      "Current OT2 enrollment/status and any Google I/O 2026 mention unverified against the cached record (which still shows OT/not-released)."
+    ],
+    "reviewedAt": "2026-07-22T18:07:24Z"
+  }
+}

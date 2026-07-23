@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5161589557821440,
+    "name": "IndexedDB: SQLite backend",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5161589557821440",
+    "featureType": "No developer-visible change",
+    "category": "Offline / Storage",
+    "owners": [
+      "evanstade@microsoft.com",
+      "abhishek.shanthkumar@microsoft.com",
+      "fergal@google.com"
+    ],
+    "blinkComponents": [
+      "Blink>Storage>IndexedDB"
+    ],
+    "flagName": "idb-sqlite-backing-store",
+    "finchName": "IdbSqliteOnDiskRollout",
+    "specLink": "https://www.w3.org/TR/IndexedDB",
+    "rolloutStep": "step 2 of 3 (new on-disk stores only; step 1 = in-memory/incognito, feature 5126896685809664; step 3 = migrate existing LevelDB data, future)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):5161589557821440",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The problem is concrete and validated: Chromium IndexedDB reliability/maintainability is poor on an aging LevelDB backend, with sophisticated web apps reporting high rates of missing or corrupt data. This is step 2 of a 3-phase rollout (new on-disk stores; existing LevelDB data untouched), with no Web API change. Decision and owners are clear (Microsoft-owned: Evan Stade, Abhishek Shanthkumar, plus Fergal @ Google). The core problem is independently corroborated by end-user reports of Chrome repeatedly losing site data where IndexedDB is lost most often. Evidence inventory (ChromeStatus record, step-1 and step-2 blink-dev PSAs, sample, tracking bug) is in place.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S13",
+        "S14"
+      ],
+      "limitations": "No public explainer (this is an infra change, not an API proposal); ChromeStatus records Web developers as No signals."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "This is an implementation/maintainability decision rather than a use-case-driven incubation, so the usual incubation artifacts (use-case brief, developer research) do not cleanly apply. The underlying problem is real and corroborated, and other-engine analysis is strong: Firefox and Safari already use SQLite for IndexedDB, so the direction is convergent rather than speculative. However there is no public use-case brief, no developer research, and non-developer external dependents (forensic parsers of the LevelDB on-disk format; library authors who reason about the backing store) were not represented in the incubation evidence.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S6",
+        "S10",
+        "S13"
+      ],
+      "limitations": "No public incubation venue or evidence ledger; Web developers No signals; external-tooling constituencies not in scope of ChromeStatus signals."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "The implementation exists: LevelDB-to-SQLite migration code was written and described as in a decent state, with pre-ship bugs filed and fixed (e.g. SQLite database errors masked under certain conditions; grace period for SQLite connections). A working sample demonstrating the one web-visible behavioral change (concurrent readwrite transaction scheduling) exists. Both old and new implementations were newly fuzz-tested. Gaps: no public task-based friction logs, no framework/server integration-spike evidence, and no public developer feedback gathered during prototyping.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S8",
+        "S12"
+      ],
+      "limitations": "Friction-log and integration-spike evidence is not public; migration-bug detail is snippet-level only because the Chromium issue is login-walled."
+    },
+    "developerTrials": {
+      "status": "unknown",
+      "finding": "This is the current phase: the on-disk variant is in developer trial at M149 behind the idb-sqlite-backing-store flag (Finch IdbSqliteOnDiskRollout). However there is no public evidence of a recruited developer cohort, task-completion data, feedback themes, or attributable partner trial for the on-disk variant. For a no-API-change infra feature the flag functions mainly as a manual-testing toggle rather than a recruited cohort, so the usual dev-trial learning questions cannot be answered from public evidence.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No cohort methodology, participation denominators, or feedback summary is public; cannot distinguish interest from successful task completion."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Standards positions evolved positively between steps: for this (step-2) record Firefox and Safari are marked Shipped/Shipping with notes that both use SQLite for IndexedDB, whereas the step-1 record still showed No signal. TAG review and tag review are both Not applicable (appropriate for an API-unchanged impl change) and WPT is covered. Caveats: security_review_status and privacy_review_status are both Pending as of 2026-06-15; the transaction-scheduling change is web-visible with an acknowledged (if low) breakage risk; Web developers No signals.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S8"
+      ],
+      "limitations": "Formal security and privacy reviews unresolved at cutoff; no web-developer signal confirming the behavioral change is harmless."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "There is no Origin Trial (origintrial is false; no new web API to opt into, so an OT is structurally inappropriate). The team instead uses a staged Finch rollout (rollout_plan: Experiment users ramp up over time; finch IdbSqliteOnDiskRollout) with A/B measurements during rollout as the field risk-reduction mechanism, and explicitly stated that the incognito-first launch was an extra precaution to verify correctness in a low-stakes environment before touching persisted data. Not-relevant specifically to the Origin-Trial phase; this does NOT mean untested - the staged rollout carries the field-experiment function.",
+      "evidenceIds": [
+        "S1",
+        "S4"
+      ],
+      "limitations": "No public experiment protocol, metric thresholds, or rollback triggers are exposed; the field-experiment function is implicit in the Finch rollout."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Ship is targeted at M152 for desktop/Android/WebView, having slipped from the step-2 PSA estimate of M150 (devtrial also slipped 148 to 149). Security and privacy reviews remain Pending. The critical differences-to-be-aware-of docs and the security doc linked from ChromeStatus could not be retrieved (access-restricted). A rollout/Finch plan exists and measurement is referenced in intent discussion but the measurement field is null in the record. Incomplete/unknown at cutoff.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "Design/security docs unverifiable; root cause of milestone slippage not public; no public reliability metric or rollback trigger."
+    },
+    "release": {
+      "status": "unknown",
+      "finding": "This feature (on-disk new stores) has NOT shipped to stable at the evidence cutoff (is_released false; status Proposed; the only recorded launch event is the M149 dev trial). The related step-1 (in-memory/incognito, distinct feature 5126896685809664) shipped in Chrome 145 stable on 2026-02-10 and was documented in official release notes, with no regression or data-loss reports surfacing in research. For this feature release remains pending.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S8"
+      ],
+      "limitations": "Absence of reported step-1 regressions is not proof of success (method rule); on-disk ship outcome is structurally unavailable."
+    },
+    "adoption": {
+      "status": "not-relevant",
+      "finding": "For a no-API-change implementation rewrite there is no site adoption path: sites use IndexedDB unchanged and receive the new backend via rollout. The meaningful adoption metric is rollout completion plus maintenance of ecosystem tooling that depends on the on-disk format. On-disk new-store rollout has not reached stable. Ecosystem tools that reason about the backing store exist (RxDB; forensic parsers) and RxDB assessed that no changes are needed because Firefox and Safari already use SQLite. Not-relevant as a site-adoption dimension with rationale; not untested.",
+      "evidenceIds": [
+        "S1",
+        "S6",
+        "S10"
+      ],
+      "limitations": "Rollout completion not yet measurable on-disk; forensic-tool re-tooling burden not quantified."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "The on-disk variant is not yet in stable, so there is no production support data for it. Step-1 (in-memory) has been in stable roughly five months with no surfaced support incidents, but in-memory is materially lower-risk (no persisted data) and absence of incidents is not evidence of success. DevTools support is unchanged.",
+      "evidenceIds": [
+        "S1",
+        "S7"
+      ],
+      "limitations": "No support-issue taxonomy, denominators, or recurrence data for the on-disk variant; lower-risk step-1 is a weak proxy."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a backend migration, not a web-facing API deprecation or removal. The IndexedDB Web API is unchanged; there is no reverse trial or removal timeline. The internal LevelDB code is being phased out, and the future step-3 (migration of existing persisted data) carries deprecation-like data-loss risk, but that is a separate future feature. Not-relevant to this feature deprecation phase, with rationale.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "The step-3 data migration is out of scope for this feature ID but is the highest-risk future deprecation-like event and should get its own PSA."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "unscored",
+      "finding": "Value is indirect: no new developer capability. The claimed outcome is improved reliability (primary) and performance (secondary). The reliability problem is real and corroborated, and converging on the SQLite backend already used by Firefox and Safari is a sound direction. But the central value claim (fewer data-loss/corruption incidents) is not measurable until the on-disk rollout (this feature) and the later step-3 migration complete. Cannot be scored pre-ship.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S13",
+        "S14"
+      ],
+      "limitations": "Reliability improvement is the whole point and is not yet demonstrable for on-disk stores."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "Indirect. Documented cost: larger on-disk footprint (no key compression) and changed runtime/CPU/memory/disk characteristics, with explicit risk for storage-constrained devices such as kiosks. Documented benefit intent: fewer missing/corrupt-data incidents. Step-1 carried a temporary privacy cost (a new, if flaky, incognito-detection oracle). Neither benefit nor cost is yet measurable for the on-disk variant; risk profile is mixed.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "limitations": "No public measurement of storage delta, perf regression, or reliability gain on-disk; incognito-oracle tradeoff only lightly reviewed externally."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No site adoption path exists (no API change); rollout completion is the metric and on-disk rollout has not reached stable. Ecosystem-tool maintenance (RxDB: no changes needed) is the relevant signal and is tentatively positive but thin. Not scoreable as adoption success or failure.",
+      "evidenceIds": [
+        "S1",
+        "S6"
+      ],
+      "limitations": "Rollout completion unmeasured on-disk; only one attributable ecosystem signal (RxDB)."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "Positive direction: Chrome converges on the SQLite backend family already used by Firefox and Safari; the one web-visible change (concurrent readwrite transaction scheduling) aligns Chrome with Firefox/Safari and is standards-compliant either way; WPT-covered. Caveats: this is a Chrome-internal impl change so it produces no new Baseline/web-features event (indexeddb is already Baseline); the behavioral change carries a low but real breakage risk with No signals from web developers to confirm harmlessness; and step-1 introduced a temporary incognito oracle. Net mixed, leaning positive on convergence.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S5",
+        "S8"
+      ],
+      "limitations": "No post-on-disk-ship compatibility data; no web-developer confirmation that the scheduling change is harmless."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Strong engineering posture: a deliberate phased rollout (incognito first) that explicitly accounts for the irreversibility of persisted-data bugs; proactive pre-ship bug-fixing; both implementations newly fuzz-tested; migration code described as in decent state. Caveats: ship slipped M150 to M152 and devtrial 148 to 149 between the PSA and the current record without a public root cause; security and privacy reviews still Pending at cutoff; the measurement field is null (no public reliability metric or rollback trigger).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S8",
+        "S12"
+      ],
+      "limitations": "Slippage cause, review-gate status, and measurement thresholds are not public."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Strengths: a clear, honest PSA with explicit risk disclosure; a working sample for the behavioral change; step-1 covered in official Chrome 145 release notes; a complete and internally consistent ChromeStatus record. The WebSQL-versus-IDB-SQLite distinction was clearly explained when challenged in the PSA thread. Gaps: the critical differences-to-be-aware-of docs and the security doc are access-restricted and unverifiable; there is no dedicated Chrome blog post for the SQLite backend (only the older, distinct Chrome-129 Snappy-compression doc); Web developers No signals; and the WebSQL-irony framing surfaced reactively rather than being preempted.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S7",
+        "S11"
+      ],
+      "limitations": "Key design docs cannot be verified independently; developer-facing comms are thin (arguably appropriate for a no-API-change, but the storage-size cost is under-communicated)."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "On-disk variant not in stable; no production support data. Step-1 has been stable roughly five months with no surfaced incidents, but in-memory is lower-risk and absence of incidents is not success. DevTools support unchanged.",
+      "evidenceIds": [
+        "S1",
+        "S7"
+      ],
+      "limitations": "No support telemetry for the on-disk variant; lower-risk step-1 is a weak proxy."
+    },
+    "overall": {
+      "status": "unscored",
+      "finding": "A well-motivated (validated data-loss problem), interop-convergent (Firefox/Safari already on SQLite), and prudently phased implementation rewrite. However the central outcome - measured reliability improvement and acceptable storage/perf/resource cost for the on-disk variant that IS this feature - is structurally unmeasurable until on-disk ship (M152) and the later data-migration step complete. Success is not inferred from the clean step-1 ship or from absence of criticism. Overall unscored pending on-disk outcomes.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4",
+        "S7",
+        "S13"
+      ],
+      "limitations": "Pre-release; the decisive evidence arrives after the evidence cutoff."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5161589557821440",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-06-15)",
+      "publishedOrObservedAt": "2026-06-15",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, summary, motivation, owners, flag/finch, stages (devtrial 149 desktop/android; ship 152 desktop/android/webview), security/privacy review Pending, ff/safari Shipped-Shipping, no web-dev signals, no API change, step-2 of 3-phase rollout"
+      ],
+      "limitations": "Static snapshot; is_released false; does not expose rollout telemetry, review artifacts, or milestone-slippage rationale."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/5161589557821440",
+      "publisher": "chromestatuslite.com (server-rendered mirror)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms cached ChromeStatus summary, motivation, standards signals, docs/sample links"
+      ],
+      "limitations": "Mirror of the same underlying record; not independent."
+    },
+    {
+      "id": "S3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/jS0khnC5IWA",
+      "publisher": "blink-dev (Evan Stade)",
+      "publishedOrObservedAt": "2026-04-25",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Step-2 Web-Facing Change PSA; interop/compat risk framing; PSA-era milestone estimates (ship 150, devtrial 148) showing later slippage; WebSQL-vs-IDB distinction (Chromium controls the SQL so no attacker-controlled-SQL surface); Web developers No signals"
+      ],
+      "limitations": "PSA is informational, not an approval; does not include review sign-offs or telemetry."
+    },
+    {
+      "id": "S4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/jEDGJfRibfM",
+      "publisher": "blink-dev (Chromestatus bot; replies by Evan Stade, Mike Taylor, Reilly Grant)",
+      "publishedOrObservedAt": "2025-12-10",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Step-1 (in-memory) rationale: incognito-first launch is an extra precaution for data-loss risk; planned A/B rollout; temporary incognito-detection oracle acknowledged and judged acceptable vs existing oracles; reviewers aligned the phased plan is correct"
+      ],
+      "limitations": "Step-1 thread, used here only to evidence the phased-rollout rationale and oracle handling for the same overall project."
+    },
+    {
+      "id": "S5",
+      "url": "https://evanstade.github.io/web-storage-demos/idb-txn-scopes",
+      "publisher": "Evan Stade (web-storage-demos)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Working sample demonstrating the web-visible behavioral change (treatment of concurrent readwrite IDB transactions); recommends distinct databases/storage buckets to avoid relying on Chromiums previously more permissive scheduling"
+      ],
+      "limitations": "Single small demo; does not measure breakage incidence."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/pubkey/rxdb/issues/8613",
+      "publisher": "pubkey/rxdb (issue by nickchomey)",
+      "publishedOrObservedAt": "2026-06-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Ecosystem awareness by a major IndexedDB-wrapping library; expectation of improved reliability; explicit cost: larger storage size due to no key compression; assessment that no RxDB changes are needed because Firefox/Safari already use SQLite; references the two design docs and a Chromium bug"
+      ],
+      "limitations": "Single attributable library signal; issue later auto-closed as stale, not because action was taken."
+    },
+    {
+      "id": "S7",
+      "url": "https://developer.chrome.com/release-notes/145",
+      "publisher": "Chrome for Developers (release notes)",
+      "publishedOrObservedAt": "2026-02-10",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Step-1 (in-memory contexts) shipped in Chrome 145 stable on 2026-02-10 and was officially documented under Storage; confirms the broader projects phased-ship cadence"
+      ],
+      "limitations": "Covers step-1 (distinct feature ID), not the on-disk variant under review."
+    },
+    {
+      "id": "S8",
+      "url": "https://chromestatus.com/feature/5126896685809664",
+      "publisher": "Chrome Platform Status (cached step-1 record, accurate_as_of 2026-01-07)",
+      "publishedOrObservedAt": "2026-01-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Step-1 state: devtrial 144, ship 145 desktop/android; security/privacy review Not applicable; ff/safari No signal at that time (later updated to Shipped-Shipping for step 2); both impls fuzz-tested"
+      ],
+      "limitations": "Snapshot predates step-1 stable ship; is_released false in snapshot."
+    },
+    {
+      "id": "S9",
+      "url": "https://powersync.com/blog/sqlite-persistence-on-the-web",
+      "publisher": "PowerSync (Ralf Kistner)",
+      "publishedOrObservedAt": "2026-05-15",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Independent, current technical landscape of SQLite-on-web (wa-sqlite, sqlite-wasm, OPFS VFSs); notably does NOT address the Chrome IDB-to-SQLite backend change, showing it is a separate concern from the Wasm SQLite-on-web ecosystem; documents real-world Chrome incognito IndexedDB 100MB limit and quirks"
+      ],
+      "limitations": "Indirect/contextual; not an assessment of the Chrome IDB SQLite backend itself."
+    },
+    {
+      "id": "S10",
+      "url": "https://www.cclsolutionsgroup.com/post/indexeddb-on-chromium",
+      "publisher": "CCL Solutions Group (Alex Caithness)",
+      "publishedOrObservedAt": "2020-10",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Independent forensic deep-dive of the Chromium IndexedDB LevelDB on-disk format and open-source Python parsers; evidences a non-developer external constituency whose tooling depends on the format being migrated, a dependency not surfaced in ChromeStatus signals"
+      ],
+      "limitations": "Predates the SQLite work by years; background/external-impact evidence only."
+    },
+    {
+      "id": "S11",
+      "url": "https://developer.chrome.com/docs/chromium/indexeddb-storage-improvements",
+      "publisher": "Chrome for Developers (Thomas Steiner; reviewed by Evan Stade)",
+      "publishedOrObservedAt": "2024-08-27",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Related but distinct Chrome 129 optimization (Snappy compression of large IndexedDB values); same owner/reviewer overlap with the SQLite-backend work; background on prior IndexedDB storage-effort"
+      ],
+      "limitations": "Distinct feature, not the SQLite backend; included only as background."
+    },
+    {
+      "id": "S12",
+      "url": "https://issues.chromium.org/issues/40253999",
+      "publisher": "Chromium Issue Tracker (Migrate IndexedDB from LevelDB to SQLite)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Parent migration tracker; snippet evidence of pre-ship bugs found and fixed (SQLite database errors masked under certain conditions - Fixed; implement grace period for SQLite connections - Fixed)"
+      ],
+      "limitations": "Login-walled; only search-snippet-level content retrievable; cannot enumerate full bug list or severities."
+    },
+    {
+      "id": "S13",
+      "url": "https://superuser.com/questions/1926924/why-is-chrome-constantly-losing-site-data",
+      "publisher": "Super User (community Q&A)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Independent end-user evidence of the exact problem the rewrite targets: Chrome repeatedly losing site data with IndexedDB lost most often, validating the motivation"
+      ],
+      "limitations": "Anecdotal community report, not measured incidence data."
+    },
+    {
+      "id": "S14",
+      "url": "https://gist.github.com/pesterhazy/4de96193af89a6dd5ce682ce2adff49a",
+      "publisher": "pesterhazy (community gist)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Community-documented catalogue of IndexedDB reliability bugs/pain, corroborating the maintainability/reliability motivation"
+      ],
+      "limitations": "Community anecdote compilation, not a measured denominator."
+    }
+  ],
+  "successes": [
+    "Validated problem: IndexedDB data loss/corruption and an unmaintained LevelDB backend are real and independently corroborated by end-user reports and community bug catalogues (S13, S14), matching the stated motivation (S1).",
+    "Prudent, risk-aware phased rollout (incognito/in-memory first, then new on-disk stores, then migrate existing data) that explicitly accounts for the irreversibility of persisted-data bugs; reviewers endorsed the staging (S4).",
+    "Interop convergence: Chrome moves to the same SQLite backend family already used by Firefox and Safari, and the one web-visible change aligns Chrome with the other engines while remaining standards-compliant (S1, S3, S5, S8).",
+    "Engineering rigor pre-ship: both old and new implementations newly fuzz-tested, and migration bugs proactively filed and fixed (S1, S8, S12).",
+    "Honest, disclosure-rich PSA (S3) and clear official release-notes coverage for step-1 (S7); the WebSQL-vs-IDB-SQLite distinction was explained accurately when raised (S3).",
+    "Step-1 shipped cleanly to Chrome 145 stable (Feb 2026) with no surfaced regressions (S7) - a tentative positive signal for the lower-risk variant."
+  ],
+  "failures": [
+    "Milestone slippage without public root cause: the step-2 ship moved from the PSA estimate of M150 to M152 and the devtrial from 148 to 149 (S3 vs S1), with no public explanation.",
+    "Security and privacy reviews remain Pending at the evidence cutoff while ship is targeted at M152 (S1) - an unresolved prepare-to-ship gate.",
+    "Critical differences-to-be-aware-of docs and the security doc linked from ChromeStatus are access-restricted and could not be independently verified (S1; timed out on retrieval).",
+    "Web developers No signals and no public evidence of a recruited developer-trial cohort or feedback for the on-disk variant (S1, S3).",
+    "Storage-size regression (larger on-disk footprint, no key compression) is acknowledged indirectly by the ecosystem (S6) but no public measurement, threshold, or rollback trigger exists (measurement field null, S1).",
+    "External non-developer constituencies that depend on the LevelDB on-disk format (forensic parsers, eDiscovery/backup tooling) are not represented in ChromeStatus signals and were not part of the launch evidence (S10)."
+  ],
+  "counterfactuals": [
+    "If the team had shipped the SQLite on-disk backend in a single step (rather than incognito-first), the data-loss blast radius would have been far larger and largely irreversible; the phased approach is justified by the irreversibility of persisted-data bugs (S4), and a one-step ship should be treated as the avoided failure mode.",
+    "If the team had imposed the new (more restrictive) transaction-scheduling behavior on the LevelDB backend at the same time, the temporary incognito oracle from step-1 could have been avoided - but at a LevelDB perf cost and reduced ability to run a fair SQLite-vs-LevelDB A/B comparison; they chose a deliberately flaky oracle via A/B rollout, a defensible but under-reviewed privacy tradeoff (S4).",
+    "If the differences-to-be-aware-of and storage-size cost had been published as a normal web page (not access-restricted Google Docs) alongside the PSA, ecosystem authors (e.g. RxDB) and forensic-tool maintainers could have assessed impact earlier and the storage-size regression would not have been discovered mainly through reverse-engineering (S1, S6, S10).",
+    "If a dedicated Chrome blog post had explained SQLite-backed IndexedDB proactively, the WebSQL-revival misreading (surfaced reactively by a community member in the PSA thread, S3) would likely have been pre-empted.",
+    "If the forensic/eDiscovery/backup tooling constituency had been in scope of wide review, the migration would have been paired with a public format-change notice and updated parsers - currently a silent external breakage risk for step-3 (S10)."
+  ],
+  "skillImprovements": [
+    "Add an implementation-change / no-API-change launch variant in the phase modules and outcome rubric. Re-weight dimensions away from developer-value/adoption/partner-trial (which assume a new capability) and toward reliability/compat telemetry, migration risk, storage/perf/resource deltas, external-tooling-ecosystem breakage, and staged-rollout gates. The current per-phase packets map poorly to infra rewrites.",
+    "Add a non-developer external-dependents scan to wide-review and prepare-to-ship: forensic parsers, eDiscovery/backup, enterprise DLP, and third-party on-disk-format tooling, not only web-developer/framework signals. ChromeStatus fields capture only Web developers and miss this constituency entirely (as shown by S10).",
+    "Treat milestone slippage between an intent/PSA and the ship record as a first-class evidence signal and require a root-cause note (bug count, review latency, perf regression) rather than silently updating the field. The M150-to-M152 / 148-to-149 slippage here (S3 vs S1) is currently invisible to a retrospective that reads only the final record.",
+    "Add a privacy/covert-channel rehearsal trigger: any launch variant that creates or worsens an incognito/private-mode/accessibility oracle must rehearse privacy impact even when privacy_review_status is Pending or Not applicable. Step-1 introduced a temporary incognito oracle (S4) handled in-list but with formal review waived.",
+    "Give explicit guidance that for no-API-change infra work, Web developers: No signals is structurally expected (not a neutral/positive gap), and route evidence gathering instead to library authors who reason about the backing store (RxDB S6), perf/storage-sensitive apps, and embedders/WebView.",
+    "Require a public measurement/exit-criteria record for staged rollouts: per-stage reliability metric, regression budget, and rollback trigger. The measurement field is null here (S1), so the staged rollout has no public definition of done.",
+    "Add a retrospective template field capturing whether each stage gate had explicit, public exit criteria, so good phased design (as here, S4) is reusable rather than tacit."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "The two differences-to-be-aware-of Google Docs and the security-review Google Doc linked from ChromeStatus are access-restricted and could not be retrieved (timed out); these are explicitly referenced as critical reading.",
+      "This features tracking bug (498644996) and the parent migration tracker (40253999) are login-walled; only search-snippet-level implementation evidence was available.",
+      "Post-on-disk-ship outcome evidence is structurally unavailable: the on-disk variant has not shipped to stable at the cutoff (only the M149 dev trial), so reliability improvement, storage-size regression, perf/resource cost, and on-disk regressions cannot be measured yet.",
+      "Security_review_status and privacy_review_status are both Pending as of 2026-06-15 - material prepare-to-ship gates are unresolved.",
+      "No recruited developer-trial cohort, feedback themes, or task-completion data are public for the on-disk variant; Web developers is No signals.",
+      "No public rollout measurement, reliability metric, or rollback trigger (measurement field null)."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

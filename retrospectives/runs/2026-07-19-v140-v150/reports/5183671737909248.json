@@ -21,7 +21,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-20T06:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:14Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -99,13 +99,14 @@
       "limitations": "No dedicated DevRel article/sample/demo was found via search; absence is asserted from search saturation, not exhaustive coverage."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "The feature shipped only ~3 weeks before the evidence cutoff (stable 2026-06-30 vs cutoff 2026-07-20). No use counter is linked in the ChromeStatus record, no HTTP Archive/BigQuery or web-features adoption metric is available this soon, and community/press search surfaced no independent adoption, blog post, or case study for the animatable-zoom sub-feature (results loop back to the ChromeStatus entry or discuss transform-based scaling). Adoption is therefore not yet measurable.",
+      "status": "partial",
+      "finding": "Chrome 150 stable reached 2026-06-30 (~3 weeks before this revision's cutoff). The ChromeStatus record itself links no use counter (webdxUseCounterEnum and measurement are null), but the zoom web_feature maps to the CSS property-family counter for the zoom property (bucket_id 19; mappingStatus web-feature-family-counter, confidence name-matched-family) — there is no exact animatable-zoom counter. That family counter fired on 0.31695156% of measured Chrome HTTP/HTTPS page loads at Chrome 150 stable (2026-06-30) and on 0.31963434% at the latest observed point (2026-07-21); the zoom property peaked at 0.71222946% on 2018-06-17 and has declined since (first observed positive 0.63% on 2013-08-08; 4410 timeline points). Because this counter measures any use of the zoom property family, it cannot separate page loads that animate zoom from those that set it statically: it bounds the addressable audience for the behavioral change but does not measure adoption of the animatable variant. Launch-relative day30/day90/day180 checkpoints are null (the feature is under 30 days past stable). Community/press search surfaced no independent adoption, blog post, or case study for the animatable-zoom sub-feature.",
       "evidenceIds": [
         "S1",
-        "S13"
+        "S13",
+        "S14"
       ],
-      "limitations": "Recency makes adoption evidence unavailable by construction; this is unknown, not negative."
+      "limitations": "Property-family counter only — a family/property counter is not exact feature adoption and cannot attribute page loads to animating zoom. The percentage is the share of measured Chrome HTTP/HTTPS page loads where the counter fired, not unique developers/sites/users, production deployment, retention, task-success, developer satisfaction, or end-user benefit. No exact animatable-zoom counter, unique-site, production, retention, task-success, or predeclared adoption-target evidence exists; day30/day90/day180 launch-relative checkpoints are not yet available."
     },
     "support": {
       "status": "unknown",
@@ -128,14 +129,15 @@
   "outcomes": {
     "developerValue": {
       "status": "mixed",
-      "finding": "Real but incremental value. The change removes a genuine cross-browser inconsistency (zoom animated discretely in Chrome, smoothly in Firefox, not at all in old Safari) and completes the zoom property for the animation use case; unlike transform:scale, animating zoom affects layout, so it is a distinct capability. Set against this: there is no demonstrated developer demand (ChromeStatus 'Web developers: No signals'), the capability overlaps heavily with the long-standing transform:scale workaround, and value is parity rather than a new primitive.",
+      "finding": "Real but incremental value. The change removes a genuine cross-browser inconsistency (zoom animated discretely in Chrome, smoothly in Firefox, not at all in old Safari) and completes the zoom property for the animation use case; unlike transform:scale, animating zoom affects layout, so it is a distinct capability. Set against this: there is no demonstrated developer demand (ChromeStatus 'Web developers: No signals'), the capability overlaps heavily with the long-standing transform:scale workaround, the addressable audience is modest and declining (the zoom property-family counter fired on ~0.317% of measured page loads at stable, down from a 0.712% peak in 2018), and value is parity rather than a new primitive.",
       "evidenceIds": [
         "S3",
         "S6",
         "S11",
-        "S13"
+        "S13",
+        "S14"
       ],
-      "limitations": "No attributable developer demand or usage evidence exists to weigh demand quantitatively."
+      "limitations": "No attributable developer-demand evidence exists for the animatable variant; the property-family usage counter bounds the audience but does not measure demand for animatability and is not an exact animatable-zoom adoption metric."
     },
     "endUserImpact": {
       "status": "unscored",
@@ -148,12 +150,13 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Cannot be scored: the feature is <4 weeks past stable at the evidence cutoff, no use counter or adoption metric is linked, and no independent adoption signal was found. Per the method, recency with no data is unknown/unscored, not failure.",
+      "finding": "Unscored: there is no predeclared adoption target in the Intent to Ship or ChromeStatus entry, and no production, retention, or case-study evidence, so no threshold exists to score against. The only available telemetry is the zoom CSS property-family counter (bucket_id 19), not an exact animatable-zoom counter: it fired on 0.31695156% of measured Chrome HTTP/HTTPS page loads at Chrome 150 stable (2026-06-30) and 0.31963434% at the latest point (2026-07-21), against a 2018-06-17 peak of 0.71222946%. This bounds the addressable audience (the zoom property is in modest and declining use) but does not measure adoption of the animatable behavior, and per the method a family/property counter is not treated as success or failure on its own. day30/day90/day180 checkpoints are null. With no predeclared target and no corroborating production/retention evidence, the outcome stays unscored and the measured level/trend is described rather than scored.",
       "evidenceIds": [
         "S1",
-        "S13"
+        "S13",
+        "S14"
       ],
-      "limitations": "Adoption data does not yet exist for a feature this fresh."
+      "limitations": "No exact animatable-zoom counter, no predeclared target, and no production/retention/case-study evidence; the family counter cannot attribute page loads to animation of zoom and is not a unique-site/user/production metric. Launch-relative day30/day90/day180 checkpoints are not yet observable."
     },
     "interoperability": {
       "status": "success",
@@ -200,7 +203,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A clean, on-schedule interop catch-up that achieved its stated goal (all three engines + the spec now agree that zoom interpolates by computed value), with no new API surface and minimal risk. Held back from success by: no demonstrated developer demand, adoption/usage that is unmeasurable this soon after ship, a thin evidence/communication packet at intent and release, and concrete documentation lag (MDN still says 'Not animatable' at launch). Completion is partial because adoption, support, security/privacy-review outcome, and WPT run results are missing.",
+      "finding": "A clean, on-schedule interop catch-up that achieved its stated goal (all three engines + the spec now agree that zoom interpolates by computed value), with no new API surface and minimal risk. Held back from success by: no demonstrated developer demand, an animatable-zoom adoption level that remains unmeasured (only the broader zoom property-family counter is available — ~0.317% of measured page loads at stable, modestly declining from a 2018 peak — with no exact counter, predeclared target, or production/retention evidence), a thin evidence/communication packet at intent and release, and concrete documentation lag (MDN still says 'Not animatable' at launch). Completion is partial because exact animatable-zoom adoption, support, security/privacy-review outcome, and WPT run results are still missing.",
       "evidenceIds": [
         "S1",
         "S3",
@@ -208,9 +211,10 @@
         "S6",
         "S8",
         "S10",
-        "S11"
+        "S11",
+        "S14"
       ],
-      "limitations": "Overall is mixed by design; it does not hide the unscored adoption/support dimensions."
+      "limitations": "Overall is mixed by design; it does not hide the unscored adoption/support dimensions, and the family counter is a proxy audience signal rather than measured animatable-zoom adoption."
     }
   },
   "sources": [
@@ -369,6 +373,21 @@
         "Near-zero independent coverage of the animatable-zoom sub-feature; existing guidance (TestMu) still says zoom is 'Not animatable ... use transform: scale() instead'; Jake Archibald's 2025 'Animating zooming' article concerns transform order, not the zoom property; searches loop back to the ChromeStatus entry"
       ],
       "limitations": "Search saturation is not exhaustive; absence of coverage is asserted, not proven."
+    },
+    {
+      "id": "S14",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=19",
+      "publisher": "Chrome Platform Status (CSS property popularity timeline; bucket_id 19 = zoom property family)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:14Z",
+      "sourceType": "usage",
+      "supports": [
+        "Property-family CSS use counter for the zoom property (bucket_id 19); value is the share of measured Chrome HTTP/HTTPS page loads on which the counter fired at least once",
+        "At Chrome 150 stable (2026-06-30) the zoom counter fired on 0.31695156% of measured page loads; latest observed point 2026-07-21 0.31963434%; latest cached snapshot 2026-07-20 0.32053127%",
+        "Historical peak 0.71222946% on 2018-06-17; first observed positive 0.63% on 2013-08-08; 4410 timeline points; mappingStatus web-feature-family-counter, confidence name-matched-family",
+        "Launch-relative checkpoints day30/day90/day180 are null (feature under 30 days past stable)"
+      ],
+      "limitations": "Property-family counter, not an exact animatable-zoom counter — it measures any use of the zoom property and cannot separate page loads that animate zoom from those that set it statically; a family/property counter is not exact feature adoption. The percentage is the share of measured Chrome HTTP/HTTPS page loads where the counter fired, not unique developers/sites/users, production deployment, retention, task-success, developer satisfaction, or end-user benefit. Counter instrumentation may include detection/probing; UMA reflects participating Chrome clients and the dominant milestone, with enterprise/opt-out populations possibly underrepresented. day30/day90/day180 checkpoints not yet available."
     }
   ],
   "successes": [
@@ -392,17 +411,18 @@
     "Add a documentation-lag regression rule: for any CSS animation/behavior change, verify MDN 'Animation type' and browser-compat-data match the shipped behavior at launch; flag a doc-lag alert when they diverge (as here, MDN 'Not animatable' vs shipped 'by computed value type').",
     "Add a wide-review packet template item: when TAG is 'Not applicable', auto-insert the cited catch-up exception (per chromium.org wide-review/#exceptions) and the other-engine ship evidence, so reviewers are not forced to prompt for it (as Mike Taylor did).",
     "Add a completion/recency rule to the retrospective method: features fewer than ~4 weeks past stable cannot be marked 'complete' on adoption/support dimensions; default to 'partial' with a recency rationale and schedule a re-run.",
+    "Add a metric-scope labeling rule to the retrospective method: when a ChromeStatus web_feature maps only to a broader WebDX family/property/origin-trial counter (mappingStatus web-feature-family-counter), record the scope explicitly and never treat the family percentage as exact feature adoption; surface atStable/day30/day90/day180 checkpoints only where the scope is exact, and keep the adoption outcome unscored when only a family proxy and no predeclared target exist (as here, where zoom is a property-family counter, not an animatable-zoom counter).",
     "Encourage a minimal, reusable before/after sample for even small CSS behavior deltas (here discrete vs interpolated zoom) so the behavioral change is demonstrable and discoverable without a full article."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Adoption/usage: feature shipped 2026-06-30, only ~3 weeks before the 2026-07-20 cutoff; no use counter, HTTP Archive/BigQuery, or web-features adoption metric exists this soon.",
+      "Adoption/usage: ChromeStatus exposes a zoom property-family CSS counter (bucket_id 19) — fired on 0.31695156% of measured Chrome HTTP/HTTPS page loads at stable (2026-06-30) — but there is no exact animatable-zoom counter, and no unique-site, production, retention, task-success, or predeclared adoption-target evidence; launch-relative day30/day90/day180 checkpoints are not yet available (feature under 30 days past stable).",
       "Chromium tracking bug (393810951) and the implementing CL: buganizer requires auth/JS and the reader returned 500; implementation detail, review comments, and any regressions are unverified.",
       "WPT cross-browser pass/fail at launch: wpt.fyi is JS-rendered (empty body) and the results API URL was rejected by the reader; conformance is inferred from the test's assert plus converging engine implementations.",
       "Security/privacy review final outcomes: both were 'Pending' in the cached record (accurate_as_of 2026-05-05); no public evidence of their resolution before stable was found.",
       "Support patterns: too recent to observe; buganizer internals not publicly retrievable."
     ],
-    "reviewedAt": "2026-07-20T06:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:14Z"
   }
 }

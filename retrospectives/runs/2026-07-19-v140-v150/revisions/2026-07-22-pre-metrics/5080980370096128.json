@@ -1,0 +1,457 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5080980370096128,
+    "name": "Support path() and shape() in shape-outside",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5080980370096128",
+    "category": "CSS",
+    "blinkComponents": [
+      "Blink>CSS"
+    ],
+    "featureType": "Chromium catches up",
+    "webFeature": "shape-outside",
+    "ownerEmails": [
+      "cgqaq@chromium.org"
+    ],
+    "specLink": "https://drafts.csswg.org/css-shapes/#shape-outside-property",
+    "trackingBugUrl": "https://issues.chromium.org/u/2/issues/502328208"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5080980370096128",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-19T00:00:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The entry is clearly classified as a CSS / Blink>CSS 'Chromium catches up' capability extending shape-outside to accept path() and shape(). Owner cgqaq@chromium.org; tracking bug 502328208; web feature 'shape-outside'. The problem statement (shape-outside lacks parity with clip-path/offset-path, forcing image-based hacks) is coherent and scoped, and the intended ship milestone (149 on desktop/android/ios/webview) is recorded from intake. The lifecycle stage was correctly read as 'prototype/ship a spec-defined extension', not open-ended incubation.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s16"
+      ],
+      "limitations": "No initial_public_proposal_url and no explainer_links are recorded; intake relied on the CSS WG spec rather than a standalone explainer. 'Chromium catches up' framing is inaccurate for this sub-feature (Chrome leads; see interoperability)."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Deep incubation was minimal, which is appropriate for a spec-alignment task: css-shapes Level 1 already defines path() and shape() as <basic-shape> values usable by shape-outside (with implicit closepath for closed-loop contexts). The developer problem is independently evidenced and long-standing: an MDN issue from 2021 (mdn/content#9703) reports path() producing no effect in shape-outside in Chrome and Firefox and was closed wontfix; a Samsung Internet community article notes shape-outside lacks <path> support. The predecessor shape() in clip-path shipped in Chrome 135 / Safari 18.4 (Apr 2025) authored by Noam Rosenthal, a CSS Shapes spec editor, establishing the parsing/animation machinery this feature reuses.",
+      "evidenceIds": [
+        "s3",
+        "s9",
+        "s10",
+        "s11"
+      ],
+      "limitations": "No public explainer, no TAG review, no attributable developer-demand research specific to this feature were found; 'web developers: No signals' is recorded. Problem evidence is anecdotal rather than surveyed."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "An Intent to Prototype thread exists with motivation, Blink component, tracking bug, and estimated ship milestones (all platforms 149). The design reuses already-shipped path()/shape() parsing from clip-path/offset-path, so prototype risk is low and the grammar is fixed by spec (including interpolation rules for shape()/path()).",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s3"
+      ],
+      "limitations": "The public ITP thread SUMMARY contains erroneous copy-paste text ('define float exclusion shapes using rectangle coordinates, aligning Chrome with Firefox and Safari which already support this feature') that actually describes the sibling rect()/xywh() feature and is false for path()/shape(). No task-based friction logs or representative-user testing are visible publicly."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial (behind a flag) was conducted. The manifest's single launch event is '149: Enabled by default' and the ChromeStatus record has no dev-trial stage (flag_name null, origintrial false). For a deterministic CSS parsing/rendering extension that reuses proven machinery, a flag trial would add limited field evidence, so its absence is defensible.",
+      "evidenceIds": [
+        "s1",
+        "s16"
+      ],
+      "limitations": "Because no trial ran, no external developer feedback was gathered before ship; any rough edges would only surface post-launch. Marked not-relevant on process fit, not because it was tested and found unnecessary."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Tag review 'Not applicable'. Firefox is Positive and placed path()/shape() into the Interop 2026 CSS shape focus area (bugzilla meta 2017356, platform-scheduled 2026-07-17). The Interop 2026 announcement (web.dev, authored by Rachel Andrew; Apple, Google, Igalia, Microsoft, Mozilla) explicitly names shape() for BOTH clip-path and shape-outside as a 2026 focus area — strong multi-engine coordination. WPT is enabled. However: Safari returned 'No signal' (WebKit/standards-positions#650, opened 2026-04-22 by the same owner, still open, unassigned, no position as of retrieval); 'web developers: No signals'; security_review_status and privacy_review_status both 'Pending' at cache time (2026-05-13); spec maturity is only Editor's Draft / 'Working draft' (val 4), not CR.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "Safari silence must not be read as support (issue #650 is unresolved). Review statuses are stale-pending in the cache (likely resolved by ship but unverified). No TAG review was linked."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial (origintrial false; no OT stage or goals/risks). Appropriate: a deterministic, spec-defined CSS value extension with no field uncertainty requiring real-origin/user conditions does not need an experiment.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None. Marked not-relevant on process fit."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship thread exists (stage 260, intent_stage 5) and references interop-2026-shape. rollout_plan is 'Will ship enabled for all users'; all platforms target 149; finch_name CSSShapeOutsidePathAndShapeSupport is set; rollout_impact low (2). The official Chrome 149 release notes accurately describe the feature with tracking bug, spec, and ChromeStatus links.",
+      "evidenceIds": [
+        "s1",
+        "s5",
+        "s12"
+      ],
+      "limitations": "The ITS thread body could not be retrieved (Google Groups repeatedly timed out), so LGTMs/objections are unverified (search snippet only). Security and privacy reviews were still 'Pending' in the cached record (accurate_as_of 2026-05-13). No public conformance/friction report. is_released was false at cache time."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 149 stable (June 2, 2026) on desktop, Android, iOS, and WebView (all 149). Documented accurately in the official Chrome 149 release notes ('Adds support for the path() and shape() shape functions in the CSS shape-outside property... support animation'), bundled alongside the sibling rect()/xywh() feature. Independent press corroborated the ship and the new shape-outside functions (web-standards.dev 'What's new in Chrome 149', June 4; gigazine.net, June 3). Two Codepen demos (una/ogzRBWV, yisi/EaNjzvR) are linked from ChromeStatus.",
+      "evidenceIds": [
+        "s1",
+        "s12",
+        "s13",
+        "s14"
+      ],
+      "limitations": "No dedicated launch article/blog for this specific feature (it is a release-notes line item, not a feature post). MDN was not updated at ship time (see evidenceAndCommunication)."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "The feature shipped only ~6-7 weeks before the evidence cutoff, so no usage or adoption data exists. Notably, webdx_usecounter_enum is null in the ChromeStatus record, so Chrome's own use-counter adoption measurement is not wired up for this feature. No case studies, framework/tool integrations, or production deployments were found.",
+      "evidenceIds": [
+        "s1",
+        "s16"
+      ],
+      "limitations": "Too early for adoption evidence; absence of a use-counter bucket means adoption will remain unmeasurable from Chrome telemetry even as time passes."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Too recent for a support-issue taxonomy. Tracking bug 502328208 exists but lives on the restricted issues.chromium.org/u/2 tracker and is not publicly inspectable. An older, unrelated shape-outside interop report (developer.chrome.com#269) predates and is distinct from this feature.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No public support issues attributable to this feature yet; restricted tracking bug blocks external verification."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This launch adds a capability (new accepted <basic-shape> values); nothing is deprecated or removed. No replacement, migration, reverse trial, or removal timeline applies.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "None."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is real and durable (path()/shape() rejected in shape-outside since at least 2021; image-PNG hacks are the documented workaround) and the fix brings parity with clip-path/offset-path and enables animation, all grounded in a stable spec. However, no attributable developer demand was gathered for this specific launch ('web developers: No signals'), and the primary reference doc (MDN) still tells developers these functions are invalid, undermining discoverability at launch. Value is plausible and spec-correct but unvalidated by demand and weakened by stale docs.",
+      "evidenceIds": [
+        "s3",
+        "s9",
+        "s10",
+        "s11"
+      ],
+      "limitations": "No survey, partner, or trial evidence of developer demand for THIS feature; value is inferred from the long-standing gap, not measured."
+    },
+    "endUserImpact": {
+      "status": "unscored",
+      "finding": "This is a developer-facing CSS layout primitive; end-user impact is indirect (richer text wrapping/animation). No end-user-facing, accessibility, privacy, or security end-user evidence exists (privacy/security reviews were pending at cache time).",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No end-user dimension evidence; not inferable. Marked unscored rather than unknown because end-user impact is structurally indirect for this feature class."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Feature is <2 months old at cutoff; no usage, framework, partner, or production evidence exists, and no use-counter bucket is configured (webdx_usecounter_enum null).",
+      "evidenceIds": [
+        "s1",
+        "s16"
+      ],
+      "limitations": "Adoption is not yet measurable and, without a use counter, may remain hard to measure."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "The spec defines path()/shape() as <basic-shape> and the feature is part of the coordinated Interop 2026 'shape()' focus area (which explicitly names shape-outside) across Apple/Google/Igalia/Microsoft/Mozilla; Firefox is Positive and tracks it (interop-2026-shape). BUT at the evidence cutoff only Chrome had shipped path()/shape() in shape-outside (M149, June 2, 2026): Safari 27 beta (June 8, 2026) lists only bug FIXES for shape-outside/shape() and no new-feature support, and the WebKit standards position (#650) is open with no position; Firefox 151/152 release notes do not list it. MDN marks shape-outside Baseline 'widely available' only for the basic functions. The 'Chromium catches up' label is misleading — Chrome actually leads here; it catches up to the spec, not to other engines.",
+      "evidenceIds": [
+        "s3",
+        "s6",
+        "s7",
+        "s8",
+        "s9",
+        "s15"
+      ],
+      "limitations": "Cross-engine ship confirmation for path()/shape() in shape-outside is absent for Safari/Firefox; coordinated catch-up is underway but incomplete. WPT per-feature pass rates were not retrieved (dashboard timed out)."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "Low implementation risk: path()/shape() parsing, computed-value, and interpolation logic already shipped for clip-path (M135) and offset-path and is reused; WPT is enabled and the spec lists dedicated test files for path-function/shape-function/shape-outside. Cross-engine conformance work is active (Safari 27 fixed shape() control-point-anchor serialization per the CSS Shapes spec).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s11",
+        "s15"
+      ],
+      "limitations": "No public conformance/regression report for this specific sub-feature was retrieved; WPT pass rates for shape-outside path/shape were not obtainable. The need for a post-ship Safari serialization fix suggests edge-case conformance was still settling."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The OFFICIAL Chrome 149 release notes describe the feature correctly and link spec/tracking-bug/ChromeStatus. Weaknesses: (1) the public Intent to Prototype SUMMARY carries copy-paste error text from the sibling rect()/xywh() feature ('rectangle coordinates... aligning Chrome with Firefox and Safari which already support this feature') — both false for path()/shape(); (2) MDN's shape-outside page (last modified 2025-08-09) still states 'other <basic-shape> functions are invalid', directly contradicting the shipped behavior; (3) there is no dedicated launch article (release-notes line item only); (4) the 'Chromium catches up' label misrepresents cross-browser status.",
+      "evidenceIds": [
+        "s4",
+        "s9",
+        "s12",
+        "s1"
+      ],
+      "limitations": "Intent to Ship body not retrievable (Google Groups timeouts), so review-discussion accuracy is unverified."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "Too early for support data; no recurring issues, regressions, or docs-friction signals yet. Tracking bug is on a restricted tracker.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "No support evidence exists at this age; unscored."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A clean, low-risk, spec-aligned, Interop-2026-coordinated extension that shipped on schedule across all platforms with accurate official release notes and a real, long-standing developer problem. It is tempered by: too-recent-to-assess adoption/impact; interoperability that is Chrome-only today (Safari/Firefox catching up, WebKit no-signal); an erroneous public intent-thread summary; stale MDN documentation; no pre-ship developer feedback; and an inaccurate 'catches up' framing. Overall mixed — the launch itself was executed competently, but several evidence/communication and adoption-measurability gaps are material.",
+      "evidenceIds": [
+        "s1",
+        "s4",
+        "s8",
+        "s9",
+        "s12",
+        "s15"
+      ],
+      "limitations": "Overall must not hide the mixed dimensions above; adoption and end-user impact remain unscored, not successful."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5080980370096128",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-05-13)",
+      "publishedOrObservedAt": "2026-05-13",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature metadata, owner cgqaq@chromium.org, Blink>CSS, feature_type 'Chromium catches up', stages (ITP/ITS), all platforms M149, FF Positive/interop-2026-shape, Safari No signal, webdev No signals, security/privacy review Pending, spec Working draft, wpt true, webdx_usecounter_enum null, finch_name, demos"
+      ],
+      "limitations": "Cache snapshot 2026-05-13; some fields (reviews, is_released) stale relative to ship. Internal/restricted fields (intent threads, bug) not directly readable."
+    },
+    {
+      "id": "s16",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest (immutable input)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Single launch event '149:Enabled by default:5080980370096128'; feature name; report status pending"
+      ],
+      "limitations": "Manifest is an input index, not a primary source about the feature."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5080980370096128",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-05-13",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Confirms summary, motivation, spec link, FF Positive (interop-2026-shape), Safari No signal, webdev No signals, tracking bug 502328208"
+      ],
+      "limitations": "Lite view omits stage/review detail present in the cached record."
+    },
+    {
+      "id": "s3",
+      "url": "https://drafts.csswg.org/css-shapes/",
+      "publisher": "W3C CSS Working Group (CSS Shapes Module Level 1, Editor's Draft)",
+      "publishedOrObservedAt": "2026-05-07",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "<basic-shape> includes path() and shape(); shape-outside consumes <basic-shape>; path() auto-closes for shape-outside/clip-path; shape()/path() interpolation rules; test files referenced; editors include Noam Rosenthal (Google)"
+      ],
+      "limitations": "Editor's Draft ('Working draft' maturity), not a Recommendation; subject to change."
+    },
+    {
+      "id": "s4",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/yBAVufkvFC0",
+      "publisher": "chromium blink-dev (Intent to Prototype)",
+      "publishedOrObservedAt": "2026-04-14",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "ITP exists; motivation; Blink>CSS; tracking bug; estimated milestones all 149; reuses existing path()/shape() machinery"
+      ],
+      "limitations": "SUMMARY text is erroneous (copy-pasted rect()/xywh() description: 'rectangle coordinates... Firefox and Safari which already support'); the accurate motivation section and ChromeStatus record differ."
+    },
+    {
+      "id": "s5",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/JcYSSIebjtg/m/9lSsNhkABgAJ",
+      "publisher": "chromium blink-dev (Intent to Ship)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "ITS thread title 'Intent to Ship: Support path() and shape() in shape-outside'; references interop-2026-shape"
+      ],
+      "limitations": "Thread body not retrievable (Google Groups timeouts); only title/snippet via search. LGTMs/objections unverified."
+    },
+    {
+      "id": "s6",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=2017356",
+      "publisher": "Mozilla Bugzilla (Interop 2026 CSS shape meta)",
+      "publishedOrObservedAt": "2026-06-05",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Firefox Positive; 'interop-2026-shape' tracking meta; multiple dependency bugs; platform-scheduled 2026-07-17; active FF work"
+      ],
+      "limitations": "Meta bug; per-function FF ship status not stated here."
+    },
+    {
+      "id": "s7",
+      "url": "https://github.com/WebKit/standards-positions/issues/650",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2026-04-22",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Safari 'No signal': request filed 2026-04-22 by CGQAQ (same owner); open, unassigned, no labels, no position; WebKit notes it already supports path()/shape() in clip-path but not shape-outside"
+      ],
+      "limitations": "No WebKit position rendered; silence != opposition or support."
+    },
+    {
+      "id": "s8",
+      "url": "https://web.dev/blog/interop-2026",
+      "publisher": "web.dev (Rachel Andrew, on behalf of Apple/Google/Igalia/Microsoft/Mozilla)",
+      "publishedOrObservedAt": "2026-02-12",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Interop 2026 'shape() CSS function' focus area explicitly: 'can be used with clip-path and shape-outside'; multi-engine coordination"
+      ],
+      "limitations": "Announcement-level; does not state which engines have shipped vs committed."
+    },
+    {
+      "id": "s9",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/shape-outside",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": "2025-08-09",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "other",
+      "supports": [
+        "shape-outside Baseline 'widely available' since Jan 2020 (basic functions only); page still says 'other <basic-shape> functions are invalid'; last modified 2025-08-09 — predates and contradicts the M149 ship"
+      ],
+      "limitations": "Page is stale relative to launch; browser-compatibility table did not render."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/mdn/content/issues/9703",
+      "publisher": "mdn/content (community issue)",
+      "publishedOrObservedAt": "2021-10-09",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing developer problem: path() in shape-outside produced no effect in Chrome/Firefox (2021); closed wontfix; validates the feature's motivation"
+      ],
+      "limitations": "Single anecdotal report (2021); not quantitative demand."
+    },
+    {
+      "id": "s11",
+      "url": "https://developer.chrome.com/blog/css-shape",
+      "publisher": "Chrome for Developers (Noam Rosenthal)",
+      "publishedOrObservedAt": "2025-04-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Predecessor: shape() shipped in clip-path in Chrome 135 / Safari 18.4 (Apr 2025); states 'At the moment, it only works for clip-path'; establishes reused machinery and spec-editor authorship"
+      ],
+      "limitations": "Covers clip-path, not shape-outside; predates this feature."
+    },
+    {
+      "id": "s12",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers (Chrome 149 release notes)",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome 149 stable date June 2, 2026; accurate feature description for path()/shape() in shape-outside with tracking bug 502328208, spec, ChromeStatus link; sibling rect()/xywh() feature described separately"
+      ],
+      "limitations": "Line-item in milestone notes, not a dedicated feature article."
+    },
+    {
+      "id": "s13",
+      "url": "https://web-standards.dev/news/2026/06/chrome-149/",
+      "publisher": "Web Standards (web-standards.dev)",
+      "publishedOrObservedAt": "2026-06-04",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent corroboration: 'shape-outside property now supports path(), shape(), rect(), and xywh() functions' in Chrome 149"
+      ],
+      "limitations": "Roundup-style; brief."
+    },
+    {
+      "id": "s14",
+      "url": "https://gigazine.net/gsc_news/en/20260603-google-chrome-149/",
+      "publisher": "Gigazine",
+      "publishedOrObservedAt": "2026-06-03",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Independent press: Chrome 149 stable released; shape-outside now accepts path() etc. for text wrapping; pins stable to ~June 3, 2026"
+      ],
+      "limitations": "Accessed via search snippet only; full page not read."
+    },
+    {
+      "id": "s15",
+      "url": "https://developer.apple.com/documentation/safari-release-notes/safari-27-release-notes",
+      "publisher": "Apple Developer (Safari 27 Beta Release Notes)",
+      "publishedOrObservedAt": "2026-06-08",
+      "retrievedAt": "2026-07-19T00:00:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Safari 27 beta (27.0 beta, June 8, 2026) lists only bug FIXES for shape-outside (RTL wrapping) and shape() (control-point serialization), with NO new-feature listing for path()/shape() in shape-outside; confirms Safari had not yet shipped it at cutoff"
+      ],
+      "limitations": "Beta release notes; final Safari 27 ship status not confirmed; fixes could relate to clip-path shape() rather than shape-outside."
+    }
+  ],
+  "successes": [
+    "Shipped on schedule in Chrome 149 stable (June 2, 2026) across desktop, Android, iOS, and WebView with accurate official release notes and correct spec/tracking-bug/ChromeStatus linking.",
+    "Genuine, durable developer problem addressed: path()/shape() in shape-outside did not work (documented since 2021, MDN mdn/content#9703); the fix brings parity with clip-path/offset-path and enables animation.",
+    "Strong interoperability coordination: the feature sits inside the Interop 2026 'shape()' focus area, which explicitly names shape-outside and spans Apple/Google/Igalia/Microsoft/Mozilla; Firefox is Positive and tracks interop-2026-shape.",
+    "Low implementation risk via reuse of already-shipped, spec-conformant path()/shape() parsing/computed-value/interpolation machinery from clip-path (M135) and offset-path; no origin trial needed.",
+    "Good launch hygiene: Codepen demos linked, finch name set, rollout plan 'enabled for all users', all platforms aligned at M149."
+  ],
+  "failures": [
+    "The public Intent to Prototype thread summary carried erroneous copy-paste text from the sibling rect()/xywh() feature ('rectangle coordinates... aligning Chrome with Firefox and Safari which already support this feature'), both false for path()/shape() — a factual error in a public intent document that could mislead readers about cross-browser readiness.",
+    "MDN documentation was not updated at ship: the shape-outside page (last modified 2025-08-09) still states 'other <basic-shape> functions are invalid', directly contradicting the shipped behavior and hurting discoverability.",
+    "The 'Chromium catches up' label is inaccurate for this sub-feature — Chrome leads (Safari/Firefox had not shipped path()/shape() in shape-outside at cutoff); it catches up to the spec, not to other engines.",
+    "No developer trial and no pre-ship developer feedback; 'web developers: No signals' was recorded, so demand/ergonomics were not validated before ship.",
+    "Adoption is not instrumented: webdx_usecounter_enum is null, so Chrome's own telemetry cannot measure uptake of this feature.",
+    "Security and privacy review were still 'Pending' at the last cache (2026-05-13); the Intent to Ship body was not publicly retrievable, leaving formal review/LGTM state unverified from independent evidence."
+  ],
+  "counterfactuals": [
+    "A brief behind-a-flag developer trial — or circulating the linked Codepen demos to a varied cohort before M149 — could have validated the animation/responsive value claim and surfaced edge cases (e.g., the shape() control-point-anchor serialization that Safari later fixed per spec) before Chrome's stable ship.",
+    "If MDN had been updated in lockstep with the ship, developers would have accurate discoverability at launch instead of a page that still calls these functions invalid; this likely suppresses real early adoption.",
+    "If the intent-thread summary had been QA'd against the canonical ChromeStatus record (and the sibling rect()/xywh() description), the public record would not carry the false 'Firefox and Safari already support this feature' claim, which risks developers shipping path()/shape() in shape-outside expecting cross-browser support that does not yet exist.",
+    "Wiring a use counter at ship would make post-launch adoption measurable; without it (webdx_usecounter_enum null), 'no usage data' will persist and could be misread as 'no adoption.'",
+    "A clearer feature_type/note distinguishing 'catches up to the spec' from 'catches up to other engines' would have kept Baseline/interop messaging honest."
+  ],
+  "skillImprovements": [
+    "Add a phase-06 (prepare-to ship) automated diff: compare each Intent to Prototype / Intent to Ship thread summary against the canonical ChromeStatus summary AND against sibling-feature summaries in the same milestone, to flag copy-paste contamination (the rect()/xywh() text bled into path/shape here).",
+    "Add a release-readiness gate for 'Chromium catches up' features: verify the 'catches up' claim per sub-function against actual other-engine ship status; if Chrome leads, require a corrected feature_type or an explicit note, because the label drives Baseline/interop messaging.",
+    "Add a doc-sync requirement: before 'Enabled by default' ships for a CSS property/value, confirm the MDN page and BCD entry are updated (or a tracked edit is open) and alert when the live MDN page contradicts shipped behavior (here it still says 'invalid').",
+    "Add an adoption-measurability check at ship: if a feature launches without a webdx use-counter enum, record it explicitly as a known adoption-measurement gap so future retrospectives do not equate 'no usage data' with 'low usage.'",
+    "Add a wide-review cross-engine reality check: when an Interop focus area names a feature, record which engines have actually shipped vs only committed, and ensure intent/release notes never imply broader support than exists (relevant to the false 'already support' claim).",
+    "Add a Google-Groups-intent fallback in the research toolchain (msgID-to-archived-URL resolver or a browser fetch) so Intent to Ship/Prototype bodies are reliably retrievable instead of timing out, which left LGTM/review state unverified here."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Post-launch usage/adoption data (none exists; feature <2 months old) and no use-counter bucket configured, so adoption remains unmeasurable.",
+      "Confirmation that Safari (27+) and Firefox have shipped path()/shape() in shape-outside (only Chrome had shipped at cutoff; Safari 27 beta shows fixes only; WebKit position still open).",
+      "Intent to Ship thread body (LGTMs, objections, final review states) — Google Groups repeatedly timed out; only title/snippet obtained.",
+      "WPT per-feature pass rates for shape-outside path()/shape() (wpt.fyi dashboard timed out).",
+      "Current security/privacy review statuses (cached record showed 'Pending' as of 2026-05-13; likely resolved by ship but unverified).",
+      "MDN update reflecting shipped support (page still says other basic-shape functions are invalid at retrieval)."
+    ],
+    "reviewedAt": "2026-07-19T00:00:00Z"
+  }
+}

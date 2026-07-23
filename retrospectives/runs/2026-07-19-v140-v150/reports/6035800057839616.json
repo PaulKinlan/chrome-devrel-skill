@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6035800057839616,
+    "name": "Platform-provided behaviors",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6035800057839616",
+    "category": "DOM",
+    "summary": "Adds 'Platform-Provided Behaviors' to ElementInternals so autonomous custom elements can adopt native behaviors without extending native elements or reimplementing them in JS. Starts with HTMLSubmitButtonBehavior wired to attachInternals({behaviors:[...]}).",
+    "owners": [
+      "ansollan@microsoft.com",
+      "leo.lee@microsoft.com",
+      "daniec@microsoft.com",
+      "aluhrs@microsoft.com"
+    ],
+    "creator": "ansollan@microsoft.com",
+    "blinkComponent": "Blink>DOM",
+    "finchName": "ElementInternalsBehaviors",
+    "flagName": "enable-experimental-web-platform-features",
+    "specLink": "https://github.com/whatwg/html/pull/12409",
+    "isReleased": false,
+    "chromeStatus": "Proposed",
+    "shippingYear": 2026,
+    "standardsMaturity": "Working draft (spec under development in a Working Group)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:In developer trial (Behind a flag):6035800057839616",
+      "milestone": 149,
+      "category": "In developer trial (Behind a flag)"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T18:07:24Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Clearly classified as a new DOM web-platform feature with a concrete problem statement, named owners (Microsoft: ansollan/leo.lee/daniec/aluhrs), a Blink component (Blink>DOM), a tracking bug, an explainer, and a WHATWG initial proposal. The decision layer (browser/DOM intervention for autonomous custom elements) is plausible and well-scoped; the API is framed as filling a real gap rather than as proof of a problem.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "limitations": "End-user constituencies (form/assistive-technology users) appear only via the accessibility framing; no separate end-user stakeholder scan is evidenced."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Strong incubation evidence. The problem is real and long-standing: FACE-as-submit-button demand dates to 2019 (WICG#814, 'needs concrete proposal'), with TPAC 2023 and 2025 discussions on customized-built-in alternatives. Source-linked workarounds exist across major design-system frameworks (Shoelace, Material Web, Adobe Spectrum, Microsoft Fluent UI), each maintaining error-prone manual click/requestSubmit wiring or hidden <button> proxies. Explainer includes goals, non-goals, alternatives, feature detection, a polyfill path, and conflict resolution before locking the API. Public venue is WHATWG HTML (#12150).",
+      "evidenceIds": [
+        "S3",
+        "S5",
+        "S1"
+      ],
+      "limitations": "The ChromeStatus 'Web developers: Positive' signal rests on a Google Doc survey that was not independently retrievable, so its methods/sample size and representativeness are unverifiable."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "Intent to Prototype was filed on blink-dev; an implementation exists behind an experimental flag (finch ElementInternalsBehaviors; flag enable-experimental-web-platform-features), a public sample/demo and dev-trial HOWTO are provided, WPT coverage is declared, and a spec PR (whatwg/html#12409) is open. The smallest useful capability (HTMLSubmitButtonBehavior) is implemented.",
+      "evidenceIds": [
+        "S9",
+        "S1",
+        "S3",
+        "S10"
+      ],
+      "limitations": "The Chromium tracking bug (486928684) could not be retrieved, so implementation completeness, test/regression state, and platform coverage (iOS/Webview first/last milestones are null) are unconfirmed. The spec PR is unmerged (working draft). No prototype friction-log evidence is public."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "The single launch event is the M149 developer trial behind a flag (desktop + Android, per stage-130 desktop_first/android_first=149). Trial infrastructure exists: a HOWTO, a sample, and a defined measurement plan (three UseCounters: ElementInternalsWithBehaviors, HTMLSubmitButtonBehaviorUsage, ElementInternalsBehaviorsAccess). However, there is no published evidence of a recruited cohort, task completion, friction logs, or attributable trial findings; the trial is very recent and the proposal-to-trial timeline is compressed (ChromeStatus entry Feb 9 2026 -> M149).",
+      "evidenceIds": [
+        "S10",
+        "S1",
+        "S3",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "limitations": "No dev-trial readout (who tried what, task success, design changes) is public; the 'Web developers: Positive' signal predates/is uncoupled from the trial. UseCounter popularity timelines (5878/5879/5880) are now cached (collected 2026-07-22) and all read day_percentage 0 across their observed windows (firstObservedPositive null for all three), consistent with a default-off flag and not yet a meaningful adoption signal; the counters measure share of measured Chrome page loads, not unique-site/production/task-success/user-benefit evidence."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Wide review has been initiated but is materially incomplete and readiness is NOT met. Position requests were filed to Mozilla (#1380, status 'Unscreened' = No signal) and WebKit (#642, Open = No signal) on 2026-03-30; TAG review is explicitly 'Not filed yet'; the spec is an unmerged working-draft PR; and Baseline/web-features classifies the feature as 'early features - without shipping implementations'. Per the method, 'No signal' must not be treated as neutral or positive.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S8",
+        "S1"
+      ],
+      "limitations": "No other-engine position exists; TAG review absent; spec PR merge state could not be confirmed directly (reader failures) but is unmerged per the cached record's maturity field."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No Origin Trial has been conducted. The only field exposure is the flag-based developer trial; the manifest contains no 'Origin trial' event for this feature, and ChromeStatus origintrial=false. An OT stage with goals/risks is defined in the record but has not run.",
+      "evidenceIds": [
+        "S1",
+        "S10"
+      ],
+      "limitations": "Not-relevant because no origin-trial experiment has occurred; this is not used to mean untested."
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "The active stage is labeled 'Prepare to ship' (intent_stage 5), but the feature has not shipped (status 'Proposed', is_released=false) and no Intent to Ship or ship-readiness packet is evidenced. Preparing to ship while both other engines are 'No signal' and TAG review is unfiled would be premature.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No Intent to Ship thread or ship-readiness artifact was found or retrievable; the stage label reflects intent, not an executed decision."
+    },
+    "release": {
+      "status": "not-relevant",
+      "finding": "No stable/default availability. The only release is the experimental flag-based developer trial in M149; there is no 'Enabled by default' or stable launch event.",
+      "evidenceIds": [
+        "S1",
+        "S10"
+      ],
+      "limitations": "Not-relevant because the feature has not been released to stable."
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "Pre-launch and flag-gated: the only launch event is the M149 'In developer trial (Behind a flag)' exposure (stableDate 2026-06-02), so default-on production adoption is not yet possible and the adoption phase has not begun in any meaningful (default-on) sense. Three exact ChromeStatus feature UseCounters are now cached (mappingStatus multiple-counters): 5878 ElementInternalsWithBehaviors, 5879 HTMLSubmitButtonBehaviorUsage, 5880 ElementInternalsBehaviorsAccess - each scope 'exact'/'exact' (none is a broader WebDX family, property, or origin-trial counter), so no single counter equals total feature adoption. Through the observed window (latest points 2026-05-11 / 2026-06-16 / 2026-06-28) every counter reads day_percentage 0 (share of measured Chrome HTTP/HTTPS page loads where the counter fired), and firstObservedPositive is null for all three; the only launch-relative checkpoint with a value is 5879 atStable = 0% on 2026-06-10 (8 days after M149 stable), with day30/day90/day180 null for all three. This 0% is consistent with a default-off, opt-in flag surface but is not proof of zero real-world use and is not yet a meaningful adoption signal. (Telemetry added in this revision; it informs outcomes only and was not available at any intake/review/ship decision.)",
+      "evidenceIds": [
+        "S1",
+        "S10",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "limitations": "The production/default-on adoption phase cannot be assessed until the feature ships; cached counters measure share of measured Chrome page loads only and are not unique-site, production-deployment, retention, task-success, user-benefit, or predeclared-target evidence; flag-gating makes the 0% figures not yet meaningful as adoption."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Pre-launch; no observable support burden. A Chromium tracking bug (486928684) exists but its contents could not be retrieved.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Support phase has not begun; bug detail unretrieved."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "New feature introducing a new API surface; no existing behavior, API, or compatibility path is being removed.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Not-relevant; nothing to deprecate."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The developer problem is real, important, and long-standing, with concrete source-linked workarounds in widely used design-system frameworks and no existing API for implicit form submission from custom elements. The proposed solution targets the gap directly. However, the solution's value is not yet validated by trial task-completion or production usage data; the now-cached UseCounters read day_percentage 0 but the feature is flag-gated/default-off, so usage telemetry does not constitute validation.",
+      "evidenceIds": [
+        "S3",
+        "S5",
+        "S1",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "limitations": "No trial task-completion/production validation; cached usage telemetry reads 0% but is flag-gated and is not validation; the 'Web developers: Positive' survey is an unretrieved Google Doc."
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "Primarily a developer-facing API; end-user impact (accessibility/role correctness, focusability, implicit submission of custom buttons) is indirect and unmeasured, and the feature is not shipped.",
+      "evidenceIds": [
+        "S3"
+      ],
+      "limitations": "No user-impact evidence; cached UseCounters measure page-load share, not end-user benefit, and cannot be assessed pre-shipment."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Flag-gated and unshipped; no default-on production adoption. Three exact feature UseCounters are now cached (mappingStatus multiple-counters; each scope 'exact'/'exact') and all read day_percentage 0 across their observed windows (5878 latest 2026-05-11; 5879 latest 2026-06-16, peak 0%, atStable 0% on 2026-06-10; 5880 latest 2026-06-28), with firstObservedPositive null for all three and day30/day90/day180 null. The 0% level is consistent with the M149 dev trial being default-off/opt-in and is described, not scored: the ChromeStatus record states no predeclared adoption target, and there is no corroborating unique-site, production, retention, task-success, or user-benefit evidence. Low (zero) measured usage behind a flag is not by itself a failure, and no threshold exists against which to call it success; the outcome is unscored for lack of a target, not for lack of telemetry.",
+      "evidenceIds": [
+        "S1",
+        "S10",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "limitations": "No predeclared adoption target; no unique-site/production/retention/task-success/user-benefit evidence; counters measure share of measured Chrome HTTP/HTTPS page loads where the counter fired, not unique developers/sites/users, successful task completion, satisfaction, production deployment, or end-user benefit; flag-gated so 0% is not yet a meaningful adoption signal; zero is not proof of zero real-world use."
+    },
+    "interoperability": {
+      "status": "unscored",
+      "finding": "Dominant unresolved risk and currently single-engine. Chromium-only experimental; Mozilla 'No signal' (Unscreened) and WebKit 'No signal' (Open); TAG review 'Not filed yet'; spec is an unmerged working-draft PR; Baseline/web-features lists it under 'no shipping implementations'. This cannot be scored as success/mixed/failure at this stage - it is unresolved interop, not achieved interop.",
+      "evidenceIds": [
+        "S6",
+        "S7",
+        "S8",
+        "S1"
+      ],
+      "limitations": "Engine positions may evolve; TAG review pending."
+    },
+    "implementationQuality": {
+      "status": "partial",
+      "finding": "Implementation exists behind a flag with a finch name; WPT coverage declared; debuggability (ElementInternals inspection, a11y role in DevTools, console warning), and security/privacy/interop/ergonomics risk writeups are present; a three-UseCounter measurement plan is defined and its counters are now cached and instrumented (reading 0% behind the flag).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "limitations": "Chromium bug/regression/conformance state unretrieved; spec PR unmerged; no WPT pass-rate results retrieved; iOS/Webview rollout milestones are null; cached counters confirm instrumentation fires but read 0% and do not speak to implementation correctness."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Documentation is thorough and coherent (explainer with goals/non-goals/alternatives/feature detection/polyfill path/conflict resolution, a HOWTO, a sample, risk writeups, a measurement plan). Weaknesses: the 'Web developers: Positive' signal cites a non-public Google Doc; the public summary does not surface the single-engine/no-signal interop status; the ChromeStatus record carries stale fields (web_feature 'Missing feature', spec link is an open PR).",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S6",
+        "S7"
+      ],
+      "limitations": "Spec PR and tracking bug were not directly retrievable; survey/design Google Docs are auth-walled."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "Pre-launch; no observable support burden or issue taxonomy.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Support phase has not begun."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A well-incubated, well-documented proposal addressing a real, long-standing gap, now at an early Chromium-only experimental developer trial (M149, behind a flag). It is materially incomplete on cross-engine interoperability (no signals from Mozilla/WebKit, no TAG review, unmerged working-draft spec, no Baseline entry). Adoption is measurable but unscored: the three cached exact UseCounters (mappingStatus multiple-counters, all scope 'exact') read day_percentage 0 across their observed windows, consistent with a default-off flag and with no predeclared target or production/retention corroboration to score against. The feature has not shipped. Strengths are genuine, but interop is unresolved and the value/adoption remain unvalidated by task-completion or production use.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S12",
+        "S13"
+      ],
+      "limitations": "Pre-launch feature; post-launch outcomes unknowable; adoption is unscored for lack of a target/corroborating production evidence, not for lack of telemetry; some primary artifacts (spec PR, bug) unretrievable."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6035800057839616",
+      "publisher": "Chrome Platform Status (cached record; accurate_as_of 2026-02-09, updated 2026-05-29)",
+      "publishedOrObservedAt": "2026-05-29",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Authoritative feature detail: owners, stages, finch/flag, spec/explainer/doc/sample links, security/privacy/interop/ergonomics/webview risks, measurement (3 UseCounters), WPT declared, standards positions, is_released=false, status Proposed",
+        "Stage 130 desktop_first/android_first=149 aligning dev trial to M149"
+      ],
+      "limitations": "Cached snapshot; some fields stale (web_feature 'Missing feature', spec link is an open PR); accurate_as_of 2026-02-09."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/6035800057839616",
+      "publisher": "Chrome Platform Status (chromestatuslite server-rendered view)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Status 'Proposed'; DOM category; standards/spec link; Firefox/Safari 'No signal'; Web developers 'Positive'; samples/docs/explainer links"
+      ],
+      "limitations": "Server-rendered summary; less detail than the full record."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/PlatformProvidedBehaviors/explainer.md",
+      "publisher": "Microsoft Edge Explainers (author: Ana Sollano Kim / anaskim)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Goals/non-goals; framework workarounds (Shoelace, Material Web, Adobe Spectrum, Microsoft Fluent UI) with source links; WICG#814/whatwg issues; TPAC 2023 + 2025; alternatives; feature detection; conflict resolution; a11y role layering; polyfill path; HTMLSubmitButtonBehavior semantics"
+      ],
+      "limitations": "Author-authored; retrieved via raw mirror; content truncated near the end; no independent validation."
+    },
+    {
+      "id": "S4",
+      "url": "https://github.com/whatwg/html/issues/12150",
+      "publisher": "WHATWG HTML",
+      "publishedOrObservedAt": "2026-02-10",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Initial public proposal date (2026-02-10); author anaskim; CC leotlee/dandclark/aluhrs13; problem statement and proposed approach"
+      ],
+      "limitations": "GitHub issue body; comment thread not fully captured."
+    },
+    {
+      "id": "S5",
+      "url": "https://github.com/WICG/webcomponents/issues/814",
+      "publisher": "WICG webcomponents",
+      "publishedOrObservedAt": "2019-05-16",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing (since 2019) demand for form-associated custom elements to act as submit buttons (:default, implicit submission); strawperson internals.submitButton; 'needs concrete proposal' label"
+      ],
+      "limitations": "Only issue body retrieved; later comments referencing Platform-Provided Behaviors not fully captured."
+    },
+    {
+      "id": "S6",
+      "url": "https://github.com/mozilla/standards-positions/issues/1380",
+      "publisher": "Mozilla standards-positions",
+      "publishedOrObservedAt": "2026-03-30",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla status 'Unscreened' = No signal; filed by anaskim 2026-03-30; @keithamus tagged for input; cross-ref to WebKit#642"
+      ],
+      "limitations": "Issue body only; no Mozilla position has been issued."
+    },
+    {
+      "id": "S7",
+      "url": "https://github.com/WebKit/standards-positions/issues/642",
+      "publisher": "WebKit standards-positions",
+      "publishedOrObservedAt": "2026-03-30",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "WebKit status Open = No signal; TAG Design Review 'Not filed yet'; labels from:Microsoft / topic:web-components / venue:WHATWG HTML Workstream"
+      ],
+      "limitations": "Issue body only; no WebKit position has been issued."
+    },
+    {
+      "id": "S8",
+      "url": "https://github.com/web-platform-dx/web-features/issues/3971",
+      "publisher": "web-platform-dx/web-features (Baseline feature tracking)",
+      "publishedOrObservedAt": "2026-04-20",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Feature entry request; labels 'early features - Feature definition work for features without shipping implementations'; browser support summary: Chromium Positive/prototyping, Mozilla No signal, WebKit No signal"
+      ],
+      "limitations": "Issue body only; feature not yet in Baseline."
+    },
+    {
+      "id": "S9",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/ETKzYhB6BbI/m/0jQaazNHAQAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Prototype: Platform-provided behaviors thread exists; summary matches the feature (HTMLSubmitButtonBehavior, attachInternals behaviors)"
+      ],
+      "limitations": "Google Groups reader stripped most content (contact emails, links, LGTMs, dates not captured); could not confirm approval outcome."
+    },
+    {
+      "id": "S10",
+      "url": "file:///home/paulkinlan/chrome-devrel-skill/retrospectives/runs/2026-07-19-v140-v150/manifest.features.jsonl",
+      "publisher": "Retrospective run manifest (2026-07-19-v140-v150)",
+      "publishedOrObservedAt": "2026-07-19",
+      "retrievedAt": "2026-07-20T22:40:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Sole launch event: M149 'In developer trial (Behind a flag)'; no 'Enabled by default'/origin-trial/deprecation events for this feature"
+      ],
+      "limitations": "Run-level manifest, not a feature primary source."
+    },
+    {
+      "id": "S11",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5878",
+      "publisher": "Chrome Platform Status feature-popularity UseCounter timeline (bucket 5878, ElementInternalsWithBehaviors)",
+      "publishedOrObservedAt": "2026-05-11",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact ChromeStatus feature counter (scope exact, confidence exact) for ElementInternalsWithBehaviors (attachInternals called with the behaviors option), named verbatim in the ChromeStatus measurement field; one observed point through 2026-05-11 at day_percentage 0, i.e. the counter fired on 0% of measured Chrome HTTP/HTTPS page loads; firstObservedPositive null; M149 launch checkpoint (dev trial, stableDate 2026-06-02) has null atStable/day30/day90/day180"
+      ],
+      "limitations": "Measures share of measured Chrome page loads where the counter fired, not unique developers/sites/users, successful task completion, satisfaction, production deployment, or end-user benefit; M149 exposure is a flag-gated dev trial (default-off), so 0% is consistent with opt-in-only access and is not yet a meaningful adoption signal; one data point; zero is not proof of zero real-world use."
+    },
+    {
+      "id": "S12",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5879",
+      "publisher": "Chrome Platform Status feature-popularity UseCounter timeline (bucket 5879, HTMLSubmitButtonBehaviorUsage)",
+      "publishedOrObservedAt": "2026-06-16",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact ChromeStatus feature counter (scope exact, confidence exact) for HTMLSubmitButtonBehaviorUsage (new HTMLSubmitButtonBehavior()), named verbatim in the ChromeStatus measurement field; three observed points through 2026-06-16, latest day_percentage 0 and peak day_percentage 0 (2026-05-11); firstObservedPositive null; M149 launch checkpoint (dev trial, stableDate 2026-06-02) atStable = 0% on 2026-06-10, day30/day90/day180 null"
+      ],
+      "limitations": "Measures share of measured Chrome page loads where the counter fired, not unique developers/sites/users, successful task completion, satisfaction, production deployment, or end-user benefit; M149 exposure is a flag-gated dev trial (default-off), so 0% (including atStable) is consistent with opt-in-only access and is not yet a meaningful adoption signal; zero is not proof of zero real-world use."
+    },
+    {
+      "id": "S13",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5880",
+      "publisher": "Chrome Platform Status feature-popularity UseCounter timeline (bucket 5880, ElementInternalsBehaviorsAccess)",
+      "publishedOrObservedAt": "2026-06-28",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact ChromeStatus feature counter (scope exact, confidence exact) for ElementInternalsBehaviorsAccess (ElementInternals.behaviors property accessed), named verbatim in the ChromeStatus measurement field; one observed point through 2026-06-28 at day_percentage 0, i.e. the counter fired on 0% of measured Chrome HTTP/HTTPS page loads; firstObservedPositive null; M149 launch checkpoint (dev trial, stableDate 2026-06-02) has null atStable/day30/day90/day180"
+      ],
+      "limitations": "Measures share of measured Chrome page loads where the counter fired, not unique developers/sites/users, successful task completion, satisfaction, production deployment, or end-user benefit; M149 exposure is a flag-gated dev trial (default-off), so 0% is consistent with opt-in-only access and is not yet a meaningful adoption signal; one data point; zero is not proof of zero real-world use."
+    }
+  ],
+  "successes": [
+    "Real, long-standing developer problem (FACE-as-submit-button demand since 2019) with concrete, source-linked error-prone workarounds across major design-system frameworks (Shoelace, Material Web, Adobe Spectrum, Microsoft Fluent UI).",
+    "Thoughtful explainer: explicit goals/non-goals, considered alternatives, feature detection, polyfill path, behavior conflict resolution, and an accessibility role-layering model.",
+    "Measurement and dev-trial kit prepared before the M149 dev trial: a HOWTO, a public sample, and three distinct UseCounters (attachInternals behaviors option, HTMLSubmitButtonBehavior construction, ElementInternals.behaviors access).",
+    "Cross-referenced standards-position requests filed to both Mozilla and WebKit, and a Baseline/web-features entry request opened, keeping the interop path visible."
+  ],
+  "failures": [
+    "Cross-engine interoperability is unresolved: Mozilla 'No signal' (Unscreened), WebKit 'No signal' (Open), TAG review 'Not filed yet', and the spec is an unmerged working-draft PR; the feature is Chromium-only experimental with no Baseline status.",
+    "The ChromeStatus 'Web developers: Positive' signal rests on a non-public Google Doc, and the public summary does not surface the single-engine / no-signal interop status.",
+    "No published developer-trial validation (cohort, task completion, friction, attributable feedback); the feature moved from ChromeStatus entry (2026-02-09) to M149 dev trial very quickly."
+  ],
+  "counterfactuals": [
+    "If an Origin Trial (or at minimum resolved Mozilla/WebKit positions and a filed TAG review) were required before any 'prepare to ship' staging, the dominant Baseline-blocking single-engine risk would be addressed earlier rather than carried forward.",
+    "If the 'Web developers: Positive' survey were published with methods and sample size, developerValue would be independently defensible instead of gated behind a Google Doc.",
+    "If the M149 dev trial produced a public cohort/friction readout, the transition to wide review or ship could rest on task-completion evidence rather than on interest/registration.",
+    "If the fast proposal-to-trial timeline (<6 months) had triggered an explicit incubation-alternatives check, the design debate already present in WICG#814 could be shown to be exhausted rather than deferred."
+  ],
+  "skillImprovements": [
+    "Add a phase-04 (wide-review) hard gate/eval: a feature must not advance to 'prepare to ship' staging while any engine is 'No signal', TAG review is 'Not filed yet', and the spec is an unmerged PR; surface 'No signal' explicitly rather than as neutral.",
+    "Add a regression eval where the only 'Web developer: Positive' evidence is a non-public Google Doc - flag as unverifiable and require methods/sample size.",
+    "Add a pre-launch template rule: when a feature's only launch event is 'In developer trial (Behind a flag)', auto-classify release/adoption/end-user-impact/support as unknown (not success) and require a trial readout before any outcome scoring.",
+    "Add a counterfactual/eval trigger for very fast proposal-to-dev-trial timelines (under ~6 months) to verify that incubation alternatives and contradictory evidence were genuinely exhausted.",
+    "Add a source-retrievability fallback rule: when spec-PR/Chromium-bug readers time out, mark the report partial rather than inferring state, and record the attempted URLs for resume."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "WHATWG spec PR whatwg/html#12409 content/merge state - reader returned 500/timeout; known only as an open working-draft PR from the cached record.",
+      "Chromium tracking bug issues.chromium.org/486928684 (implementation/test/regression state) - reader timed out.",
+      "blink-dev Ready for Trial announcement (lVP5il5uNuM) content - not retrieved.",
+      "Developer-survey Google Doc behind the 'Web developers: Positive' signal - auth-walled/not retrieved.",
+      "Design-doc Google Doc (1LA1hhzxmi4OmZoGtIdnwvL3g7y48YjXTOoUvFtxFugE) - not retrieved.",
+      "Demo (microsoftedge.github.io/...platform-provided-behaviors-for-custom-elements) and HOWTO content - not retrieved.",
+      "WPT results (custom-elements/form-associated tentative) declared but not retrieved.",
+      "No unique-site, production-deployment, retention, task-success, user-benefit, or predeclared adoption-target evidence; the cached UseCounters measure page-load share only, are flag-gated (default-off), and are not yet a meaningful adoption signal.",
+      "Independent press/community/case-study coverage - none found beyond the proposal/standards/issues threads."
+    ],
+    "reviewedAt": "2026-07-22T18:07:24Z"
+  }
+}

@@ -22,7 +22,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-19T12:00:00Z",
+  "evidenceCutoff": "2026-07-22T18:07:22Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -61,7 +61,7 @@
     },
     "developerTrials": {
       "status": "partial",
-      "finding": "A Ready-for-Trial / developer trial was declared (estimated milestone M114, desktop_first=114) with a public test_app and devtrial instructions. At trial time TAG review was explicitly 'Not yet requested'. The activation_risks field honestly flags that building+deploying an IWA via managed enterprise distribution is a significant activation hurdle. Observable feedback volume is thin: the controlled-frame repo has only ~38 stars/11 forks, and one open issue ('is the API available in kiosk ChromeOS apps?') signals availability confusion. No origin trial was ever run (origintrial=false; stage 150 goals/risks empty).",
+      "finding": "A Ready-for-Trial / developer trial was declared (estimated milestone M114, desktop_first=114) with a public test_app and devtrial instructions. At trial time TAG review was explicitly 'Not yet requested'. The activation_risk field honestly flags that building+deploying an IWA via managed enterprise distribution is a significant activation hurdle. Observable feedback volume is thin: the controlled-frame repo has only ~38 stars/11 forks, and one open issue ('is the API available in kiosk ChromeOS apps?') signals availability confusion. No origin trial was ever run (origintrial=false; stage 150 goals/risks empty).",
       "evidenceIds": [
         "S1",
         "S12",
@@ -114,15 +114,16 @@
       "limitations": "Exact stable-channel date of Chrome 140 not pinned; the 'behind a flag' vs 'shipped' status contradiction in ChromeStatus could not be reconciled from primary sources."
     },
     "adoption": {
-      "status": "failure",
-      "finding": "No defensible adoption evidence. The linked use-counter popularity page (#5624) is JavaScript-rendered and returned no extractable numbers, and IWA usage is enterprise-scoped so public counters are near-zero/unrepresentative by construction. No independent production case study was found (searches returned only generic kiosk/signage vendors, none referencing Controlled Frame). The explainer repo shows low traction (~38 stars, 11 forks, 3 open issues including a 2026 message-passing request and a 2025 'is the API available in kiosk ChromeOS apps?' availability-confusion question). The IWA platform itself is still described as 'currently under development' in Chrome Enterprise documentation. Across a ~3-year dev-trial-to-ship window there are no positive public adoption signals and concrete friction exists.",
+      "status": "unscored",
+      "finding": "An exact-scope use counter (HTMLControlledFrameElement, bucket 5624; mapping confidence 'exact', not a WebDX family/property counter) is now cached and shows near-zero, declining public page-load usage across its observation window (first point 2025-08-14; 337 daily points through 2026-07-21): peak 0.000023% on 2025-08-15, first observed positive 0.000007% on 2025-08-14, 0.000001% at Chrome 140 stable (2025-09-02), then 0% at day30 (2025-10-02), 0.000001% at day90 (2025-12-01), 0% at day180 (2026-03-01), and ~0.0000002% (day_percentage 2.2e-7) by 2026-07-21. These values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired — not unique developers, sites, users, successful tasks, or production deployment; the counter only begins 2025-08-14, so any earlier dev-trial usage is not captured by this exact property. Non-usage signals remain weak: no independent production case study (searches returned only generic kiosk/signage vendors, none referencing Controlled Frame), low explainer-repo traction (~38 stars, 11 forks, 3 open issues including a 2026 message-passing request and a 2025 availability-confusion question), and the IWA platform still self-described as 'currently under development' in Chrome Enterprise documentation. Because no adoption target was declared at intake/ship and there is no production/retention corroboration, the measured level/trend is described rather than scored; near-zero public telemetry is consistent with an enterprise-gated, IWA-only, allowlisted API and is not proof of zero real-world use.",
       "evidenceIds": [
-        "S10",
+        "S22",
         "S15",
+        "S10",
         "S18",
         "S1"
       ],
-      "limitations": "Private enterprise deployments are not observable; absence of public adoption does not equal zero private use. Per the method, no success is inferred from shipment or absent criticism."
+      "limitations": "Exact counter underrepresents enterprise/IWA and opt-out populations in UMA; no unique-site, production-deployment, retention, task-success, or user-benefit breakdown; no predeclared adoption target. Private enterprise deployments remain unobservable."
     },
     "support": {
       "status": "unknown",
@@ -168,15 +169,16 @@
       "limitations": "No user-research artifacts surfaced; security/privacy questionnaires exist but their resolutions were not read in full."
     },
     "adoption": {
-      "status": "failure",
-      "finding": "No measurable adoption across a ~3-year availability window: no extractable usage data, no independent case studies, low explainer-repo traction, active availability confusion in issues, and the host IWA platform still self-described as 'under development' and gated by an enterprise allowlist from Chrome 143. Available signals are negative-adjacent rather than merely absent.",
+      "status": "unscored",
+      "finding": "Measured adoption is near-zero and declining in public Chrome page-load telemetry: the exact HTMLControlledFrameElement counter (bucket 5624) peaked at 0.000023% on 2025-08-15, was 0.000001% at Chrome 140 stable (2025-09-02), and ~0.0000002% (2.2e-7) by 2026-07-21, with launch-relative checkpoints day30=0%, day90=0.000001%, day180=0% (337 daily points from 2025-08-14). This is the share of measured page loads where the counter fired — not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit. Corroborating signals are absent or weak: no production case studies, low explainer-repo traction, active availability confusion in issues, and the host IWA platform still self-described as 'under development' and gated by a Google-managed allowlist from Chrome 143. No adoption target was declared, and there is no production/retention corroboration, so per method the outcome is unscored and the measured level/trend is described; near-zero public share is consistent with an enterprise-gated, IWA-only API but is not, by itself, a success or failure verdict.",
       "evidenceIds": [
-        "S10",
+        "S22",
         "S15",
+        "S10",
         "S18",
         "S17"
       ],
-      "limitations": "Enterprise/private deployments are not publicly observable, so the failure is about measurable/public adoption, not a proof of zero usage."
+      "limitations": "Exact counter underrepresents enterprise/IWA traffic; no unique-site, production, retention, task-success, or user-benefit evidence; no predeclared target. Private enterprise deployments remain unobservable."
     },
     "interoperability": {
       "status": "failure",
@@ -224,7 +226,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "Controlled Frame solves a real, well-scoped problem with a coherent, review-addressed security model and shipped on schedule aligned with Chrome Apps kiosk deprecation — a competent enterprise-scoped launch. But it is structurally single-vendor/single-OS with no interoperability or measurable adoption, its availability is heavily gated (IWA-only, enterprise-managed ChromeOS, embedder flag, allowlist from 143), and the ChromeStatus record carries status/targets data-quality gaps. Per the method, overall must not hide these mixed-to-failing dimensions.",
+      "finding": "Controlled Frame solves a real, well-scoped problem with a coherent, review-addressed security model and shipped on schedule aligned with Chrome Apps kiosk deprecation — a competent enterprise-scoped launch. But it is structurally single-vendor/single-OS with no interoperability path, its availability is heavily gated (IWA-only, enterprise-managed ChromeOS, embedder flag, allowlist from 143), and measured public-telemetry adoption is near-zero and declining (peak 0.000023%, latest ~0.0000002%) — described against an absent target rather than counted as success or failure. The ChromeStatus record also carries status/targets data-quality gaps. Per the method, overall must not hide these mixed-to-failing dimensions or convert an unscored adoption outcome into a binary verdict.",
       "evidenceIds": [
         "S1",
         "S2",
@@ -232,9 +234,10 @@
         "S10",
         "S16",
         "S17",
-        "S11"
+        "S11",
+        "S22"
       ],
-      "limitations": "Material evidence gaps (usage numbers, ITS thread body, private adoption) prevent a complete verdict; see completion."
+      "limitations": "Material evidence gaps (ITS thread body, private adoption, production/retention corroboration) remain; adoption is described, not scored, due to an absent target. See completion."
     }
   },
   "sources": [
@@ -414,9 +417,9 @@
       "retrievedAt": "2026-07-19T12:00:00Z",
       "sourceType": "usage",
       "supports": [
-        "A popularity use-counter is linked for the feature"
+        "A popularity use-counter is linked for the feature (measurement field maps to bucket 5624, HTMLControlledFrameElement, exact scope)"
       ],
-      "limitations": "Page is JavaScript-rendered; no numeric usage data could be extracted. Also IWA usage is enterprise-scoped, making public counters unrepresentative."
+      "limitations": "This popularity page is JavaScript-rendered and yielded no numeric data on direct read; the underlying timeline was subsequently cached from the data endpoint as S22. IWA usage is enterprise-scoped, so public counters are a partial view."
     },
     {
       "id": "S16",
@@ -489,6 +492,18 @@
         "Fugu tracking bug for Controlled Frame; open; migrated from original crbug 1233993"
       ],
       "limitations": "Bug body/comments not read (requires auth); status inferred from ChromeStatus fields."
+    },
+    {
+      "id": "S22",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5624",
+      "publisher": "Chrome Platform Status (use-counter timeline; bucket 5624 = HTMLControlledFrameElement)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:22Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact-scope feature counter (HTMLControlledFrameElement; mapping confidence 'exact', not a WebDX family/property counter): 337 daily points from 2025-08-14 to 2026-07-21; first observed positive 0.000007% on 2025-08-14; peak 0.000023% on 2025-08-15; at Chrome 140 stable (2025-09-02) 0.000001%; day30 (2025-10-02) 0%; day90 (2025-12-01) 0.000001%; day180 (2026-03-01) 0%; latest (2026-07-21) ~0.0000002% (day_percentage 2.2e-7). Near-zero and declining share of measured page loads."
+      ],
+      "limitations": "Values are the share of measured Chrome HTTP/HTTPS page loads on which the counter fired; not unique developers/sites/users, successful tasks, satisfaction, production deployment, or end-user benefit. Mapping is exact (HTMLControlledFrameElement), not a family/property counter. Counter first observed 2025-08-14, so pre-Aug-2025 dev-trial usage is not captured by this exact property; UMA underrepresents enterprise/opt-out populations; zero/missing points are not proof of zero real-world use; instrumentation may include probing. No predeclared adoption target exists to compare against. Timeline cached with SHA-256 7d9ccec62e53564e1a537e49704f378545ee32965815a359a889ed2d0442ffed."
     }
   ],
   "successes": [
@@ -499,7 +514,7 @@
   ],
   "failures": [
     "No interoperability: single-browser, single-OS (no Android), WPT:false, Mozilla negative on the host IWA proposal, WebKit no signal, web developers 'no signals' — no Baseline path and no cross-engine owner.",
-    "Negligible measurable adoption across a ~3-year availability window: no usage data, no case studies, low explainer-repo traction, and active availability confusion in issues.",
+    "No public production case studies and weak developer-engagement signals across a ~3-year availability window: low explainer-repo traction (~38 stars, 11 forks, 3 open issues) with active availability confusion ('is the API available in kiosk ChromeOS apps?'), and no production deployment surfaced by search. The exact use counter confirms near-zero public page-load usage (peak 0.000023% on 2025-08-15; latest ~0.0000002%), consistent with an enterprise-gated API — per method this measured level is described and the adoption outcome is left unscored rather than treated as a usage-number failure.",
     "Severe practical-availability gating that makes 'enabled by default at 140' not equivalent to GA: IWA-only, enterprise-managed ChromeOS-only at ship, embedder flag, and a Google-managed allowlist added in Chrome 143.",
     "Weak/late wide review: TAG review requested only in March 2025 and against Chromium's own IWA guidance (which says not to request it); no evidence of the recommended JS-platform/WinterTC outreach.",
     "ChromeStatus data-quality gaps: status field reads 'In developer trial (Behind a flag)' while the ship stage records desktop_first=140, and adoption/availability expectations were left empty at ship.",
@@ -508,7 +523,7 @@
   "counterfactuals": [
     "If IWAs had been available beyond enterprise-managed ChromeOS (or if the Chrome 143 allowlist gate had not been introduced), activation friction would be materially lower and adoption might be observable; the platform-readiness gap is the dominant adoption constraint, not the API design.",
     "If a cross-engine or JS-runtime owner (Electron/Node/Deno/Bun via WinterTC) had co-designed and adopted the surface, interoperability and a Baseline path could exist; the IWA-only scoping and Mozilla's negative IWA position foreclose this.",
-    "If adoption_expectation/availability_expectation had been defined at intake/ship, success could be measured against targets rather than inferred from absence.",
+    "If adoption_expectation/availability_expectation had been defined at intake/ship, the now-available usage telemetry (near-zero public page-load share) could be judged against a target instead of merely described; their absence leaves the adoption outcome unscored.",
     "If the explainer had been kept current and the policy-introspection leakage resolved before ship, security/wide-review assumptions could be validated against the shipped design.",
     "If the TAG review had been requested early (not Mar 2025) and reconciled with the IWA guidance ('do not request TAG'), wide review would not have been a near-ship formality.",
     "If the ChromeStatus status field had been reconciled with the ship stage, downstream tooling (and this retrospective) would not have to treat 'enabled by default' vs 'behind a flag' as contradictory."
@@ -519,18 +534,19 @@
     "Add an IWA-specific-API phase packet: (a) verify the 'why IWA-specific' explainer section, (b) check that the manual Intent-to-Ship was sent to both blink-dev@ and iwa-dev@ and that IWA-owner approval + 3 Blink API-owner LGTMs are present, (c) treat interoperability/Baseline as 'not-relevant with rationale' (per Chromium IWA guidance) rather than as a failure to test, and (d) seek JS-platform/WinterTC and Electron signals instead of Mozilla/WebKit/TAG positions.",
     "Add a prepareToShip adoption-targets gate: if adoption_expectation, availability_expectation, and adoption_plan are all empty at Intent-to-Ship, mark the transition packet incomplete and require explicit targets (or a documented rationale for their absence).",
     "Add a successor-to-deprecated-feature linkage rule: when a feature is the designated successor to a deprecated API (here Chrome Apps <webview>), include the deprecation timeline as required context and check migration readiness — flag when successor-platform readiness (IWA enterprise/ChromeOS-only, allowlist) lags the predecessor's EOL milestones (ChromeOS kiosk EOL at 150).",
-    "Add a usage-data fallback for JS-rendered sources: when a chromestatus.com use-counter or metrics page returns no extractable body, record it as missing evidence and do not infer usage (and note when enterprise-scoping makes public counters unrepresentative)."
+    "Add a usage-data caching step: when a chromestatus.com use-counter popularity page is JS-rendered, fetch and cache the underlying timeline data endpoint (chromestatus.com/data/timeline/featurepopularity?bucket_id=...) with a SHA-256, record the mapping status (exact vs WebDX family/property vs origin-trial — a family/property/trial counter is not exact feature adoption), and capture launch-relative checkpoints (atStable/day30/day90/day180) plus first-observed/peak/latest, so near-zero or enterprise-scoped counters are reported with exact percentages rather than recorded as missing evidence."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Actual usage numbers: the linked use-counter page (chromestatus.com/metrics/feature/timeline/popularity/5624) is JavaScript-rendered and returned no data; IWA usage is also enterprise-private, so no defensible usage figure exists.",
+      "No unique-site, production-deployment, retention, task-success, or user-benefit breakdown: the exact HTMLControlledFrameElement use counter (S22) reports only the share of measured page loads where the counter fired, not who uses it in production or whether tasks succeed. Private enterprise deployments are unobservable.",
+      "No predeclared adoption/availability target at intake or ship (adoption_expectation/availability_expectation/adoption_plan all empty), so the near-zero measured telemetry can only be described, not judged against a threshold.",
       "Intent to Ship thread body (Google Groups message-id URLs were rejected by the reader): LGTM count, IWA-owner sign-off, and ship comms could not be read directly, only inferred from ChromeStatus fields and the IWA governance doc.",
       "No public adoption/partner case studies: searches found no production deployment of Controlled Frame; partner interest is referenced only generically ('internal partners have requested').",
       "Timed-out reads: chromeos.dev 'PWAs: Past, Present, Future' post and the blink-dev IWA-allowlist PSA page did not load fully (content partially recovered via search snippets + secondary docs).",
       "TAG review eventual position/comments beyond the opening request were not read; security/privacy questionnaire resolutions were not read in full.",
       "Internal Chromium crash/regression telemetry and support volume are not public, leaving support-health unscored."
     ],
-    "reviewedAt": "2026-07-19T12:00:00Z"
+    "reviewedAt": "2026-07-22T18:07:22Z"
   }
 }

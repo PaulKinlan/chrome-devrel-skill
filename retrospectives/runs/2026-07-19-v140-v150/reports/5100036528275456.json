@@ -17,7 +17,7 @@
       "category": "Enabled by default"
     }
   ],
-  "evidenceCutoff": "2026-07-22T13:30:00Z",
+  "evidenceCutoff": "2026-07-22T18:06:38Z",
   "phaseReview": {
     "intake": {
       "status": "supported",
@@ -103,15 +103,16 @@
       "limitations": "DevRel coverage was release-notes-level only (one paragraph); no dedicated learn/blog article or sample tying the feature to the Chrome 135+ 'Carousels with CSS' narrative. The ChromeStatus record snapshot was stale relative to the ship milestone."
     },
     "adoption": {
-      "status": "unknown",
-      "finding": "Qualitative developer demand is real and pre-dates the ship (CSSWG #9452: 10 thumbs-up plus argyleink and bakura10 production use cases; web-platform-dx developer-signals #463 open to collect signals; positive comments from kurtextrem on the I2S thread). However no quantitative usage data is available in the evidence set — the use counter ScrollIntoViewContainerNearest exists but public UMA/histogram figures were not retrievable, the feature is single-engine and only ~4 months past stable, and the rules forbid inferring adoption from demand, shipment, or sentiment alone.",
+      "status": "partial",
+      "finding": "Adoption is now measured via the exact feature use counter ScrollIntoViewContainerNearest (bucket 5578), named verbatim in the ChromeStatus measurement field ('Measured as web feature ScrollIntoViewContainerNearest'). It fired on 0% of measured Chrome HTTP/HTTPS page loads at stable (M140, 2025-09-02), first registered a positive value on 2025-09-08 (0.00000015%), and rose through the launch-relative checkpoints: 0.00000701% at day 30 (2025-10-02), 0.00002715% at day 90 (2025-12-01), and 0.00003056% at day 180 (2026-03-01), reaching 0.00006212% on the latest observed day (2026-07-21; peak 0.00009195% on 2026-06-25) — single-digit page-loads per ~10 million, with slow but real growth from a near-zero base. Qualitative developer demand pre-dates and accompanies the ship (CSSWG #9452: argyleink and bakura10 production use cases; web-platform-dx developer-signals #463; positive I2S comments). mappingStatus is multiple-counters: two CSS property counters (contain bucket 517, https://chromestatus.com/data/timeline/csspopularity?bucket_id=517; container bucket 699, https://chromestatus.com/data/timeline/csspopularity?bucket_id=699) also map but measure unrelated CSS properties (a name collision with the feature's 'container' option), are broader property counters rather than exact feature adoption, and are excluded from feature-adoption claims. There is no predeclared adoption target in the ChromeStatus record or Intent to Ship, and no production/retention evidence corroborates the page-load share, so the measured level is described rather than judged success or failure (low page-load share is not, by itself, failure).",
       "evidenceIds": [
         "S3",
         "S11",
         "S8",
-        "S1"
+        "S1",
+        "S16"
       ],
-      "limitations": "No Chrome use-counter percentages, HTTP Archive/webstatus.dev telemetry, or framework/library integration evidence retrieved. Durable production adoption cannot be confirmed."
+      "limitations": "Counter share is page-load reach only; not unique sites, developers, users, production deployment, retention, task success, satisfaction, or end-user benefit, and counter instrumentation may include probing. UMA reflects participating Chrome clients; enterprise/opt-out populations may be underrepresented; zero/delayed points are not proof of zero real-world use. No unique-site breakdown, production/retention evidence, framework/library integration, or predeclared adoption target. The two CSS property counters in the mapping are unrelated to this feature and excluded."
     },
     "support": {
       "status": "partial",
@@ -154,13 +155,14 @@
     },
     "adoption": {
       "status": "unscored",
-      "finding": "Real qualitative demand but no quantitative usage/production-adoption evidence in the set; feature is single-engine and ~4 months past stable.",
+      "finding": "Real qualitative demand plus now-measured but very low and slowly growing Chrome page-load usage. The exact feature counter ScrollIntoViewContainerNearest (bucket 5578) fired on 0.00000701% of measured page loads at day 30 (2025-10-02), 0.00002715% at day 90 (2025-12-01), 0.00003056% at day 180 (2026-03-01), and 0.00006212% on the latest observed day (2026-07-21; peak 0.00009195% on 2026-06-25) — single-digit page-loads per ~10 million, rising slowly from a near-zero base (0% at stable, first positive 2025-09-08). mappingStatus is multiple-counters: two CSS property counters (contain bucket 517, container bucket 699) also map but measure unrelated CSS properties (name collision) and are not feature adoption; they are excluded. The ChromeStatus record and Intent to Ship contain no predeclared adoption target, and no production/retention evidence corroborates the page-load share; per the rules low usage is not automatically failure and the absence of a threshold is not 'mixed', so the adoption outcome remains unscored and the measured level/trend is described rather than judged.",
       "evidenceIds": [
         "S3",
         "S11",
-        "S1"
+        "S1",
+        "S16"
       ],
-      "limitations": "Use-counter numbers, HTTP Archive, and framework integration data not retrieved."
+      "limitations": "Page-load reach, not unique sites/developers/users, production deployment, retention, task success, satisfaction, or end-user benefit. No unique-site, production/retention, framework/library-integration, or predeclared-target evidence. Single-engine and ~10 months post-stable (latest observed 2026-07-21)."
     },
     "interoperability": {
       "status": "mixed",
@@ -205,7 +207,7 @@
     },
     "overall": {
       "status": "mixed",
-      "finding": "A well-motivated, cleanly implemented, low-risk progressive-enhancement delta that shipped on schedule (M140) with positive TAG/Mozilla/WebKit signals and an API-owner review loop that caught the missing-explainer gap. Offsetting issues: it is currently single-engine (Chrome/Edge only, ~4 months post-stable), never produced a standalone explainer, left a spec-clarity defect (#12260), carried inaccurate intent-record signals and a stale ChromeStatus snapshot, shipped only release-notes-level DevRel coverage, and has no quantitative adoption data.",
+      "finding": "A well-motivated, cleanly implemented, low-risk progressive-enhancement delta that shipped on schedule (M140) with positive TAG/Mozilla/WebKit signals and an API-owner review loop that caught the missing-explainer gap. Offsetting issues: it is single-engine (Chrome/Edge only; Firefox and Safari not shipped as of the Dec 2025 Web Platform DX support table), never produced a standalone explainer, left a spec-clarity defect (#12260), carried inaccurate intent-record signals and a stale ChromeStatus snapshot, shipped only release-notes-level DevRel coverage, and has only very-low measured adoption (exact counter ScrollIntoViewContainerNearest at ~0.00006% of page loads on 2026-07-21, ~10 months post-stable) with no predeclared target or production/retention corroboration to judge it against.",
       "evidenceIds": [
         "S1",
         "S3",
@@ -216,9 +218,10 @@
         "S9",
         "S10",
         "S11",
-        "S12"
+        "S12",
+        "S16"
       ],
-      "limitations": "Overall is deliberately mixed because interoperability, adoption, and end-user-impact dimensions are unscored/unachieved while developer-value and implementation-quality are strong."
+      "limitations": "Overall is deliberately mixed because interoperability (single-engine as of Dec 2025), adoption (now measured but unscored — very low page-load share, no predeclared target), and end-user-impact dimensions are unscored/unachieved while developer-value and implementation-quality are strong."
     }
   },
   "sources": [
@@ -231,7 +234,8 @@
       "sourceType": "chromestatus",
       "supports": [
         "Feature identity, owner, components, spec link, stages, dev trial M138, ship stage M140, finch name, use counter name, sample link",
-        "Cached record internally inconsistent: status 'Proposed', is_released=false, intent_stage 'None' despite M140 ship stage"
+        "Cached record internally inconsistent: status 'Proposed', is_released=false, intent_stage 'None' despite M140 ship stage",
+        "Measurement field: 'Measured as web feature ScrollIntoViewContainerNearest' (the exact feature counter); no predeclared adoption target recorded"
       ],
       "limitations": "Pre-ship snapshot; top-level status/is_released/intent_stage fields are stale relative to the recorded ship milestone."
     },
@@ -259,7 +263,7 @@
         "Independent developer demand: argyleink (carousel demo avoiding scrollIntoView due to hijacking), bakura10 (Shopify-theme RTL scroll-snap carousel production case, prefers a boundary/element form)",
         "10 thumbs-up reactions"
       ],
-      "limitations": "Issue is the de-facto explainer; no separate explainer document exists."
+      "limitations": "Issue is the de-facto explainer; no separate explainer document exists. Demand is qualitative; not a measure of measured page-load adoption."
     },
     {
       "id": "S4",
@@ -367,7 +371,7 @@
         "Authoritative current browser support: Chrome 140 (Sep 2 2025), Chrome Android 140, Edge 140 (Sep 5 2025) shipped; Firefox, Firefox Android, Safari, Safari iOS NOT supported as of Dec 2025",
         "Issue collects web-developer signals for the feature"
       ],
-      "limitations": "Does not provide quantitative usage percentages; signals-collection counts not captured here."
+      "limitations": "Does not provide quantitative usage percentages; signals-collection counts not captured here. Browser-support snapshot is dated Dec 2025; no newer cross-engine status retrieved."
     },
     {
       "id": "S12",
@@ -416,6 +420,21 @@
         "A dedicated caniuse table exists for scrollIntoView() container describing nearest vs all behaviour"
       ],
       "limitations": "Full support table not retrieved by the reader (timed out); only the search-result summary was available. Authoritative support taken from S11 instead."
+    },
+    {
+      "id": "S16",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5578",
+      "publisher": "Chrome Platform Status (UseCounter feature-popularity timeline for ScrollIntoViewContainerNearest, bucket 5578; cached at evidence/metrics/timelines/feature-5578.json, sha256 e04b2ee36a164be67b0fab5c02e251c04847e1689ce54704689f096fe13b68f6)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:06:38Z",
+      "sourceType": "usage",
+      "supports": [
+        "Exact feature use counter ScrollIntoViewContainerNearest (bucket 5578), named verbatim in the ChromeStatus measurement field; the only counter in the multi-counter mapping that is exact adoption for THIS feature",
+        "Launch-relative checkpoints for M140 (stable 2025-09-02): atStable 0%, day30 (2025-10-02) 0.00000701%, day90 (2025-12-01) 0.00002715%, day180 (2026-03-01) 0.00003056%; first positive 2025-09-08 0.00000015%; latest 2026-07-21 0.00006212%; peak 2026-06-25 0.00009195%",
+        "Share of measured Chrome HTTP/HTTPS page loads where the counter fired; slow growth from a near-zero base, remaining in the low 1e-5 range ~10 months post-stable",
+        "mappingStatus multiple-counters: CSS property counters contain (bucket 517) and container (bucket 699) also map but are unrelated CSS properties (name collision) and are NOT feature adoption; excluded from feature-adoption claims"
+      ],
+      "limitations": "Page-load reach only (numerator = page loads on which the counter fired at least once; denominator = measured Chrome HTTP/HTTPS page loads across official channels/platforms); NOT unique developers, sites, users, successful task completion, satisfaction, production deployment, retention, or end-user benefit. Counter instrumentation may include probing. UMA reflects participating Chrome clients; enterprise/opt-out populations may be underrepresented; zero/missing/delayed points are not proof of zero real-world use. No predeclared adoption target exists in the record to judge the level against. The two CSS property timelines (csspopularity?bucket_id=517 and =699) are broader property counters unrelated to this feature and are not cited as feature adoption."
     }
   ],
   "successes": [
@@ -447,18 +466,20 @@
     "Require every new option/property ship to include a documented, copy-pasteable feature-detection recipe, and prefer a clean supports check where the platform offers one.",
     "Add an interop-expectation field distinguishing 'positive position' from 'shipped', and a post-ship monitoring alert that fires when other-engine positions are positive but shipment is absent after N months.",
     "Add a post-ship monitoring alert for unanswered developer questions on intent threads so support gaps (e.g., the ~2-month feature-detection question) are caught promptly.",
-    "Add a release-comms expectation that features tied to an existing DevRel narrative (e.g., carousels) get a dedicated learn/blog/sample, not only a release-notes paragraph."
+    "Add a release-comms expectation that features tied to an existing DevRel narrative (e.g., carousels) get a dedicated learn/blog/sample, not only a release-notes paragraph.",
+    "Require a predeclared adoption target or an explicit 'monitor-only, no target' decision in the Intent to Ship for any feature that ships a use counter, so post-ship ChromeStatus use-counter telemetry can be judged against a threshold rather than only described; this retrospective's exact counter (ScrollIntoViewContainerNearest, ~0.00006% of page loads ~10 months post-stable) could not be scored because no target was recorded."
   ],
   "completion": {
     "status": "partial",
     "missingEvidence": [
-      "Quantitative Chrome use-counter usage for ScrollIntoViewContainerNearest (UMA/chromestatus histogram not retrievable).",
-      "HTTP Archive / webstatus.dev adoption telemetry post-ship.",
+      "Unique-site breakdown of the measured ScrollIntoViewContainerNearest page-load share; the counter is page-load reach, not unique sites, developers, or users.",
+      "Production deployment / retention evidence for the feature (no framework/library integration or case-study evidence retrieved).",
+      "Predeclared adoption target/threshold in the ChromeStatus record or Intent to Ship against which to judge the measured level.",
       "Intent to Prototype thread content (Google Groups msgid URL rejected by the reader; only the Intent to Ship thread was retrieved).",
       "wpt.fyi pass/fail detail (page timed out; only test authorship and self-assessed coverage confirmed via the chromium bug and I2S).",
       "Firefox/Safari implementation tracking bugs or ETAs (positions positive but no public implementation signals found).",
       "End-user impact / accessibility studies (none exist for this developer-facing API)."
     ],
-    "reviewedAt": "2026-07-22T13:30:00Z"
+    "reviewedAt": "2026-07-22T18:06:38Z"
   }
 }

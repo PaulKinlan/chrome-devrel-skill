@@ -1,0 +1,404 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5196629995028480,
+    "name": "Respect autocorrect=\"off\" for Windows touch keyboard in TSF",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5196629995028480",
+    "webFeature": "autocorrect",
+    "blinkComponent": "Blink>Editing>IME",
+    "featureType": "Chromium catches up",
+    "ownerEmail": "pranavmodi@microsoft.com",
+    "editorEmail": "ragoulik@microsoft.com",
+    "finchName": "kTSFHonorAutocorrectOff",
+    "desktopFirst": 149,
+    "starCount": 76
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:5196629995028480",
+      "milestone": 149,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-20T22:45:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Correctly classified and scoped as a 'Chromium catches up' platform-enforcement bug-fix (feature_type_int=1, category Miscellaneous, Blink>Editing>IME), owned by a Microsoft contributor (pranavmodi@microsoft.com). The problem is concrete and real: the HTML Living Standard autocorrect attribute is silently ignored by the Windows touch keyboard (TSF InputScope has no autocorrect field), so autocorrect=\"off\" is not honored on Windows even though it works on Android. Motivation cites precise-input scenarios (code editors, username/email fields, medical/legal forms). The intake correctly identified this as platform-level enforcement of an existing standard attribute, not a new web API.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "No explainer or initial-public-proposal URL is recorded; intake artifacts beyond the ChromeStatus motivation text are not evidenced."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The problem/use-case is well-stated and maps to a genuine author need (an opted-out attribute being ignored). However there is no public explainer (explainer_links empty), no TAG review, no documented ecosystem/customer research, framework engagement, or co-design. Lightweight incubation is defensible for a one-platform 'catches up' fix of a standardized attribute, but developer demand is asserted in the motivation rather than validated with independent evidence.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "No independent demand research, survey, or partner evidence found; the autocorrect attribute's broader developer demand is only indirectly evidenced by WPT Interop #1155 and MDN Baseline status."
+    },
+    "prototype": {
+      "status": "partial",
+      "finding": "A concrete implementation landed (CL d92a6c59, 2026-03-05) by Pranav Modi, reviewed by editing/IME domain experts (Jesse McKenna, Dana Fried). The approach is specific: snapshot the document buffer in TSFTextStore::RequestLock() before granting the lock, and after the lock revert the buffer if autocorrect=\"off\", committed text was replaced (not appended), and there is no active IME composition. Unit tests plus a manual WPT were added. However, the prototype stage's central risk question ('does it compose safely with IMEs?') was not resolved before ship: the CL description asserted 'Normal typing and IME composition are unaffected,' which was later contradicted by the IME text-overwrite regression.",
+      "evidenceIds": [
+        "s4",
+        "s5"
+      ],
+      "limitations": "No evidence of IME-composition (CJK commit/replace) testing against the buffer-snapshot logic during prototyping; the manual WPT only covers touch-keyboard autocorrect, not IME interaction."
+    },
+    "developerTrials": {
+      "status": "not-relevant",
+      "finding": "No developer trial or flag period occurred (flag_name 'Not Applicable', no origin trial, finch rollout 'Will ship enabled for all users'). This is the standard path for a Windows-only platform-enforcement fix that introduces no new web-facing API, event, or state (per the feature's own debuggability statement) and is gated by a Finch kill switch. There was nothing API-shaped for external developers to trial.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "Not-relevant is used to mean a developer trial was not the appropriate vehicle for this change type, not that anything was tested or untested; pre-ship validation gaps are assessed under prototype/prepareToShip."
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "TAG review and tag review were N/A. Gecko/Safari/web-dev were all 'no signal' in ChromeStatus. The intent thread transparently resolved a real ambiguity: Mike Taylor asked whether 'no signal' should be read as 'shipped/shipping' for Gecko/WebKit; the author correctly clarified this is Windows-specific enforcement (Firefox shipped the autocorrect attribute in v136 but does NOT suppress Windows touch-keyboard autocorrect; Safari is N/A on Windows), and Dan Clark LGTM'd while requesting a Firefox parity bug be filed. Three LGTMs were obtained (Daniel Bratell, Dan Clark, Chris Harrelson). But formal security_review_status and privacy_review_status were still 'Pending' at the cache date, and there is no cross-engine commitment to this specific Windows behavior; the underlying autocorrect attribute remains 'not Baseline' (MDN) and was flagged as a Chrome gap (WPT Interop #1155, opened 2025-09-24).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s10",
+        "s11"
+      ],
+      "limitations": "Whether the Firefox parity bug Dan Clark requested was actually filed and its status are unknown; security/privacy review outcomes post-cache-date are unevidenced."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial or field experiment was run and none was justified: the change is a platform-level enforcement fix with no stated uncertainty requiring real-origin/user field evidence, gated instead by the kTSFHonorAutocorrectOff Finch kill switch, with a 'ship enabled for all users' plan.",
+      "evidenceIds": [
+        "s1",
+        "s3"
+      ],
+      "limitations": "Not-relevant reflects that no OT/field experiment was the appropriate tool for this change type; the residual IME risk that an experiment could have surfaced is assessed under prepareToShip/release."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship was filed (2026-03-14) and approved with 3 LGTMs by 2026-03-20. A spec link (HTML Living Standard) and a Finch kill switch are present; the change is Windows-only with no Android/WebView impact and needs no DevTools changes. However, pre-ship testing did not catch the IME interaction regression that forced a same-release (M147) revert, indicating the prepare-to-ship rehearsal of IME-composition interaction was insufficient. Security and privacy reviews were still 'Pending' at the cache date (accurate_as_of 2026-05-04).",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "limitations": "The gap between 'claimed IME-safe' and 'shipped IME-broken' is the central prepare-to-ship failure; specific test artifacts covering IME composition were not found."
+    },
+    "release": {
+      "status": "mixed",
+      "finding": "The feature shipped in M147 stable, was reverted in M147 point releases due to an IME text-overwrite regression (bug 498745133), and was then relanded and shipped again in Chrome 149 stable (2026-06-02), where the Chrome 149 release notes describe it accurately. A shipped-stable regression requiring an in-release revert is a notable release-quality failure, partly mitigated by the fast, well-documented revert (2026-04-06, ~one month after the original CL, by a domain owner) and by the Finch kill switch. Additionally, the ChromeStatus record is internally inconsistent with the actual ship: status is 'Proposed' and is_released=false despite the M149 ship recorded in the manifest and release notes.",
+      "evidenceIds": [
+        "s1",
+        "s5",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "limitations": "Exact M147 stable ship date and the precise M147 point-release number that first carried the revert were not pinned; the regression bug 498745133 detail requires authenticated access."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "Adoption is not meaningfully measurable for this change: it introduces no new web-facing API (authors already set autocorrect=\"off\"; the feature makes that work on the Windows touch keyboard), no use-counter bucket is linked (webdx_usecounter_enum null), and no framework/library integration, case study, or production-usage evidence was found. The developer value is implicit correctness rather than instrumented adoption.",
+      "evidenceIds": [
+        "s1",
+        "s11"
+      ],
+      "limitations": "No usage telemetry, HTTP Archive / web-features data, or partner usage was found; for a no-new-API platform fix this is expected rather than necessarily a gap."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support dashboard, FAQ, troubleshooting material, or issue taxonomy exists for this feature. The only documented issue is the IME regression (bug 498745133), which was addressed via revert and reland. Post-M149 support burden and any recurrence of the regression are not evidenced.",
+      "evidenceIds": [
+        "s5"
+      ],
+      "limitations": "No post-ship support telemetry or issue data accessible; cannot determine whether the reland fully eliminated the IME regression in production."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is an additive correctness fix that honors an existing standard attribute; it is not a deprecation or removal. A Finch kill switch (kTSFHonorAutocorrectOff) exists for rollback, but there is no deprecation/removal lifecycle to replay.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Not-relevant is used because no deprecation/removal phase applies, not because anything was untested."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "mixed",
+      "finding": "The problem is legitimate and well-scoped: an existing HTML Living Standard attribute (autocorrect=\"off\") was silently ignored by the Windows touch keyboard, breaking precise-input scenarios the author had explicitly opted out of. The fix makes a standard attribute behave as authors expect on one platform, a real if narrow correctness improvement. It is Windows-only, and the broader autocorrect attribute is still 'not Baseline' (MDN) and was a flagged Chrome gap (WPT Interop #1155), so cross-platform developer value is partial rather than broad.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s11",
+        "s10"
+      ],
+      "limitations": "No independent developer-demand evidence beyond the motivation text; value is asserted rather than measured."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "Positive in intent (preserves precise user input where the author disabled autocorrect; benefits precise-input and IME-adjacent workflows on touch Windows), but the first ship caused a real end-user regression: existing text was overwritten when typing IME text (bug 498745133), affecting IME users (a large Windows population). The revert mitigated this for M147 users and the feature re-shipped in M149, so net end-user impact across the M147-to-M149 window is mixed rather than cleanly positive.",
+      "evidenceIds": [
+        "s5",
+        "s6",
+        "s8"
+      ],
+      "limitations": "Severity, affected IMEs, and user-report counts for bug 498745133 require authenticated access and were not retrieved."
+    },
+    "adoption": {
+      "status": "unscored",
+      "finding": "No adoption is instrumented or observable for a no-new-API, Windows-only platform fix (no use-counter bucket, no framework integration, no case studies found). Adoption as a dimension is not applicable/evidenced here.",
+      "evidenceIds": [
+        "s1"
+      ],
+      "limitations": "Absent adoption evidence is expected for this change type and is not interpreted as failure or success."
+    },
+    "interoperability": {
+      "status": "mixed",
+      "finding": "This specific behavior (Windows touch-keyboard autocorrect suppression) is single-engine by platform design: Firefox does not do it on Windows (verified in the intent thread), and Safari does not run on Windows. The author correctly framed this as platform enforcement rather than a spec divergence, and the attribute is in the HTML Living Standard. But the underlying autocorrect attribute is 'not Baseline' (MDN) and was flagged as a Chrome gap (WPT Interop #1155), Safari's autocorrect IDL reflection differs in a way that broke Vue.js (WebKit bug 289197), and there is no cross-engine commitment to the Windows-specific behavior (a Firefox parity bug was requested but its status is unknown).",
+      "evidenceIds": [
+        "s3",
+        "s9",
+        "s10",
+        "s11"
+      ],
+      "limitations": "Status of the requested Firefox parity bug is unknown; Baseline/web-features detail for the autocorrect attribute was not retrievable from the JS-rendered dashboard."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "The implementation was code-reviewed by editing/IME domain experts and included unit tests plus a manual WPT. But it shipped to M147 stable with a regression the CL explicitly claimed was avoided ('Normal typing and IME composition are unaffected'), forcing a same-release revert (IME text overwrite, bug 498745133) - a direct contradiction of the author's safety claim. It was then relanded in M149 (2026-05-03) and shipped without an observed second revert, but the specific fix applied in the reland (the diff between original and reland) was not directly verified from accessible sources.",
+      "evidenceIds": [
+        "s4",
+        "s5",
+        "s6",
+        "s7"
+      ],
+      "limitations": "The reland CL/diff and regression bug 498745133 detail could not be retrieved; whether/how the IME regression was actually fixed before M149 re-ship is unverified."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "The Intent to Ship and ChromeStatus record are substantively accurate, and the reviewer discussion transparently resolved the Gecko/Safari 'no signal' ambiguity; the M149 release notes describe the feature correctly. But the original CL description's claim that IME composition is unaffected was incorrect (contradicted by the regression), and the ChromeStatus record is internally inconsistent (status 'Proposed'/is_released=false despite the M149 ship; security and privacy reviews 'Pending' at cache date). The revert commit properly documented the reason and regression bug, which is good practice.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s5",
+        "s8"
+      ],
+      "limitations": "Cannot determine whether ChromeStatus was ever reconciled post-M149; security/privacy final states are unknown."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support material or issue-tracking evidence for this feature was found; the only documented issue is the IME regression (addressed by revert+reland). Post-M149 support burden and recurrence are unevidenced.",
+      "evidenceIds": [
+        "s5"
+      ],
+      "limitations": "No accessible support telemetry; the dimension cannot be scored from public evidence."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "Overall mixed, not success: a legitimate, well-scoped correctness fix for an existing standard attribute on Windows, with a transparent intent process and 3 LGTMs and a working Finch kill switch. But it shipped to M147 stable with an IME regression it explicitly claimed to avoid, requiring an in-release revert before re-shipping in M149; cross-engine parity for the specific behavior is absent by design; and the broader autocorrect attribute remains not Baseline. The fast, well-documented revert and clean M149 re-ship prevent a failure rating, but a same-release revert of a shipped-stable regression is a material launch-quality defect.",
+      "evidenceIds": [
+        "s1",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "s8",
+        "s11"
+      ],
+      "limitations": "Completion is partial: the reland fix, regression severity, and post-M149 support data are not directly evidenced."
+    }
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://chromestatus.com/feature/5196629995028480",
+      "publisher": "Chrome Platform Status (cached record, accurate_as_of 2026-05-04)",
+      "publishedOrObservedAt": "2026-05-04",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature identity, summary, motivation, owner (pranavmodi@microsoft.com), spec link, tracking bug 487613498, desktop_first 149, finch kTSFHonorAutocorrectOff, Windows-only, no DevTools changes, manual WPT, Gecko/Safari/web-dev no-signal, feature_type 'Chromium catches up', security/privacy review Pending, status 'Proposed'/is_released=false"
+      ],
+      "limitations": "Record status/is_released contradict the M149 ship (data-quality inconsistency); accurate_as_of precedes the 2026-06-02 stable."
+    },
+    {
+      "id": "s2",
+      "url": "https://chromestatuslite.com/feature/5196629995028480",
+      "publisher": "Chrome Platform Status (server-rendered lite view)",
+      "publishedOrObservedAt": "2026-05-04",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Corroborates the cached record: summary, motivation, spec, tracking bug, Proposed status, FF/Safari/web-dev no signal"
+      ],
+      "limitations": "Server-rendered view mirrors the same record; does not add independent evidence."
+    },
+    {
+      "id": "s3",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/pIecMZqlWA8/m/ibJejCr3DAAJ",
+      "publisher": "blink-dev Intent to Ship thread",
+      "publishedOrObservedAt": "2026-03-20",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Intent to Ship filed 2026-03-14 by Pranav Modi; Mike Taylor's 'no signal vs shipped' question; clarification that this is Windows-specific enforcement not attribute shipping (Firefox shipped attribute v136 but does not suppress Windows TKB autocorrect; Safari N/A on Windows); Dan Clark LGTM2 + request to file a Firefox parity bug; Daniel Bratell LGTM; Chris Harrelson LGTM3; manual WPT link; finch kTSFHonorAutocorrectOff"
+      ],
+      "limitations": "Thread body retrieved via reader; the exact LGTM lines for Bratell/Harrelson were present but terse."
+    },
+    {
+      "id": "s4",
+      "url": "https://chromium.googlesource.com/chromium/src/+/d92a6c59e16e009d5a14f0be69cdb122df679fcf",
+      "publisher": "Chromium source (Gitiles) - original CL d92a6c59",
+      "publishedOrObservedAt": "2026-03-05",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Original implementation landed 2026-03-05 by Pranav Modi; reviewed by Jesse McKenna and Dana Fried; CL 7609541; fix approach (snapshot buffer in TSFTextStore::RequestLock, revert replaced text when autocorrect=off and no active IME composition); claim 'Normal typing and IME composition are unaffected'; files changed include tsf_text_store.cc, tsf_text_store_unittest.cc, ui_base_features (kTSFHonorAutocorrectOff), and added manual WPT"
+      ],
+      "limitations": "Commit metadata only; code diff not parsed in full."
+    },
+    {
+      "id": "s5",
+      "url": "https://chromium.googlesource.com/chromium/src/+/2478fb68341089b65ba0790e2a201ed36aebc945",
+      "publisher": "Chromium source (Gitiles) - M147 revert commit 2478fb68",
+      "publishedOrObservedAt": "2026-04-06",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "[M147 RC] Revert authored 2026-04-06 by Jesse McKenna; Reason for revert: 'CL seems to cause existing text to be overwritten when typing IME text'; regression bug 498745133; reverts commit d92a6c59; cherry-picked from main revert 2f62cf50; deleted the manual WPT and reverted tsf_text_store + ui_base_features"
+      ],
+      "limitations": "Reason text is one line; full regression repro/severity not included."
+    },
+    {
+      "id": "s6",
+      "url": "https://chromium.googlesource.com/chromium/src/+/147.0.7727.55",
+      "publisher": "Chromium source (Gitiles) - M147 stable version tag 147.0.7727.55",
+      "publishedOrObservedAt": "2026-04-06",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "The 147.0.7727.55 stable version resolves to the M147 revert commit (7dc2b8f6), confirming the feature reached M147 stable and was reverted via M147 branch-head cherry-picks (branch-heads/7727_49 and 7727), i.e. a ship-then-same-release-revert"
+      ],
+      "limitations": "Exact first stable build carrying the feature and the exact point release that first carried the revert were not separately pinned."
+    },
+    {
+      "id": "s7",
+      "url": "https://www.gitclear.com/open_repos/chromium/chromium/release/149.0.7825.0",
+      "publisher": "GitClear (Chromium GitHub-mirror release tracker)",
+      "publishedOrObservedAt": "2026-05-04",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "Reland commit 'Reland \"[Editing] Respect autocorrect=\"off\" for Windows touch keyboard\"' authored 2026-05-03 by pranavmodi25 (Pranav Modi) in release 149.0.7825.0 (released 2026-05-04)"
+      ],
+      "limitations": "Third-party mirror; does not show the reland commit message body or the specific fix applied."
+    },
+    {
+      "id": "s8",
+      "url": "https://developer.chrome.com/release-notes/149",
+      "publisher": "Chrome for Developers - Chrome 149 Release notes",
+      "publishedOrObservedAt": "2026-06-02",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 149 stable date 2026-06-02; feature listed: 'Respect autocorrect=\"off\" for Windows touch keyboard in TSF - Makes Chrome's TSF integration detect and revert touch keyboard autocorrections on Windows when the focused editable element has autocorrect=\"off\" set'; tracking bug 487613498"
+      ],
+      "limitations": "Release notes are announcement-grade; no adoption, usage, or post-ship issue data."
+    },
+    {
+      "id": "s9",
+      "url": "https://bugs.webkit.org/show_bug.cgi?id=289197",
+      "publisher": "WebKit Bugzilla (bug 289197)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Safari/WebKit autocorrect IDL-attribute reflection differs from Chrome/Firefox, causing a Vue.js incompatibility; a comment notes Firefox added autocorrect attribute support in v136 and that 'Chrome is just behind on HTML spec support'"
+      ],
+      "limitations": "Tangential to this feature: concerns the autocorrect attribute's IDL reflection, not Windows touch-keyboard enforcement; filing date unknown."
+    },
+    {
+      "id": "s10",
+      "url": "https://github.com/web-platform-tests/interop/issues/1155",
+      "publisher": "web-platform-tests/interop (Issue #1155)",
+      "publishedOrObservedAt": "2025-09-24",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Autocorrect attribute flagged as a Chrome gap and proposed as an Interop 2026 focus area; 'Currently the attribute is supported by Firefox and Safari, but is not supported by Chrome'"
+      ],
+      "limitations": "About the autocorrect attribute broadly, not this Windows-specific enforcement; a proposal/issue, not an accepted focus area."
+    },
+    {
+      "id": "s11",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocorrect",
+      "publisher": "MDN Web Docs",
+      "publishedOrObservedAt": "2026-04-17",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "other",
+      "supports": [
+        "autocorrect is an enumerated HTML global attribute controlling spelling/punctuation autocorrection for editable elements; MDN marks it 'Limited availability - not Baseline'"
+      ],
+      "limitations": "Compatibility table detail was JS-rendered/not fully parsed; Baseline claim relied on the page banner text."
+    },
+    {
+      "id": "s12",
+      "url": "https://html.spec.whatwg.org/multipage/interaction.html#autocorrection",
+      "publisher": "WHATWG HTML Living Standard",
+      "publishedOrObservedAt": "2026-07-17",
+      "retrievedAt": "2026-07-20T22:45:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "autocorrection is defined in the HTML Living Standard (Final published standard, ChromeStatus maturity val 5)"
+      ],
+      "limitations": "Living Standard is continuously updated; retrieved Last-Updated date only."
+    }
+  ],
+  "successes": [
+    "Correctly scoped as a low-surface-area 'Chromium catches up' platform-enforcement bug-fix with no new web-facing API, events, or state.",
+    "Transparent Intent to Ship that explicitly resolved the Gecko/Safari 'no signal' ambiguity and distinguished attribute support from Windows platform enforcement; obtained 3 LGTMs (Bratell, Clark, Harrelson).",
+    "A Finch kill switch (kTSFHonorAutocorrectOff) enabled a fast, safe rollback when the regression appeared.",
+    "Fast, well-documented revert of the M147 regression (~one month after the original CL, 2026-04-06) by an editing/IME domain owner (Jesse McKenna), including the revert reason and a dedicated regression bug (498745133).",
+    "Unit tests plus a manual WPT were included; the CL was reviewed by editing/IME domain experts (Jesse McKenna, Dana Fried).",
+    "Accurate Chrome 149 release-notes description on the M149 re-ship."
+  ],
+  "failures": [
+    "Pre-ship testing did not catch an IME interaction regression that the CL explicitly claimed was avoided ('Normal typing and IME composition are unaffected') - a direct contradiction by reality (bug 498745133).",
+    "A shipped-stable regression requiring an in-release (M147) revert is a material launch-quality failure; users on M147 were briefly exposed to IME text-overwrite breakage.",
+    "No cross-engine parity commitment for the Windows-specific behavior, and the broader autocorrect attribute remains 'not Baseline' (MDN) and a flagged Chrome gap (WPT Interop #1155).",
+    "ChromeStatus record data quality: status 'Proposed'/is_released=false is inconsistent with the M149 ship recorded in the manifest and release notes, and security/privacy reviews were still 'Pending' at the cache date."
+  ],
+  "counterfactuals": [
+    "If pre-ship validation had exercised IME composition (especially CJK IMEs committing/replacing text) against the TSF buffer-snapshot logic, the overwrite regression would likely have been caught before M147 stable, avoiding both the in-release revert and the user-facing IME breakage. The manual WPT only covered touch-keyboard autocorrect, not IME-composition interaction.",
+    "If a short developer/IME-user trial on touch Windows hardware had run before ship, the regression's impact on IME users (a large Windows population) could have surfaced before stable.",
+    "If the Firefox parity bug Dan Clark requested had been filed and tracked publicly, cross-engine interop for the behavior would be on a clearer path; its status is currently unknown.",
+    "If ChromeStatus launch events captured branch-head reverts, this feature's manifest would record the M147 ship+revert alongside the M149 event instead of only M149, which currently masks the regression from any inventory-driven review."
+  ],
+  "skillImprovements": [
+    "Add a prototype/prepareToShip regression-rehearsal packet for editing/IME-area changes: require explicit IME-composition (CJK commit/replace) test coverage whenever TSF or composition-buffer logic changes, and treat any author claim of 'IME unaffected' as an unverified hypothesis that must be backed by a test, not an assertion.",
+    "Add a launch-retrospective evidence source that detects same-release reverts: scan for 'Revert ... cherry picked ... Reason for revert' commits on branch-heads to surface ship+revert events that ChromeStatus launch events miss (this feature's manifest lists only M149, hiding the M147 ship+revert).",
+    "Add a ChromeStatus data-quality check that flags features whose status/is_released contradict the release notes or manifest launch events (here 'Proposed'/is_released=false despite shipping in M149), and flags Pending security/privacy reviews at ship.",
+    "Add a 'Baseline/interop context' requirement for catches-up fixes: even when a change is platform-only, cite the underlying attribute's Baseline/MDN/WPT-interop status so single-engine-by-design behavior is not mistaken for broad interoperability.",
+    "Add an eval/regression case: 'feature claims IME composition is unaffected but ships with no IME test' should block the prototype-to-prepareToShip transition."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Regression bug 498745133 (IME text overwrite) detail: severity, reproduction, affected IMEs, and user-report counts require authenticated Chromium issue access.",
+      "Reland CL/diff: the specific fix applied to the IME regression before M149 re-ship was not retrievable (chromium-review requires JS; reland commit message body not parsed); whether the regression was fully eliminated in production is unverified.",
+      "Whether the Firefox parity bug requested by Dan Clark was actually filed and its current status.",
+      "Post-M149 production support telemetry, issue data, and any recurrence of the IME regression.",
+      "Independent ecosystem adoption/usage data (expected absent for a no-new-API Windows-only fix, but not confirmed).",
+      "Reconciled ChromeStatus status (whether 'Proposed'/is_released=false and Pending security/privacy reviews were ever updated post-M149)."
+    ],
+    "reviewedAt": "2026-07-20T22:45:00Z"
+  }
+}

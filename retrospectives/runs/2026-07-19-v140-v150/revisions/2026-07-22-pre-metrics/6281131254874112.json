@@ -1,0 +1,535 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6281131254874112,
+    "name": "Uint8Array to/from base64 and hex",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6281131254874112",
+    "category": "JavaScript",
+    "blinkComponent": "Blink>JavaScript>Language",
+    "featureType": "Chromium catches up",
+    "webFeature": "uint8array-base64-hex",
+    "specLink": "https://tc39.es/proposal-arraybuffer-base64/spec",
+    "owners": [
+      "rezvan@chromium.org",
+      "syg@chromium.org"
+    ],
+    "flagName": "--js_base_64",
+    "finchName": "V8Flag_js_base_64"
+  },
+  "launchEvents": [
+    {
+      "eventId": "140:Enabled by default:6281131254874112",
+      "milestone": 140,
+      "category": "Enabled by default"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22T16:30:00Z",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "Exceptionally well-validated developer problem: JavaScript lacked a built-in base64/hex codec for Uint8Array despite years of demand. Chrome correctly classified the work as 'Chromium catches up' (Firefox shipped in 133, Safari in 18.2 before Chrome). The problem is evidenced by a long-running, highly-duplicated Stack Overflow question, a Cloudflare Workers friction thread, multiple npm libraries, and the TC39 explainer's own alternatives analysis. Chrome-side intake artifacts are thin (motivation, initial_public_proposal_url, sample_links and doc_links are all null in the ChromeStatus record), but the underlying TC39 proposal carried years of prior incubation.",
+      "evidenceIds": [
+        "S1",
+        "S3",
+        "S14",
+        "S15",
+        "S18",
+        "S19"
+      ],
+      "limitations": "ChromeStatus record created only 2025-04-29 (months before ship); Chrome-specific intake/motivation docs are absent because incubation happened in TC39, not Chrome."
+    },
+    "incubation": {
+      "status": "supported",
+      "finding": "Incubation occurred in TC39, not Chrome: the proposal (champion Kevin Gibbons/bakkot) progressed Stage 1->2->3 (Feb 2024 TC39)->4 (Oct 2025). The README/spec provide a thorough FAQ rejecting atob/btoa and TextEncoder as homes for this and documenting alphabet/lastChunkHandling/padding variation across languages and libraries. Chrome is a consumer of an already well-incubated, multi-engine-consensus proposal.",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S18"
+      ],
+      "limitations": "Chrome did not author or publicly co-design this proposal; its incubation record lives in TC39 rather than in a Chrome explainer."
+    },
+    "prototype": {
+      "status": "supported",
+      "finding": "V8 implementation proceeded cleanly behind the --js_base_64 runtime flag (Finch V8Flag_js_base_64). Chromium tracking bug 42204568 ('Implement the base64 proposal') was opened 2024-02-14 by syg@chromium.org, assigned to rezvan@chromium.org, reached status Fixed with 31 linked resources, and began when the proposal was Stage 3 (standard V8 practice for TC39 features). Conformance tests were added to test262 (PR #3994).",
+      "evidenceIds": [
+        "S1",
+        "S6",
+        "S3",
+        "S21"
+      ],
+      "limitations": "No public task-based samples or friction logs in the ChromeStatus record (sample_links empty); implementation CL bodies not individually retrieved."
+    },
+    "developerTrials": {
+      "status": "partial",
+      "finding": "A developer trial existed behind the flag in Chrome 138 (desktop+android_first per the record). However the Chrome-side trial packet is thin: devtrial_instructions is null, there is no published cohort, recruitment, task-completion, or findings artifact, and star_count is 61. This is low-risk because the API was already proven by Firefox/Safari shipping, but it does not satisfy the phase module's evidence expectations.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No attributable Chrome-side developer-trial findings, feedback themes, or participant data were found."
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "Wide review is strong but happened primarily in TC39. TAG, security, and privacy reviews are 'Not applicable' (correct for a TC39 language builtin). Cross-engine consensus is concrete: Firefox shipped (133) and Safari shipped (18.2) before Chrome, so Chrome is aligning to already-shipped behavior. The ChromeStatus 'Web developers: No signals' field is misleading given overwhelming external demand and should not be read as neutral.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S11",
+        "S12",
+        "S13",
+        "S10"
+      ],
+      "limitations": "No Chrome-collected web-developer signal; the 'No signals' value understates demand that is visible externally (S14, S15, S19)."
+    },
+    "experiment": {
+      "status": "not-relevant",
+      "finding": "No origin trial was used (all OT fields null/false; origintrial=false). This is appropriate rather than a gap: TC39/ECMA-262 JavaScript builtins shipped via V8 have no embedder, permission, or origin-scoped dimension to field-test, so the V8 flag->default path replaces an OT. The effective field exposure was the M138 behind-flag trial plus the fact that Firefox/Safari had already shipped identical behavior.",
+      "evidenceIds": [
+        "S1",
+        "S21"
+      ],
+      "limitations": "Not-relevant is used with rationale (TC39 JS builtin, no OT applies), never to mean untested."
+    },
+    "prepareToShip": {
+      "status": "partial",
+      "finding": "An Intent to Ship was posted to blink-dev (thread exists and was auto-generated by Chrome Platform Status). The implementation is Fixed (bug 42204568) and WebDX use counters were added ('Add WebDX feature for base64'). No enterprise impact and breaking_change=false. Two cautions: (1) Chrome shipped a TC39 proposal still at Stage 3 (Stage 4 was only reached Oct 2025, after the Aug/Sept 2025 ship); (2) a linked CL snippet referenced 'Disable web tests to ship base64 in V8' whose full detail and severity were not retrieved.",
+      "evidenceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S4"
+      ],
+      "limitations": "Google Groups intent body was not retrievable (page timed out repeatedly), so LGTM count, the explicit review/position matrix, and any risk discussion could not be confirmed; the 'disable web tests' CL detail is unexplained."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Clean, well-documented release. Chrome 140 stable shipped 2025-09-02 (Early Stable 2025-08-27) and the feature is explicitly listed in the Chrome for Developers release notes under JavaScript. MDN documents the full API (fromBase64, toBase64, setFromBase64, setFromHex, fromHex, toHex) and marks it Baseline newly-available September 2025. Chrome for Developers promoted it ('move over atob... part of Baseline'). caniuse confirms Chrome/Edge 140+.",
+      "evidenceIds": [
+        "S7",
+        "S8",
+        "S9",
+        "S17",
+        "S10"
+      ],
+      "limitations": "The ChromeStatus source-of-truth itself lagged: status remained 'Proposed' and is_released=false as of accurate_as_of 2025-08-27, despite the manifest launch event. No dedicated developer.chrome.com blog article was found (DevRel via release notes + MDN + LinkedIn social, not an in-depth article)."
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "Interoperability-driven adoption is forming: caniuse global support ~81.32% (Chrome/Edge 140+, Firefox 133+, Safari 18.2+, Opera 124+), Baseline newly-available Sept 2025, and Node.js 25 gains it via V8 14.1 (server-side). Third-party tutorials are appearing. However no public production-usage figure exists (Chrome use counters are internal), and there are ecosystem gaps: caniuse reports Samsung Internet 29 still unsupported plus QQ/UC unsupported, and shows Chrome-for-Android at 147 versus the ChromeStatus android_first=140.",
+      "evidenceIds": [
+        "S10",
+        "S9",
+        "S16",
+        "S7"
+      ],
+      "limitations": "No public usage/adoption percentage; no attributable case studies or framework 'we adopted this' statements; Android Chromium-derived browser support is incomplete."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support incidents, regressions, or recurring issue themes were found for this feature. The API is small, synchronous, and precisely specified with test262 coverage, so support burden is plausibly low, but absence of retrieved evidence is not evidence of low burden.",
+      "evidenceIds": [
+        "S1",
+        "S3"
+      ],
+      "limitations": "No public Chromium/V8 support-issue data or telemetry retrieved; support burden remains unscored."
+    },
+    "deprecation": {
+      "status": "not-relevant",
+      "finding": "This is a new shipping feature with no deprecation or removal lifecycle event. Although DevRel framed it as 'move over atob', atob/btoa is not deprecated or removed by this feature.",
+      "evidenceIds": [
+        "S1",
+        "S17"
+      ],
+      "limitations": "Not-relevant with rationale: no removal event exists for this feature ID; the atob framing is messaging, not a deprecation plan."
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "success",
+      "finding": "Solves a genuine, long-standing, high-friction gap with a well-considered API. Demand is overwhelming (one of the most-duplicated base64/Uint8Array SO questions, Cloudflare Workers pain, many npm libraries). The design (alphabet/lastChunkHandling/omitPadding options, zero-copy setFrom* variants returning {read,written}, hex parity, deliberate whitespace handling) is the product of thorough TC39 incubation and explicit rejection of inferior homes (atob/btoa, TextEncoder).",
+      "evidenceIds": [
+        "S3",
+        "S4",
+        "S14",
+        "S15",
+        "S18",
+        "S19"
+      ],
+      "limitations": "Developer value is strong and defensible; not contingent on Chrome-specific demand evidence."
+    },
+    "endUserImpact": {
+      "status": "mixed",
+      "finding": "End-user benefit is real but indirect and unmeasured: a native, optimized codec can reduce bundle size (fewer base64 libraries), speed decode/encode, and simplify binary handling. There is no direct end-user-facing capability, control, or consent dimension, and no attributable end-user outcome data.",
+      "evidenceIds": [
+        "S3",
+        "S20",
+        "S14",
+        "S19"
+      ],
+      "limitations": "No measured end-user outcome (perf, payload, battery); benefit is inferred from the primitive's nature, not demonstrated."
+    },
+    "adoption": {
+      "status": "mixed",
+      "finding": "Broad engine/runtime alignment (Baseline Sept 2025; Chrome/Edge/Firefox/Safari all shipped; Node.js 25) but durable production adoption is unproven: no public usage %, no case studies, and material Android ecosystem gaps (Samsung Internet unsupported per caniuse).",
+      "evidenceIds": [
+        "S10",
+        "S9",
+        "S16",
+        "S7"
+      ],
+      "limitations": "Usage tracked internally via use counters (S6) but not published; cannot score adoption as success from Baseline/interop alone."
+    },
+    "interoperability": {
+      "status": "success",
+      "finding": "The strongest dimension and the explicit point of the launch: all three core engines shipped interoperable behavior (Firefox 133, Safari 18.2, Chrome 140), Edge 140+ via Chromium, Baseline newly-available September 2025, test262 conformance, and caniuse global ~81%. Chrome was deliberately last, aligning to existing implementations.",
+      "evidenceIds": [
+        "S1",
+        "S10",
+        "S9",
+        "S11",
+        "S13"
+      ],
+      "limitations": "Minor caveats: Samsung Internet/QQ/UC not yet supported; caniuse Chrome-for-Android version (147) conflicts with ChromeStatus android_first (140); Chrome shipped at Stage 3 (Stage 4 came Oct 2025)."
+    },
+    "implementationQuality": {
+      "status": "mixed",
+      "finding": "V8 implementation is Fixed, matches the spec, uses an optimized decoder path (simdutf referenced), and has test262 coverage. Mixed because Chrome shipped while the proposal was still TC39 Stage 3 (Stage 4 reached Oct 2025), and one CL referenced 'Disable web tests to ship base64 in V8' with no retrieved explanation of scope or severity.",
+      "evidenceIds": [
+        "S6",
+        "S3",
+        "S4",
+        "S20"
+      ],
+      "limitations": "The 'disable web tests' CL body and any WPT/test262 interop dashboard result were not retrieved; quality inference rests on multi-engine convergence rather than a public conformance report."
+    },
+    "evidenceAndCommunication": {
+      "status": "mixed",
+      "finding": "Release communication was solid and accurate (release notes, MDN for all six methods, Baseline alignment, social promotion). Mixed because the ChromeStatus source-of-trith was stale at ship time (status 'Proposed'/is_released=false as of 2025-08-27) and the 'Web developers: No signals' field materially understates demand. No in-depth developer.chrome.com article accompanied the launch.",
+      "evidenceIds": [
+        "S1",
+        "S2",
+        "S7",
+        "S9",
+        "S17",
+        "S14"
+      ],
+      "limitations": "Stale ChromeStatus fields affect downstream tooling/decision-makers; the 'move over atob' framing could imply an atob removal that is not planned."
+    },
+    "support": {
+      "status": "unscored",
+      "finding": "No public support-issue data, regression reports, or known-issues material were retrieved for this feature. A small, synchronous, well-specified primitive plausibly has low support burden, but this is unmeasured.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Unscored: absence of retrieved support evidence is not evidence of low burden; no Chromium/V8 support telemetry was accessible."
+    },
+    "overall": {
+      "status": "mixed",
+      "finding": "A low-risk, well-justified interoperability catch-up that shipped cleanly with strong developer value and same-month Baseline status. Overall is mixed rather than success because durable adoption (no public usage), end-user impact (indirect/unmeasured), and support remain unknown or partial, and the method forbids inferring overall success from shipment, interop, or press sentiment alone.",
+      "evidenceIds": [
+        "S1",
+        "S7",
+        "S10",
+        "S9",
+        "S3"
+      ],
+      "limitations": "Honest unknowns in adoption/support prevent a 'success' overall score despite strong interop and problem validity."
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6281131254874112",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": "2025-08-27T21:13:31Z",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Feature record: name, summary, category JavaScript, feature_type 'Chromium catches up', spec link, owners rezvan/syg, stages (dev trial desktop+android 138, ship desktop+android 140), flag --js_base_64 / Finch V8Flag_js_base_64, Firefox+Safari shipped, webdev 'No signals', TAG/security/privacy 'Not applicable', status 'Proposed'/is_released false at accurate_as_of"
+      ],
+      "limitations": "Local cached snapshot at evidence/chromestatus/features/6281131254874112.json; status and is_released lag the actual M140 ship."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatuslite.com/feature/6281131254874112",
+      "publisher": "Chrome Platform Status (Google)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "chromestatus",
+      "supports": [
+        "Server-rendered mirror confirming category, type 'Chromium catches up', status 'Proposed', Firefox shipped, Safari shipped via WebKit bugs, web developers 'No signals'"
+      ],
+      "limitations": "Same underlying data as S1; dynamic page."
+    },
+    {
+      "id": "S3",
+      "url": "https://github.com/tc39/proposal-arraybuffer-base64",
+      "publisher": "TC39 (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Proposal at Stage 4, 'complete included in the standard', repo archived; full API (toBase64/fromBase64/toHex/fromHex/setFromBase64/setFromHex); options (alphabet, lastChunkHandling, omitPadding); FAQ rejecting atob/btoa and TextEncoder; simdutf fast-decoder note"
+      ],
+      "limitations": "README reflects current Stage-4 state, not the historical stage timeline."
+    },
+    {
+      "id": "S4",
+      "url": "https://tc39.es/proposal-arraybuffer-base64/spec/",
+      "publisher": "TC39",
+      "publishedOrObservedAt": "2025-10-28",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "spec",
+      "supports": [
+        "Stage 4 Draft dated 2025-10-28; full algorithmic spec including lastChunkHandling, whitespace handling, base64url; RFC 4648 reference"
+      ],
+      "limitations": "Draft dated after Chrome's Aug/Sept 2025 ship; reflects Stage-4 maturity reached post-shipment."
+    },
+    {
+      "id": "S5",
+      "url": "https://groups.google.com/a/chromium.org/g/blink-dev/c/yHjg1eo7FlY/m/FdBxxeW3BQAJ",
+      "publisher": "blink-dev (Google Groups)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "intent",
+      "supports": [
+        "Existence and title of Chrome 'Intent to Ship: Uint8Array to/from base64 and hex', auto-generated via Chrome Platform Status"
+      ],
+      "limitations": "Thread body, LGTM count, review/position matrix, and risk discussion were NOT retrievable (Google Groups JS page timed out repeatedly)."
+    },
+    {
+      "id": "S6",
+      "url": "https://issues.chromium.org/issues/42204568",
+      "publisher": "Chromium Issue Tracker (Google)",
+      "publishedOrObservedAt": "2024-02-14",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "implementation",
+      "supports": [
+        "'Implement the base64 proposal' opened 2024-02-14 by syg, assigned rezvan, collaborator fw, Status Fixed, P2 Feature, 31 resources; 'Stage 3 TC39 proposal as of the February 2024 TC39'; CL adding '[use-counters] Add WebDX feature for base64'; CL snippet 'Disable web tests to ship base64 in V8'"
+      ],
+      "limitations": "Individual CL bodies and the 'disable web tests' rationale not retrieved; severity of that step unconfirmed."
+    },
+    {
+      "id": "S7",
+      "url": "https://developer.chrome.com/release-notes/140",
+      "publisher": "Chrome for Developers (Google)",
+      "publishedOrObservedAt": "2025-09-02",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 stable 2025-09-02 for Android/ChromeOS/Linux/macOS/Windows; feature listed under JavaScript 'Uint8Array to and from base64 and hex' with ChromeStatus + Spec links; page last updated 2025-09-02"
+      ],
+      "limitations": "Release-notes description, not adoption metrics."
+    },
+    {
+      "id": "S8",
+      "url": "https://support.google.com/chrome/a/answer/10314655",
+      "publisher": "Google Chrome Enterprise and Education",
+      "publishedOrObservedAt": "2025-08-27",
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Chrome 140 Early Stable date 2025-08-27 (stable 2025-09-02 per S7)"
+      ],
+      "limitations": "Release schedule table; corroborates S7 date."
+    },
+    {
+      "id": "S9",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/fromBase64",
+      "publisher": "MDN Web Docs (Mozilla)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "MDN docs for the full API (fromBase64, toBase64, setFromBase64, setFromHex, fromHex, toHex); 'Newly available Since September 2025' (Baseline)"
+      ],
+      "limitations": "Baseline date reflects alignment month, not adoption volume."
+    },
+    {
+      "id": "S10",
+      "url": "https://caniuse.com/mdn-javascript_builtins_uint8array_frombase64",
+      "publisher": "Can I use",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Chrome/Edge 4-139 not supported, 140+ supported; Firefox 133+; Safari 18.2+; Opera 124+; Chrome for Android shown at 147; Samsung Internet 29 NOT supported; QQ/UC unsupported; global ~81.32%"
+      ],
+      "limitations": "caniuse Chrome-for-Android version (147) conflicts with ChromeStatus android_first (140); data as-of retrieval date."
+    },
+    {
+      "id": "S11",
+      "url": "https://groups.google.com/a/mozilla.org/g/dev-platform/c/cnY_Tu0tFos",
+      "publisher": "Mozilla dev-platform",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Mozilla 'Intent to ship: Uint8Array to/from base64 and hex' - 'As of Firefox 133, I intend to turn the proposal implementation on by default on all platforms'"
+      ],
+      "limitations": "Snippet only; full Mozilla thread not retrieved."
+    },
+    {
+      "id": "S12",
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1862220",
+      "publisher": "Mozilla Bugzilla",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Firefox tracking/shipping bug for the proposal (from ChromeStatus ff.view.url)"
+      ],
+      "limitations": "Referenced from the cached record; not independently re-read."
+    },
+    {
+      "id": "S13",
+      "url": "https://webkit.org/blog/15798/release-notes-for-safari-technology-preview-202",
+      "publisher": "WebKit",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "standards-position",
+      "supports": [
+        "Safari shipped the proposal (WebKit bugs 274635, 276215, 275593); stable Safari 18.2+ confirmed via caniuse"
+      ],
+      "limitations": "Cached-record reference; precise stable Safari version (18.2) confirmed via S10."
+    },
+    {
+      "id": "S14",
+      "url": "https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string",
+      "publisher": "Stack Overflow",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Long-standing, highly-duplicated developer pain converting Uint8Array/ArrayBuffer to base64; 21 duplicate answers; closed as duplicate ~3 months before retrieval"
+      ],
+      "limitations": "Demand proxy, not adoption; single (very large) question."
+    },
+    {
+      "id": "S15",
+      "url": "https://community.cloudflare.com/t/uint8array-to-base64-in-workers/373027",
+      "publisher": "Cloudflare Community",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "Real developer friction converting Uint8Array/ArrayBuffer to base64 in a serverless runtime"
+      ],
+      "limitations": "Existence and snippet confirmed via search; full thread body not retrieved (reader timed out)."
+    },
+    {
+      "id": "S16",
+      "url": "https://github.com/nodejs/node/issues/59285",
+      "publisher": "Node.js (GitHub)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "usage",
+      "supports": [
+        "Node.js support comes from V8 (not Node's own impl); Node 25 uses V8 14.1 which supports Uint8Array#from/toBase64; Node 24 (V8 13) does not"
+      ],
+      "limitations": "Server-side adoption tied to V8 version; mdn/browser-compat-data issue #28228 corroborates Node 25."
+    },
+    {
+      "id": "S17",
+      "url": "https://www.linkedin.com/posts/chrome-for-developers_move-over-atob-the-new-uint8arrayfrombase64-activity-7388987436153888768-ElzH",
+      "publisher": "Chrome for Developers (LinkedIn)",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "press",
+      "supports": [
+        "Chrome DevRel promotion: 'the new Uint8Array.fromBase64() method is here, it's part of Baseline... a better way to handle base64-encoded data'"
+      ],
+      "limitations": "Social post, not a full article; no dedicated developer.chrome.com blog found."
+    },
+    {
+      "id": "S18",
+      "url": "https://news.ycombinator.com/item?id=37996291",
+      "publisher": "Hacker News",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "community",
+      "supports": [
+        "TC39 proposal champion ties native base64 to replacing Node.js Buffer; community interest in standard binary handling"
+      ],
+      "limitations": "Forum discussion; demand/interest proxy."
+    },
+    {
+      "id": "S19",
+      "url": "https://www.npmjs.com/package/js-base64",
+      "publisher": "npm",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "Incumbent library solution including Base64.toUint8Array (mirrors the native API); existing-solution landscape the proposal supersedes"
+      ],
+      "limitations": "One of many base64 npm libraries; not adoption of the native API."
+    },
+    {
+      "id": "S20",
+      "url": "https://simdutf.github.io/browserbase64/",
+      "publisher": "simdutf",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "research",
+      "supports": [
+        "Cross-browser Uint8Array.fromBase64 performance benchmark; ties to the optimized simdutf decoder referenced by the proposal"
+      ],
+      "limitations": "Micro-benchmark; performance evidence, not adoption."
+    },
+    {
+      "id": "S21",
+      "url": "https://v8.dev/docs/feature-launch-process",
+      "publisher": "V8.dev",
+      "publishedOrObservedAt": null,
+      "retrievedAt": "2026-07-22T16:30:00Z",
+      "sourceType": "other",
+      "supports": [
+        "V8/Chrome JavaScript+WebAssembly feature shipping process; explains the flag->trial->default path used for TC39 features"
+      ],
+      "limitations": "Process documentation, not feature-specific evidence."
+    }
+  ],
+  "successes": [
+    "Correctly scoped as 'Chromium catches up': Chrome aligned to an already-shipped, multi-engine TC39 proposal, minimizing design and interop risk (Firefox 133 and Safari 18.2 shipped first).",
+    "Exceptional, independently-evidenced problem validity (heavily duplicated Stack Overflow question, Cloudflare Workers friction, large npm library ecosystem, TC39 alternatives analysis).",
+    "Strong cross-engine interoperability from launch day, yielding Baseline 'newly available' in the same month Chrome shipped (September 2025).",
+    "Thoughtful, well-incubated API design (alphabet/lastChunkHandling/omitPadding, zero-copy setFrom* returning {read,written}, hex parity, deliberate whitespace/padding semantics) - the payoff of TC39 rather than Chrome-only incubation.",
+    "Clean release execution: feature explicitly listed in Chrome 140 release notes, full MDN coverage for all six methods, Baseline alignment, and DevRel promotion.",
+    "Implementation tracked to completion (bug 42204568 Fixed) with WebDX use counters added for post-ship measurement."
+  ],
+  "failures": [
+    "Chrome shipped a TC39 proposal still at Stage 3 (Stage 4 was reached October 2025, after the August/September 2025 ship). Low-risk given identical Firefox/Safari behavior, but a standards-maturity-at-ship caveat.",
+    "ChromeStatus source-of-truth data lagged at ship time: status stayed 'Proposed' and is_released=false as of accurate_as_of 2025-08-27, and 'Web developers: No signals' materially understates overwhelming external demand - misleading for downstream tooling and decision-makers.",
+    "Thin Chrome-side developer-trial packet (no documented trial instructions, cohort, task completion, or findings), acceptable for a catch-up JS builtin but below the phase module's evidence bar.",
+    "No public adoption measurement: Chrome use counters exist internally (bug 42204568) but no usage figure is published, leaving adoption partially unscoreable; Samsung Internet (a major Android browser) remained unsupported per caniuse.",
+    "No attributable production case studies or framework/runtime adoption statements (beyond Node.js 25 via V8) were found.",
+    "Intent-to-Ship body, LGTM count, and explicit review matrix were not independently retrievable, weakening the prepare-to-ship evidence ledger."
+  ],
+  "counterfactuals": [
+    "If Chrome had waited for TC39 Stage 4 (October 2025) instead of shipping at Stage 3 (August/September 2025), it would have removed the standards-maturity caveat at the cost of ~2 extra months of non-interoperability with Firefox/Safari - likely the wrong trade given both engines had already shipped identical behavior.",
+    "If Chrome had populated the 'Web developers' signal field with the available external demand evidence (Stack Overflow, npm, forum friction) and recorded a dev-trial findings packet, the ChromeStatus record would have reflected real demand instead of the misleading 'No signals'.",
+    "If a dedicated developer.chrome.com article (beyond release notes + MDN + a LinkedIn post) had accompanied ship, awareness among Chrome-centric developers would likely be higher, though adoption of a low-level primitive is driven more by Baseline/interoperability than by content.",
+    "If Chrome had published the use-counter adoption curve and a conformance/WPT interop dashboard result, this retrospective could score adoption and implementation quality concretely instead of partial/mixed.",
+    "If the 'disable web tests to ship base64 in V8' step had a public rationale, the implementation-quality assessment would not hinge on an unexplained CL snippet."
+  ],
+  "skillImprovements": [
+    "Add a phase-module rule (and a retrospective fast-path) for TC39/ECMA-262 language features: TAG/security/privacy reviews and Origin Trials are structurally 'Not applicable'; conformance is test262 (not WPT); cross-engine consensus is measured by Firefox/Safari shipping and TC39 stage, not W3C signals. The process must not penalize these as gaps.",
+    "Add a ChromeStatus data-quality check to prepare-to-ship and release phases: flag when status/is_released contradict a manifest launch event, and when 'Web developers: No signals' coexists with strong external demand evidence (Stack Overflow duplication, npm packages, forum threads).",
+    "Add a standards-maturity-at-ship capture: record the TC39/W3C stage or maturity at the ship date separately from current state, so a later Stage-4 is never conflated with ship-time Stage-3.",
+    "Add an adoption-evidence requirement for shipped primitives: require caniuse global %, Baseline status, other-engine versions, major Chromium-derived browser gaps (Samsung Internet, QQ, UC), and runtime support (Node/Bun/Deno); score usage as unknown when only internal use counters exist.",
+    "Add a regression eval for 'low-risk catch-up' features: high interop + high problem validity + no end-user-facing change must still require measured adoption and support evidence before an overall 'success' score, preventing over-scoring from shipment or Baseline alone.",
+    "Record attempted-but-failed evidence sources (e.g., Google Groups intent body, Chromium CL bodies) in the evidence ledger so a failed provider can resume without re-deriving the target URLs."
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent to Ship thread body, LGTM count, and explicit review/position matrix (Google Groups page timed out repeatedly; only existence/title confirmed).",
+      "Public Chrome usage/adoption percentage (use counters exist internally via bug 42204568 but are not published).",
+      "Support-issue / regression telemetry (no public Chromium or V8 support data retrieved).",
+      "Full detail and rationale of the 'Disable web tests to ship base64 in V8' CL (severity unconfirmed).",
+      "Resolution of the Chrome-for-Android version discrepancy (caniuse 147 vs ChromeStatus android_first 140) and Samsung Internet support status.",
+      "Any attributable production case studies or framework/runtime adoption statements beyond Node.js 25/V8 14.1."
+    ],
+    "reviewedAt": "2026-07-22T16:30:00Z"
+  }
+}
