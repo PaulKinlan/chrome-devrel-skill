@@ -113,15 +113,19 @@ A model runner and judge calibration set are still to be implemented.
   and authority routing. Requires independent fresh-context execution before any
   baseline is claimed.
 
+- `mdn-docs-bcd-spec-disagreement`: **UNSCORED** — no eval result exists. Tests
+  evidence separation (spec vs BCD vs docs), authority boundary, and publication
+  safety. Requires independent fresh-context execution.
+
 ## Scoring status summary
 
 | Status                                 | Count  | Definition                                                      |
 | -------------------------------------- | ------ | --------------------------------------------------------------- |
 | Independently verified                 | 0      | Fresh-context responder + separate fresh-context judge          |
 | Provisional (same-session self-scored) | 9      | Same session produced response and scoring; shares context bias |
-| Unscored (case exists, no result)      | 1      | Eval case defined but no response/judgment retained             |
+| Unscored (case exists, no result)      | 2      | Eval case defined but no response/judgment retained             |
 | No retained result                     | 8      | Case exists in cases.json but no result file was produced       |
-| **Total cases**                        | **18** |                                                                 |
+| **Total cases**                        | **19** |                                                                 |
 
 All provisional results share context bias and require fresh-context
 verification before citing as defensible baselines.
