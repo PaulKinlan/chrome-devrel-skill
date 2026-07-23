@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5182464632946688,
+    "name": "Origin-keyed process isolation",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5182464632946688",
+    "category": "Security",
+    "blinkComponent": "Blink",
+    "owner": "Unknown",
+    "creator": "lbrady@google.com",
+    "featureType": "New capability",
+    "webFeature": null,
+    "specLink": null,
+    "starCount": 82,
+    "summary": "Chrome 142 introduces a shift in the process isolation policy from locking processes to a site like `https://example.com` to locking them to a specific origin, such as, `https://foo.example.com`.\nTo further enhance security, Chrome is moving to a more granular process isolation model called **Origin Isolation**. \nPreviously, Chrome used **Site Isolation**, which grouped different origins from the same site (for example, `https://a.example.com` and `https://b.example.com`) into a single renderer process.\nWith **Origin Isolation**, each individual origin (for example, `https://foo.example.com`) will be isolated in its own renderer process. This change strengthens Chrome's security architecture by better aligning process boundaries with the web's fundamental origin-based security model, offering greater protection against potential vulnerabilities within sites.\n\n**Potential performance considerations**: While each individual process will be smaller, this increase in process granularity may lead to higher overall memory and CPU usage. To balance security and performance, Origin Isolation will be enabled by default only on devices with at least 4GB of RAM.\n**Enterprise Control**: Admins can control this feature using the [OriginKeyedProcessesEnabled](https://chromeenterprise.google/policies/#OriginKeyedProcessesEnabled) policy.\n"
+  },
+  "launchEvents": [
+    {
+      "eventId": "142:Stepped rollout:5182464632946688",
+      "milestone": 142,
+      "category": "Stepped rollout",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-09-17 by lbrady@google.com). Chrome 142 introduces a shift in the process isolation policy from locking processes to a site like `https://example.com` to locking them to a specific origin, such as, `https://foo.example.com`.\nTo further enhance security, Chrome is moving to a more granular process isolation model called **Origin Isolation**. \nPreviously, Chrome used **Site Isolation**, which grouped different origins from the same site (for example, `https://a.example.com` and `https://b.example.com`) into a single renderer process.\nWith **Origin Isolation**, each individual origin (for example, `https://foo.example.com`) will be isolated in its own renderer process. This change strengthens Chrome's security architecture by better aligning process boundaries with the web's fundamental origin-based security model, offering greater protection against potential vulnerabilities within sites.\n\n**Potential performance considerations**: While each individual process will be smaller, this increase in process granularity may lead to higher overall memory and CPU usage. To balance security and performance, Origin Isolation will be enabled by default only on devices with at least 4GB of RAM.\n**Enterprise Control**: Admins can control this feature using the [OriginKeyedProcessesEnabled](https://chromeenterprise.google/policies/#OriginKeyedProcessesEnabled) policy.\n Category: Security. Blink component: Blink. Stars: 82.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "unknown",
+      "finding": "No web feature mapping. Problem definition unknown from public record.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Cross-engine review status unknown.",
+      "evidenceIds": [],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 142 (Stepped rollout).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": "No public ChromeStatus counter exists for this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: Chrome 142 introduces a shift in the process isolation policy from locking processes to a site like `https://example.com` to locking them to a specific origin, such as, `https://foo.example.com`.\nTo f",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "unknown",
+      "finding": "Interoperability status unknown.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 82 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5182464632946688",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-09-17",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Origin-keyed process isolation: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "No public usage counter for adoption measurement",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "No public usage counter exists for this feature",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:19.870Z. Includes cached Chrome usage metrics."
+  }
+}

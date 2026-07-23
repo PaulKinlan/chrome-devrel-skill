@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 4614417052467200,
+    "name": "FedCM Privacy Enforcement for Client Metadata",
+    "chromeStatusUrl": "https://chromestatus.com/feature/4614417052467200",
+    "category": "Miscellaneous",
+    "blinkComponent": "Blink>Identity>FedCM",
+    "owner": "Unknown",
+    "creator": "sureshpotti@microsoft.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "fedcm",
+    "specLink": null,
+    "starCount": 69,
+    "summary": "To address cross-site identity correlation risks in the FedCM API, Identity Providers (IdPs) that utilize client_metadata within their FedCM configuration are required to implement the direct endpoints format in the .well-known/web-identity file. This mandate ensures that both accounts_endpoint and login_url are explicitly defined whenever a client_metadata_endpoint is present. This approach strengthens privacy protections by preventing relying parties from exploiting metadata to correlate user identities across multiple sites. For further details and discussion, refer to https://github.com/w3c-fedid/FedCM/issues/700.\n\nIn Chrome 143 (Warning Phase): If client_metadata_endpoint exists but accounts_endpoint or login_url is missing, the browser will display console warnings. This gives IdPs time to update configurations.\n"
+  },
+  "launchEvents": [
+    {
+      "eventId": "143:Enabled by default:4614417052467200",
+      "milestone": 143,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-10-10 by sureshpotti@microsoft.com). To address cross-site identity correlation risks in the FedCM API, Identity Providers (IdPs) that utilize client_metadata within their FedCM configuration are required to implement the direct endpoints format in the .well-known/web-identity file. This mandate ensures that both accounts_endpoint and login_url are explicitly defined whenever a client_metadata_endpoint is present. This approach strengthens privacy protections by preventing relying parties from exploiting metadata to correlate user identities across multiple sites. For further details and discussion, refer to https://github.com/w3c-fedid/FedCM/issues/700.\n\nIn Chrome 143 (Warning Phase): If client_metadata_endpoint exists but accounts_endpoint or login_url is missing, the browser will display console warnings. This gives IdPs time to update configurations.\n Category: Miscellaneous. Blink component: Blink>Identity>FedCM. Stars: 69.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'fedcm'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'fedcm'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 143 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'Fedcm' (ChromeStatus timeline, bucket_id 247) measured 2.1970% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-12-10 with 557 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures the Fedcm family/property, not this specific feature. Does not isolate the Chrome 143 increment."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: To address cross-site identity correlation risks in the FedCM API, Identity Providers (IdPs) that utilize client_metadata within their FedCM configuration are required to implement the direct endpoint",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'Fedcm' (ChromeStatus timeline, bucket_id 247) measured 2.1970% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-12-10 with 557 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'fedcm'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 69 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/4614417052467200",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-10-10",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "FedCM Privacy Enforcement for Client Metadata: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=247",
+      "publisher": "Chrome Platform Status (WebDX/WebFeature popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:16.158Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX/WebFeature counter 'Fedcm' (bucket_id 247), scope: web-feature-family, confidence: declared-family; latest 2.1970% on 2026-07-20"
+      ],
+      "limitations": "Family/property-level counter; does not isolate the specific feature adoption."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:20.071Z. Includes cached Chrome usage metrics."
+  }
+}

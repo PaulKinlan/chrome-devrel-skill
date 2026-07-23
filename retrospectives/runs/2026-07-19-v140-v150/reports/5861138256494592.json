@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5861138256494592,
+    "name": "Enable monochrome emoji rendering in forced colors mode.",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5861138256494592",
+    "category": "Miscellaneous",
+    "blinkComponent": "Blink>Fonts",
+    "owner": "Unknown",
+    "creator": "sejalanand@microsoft.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "forced-colors",
+    "specLink": null,
+    "starCount": 85,
+    "summary": "This change updates Chromium’s emoji rendering behavior in Forced Colors Mode. During computed-value resolution, emoji whose font-variant-emoji value computes to normal or unicode are rendered using their monochrome glyphs when available.\n\nChromium will therefore suppress color emoji rendering, which ensures emojis fully participate in the Forced Colors Mode pipeline and respect system high-contrast colors. Behavior outside forced colors mode is unchanged."
+  },
+  "launchEvents": [
+    {
+      "eventId": "145:Enabled by default:5861138256494592",
+      "milestone": 145,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-11-24 by sejalanand@microsoft.com). This change updates Chromium’s emoji rendering behavior in Forced Colors Mode. During computed-value resolution, emoji whose font-variant-emoji value computes to normal or unicode are rendered using their monochrome glyphs when available.\n\nChromium will therefore suppress color emoji rendering, which ensures emojis fully participate in the Forced Colors Mode pipeline and respect system high-contrast colors. Behavior outside forced colors mode is unchanged. Category: Miscellaneous. Blink component: Blink>Fonts. Stars: 85.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'forced-colors'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'forced-colors'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 145 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'ForcedColors' (ChromeStatus timeline, bucket_id 165) measured 35.3797% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-11-10 with 563 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures the ForcedColors family/property, not this specific feature. Does not isolate the Chrome 145 increment."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: This change updates Chromium’s emoji rendering behavior in Forced Colors Mode. During computed-value resolution, emoji whose font-variant-emoji value computes to normal or unicode are rendered using t",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'ForcedColors' (ChromeStatus timeline, bucket_id 165) measured 35.3797% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-11-10 with 563 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'forced-colors'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 85 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5861138256494592",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-11-24",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Enable monochrome emoji rendering in forced colors mode.: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=165",
+      "publisher": "Chrome Platform Status (WebDX/WebFeature popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:24.012Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX/WebFeature counter 'ForcedColors' (bucket_id 165), scope: web-feature-family, confidence: declared-family; latest 35.3797% on 2026-07-20"
+      ],
+      "limitations": "Family/property-level counter; does not isolate the specific feature adoption."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:21.396Z. Includes cached Chrome usage metrics."
+  }
+}

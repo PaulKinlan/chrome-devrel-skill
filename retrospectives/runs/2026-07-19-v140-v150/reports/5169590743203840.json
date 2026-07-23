@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5169590743203840,
+    "name": "Open Font Format avar2 text shaping and glyph rendering",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5169590743203840",
+    "category": "CSS",
+    "blinkComponent": "Blink>Fonts",
+    "owner": "Unknown",
+    "creator": "drott@chromium.org",
+    "featureType": "Chromium catches up",
+    "webFeature": "font-variation-settings",
+    "specLink": null,
+    "starCount": 46,
+    "summary": "Version 2 of the avar (Axis Variations) table enables font designers to create variable fonts with better control over interpolation. While the original variable font spec handles axes independently, avar2 allows axes to influence one another. This leads to fonts that are easier to use for content authors to use, and enable compact storage. \n\nSupport for this feature in Blink means, activating a compile flag in HarfBuzz that processes the version 2 additional fields of the avar table to extend axis variations processing.\n\nAvar2 works by using the same familiar concepts of font variations, but applying the variable delta values to the design axis specifications itself. Plus, it allows doing this over a range of multiple axes.\n\nAs an example, it allows the creation of \"meta sliders\" which control multiple variation axes at once, alleviating the user from fine-tuning and  finding a useful corner of the font's design space. \n\nAvar2 gives font designers better control over the usable variation space of their font, and allows coordinating the adjustment of design axes across several axes. \n\nBy defining the relationships between axes mathematically within the avar version 2 table, fonts can achieve complex designs with fewer masters, leading to smaller file sizes, because the interpolation is stored more efficiently.\n"
+  },
+  "launchEvents": [
+    {
+      "eventId": "148:Enabled by default:5169590743203840",
+      "milestone": 148,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2026-03-23 by drott@chromium.org). Version 2 of the avar (Axis Variations) table enables font designers to create variable fonts with better control over interpolation. While the original variable font spec handles axes independently, avar2 allows axes to influence one another. This leads to fonts that are easier to use for content authors to use, and enable compact storage. \n\nSupport for this feature in Blink means, activating a compile flag in HarfBuzz that processes the version 2 additional fields of the avar table to extend axis variations processing.\n\nAvar2 works by using the same familiar concepts of font variations, but applying the variable delta values to the design axis specifications itself. Plus, it allows doing this over a range of multiple axes.\n\nAs an example, it allows the creation of \"meta sliders\" which control multiple variation axes at once, alleviating the user from fine-tuning and  finding a useful corner of the font's design space. \n\nAvar2 gives font designers better control over the usable variation space of their font, and allows coordinating the adjustment of design axes across several axes. \n\nBy defining the relationships between axes mathematically within the avar version 2 table, fonts can achieve complex designs with fewer masters, leading to smaller file sizes, because the interpolation is stored more efficiently.\n Category: CSS. Blink component: Blink>Fonts. Stars: 46.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'font-variation-settings'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'font-variation-settings'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 148 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The CSS property counter 'font-variation-settings' (ChromeStatus timeline, bucket_id 549) measured 21.3288% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2017-06-05 with 3232 data points. Mapping confidence: name-matched-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures the font-variation-settings family/property, not this specific feature. Does not isolate the Chrome 148 increment."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: Version 2 of the avar (Axis Variations) table enables font designers to create variable fonts with better control over interpolation. While the original variable font spec handles axes independently, ",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The CSS property counter 'font-variation-settings' (ChromeStatus timeline, bucket_id 549) measured 21.3288% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2017-06-05 with 3232 data points. Mapping confidence: name-matched-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'font-variation-settings'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 46 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5169590743203840",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-03-23",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Open Font Format avar2 text shaping and glyph rendering: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=549",
+      "publisher": "Chrome Platform Status (CSS property popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:05.095Z",
+      "sourceType": "usage",
+      "supports": [
+        "CSS property counter 'font-variation-settings' (bucket_id 549), scope: property-family, confidence: name-matched-family; latest 21.3288% on 2026-07-20"
+      ],
+      "limitations": "Family/property-level counter; does not isolate the specific feature adoption."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:22.856Z. Includes cached Chrome usage metrics."
+  }
+}

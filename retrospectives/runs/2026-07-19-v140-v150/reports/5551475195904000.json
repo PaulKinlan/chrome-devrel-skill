@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5551475195904000,
+    "name": "Unframed display mode for Isolated Web Apps",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5551475195904000",
+    "category": "Isolated Web Apps-specific API",
+    "blinkComponent": "UI>Browser>WebAppInstalls>Isolated",
+    "owner": "Unknown",
+    "creator": "laurila@chromium.org",
+    "featureType": "New capability",
+    "webFeature": null,
+    "specLink": null,
+    "starCount": 115,
+    "summary": "Unframed display mode allows [Isolated Web Apps](https://chromeos.dev/en/web/isolated-web-apps) to occupy the entire browser window, which optimizes the workspace available. By removing standard window borders and title bars, developers can implement unique user experiences with branding and menu hierarchies that match the look-and-feel of native applications. \n\nAdministrators can manage this feature with existing policies for window management:  \n- [DefaultWindowManagementSetting](https://chromeenterprise.google/policies/#DefaultWindowManagementSetting) configures the default state for the window management for all apps. The policies below can override this default.  \n- [WindowManagementAllowedForUrls](https://chromeenterprise.google/policies/#WindowManagementAllowedForUrls) allows  IWAs with specified origins to enter unframed mode without any user interaction.  \n- [WindowManagementBlockedForUrls](https://chromeenterprise.google/policies/#WindowManagementBlockedForUrls) blocks unframed mode for IWAs with specified origins, forcing Chrome to fallback to other available display modes."
+  },
+  "launchEvents": [
+    {
+      "eventId": "146:In developer trial (Behind a flag):5551475195904000",
+      "milestone": 146,
+      "category": "In developer trial (Behind a flag)",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2022-07-20 by laurila@chromium.org). Unframed display mode allows [Isolated Web Apps](https://chromeos.dev/en/web/isolated-web-apps) to occupy the entire browser window, which optimizes the workspace available. By removing standard window borders and title bars, developers can implement unique user experiences with branding and menu hierarchies that match the look-and-feel of native applications. \n\nAdministrators can manage this feature with existing policies for window management:  \n- [DefaultWindowManagementSetting](https://chromeenterprise.google/policies/#DefaultWindowManagementSetting) configures the default state for the window management for all apps. The policies below can override this default.  \n- [WindowManagementAllowedForUrls](https://chromeenterprise.google/policies/#WindowManagementAllowedForUrls) allows  IWAs with specified origins to enter unframed mode without any user interaction.  \n- [WindowManagementBlockedForUrls](https://chromeenterprise.google/policies/#WindowManagementBlockedForUrls) blocks unframed mode for IWAs with specified origins, forcing Chrome to fallback to other available display modes. Category: Isolated Web Apps-specific API. Blink component: UI>Browser>WebAppInstalls>Isolated. Stars: 115.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "unknown",
+      "finding": "No web feature mapping. Problem definition unknown from public record.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Cross-engine review status unknown.",
+      "evidenceIds": [],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 146 (In developer trial (Behind a flag)).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The legacy HTML/JS counter 'UnframedIwa' (ChromeStatus timeline, bucket_id 5764) measured 0.0000% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2026-03-25 with 9 data points. Mapping confidence: exact.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures this feature directly but may include pre-existing usage."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: Unframed display mode allows [Isolated Web Apps](https://chromeos.dev/en/web/isolated-web-apps) to occupy the entire browser window, which optimizes the workspace available. By removing standard windo",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The legacy HTML/JS counter 'UnframedIwa' (ChromeStatus timeline, bucket_id 5764) measured 0.0000% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2026-03-25 with 9 data points. Mapping confidence: exact.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "unknown",
+      "finding": "Interoperability status unknown.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 115 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5551475195904000",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2022-07-20",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Unframed display mode for Isolated Web Apps: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/featurepopularity?bucket_id=5764",
+      "publisher": "Chrome Platform Status (legacy HTML/JS popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:23.193Z",
+      "sourceType": "usage",
+      "supports": [
+        "legacy HTML/JS counter 'UnframedIwa' (bucket_id 5764), scope: exact, confidence: exact; latest 0.0000% on 2026-07-20"
+      ],
+      "limitations": "Counter measures this feature's usage directly."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:22.299Z. Includes cached Chrome usage metrics."
+  }
+}

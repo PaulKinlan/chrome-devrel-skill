@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5153386492198912,
+    "name": "Performance + Event Timing: InteractionCount",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5153386492198912",
+    "category": "Performance",
+    "blinkComponent": "Blink>PerformanceAPIs",
+    "owner": "Unknown",
+    "creator": "mmocny@google.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "event-timing",
+    "specLink": null,
+    "starCount": 73,
+    "summary": "The Event Timing API is part of the Performance Timeline and is used to measure the performance of user interactions.  Certain Events will have an interactionId value assigned to them, and this is useful for grouping related interactions based on common physical user inputs or gestures.\n\nThis feature adds a very trivial performance.interactionCount, which is just the total number of interactions that have occured on the page.\n\nIn particular, this feature is useful for computing the Interaction to Next Paint (INP) metric value, which requires knowing the total number of interactions in order to compute a high percentile score (p98 for pages with greater than 50 total interactions).\n\nThis feature has been specced for a long while, was prototypes in Chromium a long time ago but never shipped, is part of Interop 2025, and is already available in other browsers.\n\n(Note: there is already a more powerful performance.eventCounts map for specific events, but it is not possible to accurately map event counts to interaction counts.)"
+  },
+  "launchEvents": [
+    {
+      "eventId": "144:Enabled by default:5153386492198912",
+      "milestone": 144,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-10-17 by mmocny@google.com). The Event Timing API is part of the Performance Timeline and is used to measure the performance of user interactions.  Certain Events will have an interactionId value assigned to them, and this is useful for grouping related interactions based on common physical user inputs or gestures.\n\nThis feature adds a very trivial performance.interactionCount, which is just the total number of interactions that have occured on the page.\n\nIn particular, this feature is useful for computing the Interaction to Next Paint (INP) metric value, which requires knowing the total number of interactions in order to compute a high percentile score (p98 for pages with greater than 50 total interactions).\n\nThis feature has been specced for a long while, was prototypes in Chromium a long time ago but never shipped, is part of Interop 2025, and is already available in other browsers.\n\n(Note: there is already a more powerful performance.eventCounts map for specific events, but it is not possible to accurately map event counts to interaction counts.) Category: Performance. Blink component: Blink>PerformanceAPIs. Stars: 73.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'event-timing'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'event-timing'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 144 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": "No public ChromeStatus counter exists for this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: The Event Timing API is part of the Performance Timeline and is used to measure the performance of user interactions.  Certain Events will have an interactionId value assigned to them, and this is use",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'event-timing'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 73 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5153386492198912",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-10-17",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Performance + Event Timing: InteractionCount: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "No public usage counter for adoption measurement",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "No public usage counter exists for this feature",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:20.618Z. Includes cached Chrome usage metrics."
+  }
+}

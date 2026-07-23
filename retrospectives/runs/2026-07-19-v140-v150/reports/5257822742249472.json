@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5257822742249472,
+    "name": "X25519Kyber768 key encapsulation for TLS",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5257822742249472",
+    "category": "Security",
+    "blinkComponent": "Internals>Network>SSL",
+    "owner": "Unknown",
+    "creator": "dadrian@google.com",
+    "featureType": "New capability",
+    "webFeature": null,
+    "specLink": null,
+    "starCount": 147,
+    "summary": "Chrome 124 enabled by default on all desktop platforms a new post-quantum secure TLS key encapsulation mechanism [X25519Kyber768](https://developer.chrome.com/blog/chrome-124-beta#x25519kyber768_key_encapsulation_for_tls), based on a NIST standard (ML-KEM). This protects network traffic from Chrome with servers that also support ML-KEM from decryption by a future quantum computer. This change should be transparent to server operators. This cipher will be used for both [TLS 1.3](https://datatracker.ietf.org/doc/html/rfc8446) and [QUIC](https://datatracker.ietf.org/doc/rfc9000/) connections.\n\nHowever, some TLS middleboxes might be unprepared for the size of a Kyber (ML-KEM) key encapsulation, or a new TLS ClientHello cipher code point, leading to dropped or hanging connections. This can be resolved by updating your middlebox, or disabling the key encapsulation mechanism via the temporary [PostQuantumKeyAgreementEnabled](https://chromeenterprise.google/policies/#PostQuantumKeyAgreementEnabled) enterprise policy, which will be available through Chrome 145. However, long term, post-quantum secure ciphers will be required in TLS and the enterprise policy will be removed in Chrome 147. Post-quantum cryptography is required for CSNA 2.0. To learn more, see [Protect Chrome Traffic with Hybrid Kyper KEM](https://blog.chromium.org/2023/08/protecting-chrome-traffic-with-hybrid.html)."
+  },
+  "launchEvents": [
+    {
+      "eventId": "147:Stepped rollout:5257822742249472",
+      "milestone": 147,
+      "category": "Stepped rollout",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2023-04-28 by dadrian@google.com). Chrome 124 enabled by default on all desktop platforms a new post-quantum secure TLS key encapsulation mechanism [X25519Kyber768](https://developer.chrome.com/blog/chrome-124-beta#x25519kyber768_key_encapsulation_for_tls), based on a NIST standard (ML-KEM). This protects network traffic from Chrome with servers that also support ML-KEM from decryption by a future quantum computer. This change should be transparent to server operators. This cipher will be used for both [TLS 1.3](https://datatracker.ietf.org/doc/html/rfc8446) and [QUIC](https://datatracker.ietf.org/doc/rfc9000/) connections.\n\nHowever, some TLS middleboxes might be unprepared for the size of a Kyber (ML-KEM) key encapsulation, or a new TLS ClientHello cipher code point, leading to dropped or hanging connections. This can be resolved by updating your middlebox, or disabling the key encapsulation mechanism via the temporary [PostQuantumKeyAgreementEnabled](https://chromeenterprise.google/policies/#PostQuantumKeyAgreementEnabled) enterprise policy, which will be available through Chrome 145. However, long term, post-quantum secure ciphers will be required in TLS and the enterprise policy will be removed in Chrome 147. Post-quantum cryptography is required for CSNA 2.0. To learn more, see [Protect Chrome Traffic with Hybrid Kyper KEM](https://blog.chromium.org/2023/08/protecting-chrome-traffic-with-hybrid.html). Category: Security. Blink component: Internals>Network>SSL. Stars: 147.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "unknown",
+      "finding": "No web feature mapping. Problem definition unknown from public record.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Cross-engine review status unknown.",
+      "evidenceIds": [],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 147 (Stepped rollout).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": "No public ChromeStatus counter exists for this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: Chrome 124 enabled by default on all desktop platforms a new post-quantum secure TLS key encapsulation mechanism [X25519Kyber768](https://developer.chrome.com/blog/chrome-124-beta#x25519kyber768_key_e",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "unknown",
+      "finding": "Interoperability status unknown.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 147 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5257822742249472",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2023-04-28",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "X25519Kyber768 key encapsulation for TLS: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "No public usage counter for adoption measurement",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "No public usage counter exists for this feature",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:22.598Z. Includes cached Chrome usage metrics."
+  }
+}

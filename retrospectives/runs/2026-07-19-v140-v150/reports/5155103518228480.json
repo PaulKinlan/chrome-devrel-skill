@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5155103518228480,
+    "name": "Use of CssPixels in LayoutShift API",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5155103518228480",
+    "category": "Performance",
+    "blinkComponent": "Blink>PerformanceAPIs",
+    "owner": "Unknown",
+    "creator": "anediaz@gmail.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "layout-instability",
+    "specLink": null,
+    "starCount": 91,
+    "summary": "This feature changes the attribution data (`prevRect` and `currentRect`) in the [LayoutShift API](https://wicg.github.io/layout-instability/) to be reported in CSS pixels instead of physical pixels.\nThe current behavior is inconsistent with other layout-related APIs, which all use CSS pixels. This change improves consistency, simplifies usage for developers, and aligns with expected units in debugging and tooling."
+  },
+  "launchEvents": [
+    {
+      "eventId": "145:Enabled by default:5155103518228480",
+      "milestone": 145,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-07-16 by anediaz@gmail.com). This feature changes the attribution data (`prevRect` and `currentRect`) in the [LayoutShift API](https://wicg.github.io/layout-instability/) to be reported in CSS pixels instead of physical pixels.\nThe current behavior is inconsistent with other layout-related APIs, which all use CSS pixels. This change improves consistency, simplifies usage for developers, and aligns with expected units in debugging and tooling. Category: Performance. Blink component: Blink>PerformanceAPIs. Stars: 91.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'layout-instability'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'layout-instability'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 145 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'LayoutInstability' (ChromeStatus timeline, bucket_id 277) measured 40.5167% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2025-01-05 with 551 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures the LayoutInstability family/property, not this specific feature. Does not isolate the Chrome 145 increment."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: This feature changes the attribution data (`prevRect` and `currentRect`) in the [LayoutShift API](https://wicg.github.io/layout-instability/) to be reported in CSS pixels instead of physical pixels.\nT",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'LayoutInstability' (ChromeStatus timeline, bucket_id 277) measured 40.5167% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2025-01-05 with 551 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'layout-instability'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 91 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5155103518228480",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-07-16",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Use of CssPixels in LayoutShift API: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=277",
+      "publisher": "Chrome Platform Status (WebDX/WebFeature popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:58.868Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX/WebFeature counter 'LayoutInstability' (bucket_id 277), scope: web-feature-family, confidence: declared-family; latest 40.5167% on 2026-07-20"
+      ],
+      "limitations": "Family/property-level counter; does not isolate the specific feature adoption."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:21.679Z. Includes cached Chrome usage metrics."
+  }
+}

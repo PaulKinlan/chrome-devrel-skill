@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5068815373303808,
+    "name": "Don't use aria-details for anchor positioning",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5068815373303808",
+    "category": "CSS",
+    "blinkComponent": "Blink>Accessibility",
+    "owner": "Unknown",
+    "creator": "masonfreed@google.com",
+    "featureType": "New capability",
+    "webFeature": null,
+    "specLink": null,
+    "starCount": 71,
+    "summary": "See the discussion in this issue for more context:\n\n- https://github.com/w3c/html-aam/issues/545\n\nThe code to create aria-details relationships for non-popover use cases of anchor positioning was likely a mistake. Since popovers and other semantic relationships *do* create aria-details, and the remaining use cases are likely non-semantic, there is a desire *not* to create these relationships in the non-semantic cases.\n\nSince most common use cases use popovers, this change should hopefully not be too noticeable to users."
+  },
+  "launchEvents": [
+    {
+      "eventId": "144:Enabled by default:5068815373303808",
+      "milestone": 144,
+      "category": "Enabled by default",
+      "date": null
+    },
+    {
+      "eventId": "144:In developer trial (Behind a flag):5068815373303808",
+      "milestone": 144,
+      "category": "In developer trial (Behind a flag)",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-11-18 by masonfreed@google.com). See the discussion in this issue for more context:\n\n- https://github.com/w3c/html-aam/issues/545\n\nThe code to create aria-details relationships for non-popover use cases of anchor positioning was likely a mistake. Since popovers and other semantic relationships *do* create aria-details, and the remaining use cases are likely non-semantic, there is a desire *not* to create these relationships in the non-semantic cases.\n\nSince most common use cases use popovers, this change should hopefully not be too noticeable to users. Category: CSS. Blink component: Blink>Accessibility. Stars: 71.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "unknown",
+      "finding": "No web feature mapping. Problem definition unknown from public record.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Cross-engine review status unknown.",
+      "evidenceIds": [],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 144 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": "No public ChromeStatus counter exists for this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: See the discussion in this issue for more context:\n\n- https://github.com/w3c/html-aam/issues/545\n\nThe code to create aria-details relationships for non-popover use cases of anchor positioning was like",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "unknown",
+      "finding": "Interoperability status unknown.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 71 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5068815373303808",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-11-18",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Don't use aria-details for anchor positioning: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "No public usage counter for adoption measurement",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "No public usage counter exists for this feature",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:21.154Z. Includes cached Chrome usage metrics."
+  }
+}

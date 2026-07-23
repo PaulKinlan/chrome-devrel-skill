@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5184992749289472,
+    "name": "Range syntax for style container queries and if()",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5184992749289472",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owner": "Unknown",
+    "creator": "moonira@google.com",
+    "featureType": "New capability",
+    "webFeature": null,
+    "specLink": null,
+    "starCount": 84,
+    "summary": "This feature enhances CSS style queries and the if() function by adding support for range syntax.\r\n\r\nThis extends style queries beyond exact value matching (e.g., style(--theme: dark)). Developers can now use comparison operators (>, <, etc.) to compare custom properties, literal values (like 10px or 25%), and values from substitution functions like attr() and env(). For a comparison to be valid, both sides must resolve to the same data type. This is limited to the following numeric types: <length>, <number>, <percentage>, <angle>, <time>, <frequency>, and <resolution>.\r\n\r\nThis allows for creating more dynamic components that adapt based on a range of inputs, not just predefined states.\r\n\r\nExamples:\r\n\r\n/* Compare a custom property against a literal length */\r\n@container style(--inner-padding > 1em) {\r\n  .card { border: 2px solid; }\r\n}\r\n\r\n/* Compare two literal values */\r\n@container style(1em < 20px) {\r\n  ...\r\n}\r\n\r\n/* Using style ranges in if() */\r\n.item-grid {\r\n  background-color: if(style(attr(data-columns, type<number>) > 2): lightblue; else: white);\r\n}"
+  },
+  "launchEvents": [
+    {
+      "eventId": "142:Enabled by default:5184992749289472",
+      "milestone": 142,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-07-10 by moonira@google.com). This feature enhances CSS style queries and the if() function by adding support for range syntax.\r\n\r\nThis extends style queries beyond exact value matching (e.g., style(--theme: dark)). Developers can now use comparison operators (>, <, etc.) to compare custom properties, literal values (like 10px or 25%), and values from substitution functions like attr() and env(). For a comparison to be valid, both sides must resolve to the same data type. This is limited to the following numeric types: <length>, <number>, <percentage>, <angle>, <time>, <frequency>, and <resolution>.\r\n\r\nThis allows for creating more dynamic components that adapt based on a range of inputs, not just predefined states.\r\n\r\nExamples:\r\n\r\n/* Compare a custom property against a literal length */\r\n@container style(--inner-padding > 1em) {\r\n  .card { border: 2px solid; }\r\n}\r\n\r\n/* Compare two literal values */\r\n@container style(1em < 20px) {\r\n  ...\r\n}\r\n\r\n/* Using style ranges in if() */\r\n.item-grid {\r\n  background-color: if(style(attr(data-columns, type<number>) > 2): lightblue; else: white);\r\n} Category: CSS. Blink component: Blink>CSS. Stars: 84.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "unknown",
+      "finding": "No web feature mapping. Problem definition unknown from public record.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "unknown",
+      "finding": "Cross-engine review status unknown.",
+      "evidenceIds": [],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 142 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": "No public ChromeStatus counter exists for this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: This feature enhances CSS style queries and the if() function by adding support for range syntax.\r\n\r\nThis extends style queries beyond exact value matching (e.g., style(--theme: dark)). Developers can",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "unknown",
+      "finding": "Interoperability status unknown.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 84 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5184992749289472",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-07-10",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Range syntax for style container queries and if(): ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "No public usage counter for adoption measurement",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "No public usage counter exists for this feature",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:19.720Z. Includes cached Chrome usage metrics."
+  }
+}

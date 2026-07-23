@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6229300214890496,
+    "name": "EditContext: TextFormat underlineStyle and underlineThickness",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6229300214890496",
+    "category": "JavaScript",
+    "blinkComponent": "Blink>Editing>EditContext",
+    "owner": "Unknown",
+    "creator": "ashishkum@microsoft.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "edit-context",
+    "specLink": null,
+    "starCount": 71,
+    "summary": "Chromium shipped https://developer.mozilla.org/en-US/docs/Web/API/EditContext with a bug where the https://developer.mozilla.org/en-US/docs/Web/API/TextFormat object supplied by the https://developer.mozilla.org/en-US/docs/Web/API/EditContext/textformatupdate_event provides incorrect values for the underlineStyle and underlineThickness properties. In Chromium the possible values are {“None”, “Solid”, “Dotted”, “Dashed”, “Squiggle”} and {“None”, “Thin”, “Thick”}, when per https://w3c.github.io/edit-context/#dom-underlinestyle they should be {“none”, “solid”, “dotted”, “dashed”, “wavy”} and {“none”, “thin”, “thick”}. This Intent covers switching TextFormat.underlineStyle and TextFormat.underlineThickness to use the spec values.\n\nThis change is valuable because it aligns these attributes with existing CSS https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style and the https://www.w3.org/TR/design-principles/#casing-rules. Since the purpose of the TextFormat properties is to be used in applying these text styles to text being composed on behalf of an IME, it will be more convenient for developers if the underlineStyle value can be applied directly from the event to CSS without need for a remapping. For both underlineStyle and underlineThickness, matching the platform lower-case convention will reduce the likelihood of developer confusion."
+  },
+  "launchEvents": [
+    {
+      "eventId": "143:Enabled by default:6229300214890496",
+      "milestone": 143,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-09-08 by ashishkum@microsoft.com). Chromium shipped https://developer.mozilla.org/en-US/docs/Web/API/EditContext with a bug where the https://developer.mozilla.org/en-US/docs/Web/API/TextFormat object supplied by the https://developer.mozilla.org/en-US/docs/Web/API/EditContext/textformatupdate_event provides incorrect values for the underlineStyle and underlineThickness properties. In Chromium the possible values are {“None”, “Solid”, “Dotted”, “Dashed”, “Squiggle”} and {“None”, “Thin”, “Thick”}, when per https://w3c.github.io/edit-context/#dom-underlinestyle they should be {“none”, “solid”, “dotted”, “dashed”, “wavy”} and {“none”, “thin”, “thick”}. This Intent covers switching TextFormat.underlineStyle and TextFormat.underlineThickness to use the spec values.\n\nThis change is valuable because it aligns these attributes with existing CSS https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style and the https://www.w3.org/TR/design-principles/#casing-rules. Since the purpose of the TextFormat properties is to be used in applying these text styles to text being composed on behalf of an IME, it will be more convenient for developers if the underlineStyle value can be applied directly from the event to CSS without need for a remapping. For both underlineStyle and underlineThickness, matching the platform lower-case convention will reduce the likelihood of developer confusion. Category: JavaScript. Blink component: Blink>Editing>EditContext. Stars: 71.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'edit-context'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'edit-context'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 143 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'EditContext' (ChromeStatus timeline, bucket_id 125) measured 0.4471% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-10-10 with 568 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures the EditContext family/property, not this specific feature. Does not isolate the Chrome 143 increment."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: Chromium shipped https://developer.mozilla.org/en-US/docs/Web/API/EditContext with a bug where the https://developer.mozilla.org/en-US/docs/Web/API/TextFormat object supplied by the https://developer.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'EditContext' (ChromeStatus timeline, bucket_id 125) measured 0.4471% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-10-10 with 568 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'edit-context'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 71 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6229300214890496",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-09-08",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "EditContext: TextFormat underlineStyle and underlineThickness: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=125",
+      "publisher": "Chrome Platform Status (WebDX/WebFeature popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:07:24.532Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX/WebFeature counter 'EditContext' (bucket_id 125), scope: web-feature-family, confidence: declared-family; latest 0.4471% on 2026-07-20"
+      ],
+      "limitations": "Family/property-level counter; does not isolate the specific feature adoption."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:20.053Z. Includes cached Chrome usage metrics."
+  }
+}

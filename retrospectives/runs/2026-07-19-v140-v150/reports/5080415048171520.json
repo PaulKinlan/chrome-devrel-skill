@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5080415048171520,
+    "name": "Restricting spelling and grammar highlights",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5080415048171520",
+    "category": "User input",
+    "blinkComponent": "Blink>Editing>Spellcheck",
+    "owner": "Unknown",
+    "creator": "arichiv@chromium.org",
+    "featureType": "Chromium catches up",
+    "webFeature": "spelling-grammar-error",
+    "specLink": null,
+    "starCount": 63,
+    "summary": "This experiment would change when spelling and grammar hints are applied to text fields to reduce the of websites ability to extract information about the user’s dictionary, specifically:\r\n* Hints would not be applied to a text field that has not had user interaction (an autofocus is insufficient, there must be a click or key press of some kind relative to that field).\r\n* Hints would only be applied once per user interaction (the text cannot be changed programmatically and have hints applied without a click or key press of some kind relative to that field).\r\n"
+  },
+  "launchEvents": [
+    {
+      "eventId": "143:Enabled by default:5080415048171520",
+      "milestone": 143,
+      "category": "Enabled by default",
+      "date": null
+    },
+    {
+      "eventId": "143:In developer trial (Behind a flag):5080415048171520",
+      "milestone": 143,
+      "category": "In developer trial (Behind a flag)",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2025-10-09 by arichiv@chromium.org). This experiment would change when spelling and grammar hints are applied to text fields to reduce the of websites ability to extract information about the user’s dictionary, specifically:\r\n* Hints would not be applied to a text field that has not had user interaction (an autofocus is insufficient, there must be a click or key press of some kind relative to that field).\r\n* Hints would only be applied once per user interaction (the text cannot be changed programmatically and have hints applied without a click or key press of some kind relative to that field).\r\n Category: User input. Blink component: Blink>Editing>Spellcheck. Stars: 63.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'spelling-grammar-error'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'spelling-grammar-error'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 143 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'SpellingGrammarError' (ChromeStatus timeline, bucket_id 192) measured 0.7003% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-11-15 with 561 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": "Counter measures the SpellingGrammarError family/property, not this specific feature. Does not isolate the Chrome 143 increment."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: This experiment would change when spelling and grammar hints are applied to text fields to reduce the of websites ability to extract information about the user’s dictionary, specifically:\r\n* Hints wou",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The WebDX/WebFeature counter 'SpellingGrammarError' (ChromeStatus timeline, bucket_id 192) measured 0.7003% of measured Chrome HTTP/HTTPS page loads on 2026-07-20. Tracked since 2024-11-15 with 561 data points. Mapping confidence: declared-family.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'spelling-grammar-error'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 63 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5080415048171520",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2025-10-09",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "Restricting spelling and grammar highlights: ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/webfeaturepopularity?bucket_id=192",
+      "publisher": "Chrome Platform Status (WebDX/WebFeature popularity timeline)",
+      "publishedOrObservedAt": "2026-07-20",
+      "retrievedAt": "2026-07-22T18:06:29.923Z",
+      "sourceType": "usage",
+      "supports": [
+        "WebDX/WebFeature counter 'SpellingGrammarError' (bucket_id 192), scope: web-feature-family, confidence: declared-family; latest 0.7003% on 2026-07-20"
+      ],
+      "limitations": "Family/property-level counter; does not isolate the specific feature adoption."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:24:20.404Z. Includes cached Chrome usage metrics."
+  }
+}
