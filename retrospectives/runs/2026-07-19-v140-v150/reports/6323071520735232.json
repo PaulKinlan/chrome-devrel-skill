@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 6323071520735232,
+    "name": "Support rect() and xywh() in shape-outside",
+    "chromeStatusUrl": "https://chromestatus.com/feature/6323071520735232",
+    "category": "CSS",
+    "blinkComponent": "Blink>CSS",
+    "owner": "cgqaq@chromium.org",
+    "creator": "cgqaq@chromium.org",
+    "featureType": "Chromium catches up",
+    "webFeature": "shape-outside",
+    "specLink": "https://drafts.csswg.org/css-shapes-2/",
+    "starCount": 39,
+    "summary": "Adds support for the rect() and xywh() basic shape functions in the CSS shape-outside property. These functions allow developers to define float exclusion shapes using rectangle coordinates, aligning Chrome with Firefox and Safari which already support this feature."
+  },
+  "launchEvents": [
+    {
+      "eventId": "149:Enabled by default:6323071520735232",
+      "milestone": 149,
+      "category": "Enabled by default",
+      "date": "2026-06-02"
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "The ChromeStatus record (created 2026-04-02 by cgqaq@chromium.org) correctly identifies a concrete gap: Chrome's shape-outside property did not support the rect() and xywh() basic shape functions, while Firefox and Safari already did. The feature is categorized as CSS, assigned to Blink>CSS, and has 39 stars. The summary clearly states the interoperability gap and the alignment goal. The intake correctly classified this as a 'Chromium catches up' feature rather than a new primitive.",
+      "evidenceIds": ["S1"],
+      "limitations": "Intent thread content was not directly accessible; only the ChromeStatus record fields are known."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "The feature targets CSS Shapes Module Level 2 (css-shapes-2). The problem is well-defined: developers using shape-outside for float exclusion could not use rectangle shapes via rect()/xywh() and had to use workarounds (polygon, inset, orJavaScript). However, there is no evidence of developer demand research, customer interviews, or framework/ecosystem analysis in the ChromeStatus record.",
+      "evidenceIds": ["S1"],
+      "limitations": "No public explainer or incubation venue discussion was found beyond the spec link. No developer research or workaround cost analysis."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "Implementation was completed (shipped in Chrome 149), but no evidence of prototype-stage friction logs, API ergonomics testing, or framework integration spikes is available in the public record.",
+      "evidenceIds": ["S1"],
+      "limitations": "Prototype-stage evidence is not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "This is a CSS property expansion aligning with existing Firefox/Safari behavior, not a new API requiring developer trial feedback. The feature shipped directly to stable.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "supported",
+      "finding": "The spec (CSS Shapes Module Level 2) is an established CSS Working Group deliverable. Firefox and Safari already support rect() and xywh() in shape-outside, providing cross-engine validation. The feature was categorized as 'is_official_web_feature: true' with web_feature 'shape-outside'.",
+      "evidenceIds": ["S1", "S2"],
+      "limitations": "Direct TAG review or Mozilla/WebKit position threads for this specific feature were not found in the public record."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial was needed; the feature shipped directly.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness is unknown from the public ChromeStatus record. MDN documentation state for rect()/xywh() in shape-outside was not verified.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness, FAQ, or known-limitations documentation."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 149 (Enabled by default, 2026-06-02). The feature aligns Chrome with Firefox and Safari, completing cross-engine interoperability for rect() and xywh() in shape-outside.",
+      "evidenceIds": ["S1"],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "The CSS property-family counter 'shape-outside' (ChromeStatus CSS timeline, bucket_id 347) measures all uses of shape-outside (not specific to rect()/xywh()). It measured 0.00652203 (~0.65%) of measured Chrome HTTP/HTTPS page loads on 2026-07-21 and has been tracked since 2013-08-30 (4412 timeline points). The family-level usage is low but stable, indicating shape-outside is a niche but persistent CSS feature. Adoption of rect()/xywh() specifically cannot be isolated from this counter. The property first appeared well before this feature shipped, so the counter does not measure the increment from rect()/xywh() support.",
+      "evidenceIds": ["S1", "S2"],
+      "limitations": "The counter measures the shape-outside property family, not the rect()/xywh() functions specifically. The ~0.65% usage predates and does not isolate the Chrome 149 change. No feature-specific counter exists."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public evidence of support issues, developer confusion, or known bugs related to rect()/xywh() in shape-outside.",
+      "evidenceIds": [],
+      "limitations": "Support evidence not yet gathered."
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Developers can now use rect() and xywh() for rectangular float exclusion shapes without workarounds. This removes a known interoperability gap where Chrome lagged Firefox and Safari.",
+      "evidenceIds": ["S1"]
+    },
+    "endUserImpact": {
+      "status": "partial",
+      "finding": "End-user impact is indirect: better shape-outside support enables richer print-style and magazine layouts, but shape-outside itself is used on ~0.65% of page loads. The specific rect()/xywh() functions do not change performance, privacy, or accessibility characteristics of existing shape-outside usage.",
+      "evidenceIds": ["S1", "S2"]
+    },
+    "adoption": {
+      "status": "partial",
+      "finding": "shape-outside family usage is measured at ~0.65% of Chrome page loads (CSS counter bucket_id 347, 2026-07-21). This is a stable, low-volume CSS property. The rect()/xywh() increment cannot be isolated. The feature aligns Chrome with Firefox/Safari, so adoption is primarily about parity rather than new demand.",
+      "evidenceIds": ["S1", "S2"]
+    },
+    "interoperability": {
+      "status": "supported",
+      "finding": "This feature completes cross-engine support: Firefox and Safari already support rect() and xywh() in shape-outside. Chrome 149 brings parity. The web_feature 'shape-outside' is an official WebDX feature.",
+      "evidenceIds": ["S1"]
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No public evidence of implementation bugs or regressions. The feature is a straightforward CSS parsing/rendering addition.",
+      "evidenceIds": []
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record is clear and well-structured. No evidence of blog posts, release notes, or developer communication beyond the ChromeStatus entry. The feature has 39 stars, suggesting moderate developer awareness.",
+      "evidenceIds": ["S1"]
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support issues identified.",
+      "evidenceIds": []
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "A well-scoped interoperability fix that closes a known CSS gap. The feature is low-risk (aligning with existing cross-engine behavior) and targets a niche but real CSS use case. The main limitation is that adoption of the specific rect()/xywh() functions cannot be measured independently of the broader shape-outside property family.",
+      "evidenceIds": ["S1", "S2"]
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/6323071520735232",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2026-04-02",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "ChromeStatus record with feature details, owner, category, spec link, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    {
+      "id": "S2",
+      "url": "https://chromestatus.com/data/timeline/csspopularity?bucket_id=347",
+      "publisher": "Chrome Platform Status (CSS property popularity timeline)",
+      "publishedOrObservedAt": "2026-07-21",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "usage",
+      "supports": [
+        "CSS property-family counter 'shape-outside' (bucket_id 347) measures all uses of shape-outside property; latest 0.00652203 (~0.65%) on 2026-07-21; tracked since 2013-08-30 with 4412 data points"
+      ],
+      "limitations": "Family-level counter measuring the shape-outside property, not the rect()/xywh() functions specifically. Does not isolate the Chrome 149 increment. Usage predates the feature."
+    }
+  ],
+  "successes": [
+    "Well-scoped interoperability fix: Chrome aligned with Firefox and Safari for rect()/xywh() in shape-outside",
+    "Low-risk CSS parsing/rendering addition with no known performance or security concerns",
+    "Clear ChromeStatus record with proper categorization and ownership"
+  ],
+  "failures": [
+    "No developer research or demand analysis prior to implementation",
+    "No feature-specific usage counter — adoption of rect()/xywh() cannot be measured independently",
+    "No evidence of prototype-stage friction logs or framework integration testing",
+    "Documentation readiness (MDN, samples) not verified in the public record"
+  ],
+  "counterfactuals": [
+    "If shape-outside usage were near zero, the interoperability gap might not justify implementation effort — but ~0.65% of page loads is non-trivial for a CSS property",
+    "If Firefox/Safari had not already shipped this, Chrome would have been the originator and would need more careful design review",
+    "A feature-specific counter for rect()/xywh() would enable better adoption measurement"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow: for every feature with any mapped Chrome use counter, cache the ChromeStatus timeline data and report the measured usage with interpretation guards",
+    "For 'Chromium catches up' features, verify and cite the specific Firefox/Safari release versions that first shipped the capability",
+    "For CSS features mapped to property-family counters, note that family-level usage does not isolate the specific function/value adoption"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content (motivation, scope, requested feedback)",
+      "Prototype-stage friction logs or framework integration testing",
+      "MDN documentation state for rect()/xywh() in shape-outside",
+      "Feature-specific usage counter (only family-level shape-outside counter exists)",
+      "Direct TAG/Mozilla/WebKit position threads for this feature"
+    ],
+    "notes": "Report created with cached Chrome usage metrics. Feature-specific adoption cannot be measured independently of the shape-outside property family counter."
+  }
+}
