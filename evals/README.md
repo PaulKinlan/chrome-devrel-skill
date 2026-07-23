@@ -101,7 +101,8 @@ A model runner and judge calibration set are still to be implemented.
   web/native/mini-app/chat/agent alternatives and counterevidence; the result
   strengthened user-control and transition-trigger requirements.
 - [`retrospective-denominator-and-metrics-honesty`](results/2026-07-22-retrospective-denominator-and-metrics-honesty.md):
-  19/20 across five focus dimensions, no critical failures. It correctly
-  distinguished 291 unique features from 355 milestone memberships, preserved
-  139 no-counter features as unknown (not zero), and rejected a single success
-  count.
+  **PROVISIONAL** — 19/20 across five focus dimensions, same-session
+  self-scored (not independently verified). It correctly distinguished 291
+  unique features from 355 milestone memberships, preserved 139 no-counter
+  features as unknown (not zero), and rejected a single success count.
+  Requires fresh-context runner for defensible baseline.
