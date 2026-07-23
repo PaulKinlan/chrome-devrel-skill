@@ -1,8 +1,29 @@
 # Eval result: `retrospective-denominator-and-metrics-honesty`
 
 **Case:** Overlap-aware denominators and no-counter preservation **Date:**
-2026-07-22 **Model context:** fresh/isolated (no prior context from the
-291-feature run) **Commit:** `03e1a31`
+2026-07-22 **Model context:** same session that authored R1-R5 — NOT
+independently verified **Commit:** `40cdb3a`
+
+> **Independence disclaimer:** This eval was produced and scored in the same
+> session that authored the rules under test. The simulated response and
+> judgment share context bias. This result is provisional, not independently
+> verified. A fresh-context runner is required for a defensible baseline.
+>
+> **Smallest reproducible runner path:**
+>
+> 1. Launch a fresh agent session (new context, no prior chrome-devrel-skill
+>    work) with `SKILL.md` + relevant modules loaded.
+> 2. Feed the case prompt from `evals/cases.json` (id:
+>    `retrospective-denominator-and-metrics-honesty`).
+> 3. Capture the full response transcript.
+> 4. In a separate fresh session, load `evals/rubric.json`, the response
+>    transcript, and the case's `expected`/`forbidden`/`focus` arrays.
+> 5. Score each focus dimension 0-4 with quoted evidence from the response.
+> 6. Check all critical failures and forbidden behaviors.
+> 7. Write the result to
+>    `evals/results/<date>-retrospective-denominator-and-metrics-honesty.md`
+>    with per-dimension scores, quotes, and verdict.
+> 8. Update `evals/README.md` baseline if the independent score differs.
 
 ## Simulated skill response
 
