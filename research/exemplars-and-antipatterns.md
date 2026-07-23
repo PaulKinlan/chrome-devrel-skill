@@ -1,10 +1,11 @@
-# Exemplars and anti-patterns from public cases
+# Method and process patterns from public cases
 
-Source-cited patterns from the Chrome 140–150 retrospective run (291 features)
-and validated eval cases. These are **process patterns**, not launch outcome
-conclusions. Each cites specific report IDs or eval results.
+Source-cited method/process patterns from the Chrome 140–150 retrospective run
+(291 features) and validated eval cases. These are **process patterns about how
+the skill handles evidence**, not launch outcome conclusions or judgments about
+whether features succeeded.
 
-## Exemplars (things that worked)
+## Process patterns that produced honest evidence
 
 ### E1: CSS catchup features with clean ChromeStatus records
 
@@ -13,9 +14,13 @@ conclusions. Each cites specific report IDs or eval results.
 clear problem statements, cross-engine parity, and honest metric scope labels.
 ChromeStatus-evidence-only reports are sufficient for these low-risk features.
 
-**Evidence:** 6323071520735232 report — CSS family counter at 0.65% honestly
-labeled as family-level, not feature-specific. 4547107962486784 — exact counter
-mapped, adoption measurable.
+**Evidence:** Report `reports/6323071520735232.json` — CSS family counter
+`shape-outside` (bucket_id 347) measured **0.00642198%** of Chrome page loads on
+2026-07-20 (source: `evidence/metrics/features/6323071520735232.json`, field
+`latestSnapshot.day_percentage`). The report states this is a family-level
+measurement, not feature-specific adoption. Report
+`reports/4547107962486784.json` has an exact counter mapped, allowing direct
+adoption measurement.
 
 **Limit:** Not all CSS features are low-risk. Layout-breaking changes need
 deeper analysis.
@@ -43,7 +48,7 @@ unknown, 207 prototype unknown, all explicitly labeled.
 **Limit:** Unknowns are concentrated in ChromeStatus-evidence-only generated
 reports. Deeper analysis would resolve many.
 
-## Anti-patterns (things to avoid)
+## Process anti-patterns (evidence-handling failures to avoid)
 
 ### A1: Treating "no counter" as "zero usage"
 

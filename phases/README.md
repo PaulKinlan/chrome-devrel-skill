@@ -20,29 +20,30 @@ current canonical process documentation.
 
 ## Role routing by phase
 
-Advisory — teams configure their own owner map (see
-`modules/governance-and-roles.md`). Roles marked **lead** own the phase
-decision; **contrib** contribute evidence/artifacts; **review** must sign off
-formally.
+Advisory — teams configure their own owner map and authority (see
+`modules/governance-and-roles.md`). Roles marked **coordinate** lead the work
+stream; **contribute** provide input; **consult** are engaged for advice;
+**formal-review-if-required** may need formal sign-off per the team's canonical
+process (DevRel does not determine whether it is required).
 
-| Phase              | DevRel   | Product/Eng | API Owner | Privacy | Security | A11y    | Standards | Comms    |
-| ------------------ | -------- | ----------- | --------- | ------- | -------- | ------- | --------- | -------- |
-| 0 Intake           | **lead** | contrib     | contrib   | —       | —        | —       | —         | —        |
-| 1 Incubation       | **lead** | contrib     | review    | review  | review   | contrib | contrib   | —        |
-| 2 Prototype        | contrib  | **lead**    | review    | review  | review   | contrib | contrib   | —        |
-| 3 Developer trials | **lead** | contrib     | contrib   | —       | —        | contrib | —         | —        |
-| 4 Wide review      | contrib  | contrib     | **lead**  | review  | review   | review  | **lead**  | —        |
-| 5 Experiment       | contrib  | **lead**    | contrib   | review  | review   | —       | contrib   | —        |
-| 6 Prepare to ship  | contrib  | contrib     | review    | review  | review   | review  | contrib   | contrib  |
-| 7 Release          | contrib  | contrib     | —         | —       | —        | —       | —         | **lead** |
-| 8 Adoption         | **lead** | contrib     | —         | —       | —        | —       | contrib   | contrib  |
-| 9 Support          | **lead** | contrib     | —         | —       | —        | —       | —         | —        |
-| 10 Deprecation     | **lead** | contrib     | review    | review  | —        | contrib | contrib   | contrib  |
+| Phase              | DevRel         | Product/Eng    | API Owner      | Privacy                   | Security                  | A11y                      | Standards      | Comms          |
+| ------------------ | -------------- | -------------- | -------------- | ------------------------- | ------------------------- | ------------------------- | -------------- | -------------- |
+| 0 Intake           | **coordinate** | contribute     | consult        | —                         | —                         | —                         | —              | —              |
+| 1 Incubation       | **coordinate** | contribute     | consult        | formal-review-if-required | formal-review-if-required | consult                   | consult        | —              |
+| 2 Prototype        | contribute     | **coordinate** | consult        | formal-review-if-required | formal-review-if-required | consult                   | consult        | —              |
+| 3 Developer trials | **coordinate** | contribute     | consult        | —                         | —                         | consult                   | —              | —              |
+| 4 Wide review      | contribute     | contribute     | **coordinate** | formal-review-if-required | formal-review-if-required | formal-review-if-required | **coordinate** | —              |
+| 5 Experiment       | contribute     | **coordinate** | consult        | formal-review-if-required | formal-review-if-required | —                         | consult        | —              |
+| 6 Prepare to ship  | contribute     | contribute     | consult        | formal-review-if-required | formal-review-if-required | formal-review-if-required | consult        | contribute     |
+| 7 Release          | contribute     | contribute     | —              | —                         | —                         | —                         | —              | **coordinate** |
+| 8 Adoption         | **coordinate** | contribute     | —              | —                         | —                         | —                         | consult        | contribute     |
+| 9 Support          | **coordinate** | contribute     | —              | —                         | —                         | —                         | —              | —              |
+| 10 Deprecation     | **coordinate** | contribute     | consult        | formal-review-if-required | —                         | consult                   | consult        | contribute     |
 
-DevRel leads phases where evidence quality, developer feedback, and adoption
-mechanics are the primary decisions (intake, trials, adoption, support,
-deprecation). Product/engineering and formal reviewers lead where design,
-implementation, or formal sign-off is the primary decision.
+DevRel coordinates phases where evidence quality, developer feedback, and
+adoption mechanics are the primary work. Product/engineering coordinate where
+design and implementation are primary. Whether formal review is required at any
+phase is determined by the team's canonical process, not by this table.
 
 This routing is advisory. Teams must calibrate to their governance model.
 
@@ -60,6 +61,5 @@ This routing is advisory. Teams must calibrate to their governance model.
 - [09 — Support and iteration](09-support.md)
 - [10 — Deprecation and removal](10-deprecation.md)
 
-Use `../modules/ecosystem-and-customer-research.md` whenever demand,
-alternatives, communities, customers, partners, or adjacent-platform behavior is
-unknown.
+Use `modules/ecosystem-and-customer-research.md` whenever demand, alternatives,
+communities, customers, partners, or adjacent-platform behavior is unknown.

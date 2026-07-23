@@ -1,69 +1,75 @@
 # Governance and role routing
 
-This module defines advisory roles and routing for Chrome DevRel work. It does
-not invent approval authority — formal API Owner, standards, engineering,
-privacy, security, accessibility, legal, and release approvals remain defined by
-Chromium's canonical process.
+This module defines advisory role **archetypes** and routing responsibilities.
+It does not define formal authority — actual sign-off authority must be sourced
+from each team's canonical process documentation and configured in the team
+owner map.
 
-## Public-core roles
+## Role archetypes
 
-These roles exist in any team doing platform DevRel. A team may combine roles,
-but the responsibilities must be owned.
+These archetypes describe responsibilities, not authority. A team maps them to
+actual people and confirms authority from their governance process.
 
-| Role                      | Responsibilities                                            | Decision authority                          |
-| ------------------------- | ----------------------------------------------------------- | ------------------------------------------- |
-| DevRel lead               | Owns the retrospective, evidence quality, and adoption plan | Advises; does not block or approve shipment |
-| Product/engineering owner | Owns the feature design, implementation, and ship decision  | Formal ship/hold/delay decision             |
-| API Owner / Blink owner   | Owns the ChromeStatus entry, intent threads, and API review | Formal API review approval                  |
-| Privacy reviewer          | Owns privacy analysis and data-flow review                  | Formal privacy sign-off                     |
-| Security reviewer         | Owns threat model and abuse analysis                        | Formal security sign-off                    |
-| Accessibility reviewer    | Owns a11y testing and semantics review                      | Formal a11y sign-off                        |
-| Standards/TAG liaison     | Owns standards venue engagement and cross-engine positions  | Formal standards position                   |
-| Engineering lead/TL       | Owns implementation quality, testing, and rollout           | Formal implementation sign-off              |
-| Communications/PR         | Owns external messaging, press, and social                  | Formal comms approval                       |
-| Legal counsel             | Owns legal, regulatory, and liability review                | Formal legal sign-off                       |
-| HR/people support         | Owns team safety and well-being during contentious launches | Formal HR authority                         |
-| Community/GDE manager     | Owns developer community engagement and GDE enablement      | Advises on community strategy               |
+| Archetype                 | Responsibilities                                                                   | Routing verb                                       |
+| ------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------- |
+| DevRel practitioner       | Evidence quality, adoption strategy, developer research, artifacts, retrospectives | **coordinates** evidence and adoption work         |
+| Product/engineering owner | Feature design, implementation, rollout decisions                                  | **contributes** design context                     |
+| API Owner / Blink owner   | ChromeStatus entry management, API review process                                  | **consult** for API process questions              |
+| Privacy reviewer          | Privacy analysis, data-flow review                                                 | **formal-review-if-required** by canonical process |
+| Security reviewer         | Threat model, abuse analysis                                                       | **formal-review-if-required** by canonical process |
+| Accessibility reviewer    | A11y testing, semantics                                                            | **formal-review-if-required** by canonical process |
+| Standards/TAG liaison     | Standards venue engagement, cross-engine outreach                                  | **consult** for standards positioning              |
+| Engineering lead/TL       | Implementation quality, testing, rollout mechanics                                 | **contributes** implementation context             |
+| Communications/PR         | External messaging, press, social                                                  | **coordinates** external communication             |
+| Legal counsel             | Legal, regulatory, liability                                                       | **formal-review-if-required** by canonical process |
+| HR/people support         | Team safety and well-being                                                         | **consult** for safety/incident response           |
+| Community/GDE manager     | Developer community engagement, GDE enablement                                     | **contributes** community strategy                 |
+
+## Routing verbs
+
+- **coordinates:** leads the work stream for this area
+- **contributes:** provides input, evidence, or context
+- **consult:** engaged for advice or specialized knowledge
+- **formal-review-if-required:** formal sign-off may be needed per the team's
+  canonical process; DevRel does not determine whether it is required
 
 ## Team-configurable owner map
 
-Each team must fill in who holds each role. This is organization-local
-configuration — the public skill provides the template, not the names.
+Each team must fill in who holds each archetype and confirm authority from their
+governance process. This is organization-local configuration — the public skill
+provides the template, not the authority.
 
 ```markdown
 ## Team owner map (config-required)
 
-| Role                      | Name/email | Backup    | Notes |
-| ------------------------- | ---------- | --------- | ----- |
-| DevRel lead               | _fill in_  | _fill in_ |       |
-| Product/engineering owner | _fill in_  | _fill in_ |       |
-| API Owner                 | _fill in_  | _fill in_ |       |
-| Privacy reviewer          | _fill in_  | _fill in_ |       |
-| Security reviewer         | _fill in_  | _fill in_ |       |
-| Accessibility reviewer    | _fill in_  | _fill in_ |       |
-| Standards/TAG liaison     | _fill in_  | _fill in_ |       |
-| Engineering lead/TL       | _fill in_  | _fill in_ |       |
-| Communications/PR         | _fill in_  | _fill in_ |       |
-| Legal counsel             | _fill in_  | _fill in_ |       |
-| HR/people support         | _fill in_  | _fill in_ |       |
-| Community/GDE manager     | _fill in_  | _fill in_ |       |
+| Archetype                 | Name/email | Backup    | Authority source       | Notes |
+| ------------------------- | ---------- | --------- | ---------------------- | ----- |
+| DevRel practitioner       | _fill in_  | _fill in_ | _team process_         |       |
+| Product/engineering owner | _fill in_  | _fill in_ | _team process_         |       |
+| API Owner                 | _fill in_  | _fill in_ | _Blink launch process_ |       |
+| Privacy reviewer          | _fill in_  | _fill in_ | _team process_         |       |
+| Security reviewer         | _fill in_  | _fill in_ | _team process_         |       |
+| Accessibility reviewer    | _fill in_  | _fill in_ | _team process_         |       |
+| Standards/TAG liaison     | _fill in_  | _fill in_ | _team process_         |       |
+| Engineering lead/TL       | _fill in_  | _fill in_ | _team process_         |       |
+| Communications/PR         | _fill in_  | _fill in_ | _team process_         |       |
+| Legal counsel             | _fill in_  | _fill in_ | _team process_         |       |
+| HR/people support         | _fill in_  | _fill in_ | _team process_         |       |
+| Community/GDE manager     | _fill in_  | _fill in_ | _team process_         |       |
 ```
 
-## DevRel authority boundary
+## DevRel boundary
 
-DevRel can:
+DevRel **coordinates** evidence and adoption work. DevRel does not:
 
-- Advise on evidence quality, adoption strategy, and readiness gaps
-- Recommend delays, narrower scope, or additional evidence collection
-- Produce artifacts, research, and retrospective analysis
-- Escalate concerns to formal reviewers
-
-DevRel cannot:
-
+- Determine whether formal review is required or sufficient
 - Block or approve shipment
 - Replace formal privacy, security, accessibility, legal, or API Owner review
 - Override engineering or product decisions
 - Commit partners or other engines to positions they have not stated
+
+Whether a formal review is required, and who conducts it, is determined by each
+team's canonical governance process — not by this skill.
 
 ## Role routing by lifecycle phase
 
