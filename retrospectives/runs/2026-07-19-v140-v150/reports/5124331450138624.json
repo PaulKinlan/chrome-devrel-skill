@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "feature": {
+    "id": 5124331450138624,
+    "name": "IndexedDB getAllRecords() and direction option for getAll()/getAllKeys()",
+    "chromeStatusUrl": "https://chromestatus.com/feature/5124331450138624",
+    "category": "Offline / Storage",
+    "blinkComponent": "Blink>Storage>IndexedDB",
+    "owner": "Unknown",
+    "creator": "stevebe@microsoft.com",
+    "featureType": "Chromium catches up",
+    "webFeature": "indexeddb",
+    "specLink": null,
+    "starCount": 94,
+    "summary": "This feature adds the getAllRecords() API to IndexedDB's IDBObjectStore and IDBIndex.  It also adds a direction parameter to getAll() and getAllKeys().  This functionality enables certain read patterns to be significantly faster when compared to the existing alternative of iteration with cursors.  One key workload from a Microsoft property showed a 350ms improvement. \n\ngetAllRecords() effectively combines getAllKeys() and getAll() by enumerating both primary keys and values at the same time. For an IDBIndex, getAllRecords() also provides the record's index key in addition to the primary key and value.\n\ngetAllRecords() can optionally return records in either ascending or descending order.  This option is also back-ported to the existing operations getAll() and getAllKeys()."
+  },
+  "launchEvents": [
+    {
+      "eventId": "141:Enabled by default:5124331450138624",
+      "milestone": 141,
+      "category": "Enabled by default",
+      "date": null
+    }
+  ],
+  "evidenceCutoff": "2026-07-22",
+  "phaseReview": {
+    "intake": {
+      "status": "supported",
+      "finding": "ChromeStatus record (created 2024-10-04 by stevebe@microsoft.com). This feature adds the getAllRecords() API to IndexedDB's IDBObjectStore and IDBIndex.  It also adds a direction parameter to getAll() and getAllKeys().  This functionality enables certain read patterns to be significantly faster when compared to the existing alternative of iteration with cursors.  One key workload from a Microsoft property showed a 350ms improvement. \n\ngetAllRecords() effectively combines getAllKeys() and getAll() by enumerating both primary keys and values at the same time. For an IDBIndex, getAllRecords() also provides the record's index key in addition to the primary key and value.\n\ngetAllRecords() can optionally return records in either ascending or descending order.  This option is also back-ported to the existing operations getAll() and getAllKeys(). Category: Offline / Storage. Blink component: Blink>Storage>IndexedDB. Stars: 94.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content not directly accessible."
+    },
+    "incubation": {
+      "status": "partial",
+      "finding": "Feature targets web feature 'indexeddb'. This is an official WebDX feature. Problem definition depends on the spec/explainer which was not directly accessible.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "No public explainer or incubation discussion accessible."
+    },
+    "prototype": {
+      "status": "unknown",
+      "finding": "No public evidence of prototype-stage friction logs, API ergonomics testing, or framework integration.",
+      "evidenceIds": [],
+      "limitations": "Prototype-stage evidence not publicly documented."
+    },
+    "developerTrials": {
+      "status": "not relevant",
+      "finding": "No developer trial was conducted or required for this feature.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "wideReview": {
+      "status": "partial",
+      "finding": "Feature maps to official WebDX feature 'indexeddb'. Cross-engine positions not verified in this report.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": "Direct TAG/Mozilla/WebKit positions not checked."
+    },
+    "experiment": {
+      "status": "not relevant",
+      "finding": "No origin trial needed.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "prepareToShip": {
+      "status": "unknown",
+      "finding": "Documentation and samples readiness unknown.",
+      "evidenceIds": [],
+      "limitations": "No evidence of docs readiness."
+    },
+    "release": {
+      "status": "supported",
+      "finding": "Shipped in Chrome 141 (Enabled by default).",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": "No public ChromeStatus counter exists for this feature."
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No public support evidence gathered.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "deprecation": {
+      "status": "not relevant",
+      "finding": "This is a capability addition or behavior change, not a deprecation.",
+      "evidenceIds": [],
+      "limitations": ""
+    }
+  },
+  "outcomes": {
+    "developerValue": {
+      "status": "supported",
+      "finding": "Addresses: This feature adds the getAllRecords() API to IndexedDB's IDBObjectStore and IDBIndex.  It also adds a direction parameter to getAll() and getAllKeys().  This functionality enables certain read pattern",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "endUserImpact": {
+      "status": "unknown",
+      "finding": "End-user impact not analyzed in this report.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "adoption": {
+      "status": "unknown",
+      "finding": "No public Chrome usage counter is mapped for this feature. Adoption cannot be measured from public telemetry.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "interoperability": {
+      "status": "partial",
+      "finding": "Maps to WebDX feature 'indexeddb'. Cross-engine support not verified.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "implementationQuality": {
+      "status": "unknown",
+      "finding": "No implementation quality evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "evidenceAndCommunication": {
+      "status": "partial",
+      "finding": "ChromeStatus record exists with 94 stars.",
+      "evidenceIds": [
+        "S1"
+      ],
+      "limitations": ""
+    },
+    "support": {
+      "status": "unknown",
+      "finding": "No support evidence.",
+      "evidenceIds": [],
+      "limitations": ""
+    },
+    "overall": {
+      "status": "partial",
+      "finding": "Report generated from ChromeStatus evidence with cached usage metrics. Missing: intent thread, prototype evidence, docs verification, support data.",
+      "evidenceIds": [
+        "S1",
+        "S2"
+      ],
+      "limitations": ""
+    }
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://chromestatus.com/feature/5124331450138624",
+      "publisher": "Chrome Platform Status",
+      "publishedOrObservedAt": "2024-10-04",
+      "retrievedAt": "2026-07-22T18:07:24Z",
+      "sourceType": "primary",
+      "supports": [
+        "IndexedDB getAllRecords() and direction option for getAll()/getAllKeys(): ChromeStatus record with feature details, owner, and launch milestone"
+      ],
+      "limitations": "ChromeStatus record fields only; intent thread content may not be directly accessible."
+    }
+  ],
+  "successes": [
+    "Clear feature description and problem statement in ChromeStatus",
+    "Maps to official WebDX feature",
+    "Usage metrics available and cached"
+  ],
+  "failures": [
+    "Intent thread content not accessible",
+    "No public usage counter for adoption measurement",
+    "Prototype-stage friction logs not documented",
+    "Documentation readiness not verified"
+  ],
+  "counterfactuals": [
+    "Without developer demand research, the feature priority is assumed from the ChromeStatus record alone"
+  ],
+  "skillImprovements": [
+    "Add a mandatory metrics step to the retrospective flow"
+  ],
+  "completion": {
+    "status": "partial",
+    "missingEvidence": [
+      "Intent thread content",
+      "Prototype-stage testing",
+      "Documentation verification",
+      "No public usage counter exists for this feature",
+      "Cross-engine positions",
+      "Support data"
+    ],
+    "notes": "Report generated 2026-07-23T20:23:35.278Z. Includes cached Chrome usage metrics."
+  }
+}
