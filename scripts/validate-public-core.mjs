@@ -130,6 +130,7 @@ try {
     "mdn-reference",
     "mdn-bcd-entry",
     "youtube-announcement",
+    "editorial-blog-post",
   ];
   for (const target of targets.targets) {
     if (target.reviewRequired) {

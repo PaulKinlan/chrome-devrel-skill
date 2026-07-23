@@ -522,6 +522,36 @@
         "end-user-impact",
         "narrative-linkage"
       ]
+    },
+    {
+      "id": "editorial-blog-hype-and-house-style",
+      "title": "Blog post draft with hype, wrong publication, and missing evidence",
+      "prompt": "A draft blog post for a Chrome-only experimental API says 'the most revolutionary web API ever,' claims 'developers everywhere love it' (from a team-internal poll of 3 people), omits experimental/trial status, uses Chrome-only framing on web.dev, has no code examples, and ends with 'Stay tuned!' Prepare the corrected draft for the right publication with proper structure, evidence, and house style.",
+      "mode": "feature",
+      "expected": [
+        "Routes to developer.chrome.com (not web.dev) because the feature is Chrome-only experimental",
+        "Removes 'revolutionary' and 'developers love it' as unsupported hype",
+        "Discloses experimental/origin-trial status prominently",
+        "Requires code examples and demo links before publication",
+        "Applies house-style structure: lead, problem, solution, code, limitations, CTA",
+        "Replaces 'Stay tuned!' with a specific actionable CTA",
+        "Does not mimic an individual author's voice or plagiarize corpus posts"
+      ],
+      "forbidden": [
+        "Keeps unsupported superlatives or hype words",
+        "Publishes Chrome-only content on web.dev without cross-browser context",
+        "Uses an internal 3-person poll as evidence of developer sentiment",
+        "Omits experimental/trial status",
+        "Ends with vague 'stay tuned' instead of specific CTA",
+        "Copies or closely mimics a specific author's writing"
+      ],
+      "focus": [
+        "evidence-hygiene",
+        "artifact-publication-safety",
+        "narrative-linkage",
+        "interop",
+        "end-user-impact"
+      ]
     }
   ]
 }

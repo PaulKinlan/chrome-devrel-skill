@@ -121,15 +121,19 @@ A model runner and judge calibration set are still to be implemented.
   Tests evidence-backed claims, hype rejection, interoperability disclosure, and
   limitation preservation in video scripts. Requires independent execution.
 
+- `editorial-blog-hype-and-house-style`: **UNSCORED** — no eval result exists.
+  Tests publication routing, hype rejection, house-style application, and
+  anti-plagiarism. Requires independent execution.
+
 ## Scoring status summary
 
 | Status                                 | Count  | Definition                                                      |
 | -------------------------------------- | ------ | --------------------------------------------------------------- |
 | Independently verified                 | 0      | Fresh-context responder + separate fresh-context judge          |
 | Provisional (same-session self-scored) | 9      | Same session produced response and scoring; shares context bias |
-| Unscored (case exists, no result)      | 3      | Eval case defined but no response/judgment retained             |
+| Unscored (case exists, no result)      | 4      | Eval case defined but no response/judgment retained             |
 | No retained result                     | 8      | Case exists in cases.json but no result file was produced       |
-| **Total cases**                        | **20** |                                                                 |
+| **Total cases**                        | **21** |                                                                 |
 
 All provisional results share context bias and require fresh-context
 verification before citing as defensible baselines.
