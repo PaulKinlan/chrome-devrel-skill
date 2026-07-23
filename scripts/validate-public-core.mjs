@@ -121,6 +121,9 @@ try {
     "speaker-deck",
     "adoption-plan",
     "support-pack",
+    "mdn-reference",
+    "mdn-bcd-entry",
+    "youtube-announcement",
   ];
   for (const target of targets.targets) {
     if (target.reviewRequired) {
