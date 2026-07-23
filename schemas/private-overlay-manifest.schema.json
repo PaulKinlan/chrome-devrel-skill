@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chrome-devrel-skill/schemas/private-overlay-manifest.json",
+  "title": "Private overlay input manifest",
+  "description": "Machine-readable schema for organization-local private inputs. Contains NO private data — only the contract. Teams fill in their own manifest instance.",
+  "type": "object",
+  "required": ["schemaVersion", "team", "lastUpdated", "inputs"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "team": { "type": "string", "description": "Team name (config-required)" },
+    "lastUpdated": { "type": "string", "format": "date-time" },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "title", "publicSafe"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+          "type": {
+            "type": "string",
+            "enum": [
+              "roadmap",
+              "partner-discussion",
+              "internal-feedback",
+              "unreleased-spec",
+              "decision-thread",
+              "measurement-data",
+              "other"
+            ]
+          },
+          "title": { "type": "string" },
+          "location": {
+            "type": "string",
+            "description": "Private system reference — NEVER a public URL. Use opaque identifier only."
+          },
+          "owner": { "type": "string" },
+          "publicSafe": { "type": "boolean", "default": false },
+          "consentForPublicUse": {
+            "type": "string",
+            "enum": ["none", "partial", "full"],
+            "default": "none"
+          },
+          "consentDetails": {
+            "type": "string",
+            "description": "What can be cited publicly, if anything. Empty if consentForPublicUse is none."
+          },
+          "expiry": { "type": ["string", "null"], "format": "date-time" },
+          "relatedFeatures": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "ChromeStatus feature IDs"
+          }
+        }
+      }
+    }
+  }
+}

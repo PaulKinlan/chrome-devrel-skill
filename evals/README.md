@@ -106,3 +106,20 @@ A model runner and judge calibration set are still to be implemented.
   from 355 milestone memberships, preserved 139 no-counter features as unknown
   (not zero), and rejected a single success count. Requires fresh-context runner
   for defensible baseline.
+
+- `governance-routing-and-measurement-design`: **UNSCORED** — no eval result
+  exists. Tests governance boundary, measurement design, readiness assessment,
+  and authority routing. Requires independent fresh-context execution before any
+  baseline is claimed.
+
+## Scoring status summary
+
+| Status                                 | Count |
+| -------------------------------------- | ----- |
+| Independently verified                 | 0     |
+| Provisional (same-session self-scored) | 9     |
+| Unscored                               | 1     |
+| Total cases                            | 18    |
+
+All provisional results share context bias and require fresh-context
+verification before citing as defensible baselines.
