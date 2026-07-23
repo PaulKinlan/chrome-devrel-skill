@@ -29,11 +29,17 @@ for (const file of templateFiles) {
   try {
     const data = await readJson(`${templateDir}/${file}`);
     if (!data.schemaVersion && !data.metricId && !data.artifactType) {
-      // publishing-targets has schemaVersion at top level
-      if (file === "publishing-targets.manifest.json" && data.schemaVersion) {
+      if (
+        file === "publishing-targets.manifest.json" && data.schemaVersion
+      ) {
         ok(`template ${file}: parsed`);
       } else if (file.includes(".example.")) {
         ok(`template ${file}: example parsed`);
+      } else if (
+        file.startsWith("mdn-bcd") || file.startsWith("mdn-")
+      ) {
+        // MDN templates use different structures (frontmatter in .md, BCD in .json)
+        ok(`template ${file}: parsed`);
       } else {
         fail(`template ${file}`, "missing schemaVersion or identifier");
       }
