@@ -25,7 +25,7 @@ _Detailed description of the interface, its role, and lifecycle._
 _Also inherits static properties from {{DOMxRef("ParentInterface")}}._
 
 - {{DOMxRef("InterfaceName/staticPropertyName_static",
-  "InterfaceName.propertyName")}}
+  "InterfaceName.staticPropertyName")}}
   - : _Description._
 
 ## Instance properties
@@ -40,7 +40,7 @@ _Also inherits properties from {{DOMxRef("ParentInterface")}}._
 _Also inherits static methods from {{DOMxRef("ParentInterface")}}._
 
 - {{DOMxRef("InterfaceName/staticMethodName_static",
-  "InterfaceName.methodName()")}}
+  "InterfaceName.staticMethodName()")}}
   - : _Description._
 
 ## Instance methods

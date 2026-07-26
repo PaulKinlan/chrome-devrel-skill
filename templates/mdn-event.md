@@ -65,5 +65,5 @@ _When developers would listen for this event._
 ## See also
 
 - Related events on this interface
-- [DOM events index](https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/web/events/index.md)
+- [DOM events index](https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/web/api/document_object_model/events/index.md)
   (for new event classes)

@@ -629,13 +629,24 @@ try {
     join(root, "templates/mdn-bcd-generation-guide.md"),
     "utf8",
   );
-  if (
-    bcdGuide3.includes("REQUIRED generally") ||
-    (bcdGuide3.includes("spec_url") && !bcdGuide3.includes("standard_track"))
-  ) {
+  // Check spec_url is conditional in BCD guide
+  // Every spec_url mention with "REQUIRED" must also mention "standard_track"
+  const specUrlLines2 = bcdGuide3.split("\n").filter((l) =>
+    l.toLowerCase().includes("spec_url") &&
+    l.toLowerCase().includes("required") &&
+    !l.toLowerCase().includes("standard_track")
+  );
+  if (specUrlLines2.length > 0) {
     fail(
       "BCD guide",
-      "spec_url presented as unconditionally required — must be conditional on standard_track:true",
+      `spec_url REQUIRED without standard_track condition: ${
+        specUrlLines2[0].trim()
+      }`,
+    );
+  } else if (bcdGuide3.includes("REQUIRED unconditionally")) {
+    fail(
+      "BCD guide",
+      "spec_url described as REQUIRED unconditionally — must be conditional on standard_track:true",
     );
   } else {
     ok("BCD guide: spec_url conditional on standard_track:true");
@@ -669,12 +680,12 @@ try {
     /DOMxRef\("InterfaceName\/staticMethodName_static",\s*"([^"]+)"\)/,
   );
   if (staticMethodMatch) {
-    if (staticMethodMatch[1] !== "InterfaceName.methodName()") {
+    if (staticMethodMatch[1] !== "InterfaceName.staticMethodName()") {
       fail(
         "MDN interface",
         `static method label "${
           staticMethodMatch[1]
-        }" should be "InterfaceName.methodName()"`,
+        }" should be "InterfaceName.staticMethodName()"`,
       );
     } else {
       ok("MDN interface: static method target-label pair exact");
@@ -686,12 +697,12 @@ try {
     /DOMxRef\("InterfaceName\/staticPropertyName_static",\s*"([^"]+)"\)/,
   );
   if (staticPropMatch) {
-    if (staticPropMatch[1] !== "InterfaceName.propertyName") {
+    if (staticPropMatch[1] !== "InterfaceName.staticPropertyName") {
       fail(
         "MDN interface",
         `static property label "${
           staticPropMatch[1]
-        }" should be "InterfaceName.propertyName"`,
+        }" should be "InterfaceName.staticPropertyName"`,
       );
     } else {
       ok("MDN interface: static property target-label pair exact");
@@ -721,6 +732,36 @@ try {
   }
   if (specUrlConditional) {
     ok("BCD guide: spec_url conditional on standard_track");
+  }
+
+  // Adversarial: parse ALL DOMxRef in interface, validate target-label pairs
+  const allDomxRef = interfaceText3.matchAll(
+    /DOMxRef\("([^"]+)",\s*"([^"]+)"\)/g,
+  );
+  let pairErrors = 0;
+  for (const match of allDomxRef) {
+    const target = match[1];
+    const label = match[2];
+    if (target.endsWith("_event") && / event$/i.test(label)) {
+      fail(
+        "MDN interface DOMxRef",
+        `event target "${target}" label "${label}" should not end with " event"`,
+      );
+      pairErrors++;
+    }
+    if (target.endsWith("_static")) {
+      const member = target.split("/").pop()?.replace("_static", "");
+      if (member && member.startsWith("static") && !label.includes(member)) {
+        fail(
+          "MDN interface DOMxRef",
+          `static target "${target}" label "${label}" missing member "${member}"`,
+        );
+        pairErrors++;
+      }
+    }
+  }
+  if (pairErrors === 0) {
+    ok("MDN interface: all DOMxRef target-label pairs valid");
   }
 
   // Check no dead URL patterns (index.md/API_ in pinned paths)
