@@ -1,5 +1,6 @@
 ---
 title: "_InterfaceName_: _InterfaceName_() constructor"
+short-title: "_InterfaceName_()"
 slug: Web/API/_InterfaceName_/_InterfaceName_
 page-type: web-api-constructor
 browser-compat: api._InterfaceName_._InterfaceName_

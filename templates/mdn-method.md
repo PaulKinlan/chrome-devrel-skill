@@ -1,5 +1,6 @@
 ---
 title: "_InterfaceName_: _methodName_() method"
+short-title: "_methodName_()"
 slug: Web/API/_InterfaceName_/methodName
 page-type: web-api-instance-method
 browser-compat: api._InterfaceName_.methodName

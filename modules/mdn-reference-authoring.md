@@ -74,7 +74,7 @@ findings to resolve, not things to silently reconcile.
 | Static property            | `web-api-static-property`   | `templates/mdn-property.md` (adapt: title uses `InterfaceName.propertyName`, slug omits `prototype`) |
 | Event                      | `web-api-event`             | `templates/mdn-event.md`                                                                             |
 | Examples                   | (embedded or standalone)    | `templates/mdn-examples.md`                                                                          |
-| BCD entry                  | (JSON, not MDN page)        | `templates/mdn-bcd-entry.json`                                                                       |
+| BCD entry                  | (JSON, generated per entry) | `templates/mdn-bcd-generation-guide.md`                                                              |
 | Documentation plan         | (internal)                  | `templates/mdn-doc-plan.md`                                                                          |
 | Review checklist/PR packet | (internal)                  | `templates/mdn-review-checklist.md`                                                                  |
 
@@ -97,6 +97,28 @@ findings to resolve, not things to silently reconcile.
 - **Slug format:** `Web/API/InterfaceName` for interface;
   `Web/API/InterfaceName/memberName` for members
 
+## Sidebar and member-list integration
+
+API reference pages use macros for navigation and member lists:
+
+- **GroupData:** defines the sidebar navigation tree for an API. Each API has a
+  GroupData entry in `files/en-us/_data/GroupData.json` that controls which
+  pages appear in the left sidebar. New APIs require a GroupData entry.
+- **APIRef:** auto-generates the list of constructors, properties, methods, and
+  events on interface pages. Reads from the page tree structure — subpages are
+  automatically listed.
+- **Interface event links:** each event listed in the interface Events section
+  must {{DOMxRef}}-link to its event subpage (e.g.,
+  `{{DOMxRef("InterfaceName.eventName_event")}}`).
+- **Static member references:** static members use slash-path `_static` slugs in
+  DOMxRef (e.g., `{{DOMxRef("InterfaceName.methodName_static()")}}`) and display
+  labels that include "static" (e.g., "`InterfaceName.methodName()` static
+  method").
+
+Source:
+[API sidebars](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Write_an_api_reference/Sidebars)
+(retrieved 2026-07-22).
+
 ## BCD evidence rules
 
 - `version_added` must be `null` (unknown) until release/test evidence exists
@@ -106,8 +128,8 @@ findings to resolve, not things to silently reconcile.
   auto-generated status banners
 - Template uses `null` placeholders with `"REPLACE with evidence"` notes
 - Validating JSON parse is NOT the same as validating against BCD schema —
-  schema validation requires the BCD project's tooling
-  (`npx @mdn/browser-compat-data`)
+  schema validation requires the BCD project's tooling (clone
+  `mdn/browser-compat-data`, `npm install`, `npm test`)
 
 ## Review process (official)
 

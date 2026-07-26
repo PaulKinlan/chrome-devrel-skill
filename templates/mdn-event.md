@@ -1,5 +1,6 @@
 ---
 title: "_InterfaceName_: _eventName_ event"
+short-title: "_eventName_ event"
 slug: Web/API/_InterfaceName_/_eventName_event
 page-type: web-api-event
 browser-compat: api._InterfaceName_._eventName_event

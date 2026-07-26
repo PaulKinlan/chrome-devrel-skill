@@ -27,7 +27,8 @@
 - [ ] At least one working example with {{EmbedLiveSample}} under descriptive H3
       heading
 - [ ] Example is keyboard-accessible
-- [ ] BCD entry created/updated; `version_added` uses evidence or `null`
+- [ ] BCD entry created/updated; `version_added` uses evidence (version string
+      or `false`), never `null`
 - [ ] NO invented version numbers or status booleans in BCD (all null/false
       until attested)
 - [ ] Status fields in BCD drive auto-generated banners (not manually authored)
@@ -38,11 +39,23 @@
 
 ## Local build checks
 
+**mdn/content:**
+
 ```sh
 npm install
 npm start          # preview at localhost:8080
 # inspect rendered page for visual/structural flaws
 npm run fix:md     # auto-format markdown
+```
+
+**browser-compat-data (BCD):**
+
+```sh
+git clone https://github.com/mdn/browser-compat-data.git
+cd browser-compat-data
+npm install
+npm test          # schema + data validation (MUST pass)
+npm run lint:fix  # style suggestions
 ```
 
 ## PR packet
