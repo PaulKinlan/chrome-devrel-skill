@@ -1,9 +1,9 @@
 ---
 title: "_InterfaceName_: _ConstructorName_() constructor"
 short-title: "_ConstructorName_()"
-slug: Web/API/_InterfaceName_/_InterfaceName_
+slug: Web/API/_InterfaceName_/_ConstructorName_
 page-type: web-api-constructor
-browser-compat: api._InterfaceName_._InterfaceName_
+browser-compat: api._InterfaceName_._ConstructorName_
 ---
 
 {{APIRef("GroupDataName")}}

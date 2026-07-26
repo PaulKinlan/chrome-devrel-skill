@@ -457,6 +457,125 @@ try {
     );
   }
 
+  // Check interface DOMxRef uses slash-path with display labels
+  const interfaceText2 = await readFile(
+    join(root, "templates/mdn-interface.md"),
+    "utf8",
+  );
+  const dotDomxRef = interfaceText2.match(/DOMxRef\("InterfaceName\.[A-Z]/g);
+  if (dotDomxRef && dotDomxRef.length > 0) {
+    fail(
+      "MDN interface",
+      `${dotDomxRef.length} DOMxRef use dot form (InterfaceName.X) — must use slash-path with display label`,
+    );
+  } else {
+    ok("MDN interface: all DOMxRef use slash-path form");
+  }
+  // Check events have DOMxRef with display label (not bare text)
+  if (interfaceText2.match(/^- \`eventname\`/m)) {
+    fail(
+      "MDN interface",
+      "events use bare text — must use {{DOMxRef with slash-path and display label}}",
+    );
+  } else {
+    ok("MDN interface: events use DOMxRef with slash-path");
+  }
+
+  // Check constructor slug uses ConstructorName
+  const constructorText2 = await readFile(
+    join(root, "templates/mdn-constructor.md"),
+    "utf8",
+  );
+  if (
+    constructorText2.includes("slug: Web/API/_InterfaceName_/_InterfaceName_")
+  ) {
+    fail(
+      "MDN constructor",
+      "slug uses InterfaceName — must use ConstructorName (e.g., HTMLAudioElement/Audio)",
+    );
+  } else {
+    ok("MDN constructor: slug uses ConstructorName");
+  }
+  if (
+    constructorText2.includes(
+      "browser-compat: api._InterfaceName_._InterfaceName_",
+    )
+  ) {
+    fail(
+      "MDN constructor",
+      "browser-compat uses InterfaceName — must use ConstructorName",
+    );
+  } else {
+    ok("MDN constructor: browser-compat uses ConstructorName");
+  }
+
+  // All-file floating provenance scan (modules + templates)
+  const allMdFiles = [...mdnMdFiles, "mdn-bcd-generation-guide.md"];
+  let floatingCount = 0;
+  for (const file of allMdFiles) {
+    try {
+      const text = await readFile(join(root, "templates", file), "utf8");
+      if (
+        text.includes("blob/main/") || text.includes("blob/HEAD/") ||
+        text.includes("raw.githubusercontent.com/") && text.includes("/main/")
+      ) {
+        fail(
+          `MDN ${file}`,
+          "contains floating blob/main or blob/HEAD URL — must pin to SHA",
+        );
+        floatingCount++;
+      }
+    } catch {}
+  }
+  // Also scan module
+  if (
+    moduleText.includes("blob/main/") || moduleText.includes("blob/HEAD/") ||
+    (moduleText.includes("raw.githubusercontent.com/") &&
+      moduleText.includes("/main/"))
+  ) {
+    fail("MDN module", "contains floating URL — must pin to SHA");
+    floatingCount++;
+  }
+  if (floatingCount === 0) ok("MDN: no floating provenance URLs in any file");
+
+  // Semantic BCD check: version_added true must not be presented as valid
+  const bcdGuide2 = await readFile(
+    join(root, "templates/mdn-bcd-generation-guide.md"),
+    "utf8",
+  );
+  // Check that the guide explicitly states true is forbidden
+  if (
+    !bcdGuide2.includes("`true`") ||
+    !bcdGuide2.toLowerCase().includes("forbidden")
+  ) {
+    fail(
+      "BCD guide",
+      "does not explicitly state that true is forbidden for version_added",
+    );
+  } else {
+    ok("BCD guide: explicitly states true is forbidden");
+  }
+  // Check no file says null is valid/placeholder
+  const nullValidPatterns = [
+    "version_added.*null.*valid",
+    "null.*placeholder",
+    "uses.*null",
+  ];
+  let nullIssues = 0;
+  for (const pattern of nullValidPatterns) {
+    const re = new RegExp(pattern, "i");
+    if (
+      re.test(bcdGuide2) && !bcdGuide2.toLowerCase().includes("null.*forbidden")
+    ) {
+      fail(
+        "BCD guide",
+        "presents null as valid or placeholder — null is forbidden",
+      );
+      nullIssues++;
+    }
+  }
+  if (nullIssues === 0) ok("BCD guide: null not presented as valid");
+
   ok(`MDN: ${mdnMdFiles.length} templates validated`);
 } catch (e) {
   fail("MDN validation", e.message);

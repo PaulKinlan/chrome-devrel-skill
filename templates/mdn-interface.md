@@ -17,35 +17,37 @@ _Detailed description of the interface, its role, and lifecycle._
 
 ## Constructor
 
-- {{DOMxRef("InterfaceName.InterfaceName()", "InterfaceName()")}}
+- {{DOMxRef("InterfaceName/ConstructorName", "ConstructorName()")}}
   - : _Creates a new `InterfaceName` object._
 
 ## Static properties
 
 _Also inherits static properties from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName/staticPropertyName_static")}}
+- {{DOMxRef("InterfaceName/staticPropertyName_static",
+  "InterfaceName.propertyName")}}
   - : _Description._
 
 ## Instance properties
 
 _Also inherits properties from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName.propertyName")}} {{ReadOnlyInline}}
+- {{DOMxRef("InterfaceName/propertyName", "propertyName")}} {{ReadOnlyInline}}
   - : _Description._
 
 ## Static methods
 
 _Also inherits static methods from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName/staticMethodName_static")}}
+- {{DOMxRef("InterfaceName/staticMethodName_static",
+  "InterfaceName.methodName()")}}
   - : _Description._
 
 ## Instance methods
 
 _Also inherits methods from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName.methodName()")}}
+- {{DOMxRef("InterfaceName/methodName", "methodName()")}}
   - : _Description._
 
 ## Events
@@ -54,7 +56,7 @@ Listen to these events using {{domxref("EventTarget.addEventListener",
 "addEventListener()")}} or by assigning an event handler to the `oneventname`
 property of this interface.
 
-- `eventname`
+- {{DOMxRef("InterfaceName/eventName_event", "eventName")}}
   - : _Fired when... Also available via the `oneventname` property._
 
 _This interface also inherits events from {{DOMxRef("ParentInterface")}}._

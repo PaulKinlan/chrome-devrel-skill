@@ -23,7 +23,7 @@ process with human reviewers and no guaranteed timeline.
 | Syntax sections                  | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Syntax_sections                                                       | Syntax block format                                                                         |
 | Feature status                   | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Feature_status                                                        | How experimental/deprecated/non-standard status is derived from BCD (NOT manually authored) |
 | API sidebars                     | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Write_an_api_reference/Sidebars                                                 | GroupData and APIRef macro usage                                                            |
-| mdn/content CONTRIBUTING         | https://raw.githubusercontent.com/mdn/content/main/CONTRIBUTING.md                                                                                    | Build, lint, review workflow                                                                |
+| mdn/content CONTRIBUTING         | https://raw.githubusercontent.com/mdn/content/308f0db4466bb95ff19c004f19c327af707fca98/CONTRIBUTING.md                                                | Build, lint, review workflow                                                                |
 | PR submission and reviews        | https://developer.mozilla.org/en-US/docs/MDN/Community/Pull_requests                                                                                  | Review process and expectations                                                             |
 | BCD schema                       | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/schemas/compat-data-schema.md                                | BCD entry structure and required fields                                                     |
 | BCD contributing                 | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/contributing.md                                         | BCD contribution workflow                                                                   |
@@ -121,12 +121,15 @@ Source:
 
 ## BCD evidence rules
 
-- `version_added` must be `null` (unknown) until release/test evidence exists
+- `version_added` must be a version string (from evidence) or `false` (confirmed
+  never-supported). Until evidence exists, do not populate the field — neither
+  `null` nor `true` is valid
 - Never invent version numbers
 - `spec_url` carries spec linkage in BCD, not in MDN frontmatter
 - `status.experimental`, `status.standard_track`, `status.deprecated` drive the
   auto-generated status banners
-- Template uses `null` placeholders with `"REPLACE with evidence"` notes
+- BCD generation guide (`templates/mdn-bcd-generation-guide.md`) documents valid
+  schema types and the evidence workflow
 - Validating JSON parse is NOT the same as validating against BCD schema —
   schema validation requires the BCD project's tooling (clone
   `mdn/browser-compat-data`, `npm install`, `npm test`)
@@ -160,7 +163,8 @@ A page is review-ready when:
 - [ ] Parameters, return value, exceptions documented (methods/constructors)
 - [ ] Interface pages list constructor, properties, methods, events
 - [ ] At least one working example with {{EmbedLiveSample}} under descriptive H3
-- [ ] BCD entry exists; `version_added` uses evidence or `null` (never invented)
+- [ ] BCD entry exists; `version_added` uses evidence (version string or
+      `false`). Neither `null` nor `true` is valid
 - [ ] Status derived from BCD (not manually authored)
 - [ ] {{SecureContext_Header}} / {{AvailableInWorkers}} used where applicable
 - [ ] No invented compat data, spec claims, or reviewer sign-off

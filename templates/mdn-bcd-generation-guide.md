@@ -20,7 +20,7 @@ npm run lint:fix  # auto-fixes style issues
 ```
 
 Source:
-[BCD contributing guide](https://github.com/mdn/browser-compat-data/blob/main/docs/contributing.md)
+[BCD contributing guide](https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/contributing.md)
 (retrieved 2026-07-22, commit `9851c5cb2361b4fe35b6a49b4dbda64792579fd9`).
 
 ## BCD entry structure (reference, not a scaffold)
@@ -62,21 +62,8 @@ Every BCD entry for a Web API member requires:
 
 ## Evidence rules
 
-- `version_added`: MUST be a version string (e.g., `"120"`) or `false`. NOT
-  `null` — `null` is forbidden by schema.
-- `version_added: false` means confirmed never-supported. Use only with
-  evidence.
-- `version_added: true` means supported at an unknown version. Avoid; prefer
-  specific versions.
-- `"mirror"` inherits from upstream browser. Valid for derivatives.
-- `spec_url`: MUST be a valid HTTPS URL with a fragment pointing to the specific
-  spec section. If no spec exists, omit `spec_url` entirely (do NOT use
-  placeholder URLs).
-- `standard_track: true` requires a real `spec_url`. If `standard_track: false`,
-  do not include `spec_url`.
-- `status` booleans are factual claims — set them only with evidence of the
-  feature's standards status.
-- `webview_ios` is a required browser key (added in recent BCD schema versions).
+- `version_added`: MUST be a version string (e.g., `"120"`) or `false`. Schema
+  permits ONLY string|false — `null` and `true` are both forbidden.
 
 ## Evidence checklist (before submitting BCD PR)
 
