@@ -764,6 +764,43 @@ try {
     ok("MDN interface: all DOMxRef target-label pairs valid");
   }
 
+  // Check APIRef semantics: no stale member-list/page-tree language
+  const stalePatterns = [
+    "auto-generates the list of",
+    "Reads from the page tree",
+    "subpages are automatically listed",
+    "auto-generates.*member list",
+  ];
+  let staleCount = 0;
+  for (const pattern of stalePatterns) {
+    const re = new RegExp(pattern, "i");
+    if (re.test(moduleText)) {
+      fail("MDN module APIRef", `stale language: "${pattern}"`);
+      staleCount++;
+    }
+  }
+  // Must contain correct concepts
+  if (!moduleText.includes("renders") || !moduleText.includes("sidebar")) {
+    fail("MDN module APIRef", "missing required concept: renders sidebar");
+    staleCount++;
+  }
+  if (
+    !moduleText.includes("tag-discovered") &&
+    !moduleText.includes("Tag-discovered")
+  ) {
+    fail("MDN module APIRef", "missing required concept: tag discovery");
+    staleCount++;
+  }
+  if (!moduleText.includes("GroupData")) {
+    fail("MDN module APIRef", "missing required concept: GroupData");
+    staleCount++;
+  }
+  if (staleCount === 0) {
+    ok(
+      "MDN module APIRef: correct semantics (sidebar, tag discovery, GroupData)",
+    );
+  }
+
   // Check no dead URL patterns (index.md/API_ in pinned paths)
   const moduleText2 = await readFile(
     join(root, "modules/mdn-reference-authoring.md"),

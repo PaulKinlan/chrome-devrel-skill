@@ -132,5 +132,14 @@ await withMutation(
   "dot",
 );
 
+// Test 8: Stale APIRef member-list/page-tree language
+await withMutation(
+  "modules/mdn-reference-authoring.md",
+  "reads the GroupData entry for the current API name and renders",
+  "auto-generates the list of constructors, properties, methods, and events on interface pages. Reads from",
+  "stale APIRef semantics",
+  "stale language",
+);
+
 console.log(`\nMutation tests: ${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);

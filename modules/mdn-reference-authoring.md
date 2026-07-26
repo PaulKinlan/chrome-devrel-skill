@@ -105,14 +105,19 @@ findings to resolve, not things to silently reconcile.
 
 ## Sidebar and member-list integration
 
-API reference pages use macros for navigation and member lists:
+API reference pages use macros for sidebar navigation:
 
-- **GroupData:** defines the sidebar navigation tree for an API. Each API has a
-  GroupData entry in `files/jsondata/GroupData.json` that controls which pages
-  appear in the left sidebar. New APIs require a GroupData entry.
-- **APIRef:** auto-generates the list of constructors, properties, methods, and
-  events on interface pages. Reads from the page tree structure — subpages are
-  automatically listed.
+- **GroupData:** defines the sidebar navigation tree for an API in
+  `files/jsondata/GroupData.json`. Each API has an entry listing related pages,
+  events, and interfaces. New APIs require a GroupData entry.
+- **APIRef:** reads the GroupData entry for the current API name and renders the
+  sidebar. Tag-discovered entries cover constructors ("Constructor" tag),
+  methods ("Method" tag), and properties ("Property" tag) only. Events and other
+  manual membership come through GroupData arrays, not tag discovery. APIRef
+  does NOT generate member lists on the page itself.
+- **Interface member lists** (constructors, properties, methods, events on the
+  page body) are authored manually as definition lists. They are NOT generated
+  by any macro.
 - **Interface event links:** each event listed in the interface Events section
   must {{DOMxRef}}-link to its event subpage (e.g.,
   `{{DOMxRef("InterfaceName/eventName_event", "eventName")}}`).
