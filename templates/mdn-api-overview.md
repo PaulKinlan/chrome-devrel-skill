@@ -4,6 +4,8 @@ slug: Web/API/_API_Name_API
 page-type: web-api-overview
 ---
 
+{{APIRef("GroupDataName")}}
+
 The **_API Name_** API _description of what it does_.
 
 ## Concepts and usage

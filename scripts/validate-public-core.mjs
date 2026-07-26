@@ -591,7 +591,9 @@ try {
   }
 
   // Check module for dot-form DOMxRef (not slash-path)
-  const moduleDomxRefDot = moduleText.match(/DOMxRef\("InterfaceName\.[A-Z]/g);
+  const moduleDomxRefDot = moduleText.match(
+    /DOMxRef\("InterfaceName\.[a-zA-Z]/g,
+  );
   if (moduleDomxRefDot && moduleDomxRefDot.length > 0) {
     fail(
       "MDN module",
@@ -637,6 +639,113 @@ try {
     );
   } else {
     ok("BCD guide: spec_url conditional on standard_track:true");
+  }
+
+  // Check event DOMxRef display label is bare (not "eventName event")
+  const interfaceText3 = await readFile(
+    join(root, "templates/mdn-interface.md"),
+    "utf8",
+  );
+  const eventLabelMatch = interfaceText3.match(
+    /DOMxRef\("InterfaceName\/eventName_event",\s*"([^"]+)"\)/,
+  );
+  if (eventLabelMatch) {
+    if (/ event$/i.test(eventLabelMatch[1])) {
+      fail(
+        "MDN interface",
+        `event DOMxRef label "${
+          eventLabelMatch[1]
+        }" should be bare event name, not "X event"`,
+      );
+    } else {
+      ok(
+        `MDN interface: event DOMxRef label is bare ("${eventLabelMatch[1]}")`,
+      );
+    }
+  }
+
+  // Check static method target-label pair is exact
+  const staticMethodMatch = interfaceText3.match(
+    /DOMxRef\("InterfaceName\/staticMethodName_static",\s*"([^"]+)"\)/,
+  );
+  if (staticMethodMatch) {
+    if (staticMethodMatch[1] !== "InterfaceName.methodName()") {
+      fail(
+        "MDN interface",
+        `static method label "${
+          staticMethodMatch[1]
+        }" should be "InterfaceName.methodName()"`,
+      );
+    } else {
+      ok("MDN interface: static method target-label pair exact");
+    }
+  }
+
+  // Check static property target-label pair is exact
+  const staticPropMatch = interfaceText3.match(
+    /DOMxRef\("InterfaceName\/staticPropertyName_static",\s*"([^"]+)"\)/,
+  );
+  if (staticPropMatch) {
+    if (staticPropMatch[1] !== "InterfaceName.propertyName") {
+      fail(
+        "MDN interface",
+        `static property label "${
+          staticPropMatch[1]
+        }" should be "InterfaceName.propertyName"`,
+      );
+    } else {
+      ok("MDN interface: static property target-label pair exact");
+    }
+  }
+
+  // Check spec_url is conditional in BCD guide (must mention standard_track)
+  const bcdGuide4 = await readFile(
+    join(root, "templates/mdn-bcd-generation-guide.md"),
+    "utf8",
+  );
+  const specUrlLines = bcdGuide4.split("\n").filter((l) =>
+    l.includes("spec_url")
+  );
+  let specUrlConditional = true;
+  for (const line of specUrlLines) {
+    if (
+      line.toLowerCase().includes("required") &&
+      !line.toLowerCase().includes("standard_track")
+    ) {
+      specUrlConditional = false;
+      fail(
+        "BCD guide",
+        `spec_url described as required without standard_track condition: ${line.trim()}`,
+      );
+    }
+  }
+  if (specUrlConditional) {
+    ok("BCD guide: spec_url conditional on standard_track");
+  }
+
+  // Check no dead URL patterns (index.md/API_ in pinned paths)
+  const moduleText2 = await readFile(
+    join(root, "modules/mdn-reference-authoring.md"),
+    "utf8",
+  );
+  if (moduleText2.includes("index.md/API_")) {
+    fail(
+      "MDN module",
+      "contains dead URL pattern index.md/API_ — use api_X_template/index.md",
+    );
+  } else {
+    ok("MDN module: no dead source URL patterns");
+  }
+
+  // Check APIRef in overview template
+  const overviewText = await readFile(
+    join(root, "templates/mdn-api-overview.md"),
+    "utf8",
+  );
+  if (!overviewText.includes("{{APIRef")) {
+    fail("MDN overview", "missing {{APIRef}} macro");
+  } else {
+    ok("MDN overview: APIRef present");
   }
 
   ok(`MDN: ${mdnMdFiles.length} templates validated`);
