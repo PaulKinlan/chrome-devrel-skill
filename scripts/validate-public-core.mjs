@@ -576,6 +576,69 @@ try {
   }
   if (nullIssues === 0) ok("BCD guide: null not presented as valid");
 
+  // Check constructor template doesn't use InterfaceName in syntax
+  const constructorText3 = await readFile(
+    join(root, "templates/mdn-constructor.md"),
+    "utf8",
+  );
+  if (constructorText3.includes("new InterfaceName(")) {
+    fail(
+      "MDN constructor",
+      "syntax uses new InterfaceName() — must use new ConstructorName()",
+    );
+  } else {
+    ok("MDN constructor: syntax uses ConstructorName");
+  }
+
+  // Check module for dot-form DOMxRef (not slash-path)
+  const moduleDomxRefDot = moduleText.match(/DOMxRef\("InterfaceName\.[A-Z]/g);
+  if (moduleDomxRefDot && moduleDomxRefDot.length > 0) {
+    fail(
+      "MDN module",
+      `${moduleDomxRefDot.length} DOMxRef use dot form in module — must use slash-path`,
+    );
+  } else {
+    ok("MDN module: all DOMxRef use slash-path form");
+  }
+
+  // Scan ALL files for developer.mozilla.org URLs (live, not pinned)
+  const allScanFiles = [
+    ...mdnMdFiles.map((f) => join("templates", f)),
+    "modules/mdn-reference-authoring.md",
+  ];
+  let liveUrlCount = 0;
+  for (const relPath of allScanFiles) {
+    try {
+      const text = await readFile(join(root, relPath), "utf8");
+      const matches = text.match(/developer\.mozilla\.org/g);
+      if (matches) {
+        fail(
+          `MDN ${relPath}`,
+          `${matches.length} developer.mozilla.org URLs — must pin to GitHub blob SHA or label as live`,
+        );
+        liveUrlCount += matches.length;
+      }
+    } catch {}
+  }
+  if (liveUrlCount === 0) ok("MDN: no unpinned developer.mozilla.org URLs");
+
+  // Check spec_url is conditional in BCD guide
+  const bcdGuide3 = await readFile(
+    join(root, "templates/mdn-bcd-generation-guide.md"),
+    "utf8",
+  );
+  if (
+    bcdGuide3.includes("REQUIRED generally") ||
+    (bcdGuide3.includes("spec_url") && !bcdGuide3.includes("standard_track"))
+  ) {
+    fail(
+      "BCD guide",
+      "spec_url presented as unconditionally required — must be conditional on standard_track:true",
+    );
+  } else {
+    ok("BCD guide: spec_url conditional on standard_track:true");
+  }
+
   ok(`MDN: ${mdnMdFiles.length} templates validated`);
 } catch (e) {
   fail("MDN validation", e.message);

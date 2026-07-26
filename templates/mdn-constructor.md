@@ -14,7 +14,7 @@ interface creates a new `InterfaceName` object.
 ## Syntax
 
 ```js-nolint
-new InterfaceName()
+new ConstructorName()
 new ConstructorName(parameter1)
 new ConstructorName(parameter1, parameter2)
 ```

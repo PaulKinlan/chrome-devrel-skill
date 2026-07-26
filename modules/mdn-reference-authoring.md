@@ -10,24 +10,24 @@ process with human reviewers and no guaranteed timeline.
 
 ## Source evidence brief (2026-07-22)
 
-| Source                           | URL                                                                                                                                                   | Governs                                                                                     |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Page types                       | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types                                                            | Valid `page-type` frontmatter values                                                        |
-| API landing page template        | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_landing_page_template                                  | Overview/landing page structure                                                             |
-| API reference page template      | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_reference_page_template                                | Interface page structure                                                                    |
-| API constructor subpage template | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_constructor_subpage_template                           | Constructor page structure                                                                  |
-| API method subpage template      | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_method_subpage_template                                | Method page structure                                                                       |
-| API property subpage template    | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_property_subpage_template                              | Property page structure                                                                     |
-| API event subpage template       | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_event_subpage_template                                 | Event page structure                                                                        |
-| How to write an API reference    | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/howto/write_an_api_reference/index.md | Authoring workflow and conventions                                                          |
-| Syntax sections                  | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Syntax_sections                                                       | Syntax block format                                                                         |
-| Feature status                   | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Feature_status                                                        | How experimental/deprecated/non-standard status is derived from BCD (NOT manually authored) |
-| API sidebars                     | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Write_an_api_reference/Sidebars                                                 | GroupData and APIRef macro usage                                                            |
-| mdn/content CONTRIBUTING         | https://raw.githubusercontent.com/mdn/content/308f0db4466bb95ff19c004f19c327af707fca98/CONTRIBUTING.md                                                | Build, lint, review workflow                                                                |
-| PR submission and reviews        | https://developer.mozilla.org/en-US/docs/MDN/Community/Pull_requests                                                                                  | Review process and expectations                                                             |
-| BCD schema                       | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/schemas/compat-data-schema.md                                | BCD entry structure and required fields                                                     |
-| BCD contributing                 | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/contributing.md                                         | BCD contribution workflow                                                                   |
-| BCD data guidelines              | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/data-guidelines/README.md                               | BCD data quality rules                                                                      |
+| Source                           | URL                                                                                                                                                                                  | Governs                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Page types                       | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md                                  | Valid `page-type` frontmatter values                                                        |
+| API landing page template        | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md/API_landing_page_template        | Overview/landing page structure                                                             |
+| API reference page template      | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md/API_reference_page_template      | Interface page structure                                                                    |
+| API constructor subpage template | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md/API_constructor_subpage_template | Constructor page structure                                                                  |
+| API method subpage template      | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md/API_method_subpage_template      | Method page structure                                                                       |
+| API property subpage template    | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md/API_property_subpage_template    | Property page structure                                                                     |
+| API event subpage template       | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/page_types/index.md/API_event_subpage_template       | Event page structure                                                                        |
+| How to write an API reference    | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/howto/write_an_api_reference/index.md                                | Authoring workflow and conventions                                                          |
+| Syntax sections                  | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/syntax_sections/index.md                             | Syntax block format                                                                         |
+| Feature status                   | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/page_structures/feature_status/index.md                              | How experimental/deprecated/non-standard status is derived from BCD (NOT manually authored) |
+| API sidebars                     | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/howto/write_an_api_reference/sidebars/index.md                       | GroupData and APIRef macro usage                                                            |
+| mdn/content CONTRIBUTING         | https://raw.githubusercontent.com/mdn/content/308f0db4466bb95ff19c004f19c327af707fca98/CONTRIBUTING.md                                                                               | Build, lint, review workflow                                                                |
+| PR submission and reviews        | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/community/pull_requests/index.md                                                        | Review process and expectations                                                             |
+| BCD schema                       | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/schemas/compat-data-schema.md                                                               | BCD entry structure and required fields                                                     |
+| BCD contributing                 | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/contributing.md                                                                        | BCD contribution workflow                                                                   |
+| BCD data guidelines              | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/data-guidelines/README.md                                                              | BCD data quality rules                                                                      |
 
 **Retrieval date:** 2026-07-22 for all sources. Recheck before each PR — MDN
 evolves.
@@ -80,7 +80,13 @@ findings to resolve, not things to silently reconcile.
 
 ## Frontmatter rules (official patterns)
 
-- **Required:** `title`, `slug`, `page-type`, `browser-compat`
+- **Required for all page types:** `title`, `slug`, `page-type`
+- **`browser-compat` required for:** interface, constructor, method, property,
+  event (all member pages)
+- **`browser-compat` NOT required for:** API overview/landing (compat data is on
+  member pages)
+- **`short-title` required for:** constructor, method, property, event (member
+  pages)
 - **Forbidden:** `spec-url` (spec linkage via BCD `spec_url`), `experimental`
   (derived from BCD), `short-title` (not in official templates for most page
   types)
@@ -109,14 +115,15 @@ API reference pages use macros for navigation and member lists:
   automatically listed.
 - **Interface event links:** each event listed in the interface Events section
   must {{DOMxRef}}-link to its event subpage (e.g.,
-  `{{DOMxRef("InterfaceName.eventName_event")}}`).
+  `{{DOMxRef("InterfaceName/eventName_event")}}`).
 - **Static member references:** static members use slash-path `_static` slugs in
-  DOMxRef (e.g., `{{DOMxRef("InterfaceName.methodName_static()")}}`) and display
-  labels that include "static" (e.g., "`InterfaceName.methodName()` static
-  method").
+  DOMxRef (e.g.,
+  `{{DOMxRef("InterfaceName/methodName_static", "InterfaceName.methodName()")}}`)
+  and display labels that include "static" (e.g., "`InterfaceName.methodName()`
+  static method").
 
 Source:
-[API sidebars](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Write_an_api_reference/Sidebars)
+[API sidebars](https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/howto/write_an_api_reference/sidebars/index.md)
 (retrieved 2026-07-22).
 
 ## BCD evidence rules
@@ -125,7 +132,8 @@ Source:
   never-supported). Until evidence exists, do not populate the field — neither
   `null` nor `true` is valid
 - Never invent version numbers
-- `spec_url` carries spec linkage in BCD, not in MDN frontmatter
+- `spec_url` in BCD carries spec linkage (not in MDN frontmatter). Optional
+  generally; required when `status.standard_track: true`
 - `status.experimental`, `status.standard_track`, `status.deprecated` drive the
   auto-generated status banners
 - BCD generation guide (`templates/mdn-bcd-generation-guide.md`) documents valid

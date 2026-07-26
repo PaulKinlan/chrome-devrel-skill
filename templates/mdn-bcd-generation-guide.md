@@ -32,7 +32,7 @@ Every BCD entry for a Web API member requires:
   "api": {
     "InterfaceName": {
       "__compat": {
-        "spec_url": "<valid HTTPS URL with fragment to spec section>",
+        "spec_url": "<HTTPS URL with fragment — REQUIRED when standard_track:true, optional otherwise>",
         "support": {
           "chrome": { "version_added": "<version string or false>" },
           "chrome_android": "mirror",
@@ -69,7 +69,8 @@ Every BCD entry for a Web API member requires:
 
 - [ ] Every non-mirror `version_added` has a source: release notes,
       ChromeStatus, bug tracker, or test
-- [ ] `spec_url` points to the actual spec section (not a placeholder)
+- [ ] `spec_url` points to actual spec section, or omitted if
+      `standard_track: false`
 - [ ] `status` booleans match the feature's real standards position
 - [ ] `npm test` passes (schema validation)
 - [ ] `npm run lint:fix` applied

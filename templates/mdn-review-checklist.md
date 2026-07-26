@@ -9,7 +9,8 @@
 ## Pre-PR checks
 
 - [ ] Frontmatter: correct `page-type`, `title`, `slug`, `browser-compat`
-- [ ] NO `spec-url` in frontmatter (spec linkage via BCD `spec_url`)
+- [ ] NO `spec-url` in frontmatter (spec linkage via BCD `spec_url`, which is
+      optional generally but required when standard_track:true)
 - [ ] NO `experimental` in frontmatter (derived from BCD status)
 - [ ] NO `short-title` unless official template uses it for this page type
 - [ ] Title format matches official pattern for page type
