@@ -6,6 +6,8 @@ page-type: web-api-instance-method
 browser-compat: api._InterfaceName_.methodName
 ---
 
+{{APIRef("GroupDataName")}}
+
 The **`methodName()`** method of the {{DOMxRef("InterfaceName")}} interface
 _description_.
 

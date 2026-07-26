@@ -6,6 +6,8 @@ page-type: web-api-instance-property
 browser-compat: api._InterfaceName_.propertyName
 ---
 
+{{APIRef("GroupDataName")}}
+
 The **`propertyName`** property of the {{DOMxRef("InterfaceName")}} interface
 _description_.
 

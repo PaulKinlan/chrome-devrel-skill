@@ -355,6 +355,108 @@ try {
     }
   }
 
+  // Check APIRef in member templates
+  const apiRefRequired = [
+    "mdn-interface.md",
+    "mdn-constructor.md",
+    "mdn-method.md",
+    "mdn-property.md",
+    "mdn-event.md",
+  ];
+  let apiRefMissing = 0;
+  for (const file of apiRefRequired) {
+    const text = await readFile(join(root, "templates", file), "utf8");
+    if (!text.includes("{{APIRef")) {
+      fail(`MDN ${file}`, "missing {{APIRef}} macro");
+      apiRefMissing++;
+    }
+  }
+  if (apiRefMissing === 0) ok("MDN: APIRef present in all member templates");
+
+  // Check event short-title is bare (not "eventName event")
+  const eventText = await readFile(
+    join(root, "templates/mdn-event.md"),
+    "utf8",
+  );
+  const eventFm = eventText.match(/^---\n([\s\S]*?)\n---/)?.[1] || "";
+  if (eventFm.match(/short-title:\s*".*event"/)) {
+    fail(
+      "MDN event short-title",
+      'should be bare event name, not "eventName event"',
+    );
+  } else if (eventFm.includes("short-title:")) {
+    ok("MDN event short-title: bare event name form");
+  }
+
+  // Check constructor short-title uses ConstructorName not InterfaceName
+  const constructorText = await readFile(
+    join(root, "templates/mdn-constructor.md"),
+    "utf8",
+  );
+  if (constructorText.includes('short-title: "_InterfaceName_()"')) {
+    fail(
+      "MDN constructor short-title",
+      "should use ConstructorName, not InterfaceName (e.g. Audio() not HTMLAudioElement())",
+    );
+  } else if (constructorText.includes("short-title:")) {
+    ok("MDN constructor short-title: ConstructorName form");
+  }
+
+  // Check GroupData path in module
+  if (moduleText.includes("_data/GroupData")) {
+    fail(
+      "MDN module",
+      "references old GroupData path (_data/) — should be files/jsondata/GroupData.json",
+    );
+  } else if (moduleText.includes("jsondata/GroupData")) {
+    ok("MDN module: correct GroupData path (files/jsondata/GroupData.json)");
+  }
+
+  // Check interface template uses slash-path DOMxRef for events/static
+  const interfaceText = await readFile(
+    join(root, "templates/mdn-interface.md"),
+    "utf8",
+  );
+  if (interfaceText.includes('DOMxRef("InterfaceName.eventName')) {
+    fail(
+      "MDN interface",
+      "event DOMxRef uses dot form — should use slash-path (InterfaceName/eventName_event)",
+    );
+  }
+  if (interfaceText.includes('DOMxRef("InterfaceName.static')) {
+    fail(
+      "MDN interface",
+      "static DOMxRef uses dot form — should use slash-path (InterfaceName/methodName_static)",
+    );
+  }
+
+  // Check no floating provenance URLs in module
+  if (moduleText.includes("blob/main/") || moduleText.includes("blob/HEAD/")) {
+    fail(
+      "MDN module",
+      "contains floating blob/main/ or blob/HEAD/ URLs — must pin to commit SHA",
+    );
+  } else {
+    ok("MDN module: all source URLs pinned to commit SHAs");
+  }
+
+  // Check BCD guide: no version_added true/null guidance
+  const bcdGuide = await readFile(
+    join(root, "templates/mdn-bcd-generation-guide.md"),
+    "utf8",
+  );
+  if (bcdGuide.includes("version_added: true") && !bcdGuide.includes("NOT")) {
+    fail("BCD guide", "mentions version_added: true without prohibiting it");
+  }
+  if (
+    bcdGuide.includes("version_added: null") && !bcdGuide.includes("forbidden")
+  ) {
+    fail(
+      "BCD guide",
+      "mentions version_added: null without noting it is forbidden",
+    );
+  }
+
   ok(`MDN: ${mdnMdFiles.length} templates validated`);
 } catch (e) {
   fail("MDN validation", e.message);

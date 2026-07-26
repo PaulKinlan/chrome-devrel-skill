@@ -10,24 +10,24 @@ process with human reviewers and no guaranteed timeline.
 
 ## Source evidence brief (2026-07-22)
 
-| Source                           | URL                                                                                                                         | Governs                                                                                     |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Page types                       | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types                                  | Valid `page-type` frontmatter values                                                        |
-| API landing page template        | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_landing_page_template        | Overview/landing page structure                                                             |
-| API reference page template      | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_reference_page_template      | Interface page structure                                                                    |
-| API constructor subpage template | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_constructor_subpage_template | Constructor page structure                                                                  |
-| API method subpage template      | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_method_subpage_template      | Method page structure                                                                       |
-| API property subpage template    | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_property_subpage_template    | Property page structure                                                                     |
-| API event subpage template       | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_event_subpage_template       | Event page structure                                                                        |
-| How to write an API reference    | https://github.com/mdn/content/blob/main/files/en-us/mdn/writing_guidelines/howto/write_an_api_reference/index.md           | Authoring workflow and conventions                                                          |
-| Syntax sections                  | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Syntax_sections                             | Syntax block format                                                                         |
-| Feature status                   | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Feature_status                              | How experimental/deprecated/non-standard status is derived from BCD (NOT manually authored) |
-| API sidebars                     | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Write_an_api_reference/Sidebars                       | GroupData and APIRef macro usage                                                            |
-| mdn/content CONTRIBUTING         | https://raw.githubusercontent.com/mdn/content/main/CONTRIBUTING.md                                                          | Build, lint, review workflow                                                                |
-| PR submission and reviews        | https://developer.mozilla.org/en-US/docs/MDN/Community/Pull_requests                                                        | Review process and expectations                                                             |
-| BCD schema                       | https://github.com/mdn/browser-compat-data/blob/main/schemas/compat-data-schema.md                                          | BCD entry structure and required fields                                                     |
-| BCD contributing                 | https://github.com/mdn/browser-compat-data/blob/main/docs/contributing.md                                                   | BCD contribution workflow                                                                   |
-| BCD data guidelines              | https://github.com/mdn/browser-compat-data/blob/HEAD/docs/data-guidelines/README.md                                         | BCD data quality rules                                                                      |
+| Source                           | URL                                                                                                                                                   | Governs                                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Page types                       | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types                                                            | Valid `page-type` frontmatter values                                                        |
+| API landing page template        | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_landing_page_template                                  | Overview/landing page structure                                                             |
+| API reference page template      | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_reference_page_template                                | Interface page structure                                                                    |
+| API constructor subpage template | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_constructor_subpage_template                           | Constructor page structure                                                                  |
+| API method subpage template      | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_method_subpage_template                                | Method page structure                                                                       |
+| API property subpage template    | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_property_subpage_template                              | Property page structure                                                                     |
+| API event subpage template       | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_event_subpage_template                                 | Event page structure                                                                        |
+| How to write an API reference    | https://github.com/mdn/content/blob/308f0db4466bb95ff19c004f19c327af707fca98/files/en-us/mdn/writing_guidelines/howto/write_an_api_reference/index.md | Authoring workflow and conventions                                                          |
+| Syntax sections                  | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Syntax_sections                                                       | Syntax block format                                                                         |
+| Feature status                   | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Feature_status                                                        | How experimental/deprecated/non-standard status is derived from BCD (NOT manually authored) |
+| API sidebars                     | https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Write_an_api_reference/Sidebars                                                 | GroupData and APIRef macro usage                                                            |
+| mdn/content CONTRIBUTING         | https://raw.githubusercontent.com/mdn/content/main/CONTRIBUTING.md                                                                                    | Build, lint, review workflow                                                                |
+| PR submission and reviews        | https://developer.mozilla.org/en-US/docs/MDN/Community/Pull_requests                                                                                  | Review process and expectations                                                             |
+| BCD schema                       | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/schemas/compat-data-schema.md                                | BCD entry structure and required fields                                                     |
+| BCD contributing                 | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/contributing.md                                         | BCD contribution workflow                                                                   |
+| BCD data guidelines              | https://github.com/mdn/browser-compat-data/blob/9851c5cb2361b4fe35b6a49b4dbda64792579fd9/docs/data-guidelines/README.md                               | BCD data quality rules                                                                      |
 
 **Retrieval date:** 2026-07-22 for all sources. Recheck before each PR — MDN
 evolves.
@@ -102,8 +102,8 @@ findings to resolve, not things to silently reconcile.
 API reference pages use macros for navigation and member lists:
 
 - **GroupData:** defines the sidebar navigation tree for an API. Each API has a
-  GroupData entry in `files/en-us/_data/GroupData.json` that controls which
-  pages appear in the left sidebar. New APIs require a GroupData entry.
+  GroupData entry in `files/jsondata/GroupData.json` that controls which pages
+  appear in the left sidebar. New APIs require a GroupData entry.
 - **APIRef:** auto-generates the list of constructors, properties, methods, and
   events on interface pages. Reads from the page tree structure — subpages are
   automatically listed.

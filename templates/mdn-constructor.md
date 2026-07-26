@@ -1,20 +1,22 @@
 ---
-title: "_InterfaceName_: _InterfaceName_() constructor"
-short-title: "_InterfaceName_()"
+title: "_InterfaceName_: _ConstructorName_() constructor"
+short-title: "_ConstructorName_()"
 slug: Web/API/_InterfaceName_/_InterfaceName_
 page-type: web-api-constructor
 browser-compat: api._InterfaceName_._InterfaceName_
 ---
 
-The **`InterfaceName()`** constructor of the {{DOMxRef("InterfaceName")}}
+{{APIRef("GroupDataName")}}
+
+The **`ConstructorName()`** constructor of the {{DOMxRef("InterfaceName")}}
 interface creates a new `InterfaceName` object.
 
 ## Syntax
 
 ```js-nolint
 new InterfaceName()
-new InterfaceName(parameter1)
-new InterfaceName(parameter1, parameter2)
+new ConstructorName(parameter1)
+new ConstructorName(parameter1, parameter2)
 ```
 
 ### Parameters
@@ -40,7 +42,7 @@ A new {{DOMxRef("InterfaceName")}} object.
 ### _Descriptive heading_
 
 ```js
-const instance = new InterfaceName("value");
+const instance = new ConstructorName("value");
 console.log(instance.propertyName); // "value"
 ```
 

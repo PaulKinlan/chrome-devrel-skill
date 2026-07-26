@@ -5,6 +5,8 @@ page-type: web-api-interface
 browser-compat: api._InterfaceName_
 ---
 
+{{APIRef("GroupDataName")}}
+
 The **`InterfaceName`** interface of the _API Name_ API _description_.
 
 {{InheritanceDiagram}}
@@ -22,7 +24,7 @@ _Detailed description of the interface, its role, and lifecycle._
 
 _Also inherits static properties from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName.staticPropertyName_static")}}
+- {{DOMxRef("InterfaceName/staticPropertyName_static")}}
   - : _Description._
 
 ## Instance properties
@@ -36,7 +38,7 @@ _Also inherits properties from {{DOMxRef("ParentInterface")}}._
 
 _Also inherits static methods from {{DOMxRef("ParentInterface")}}._
 
-- {{DOMxRef("InterfaceName.staticMethodName_static()")}}
+- {{DOMxRef("InterfaceName/staticMethodName_static")}}
   - : _Description._
 
 ## Instance methods

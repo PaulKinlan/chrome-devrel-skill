@@ -39,7 +39,7 @@ Every BCD entry for a Web API member requires:
           "edge": "mirror",
           "firefox": { "version_added": "<version string or false>" },
           "firefox_android": "mirror",
-          "ie": { "version_added": "<version string or false>" },
+          "ie": { "version_added": "<version string>" }, # or omit entirely for modern-only APIs
           "oculus": "mirror",
           "opera": { "version_added": "<version string or false>" },
           "opera_android": "mirror",
