@@ -1,11 +1,11 @@
 ---
-title: "_InterfaceName_._eventName_ event"
+title: "_InterfaceName_: _eventName_ event"
 slug: Web/API/_InterfaceName_/_eventName_event
 page-type: web-api-event
 browser-compat: api._InterfaceName_._eventName_event
 ---
 
-The **`eventName`** event of the {{domxref("InterfaceName")}} interface is fired
+The **`eventName`** event of the {{DOMxRef("InterfaceName")}} interface is fired
 when _trigger condition_.
 
 ## Syntax
@@ -14,8 +14,8 @@ Use the event name in methods like {{domxref("EventTarget.addEventListener",
 "addEventListener()")}}, or set an event handler property.
 
 ```js
-InterfaceName.addEventListener("eventName", (event) => {});
-InterfaceName.oneventname = (event) => {};
+addEventListener("eventName", (event) => {});
+oneventname = (event) => {};
 ```
 
 ## Event type
@@ -33,7 +33,13 @@ _Also inherits properties from {{domxref("Event")}}._
 
 ## Description
 
-_Additional context about when this fires and what triggers it._
+### Trigger
+
+_What causes this event to fire._
+
+### Use cases
+
+_When developers would listen for this event._
 
 ## Examples
 
@@ -56,3 +62,5 @@ _Additional context about when this fires and what triggers it._
 ## See also
 
 - Related events on this interface
+- [DOM events index](https://developer.mozilla.org/en-US/docs/Web/Events) (for
+  new event classes)

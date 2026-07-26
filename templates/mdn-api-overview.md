@@ -1,11 +1,8 @@
 ---
 title: "_API Name_ API"
-slug: Web/API/_API_Name_
+slug: Web/API/_API_Name_API
 page-type: web-api-overview
-browser-compat: api._API_Name_
 ---
-
-{{SeeCompatTable}}
 
 The **_API Name_** API _description of what it does_.
 
@@ -14,13 +11,21 @@ The **_API Name_** API _description of what it does_.
 _Why the API exists, what problems it solves, key concepts developers need to
 understand._
 
+## Guides
+
+- [Guide title](_guide URL or "to be written"_)
+
 ## Interfaces
 
-{{ListSubpagesFor("/Web/API/_API_Name_")}}
+- {{DOMxRef("InterfaceName")}}
+  - : _One-line description._
 
-### Interfaces and dictionaries
+### Extensions to other interfaces
 
-_List of interfaces with one-line descriptions and links to subpages._
+_If the API extends existing interfaces, list them here as a definition list._
+
+- {{DOMxRef("ExistingInterface.propertyName")}} {{ReadOnlyInline}}
+  - : _Description of the extension._
 
 ## Examples
 
@@ -35,6 +40,9 @@ _List of interfaces with one-line descriptions and links to subpages._
 ## Specifications
 
 {{Specifications}}
+
+_Note: Specifications and Browser compatibility sections are optional on landing
+pages if the feature is very large. Include them when practical._
 
 ## Browser compatibility
 

@@ -84,14 +84,16 @@ findings to resolve, not things to silently reconcile.
 - **Forbidden:** `spec-url` (spec linkage via BCD `spec_url`), `experimental`
   (derived from BCD), `short-title` (not in official templates for most page
   types)
-- **Title format by page type:**
+- **Title format by page type (colon form, no `prototype`):**
   - Interface: `InterfaceName`
-  - Constructor: `InterfaceName() constructor`
-  - Instance method: `InterfaceName.prototype.methodName()`
-  - Static method: `InterfaceName.methodName()`
-  - Instance property: `InterfaceName.prototype.propertyName`
-  - Static property: `InterfaceName.propertyName`
-  - Event: `InterfaceName.eventName event`
+  - Constructor: `InterfaceName: ConstructorName() constructor`
+  - Instance method: `InterfaceName: methodName() method`
+  - Static method: `InterfaceName: methodName() static method`
+  - Instance property: `InterfaceName: propertyName property` (with
+    `short-title: "propertyName"`)
+  - Static property: `InterfaceName: propertyName static property` (with
+    `short-title: "propertyName"`)
+  - Event: `InterfaceName: eventName event`
 - **Slug format:** `Web/API/InterfaceName` for interface;
   `Web/API/InterfaceName/memberName` for members
 

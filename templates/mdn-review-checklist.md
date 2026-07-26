@@ -28,7 +28,8 @@
       heading
 - [ ] Example is keyboard-accessible
 - [ ] BCD entry created/updated; `version_added` uses evidence or `null`
-- [ ] NO invented version numbers in BCD
+- [ ] NO invented version numbers or status booleans in BCD (all null/false
+      until attested)
 - [ ] Status fields in BCD drive auto-generated banners (not manually authored)
 - [ ] {{SecureContext_Header}} / {{AvailableInWorkers}} where applicable
 - [ ] {{SeeCompatTable}} only if experimental (derived from BCD)
