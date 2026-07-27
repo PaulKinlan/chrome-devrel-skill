@@ -1,0 +1,280 @@
+I've loaded the skill and the two modules this request routes to: `user-impact-and-review-rehearsal.md` (primary, since the ask is to rehearse user + formal-review perspectives before launch) and `stakeholder-critique.md` (the multi-GB download + browser-supplied model raises competition/resource/agency questions that lens is built for). Below is the full autonomous DevRel response.
+
+---
+
+# 0. Questions I would normally ask first (stated, not blocking)
+
+I'm proceeding on these **working assumptions** because this is non-interactive:
+
+- **Q1.** Which claims are actually on the page/deck/ChromeStatus entry, and are "private" and "zero-cost" official marketing or engineering shorthand?
+  - *Assumption:* Both are intended for public-facing launch materials (article, launch page, talk). I'm treating them as candidate public claims, which is the high-risk case.
+- **Q2.** Is there any network egress at all (telemetry, model catalog/download selection, crash logs, safety reporting)?
+  - *Assumption:* Unknown — I treat this as an unknown, not "none." This single fact determines whether "private" survives review.
+- **Q3.** Who chooses, versions, and updates the model, and can other browsers/model providers implement a substitutable path?
+  - *Assumption:* The browser vendors and ships one managed model. This is the competition-sensitive assumption.
+- **Q4.** Is the download user-initiated, page-triggered, or background?
+  - *Assumption:* Possibly page-triggerable (developer ergonomics implies the page can request the capability). I flag page-triggered download as the worst-case security/abuse path.
+- **Q5.** Lifecycle stage — intent-to-ship, origin trial, prepare-to-ship?
+  - *Assumption:* Pre-launch readiness / prepare-to-ship, given the explicit "before launch" framing. I have **not** assumed a ChromeStatus entry, explainer, or formal review status exists; those are unknowns.
+
+No values, commitments, or positions below are invented to fill these gaps.
+
+---
+
+# 1. Diagnose — intake summary
+
+| Field | Finding |
+|---|---|
+| **Mode** | Feature (proposed browser AI API). |
+| **Lifecycle stage (assumed)** | Readiness / prepare-to-ship, pre formal-review. |
+| **Developer problem (claimed)** | Developers want on-device AI inference without managing models, weights, serving, or cloud bills. Plausible problem — **hypothesis, not yet evidenced.** |
+| **Target audience** | Web developers/site operators (primary); end users (cost bearers). |
+| **Current decision needed** | Whether the public claims "private" and "zero-cost" are safe to ship, and what the team must demonstrate before they are. |
+| **Evidence already available** | Engineering premise: multi-GB download, substantial storage/memory/compute, local inference. That's it. |
+| **Highest-risk assumptions** | (a) "zero-cost" is defensible — **contradicted by the premise itself.** (b) "private" is defensible without bounding — **unproven.** (c) Developer ergonomics ≈ user benefit. |
+| **Missing owners/stakeholders** | Privacy reviewer, security/abuse reviewer, competition/legal, TAG/standards, accessibility, enterprise/EDU, measurement owner, support owner. |
+| **Recommended next intervention** | Freeze the two claims, run the rehearsal below, then convert each claim into a bounded, demonstrable statement with a named owner and test. |
+
+**FACT (premise):** The implementation may download several gigabytes and use substantial storage, memory, and compute.
+**CONTRADICTION:** "Zero-cost" is contradicted by the premise on its face — bandwidth, storage, memory, compute, battery, thermal, and on metered networks money are all costs. This is not a judgment call; it is an arithmetic conflict between the claim and the premise.
+
+---
+
+# 2. Assess readiness (no veto invented)
+
+| Dimension | Status | Note |
+|---|---|---|
+| Problem validity | **Partial** | "Developers want managed on-device AI" is plausible but unevidenced. |
+| End-user benefit/cost/control | **Contradicted** | Premise itself contradicts "zero-cost"; "private" is unbounded. |
+| Developer demand | **Unknown** | No survey/interview evidence supplied. |
+| Use-case quality | **Unknown** | No concrete use cases with jobs and fallbacks. |
+| Partner commitment | **Unknown** | None supplied. |
+| API ergonomics | **Partial** | "Browser manages model" is ergonomically attractive; loss of model control is the offsetting cost. |
+| Accessibility | **Unknown** | On-device model quality across languages/disabilities unknown — an equity risk. |
+| Privacy & data protection | **Partial→Contradicted** | Local inference is a real plus, but "private" as a blanket claim is unsupported until egress is bounded. |
+| Security & abuse | **Unknown** | Page-triggerable multi-GB download + sustained compute = DoS amplifier unless gated. |
+| Standards & interop | **Unknown** | Independent implementability and other-engine positions unknown; browser-supplied model complicates Baseline. |
+| Legal/regulatory/competition | **Unknown** | Browser-as-model-provider raises gatekeeping/self-preferencing questions. Questions for qualified reviewers, not conclusions. |
+| Performance/resource cost | **Partial (worse than claimed)** | Costs exist and are material; the "zero-cost" framing hides them. |
+| Docs/samples | **Unknown** | |
+| Supportability | **Unknown** | Model version skew, update cadence, rollback. |
+| Narrative | **Contradicted** | Current narrative ("private, zero-cost") contains a false claim and an unbounded claim. |
+| Launch resilience | **Unknown** | |
+
+DevRel cannot block shipment, and I'm not claiming it can. The consequence of shipping "zero-cost" as written is that it is **demonstrably false**, will be quoted back at the team by press, civil society, and reviewers, and will cost credibility for the *genuine* parts of the value proposition. That is preventable now.
+
+---
+
+# 3. Challenge — Lens A: User impact & review rehearsal
+
+*(All review items below are `pre-review hypothesis`, never `approved`.)*
+
+## 3.1 Three-group benefit/cost (who gets what, who pays)
+
+| Group | Benefit | Cost borne |
+|---|---|---|
+| **End users** | Possible: faster, offline-capable features; data doesn't leave device *for inference* (if designed so) | Bandwidth (multi-GB), storage, memory, CPU/GPU/NPU, battery, thermal, device lifespan, data-plan money on metered networks; low-end devices may be priced out; possible fingerprinting via model presence/version |
+| **Developers / site operators** | No inference server bill; no model ops; simpler integration | Loss of control over model quality, version, availability, update cadence; dependency on browser-supplied model; must build fallbacks for unsupported/low-spec devices; support burden for inconsistent behavior |
+| **Implementers / intermediaries** | (Chrome) ecosystem pull, AI-platform positioning | (Other browsers) must implement a substitutable path or be non-conformant; (model providers) face a gatekeeper dynamic; (enterprises) must policy/control unscheduled multi-GB downloads |
+
+**Key DevRel point:** "Zero-cost" describes a transfer — the site operator's cloud inference bill is redistributed onto the end user's device. A cost that moves is not a cost that vanishes. The honest, defensible value proposition is **"cost and data locality shift to the user's device,"** which is genuinely attractive *for some developers and some users* and is *not* the same claim as "zero-cost" or "free."
+
+## 3.2 User-cost and control ledger (must be measured; placeholders for the team to fill)
+
+Every row needs: measurement method, device/config, denominator, uncertainty.
+
+- **Download:** size, timing, frequency; automatic vs user-initiated vs page-triggered vs admin-controlled. *Unknown.*
+- **Storage:** persistent footprint; eviction behavior; re-download triggers (update, cache clear, profile reset, device switch). *Unknown.*
+- **Compute/battery/thermal:** inference latency, sustained vs burst, GPU/NPU contention, fan/thermal throttle, energy and environmental cost. *Unknown.*
+- **Network conditions:** metered networks, data caps, satellite/low-bandwidth, Global South median devices. *Unknown.*
+- **Consent/control:** can the user refuse, revoke, delete, see what was downloaded, prevent background download, set a cap? *Unknown.*
+- **Trigger surface:** can merely visiting a page cause download or compute? (Worst case for abuse and for "zero-cost.") *Unknown.*
+- **Data egress:** anything leaving the device beyond the model artifact fetch (telemetry, catalog selection, crash/safety reporting, model warm-up pings)? *Unknown — this single row decides "private."*
+- **Fingerprinting:** can a site detect model presence/version/capability or use outputs to fingerprint? *Unknown.*
+- **Accessibility:** model quality across languages, dialects, sign, cognitive load, motion, captions; AT compatibility of any UI surfaced. *Unknown.*
+- **Failure/fallback:** unsupported device, out-of-storage, OOM kill, mid-inference abort, version skew, provider/model change. *Unknown.*
+- **Reversibility:** can the user get storage back without breaking sites? *Unknown.*
+
+## 3.3 Pre-review perspective matrix (each = `pre-review hypothesis`)
+
+**Accessibility.** On-device models frequently underperform cloud models for non-dominant languages, dialects, accents, and disability-adjacent tasks. If the API pushes developers toward a lower-quality local model for, e.g., captioning or text simplification, **the accessibility floor can drop** even as privacy improves. Fallback must preserve the *task*, not merely avoid a crash.
+*Hypothesis:* reviewers will ask for measured quality parity across locales/disabilities vs the cloud baseline, and for a developer-facing quality signal so sites don't silently degrade AT users.
+
+**Privacy & data protection.** "Private" is a whole-system property; inference location is one input.
+*Likely reviewer questions:* What data leaves the device, to whom, for what purpose, retained how long? Is it minimized, purpose-limited, controllable, deletable? Does model *download/selection* reveal anything about the page/user (a content-driven catalog choice is a leak)? Is "local/private" **demonstrably** bounded — i.e., is there a measurement showing the egress surface? What's the fingerprinting surface from model presence/version/outputs? What about hostile use at scale?
+*Pre-review hypothesis:* "Private" survives only if paired with (a) a stated, minimal egress list, (b) user control, (c) a demonstrable test of "nothing but X leaves the device," and (d) a fingerprinting analysis.
+
+**Security & abuse.** A page that can trigger multi-GB download + sustained local compute is a resource-exhaustion / battery-drain vector. Hostile sites could probe model outputs to infer attributes about user-supplied or scraped media.
+*Pre-review hypothesis:* reviewers will want origin gating, quotas/rate limits, user-visible resource controls, background-use rules, and an abuse model — before the ergonomics claim "easy for developers" becomes "easy for attackers."
+
+**Standards & interoperability.** Can the API be independently implemented? The hard standards question is the *model*: if the browser supplies and updates one model, conformance is "implement this behavior" *and* "ship a compatible model," which is unusually heavy. Other engines may accept the API but not the model choice.
+*Pre-review hypothesis:* TAG/interop reviewers will probe (a) independent implementability including model substitutability, (b) the Baseline path, and (c) the cost of a Chrome-only period that includes a Chrome-only model.
+
+**Legal, regulatory & competition.** These are *questions for qualified reviewers*, not legal conclusions. The browser becoming the model distributor/provider touches: defaults/bundling/self-preferencing; whether independent providers can offer a genuinely substitutable model path; whether the browser controls quality levels, terms, and updates devs can access; and data-protection duties for anything that does egress. Different jurisdictions (competition, consumer protection, data protection) may each have a question.
+*Pre-review hypothesis:* competition reviewers will focus on the model-selection/gatekeeper angle; the team should go in with an answer to "can a third-party model provider reach these developers and users on equal terms?"
+
+**Engineering, performance & operations.** Worst-case device cost; update/version skew across the fleet; partial rollout where some profiles have the model and some don't; corrupted/abandoned model state; rollback. *Unknown — needs ops plan.*
+
+**Enterprise & administrators.** Unscheduled multi-GB downloads are an IT problem: bandwidth budgets (branches, EDU, shared kiosks), storage quotas, audit, policy to disable/delay/cap, and migration. *Pre-review hypothesis:* enterprise reviewers will want group policy/MDM controls and notice early enough to act.
+
+## 3.4 Public-question / analogous-coverage brief
+
+Recurring critique patterns from analogous browser launches (these are *patterns to anticipate*, not attributed quotes; treat each as requiring current source retrieval before launch):
+
+1. **"Helpful" background downloads that cost users.** Features that fetch large artifacts without crisp consent get criticized for bandwidth/storage/battery costs — especially on metered networks and low-end hardware. *Likely press/civil-society question:* "Who asked for this download, when, and can I stop it?"
+2. **"Private" claims by large platforms.** On-device/"private" AI claims receive sustained scrutiny over what egress and telemetry actually exist; the gap between "local" and "private" is the standard attack surface. *Likely question:* "Private from whom, exactly, and what's the proof?"
+3. **Browser bundling a service/capability.** Competition and civil-society scrutiny of defaults, gatekeeping, and whether independent providers can compete on equal terms. *Likable question:* "Can anyone else's model run here?"
+
+For each: the right response is **evidence, narrower claims, controls, or an accepted-and-stated tradeoff** — never spin. The team can be well-prepared for all three *if it narrows the claims now.*
+
+## 3.5 Claims ledger (the single most important artifact for this request)
+
+| Claim | Verdict | What to do |
+|---|---|---|
+| **"Zero-cost"** | **CONTRADICTED** by premise (multi-GB download + storage + memory + compute + battery + possible metered-network money). | **Remove.** Replace with bounded statements that name *whose* cost. |
+| **"Private"** (blanket) | **UNSUPPORTED / PROVISIONAL** — local inference is necessary but not sufficient. | **Bound it.** State the egress surface, demonstrate "nothing but X leaves the device," add user control + fingerprinting analysis. |
+| **"Inference is local"** | **FACT** (per premise). | Keep as a *mechanism*, not as a benefit by itself. |
+| **"Easy for developers — browser manages the model"** | **PARTIAL.** True that devs shed infra burden; false that this is pure upside (they lose model control/quality/version control). | Reframe: "removes model serving/download infra from the developer" + name the tradeoff. |
+| **"No per-inference server cost to the site operator"** | **Likely SAFE** if accurate. | This is the defensible value-prop core. State it precisely and *distinctly* from user cost. |
+| **"Cost shifted to the user's device"** | **FACT.** | Say this plainly. It is honest and still attractive for many use cases. |
+
+**Safe public framings (recommendation):**
+- "On-device inference keeps inputs and outputs on the device; [X] is the only network egress." *(requires bounding)*
+- "No inference server for the site to run or pay for." *(defensible)*
+- "The user's device does the work, so the site doesn't send data to a cloud model for inference." *(defensible, and the real privacy story)*
+
+**Unsafe as written:** "private and zero-cost."
+
+---
+
+# 4. Challenge — Lens B: Stakeholder critique (condensed; headlines only)
+
+## 4.1 Power & capability change
+- **New capability:** the browser becomes an AI model distributor/provider; pages gain (potentially) the ability to request local inference, which may trigger large downloads and sustained compute.
+- **Gains power/value:** the browser vendor (ecosystem pull, AI-platform positioning); site operators (shed inference infra cost).
+- **Loses choice/resources:** end users (device resources, possibly money); independent model providers (gatekeeper risk); other browsers (must implement a substitutable path); enterprises (unscheduled large downloads).
+- **Benign site vs hostile site:** benign = offline AI features; hostile = resource-exhaustion, fingerprinting via model presence/outputs, inference on scraped/user media without intent.
+- **One browser vs all:** a Chrome-only period with a Chrome-only model is materially different from a multi-engine, multi-model standard.
+
+## 4.2 Affected constituencies (retained, with why)
+End users (cost bearers; especially low-end hardware, metered networks, Global South, shared/enterprise/EDU devices); privacy & security researchers (egress, fingerprinting, abuse); competition/regulators (gatekeeping, defaults); other engines + TAG (independent implementability, Baseline); independent model providers (substitutable path); accessibility community (model quality equity); enterprise admins (download/storage policy); developers of cloud-AI-dependent frameworks (displacement + integration).
+
+## 4.3 Dated source packet — **status: to be retrieved (open questions)**
+I have **not** retrieved current positions; per the module I must not infer them from memory. Before launch, retrieve and timestamp proposal-specific positions from, as starting points: Mozilla Standards Positions and Web Vision; WebKit Standards Positions and Tracking Prevention Policy; W3C TAG design reviews, Ethical Web Principles, Privacy Principles, and Design Principles (priority of constituencies; "safe to load a page"); EFF positions on interoperability and on on-device "private" AI. **Every "what would X say" must become a retrieved, dated source or remain an open question.** None of these is currently a recorded position on this proposal.
+
+## 4.4 Top critique themes (steelmanned; each = `principle-grounded inference`, not recorded position)
+
+| Theme | Strongest concern (steelmanned) | Current response | Gap | Next action |
+|---|---|---|---|---|
+| Resource cost honesty | "Zero-cost" is false; the user pays in bandwidth/storage/battery/money. Marketing it as free transfers a cloud bill onto devices, often lower-end ones. | None on record. | Claim contradicts premise. | Remove claim; publish a cost-shift statement + measurements. |
+| "Private" bounding | "Local ≠ private." Without an egress inventory and a fingerprinting analysis, "private" is unproven and possibly misleading. | Local inference stated. | No egress/FP analysis on record. | Produce demonstrable egress bound + control + FP analysis. |
+| Abuse/resource-exhaustion | Page-triggerable multi-GB download + sustained compute is a DoS/battery vector. | Unknown. | No abuse model on record. | Origin gating, quotas, user controls, abuse test. |
+| Competition/gatekeeping | Browser supplies and controls the model → can independent providers substitute on equal terms? | Unknown. | No substitutability answer. | Design + legal review of third-party model path; record as questions for qualified reviewers. |
+| Interop/Baseline | API + a specific managed model is hard to conform to independently. | Unknown. | No interop/Baseline plan. | TAG review; independent-implementability write-up. |
+| Equity | On-device model may underperform for non-dominant languages/disabilities, lowering the accessibility floor. | Unknown. | No quality-parity data. | Measure quality across locales/disabilities; expose a dev-facing quality signal. |
+
+## 4.5 Announcement red-team findings (applied to "private and zero-cost")
+- **Hides who pays compute/bandwidth/storage.** (Cost-shift undisclosed.) → Fix.
+- **"Private" stated without analyzing incentives to bypass or egress.** → Fix.
+- **"Easy for developers" showcased while concealing resource/abuse/fallback constraints.** → Disclose constraints alongside the ergonomics.
+- **Demos may delight while concealing the multi-GB download and low-end-device behavior.** → Show the cost path in demos.
+- **Scope/naming may imply an interoperable standard when only one browser + one model ship initially.** → State the Chrome-only period explicitly.
+
+---
+
+# 5. Plan (stage: readiness / prepare-to-ship)
+
+**Outcome & exit criteria.** Public materials contain zero contradicted claims; every benefit claim is either a demonstrated fact or explicitly bounded; every review dimension has a named owner and either evidence or a tracked unknown; a rehearsed FAQ exists for the three analogous-coverage patterns.
+
+**Evidence to collect (owners TBD by team):**
+1. **Egress inventory** (privacy owner): enumerated network destinations beyond model fetch; test demonstrating the bound. *Blocker for "private."*
+2. **Cost measurement matrix** (perf owner): download size, storage, inference latency, battery/thermal, across ≥ {flagship desktop, mid Android, low-end Android, metered-network profile, enterprise-shared profile}. *Blocker for any cost claim.*
+3. **Fingerprinting analysis** (privacy/security): model presence/version/outputs as identifiers. *Blocker for "private."*
+4. **Abuse/resource model** (security owner): page-triggered download/compute controls, quotas, origin rules. *Blocker for "easy for developers."*
+5. **Accessibility/quality parity** (a11y owner): model quality vs cloud baseline across locales/disabilities; dev-facing quality signal. *Blocker for equitable rollout.*
+6. **Interop/substitutability write-up** (standards owner): independent implementability incl. model path; TAG input; Baseline plan. *Blocker for cross-engine credibility.*
+7. **Enterprise controls** (enterprise owner): policy/MDM to disable/delay/cap/audit downloads.
+8. **Developer demand/use-case evidence** (DevRel/research owner): jobs-to-be-done with concrete sites and fallbacks (not search volume).
+
+**Activities/artifacts & sequence:**
+1. **Freeze the two claims now** (this week). Replace with the bounded framings in §3.5.
+2. **Claims ledger v1** (this response) → assign an owner per row.
+3. **Egress + cost + fingerprinting evidence** (parallel; ~2–4 wks) — these unblock marketing.
+4. **Pre-review perspective brief** (below) circulated to privacy/security/competition/standards/a11y/enterprise.
+5. **TAG / other-engine outreach** before any "standard"/"interoperable" language.
+6. **Rewritten launch page/article/talk** using only safe/bounded claims.
+7. **Rehearsed FAQ** for the three analogous-coverage patterns (§3.4).
+8. **Launch-resilience check** (channels, moderation, team-support) — secondary here unless the topic attracts targeting.
+
+**Dependencies & risks:** "Private" is un-shippable as a claim until #1 and #3 land. "Easy/zero-cost" is un-shippable until #2 and #4 land. Competition questions (#6) may gate any "standard" framing and should start early.
+
+**Explicit blockers:** Unknown egress (blocks "private"); absence of any cost measurement (blocks any cost claim); no abuse model for page-triggered resource use; no accessibility quality-parity data.
+
+---
+
+# 6. Requested artifact — End-user impact & pre-review perspective brief
+
+> **Metadata:** Artifact type: End-user impact & pre-review perspective brief. Audience: launch team + formal reviewers (pre-review). Lifecycle stage: readiness / prepare-to-ship. Owner: DevRel (advisory). Status: **Provisional draft — review sections marked [NEEDS EVIDENCE] are unsupported until evidence lands.** Review requirements: privacy, security, competition/legal, standards/TAG, accessibility, enterprise, engineering/ops must each sign off on their row before public claim use. This brief is **pre-review analysis, not approval.**
+
+## 6.1 Headline
+The two proposed public claims — **"private"** and **"zero-cost"** — are **not safe as written.** "Zero-cost" is contradicted by the feature's own premise (multi-GB download; substantial storage, memory, compute). "Private" is plausible but unproven; local inference is necessary but not sufficient for a privacy claim. The genuine, defensible value proposition — **"no inference server for the site; inputs/outputs stay on the device; compute shifts to the user's device"** — is attractive and can be shipped *if* the claims are bounded and demonstrated.
+
+## 6.2 Who gets the benefit, who pays the cost
+- **Site operators:** benefit (shed inference infra/bill); trade off control of model quality/version/availability.
+- **End users:** bear the cost (bandwidth, storage, memory, battery, thermal; money on metered networks; possible exclusion on low-end devices); may benefit from offline capability and from inference data not leaving the device *for processing* — **if** designed so.
+- **Other browsers / model providers / enterprises:** face interop, gatekeeping, and policy pressures.
+
+**"Zero-cost" is a cost redistribution, not an elimination.** That distinction must be in the public materials.
+
+## 6.3 Cost & control ledger (all rows [NEEDS EVIDENCE])
+Download size/timing/trigger • persistent storage & eviction • compute/battery/thermal • metered-network & low-end-device behavior • consent/refuse/revoke/delete controls • page-trigger vs user-initiated vs background • egress beyond model fetch • fingerprinting surface • accessibility/quality parity • fallback/version-skew/rollback • reversibility. Each row needs measurement method, device/config, denominator, uncertainty.
+
+## 6.4 Pre-review perspective matrix (all `pre-review hypothesis`)
+- **Accessibility:** model quality across languages/disabilities may lower the accessibility floor; require parity data + dev-facing quality signal + fallback that preserves the task.
+- **Privacy:** "private" requires an enumerated egress bound, user control, a demonstrable "nothing but X leaves" test, and a fingerprinting analysis. [NEEDS EVIDENCE]
+- **Security/abuse:** page-triggerable multi-GB download + sustained compute is a resource-exhaustion vector; require origin gating, quotas, user controls, abuse test.
+- **Standards/interop:** independent implementability incl. the model; TAG input; Baseline path; explicit handling of a Chrome-only + single-model period.
+- **Legal/competition:** browser-as-model-provider questions (defaults, self-preferencing, substitutable third-party path) — **questions for qualified reviewers, not conclusions.**
+- **Engineering/ops:** worst-case device cost; version skew; partial rollout; rollback.
+- **Enterprise:** policy/MDM to disable/delay/cap/audit unscheduled large downloads.
+
+## 6.5 Claims guidance (use only these)
+**Safe (if accurate):** "On-device inference keeps inputs and outputs on the device; [X] is the only network egress." • "No inference server for the site to build, run, or pay for." • "The user's device does the work; the site doesn't send data to a cloud model for inference."
+**Bound before use:** "private" (needs egress/FP/control demonstration); "easy for developers" (must disclose model-control tradeoff + resource/abuse constraints).
+**Do not ship:** "zero-cost" (contradicted); "private" unqualified (unsupported).
+
+## 6.6 Anticipated public questions (rehearsed)
+- *"Who pays?"* → Answer honestly: the user's device does; the site saves its server bill. State the shift.
+- *"Private from whom? Prove it."* → State the egress inventory and the demonstration; be explicit about what local execution does and doesn't protect.
+- *"Can anyone else's model run here?"* → State the substitutability/interop position; don't imply a multi-engine standard if one browser + one model ship first.
+- *"Can a site burn my battery/bandwidth/storage?"* → State the controls (origin gating, quotas, user consent, caps).
+
+## 6.7 Required reviews/tests/owners (to be assigned)
+Egress bound (privacy) • cost matrix (perf) • fingerprinting analysis (privacy/security) • abuse/resource model (security) • a11y quality parity (a11y) • interop/substitutability (standards) • enterprise controls (enterprise) • developer demand/use-cases (DevRel research).
+
+## 6.8 Residual user risks & explicit decisions needed
+- If egress cannot be bounded to "model fetch only," **"private" must not be used.**
+- If cost cannot be measured across low-end/metered configs, **no cost claim may be made** and the team should proactively disclose the resource behavior.
+- The Chrome-only + single-model period must be **stated**, not implied to be an interoperable standard.
+
+---
+
+# 7. Measure the outcome
+
+Relevant measures for *this* work (denominators and data quality to be set with the measurement owner):
+- **Claims hygiene:** 0 contradicted claims and 0 unbounded claims in shipped public materials (denominator: all public benefit claims). Target: 100%.
+- **Review readiness:** share of review dimensions with named owner + evidence-or-tracked-unknown (denominator: dimensions in §2). Target: 100% pre-launch.
+- **Preventable negative feedback avoided:** count of public/review critiques that map to *known-unsupported* claims (target: 0; i.e., no criticism should be winnable on "you said zero-cost and it obviously isn't").
+- **Honest adoption signal:** production integrations that ship *with* disclosed fallbacks and resource behavior (better signal than raw usage that the value prop is real and the claims are sustainable).
+
+Avoid a single sentiment score; the point is that no reviewer or critic should be able to win an argument against a *fact the team already had*.
+
+---
+
+# 8. Residual unknowns (explicit)
+
+**UNKNOWN:** actual egress surface (decides "private"). **UNKNOWN:** measured cost on low-end/metered configs (decides any cost claim). **UNKNOWN:** fingerprinting surface of model presence/version/outputs. **UNKNOWN:** whether download is page-triggerable (decides the abuse-severity rating). **UNKNOWN:** other-engine and TAG positions on this proposal (must be retrieved and dated; not inferred). **UNKNOWN:** developer demand beyond plausibility. **UNKNOWN:** substitutability of third-party models (competition-critical). **UNKNOWN:** accessibility quality parity.
+
+**RECOMMENDATION (summary):** Freeze "private" and "zero-cost" today. Ship the bounded framings in §3.5/§6.5. Run the four evidence items that unblock the genuine value proposition (egress bound, cost matrix, fingerprinting analysis, abuse model). Treat "browser supplies the model" as a competition-sensitive design decision and brief qualified reviewers — not as a marketing ease-of-use win. The honest story is strong; the current wording weakens it unnecessarily.
+
+*Public-alpha DevRel advisory. This is pre-review analysis, not DevRel, privacy, security, competition, standards, or release approval.*

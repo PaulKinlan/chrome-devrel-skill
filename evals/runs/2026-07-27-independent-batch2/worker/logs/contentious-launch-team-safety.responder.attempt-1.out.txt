@@ -1,0 +1,271 @@
+# Chrome DevRel response — proposal under heavy criticism with harassment, doxxing, and a possible credible threat
+
+I've loaded the skill's `launch-resilience`, `stakeholder-critique`, `governance-and-roles`, and `artifact-templates` modules. The single most important constraint from the skill drives everything below: **preserve substantive criticism, moderate disruption consistently, and escalate harm to people — never conflate these three.** A flooded tracker is a workload problem; hate mail, doxxing, and a credible threat are a *safety* problem that DevRel does not and cannot handle alone.
+
+I have not been given the proposal name, its lifecycle stage, or the specifics of the threat. Rather than block, I state the questions and my working assumptions, then proceed to a complete response.
+
+---
+
+## Questions I would normally ask (and working assumptions I'm proceeding on)
+
+- **Which proposal / ChromeStatus ID / lifecycle stage?** *Assumption:* a public proposal already shipped to at least developer-trial/experiment or beyond, since it has a public tracker and named individuals receiving mail. I treat stage as **unknown** where it affects product decisions.
+- **What is the credible threat's content, immediacy, and jurisdiction, and who is targeted?** *Assumption:* none of these are known to me. **This is treated as a live safety item requiring immediate escalation, not a DevRel workload item.**
+- **Who are the named owners (launch lead, security, legal, HR/people, comms, moderators)?** *Assumption:* unknown — I provide the role map; names are config-required and must be filled in to convert any recommendation into an accountable commitment.
+- **Is the criticism substantive or is the flooding coordinated spam/brigading, or both?** *Assumption:* **both are present and must be sorted apart**, not assumed.
+- **What does the proposal's evidence base actually support vs. claim?** *Assumption:* unknown — I will not infer it.
+
+**Commitment status:** **[COMMITMENT]** None are in hand. The plan below contains *proposed* team actions, labeled **[RECOMMENDATION]**. They become commitments only when the owner map is filled and a decision owner accepts them.
+
+---
+
+## 1. Diagnose — intake summary
+
+- **Mode:** support / crisis response over an existing contentious proposal (product-feedback + comms + moderation + team-safety). **[FACT]**
+- **Lifecycle stage:** **[UNKNOWN]** — affects whether "pause/rollback/narrow" is even on the table; must be established by the product/engineering owner.
+- **Developer problem & audience:** the proposal has real critics; a public tracker is the live feedback surface. **[FACT]**
+- **Current decision needed (now):** (a) protect the targeted people immediately; (b) keep the tracker usable for technical feedback; (c) decide whether the *substance* changes the plan. **[RECOMMENDATION] as the decision framing.**
+- **Evidence available:** **[FACT]** tracker is being flooded; individual engineers receiving hate mail; personal information being posted; one message is described as a *possibly credible* threat. **[SIGNAL]** I have not verified the threat's credibility — that is security's job.
+- **Highest-risk assumptions:** (1) that the criticism is "just noise" around the abuse — **[CONTRADICTION]** likely false and dangerous; (2) that locking threads solves the product concern — the module explicitly flags this as a failure condition; (3) that the targeted people are willing/able to continue public-facing work — **[UNKNOWN]**, must be asked privately.
+- **Missing owners/stakeholders:** named launch/incident lead, security, qualified legal counsel, HR/people support, comms spokesperson, moderators, product/eng decision owner. **[UNKNOWN] all.**
+- **Recommended next intervention:** immediate private safety check on targeted people + security escalation of the credible threat, in parallel with standing up moderation and a single source of truth. **[RECOMMENDATION]**
+
+---
+
+## 2. Assess readiness — without inventing a veto
+
+DevRel does not determine whether formal review is required and cannot block shipment. These are advisory readiness reads.
+
+| Dimension | Status | Basis |
+|---|---|---|
+| People safety / threat handling | **Unknown → partial only after escalation** | **[FACT]** threat reported; credibility, immediacy, jurisdiction **[UNKNOWN]**. Security/legal must lead; DevRel coordinates around it. |
+| Moderation infrastructure | **Unknown** | **[UNKNOWN]** whether contribution/moderation policy exists, is published, and is enforceable on the tracker. |
+| Public source of truth | **Unknown** | **[UNKNOWN]** whether a single maintained status/evidence/FAQ location exists. |
+| Substantive-criticism response | **Partial at best / likely Contradicted** | **[FACT]** "serious legitimate criticism" exists. The plan must answer, research, or change design — not rebut on comms alone. **[CONTRADICTION]** if the team plans to "communicate through" unresolved substance. |
+| Legal/regulatory exposure | **Unknown** | Doxxing and threats can have legal dimensions; qualified counsel decides. |
+| Launch-resilience roles/on-call | **Unknown** | Owner map unfilled. |
+| Communications readiness | **Unknown** | No confirmed spokesperson, FAQ, or correction/rollback language. |
+
+**Likely consequences of unresolved gaps (advisory):** harm to people; tracker collapse so real bugs are lost; a credibility hit if criticism is suppressed or ignored; risk that a flawed design ships because attention was consumed by abuse. The single most urgent unresolved item is **not** messaging — it is the safety escalation.
+
+---
+
+## 3. Challenge — relevant lenses
+
+### 3a. The three-way separation (load-bearing)
+
+The skill forbids conflating these. I treat each with its own pipeline:
+
+1. **Substantive criticism → preserve, understand, answer, or change the design.** **[RECOMMENDATION]**
+2. **Disruptive but non-threatening behavior → moderate consistently** so real discussion survives. **[RECOMMENDATION]**
+3. **Harassment, hate, doxxing, credible threats → protect people; escalate; no personal engagement owed.** **[RECOMMENDATION]**
+
+**[CONTRADICTION] to hold in view:** the legitimate criticism and the abuse ride the same channel. Suppressing criticism to reduce the abuse surface is both wrong and self-defeating (it confirms critics' worst read and hides real defects). The plan must widen legitimate channels while closing harm.
+
+### 3b. Critique themes — scaffold (do not pre-judge the substance)
+
+I cannot know which proposal this is, so I will **not** invent criticism or positions. I provide the handling structure the team must run:
+
+| Theme | Evidence state | Action class |
+|---|---|---|
+| Design / capability concerns | **[UNKNOWN]** | Route to structured issue template; product/eng triage |
+| Privacy / security / abuse | **[UNKNOWN]** | Privacy & security reviewer (formal review per canonical process) |
+| Interoperability / other-engine / Baseline | **[UNKNOWN]** | Standards/TAG liaison; do not imply cross-engine support that isn't stated |
+| Competition / gatekeeping / power | **[UNKNOWN]** | Legal + comms; steelman, don't dismiss |
+| Performance / cost / who pays | **[UNKNOWN]** | Eng measurement; document |
+| Process / transparency | **[FACT — partially]** tracker flooding itself is a process signal | Improve feedback surface |
+
+For each theme the team fills: **recorded position vs. analogy vs. principle-grounded inference vs. open question** (per `stakeholder-critique.md`), with dated sources. **Never turn "no response," "under consideration," or an unlabeled issue into support.**
+
+### 3c. Red-team of any comms the team is tempted to send
+
+Before publishing anything, test it for: overstating demand/partner/standards support; hiding known negative positions; describing site/Chrome benefit as user benefit without evidence; making a Chrome-only ship sound like an interoperable standard; promising safeguards without analyzing incentives to bypass them. **[RECOMMENDATION]**
+
+### 3d. Power/impact rehearsal (per `stakeholder-critique.md`)
+
+Who gains power and who loses choice/privacy/compatibility under this proposal? What changes if Chrome ships alone vs. every engine? Is the behavior detectable/deniable/revocable? **[UNKNOWN] until the proposal is identified** — these questions must be answered by the team, not guessed by me.
+
+---
+
+## 4. Plan
+
+### Immediate / first hours (safety first) — **[RECOMMENDATION]**
+
+1. **Private safety check** with each affected person: contact discreetly, listen, include them in decisions that affect them. Do not send them back into the thread.
+2. **Escalate the credible threat** to company security and qualified internal channels now. Whether law-enforcement is engaged depends on **[UNKNOWN]** immediacy, jurisdiction, org policy, and the targeted person's preferences where possible. **DevRel does not run this track.**
+3. **Preserve evidence safely:** timestamps, URLs, screenshots/messages, chronology — captured *before* deletion, stored only in approved restricted systems. Do **not** redistribute doxxing content in normal reports.
+4. **Reduce exposure:** reassign monitoring/public response off the targeted people; make disengagement explicit and consequence-free. Offer voluntary digital-safety review. **Never make the targeted person responsible for organizational risk.**
+
+### First 24–72h — **[RECOMMENDATION]**
+
+5. **Stand up roles** (fill owner map below).
+6. **Publish/confirm moderation policy** and enforce it consistently; enable reporting.
+7. **Open a single source of truth** for status, known concerns, decisions, updates.
+8. **Open a structured technical-feedback channel** (templates + dedicated issues) so legitimate criticism has a home that isn't the personal-inbox firehose.
+9. **Draft truthful hold/correction/narrowing/delay/rollback language** (only with engineering confirmation of what's actually true).
+10. **Schedule moderator coverage with handoffs** — no individual monitors hostile channels continuously.
+
+### While risk remains — **[RECOMMENDATION]**
+
+11. **Group substantive criticism into themes**, mark evidence state, assign response/research/design-change owners (§3b).
+12. **Respond from the team/source-of-truth account**, not by deploying an individual into repeated debate.
+13. **Change the product/launch when warranted** — comms cannot repair an unsafe design, a misleading claim, or a broken process.
+14. **Aftercare:** time-bounded follow-up cadence (e.g., daily during acute period, then weekly while risk remains) with recurrence triggers, owners, and privacy-preserving measures; avoid imposing monitoring that prolongs exposure.
+
+---
+
+## 5. Artifact — Launch-resilience, moderation, and team-support plan
+
+```yaml
+artifactType: "launch-resilience / moderation / team-support plan"
+featureOrInitiative: "<PROPOSAL — UNKNOWN, must be filled in (ChromeStatus ID)>"
+lifecycleStage: "unknown — confirm with product/engineering owner"
+audience: "internal (configures team response; public-facing derivative must be reviewed)"
+owner: "<launch/incident lead — CONFIG-REQUIRED>"
+status: "draft"
+created: "<ISO date>"
+updated: "<ISO date>"
+sources:
+  - skill module: modules/launch-resilience.md
+  - skill module: modules/stakeholder-critique.md
+  - skill module: modules/governance-and-roles.md
+unresolvedAssumptions:
+  - proposal identity and lifecycle stage
+  - threat credibility, immediacy, jurisdiction
+  - whether published moderation policy already exists and is enforceable
+  - each public-facing team member's desired exposure level
+reviewRequirements:
+  - security
+  - qualified legal counsel
+  - HR/people support
+  - communications/PR
+  - product/engineering decision owner
+  - each affected person (for anything touching them)
+```
+
+### 5.1 Risk and controversy assessment
+
+- **[FACT]** Public tracker flooded; individual engineers receiving hate mail; personal information posted; one message described as possibly a credible threat.
+- **[HYPOTHESIS]** Flooding is a mix of (i) legitimate technical criticism, (ii) low-signal repetition/brigading, and (iii) a small volume of harmful conduct including doxxing/threat. These proportions are **[UNKNOWN]** and must be measured by moderation triage, not assumed.
+- **[RECOMMENDATION]** Treat people-safety as the binding constraint; treat tracker usability and substance-response as parallel workstreams.
+
+### 5.2 Roles / on-call / escalation matrix (config-required)
+
+| Archetype | Name/email | Backup | Authority source | Verb |
+|---|---|---|---|---|
+| Launch/incident lead | _fill in_ | _fill in_ | _team process_ | coordinates |
+| Product/engineering decision owner | _fill in_ | _fill in_ | _team process_ | contributes (decides pause/narrow/rollback) |
+| Security | _fill in_ | _fill in_ | _formal-review-if-required_ | owns threat escalation |
+| Legal counsel | _fill in_ | _fill in_ | _formal-review-if-required_ | formal-review-if-required |
+| HR / people support | _fill in_ | _fill in_ | _team process_ | consult (safety/well-being) |
+| Communications / PR (spokesperson) | _fill in_ | _fill in_ | _team process_ | coordinates external comms |
+| Moderator(s) | _fill in_ | _fill in_ | _team process_ | coordinates channel moderation |
+| Privacy reviewer | _fill in_ | _fill in_ | _formal-review-if-required_ | formal-review-if-required |
+| Accessibility reviewer | _fill in_ | _fill in_ | _formal-review-if-required_ | formal-review-if-required |
+| Standards/TAG liaison | _fill in_ | _fill in_ | _team process_ | consult |
+| Community/GDE manager | _fill in_ | _fill in_ | _team process_ | contributes |
+
+**[COMMITMENT]** None until names are filled and a decision owner accepts the plan. **[RECOMMENDATION]** Confirm actual sign-off authority from the team's canonical governance process — DevRel does not determine it.
+
+### 5.3 Severity ladder (proposed — calibrate to org) — **[RECOMMENDATION]**
+
+- **SEV-1 — credible threat / active doxxing of a person:** security + legal + (per policy/jurisdiction) law-enforcement track; reduce exposure; preserve evidence privately. *Not* a moderation-only item.
+- **SEV-2 — sustained harassment/hate, or tracker collapse blocking real bugs:** expanded moderation, structured-feedback redirect, possible temporary conversation lock on specific threads, spokesperson-led response, consider launch pause/narrowing per engineering.
+- **SEV-3 — high-volume repetitive/disruptive but non-threatening:** consistent moderation per policy, templated responses, aggregation.
+- **SEV-4 — normal substantive criticism:** preserve; route to design/research/FAQ.
+
+Triggers to define explicitly: extra moderation, a response, channel lock, launch pause, rollback, emergency escalation. **[RECOMMENDATION]**
+
+### 5.4 Public source-of-truth and channel plan — **[RECOMMENDATION]**
+
+- One maintained location for status, evidence, known concerns, decisions, updates (e.g., a pinned ChromeStatus/issue/discussion post).
+- Technical feedback via **structured templates + dedicated issues**, not personal accounts.
+- If a public thread is locked, immediately provide a **moderated structured channel** for technical criticism — never label all negative feedback "abuse."
+- Personal detail minimization in staff pages, commits, templates, launch materials; offer voluntary digital-safety review.
+
+### 5.5 Moderation and structured-feedback plan — **[RECOMMENDATION]**
+
+- Publish/confirm contribution and moderation expectations; enable reporting; ensure enforceable **before** relying on it.
+- Track these **separately** (per module), do not collapse:
+  1. Standards/design criticism and evidence gaps
+  2. Product/implementation bugs
+  3. Press narratives and factual errors
+  4. Developer confusion/support issues
+  5. Coordinated disruption/spam
+  6. Harassment/hate
+  7. Doxxing/private-information exposure
+  8. Credible physical or cyber threats
+- **Do not** quote or redistribute doxxing in normal reports; aggregate public reporting to protect targeted people; store sensitive evidence only in approved restricted systems.
+
+### 5.6 Prepared response / hold / correction / rollback materials — **[RECOMMENDATION]**
+
+Draft only what engineering confirms is true:
+- **Hold/under-review** statement (status, no false promises).
+- **Correction** templates (for factual errors, ours and press's).
+- **Narrowing/delay** language (if scope moves).
+- **Rollback** language (if engineering confirms reversal).
+- **FAQ** including the **strongest objections**, negative positions, unknowns, user costs, mitigations, and *what would change the plan*.
+
+### 5.7 Privacy and digital-safety checklist — **[RECOMMENDATION]**
+
+- Ask each public-facing team member their desired exposure level; do not assume everyone should be a spokesperson.
+- Offer voluntary digital-safety review (staff pages, social, commit history, presentation materials).
+- Rotate spokespeople; reassign monitoring; consequence-free disengagement.
+- Do not publicly disclose an affected person's actions, location, or support choices without consent.
+
+### 5.8 Incident log location and access policy — **[RECOMMENDATION]**
+
+- Restricted-access incident log (not the public tracker): timestamps, URLs, screenshots, chronology, moderation actions, escalations, decisions.
+- Access on need-to-know; sensitive evidence isolated from general incident notes.
+
+### 5.9 Team support and handoff plan — **[RECOMMENDATION]**
+
+- No individual monitors hostile channels continuously; coverage with handoffs.
+- Workload relief, private check-ins, HR/people support, security support.
+- Blameless framing; a person is not disciplined or blamed for being targeted.
+
+### 5.10 Post-incident learning review — **[RECOMMENDATION]**
+
+- Time-bounded follow-up cadence (daily during acute period → weekly while risk remains), with recurrence triggers, owners, outcomes, and **stop conditions**.
+- Blameless retrospective after the acute incident: what kept criticism usable, what protected people, what failed, what to change in the launch-resilience playbook.
+- Use `modules/launch-retrospective.md` inventory; keep partial/blocked cases visible; do not infer success from silence.
+
+---
+
+## 6. Measure the outcome
+
+Match measures to this work (no universal score). Candidate measures, with denominators and data-quality caveats to be set by owners:
+
+- **People-safety:** incidents escalated to security within target time (numerator/denominator), with privacy-preserving reporting — **[RECOMMENDATION]**
+- **Criticism usability:** % of substantive issues triaged vs. lost in flooding; time-to-substantive-response
+- **Moderation consistency:** actions aligned to published policy; rate of mis-classification (criticism mistakenly hidden / abuse mistakenly kept)
+- **Feedback-channel health:** volume routed to structured channel; bug/defect yield from it
+- **Evidence honesty:** count of public claims later corrected; undisclosed negative positions surfaced
+- **Team sustainment:** rotation adherence; no single-person exposure; aftercare completion
+
+**Avoid** inferring success from shipment, reduced public criticism, press sentiment, or tracker silence. **[RECOMMENDATION]**
+
+---
+
+## 7. Continue when the work is ongoing
+
+This is a live, evolving situation. Use `modules/continuous-loop.md`: inventory (criticism themes + harm streams + decisions) → evidence → exercise → critique → questions → goals → improve → validate → publish/update → monitor, on a fixed cadence with stable IDs, owners, and escalation points. Re-check stakeholder positions over time (they and personnel change) — timestamp each.
+
+---
+
+## Self-audit against the module's failure conditions
+
+The plan **fails if** it:
+- ❌ Tells an individual engineer to debate harassers or monitor abuse alone → plan explicitly reassigns and rotates.
+- ❌ Treats threats/doxxing as useful product feedback → routed to security, separated from feedback.
+- ❌ Hides legitimate technical criticism under a broad "toxicity" label → structured channel preserved; §3b theme scaffold.
+- ❌ Republishes personal information or sensitive evidence → restricted-access log, no doxxing redistribution.
+- ❌ Makes launch optics more important than safety → safety is the binding constraint and leads the sequence.
+- ❌ Assumes locking a thread resolves the underlying product concern → substance workstream runs in parallel.
+- ❌ Disciplines/blames a person for being targeted → explicit in §5.9.
+- ❌ Publicly discloses an affected person's actions/location/support without consent → §5.7.
+
+---
+
+## DevRel boundary (closing)
+
+DevRel **coordinates** the evidence, moderation, communications, feedback-routing, and team-support workstreams. DevRel does **not** determine whether security/legal/HR engagement is required, does not run the threat escalation, does not approve or block shipment, and cannot convert any of the above into commitments until the owner map is filled and the decision owner accepts them. The credible threat is the one item that must move **before** anything else in this document — and it moves through security and qualified channels, not DevRel.

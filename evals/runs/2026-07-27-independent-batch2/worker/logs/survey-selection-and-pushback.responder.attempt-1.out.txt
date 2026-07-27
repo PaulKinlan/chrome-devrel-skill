@@ -1,0 +1,319 @@
+# Chrome DevRel response — proposed Web AI API (survey overclaim + external criticism)
+
+Public-alpha advisory. This is pre-review DevRel analysis, not formal API Owner, privacy, security, accessibility, legal, or standards approval, and not a Chrome process. Every claim below is labeled. Bracketed items `[like this]` are team-specific content I cannot supply without inventing it.
+
+---
+
+## 0. Questions I would normally ask, and my working assumptions
+
+This arrived non-interactive, so I am stating the interrogations explicitly and proceeding on stated assumptions rather than blocking.
+
+**Questions I would ask first:**
+1. Is there a public explainer / ChromeStatus entry / intent-to-prototype already, and does the criticized material (and the survey citation) live in it?
+2. What *exactly* does the survey measure (publisher, date, sampling frame, exact question wording, n)? And where is it currently being cited?
+3. What is the criticism's actual content and source(s) — technical, privacy, "wrong layer," "no demand," interoperability, process?
+4. Is the criticism legitimate technical/policy critique, or does any of it include harassment/doxxing/threats directed at individuals?
+5. Who is the decision owner, and what decision is now pending (proceed to prototype? publish a response? retract a claim? enter an origin trial)?
+
+**Working assumptions I'm proceeding on (flag any that are wrong):**
+- **Assumption A:** Lifecycle stage is **incubation**, possibly with a prematurely public explainer, because the API is "proposed," the evidence base hasn't been built, and the survey is being used as category-level demand. (If a ChromeStatus entry and intent-to-prototype already exist, we are early **prototype** with an evidence deficit — the plan below still holds.)
+- **Assumption B:** The criticism is **legitimate technical/policy critique**, not abuse. (If any of it is targeted harassment, switch immediately to `modules/launch-resilience.md`: protect the individuals first; this response does not handle that.)
+- **Assumption C:** The survey measures **broad developer interest in AI as a category**, not this API shape. This is the core problem to resolve.
+- **Assumption D:** No partner, framework, or other-engine commitment currently exists that I can rely on. (If one does, supply it with attribution and permission before I treat it as evidence.)
+- **Assumption E:** The boundary is **mixed input (a real internal survey + public criticism), with a public-safe output layer** for the response.
+
+---
+
+## 1. Diagnose — intake summary
+
+- **Mode:** Feature (proposed Web AI API).
+- **Lifecycle stage:** **Incubation.** Problem/opportunity asserted; use cases, alternatives, and solution shape still open; evidence base not yet established. External criticism is a forcing function that has exposed the evidence gap. Rationale: the team is still relying on category-level demand, which per `phases/01-incubation.md` is a named common failure ("Using broad category interest as API demand").
+- **Developer problem and target audience:** **Unknown.** No problem statement has been supplied. The API shape is being treated as proof of a problem, which `00-intake.md` lists as a failure mode.
+- **Current decision:** (a) whether/how to respond to the external criticism, and (b) whether the API has sufficient evidence to continue toward prototype / public incubation. These are **two separate decisions** and should not be merged into "write a rebuttal."
+- **Evidence available:** One general "developers are interested in AI" survey. **Signal only, category-level** — see the audit in §3.
+- **Highest-risk assumptions** (in priority order):
+  1. That broad AI interest implies demand for *this* API shape. (**Contradiction** with how the evidence is being used — see §3.)
+  2. That developers want this work done **on-device / in the browser** at all. Survey didn't ask → **Unknown.**
+  3. That developers will accept the **model choice** the API implies. Survey didn't ask → **Unknown.**
+  4. That developers are willing to **deploy/operate** it. Survey didn't ask → **Unknown.**
+  5. That browser integration is the right layer vs. a library/server/native approach. Untested → **Unknown.**
+- **Missing owners/stakeholders (to confirm):** Decision owner `[PM/TL]`, API Owner (ChromeStatus/intent process), Privacy reviewer, Security reviewer, Accessibility reviewer, Standards/TAG liaison (cross-engine), `[survey owner]`, `[comms]`. Per governance, DevRel coordinates evidence/adoption; it does not approve, block, or sign off.
+- **Recommended next intervention:** **Stop citing the general survey as evidence for this API**, audit the survey honestly, reclassify all evidence to its true strength, group the criticism into themes, and decide between (a) co-design-and-research mode or (b) retraction of overclaimed material. **Do not draft a defensive rebuttal built on the same overclaim.**
+
+---
+
+## 2. Assess readiness (advisory, no veto)
+
+Using `modules/readiness-expectations.md`. Rating = honest state of the *evidence*, not the elegance of the API.
+
+| Dimension | Rating | Rationale |
+|---|---|---|
+| Problem validity | **Unknown** | No problem/use-case brief supplied. "API shape as proof of problem" risk. |
+| Developer demand | **Partial (and mis-presented)** | General category interest exists, but per the readiness rubric this is explicitly *Partial*: "General category interest exists but does not measure demand for this API shape." The team is currently presenting Partial as Supported — that gap is itself a `contradiction` in how evidence is used. |
+| On-device / browser-layer fit | **Unknown** | Survey did not ask. No integration evidence. |
+| Model choice / willingness to deploy | **Unknown** | Survey did not ask. No commitments. |
+| Partner commitment | **Unknown** | No attributable partner evidence supplied. None may exist. |
+| API ergonomics | **Unknown** | No friction logs. |
+| Interoperability / other engines | **Unknown** | No cross-engine positions retrieved. Silence ≠ support. |
+| Framework/library fit | **Unknown** | Untested. |
+| Documentation/samples | **Unknown** | — |
+| User impact (end-user cost: battery, storage, bandwidth, low-end devices, consent) | **Unknown** | Critical for on-device AI; no device matrix or cost analysis. |
+| Privacy / data protection | **Unknown** | "Local/on-device" claims, if any, are unverified; data-flow not analyzed. |
+| Security / abuse | **Unknown** | No threat model (model-poisoning, prompt-injection-via-API, resource exhaustion, on-device fingerprinting via model behavior). |
+| Accessibility | **Unknown** | — |
+| Performance / resource cost | **Unknown** | Flagship-vs-low-end cost unmeasured — a first-order concern for on-device AI. |
+| Narrative / claim accuracy | **Contradicted** | Public/external material appears to lean on a survey the instrument cannot support. This is the single most urgent item. |
+| Team safety | **To confirm** | Assume legitimate criticism; if any abuse is present, switch to launch-resilience immediately. |
+
+**Likely consequences if unresolved (advisory):** continued and escalating external criticism; a credibility hit that attaches to the API regardless of its technical merits; harder partner/engine conversations later because the demand story is already publicly weak; risk that an intent/experiment is launched on an evidence base that reviewers can dismiss in one paragraph. None of this is a DevRel veto — it's the cost of the gap.
+
+---
+
+## 3. Challenge
+
+### 3.1 Survey audit (the centerpiece)
+
+Applying the mandatory audit checklist from the operating rules. I can only fill the dimensions you've stated; the rest are items the survey owner must answer.
+
+| Audit dimension | Finding | Evidence class |
+|---|---|---|
+| Does the instrument measure *this API shape / use case* or a broad category? | **Measures a broad category (developer interest in AI), not this API.** Confirmed by the request: the survey did not ask about this API shape. | `fact` (about the survey's scope) |
+| On-device constraints asked? | **No.** | `fact` |
+| Browser integration asked? | **No.** | `fact` |
+| Model choice asked? | **No.** | `fact` |
+| Willingness to deploy/operate asked? | **No.** | `fact` |
+| Target population / sampling frame | **Unknown** — `[survey owner must answer]` | `unknown` |
+| Recruitment / selection bias | **Unknown** | `unknown` |
+| Question wording / order | **Unknown** — needed to judge leading-question and framing effects | `unknown` |
+| Response rate / missing data | **Unknown** | `unknown` |
+| Analysis method | **Unknown** | `unknown` |
+| Contradictory findings within the survey | **Unknown** | `unknown` |
+| Published methods / limitations | **Unknown** — if the survey has no public methods, it cannot be cited in a public response at all | `unknown` |
+
+**Conclusion of the audit:** The survey is **admissible as evidence of category climate** ("developers are paying attention to AI") and **inadmissible as evidence of demand for this API, on-device preference, browser-layer preference, model acceptance, or deployment willingness.** Any sentence in the team's material that uses the survey to support those five claims is a `contradiction` between the claim and the instrument and must be removed before any further external communication.
+
+**Replacement is required, not rewording.** Proposed falsification questions for the new instrument (per `modules/ecosystem-and-customer-research.md`):
+- *Support:* "When did you last encounter [specific job] in production? What did it cost you?"
+- *Falsification:* "What did you do instead, and why was that good enough?" / "Under what conditions would you refuse to deploy this?" / "Would you accept the on-device cost on your lowest-spec supported device?" / "Would a library/server model satisfy the same job?"
+
+### 3.2 Group the external criticism into themes (template; fill from actual sources)
+
+I do not have the criticism text, so I am **not inventing themes**. The table below is the structure to populate; every row's evidence state must be set from the real source.
+
+| Theme (to populate) | Source + date + retrieval | Evidence state | Likely response type |
+|---|---|---|---|
+| e.g., "No real demand — just category survey" | `[fill]` | `contradiction` (if it points at the survey gap, it is *correct*) | Acknowledge + present new research plan |
+| e.g., "Wrong layer — should be a library/server" | `[fill]` | `unknown` | Research adjacent-platform + existing-web alternatives; don't dismiss |
+| e.g., "On-device cost / low-end device harm" | `[fill]` | `unknown` | Device-matrix measurement before any trial |
+| e.g., "Privacy: model behavior as fingerprinting / data flow" | `[fill]` | `unknown` | Privacy review (formal-review-if-required) |
+| e.g., "Single-engine / not interoperable" | `[fill]` | `unknown` | Cross-engine outreach; do not claim interop |
+
+**Rule (from `modules/stakeholder-critique.md`):** group criticism, mark each theme's evidence state, and map each to a response / research task / design change. **Do not dismiss criticism based on presumed motive.** If a criticism correctly identifies the survey gap, the honest move is to concede it.
+
+### 3.3 Adversarial "why not?" (selected, strongest cases)
+
+- **The need is rare or already solved.** A library, a server-side model, or a native/OS API may already cover the job. *Evidence that would rebut:* attributable developer reports of an unmet, recurring, costly job that only on-device browser integration solves. **Status: unknown.**
+- **The browser is the wrong layer / premature ossification.** Shipping an on-device AI API can freeze a fast-moving model/tooling ecosystem into a lowest-common-denominator primitive. *Evidence that would rebut:* a primitive that's low-level enough not to ossify, with a credible Baseline/interop path. **Status: unknown.**
+- **Partners want the *outcome*, not *this API*.** "Interested in AI" ≠ "want this surface." **Status: partial/contradicted by the survey's own scope.**
+- **Demand is manufactured by selection bias or one vendor ecosystem.** *Evidence that would rebut:* demand across independent source families, regions, and frameworks. **Status: unknown.**
+- **On-device cost is borne by users/low-end devices, not the developers asking for it.** Classic "user is not the person bearing cost" mismatch. **Status: unknown — and the survey notably didn't probe it.**
+
+**Recommendation on direction:** This is not a stop recommendation — there isn't evidence to stop, just as there isn't evidence to proceed to trial. The defensible posture is **incubation with genuine co-design**: keep the explainer honest, retract the overclaim, and run real research. If, after representative research, the falsification cases hold, the right moves are narrow, park, or stop — not push.
+
+### 3.4 Stakeholder/constituency scan (to run, not role-played)
+
+Per `modules/stakeholder-critique.md`, do **not** write "what Safari/Mozilla/EFF would say" from memory. Retrieve current primary sources and timestamp them. Constituencies plausibly material here: end users (especially low-end-device and metered-network users), developers/framework/library authors, other engines (WebKit, Gecko, downstream), W3C TAG / relevant CGs, privacy and security researchers, civil-society/digital-rights groups, model providers, and regulators (competition, consumer protection, data protection). Mark each as **recorded position / principle-grounded inference / open question** — never turn silence into support.
+
+---
+
+## 4. Plan (incubation-appropriate)
+
+**Outcome & exit criteria:** A defensible, honest evidence base such that (a) no public material overclaims from the survey, (b) demand for *this* API shape is either demonstrated or explicitly marked unproven, and (c) the team can make a grounded incubation→prototype (or park/stop) decision. DevRel coordinates the evidence; the go/no-go is the owner's, with formal review routed per the team's canonical process.
+
+**Evidence to collect:**
+1. Full survey audit from the survey owner (sampling, wording, n, methods, limitations). If methods are not public, the survey cannot be cited externally.
+2. Representative developer research using the replacement questions above (problem-language, not API-language; include falsification items). Recruitment plan across independent source families, frameworks, regions, device tiers.
+3. Adjacent-platform + existing-web alternatives analysis (libraries, server models, native/OS AI surfaces, mini-app/chat/agent patterns) — extract the *job*, not the API.
+4. On-device cost device matrix (flagship / mid / low-end: memory, storage, battery, thermal, bandwidth) — before any trial.
+5. Cross-engine positions (retrieved and dated, not assumed).
+6. Privacy data-flow + security threat model (routed to formal review if required by the team's process).
+
+**Activities / artifacts (see §5):** evidence & survey-audit brief; criticism-response brief; developer research/survey plan; critique matrix; problem/use-case brief (once evidence supports one).
+
+**Owners / reviewers:** DevRel **coordinates** evidence & adoption; PM/Eng **contribute** design context; API Owner **consult** on ChromeStatus/intent; Privacy/Security/A11y **formal-review-if-required** per canonical process; Standards/TAG liaison **consult** on cross-engine; Comms **contributes** on the external response. Names/emails from the team owner map (`modules/governance-and-roles.md`), which is config-required and not something I can fill.
+
+**Sequence & timing (suggested):**
+1. **Now (days):** reclassify the survey; remove overclaims from all current material; decide retraction vs. correction language. *Blocker: none.*
+2. **Short (1–2 weeks):** publish an honest response to the criticism (§5.2); stand up the research plan; retrieve cross-engine positions; start the alternatives scan.
+3. **Mid (3–6 weeks):** run representative research + device-matrix measurement; populate the critique matrix; draft a real problem/use-case brief if evidence supports one.
+4. **Gate:** re-evaluate incubation→prototype with the transition packet (jobs/use cases, segment map, workarounds & costs, alternatives rejected with evidence, affected stakeholders, prototype learning goals + stop/redesign conditions). Do not advance on the category survey.
+
+**Explicit blockers:**
+- No permission to retract/correct public material → escalate to owner/Comms; this blocks an honest response.
+- Survey methods not public and survey owner unavailable → cannot cite survey externally at all; treat as internal-only.
+- Any abuse in the criticism → launch-resilience first; this plan pauses for the affected people.
+
+**Dependencies / risks:** Credibility risk if the response reuses the overclaim; partner/engine-conversation risk if the demand story stays weak; user-harm risk if on-device cost isn't measured before trial.
+
+---
+
+## 5. Artifacts
+
+Three artifacts, each with required metadata. The response (§5.2) is the one the colleague most directly asked for; §5.1 is the evidence foundation it must rest on; §5.3 is how we stop being in this position again.
+
+---
+
+### 5.1 Artifact — Evidence & survey-audit brief
+
+```yaml
+artifactType: "Problem/use-case brief (evidence-audit variant)"
+featureOrInitiative: "[Web AI API — ChromeStatus ID / explainer link]"
+lifecycleStage: "incubation"
+audience: "internal (decision owner, PM/Eng, API Owner, Comms)"
+owner: "DevRel practitioner [name]"
+status: "draft"
+created: "[ISO date]"
+updated: "[ISO date]"
+sources: ["[general AI-interest survey — full citation + retrieval date]",
+          "[each criticism source — URL, publisher, date, retrieval date]"]
+unresolvedAssumptions:
+  - "Survey methods/n not yet supplied by survey owner"
+  - "No problem statement or use-case brief yet exists"
+  - "Cross-engine positions not yet retrieved"
+reviewRequirements: ["Decision owner", "API Owner (if ChromeStatus exists)", "Comms (before any external use)"]
+```
+
+**What we can currently claim, by label:**
+
+- `signal` — A general survey indicates developers are interested in **AI as a category**. (Useful for "this area matters"; **not** evidence of demand for this API.)
+- `fact` — The survey did **not** ask about this API shape, on-device constraints, browser integration, model choice, or willingness to deploy. (Per the request.)
+- `contradiction` — Current team material appears to use the category survey to support API-specific demand. The instrument cannot support that use.
+- `unknown` — Whether developers want this job done on-device/in-browser at all; whether they accept the implied model choice; whether they would deploy it; whether a library/server/native alternative suffices; cross-engine positions; on-device cost on low-end devices; privacy data-flow; threat model.
+- `hypothesis` — That on-device browser integration is the right layer for the asserted job. (Untested; do not present as fact.)
+- `commitment` — **None on record.** No partner, framework, or engine commitment is currently attributable. None should be implied.
+
+**Five claims that must not appear in any public/explainer/intent/response material until backed by fit-for-purpose evidence:**
+1. "Developers want this API." (Survey doesn't measure it.)
+2. "Developers want this on-device / in the browser." (Not asked.)
+3. "Developers accept the model choice." (Not asked.)
+4. "Developers will deploy this." (Not asked.)
+5. "There is demand / partner support." (No attributable partner evidence on record.)
+
+---
+
+### 5.2 Artifact — Criticism-response brief (honest, non-defensive)
+
+```yaml
+artifactType: "Launch brief (response-communication variant)"
+featureOrInitiative: "[Web AI API]"
+lifecycleStage: "incubation"
+audience: "public (developers; cross-engine; civil society) — public-safe output layer"
+owner: "DevRel practitioner [name] + Comms [name]"
+status: "draft — provisional pending survey audit completion and owner sign-off"
+created: "[ISO date]"
+updated: "[ISO date]"
+sources: ["[each criticism source]", "[survey full citation]"]
+unresolvedAssumptions:
+  - "Exact criticism themes not yet supplied; do not publish until populated"
+  - "Survey methods not yet confirmed public"
+reviewRequirements: ["Decision owner", "Comms", "Standards/TAG liaison (if interop claims)", "Privacy/Security if any technical claims about on-device behavior"]
+```
+
+**Recommended posture (rationale):** Convert the criticism into a co-design and research opportunity. A defensive rebuttal built on the category survey will fail on first inspection and will damage the API's credibility independently of its merits. Concede the survey's real limits, separate what is known from what is hypothesized, and commit to evidence-gathering. This is the strongest DevRel move available.
+
+**Key messages (each must carry its evidence citation in the final draft):**
+
+1. **Acknowledge the evidence boundary.** "The [survey] tells us developers are interested in AI broadly. It does **not** tell us whether developers want this specific API, whether they want it on-device, or whether they would deploy it. We should not have implied it did, and we're correcting that."
+2. **State the real status.** "This API is in early incubation. The shape is a hypothesis, not a decision. We're testing whether browser integration is even the right layer." (Only say this if true; if a ChromeStatus/intent exists, disclose it.)
+3. **Respond to criticism by theme, not by sentiment.** For each concrete theme (demand, layer, on-device cost, privacy, interop): either (a) concede with the specific correction, (b) point to evidence that actually addresses it, or (c) name it as open and describe the research that will address it. **Never** (d) dismiss on motive.
+4. **Invite co-design, not validation.** "We want to learn about the job you actually have, the cost on your lowest-spec device, and what would make you reject this." Provide a real channel (issue tracker / research signup), not a PR mailbox.
+5. **Be explicit about what is not yet decided.** No launch date, no partner claims, no interop claims, no "private/on-device" claims unless a privacy review has technically demonstrated them.
+
+**Red-team of this response (from `modules/stakeholder-critique.md` §6) — must pass before publish:**
+- Does it overstate demand, partner commitment, survey quality, standards support, or interop? **Must be no.**
+- Does it describe a site/Chrome benefit as a user benefit without evidence? **Must be no.**
+- Does it make a single-engine implementation sound like an interoperable standard? **Must be no.**
+- Does it promise on-device safeguards without analyzing incentives to bypass them and without a completed privacy/security review? **Must be no.**
+- Does it announce scope/naming/launch intent the implementation team hasn't committed to? **Must be no.**
+- Does it conceal known negative positions or unresolved review feedback? **Must be no.**
+
+**Provisional draft (skeleton — fill bracketed content, do not invent):**
+
+> Thanks for the close read. You're right that the [survey] measures interest in AI as a category, not demand for this API — it didn't ask about the API shape, on-device cost, browser integration, model choice, or willingness to deploy. We've updated our material to stop implying otherwise `[link to correction]`.
+>
+> Where the API stands today: early incubation. `[1–2 sentences on the actual job hypothesis, phrased as a job not an API]`. We have not established that browser integration is the right layer, and we have not measured on-device cost across device tiers — both are on our research list before any trial `[link to research plan]`.
+>
+> On your specific points: `[theme-by-theme: concede / cite / name-as-open]`.
+>
+> We'd rather build this with people who'd actually use it — and with people skeptical that it should exist. If you've hit this job in production, tell us what it cost you and what you did instead: `[channel]`.
+
+**Hard limits on this draft:** It must not be published until (a) the survey audit is complete, (b) each criticism theme is populated with its real source, (c) the correction to existing material is staged, and (d) Comms + decision owner have signed off. If the team is unwilling to retract the overclaim, **do not publish a response** — a response that preserves the overclaim is worse than none.
+
+---
+
+### 5.3 Artifact — Developer research / survey plan (to get real evidence)
+
+```yaml
+artifactType: "Developer research/survey plan"
+featureOrInitiative: "[Web AI API]"
+lifecycleStage: "incubation"
+audience: "internal (research owner, decision owner); methods summary public when cited"
+owner: "DevRel practitioner [name]"
+status: "draft"
+created: "[ISO date]"
+updated: "[ISO date]"
+sources: []
+unresolvedAssumptions:
+  - "Exact segments/regions to be confirmed with PM"
+  - "Budget/cadence to be confirmed"
+reviewRequirements: ["Decision owner", "Privacy reviewer (for any PII in research)"]
+```
+
+**Research question:** Is there a recurring, costly, currently-unsolved developer/end-user job for which on-device browser integration is plausibly the right layer — and would developers actually deploy it given the on-device cost? (Decision: incubation → prototype, or park/stop.)
+
+**Population & sampling (to finalize):** Target `[segments]` across independent source families (framework/library authors, server-side AI users, native/OS AI users, enterprise, low-end-device markets, regions). Recruitment `[method]`. **Selection-bias controls:** avoid recruiting only from the team's existing followers or one vendor ecosystem; recruit skeptics deliberately; record denominator.
+
+**Questions (exact wording; include falsification):**
+- *Behavior, not opinion:* "When did you last encounter `[job]` in production? Walk us through it."
+- *Cost:* "What did it cost (time, money, device/user impact, support)?"
+- *Alternative:* "What did you do instead? Why was that good enough — or not?"
+- *Layer test:* "Would a library / server model / native API have met the same need? Why not?"
+- *On-device cost (falsification):* "Would you accept the battery/storage/bandwidth cost on your lowest-spec supported device?"
+- *Rejection test (falsification):* "What would make you refuse to deploy this?"
+- *Model choice:* "Whose model, and what would make the model choice unacceptable?"
+
+**Analysis method:** Pre-registered themes; count both supportive and falsifying responses; report denominator and non-response; do not sum anecdotes into demand. **What would contradict the hypothesis:** a majority report the job is rare/already-solved/wrong-layer/too-costly-on-device, or would refuse to deploy.
+
+**Limitations (state publicly):** Self-report bias; recruitment reach; cannot prove production deployment willingness from survey alone (needs trials). This research **cannot** by itself justify an origin trial — it can only justify (or not) moving to prototype.
+
+---
+
+## 6. Measure the outcome
+
+Matched to this work (not a universal score), per `modules/measurement-framework.md` principles:
+
+- **Evidence quality:** number of public claims traceable to fit-for-purpose cited evidence (target: 100% after correction); number of overclaim instances removed. Denominator: all public/explainer/intent claims about the API.
+- **Credibility / sentiment:** share of subsequent criticism that targets *substance* vs. *evidence overclaim* (the overclaim share should drop to ~0 after correction). Denominator: all public criticism items, deduplicated.
+- **Research fitness:** research plan with explicit denominator, falsification questions, and published methods. Denominator: research plans produced.
+- **Directional decision quality:** did the incubation→prototype (or park/stop) decision get made on representative evidence rather than the category survey? Binary, with the evidence ledger as the record.
+- **Avoided cost:** number of preventable review disputes / retractions after launch (target: lower than baseline).
+
+Report each measure's denominator, data quality, and limitations. Do not collapse to one sentiment score.
+
+---
+
+## 7. Continue (ongoing)
+
+If the API proceeds, switch to `modules/continuous-loop.md`: inventory → evidence → exercise → critique → questions → goals → improve → validate → publish/update → monitor. Keep stable evidence IDs, the dated source packet, exact denominators, owners, cadences, alert thresholds, and human escalation points. On any stage move, produce the matching transition packet (not just an email or a blog post).
+
+---
+
+## Bottom line
+
+- The survey is **category-level signal, not API demand.** That is a `fact` about its scope. Using it as API demand is a `contradiction` in how the evidence is being applied and is the root cause of the criticism's force.
+- **First action:** stop citing it as API demand; correct existing material; do not publish a defensive rebuttal that reuses the overclaim.
+- **Best response posture:** concede the real limits honestly, separate known/hypothesized/unknown, and convert criticism into co-design + representative research.
+- **No commitments exist on record** (partner, framework, or engine) and none should be implied.
+- This is **advisory DevRel analysis**, not approval of any kind; formal privacy/security/accessibility/API-Owner/legal review is routed per the team's canonical process, not granted here.
+
+If you send me (a) the actual survey citation + its methods, (b) the criticism sources verbatim, and (c) confirmation of lifecycle stage and whether a public explainer/ChromeStatus entry exists, I will populate the bracketed fields, complete the survey audit and critique matrix against the real text, and harden the response draft for Comms/owner sign-off.

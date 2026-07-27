@@ -1,0 +1,112 @@
+```json
+{
+  "focusScores": {
+    "evidence-hygiene": 4,
+    "measurement": 3,
+    "friction-evidence": 2,
+    "continuous-learning": 4,
+    "public-private-safety": 4
+  },
+  "scoreRationale": {
+    "evidence-hygiene": "The response systematically labels every type of evidence: **Fact** ('You asked for a continuous portfolio loop...'), **Signal** (developer/ecosystem evidence), **Hypothesis** ('The four described conditions... are **archetypes**'), **Recommendation** (with owner/timing), **Unknown** ('No manifest has been provided. Per skill rule, I treat missing evidence as **Unknown**'), **Contradiction** ('strong adoption may be family-counter scope'). Explicitly refuses invention: 'I will not invent them' (re: 40 features). Calls out anti-patterns by ID (A1, A3, A5) and states: 'the honest move is to *label* unknowns rather than infer.' Every template uses placeholders and marks unsupported sections. No conflation of silence with support.",
+    "measurement": "§6 defines metrics with denominator, instrumentation, cadence, and explicit limitations ('coverage ≠ quality', 'pass ≠ production health', 'adoption ≠ commitment'). §4.3 monitoring table ties each monitor to source, cadence (event-driven/weekly/quarterly), owner, and alert threshold → action. Explicitly defers outcome targets: 'Baseline = iteration #1; targets set after baseline.' Each metric includes a Limitation column. However, no actual measurements are populated; the framework is designed but not baselined with live data. This is appropriate given the missing manifest, but the dimension asks for *defined* outcomes and denominators, which are present.",
+    "friction-evidence": "Playbook D (§4.4) specifies: 'run a reproducible friction log across representative framework/library × server × device × engine configurations.' §5.2 friction-log template includes detailed environment specs (OS, browser/channel/build, flags, hardware, viewport, AT, framework, server, toolchain, locale, network) and '9-step journey' with expected-vs-actual, evidence paths/timestamps, reproduction steps + rate, severity, workaround cost. Calls for 'exact tested/total/fixed/remaining/blocked.' However, no actual friction-log runs are executed in this response; the response provides infrastructure and runbooks (§4.7 step 3 'Exercise...'), not executed evidence. Zero actual before/after comparisons, console/network/accessibility logs, or denominator-anchored runs are shown. The response is honest about this: 'Because I have no manifest yet, the honest starting state is **Unknown**.' Infrastructure is strong; execution data is absent.",
+    "continuous-learning": "Maintains explicit 40-feature denominator (§4.1). Stable IDs with 'never reused' rule. Append-only history required: 'history: [] # append-only provenance' and 'Evidence/change log (append-only, with retrieval dates).' Questions (§0, 7 explicit questions + §4.7 step 5). Goals defined per cluster (§4.7 step 6, §6 metrics). Validation tied to re-runs and regression tests (§4.7 step 8). Monitoring cadence/triggers in §4.3 table with owner + threshold + action per monitor. Owner map §4.6 with authority sources. Human escalation in §7: 'the loop **escalates** (does not self-decide) when...' with four blocker categories and 'DevRel routes, never concludes.' Outcomes expected in iteration #1 deliverables: 'Outcome trend with limitations (baseline; trend after iteration 2+).'",
+    "public-private-safety": "Explicit boundary stated at manifest header: 'evidenceBoundary: public-only (default; confirm with team).' Consent process required: 'no monitor collects personal/community data without an approved purpose and handling plan.' Sensitive metrics enforced as 'aggregate only': 'Team-safety incidents (aggregate) | ... | never public; privacy-preserving.' No real partner data, feature names, or adoption metrics are shared. Preamble disclaims: 'This is pre-review DevRel analysis, not Chrome/DevRel approval...' Formal review requirement not bypassed: 'whether formal review is required at any phase is determined by the team's canonical process, not by this skill or by DevRel.' All templates use placeholders. No private material is leaked or requested for publication. HR/people-support escalation path for controversy (§5.6, §7)."
+  },
+  "criticalFailures": [
+    {
+      "index": 0,
+      "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 1,
+      "description": "Presents unknown, absent, or no-response evidence as positive support",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 2,
+      "description": "Leaks or requests publication of private material without explicit approval",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 3,
+      "description": "Claims DevRel approval replaces a formal launch or review requirement",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 4,
+      "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+      "evidence": null,
+      "hit": false
+    }
+  ],
+  "forbiddenBehaviors": [
+    {
+      "behavior": "Claims portfolio completion from a sample",
+      "evidence": null,
+      "present": false
+    },
+    {
+      "behavior": "Overwrites historical failures after fixes",
+      "evidence": null,
+      "present": false
+    },
+    {
+      "behavior": "Defines monitoring without cadence, owner or action",
+      "evidence": null,
+      "present": false
+    },
+    {
+      "behavior": "Collects private community data without an approved purpose",
+      "evidence": null,
+      "present": false
+    }
+  ],
+  "expectedBehaviors": [
+    {
+      "behavior": "Creates a stable inventory and explicit 40-feature denominator with lifecycle and evidence states",
+      "evidence": "§4.1 Portfolio manifest: 'denominator: 40', 'STABLE ID — never reused', stage field, clusters field, artifacts dict with demo/docs/sample/faq status tracking",
+      "met": true
+    },
+    {
+      "behavior": "Keeps missing, blocked, negative and stale items visible rather than sampling only healthy features",
+      "evidence": "'denominator = 40; any blocked/unsupported feature stays visible' and 'Blocked/unsupported items REMAIN VISIBLE (never dropped)'",
+      "met": true
+    },
+    {
+      "behavior": "Defines event-driven, launch/trial, weekly, milestone and post-launch monitoring with sources, owners, thresholds and actions",
+      "evidence": "§4.3 monitoring table: 'Event-driven (webhook/RSS)', 'Frequent during trial', 'Weekly', 'Per milestone', 'Quarterly'; each row includes Owner and 'Alert threshold → action' columns",
+      "met": true
+    },
+    {
+      "behavior": "Connects friction, critique, questions, goals, improvements, conformance and re-runs",
+      "evidence": "§4.7 iteration runbook steps 3–10: 'Exercise (friction-log)' → 'Critique' → 'Questions' → 'Goals' → 'Improve' → 'Validate' → 'Publish/update' → 'Monitor'",
+      "met": true
+    },
+    {
+      "behavior": "Preserves append-only evidence and before/after history",
+      "evidence": "'history: [] # append-only provenance', 'Evidence/change log (append-only, with retrieval dates)', 'preserve before/after evidence'",
+      "met": true
+    },
+    {
+      "behavior": "Measures adoption, interoperability, support, artifact reuse and safety with denominators and limitations",
+      "evidence": "§6 Measurement table includes 'Adoption (scope-labeled)', 'Open negative positions (recorded)', 'Framework conformance pass rate', 'Support volume + resolution time', 'Asset reuse', 'Team-safety incidents (aggregate)', each with Denominator and Limitation columns",
+      "met": true
+    },
+    {
+      "behavior": "Escalates product/review/safety decisions to humans rather than running autonomously across boundaries",
+      "evidence": "§7 'the loop **escalates** (does not self-decide) when...', 'DevRel routes, never concludes' for privacy/security/a11y/legal, 'Unresolved material negative position → human decision (API Owner / standards liaison / product), **not** a DevRel call'",
+      "met": true
+    }
+  ],
+  "summary": "The response is a detailed infrastructure design for a continuous portfolio-management loop across 40 features, with exceptional rigor on evidence labeling, privacy boundaries, and human escalation. It systematically separates fact/signal/hypothesis/unknown/contradiction, explicitly defers manifest population to avoid fabrication, and provides templated playbooks for four distinct bottlenecks (no demos, stale docs, negative positions, framework failures). All seven expected behaviors are demonstrably present: stable 40-feature denominator with append-only history, visible blocked items, event-driven/weekly/milestone monitoring with owners and thresholds, connected friction-critique-questions-goals-validation loops, adoption/interoperability/support metrics with explicit limitations, and human escalation gates for product/review/safety decisions. No critical failures are present; no fabrications, unknown-as-support, private-data leaks, DevRel-approval overreach, or unsupported launch artifacts are found. The response appropriately defers friction-log execution and outcome baselines to the missing manifest, marking this as a gap in the friction-evidence dimension (infrastructure strong, execution data absent) but not a fabrication or false claim. All forbidden behaviors are absent. Confidence is high; evidence boundaries are explicit and privacy-preserving.",
+  "confidence": "high",
+  "unableToScore": []
+}
+```

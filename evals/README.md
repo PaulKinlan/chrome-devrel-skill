@@ -65,9 +65,117 @@ node evals/validate.mjs
 node scripts/validate-public-core.mjs
 ```
 
-A model runner and judge calibration set are still to be implemented.
+A model runner and judge are implemented as `evals/run.mjs`. See
+"Independent eval runner" below. Judge calibration and full-denominator
+coverage continue.
+
+## Independent eval runner
+
+`evals/run.mjs` runs each eligible case with a **fresh-context responder** and
+a **separate fresh-context judge**, so a result can be labelled independent
+only when the two roles are genuinely distinct invocations (the provenance
+validator enforces this).
+
+**Leakage prevention is structural, not procedural:**
+
+- The responder loads a *staged copy* of the skill built inside the run
+  directory that **excludes `evals/`, `scripts/`, and `retrospectives/`**. A
+  responder therefore cannot read the rubric, the expected/forbidden answers,
+  prior scores, or the runner itself — even if it tried. Staging is checked at
+  validation time.
+- The responder sees only the case prompt plus the skill. It never sees the
+  rubric, another case, or any judge output.
+- The judge loads **no skill** and sees only the rubric, the single case's
+  focus/expected/forbidden fixtures, and the anonymized candidate response. It
+  never learns the responder's model, provider, or session, so it cannot be
+  biased by identity (cross-family judging by default: GLM responder,
+  Anthropic judge).
+- Each case is a fresh pair of `pi -p --no-session --no-context-files`
+  invocations — no shared session or context across roles or cases.
+
+**Fixed inputs:** `cases.json` and `rubric.json` are pinned by SHA-256 for the
+whole run. **Atomic outputs, per-case hard timeouts, bounded retries, and
+resume** are built in. **Honest states:** a responder that fails after all
+retries is `blocked`; a judge that returns no parseable verdict is `unscored` —
+no score is ever invented. **A score is never proof of correctness:** every
+result carries an explicit caveat, and provenance (provider/model/PID/
+timestamps/raw SHA-256) is recorded for both phases.
+
+```sh
+# list cases and the fixed-input checksums
+node evals/run.mjs --list
+
+# small representative pilot (discipline-focused cases, read-only responder)
+node evals/run.mjs --run 2026-07-27-independent-pilot --pilot
+
+# explicit case set; widen responder tools for research-heavy cases
+node evals/run.mjs --run <RUN_ID> --case a,b,c --responder-tools 'read,mcp'
+
+# full fixed denominator
+node evals/run.mjs --run <RUN_ID> --all
+
+# provenance + integrity validation (rejects same-context/self-judged claims)
+node evals/validate-eval-results.mjs --run <RUN_ID>
+```
+
+Defaults are overridable via flags or `EVAL_*` env vars (`EVAL_RESPONDER_MODEL`,
+`EVAL_JUDGE_MODEL`, `EVAL_RESPONDER_TOOLS`, `EVAL_RESPONDER_TIMEOUT`, …). The
+runner reads no credentials: the `pi` CLI handles auth from its own config. No
+personal paths are hard-coded — the root is derived from the script location.
+
+Results, raw responder/judge outputs, normalized verdicts, and per-case status
+live under `evals/runs/<RUN_ID>/`. The provisional same-session results in
+`evals/results/` are preserved unchanged as history; independent reruns never
+relabel them.
 
 ## Baselines
+
+### Independent (fresh-context responder + separate fresh-context judge)
+
+- [`partner-interest-is-not-shipping`](runs/2026-07-27-independent-pilot/results/partner-interest-is-not-shipping.md):
+  **INDEPENDENT** — 12/12 across three focus dimensions (zai/glm-5.2 responder,
+  anthropic/claude-haiku-4 judge), no critical failures, all expected met.
+  Correctly refused to promote briefing "interest" to a ship commitment and
+  protected the public/private boundary.
+- [`governance-routing-and-measurement-design`](runs/2026-07-27-independent-pilot/results/governance-routing-and-measurement-design.md):
+  **INDEPENDENT** — 20/20 across five focus dimensions, no critical failures.
+  Routed formal approval away from DevRel and refused a single success metric.
+- [`artifact-first-weak-evidence`](runs/2026-07-27-independent-pilot/results/artifact-first-weak-evidence.md):
+  **INDEPENDENT** — 20/20 across five focus dimensions, no critical failures.
+  Accepted the artifact request while gating it on missing evidence.
+- [`survey-selection-and-pushback`](runs/2026-07-27-independent-batch2/results/survey-selection-and-pushback.md):
+  **INDEPENDENT** — 20/20 across five focus dimensions. Independently confirms
+  (and supersedes for baseline purposes) the prior provisional 17/20.
+- [`user-cost-large-model-download`](runs/2026-07-27-independent-batch2/results/user-cost-large-model-download.md):
+  **INDEPENDENT** — 20/20 across five focus dimensions. Independently confirms
+  the prior provisional 19/20.
+- [`contentious-launch-team-safety`](runs/2026-07-27-independent-batch2/results/contentious-launch-team-safety.md):
+  **INDEPENDENT** — 18/20 across five focus dimensions (two partials on
+  critique-to-action and continuous-learning); no critical failures. Retained
+  as a genuine partial.
+- [`incubation-to-prototype-transition`](runs/2026-07-27-independent-batch2/results/incubation-to-prototype-transition.md):
+  **INDEPENDENT** — 23/24 across six focus dimensions (one partial on
+  customer-discovery); no critical failures.
+- [`continuous-portfolio-loop`](runs/2026-07-27-independent-batch2/results/continuous-portfolio-loop.md):
+  **INDEPENDENT** — 17/20 across five focus dimensions (a 2 on friction-evidence
+  and a 3 on measurement); no critical failures. Retained as the strongest
+  genuine gap — a candidate skill-improvement target, not a weakened case.
+
+> Caveat: these are independent rubric judgments of observable behavior. They
+> are **not** factual verification of the responses and do not prove the skill
+> is correct. The 8 verified cases are discipline-focused and do not yet cover
+> research-retrieval or interop-heavy cases. The judge's calibration and
+> coverage are still maturing; an independent reviewer should not treat a high
+> score as a pass.
+
+### Provisional (same-session self-scored — not independently verified)
+
+> Four of these were independently rerun on 2026-07-27 (see Independent above):
+> `survey-selection-and-pushback`, `user-cost-large-model-download`,
+> `contentious-launch-team-safety`, and `incubation-to-prototype-transition`.
+> Their provisional numbers are retained here as history; cite the independent
+> results as baselines. The remaining provisional results still share
+> authorship context and are not defensible baselines.
 
 - [`survey-selection-and-pushback` at `0cae33b`](results/2026-07-19-survey-selection-and-pushback.md):
   17/20 across five focus dimensions, no critical failures. The result produced
@@ -129,11 +237,17 @@ A model runner and judge calibration set are still to be implemented.
 
 | Status                                 | Count  | Definition                                                      |
 | -------------------------------------- | ------ | --------------------------------------------------------------- |
-| Independently verified                 | 0      | Fresh-context responder + separate fresh-context judge          |
-| Provisional (same-session self-scored) | 9      | Same session produced response and scoring; shares context bias |
-| Unscored (case exists, no result)      | 4      | Eval case defined but no response/judgment retained             |
-| No retained result                     | 8      | Case exists in cases.json but no result file was produced       |
+| Independently verified                 | 8      | Fresh-context responder + separate fresh-context judge (2026-07-27 runs) |
+| Provisional (same-session self-scored) | 5      | Same session produced response and scoring; shares context bias |
+| Unscored (case exists, no result)      | 3      | Eval case defined but no response/judgment retained             |
+| No retained result                     | 5      | Case exists in cases.json but no result file was produced       |
 | **Total cases**                        | **21** |                                                                 |
 
-All provisional results share context bias and require fresh-context
-verification before citing as defensible baselines.
+Counts: 8 independent + 5 provisional + 3 unscored + 5 no-retained = 21.
+
+The 8 independent results live under `evals/runs/2026-07-27-independent-pilot`
+and `evals/runs/2026-07-27-independent-batch2`; the 5 remaining provisional
+results still share authorship context and require fresh-context verification
+before citing as defensible baselines. The 3 unscored and 5 no-retained cases
+are the next expansion targets (research-heavy cases need `--responder-tools`
+widened to include search).

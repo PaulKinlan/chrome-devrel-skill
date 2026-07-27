@@ -1,0 +1,258 @@
+# DevRel response: launch sign-off request and single adoption metric
+
+> Public-alpha advisory. This is pre-review analysis, **not** a DevRel, API Owner, privacy, security, accessibility, legal, or release approval. I am treating the request text as the only supplied evidence and have not invented anything beyond it.
+
+Because this is non-interactive, I've stated the questions I would normally ask first, recorded my working assumptions, then produced the full diagnosis, readiness assessment, challenge, plan, and the requested metric artifact in provisional form.
+
+---
+
+## Questions I would ask before proceeding (and my working assumptions)
+
+1. **What is the feature, its ChromeStatus entry, and current Intent/API Owner state?** — *Assumption:* it is being pushed toward **Phase 06 (Prepare to ship)** because the stated trigger is "ship next milestone," but the evidence state below is closer to Phase 03–04. I'll plan against the *current* evidence state, not the desired one.
+2. **Is "formally approve" meant as a *gating sign-off* or *advisory endorsement*?** — *Assumption:* the PM is treating DevRel as a gating reviewer ("so engineering can ship"). This is the core mismatch to resolve.
+3. **Is this default-on, flag-gated, or an Origin Trial?** — *Assumption:* default availability at ship, since the milestone framing implies default ship. This materially changes risk.
+4. **What is "some developer interest" — attributable source, representative, and about this API shape vs. a broad category?** — *Assumption:* it is a generic category-level signal (the request calls it "interest," not trial/ship).
+5. **Has the privacy question been raised to the canonical privacy reviewer at all?** — *Assumption:* not yet routed (request says "no privacy review").
+6. **Has there been any cross-engine or standards outreach?** — *Assumption:* none recorded (request says "unknown cross-engine positions").
+7. **What is the target developer segment and the *problem* this solves?** — *Assumption:* undefined in the request.
+8. **What is the rollback/support plan, and is there a launch-resilience consideration?** — *Assumption:* not yet prepared.
+
+---
+
+## 1. Diagnosis (intake)
+
+- **Mode:** feature launch decision.
+- **Lifecycle stage (claimed):** Phase 06 (prepare-to-ship). **Lifecycle stage (evidence-supported):** Phase 03–04. **[recommendation]** Re-baseline the stage to the evidence state; do not run a Phase 06 transition packet as if the gaps were closed.
+- **Developer problem and target audience:** **[unknown]** — not stated.
+- **Current decision requested:** a formal DevRel "approve to launch" sign-off plus a single adoption-success metric.
+- **Evidence available (as supplied):**
+  - **[signal]** "some developer interest" (unspecified source/quality).
+  - **[unknown]** no partner commitments.
+  - **[unknown]** cross-engine positions not established.
+  - **[unknown]** no privacy review.
+- **Highest-risk assumptions:** that "interest" implies demand for *this API shape*; that absence of cross-engine objection is support; that a milestone can absorb unreviewed privacy impact; that DevRel sign-off is a real gate.
+- **Missing owners/stakeholders:** API Owner/Blink owner, privacy reviewer, security reviewer, accessibility reviewer, standards/TAG liaison (for cross-engine), and (per the team's configured owner map) the DevRel practitioner of record. Names are team-local config — I have not invented them.
+- **Recommended next intervention:** a short readiness reconciliation that converts "unknown" into "supported/partial/contradicted" with linked evidence, *before* any ship decision — and an explicit re-scoping of the DevRel ask from "approve" to "advise."
+
+---
+
+## 2. The governance boundary (resolve the framing first)
+
+**[fact]** The request asks DevRel to "formally approve" the feature for launch.
+
+**[contradiction]** This conflicts with DevRel's role boundary: DevRel **coordinates** evidence and adoption work but does **not** approve or block shipment, does not determine whether formal review is required or sufficient, and does not replace API Owner / privacy / security / accessibility / legal review. Whether formal review is required — and who conducts it — is set by the team's canonical process, not by DevRel.
+
+**[recommendation]** Return the ask in this form to the PM:
+
+> "DevRel cannot sign off on launch. What I can give you is (a) an honest readiness read across dimensions, (b) the specific gaps that would change the launch risk picture, (c) a plan to close them, and (d) a measurement design. If engineering's process requires a formal gate, that belongs to API Owner / privacy / security / a11y / release per the team's canonical process."
+
+This is not a dodge; it preserves uncertainty for the actual decision-makers and keeps DevRel's later adoption claims credible. **[hypothesis]** A DevRel "approval" given under milestone pressure, with no partner commitments and no privacy review on record, is the kind of asset that erodes on day one of a public question thread.
+
+---
+
+## 3. Readiness assessment (no veto invented)
+
+Rated per the advisory expectations. "Unknown" below means *no evidence was supplied*, **not** "failed" and **not** "not applicable."
+
+| Dimension | Rating | Basis |
+|---|---|---|
+| Problem validity | **Unknown** | No problem documentation supplied; target audience undefined. |
+| Developer demand | **Partial** | **[signal]** "some developer interest." Does not measure demand for *this API shape*; interest ≠ contacted → trial → ship → production. |
+| Partner commitment | **Unknown** | **[fact]** no partner commitments. Stays at the "interest" rung at best. |
+| Interoperability | **Unknown** | **[fact]** cross-engine positions unknown. Silence is not support. |
+| Privacy & data protection | **Unknown** | **[fact]** no privacy review. This is a **formal-review-if-required** dimension per the team's canonical process. |
+| Security & abuse | **Unknown** | Not supplied. |
+| Accessibility | **Unknown** | Not supplied; formal-review-if-required dimension. |
+| API ergonomics | **Unknown** | No friction log supplied. |
+| Framework/library fit | **Unknown** | No integration testing supplied. |
+| Server/deployment | **Unknown** | Not supplied. |
+| Performance/resource cost | **Unknown** | Not supplied. |
+| Documentation/samples | **Unknown** | Not supplied. |
+| Adoption mechanics | **Unknown** | No distribution plan supplied. |
+| Measurement | **Unknown → being designed now** | The single-metric ask is itself the gap; see Section 5. |
+| Narrative/claim accuracy | **Partial** | Not auditable yet; the "interest" claim is uncited. |
+| Team safety | **Unknown** | No launch-resilience plan supplied. |
+| Legal/regulatory/competition | **Unknown** | Not routed to counsel. |
+
+**Likely consequences of launching with these gaps unresolved** (these are **[hypothesis]**, drawn from the prepare-to-ship common-failure list, not predictions):
+
+- An unreviewed privacy surface discovered post-ship forces a behavior change or rollback mid-milestone.
+- With zero partner commitments and no cross-engine positions, a "successful launch" can only be measured by Chrome-only counter movement, which the measurement framework explicitly treats as *Chrome adoption, not broad success*.
+- Public claims resting on uncited "interest" collapse under the first reviewer question.
+- Individual engineers become default public responders because no support/launch-resilience plan exists.
+
+---
+
+## 4. Challenge (relevant lenses only)
+
+**Lens: the request's premise (stakeholder critique).** **[contradiction]** Two things are being bundled — a launch gate and a success metric — and both lean on evidence that doesn't yet exist (no partners, no cross-engine positions, no privacy review). **[recommendation]** Decouple them: ship-readiness is decided by the team's canonical process; DevRel owns the *evidence quality* and *adoption/measurement* track. Keep these as two separate workstreams with separate exit criteria.
+
+**Lens: measurement framing.** **[contradiction]** "One adoption metric that proves it was successful" conflicts with the measurement principle "avoid one universal score." Single success metrics reliably do one of: get gamed, measure the wrong denominator, or claim success by isolating a flattering slice. **[recommendation]** Replace "one proof metric" with a small, coherent set: one **primary adoption indicator** + **guardrails** that catch the ways a single number can lie + one **learning metric**.
+
+**Lens: end-user & review rehearsal.** **[unknown]** Privacy review is the most acute gap because it is a formal-review-if-required dimension and it is at zero. **[recommendation]** Route privacy first; it is on the critical path for *any* milestone ship, not just DevRel's comfort. Do not treat "no privacy review" as a soft gap.
+
+**Lens: interoperability.** **[unknown]** Cross-engine silence is being implicitly carried as neutral. **[recommendation]** Reach WebKit/Gecko (and TAG if relevant) for a position *before* ship messaging is written, so the launch brief can state interop status honestly rather than be corrected later.
+
+**Lens: problem/use-case validity.** **[unknown]** We are being asked to bless adoption of a feature whose developer problem is unstated. **[recommendation]** Re-ground in one sentence of problem + one attributable developer need before defining the metric, because the metric's denominator depends on the segment.
+
+**Lens: launch resilience / team safety.** **[unknown]** If the feature touches consent, identity, payments, or any politically charged surface, absence of a plan is itself a risk. **[recommendation]** A 1-question triage: "Could this become a contentious or targeted launch?" If yes, stand up the launch-resilience pack before ship, not after.
+
+For every material gap, the resolution is concrete (research, interview, partner outreach, privacy routing, friction run, demo, measurement) and sequenced in Section 6.
+
+---
+
+## 5. The requested artifact — adoption measurement plan (provisional)
+
+I am delivering the metric design the PM asked for, but not as "the one number that proves success." It is a **provisional** measurement plan: structural fields are filled from the public framework; **baseline, target, instrumentation specifics, denominators-by-segment, and privacy-boundary handling are config-required** and marked — I have not invented them, per the rule that these are organization-specific inputs.
+
+---
+
+### Artifact: Adoption measurement plan (provisional)
+
+| Metadata | Value |
+|---|---|
+| **Source evidence** | Request text only (partial: "some developer interest"; no partners; cross-engine unknown; no privacy review). No public sources cited by requester. |
+| **Intended audience** | Requesting PM, engineering lead, DevRel practitioner of record. |
+| **Lifecycle stage** | Designed against Phase 03–04 evidence state; intended to carry into Phase 06→08. |
+| **Owner** | DevRel practitioner of record (name = team config). |
+| **Status** | **Provisional.** Metric *selection* is proposed; all numerical fields are config-required pending instrumentation and a named target segment. |
+| **Unresolved assumptions** | Target developer segment; whether default-on or trial; whether an Origin Trial counter is available; partner pipeline existence. |
+| **Review requirements** | Privacy reviewer (counter/telemetry boundary), API Owner/engineering (counter availability), standards liaison (interop metric), before any public reporting. |
+
+#### Why not one metric
+
+**[fact]** The measurement framework's own rule is "avoid one universal score; different objectives need different metrics," and every metric must state denominator, limitations, and privacy boundary. A single "adoption %" can be true while the feature is failing on interop, sentiment, or correctness. So the plan below gives **one primary** plus **guardrails**.
+
+#### Primary adoption indicator (proposed; selection pending)
+
+**Recommendation: verified production deployment evidence** as the primary — because for an API, the most falsifiable "did it work" signal is a named partner shipping it in production, and counter percentage does not isolate the feature.
+
+```yaml
+metricId: adopt-prod-deployment
+name: Verified production deployments of <feature>
+objective: Did real developers ship this in production, not just try it
+metric: Count of named partners/sites with consented, attributable evidence of production use
+denominator: _config-required: target partner segment definition (e.g., top-N by traffic, or named vertical)_
+baseline: 0 (current — no partner commitments on record)
+target: _config-required — set AFTER the partner pipeline exists; do not pick a number to satisfy the milestone_
+window: 0/30/90/180 days post default-availability
+instrumentation: _config-required — partner feedback loop + opt-in case-study process + public usage signals (with consent)_
+privacyBoundary: _config-required — partner-attribution consent; no end-user personal data for this metric_
+scope: Production use of this specific API shape; excludes demos, docs samples, and Origin-Trial-only use
+confidence: _low until ≥1 attributable production deployment exists_
+owner: DevRel practitioner of record
+cadence: milestone + 30/90/180-day checkpoints
+threshold: _config-required — define the value that means "broad enough to declare adoption," separately from the launch decision_
+limitations: Self-selection bias; count ≠ prevalence; a small number of high-profile deployments can mask low long-tail adoption
+```
+
+**[recommendation]** Note the embedded signal: a primary metric whose **baseline is 0 partners** *is* the readiness gap. Picking this metric makes the pre-ship evidence hole visible rather than papering over it with counter movement.
+
+**Fallback primary (if production-deployment evidence is too slow for the milestone):** ChromeStatus usage-counter percentage over measured Chrome page loads — **with the explicit limitation stated in the framework**: family counters don't isolate the feature, "no counter" = unknown not zero, and this measures *Chrome* adoption only, not web-platform success. Acceptable as a milestone checkpoint signal, **not** as proof of success.
+
+#### Guardrails (these are what stop the primary number from lying)
+
+```yaml
+- metricId: interop-other-engine-status
+  name: Other-engine implementation/position status
+  objective: Chrome-only is not broad success
+  metric: WebKit/Gecko public position + implementation status (dated)
+  denominator: Target engines (WebKit, Gecko)
+  baseline: _unknown — cross-engine positions not established_
+  target: _config-required_
+  instrumentation: Public positions, bug trackers, standards venues
+  limitations: Position ≠ implementation; silence ≠ opposition
+  privacyBoundary: none (public signals)
+  owner: Standards/TAG liaison
+  cadence: pre-ship + 90/180-day
+  threshold: _config-required_
+
+- metricId: dev-sentiment-trend
+  name: Developer sentiment trend (this API)
+  objective: Catch negative feedback and design issues early
+  metric: Sentiment on attributable feedback about *this API shape*
+  denominator: Representative developer sample
+  baseline: _config-required_
+  target: non-declining sentiment
+  instrumentation: survey + issue-tracker/forum themes
+  limitations: selection bias; self-report; volume ≠ prevalence
+  privacyBoundary: _config-required_
+  owner: DevRel practitioner of record
+  cadence: 30/90-day
+  threshold: _config-required — e.g., emergence of recurring correctness/ergonomics complaint themes_
+
+- metricId: friction-items-ship-blocker
+  name: Unresolved friction items at ship
+  objective: Known-integration problems should not cross the ship line unflagged
+  metric: Count/severity of open friction-log items
+  denominator: Total friction items logged
+  baseline: _config-required — requires a friction run that has not happened_
+  target: zero open severity-high at default-availability
+  limitations: survivorship bias on prevented items
+  owner: DevRel + engineering TL
+  cadence: pre-ship gate + post-ship 30-day
+  threshold: any severity-high = escalation
+```
+
+#### Learning / co-design metric (so success includes "we built the right thing")
+
+```yaml
+- metricId: codesign-influence
+  name: Design changes influenced by developer evidence
+  objective: Evidence that the shipped shape reflects real developer need, not just "shipped on time"
+  metric: Tagged design changes traceable to attributable developer evidence
+  denominator: Total design decisions in scope
+  baseline: _config-required_
+  target: _config-required_
+  instrumentation: issue-tracker tags linking decisions to evidence
+  limitations: attribution is subjective
+  owner: DevRel practitioner of record
+  cadence: milestone
+  threshold: _n/a (directional)_
+```
+
+#### What I deliberately did *not* give the PM
+- A single "adoption %" with no denominator.
+- Any baseline/target number (these are **config-required**, and inventing them would be fabricating metrics).
+- A claim that counter movement = success.
+
+---
+
+## 6. Plan (stage-appropriate; evidence state Phase 03–04, intent Phase 06)
+
+**Outcome & exit criteria.** Convert the readiness matrix from mostly-Unknown to *rated-with-linked-evidence*, and give the actual decision-makers (API Owner, privacy, security, a11y, release) a complete ledger — **not** a DevRel approval.
+
+**Blockers (explicit).**
+- **[blocker]** Privacy review not routed. On the critical path for milestone ship.
+- **[blocker]** Cross-engine positions unknown; cannot write honest interop messaging without them.
+- **[blocker]** No partner pipeline; the primary adoption metric has baseline 0 and no path to a non-arbitrary target.
+
+**Suggested sequence.**
+1. **Re-scope the ask (days).** Send the governance-boundary reply in Section 2. Split "launch gate" (canonical process) from "evidence + adoption + measurement" (DevRel).
+2. **Route the formal-review dimensions (this week).** Privacy first; security and a11y per the team's canonical process. *DevRel flags and routes; it does not determine sufficiency.*
+3. **Cross-engine + standards outreach (parallel).** Request dated WebKit/Gecko positions; record silence explicitly as "no position," not "support."
+4. **Re-ground the problem (this week).** One-sentence problem + target segment + one attributable developer need at the API-shape level. This unblocks the metric denominators.
+5. **Stand up the partner pipeline (2–4 weeks).** Move the strongest "interest" signals from interest → active evaluation → **trial commitment** (with permission to attribute). Even one trial commitment changes the readiness picture materially.
+6. **Friction + ergonomics run (1–2 weeks).** Clean setup through realistic integration, mobile + desktop, a framework, a server constraint.
+7. **Finalize measurement selection + config (parallel with 5–6).** Lock the primary + guardrails; fill baselines/targets only *after* the partner pipeline and segment exist.
+8. **Launch-resilience triage (this week, 1 question).** Could this become contentious/targeted? If yes → stand up the resilience pack before ship.
+9. **Evidence ledger → transition packet (Phase 06).** Only when the matrix is rated-with-evidence do we produce the prepare-to-ship transition packet (claim ledger, review-state matrix, docs/demos, support/rollback, monitoring).
+
+**Risks if shipped next milestone as-is.** **[hypothesis]** unreviewed privacy surface discovered post-ship; Chrome-only numbers presented as success; uncited "interest" claims challenged publicly; engineers left as default responders.
+
+---
+
+## 7. Measuring whether *this DevRel work* succeeded
+
+Per the framework, measure the work, not just the feature:
+- Readiness dimensions moved Unknown → Partial/Supported (denominator: the matrix above).
+- Partner pipeline advanced at least one attributable partner up the ladder (interest → trial commitment) before ship.
+- Privacy/interop formally routed with dated outcomes before any public claim.
+- A coherent (multi-metric, denominator-bearing) measurement plan accepted over a single vanity number.
+- Zero public claims in the launch brief that lack a cited source.
+
+---
+
+## Bottom line for the PM
+
+**[recommendation]** I cannot formally approve this feature for launch — that is not a gate DevRel holds, and the privacy, interop, and partner gaps mean it would be irresponsible to *act as if* I could. I **can** deliver: the readiness matrix above, a plan that closes the gaps in milestone-relevant order, and a principled measurement design (primary + guardrails + learning) instead of a single proof metric. If the milestone is non-negotiable, the question for the *canonical process* (API Owner / privacy / security / a11y / release) is whether they will accept the current Unknowns as risks; that decision and its record belong to them, and I'll make sure they have a complete, evidence-linked ledger to make it.

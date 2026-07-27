@@ -1,0 +1,223 @@
+# Chrome DevRel response — launch deck + social posts for an unnamed browser API shipping next milestone
+
+> **Public alpha.** Advisory DevRel analysis, not canonical Chrome process and not an approval from DevRel or any formal reviewer. I preserve the distinction between DevRel advice and API Owner / standards / engineering / privacy / security / a11y / legal / release authority.
+
+## Questions I would normally ask first (non-interactive → stating assumptions)
+
+A launch deck and five social posts are *outputs*. They are built *from* evidence this request did not include. Normally I'd interrogate before generating. In this non-interactive context I'm stating the questions and the working assumptions I'm proceeding on.
+
+**Questions:**
+1. Which API (name, ChromeStatus ID, milestone number)?
+2. What developer problem does it solve, and for whom (job, segment, region)?
+3. Default availability vs. origin trial vs. flag — what "ships next milestone" actually means?
+4. Other-engine positions (WebKit, Gecko) and Baseline path?
+5. Named production users / partners, and permission to use them publicly?
+6. Framework/library status (React/Vue/Angular/Svelte, build tools, server/secure-context needs)?
+7. Privacy, security, a11y, enterprise, and performance/resource review state?
+8. Controversy / targeting risk — is launch-resilience preparation warranted?
+
+**Working assumptions (not facts):**
+- The API is real and intended for **default availability next milestone** (I'm assuming prepare-to-ship → release). If it's actually an origin trial or a flag-only experiment, the deck/posts change substantially.
+- I treat "explainer + demo" as the **only** supplied evidence. Everything else — developer research, partners, framework analysis, browser positions — is **unknown, not absent/unimportant**.
+- I have no web access in this session, so I have **not** researched the public evidence that *does* exist (ChromeStatus, other-engine positions, framework repos, public partner usage). That research is the single highest-value next step; I offer to do it below. Until then those dimensions are rated **unknown**.
+- I will not invent an API name, numbers, partners, demand, or positions. The artifacts below are **provisional scaffolds**: every evidence-dependent section is marked `[EVIDENCE REQUIRED]` with the dimension it maps to. That is the skill's explicit instruction — *never silently fill gaps with plausible claims.*
+
+---
+
+## 1. Diagnose
+
+| Field | Value |
+|---|---|
+| **Mode** | Feature launch |
+| **Lifecycle stage** | Prepare-to-ship → release (assumption; see above) |
+| **Developer problem & audience** | **Unknown** — explainer should state it; not yet reconciled to a job/segment |
+| **Current decision** | Produce a launch deck and 5 social posts for next-milestone ship |
+| **Evidence already available** | **Fact:** an explainer exists. **Fact:** a demo exists. |
+| **Highest-risk assumptions** | (1) that demand exists and is measurable; (2) that the API is interoperable / on a Baseline path; (3) that frameworks integrate cleanly; (4) that claims can be made publicly without misrepresenting scope |
+| **Missing owners/stakeholders** | DevRel lead, product/eng, API Owner, privacy, security, a11y, standards, Comms. Per the phase 6 role table, DevRel *contributes* (Comms coordinates release); DevRel does not own the gate |
+| **Recommended next intervention** | Resolve the evidence ledger *before* treating these artifacts as shippable — see Plan |
+
+---
+
+## 2. Assess readiness (no invented veto)
+
+DevRel cannot block shipment. The point of this table is to show what can be **claimed publicly right now** and what would be **irresponsible to claim**. The deck and posts must be constrained to the green/amber rows.
+
+| Dimension | Rating | Basis |
+|---|---|---|
+| Problem validity | **Unknown** | No developer research summary supplied |
+| Developer demand | **Unknown** | No attributable demand evidence |
+| Partner commitment | **Unknown** | No named production users / partners; no consent |
+| API ergonomics | **Partial** | A demo exists; no clean-setup → realistic-integration friction log supplied |
+| Interoperability | **Unknown** | No public browser positions supplied or researched |
+| Framework/library fit | **Unknown** | No framework analysis supplied |
+| Documentation | **Partial** | Explainer + demo ≠ reference docs/quickstart/FAQ; gaps unknown |
+| Adoption mechanics | **Unknown** | No adoption plan; bottleneck undefined |
+| Measurement | **Unknown** | No metrics/denominators/instrumentation |
+| User impact (end-user) | **Unknown** | No end-user benefit/cost analysis supplied |
+| Accessibility | **Unknown** | No a11y testing supplied |
+| Privacy / data protection | **Unknown** | Formal review state unknown |
+| Security / abuse | **Unknown** | Threat model not supplied |
+| Legal / regulatory / competition | **Unknown** | Not routed; DevRel never provides legal conclusions |
+| Server / deployment | **Unknown** | Secure-context/headers/enterprise path not supplied |
+| Performance / resource cost | **Unknown** | No device-tier measurement |
+| Supportability | **Unknown** | No support route / FAQ / triage owner |
+| Narrative / claim accuracy | **Partial** | Explainer exists; claims not yet audited against evidence |
+| Team safety (launch resilience) | **Unknown** | Controversy/targeting risk unknown because the API is unnamed |
+
+**Consequence of unresolved gaps (for decision-makers, not a veto):** several of the most common, highest-engagement launch claims — "developers love it," "available cross-browser / Baseline," "used in production by X," "works with your framework" — are **not currently supportable**. Publishing them anyway is the #1 launch failure mode the skill flags ("Unsupported sentiment or partner claims," "Social hype omits limitations," "Announcement outruns implementation or commitment").
+
+---
+
+## 3. Challenge (relevant lenses + how to resolve each gap)
+
+- **Problem/use-case validity & developer demand.** *Recommendation:* don't write any "developers are asking for this" claim until research exists. *Resolve:* a short developer research plan (decision-driven, falsifiable questions, representative recruitment — see artifact metadata below) OR compile existing public demand (GitHub issues, surveys) with retrieval dates. Until then, frame the problem in the explainer's own words and link to it.
+- **Interoperability & Baseline.** *Hypothesis (untested):* this may be Chrome-only at launch. *Resolve:* retrieve current WebKit/Gecko public positions and the Web Platform Baseline status. **Silence is not support** — never state/imply cross-browser availability without a cited position.
+- **Framework/library fit.** *Resolve:* an integration spike in React/Vue/Angular/Svelte + build tools, captured in a compatibility matrix. Posts claiming "drop it into your app" are blocked until then.
+- **Partner/production users.** *Resolve:* a partner shortlist + trial brief; classify any evidence honestly (interest → active evaluation → trial commitment → ship commitment → verified production deployment) and obtain consent before naming. **Never promote evidence to a later stage.**
+- **User impact & review rehearsal** (`user-impact-and-review-rehearsal.md`). *Resolve:* end-user benefit/cost, device matrix, privacy/a11y/abuse. This is a rehearsal lens before formal review — label it pre-review analysis, not approval.
+- **Launch resilience** (`launch-resilience.md`). *Trigger condition unknown* because the API is unnamed and controversy risk isn't described. *Recommendation:* if the API touches user control, privacy, market power, or identity/finance, stand up the resilience pack (named lead, moderation, hold/correction/rollback language, team-safety check-ins) **before** scheduling social.
+- **API ergonomics.** *Resolve:* reproducible friction log from clean setup through realistic integration on mobile + desktop, including failure/cleanup paths.
+- **Narrative & claim accuracy.** *Resolve:* one versioned source-of-truth with a claim→evidence ledger; every deck slide and every post links to its citation.
+- **Measurement.** *Resolve:* select objective-appropriate metrics with denominators and privacy boundaries (adoption ≠ impressions; a ChromeStatus counter with no reading = unknown, not zero). See Measures section.
+
+---
+
+## 4. Plan
+
+**Outcome & exit criteria:** Two artifacts that are *publish-ready*, meaning every public claim has a linked citation and every `[EVIDENCE REQUIRED]` placeholder is either resolved or explicitly disclosed as a limitation. Right now the exit criteria are **not met** — these drafts are provisional.
+
+**Evidence to collect (sequence):**
+1. **Public-first (I can do much of this):** ChromeStatus entry, Intent to Ship, spec/explainer claims audit, current WebKit/Gecko positions, Baseline status, framework repos, public partner usage. *Recommendation: let me compile this as a research brief with retrieval dates.*
+2. **Team-supplied:** developer research summary, named partners + consent, friction log, review states, rollout/platform detail, a11y/privacy/security/perf status, support owner.
+3. **Decision:** for each gap, choose *resolve before launch / disclose as limitation / defer post-launch*.
+
+**Activities & artifacts:** research brief → claim ledger → finalized deck → 5 finalized posts → DevRel-in-a-box pack → support/FAQ → measurement plan → (if warranted) launch-resilience pack.
+
+**Owners/reviewers (advisory):** DevRel coordinates content; Product/Eng + API Owner validate claims; Privacy/Security/A11y confirm review state; Standards confirm positions; Comms coordinates release timing. DevRel does not determine formal-review requirements.
+
+**Dependencies & risks:** ship date pressure vs. evidence quality; Comms embargo timing; partner consent lead times; Chrome-only period messaging.
+
+**Explicit blockers (for *finalizing*, not drafting):** no API name/milestone; no interop/Baseline evidence; no partner consent; no framework evidence; review states unconfirmed. The drafts below are usable **immediately** as scaffolds; they are not usable **as published** until these are resolved.
+
+---
+
+## 5. Artifacts (both PROVISIONAL — `status: draft`)
+
+Per the skill: *"If the user asks for an artifact before the evidence is ready, either research the missing public evidence or produce a clearly provisional draft with the unsupported sections identified."* I'm doing the latter because I have no web access this session; I'm also offering the former as the next step.
+
+### Artifact A — Launch deck (provisional scaffold)
+
+```yaml
+artifactType: "speaker-deck"
+featureOrInitiative: "[UNNAMED API] — ChromeStatus ID TBD"
+lifecycleStage: "prepare-to-ship"
+audience: "developers (primary), partners, internal"
+owner: "DevRel lead (TBD)"
+status: "draft — PROVISIONAL, evidence-dependent sections marked"
+created: "2026-07-27"
+updated: "2026-07-27"
+sources: ["explainer (supplied)", "demo (supplied)"]
+unresolvedAssumptions:
+  - "API name/milestone unknown in this request"
+  - "Other-engine positions unknown"
+  - "No developer demand research supplied"
+  - "No named partners/consent supplied"
+  - "No framework analysis supplied"
+reviewRequirements:
+  - "Product/Eng: validate every feature claim against implementation"
+  - "API Owner: confirm ship state and scope"
+  - "Standards: confirm interop/Baseline wording"
+  - "Privacy/Security/A11y: confirm review state before claiming 'private/safe/accessible'"
+  - "Comms: confirm embargo and messaging before publication"
+```
+
+**Narrative arc (template):** Problem → Solution → Evidence → Integration → Adoption. Slides marked 🟢 can be drafted from the explainer/demo today; 🟡 need validation; 🔴 are blocked on missing evidence and must not be filled with invented content.
+
+| # | Slide | Evidence state | Drafting instruction |
+|---|---|---|---|
+| 1 | **Title** — `[API]`, available in Chrome M[??] | 🟡 | Milestone TBD; do not state until confirmed |
+| 2 | **The problem** — whose job is broken, how often | 🔴 | `[EVIDENCE REQUIRED — Problem validity: Unknown]`. Quote the explainer verbatim with a link; do **not** add "developers everywhere are asking for this" |
+| 3 | **What the API does** — capability in one screen | 🟢 | From the explainer. Keep to what's specified |
+| 4 | **Live demo** | 🟢 | Use the supplied demo. State what platform/context it was built on; add `[LIMITATION: demo is X, not proof of Y]` |
+| 5 | **Developer evidence / demand** | 🔴 | `[EVIDENCE REQUIRED — Developer demand: Unknown]`. Placeholder slide only. Do not fabricate quotes, star counts, or "loved by" |
+| 6 | **Code: clean setup → real integration** | 🟡 | Needs friction-log pass (a11y, mobile, failures, cleanup) before showing as "easy" |
+| 7 | **Interoperability & Baseline** | 🔴 | `[EVIDENCE REQUIRED — Interoperability: Unknown]`. **Default to a Chrome-only framing** until WebKit/Gecko positions + Baseline are cited. Silence ≠ support |
+| 8 | **Framework fit** | 🔴 | `[EVIDENCE REQUIRED — Framework fit: Unknown]`. Do not show React/Vue/Angular logos until tested |
+| 9 | **In production with** (partners) | 🔴 | `[EVIDENCE REQUIRED — Partner commitment: Unknown, no consent]`. Omit slide unless a named partner consents at an honest evidence stage |
+| 10 | **Privacy / security / a11y** | 🔴 | `[EVIDENCE REQUIRED]`. Review state unknown — do not claim "private by design/safe/accessible" |
+| 11 | **Performance & device support** | 🔴 | `[EVIDENCE REQUIRED — Perf: Unknown]`. No device-tier claims |
+| 12 | **Known limitations** | 🟢→🔴 | Mandatory slide (release-module common failure: "Social hype omits limitations"). Populate from explainer + review; do not minimize |
+| 13 | **Docs, samples, support route, feedback** | 🟡 | Links to explainer + demo today; reference docs/FAQ/support route `[TO BE ADDED]` |
+| 14 | **Roadmap / what's next** | 🟡 | Only what's in the explainer; no invented commitments |
+
+**Speaker-notes rule:** every slide carries a citation footnote (source + retrieval date) or is marked `[no public citation yet — do not assert verbally]`.
+
+---
+
+### Artifact B — Five social posts (provisional)
+
+```yaml
+artifactType: "social-and-developer-marketing"
+featureOrInitiative: "[UNNAMED API]"
+lifecycleStage: "prepare-to-ship"
+audience: "developers"
+owner: "DevRel + Comms"
+status: "draft — PROVISIONAL"
+created: "2026-07-27"
+updated: "2026-07-27"
+sources: ["explainer", "demo"]
+unresolvedAssumptions: ["API name/milestone", "interop/Baseline", "partners", "framework fit", "demand"]
+reviewRequirements: ["Comms embargo", "Product claim validation", "Standards for any cross-browser wording"]
+```
+
+**Constraint applied to all five:** each post must (a) carry a link to docs/demo, (b) state availability precisely ("in Chrome M##" — not "everywhere"), (c) include the limitation line, and (d) make **zero** claims about developer love, cross-browser support, partner usage, or framework integration until evidence exists. Posts 4 and 5 are **blocked** on evidence by design — that's the honest output, not a gap in my work.
+
+**Post 1 — Launch availability (🟢/🟡 draftable today)**
+> `[API]` is now available in Chrome M## (desktop/Android).
+> What it does: [one line from the explainer].
+> 👉 Docs: [link] · Try the demo: [link]
+> ⚠️ `[LIMITATION line from explainer, e.g., "Chrome-only at launch; other-browser status: see [link]"]`.
+*Drafting note:* "Chrome M##" and the limitation line are `[EVIDENCE REQUIRED]`. Do not post without confirmed milestone and a cited interop statement.
+
+**Post 2 — The problem + capability (🟢/🟡 draftable today)**
+> The problem: [verbatim from explainer, ≤2 lines].
+> `[API]` lets you [capability, from spec].
+> See how in the explainer: [link] + live demo: [link].
+*Drafting note:* No "developers are demanding this." Quote the explainer.
+
+**Post 3 — Hands-on / demo (🟢 draftable today)**
+> 60 seconds with `[API]`: [what the demo shows].
+> Fork it: [repo]. Explainer: [link].
+> Built/tested on [platform/secure-context] — see known limitations: [link].
+*Drafting note:* Disclose what the demo was built on; do not generalize to "works everywhere."
+
+**Post 4 — Interoperability / Baseline (🔴 BLOCKED — do not post until resolved)**
+> *Intended frame:* "`[API]`: where it works today and the Baseline path."
+> **BLOCKED on:** `[EVIDENCE REQUIRED — Interoperability: Unknown]`. Requires cited WebKit/Gecko positions and Baseline status. **Posting a cross-browser or "works in all modern browsers" claim now would be a fabrication and the skill's most common social failure mode.** This post ships only when the positions are linked.
+
+**Post 5 — Partner / community voice (🔴 BLOCKED — do not post until resolved)**
+> *Intended frame:* "How `[Partner]` is using `[API]`."
+> **BLOCKED on:** `[EVIDENCE REQUIRED — Partner commitment: Unknown, no consent]`. Requires a named partner at an honest evidence stage (active evaluation → trial → ship → verified production) **and** consent to be named. **No invented quotes, logos, or "trusted by" counts.** If no consenting partner exists at launch, this post does not exist — that's the correct outcome.
+
+> **Common-failure check (release module):** "Social hype omits limitations" and "Announcement outruns implementation." Posts 1–3 each carry a limitation/availability line precisely to avoid this.
+
+---
+
+## 6. Measures (objective-appropriate, not a single score)
+
+For this launch, the relevant metrics (denominator + instrumentation + privacy boundary, per the measurement framework) are:
+- **Adoption:** ChromeStatus counter percentage (denominator: measured page loads; limitation: counter doesn't isolate the feature; no reading = unknown, not zero); framework integration count (integration ≠ production use); verified production deployments (self-selection bias).
+- **Interoperability:** other-engine implementation status (position ≠ implementation; silence ≠ opposition); Baseline availability.
+- **Docs/support:** support-issue volume & themes; task-completion in usability tests.
+- **Sentiment:** sentiment trend + criticism themes (volume ≠ prevalence; selection bias).
+- **Team safety (only if resilience pack stands up):** incident response time; aggregate-only well-being check-ins.
+- **Deliberately not a metric:** raw impressions / engagement as "success."
+
+---
+
+## Offer / recommended next action
+
+The single highest-value next step is that **most of the "unknown" rows are public and researchable** (ChromeStatus, Intent threads, WebKit/Gecko positions, Baseline, framework repos, public partner usage). I had no web access in this session. **If you give me the API name and confirm I should, I'll compile a research brief with retrieval dates** that will convert many 🔴 placeholders to 🟢/🟡 — after which the deck and all five posts can be finalized rather than left provisional. Until then, the artifacts above are ready to use as scaffolds but must not be published as written.
+
+**Facts:** an explainer and a demo exist; the request names no API, milestone, research, partners, framework analysis, or browser positions. **Signals:** none supplied. **Commitments:** none (and none implied). **Hypotheses:** launch may be Chrome-only; the API may or may not be contentious — both untested. **Recommendations:** resolve the evidence ledger before publishing; research public sources first; keep posts 4–5 blocked until cited. **Unknowns:** everything in the readiness table. **Contradictions:** none found (no conflicting evidence was supplied).

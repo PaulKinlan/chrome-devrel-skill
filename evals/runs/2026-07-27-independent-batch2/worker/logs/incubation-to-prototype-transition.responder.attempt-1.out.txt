@@ -1,0 +1,261 @@
+# DevRel Response: "Ready to leave incubation" review
+
+**Mode:** feature. **Lifecycle stage (actual):** incubation — with a *requested* transition to prototype. **Decision requested:** "Prepare the Intent to Prototype." **User:** the PM. **My role:** DevRel advisory/coordinate; this is **not** API Owner, standards, or launch approval and confers no formal sign-off. **Evidence boundary:** public-safe output; explainer assumed public-or-will-be.
+
+This is a non-interactive context, so I've stated the questions I would normally ask, my working assumptions, and then proceeded in full.
+
+## 0. Questions I would ask first (and working assumptions)
+
+1. API name, **ChromeStatus ID, explainer URL, and incubation venue** (WICG / other)? *Working assumption: a single web-platform feature with a public explainer; identity unknown to me, so I use `[feature]` / `[ChromeStatus ID]` placeholders.*
+2. Who is the **target developer segment**, and what is the named **job-to-be-done**? *Assumption: PM can name one, but it is not yet validated.*
+3. Has **API Owner / TAG / other-engine** outreach happened at all? *Assumption: none (consistent with "no other-platform comparison" in the request).*
+4. Is there **time pressure** (milestone, dependency) behind "ready now"? *Assumption: none stated; treat the original date as flexible.*
+5. What does the PM consider the **bar** for "ready to leave incubation"? (Their answer usually reveals whether they equate "explainer written" with "incubation done.")
+6. Any **private/internal-only** material? *Assumption: explainer is public-safe; output below is public-safe.*
+
+## 1. Diagnose (intake summary)
+
+- **Mode/stage:** Feature; incubation. The request is to **transition to prototype** via an Intent to Prototype.
+- **Developer problem & audience:** *Hypothesis* — three plausible use cases exist, but the problem's **importance, frequency, cost, and unmet-by-alternatives** status are **unvalidated**.
+- **Current decision:** Should DevRel prepare an Intent to Prototype asserting readiness to begin prototyping/public design work?
+- **Evidence available:** A written explainer (PM-reported, unverified by me) and three plausible use cases.
+- **Highest-risk assumptions:**
+  1. "Explainer written" ⇒ "incubation complete" (**contradicts** the phase-1 entry/exit criteria).
+  2. "Plausible use case" ⇒ "validated, recurring, unmet developer need."
+  3. The API shape is correct before the problem/integration is understood.
+- **Missing owners/stakeholders:** No customer/partner contacts, no framework/library authors engaged, no other-engine signals, no privacy/security/a11y pre-review owners identified for the explainer.
+- **Recommended next intervention (DevRel):** **Do not draft a "ready" Intent to Prototype.** Run incubation-phase ecosystem/customer research and complete the **incubation→prototype transition packet**; then reassess.
+
+## 2. Readiness assessment (no veto invented)
+
+I rate the dimensions material *to this transition*. "Not relevant (yet)" means "pre-implementation/early — it will become material in prototype or later," never "tested and fine."
+
+| Dimension | Rating | Why |
+|---|---|---|
+| Problem validity | **Partial** | Three *plausible* use cases ≠ validated, recurring, costly pain. No interviews, no systematic research. Not yet distinguishable from "nice to have." |
+| Developer demand | **Unknown** | No attributable evidence from representative developers that they need *this* capability (vs. a broad category). |
+| Use-case quality | **Partial** | Scenarios exist but are untested against real workflows, costs, and constraints. |
+| Alternatives / current workarounds | **Unknown** | No workaround analysis supplied. (Workaround effort can be *evidence of a job*, not demand for the API.) |
+| Other-platform comparison | **Unknown** | No native/mini-app/chat/LLM-agent comparison. Risk of importing a non-web pattern uncritically. |
+| Interoperability (early signals) | **Unknown** | No other-engine/public-positions signals. **Silence is not support.** |
+| Partner / candidate trial users | **Unknown** | None identified; evidence ladder not even at "candidate." |
+| Prototype learning goals & measurement | **Unknown** | No learning questions, success/stop/redesign criteria. A prototype without these is a demo, not an experiment. |
+| End-user impact | **Unknown** | No benefit/cost/control analysis for end users. |
+| Privacy / Security / A11y (explainer-level) | **Unknown** | Explainer should at least *open* these; status unverified. |
+| Narrative / claim accuracy | **Partial** | Risk that "plausible" gets promoted to "established" in the explainer and the eventual intent. |
+| API ergonomics; framework/library fit; server/deployment; performance; docs; adoption mechanics; supportability; launch resilience | **Not relevant (yet)** | Pre-implementation/early; they become material in prototype (ergonomics, framework fit, friction), experiment (perf, OT mechanics), and prepare-to-ship (docs, adoption, launch resilience). Listed so they are not forgotten later. |
+
+> **DevRel authority boundary:** This assessment is advisory. Whether an Intent to Prototype is filed is a Product/Eng/API Owner decision per your canonical process. My job is to make the evidence gaps and their consequences visible *before* the decision, not to approve or block.
+
+## 3. Challenge (relevant lenses)
+
+**A. Problem & use-case validity** *(primary)*
+- *Contradiction:* the PM's "ready" claim is contradicted by the evidence base — almost every input the transition packet requires is absent. That is an internal contradiction (claim vs. evidence), not yet a contradicted external finding.
+- *Hypothesis:* each of the three use cases is a **hypothesis** ("X happens, costs Y, no current solution"), not a fact.
+- *Resolve via:* structured customer interviews (last-time-it-happened prompts), plus public signal in issue trackers / Stack Overflow / framework repos. Evidence ladder target for prototype entry: at least **observed public need + contacted-with-permission + interest** for the lead use case.
+
+**B. Ecosystem & customer research (demand, workarounds, frameworks, adjacent platforms, counterevidence)** — see `modules/ecosystem-and-customer-research.md`.
+- *Unknowns:* demand; current workarounds and their cost; framework/server behavior; native/mini-app/chat/LLM-agent equivalents.
+- *Resolve via:* a bounded research sprint with a query matrix, a source/community map, an evidence ledger, and an explicit **"why not?"** (falsification) pass. Record saturation; never equate search volume with evidence quality.
+
+**C. "Why not?" / adversarial test** *(mandatory before transition)*
+- *Hypotheses to test:* the need is rare/low-cost/already-solved; the person bearing cost isn't the proposed user; a library/framework/server/native pattern suffices; the browser is the wrong layer or would ossify a premature design; other engines have reason not to implement; the cost (privacy/security/a11y/competition/user agency) exceeds value; it only works on flagship/one region; partners want an outcome but not *this* API; "demand" is promotion/selection bias.
+- *Recommendation:* write the strongest case **against** and the evidence that would rebut it, and what result would trigger continue / change / narrow / park / stop.
+
+**D. Trial/partner candidate design**
+- *Unknown:* no candidate trial users.
+- *Resolve via:* **segment-balanced candidate hypotheses** (not endorsements), an outreach plan with consent/attribution choices, and interview prompts focused on past behavior and cost — not "do you like it?"
+
+**E. Prototype learning goals & measurement**
+- *Unknown:* no learning questions, success criteria, or stop/redesign conditions.
+- *Recommendation:* a prototype with no learning goals is the #1 incubation→prototype failure mode. Define the specific uncertainty the build resolves and what result triggers each next step.
+
+**F. Alternatives analysis (explainer-level)**
+- *Unknown:* no rejected-with-evidence alternatives.
+- *Recommendation:* the explainer's "Alternatives considered" must be evidence-backed, not gesture-y; otherwise the motivation is unsupported.
+
+**G. Interoperability & standards posture (early)**
+- *Unknown:* no venue/other-engine signals.
+- *Recommendation:* at minimum identify the incubation venue and any prior art; don't present absence of objection as support.
+
+**H. End-user impact + early review-rehearsal lenses**
+- *Unknown:* end-user benefit/cost/control; privacy/security/a11y at the explainer level.
+- *Recommendation:* open these in the explainer now (they're cheapest to influence early); full rehearsal belongs closer to wide review.
+
+## 4. Plan (stage-appropriate: complete incubation, then reassess prototype)
+
+**Outcome & exit criteria** — a defensible **incubation→prototype transition packet** containing: validated *or explicitly contested* jobs/use cases; segment & community map; current workarounds and costs; adjacent-platform pattern matrix; alternatives rejected with evidence; affected users/stakeholders and review risks; candidate partners with evidence stage; **prototype learning questions, environments, measures, and stop/redesign conditions**; explainer/source links.
+
+**Evidence to collect**
+- Representative customer/developer interviews (segment-balanced) for the three use cases.
+- Workaround analysis across public issue trackers, Q&A, framework/library repos.
+- Adjacent-platform comparison (native/mini-app/chat/LLM-agent as relevant), distilled to web-fit conclusions.
+- Framework/server/build-tool signals (at research depth, not yet integration tests).
+- Other-engine / standards signals and prior art.
+- An explicit counterevidence ("why not?") brief.
+
+**Activities & artifacts (DevRel-coordinated)**
+- Ecosystem/customer research brief + evidence ledger + saturation statement.
+- Interview/outreach plan + candidate map (consent-aware).
+- "Why not?" brief.
+- Explainer critique (goals/non-goals/alternatives/privacy-security-a11y/open questions).
+- Prototype learning-goals & measurement one-pager.
+- *Then,* only if criteria are met: a reviewed Intent to Prototype.
+
+**Owners/reviewers (advisory role routing, incubation row)** — DevRel **coordinates** research; Product/Eng **contribute** API context & constraints; API Owner, Privacy, Security, Standards, A11y **consult / formal-review-if-required** per your canonical process; Comms not yet engaged.
+
+**Dependencies & risks**
+- Research may reveal the problem is rare, solved, or at the wrong layer → pivot/narrow/stop.
+- Risk of locking API shape before integration understanding.
+- Risk of promoting "interest" to "commitment" or naming non-consenting customers.
+- If the team proceeds anyway: every public claim must stay at the evidence's actual rung.
+
+**Suggested sequence** (DevRel-led, ~this order): 1) lock research questions + "why not"; 2) source/community map + query matrix; 3) interviews + public evidence; 4) alternatives/workaround + adjacent-platform matrix; 5) prototype learning goals; 6) transition-packet assembly; 7) reassess prototype readiness; 8) *if* ready, draft Intent to Prototype from the packet.
+
+**Explicit blocker (advisory):** From DevRel's perspective the **entry criterion for prototype — "problem/use cases sufficiently understood to test a design" — is not met**, so I am not producing a "ready" Intent to Prototype. The formal filing decision remains the API Owner's/Product-Eng's.
+
+## 5. Artifacts
+
+I produced three. The **Intent to Prototype** is provided as an explicitly **provisional scaffold** that serves the PM's request while making every gap impossible to miss — it is *not* a filing-ready document.
+
+---
+
+### Artifact 1 — Incubation→Prototype Transition Packet: Gap Map *(provisional)*
+
+```yaml
+artifactType: "transition-packet-gap-map"
+featureOrInitiative: "[feature] — [ChromeStatus ID]"
+lifecycleStage: "incubation → prototype (requested)"
+audience: "internal"
+owner: "DevRel (coordinate)"
+status: "draft"
+created: "2026-07-27"
+updated: "2026-07-27"
+sources: ["[explainer URL — to verify]", "https://www.chromium.org/blink/launching-features/"]
+unresolvedAssumptions:
+  - "Explainer exists and is public-safe (PM-reported, unverified by DevRel)."
+  - "Three use cases are PM-authored scenarios, not developer-validated."
+reviewRequirements: ["PM", "Eng tech lead", "API Owner", "Privacy", "Security", "A11y", "Standards"]
+```
+
+| Transition-packet element (phase 01 exit) | Status | Evidence/Note |
+|---|---|---|
+| Jobs/use cases validated **or** explicitly contested | **Partial → Unknown** | 3 plausible use cases; none validated; none contested. *Hypothesis.* |
+| Segment & community map | **Unknown** | Not produced. |
+| Current workarounds & their costs | **Unknown** | Not analyzed. |
+| Adjacent-platform patterns (native/mini-app/chat/agent) | **Unknown** | Not compared. |
+| Alternatives rejected **with evidence** | **Unknown** | Explainer alternatives section status unverified. |
+| Affected users/stakeholders + review risks | **Unknown** | Not enumerated. |
+| Candidate partners (evidence stage) | **Unknown** | None; ladder below "candidate." |
+| Prototype learning questions / environments / measures | **Unknown** | Not defined. |
+| Stop / redesign conditions | **Unknown** | Not defined. |
+| Interoperability/standards early signals | **Unknown** | Venue/prior-art/other-engine posture not captured. |
+| Privacy / security / a11y (explainer-level) | **Unknown** | Opened in explainer? unverified. |
+
+**Verdict (advisory):** transition packet is **~10% complete**. Prototype entry criterion not satisfied.
+
+---
+
+### Artifact 2 — Intent to Prototype *(provisional scaffold; NOT filing-ready)*
+
+```yaml
+artifactType: "intent-to-prototype-scaffold"
+featureOrInitiative: "[feature] — [ChromeStatus ID]"
+lifecycleStage: "prototype (requested)"
+audience: "internal (will be public on filing)"
+owner: "PM/Eng (DevRel advisory)"
+status: "draft-provisional"
+created: "2026-07-27"
+updated: "2026-07-27"
+sources: ["[explainer URL]"]
+unresolvedAssumptions:
+  - "Every section marked [EVIDENCE GAP] is currently unsupported and must not be filled with plausible prose."
+reviewRequirements: ["API Owner (formal)", "Privacy", "Security", "A11y", "Standards", "TAG per process", "DevRel evidence sign-off"]
+```
+
+> **Contact / motivation**
+> - **[EVIDENCE GAP]** Motivation must rest on validated use cases, not "the explainer is written."
+> - **[EVIDENCE GAP]** Link to research/interviews (none yet).
+>
+> **Use cases**
+> - Three plausible use cases listed. **Label: hypothesis, not validated.** [EVIDENCE GAP — customer interviews + public signal required.]
+>
+> **Alternatives considered & why insufficient**
+> - **[EVIDENCE GAP]** No workaround/library/server/native analysis. Must be evidence-backed.
+>
+> **Why a browser/platform intervention (and why now)**
+> - **[EVIDENCE GAP]** "Why not library/server/native/agent?" not answered.
+>
+> **Other-platform comparison**
+> - **[EVIDENCE GAP]** Native/mini-app/chat/LLM-agent comparison not done.
+>
+> **Interoperability & standards posture**
+> - **[EVIDENCE GAP]** Venue, prior art, other-engine signals not captured. Silence ≠ support.
+>
+> **Prototype learning goals & design questions to answer**
+> - **[EVIDENCE GAP]** No learning questions; no success/stop/redesign criteria.
+>
+> **Candidate developers/partners to involve**
+> - **[EVIDENCE GAP]** No candidates identified; consent/attribution plan absent.
+>
+> **Privacy / Security / Accessibility considerations (explainer-level)**
+> - **[EVIDENCE GAP]** Status unverified; must be opened in explainer.
+>
+> **Flag / implementation plan**
+> - **[EVIDENCE GAP — Eng]** Runtime flag, milestone, owner TBD by Eng.
+>
+> **Risks**
+> - Internal contradiction: "ready" asserted before incubation evidence exists. Fix before filing.
+
+**Recommendation:** this scaffold becomes filing-ready only after Artifact 1 is substantially complete. DevRel will **not** sign off on evidence readiness until then.
+
+---
+
+### Artifact 3 — Developer research plan *(provisional)*
+
+```yaml
+artifactType: "developer-research-plan"
+featureOrInitiative: "[feature] — [ChromeStatus ID]"
+lifecycleStage: "incubation"
+audience: "internal"
+owner: "DevRel (coordinate)"
+status: "draft"
+created: "2026-07-27"
+updated: "2026-07-27"
+sources: []
+unresolvedAssumptions:
+  - "Target segment and job-to-be-done to be confirmed with PM before fielding."
+reviewRequirements: ["PM", "API Owner", "Privacy (if any PII collected)"]
+```
+
+**Research question (decision):** Are the three use cases real, recurring, costly, and unmet by current web/library/server/native options — enough to justify a browser intervention at *this* shape?
+
+**Population & sampling:** Representative segments across [frameworks TBD, regions TBD, scales TBD]; recruited from public communities with a selection-bias mitigation plan. Denominator and method recorded.
+
+**Support questions:** last time this occurred; what you did instead; what it cost; who approved/operated/supported it; what blocked production use; what would make you reject this API.
+
+**Falsification ("why not?") questions:** Is this rare/cheap/already solved? Wrong layer? Library/server/native sufficient? Privacy/security/a11y/competition cost > value? Flagship/one-region only?
+
+**Analysis method:** Evidence-ladder coding (observed need → candidate → contacted → interest → trial → ship → production); triangulate interviews with public signal; state saturation.
+
+**Limitations:** Cannot prove *this exact API shape* is wanted; can establish whether the *job* is real and unmet. Self-report ≠ behavior.
+
+**Outputs:** evidence ledger; jobs/segments/workarounds; adjacent-platform matrix; candidate map; "why not?" brief; revised use-case validity ratings; go/change/narrow/park/stop recommendation with thresholds.
+
+## 6. Measures for this work
+
+Match measures to the work (no single score):
+- **Transition-packet completeness** vs. the phase-01 exit inventory (today: ~10%).
+- **Validated vs. contested use cases** (target: lead use case at least at "observed + contacted + interest").
+- **Representative interview coverage** across segments/regions/stacks (denominator stated).
+- **Counterevidence surfaced** and how it was addressed.
+- **Time-to-quality-transition**, not time-to-file-on-original-date.
+- **Reduction in unsupported public claims** before any intent is filed.
+
+## 7. Continuity
+
+Track `[feature]` in the continuous loop with a stable ID: inventory → evidence → exercise → critique → questions → goals → improve → validate → publish/update → monitor. Keep the evidence ledger, denominators, owners, and cadence stable so the reassessment after research is comparable to this baseline.
+
+---
+
+**Bottom line (advisory):** "Explainer written" is an incubation *artifact*, not an incubation *exit*. The request is roughly a phase early. DevRel will not prepare a "ready" Intent to Prototype; we'll lead the research that either earns the transition or surfaces a needed change in scope — and the formal filing call stays with your API Owner/Product-Eng process. Want me to start by verifying the explainer and standing up the research sprint (Artifact 3)?

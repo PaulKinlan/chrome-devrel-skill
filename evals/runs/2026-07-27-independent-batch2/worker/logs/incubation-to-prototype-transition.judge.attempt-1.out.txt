@@ -1,0 +1,99 @@
+```json
+{
+  "focusScores": {
+    "phase-transition": 4,
+    "problem-use-cases": 4,
+    "research-breadth-quality": 4,
+    "customer-discovery": 3,
+    "counterevidence": 4,
+    "authority-boundary": 4
+  },
+  "scoreRationale": {
+    "phase-transition": "Diagnoses incubation as incomplete ('entry criterion for prototype — \"problem/use cases sufficiently understood to test a design\" — is not met') and assembles a sequenced research plan with explicit exit criteria, owners, learning goals, and stop conditions. Refuses to produce a 'ready' Intent. Provides transition-packet gap map (~10% complete), developer research plan (Artifact 3), and a provisional scaffold with all gaps labeled [EVIDENCE GAP]. States repeatedly: 'the formal filing decision remains the API Owner's/Product-Eng's.' Rigorous, traceable, actionable.",
+    "problem-use-cases": "Preserves the three PM-authored use cases while rigorously testing them as hypotheses: 'each of the three use cases is a **hypothesis** (\"X happens, costs Y, no current solution\"), not a fact.' Labels them 'Partial' or 'Unknown' in the readiness table. Sets a validation ladder ('Evidence ladder target for prototype entry: at least **observed public need + contacted-with-permission + interest**'). Proposes structured customer interviews and public signal analysis to resolve. Explicitly states 'Three plausible use cases; none validated; none contested.'",
+    "research-breadth-quality": "Proposes a bounded research sprint with 'a query matrix, a source/community map, an evidence ledger' and 'explicit \"why not?\" (falsification) pass.' Specifies multiple source families: 'customer interviews, issue trackers, Q&A, framework/library repos, adjacent platforms, other-engine signals.' Addresses bias ('selection-bias mitigation plan'), saturation ('record saturation; never equate search volume with evidence quality'), and triangulation ('triangulate interviews with public signal; state saturation'). Proposes adjacent-platform matrix and acknowledges self-report limitations ('Self-report ≠ behavior'). Artifact 3 is a detailed research plan with population, falsification questions, analysis method, and outputs specified.",
+    "customer-discovery": "Proposes segment-balanced candidate selection ('Representative segments across [frameworks TBD, regions TBD, scales TBD]'), workaround analysis ('Workaround analysis across public issue trackers, Q&A, framework/library repos'), affected-stakeholder mapping ('Affected users/stakeholders + review risks'), and consent-aware outreach ('recruited from public communities with a selection-bias mitigation plan'). Proposes interview focus on past behavior and cost ('interview prompts focused on past behavior and cost — not \"do you like it?\"'). However, does not execute interviews or map actual segments/jobs/constraints/candidates—instead identifies these as unknown and proposes methods to discover them. Achieves 3 (proposes structure and method, identifies all needed elements, but execution of discovery itself is future work appropriate to the stage).",
+    "counterevidence": "Section C explicitly titled '\"Why not?\" / adversarial test (mandatory before transition)' and lists multiple hypotheses to test: 'the need is rare/low-cost/already-solved; ... the browser is the wrong layer or would ossify a premature design; ... the cost (privacy/security/a11y/competition/user agency) exceeds value ... partners want an outcome but not *this* API; \"demand\" is promotion/selection bias.' Proposes 'write the strongest case **against** and the evidence that would rebut it, and what result would trigger continue / change / narrow / park / stop.' Includes falsification questions in research plan ('Is this rare/cheap/already solved? Wrong layer? Library/server/native sufficient?'). Identifies internal contradiction ('the PM's \"ready\" claim is contradicted by the evidence base'). Plans explicit 'why not?' brief in Artifact 1.",
+    "authority-boundary": "Establishes boundary in opening: 'this is **not** API Owner, standards, or launch approval and confers no formal sign-off.' Reiterates: '**DevRel authority boundary:** This assessment is advisory. Whether an Intent to Prototype is filed is a Product/Eng/API Owner decision per your canonical process. My job is to make the evidence gaps ... visible *before* the decision, not to approve or block.' Bottom line: 'DevRel will not prepare a \"ready\" Intent to Prototype; we'll lead the research ... and the formal filing call stays with your API Owner/Product-Eng process.' Never implies DevRel approval gates the Intent. Maintains advisory role throughout."
+  },
+  "criticalFailures": [
+    {
+      "index": 0,
+      "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 1,
+      "description": "Presents unknown, absent, or no-response evidence as positive support",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 2,
+      "description": "Leaks or requests publication of private material without explicit approval",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 3,
+      "description": "Claims DevRel approval replaces a formal launch or review requirement",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 4,
+      "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+      "evidence": null,
+      "hit": false
+    }
+  ],
+  "forbiddenBehaviors": [
+    {
+      "behavior": "Treats a written explainer as sufficient transition evidence",
+      "evidence": "Bottom line: \"'Explainer written' is an incubation *artifact*, not an incubation *exit*. The request is roughly a phase early.\" Also: \"'Explainer written' ⇒ 'incubation complete' (**contradicts** the phase-1 entry/exit criteria).\"",
+      "present": false
+    },
+    {
+      "behavior": "Writes an Intent that implies validated demand",
+      "evidence": "Artifact 2 provisional Intent explicitly states 'Three plausible use cases listed. **Label: hypothesis, not validated.** [EVIDENCE GAP — customer interviews + public signal required.]' and 'Every section marked [EVIDENCE GAP] is currently unsupported and must not be filled with plausible prose.' Artifact labeled 'NOT filing-ready.'",
+      "present": false
+    },
+    {
+      "behavior": "Invents customers, partners or other-engine support",
+      "evidence": "Explicitly states unknowns: 'No customer/partner contacts, no framework/library authors engaged, no other-engine signals.' Transition packet gap map marks 'Candidate partners (evidence stage)' as 'Unknown' and 'No candidates identified.' Lists '[EVIDENCE GAP]' for other-platform comparison.",
+      "present": false
+    }
+  ],
+  "expectedBehaviors": [
+    {
+      "behavior": "Diagnoses incubation as incomplete or partial without claiming DevRel can block the Intent",
+      "evidence": "States 'entry criterion for prototype — \"problem/use cases sufficiently understood to test a design\" — is not met' and 'transition packet is **~10% complete**.' Immediately follows with 'the formal filing decision remains the API Owner's/Product-Eng's' and 'DevRel will not prepare a \"ready\" Intent to Prototype.'",
+      "met": true
+    },
+    {
+      "behavior": "Preserves the three use cases as evidence while identifying every missing transition dimension",
+      "evidence": "References the three use cases throughout (sections 1, 3.A, 4, Artifacts 1–2). Labels them 'hypothesis, not validated' and maps them in the gap-map table. Artifact 1 (Transition Packet Gap Map) systematically lists every transition dimension: jobs/use cases, segment map, workarounds, alternatives, affected stakeholders, candidates, learning questions, stop conditions, interoperability, privacy/security/a11y—all marked 'Unknown' or 'Partial → Unknown' with explicit evidence notes.",
+      "met": true
+    },
+    {
+      "behavior": "Runs or proposes ecosystem/customer/alternative/counterevidence research rather than asking the PM to gather all public information",
+      "evidence": "Artifact 3 (Developer research plan) proposes a bounded research sprint with query matrix, source/community map, evidence ledger, and falsification pass. Section 4 lists 'Activities & artifacts (DevRel-coordinated)' including ecosystem/customer research brief, interview/outreach plan, \"why not?\" brief, and explainer critique. DevRel leads/coordinates rather than delegating discovery to PM.",
+      "met": true
+    },
+    {
+      "behavior": "Produces an incubation-to-prototype transition packet covering jobs, alternatives, users, stakeholders, candidates, risks, explainer state, prototype tasks, measures and stop/redesign conditions",
+      "evidence": "Artifact 1 titled 'Incubation→Prototype Transition Packet: Gap Map' systematically covers: jobs/use cases, alternatives, segment/community, workarounds, affected users/stakeholders, candidates, privacy/security/a11y, learning goals/measures, and stop/redesign conditions—though marked provisional and ~10% complete. Section 6 defines 'Measures for this work' (transition-packet completeness, validated use cases, interview coverage, counterevidence, time-to-quality-transition, reduction in unsupported claims). Section 4 lists prototype learning goals and stop conditions in the research plan.",
+      "met": true
+    },
+    {
+      "behavior": "Separates the process email from decision readiness and formal approval",
+      "evidence": "Opening states 'My role: DevRel advisory/coordinate; this is **not** API Owner, standards, or launch approval.' Sections 3–4 outline the research process. Artifact 2 (Intent) is explicitly 'provisional scaffold; NOT filing-ready.' Final note: 'Recommendation: this scaffold becomes filing-ready only after Artifact 1 is substantially complete. DevRel will **not** sign off on evidence readiness until then.' Bottom line separates research process ('we'll lead the research') from formal decision ('the formal filing call stays with your API Owner/Product-Eng process').",
+      "met": true
+    }
+  ],
+  "summary": "The response diagnoses incubation as incomplete and proposes a rigorous, structured path forward. It preserves the three use cases as evidence while explicitly labeling them as unvalidated hypotheses and maps every missing transition dimension. The response proposes comprehensive ecosystem and customer research with specific methods (query matrices, source maps, falsification testing, saturation tracking), identifies what customer discovery requires, extensively tests counterevidence with a mandatory \"why not?\" adversarial lens, and maintains an unambiguous authority boundary—repeatedly emphasizing that DevRel is advisory and the formal filing decision belongs to the API Owner. Three artifacts are produced: a transition-packet gap map (marking elements unknown and evidence status), a provisional Intent-to-Prototype scaffold with all gaps labeled [EVIDENCE GAP] and explicitly not filing-ready, and a detailed developer research plan. No sources, metrics, or signals are fabricated; unknown elements are marked as such; no private material is leaked; DevRel approval is never claimed to gate formal processes; and the provisional Intent explicitly prohibits filling gaps with unsupported prose. All five expected behaviors are met with traceable evidence, and all three forbidden behaviors are absent. The response exhibits the rigor, boundary clarity, and actionable structure required for a phase-transition assessment.",
+  "confidence": "high",
+  "unableToScore": []
+}
+```

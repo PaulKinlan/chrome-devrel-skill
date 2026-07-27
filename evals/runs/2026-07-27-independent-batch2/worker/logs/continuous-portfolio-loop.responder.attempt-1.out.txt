@@ -1,0 +1,388 @@
+I've loaded the full skill, the continuous-loop module, the stakeholder-critique, friction-log, ecosystem-research, governance, readiness, measurement, artifact-templates modules, and the blink lifecycle map. Below is my complete autonomous response.
+
+---
+
+# Chrome DevRel — Continuous Portfolio Loop for 40 Web-Platform Features
+
+> **Public alpha advisory.** This is pre-review DevRel analysis, not Chrome/DevRel approval and not a formal API Owner, privacy, security, a11y, legal, or release sign-off. DevRel **coordinates** evidence and adoption work; it does not determine whether formal review is required, and cannot block or approve shipment.
+
+Throughout this response I keep these labels **distinct and honest**:
+
+- **Fact** — linked public source / measured / verified behavior
+- **Signal** — attributable developer/ecosystem evidence
+- **Commitment** — a named party has agreed (interest ≠ commitment)
+- **Hypothesis** — claim that still needs a test
+- **Recommendation** — proposed action with owner/timing/expected outcome
+- **Unknown** — required information is missing (never = approval or zero)
+- **Contradiction** — available evidence challenges the current claim
+- **Blocker** — work cannot proceed safely without a decision
+
+---
+
+## 0. Questions I would normally ask first, and my working assumptions
+
+The skill says **interrogate before generating**. Because this is non-interactive, I list the questions and the assumptions I'm proceeding on.
+
+### Questions I'd ask (deferred, not blocking)
+1. What are the **40 features** (ChromeStatus IDs / names)? I will not invent them.
+2. Who **owns** each feature (DevRel practitioner, eng/TL, API Owner)? Is there a configured owner map?
+3. For each feature, what is the **current decision** the loop must serve (e.g., "advance to ship," "unblock negative position," "kill recurring framework bug")?
+4. **Evidence boundary** for this loop — public-only, approved-internal, or mixed-with-public-safe-output? Is there a consent registry for partner evidence?
+5. For "strong adoption" features — what is the **denominator and source** of the adoption claim (exact UseCounter vs family counter vs partner self-report)?
+6. For "unresolved negative positions" — are these from WebKit/Mozilla **standards-position issues**, TAG, civil-society, or other constituencies? Are they *recorded positions* or *inferences*?
+7. Is there a **publication review process** and HR/people-support path for any feature that may attract controversy?
+
+### Working assumptions I'm operating on
+- **Fact:** You asked for a *continuous portfolio loop* spanning incubation, trials, shipping, and post-launch support. → Mode = **continuous portfolio**; the operative module is `continuous-loop.md`.
+- **Hypothesis:** The four described conditions ("no demos," "stale docs," "unresolved negative positions," "strong adoption + recurring framework failures") are **archetypes**, not an exhaustive single-tag-per-feature description. I assume features may carry **multiple tags** (e.g., a shipping feature with stale docs *and* a recurring framework failure).
+- **Hypothesis:** "Shipping" maps to Blink phases 6–7 (prepare-to-ship / release); "post-launch support" maps to phases 8–9 (adoption / support-and-iteration); "incubation" = phase 1; "trials" = phases 3 and/or 5 (developer trials / origin-trial experiment).
+- **Assumption:** The 40-feature list, owner map, and private inputs do not yet exist in a form I can read, so the loop infrastructure below is built to **ingest them**. Nothing below names, promotes, or downgrades a specific real feature.
+- **Assumption:** Evidence boundary defaults to **public-only** until you confirm otherwise. I will not invent partner commitments, cross-engine positions, or adoption numbers.
+
+> **Recommendation:** As soon as you can, give me the 40 ChromeStatus IDs and I will populate the manifest's evidence columns from public sources (ChromeStatus, standards-position repos, UseCounters via web-features, framework issue trackers) rather than have your team gather it manually.
+
+---
+
+## 1. Diagnosis (intake)
+
+- **Mode:** Continuous portfolio (recurring, multi-stage).
+- **Lifecycle stages in play:** 1 Incubation · 3 Developer trials · 5 Experiment/OT · 6 Prepare-to-ship · 7 Release · 8 Adoption · 9 Support/iteration. (Phases 0, 2, 4, 10 may appear per-feature as work returns to incubation or moves to deprecation.)
+- **Developer problem / target audience:** Mixed. Four distinct bottlenecks across the portfolio, each with a different audience:
+  - *No demos* → developers cannot see/try/understand → adopters and evaluators.
+  - *Stale docs* → developers cannot find accurate canonical guidance → integrators and supporters.
+  - *Unresolved negative positions* → interoperability/legitimacy risk → other engines, TAG, civil-society, framework authors.
+  - *Strong adoption + framework failures* → production breakage → framework/library users and maintainers.
+- **Current decision:** Stand up a repeatable loop that, every cycle, inventories all 40, gathers evidence, exercises the at-risk ones, critiques, and produces a prioritized, owner-assigned work queue with monitors and human escalation points.
+- **Evidence already available:** **Unknown.** No manifest has been provided. Per skill rule, I treat missing evidence as **Unknown**, not as "not applicable" or "zero."
+- **Highest-risk assumptions:**
+  - **Hypothesis:** "Strong adoption" is currently asserted rather than measured with an exact denominator. **Risk:** inflating adoption from family-level counters or partner self-report (anti-patterns A1/A3 in the exemplars research).
+  - **Hypothesis:** Some "unresolved negative positions" may be *principle-grounded inferences* rather than *recorded positions*. These must be labeled differently and not presented as the stakeholder's stated view.
+  - **Hypothesis:** "Stale docs" may hide deeper problems (e.g., docs that match a superseded API shape). **Contradiction risk:** a mismatch between docs/explainer/spec/implementation is itself a finding.
+- **Missing owners / stakeholders:** Owner map is **config-required** (provided as a template in §4.6, not filled). For negative-position features, a **standards/TAG liaison** and **API Owner** are stakeholders DevRel consults but does not speak for.
+- **Recommended next intervention:** Build the manifest + triage matrix (§4.1–4.2), run **iteration #1** (§4.7) to produce the first dashboard and work queue, then route the four clusters through their playbooks (§4.4).
+
+---
+
+## 2. Readiness assessment — portfolio-level, no veto invented
+
+Per dimension I report **Supported / Partial / Unknown / Contradicted / Not relevant**. Because I have no manifest yet, the honest starting state is **Unknown** for almost everything; below I state the *cluster-level hypothesis* the loop's first iteration must confirm or refute, with the evidence it would take to move each to a higher state.
+
+| Dimension | "No demo" cluster | "Stale docs" cluster | "Negative positions" cluster | "Adoption+framework failures" cluster |
+|---|---|---|---|---|
+| Problem validity | **Unknown** (no demo doesn't disprove problem, but blocks evidence) | **Unknown** | **Partial→Unknown** (problem may be real; position may be about scope/privacy not need) | **Supported (hypothesis)** — recurring failures imply real usage, *if* adoption denominator is verified |
+| Developer demand | **Unknown** | **Unknown** | **Unknown** | **Partial** — adoption is a demand signal but **must be sourced**; category interest ≠ API demand |
+| Partner commitment | **Unknown** | **Unknown** | **Unknown** | **Unknown** — adoption ≠ commitment; classify via evidence ladder |
+| API ergonomics | **Unknown** (can't exercise without demo/sample) | **Unknown** | **Unknown** | **Contradicted (hypothesis)** — recurring framework failures are an ergonomics/integration signal |
+| Interoperability | **Unknown** | **Unknown** | **Contradicted** — open negative positions are explicit interop friction | **Unknown** |
+| Framework/library fit | **Unknown** | **Unknown** | **Unknown** | **Contradicted** — this is the defining problem of the cluster |
+| Documentation | **Contradicted** — no demo often correlates with thin docs | **Contradicted** — stale by definition | **Unknown** | **Partial** — docs may exist but not cover the failure modes |
+| Adoption mechanics | **Unknown** | **Unknown** | **Unknown** | **Partial** — adoption exists but is leaky |
+| Measurement | **Unknown** | **Unknown** | **Unknown** | **Unknown** — must verify adoption denominator & add failure telemetry |
+| User impact | **Unknown** | **Unknown** | **Unknown** (must run user-impact/review rehearsal) | **Unknown** |
+| Privacy / Security / A11y | **Unknown** | **Unknown** | **Unknown** (positions often cite these) | **Unknown** |
+| Team safety | **Unknown** | n/a likely | **Unknown** — negative positions can attract targeting | **Unknown** |
+| Narrative/claim accuracy | **Unknown** | **Contradicted** — stale docs risk false claims | **Contradicted** — must not present silence as support | **Contradicted** — must not present adoption as success |
+
+**Why "Unknown" everywhere is the correct starting point:** the skill's exemplars research (E3) shows the honest move is to *label* unknowns rather than infer. I am explicitly **not** treating "no evidence found" as approval, support, or zero (anti-patterns A1, A5).
+
+**Likely consequences if gaps stay unresolved (advisory, not a veto):**
+- **No-demo features:** cannot gather ergonomic evidence → cannot honestly advance from prototype/trial to ship readiness; reviewers rightly ask "how do we know it's usable?"
+- **Stale-docs features:** support burden rises; developers file duplicate issues; the canonical source of truth diverges from implementation.
+- **Negative-position features:** risk of a Chrome-only period presented as an interoperable web standard; launch-resilience exposure; other-engine and TAG friction that can ossify.
+- **Adoption+framework-failure features:** production breakage erodes trust faster than any article rebuilds it; recurring bugs signal a missing regression/conformance layer.
+
+---
+
+## 3. Challenge — relevant lenses by cluster
+
+I select only the lenses that match each bottleneck (skill rule: don't apply the whole checklist everywhere).
+
+### Cluster A — "No demos" (lens: docs/samples/demos + adoption multipliers)
+- **Challenge:** A demo is not an adoption strategy, but the *absence* of one blocks evidence collection. Which gap does a demo actually need to close — discovery, first-success, or realistic integration? **Recommendation:** scope demos to the *bottleneck*, and make them friction-log-informed, not happy-path showcases.
+- **Contradiction to test:** Is the feature undocumented because it's genuinely early (acceptable), or because no one owns the developer story (a blocker)?
+- **Red-team:** don't ship a demo that "showcases delight while concealing security, a11y, fallback, or deployment constraints" (stakeholder-critique red-team lens).
+
+### Cluster B — "Stale docs" (lens: documentation gap analysis + freshness monitoring)
+- **Challenge:** Staleness is a *symptom*. Per feature, classify the root: (a) API changed and docs didn't, (b) owner left, (c) docs were one-time launch assets with no maintenance owner, (d) docs live in a place nobody checks.
+- **Hypothesis:** the most dangerous staleness is **spec/docs/implementation mismatch** — a finding even if one path "works" (friction-log rule).
+
+### Cluster C — "Unresolved negative positions" (lens: stakeholder-critique + interoperability + user-impact/review-rehearsal + launch-resilience)
+- **Challenge:** Separate, for each position: **recorded position** vs **principle-grounded inference** vs **open question** (stakeholder-critique rule). Do **not** role-play remembered stereotypes of vendors/civil-society (explicit anti-pattern A5; "silence is unknown, not support").
+- **Required:** a **dated source packet** per constituency (URL, publisher, date, retrieval date, quotation, evidence class).
+- **Decision support, not veto:** I will lay out (i) strongest case for, (ii) strongest case against, (iii) conditions under which a skeptical stakeholder might move, (iv) conditions that should trigger redesign/narrow/another-trial/delay/rollback/abandon. **DevRel does not decide whether to ship**; it makes the unresolved risk visible to those who do.
+
+### Cluster D — "Strong adoption + recurring framework failures" (lens: friction-log + ecosystem-research + adoption + support)
+- **Challenge:** This is the classic support-phase trap named in `phases/09-support.md`: *"Writing another article instead of fixing integration/product friction."* The bottleneck is **product/framework/server**, not awareness.
+- **Contradiction to test:** Is "strong adoption" real? Verify the denominator (exact counter vs family counter — anti-pattern A3) before treating it as the anchor metric.
+- **Hypothesis:** recurring failures imply a **missing immutable regression/conformance check** and possibly an upstream contribution gap.
+
+---
+
+## 4. The continuous loop (the requested artifact)
+
+This is the core deliverable: a repeatable system, not a one-time report. It follows the 10-step loop from `continuous-loop.md` (inventory → evidence → exercise → critique → questions → goals → improve → validate → publish/update → monitor) with stable IDs, history, denominators, owners, cadences, alert thresholds, and human escalation points.
+
+### 4.1 Portfolio manifest (denominator = 40) — schema + TEAM-MUST-POPULATE
+
+```yaml
+# portfolio-manifest.yaml
+# Denominator: 40 features. Blocked/unsupported items REMAIN VISIBLE (never dropped).
+loopVersion: 1
+lastIterated: "<ISO date — to be set on iteration #1>"
+denominator: 40
+evidenceBoundary: "public-only (default; confirm with team)"
+
+features:
+  - id: "F-01"                 # STABLE ID — never reused
+    name: "<TBD by team>"       # I will NOT invent feature names
+    chromeStatusId: "<TBD>"     # populate from the 40 IDs you provide
+    stage: "incubation|prototype|dev-trial|experiment|prepare-ship|release|adoption|support|deprecation"
+    owner_devrel: "<from owner map §4.6>"
+    owner_eng: "<from owner map>"
+    apiOwner: "<consult>"
+    clusters: [no-demo|stale-docs|negative-position|framework-failure]  # multi-tag allowed
+    openConcerns: []
+    supportState: "none|monitored|active-incidents"
+    artifacts: { demo: "missing|stale|current", docs: "...", sample: "...", faq: "..." }
+    lastFrictionLog: null
+    lastCritique: null
+    history: []                # append-only provenance
+```
+
+> **Fact about this manifest:** it is a **template requiring team population**. There are no real feature names, ChromeStatus IDs, owners, or metrics in it. **Unknown** is the default for every unpopulated field; nothing is inferred.
+
+### 4.2 Triage matrix — stage × issue-archetype (routing logic)
+
+When each feature is entered, it is routed by **stage** (row) and **cluster tag(s)** (column) to a playbook (§4.4). A feature occupies one row but may occupy several columns.
+
+| Stage (Blink phase) | A: No demo | B: Stale docs | C: Negative position | D: Framework failure |
+|---|---|---|---|---|
+| Incubation (1) | Minimal example + partner candidates; *gate*: don't start from an API shape | (rare) ensure explainer is the source of truth | **Priority.** Dated source packet before any "ready" claim | Usually n/a (rare) |
+| Developer trial / Experiment (3/5) | Showcase demo + office hours + feedback rubric; trial must have *learning goals* | Trial guide must match current build | Critique matrix + outreach; do **not** present no-objection as support | Integration spike with named framework(s) |
+| Prepare-to-ship / Release (6/7) | Complete samples + FAQ before ship; **blocker** if missing | Docs gap analysis **must close** before launch brief | Launch-resilience + announcement red-team; unresolved position = disclosed limitation, not hidden | Compatibility matrix public; known issues documented |
+| Adoption / Support (8/9) | Demo refresh tied to real workflows | Freshness monitor + refresh owner | Continue engagement; track position changes | **Priority.** Friction log → regression tests → upstream fix; *not* another article |
+
+**Recommendation:** Triage count targets to confirm in iteration #1 (you have not given me the actual split, so these are **placeholders**, not measurements):
+
+```
+A (no-demo):           N_A  of 40   [unknown until manifest populated]
+B (stale-docs):        N_B  of 40   [unknown]
+C (negative-position): N_C  of 40   [unknown]
+D (framework-failure): N_D  of 40   [unknown]
+overlap (multi-tag):   N_X  of 40   [unknown]
+```
+
+### 4.3 Monitoring design — cadence and triggers (not "monitor continuously")
+
+From `continuous-loop.md`: every monitor needs **source, query/filter, owner, cadence, retention, privacy boundary, alert threshold, action, stop condition.**
+
+| Monitor | Source/query | Cadence | Owner | Alert threshold → action |
+|---|---|---|---|---|
+| New/revised standards position | WebKit/Gecko standards-positions repos, TAG, W3C issues | **Event-driven** (webhook/RSS) | Standards liaison | Any new negative/revise on a Cluster-C feature → re-run critique, notify API Owner |
+| Intent thread milestone change | Chromium intent threads, ChromeStatus | **Event-driven** | DevRel owner | Stage transition → produce that phase's transition packet |
+| Origin-trial feedback / regressions | OT dashboard, crbug | **Frequent during trial** | DevRel + eng TL | Regression or repeated negative feedback → friction log + design feedback |
+| Framework/library issue recurrence | React/Vue/Angular/Svelte/Solid trackers, crbug | **Weekly** | DevRel owner | Reappearance of a known signature → reopen friction item, add regression test |
+| Support volume by feature | Issue tracker, support portal | **Weekly** | Support owner | Volume spike or new severity → root-cause classification (product/docs/tooling/compat/messaging) |
+| Doc/demo freshness | web.dev / MDN / repo last-modified, ChromeStatus doc links | **Weekly** | Doc owner | Staleness > SLA (per stage) → refresh task, flag in freshness report |
+| Compatibility/conformance | In-house conformance suite, wpt | **Per milestone** | Eng TL | New failure → block auto-advance to "current", notify DevRel |
+| Adoption denominator drift | UseCounters / web-features | **Quarterly** | Measurement owner | Family-counter scope change → re-label, never silently re-present as feature-specific |
+| Press/public discussion & moderation signals | Public channels (privacy-preserving aggregates only) | **Frequent during launch** | Comms + HR | Harassment/doxxing/hate/threats → escalate per launch-resilience; never make an individual absorb abuse |
+| Stale artifact (>1 cycle untouched) | Manifest `lastIterated` | **Quarterly** | DevRel owner | Artifact untouched 2 cycles → revalidate or archive with reason |
+
+**Privacy rule:** no monitor collects personal/community data without an approved purpose and handling plan; team-safety metrics are **aggregate only**.
+
+### 4.4 The four cluster playbooks (tactics matched to the bottleneck)
+
+#### Playbook A — No demo
+- **Bottleneck:** developers cannot see/try/understand; evidence collection blocked.
+- **Steps:** (1) classify the demo's job — discovery, first-success, or realistic integration; (2) build the **minimal** demo that exercises the *realistic* path, not the happy path; (3) pair it with a **friction-log-informed sample** that documents setup, fallback, and known limitations; (4) add the demo to the manifest's `artifacts.demo` with version + owner + last-tested environment.
+- **Stage gating (advisory):** incubation → minimal example is acceptable; ship (phase 6) → missing demo/sample is a **blocker** for the launch brief.
+- **Artifact:** Demo & sample plan (per `artifact-templates.md`), each carrying metadata, sources, audience, owner, status, unresolved assumptions, review requirements.
+
+#### Playbook B — Stale docs
+- **Bottleneck:** canonical source of truth has diverged from implementation or lost an owner.
+- **Steps:** (1) run a **documentation gap analysis** (required-docs table: reference/quickstart/sample/FAQ/known-limitations, each with status/owner/gap); (2) diff docs vs current spec/explainer vs implementation — **a mismatch is a finding**; (3) assign a refresh owner and an SLA by stage; (4) wire the freshness monitor (§4.3) so staleness recurs, it alerts.
+- **Anti-pattern to avoid:** rewriting the docs to match a quirk of implementation without checking whether the *spec* is wrong.
+- **Artifact:** Documentation gap analysis + freshness SLA table.
+
+#### Playbook C — Unresolved negative positions
+- **Bottleneck:** interoperability/legitimacy; risk of a Chrome-only period masquerading as a web standard.
+- **Steps (per `stakeholder-critique.md`):** (1) state the power/capability change; (2) discover affected constituencies (broad, then retain only material ones); (3) build a **dated source packet** — for each: URL, publisher, publication + retrieval date, quotation, evidence class (**recorded position** / **principle-grounded inference** / **open question**); (4) steelman the strongest concern, don't pick weak objections; (5) produce the critique matrix (constituency, evidence class, source, strongest concern, severity vs likelihood, current response, gap, next action, owner/timing, status); (6) red-team the announcement; (7) set redesign/narrow/another-trial/delay/rollback/abandon triggers.
+- **Hard rules:** no support inferred from silence (A5); no personal-opinion/organisation conflation; a mitigation is not resolution until evidence shows it works.
+- **Escalation:** unresolved material negative position → human decision (API Owner / standards liaison / product), **not** a DevRel call to ship or not.
+- **Artifact:** Critique matrix + dated source packet per feature.
+
+#### Playbook D — Strong adoption + recurring framework failures
+- **Bottleneck:** product/framework/server integration, not awareness. (The named support-phase failure mode.)
+- **Steps (per `friction-log.md` + `phases/08-09`):** (1) **verify the adoption denominator first** — exact counter vs family counter; if family-level, label scope explicitly (A3); (2) run a reproducible friction log across representative framework/library × server × device × engine configurations; (3) build an **issue taxonomy** with stable IDs, reproductions, environments, severity, workaround cost, owner, status; (4) classify root cause — product/spec/compat/framework/server/tooling/docs/messaging; (5) add **immutable regression/conformance assertions** where behavior is testable; (6) contribute upstream where that scales better than content; (7) feed learnings back to product/docs/spec; (8) report exact **tested/total/fixed/remaining/blocked** counts.
+- **Anti-pattern to avoid (explicit):** *"Writing another article instead of fixing integration/product friction"*; closing tickets without validating user-task recovery; blaming developers for ambiguous behavior.
+- **Artifact:** Ecosystem/framework compatibility matrix + friction log + regression/conformance additions + support health dashboard.
+
+### 4.5 Work queue — prioritization rule
+
+Each open item gets: **stable ID, feature, cluster tag(s), stage, owner, impact, urgency, evidence state, dependencies, status.** Prioritize by:
+
+1. **Production breakage with verified adoption** (Cluster D, support stage) — highest urgency; user impact is ongoing.
+2. **Negative positions on features approaching ship/release** (Cluster C, prepare-ship/release) — launch-resilience + interop risk window is closing.
+3. **Missing demos/docs on features entering trial or ship** (Cluster A/B, trial/prepare-ship) — blocks evidence the next gate needs.
+4. **Routine freshness/recurrence** (any cluster, support/adoption) — scheduled cadence.
+
+> **Recommendation:** never let a Cluster-D feature sit behind a "write a blog post" task. The queue should make it impossible to mistake motion for progress.
+
+### 4.6 Owner map (config-required — template, not authority)
+
+DevRel coordinates; it does not grant sign-off. **Team must configure names, emails, backups, and authority source** (from `governance-and-roles.md`):
+
+| Archetype | Name/email | Backup | Authority source |
+|---|---|---|---|
+| DevRel practitioner (coordinates) | _fill_ | _fill_ | _team process_ |
+| Product/engineering owner | _fill_ | _fill_ | _team process_ |
+| API Owner / Blink owner (consult) | _fill_ | _fill_ | _Blink launch process_ |
+| Engineering lead/TL | _fill_ | _fill_ | _team process_ |
+| Privacy reviewer (formal-review-if-required) | _fill_ | _fill_ | _team process_ |
+| Security reviewer (formal-review-if-required) | _fill_ | _fill_ | _team process_ |
+| Accessibility reviewer (formal-review-if-required) | _fill_ | _fill_ | _team process_ |
+| Standards/TAG liaison (consult) | _fill_ | _fill_ | _team process_ |
+| Communications/PR | _fill_ | _fill_ | _team process_ |
+| Legal counsel (formal-review-if-required) | _fill_ | _fill_ | _team process_ |
+| HR/people support (consult) | _fill_ | _fill_ | _team process_ |
+| Community/GDE manager | _fill_ | _fill_ | _team process_ |
+
+> **Fact:** whether formal review is required at any phase is determined by the team's canonical process, not by this skill or by DevRel.
+
+### 4.7 Loop iteration #1 — runbook (the first cycle)
+
+Run this once the manifest is populated. Output maps 1:1 to `continuous-loop.md`'s Output section.
+
+1. **Inventory** — populate 40 rows with stable IDs; record stage, owner, cluster tags, artifact states, open concerns. Denominator = 40; any blocked/unsupported feature stays visible.
+2. **Gather evidence** — per feature, pull public evidence: ChromeStatus/intents, spec/explainer revision, implementation flag state, **standards positions (dated)**, UseCounter scope label (exact vs family), framework issue trackers, docs/demo last-modified, support volume.
+3. **Exercise** — friction-log the **highest-risk cells** of the triage matrix: all Cluster-D features (framework × device × engine), and any Cluster-A feature about to enter trial/ship.
+4. **Critique** — stakeholder-critique every Cluster-C feature; design/ergonomics critique every Cluster-A/D feature; freshness/accuracy critique every Cluster-B feature.
+5. **Questions** — convert each Unknown/Contradiction into an answerable question with an evidence plan.
+6. **Goals** — set per-cluster measurable goals (see §6).
+7. **Improve** — execute the four playbooks; fix at the correct layer (product/spec/impl/docs/sample/tooling/demo/fallback/support), not always "content."
+8. **Validate** — re-run exact reproductions + adjacent paths; add regression/conformance assertions; preserve before/after evidence.
+9. **Publish/update** — update the canonical source of truth; version artifacts; record limitations and owners.
+10. **Monitor** — arm the §4.3 monitors; set the next iteration date (weekly for active clusters, milestone for compat, quarterly for adoption/sentiment).
+
+**Iteration #1 deliverables (the loop's first Output):**
+- Portfolio manifest + denominator (40)
+- Current-state dashboard by dimension (§2, now populated)
+- Evidence/change log (append-only, with retrieval dates)
+- Friction, critique, and conformance results (Cluster C and D)
+- Questions and goals
+- Work queue by owner/impact/urgency (§4.5)
+- Artifact freshness report (Cluster A and B)
+- Monitoring alerts and actions (§4.3)
+- Outcome trend with limitations (baseline; trend after iteration 2+)
+- Residual risks and required human decisions (§7)
+
+---
+
+## 5. Artifacts to produce (full templates provided where the loop needs them)
+
+I provide the **structure and metadata** the skill requires (`artifact-templates.md`). Content is **provisional / TEAM-MUST-POPULATE**; unsupported sections are explicitly marked, never silently filled.
+
+### 5.1 Ecosystem/framework compatibility matrix (Cluster D) — full template
+
+```yaml
+artifactType: "ecosystem-framework-compatibility-matrix"
+featureOrInitiative: "<F-XX / ChromeStatus ID>"
+lifecycleStage: "support"
+audience: "developers"
+owner: "<DevRel owner>"
+status: "draft"
+created: "<ISO>"
+updated: "<ISO>"
+sources: ["<crbug>", "<framework tracker issue>", "<wpt results>"]
+unresolvedAssumptions: ["adoption denominator not yet verified as exact counter"]
+reviewRequirements: ["eng TL", "framework liaison"]
+```
+
+| Framework/library | Version | Status | Evidence | Blockers | Workaround | Owner |
+|---|---|---|---|---|---|---|
+| React | _x.y_ | _pass/fail/partial/unknown_ | _link+date_ | _issue ID_ | _cost_ | _name_ |
+| Vue | … | … | … | … | … | … |
+| Angular | … | … | … | … | … | … |
+| Svelte/Solid | … | … | … | … | … | … |
+| Server/SSR path | … | … | … | … | … | … |
+| Build tooling | … | … | … | … | … | … |
+
+**Integration notes:** per-framework setup, known issues, fallback paths, progressive-enhancement strategy. **Publishing target:** public docs / ChromeStatus.
+
+### 5.2 Friction log run manifest (Cluster D, and any trial/ship feature) — full template
+
+Per `friction-log.md`: run manifest (feature/version, OS, browser/channel/build, flags/tokens, hardware, viewport, input, network, locale, AT, framework, server, toolchain, docs/spec revision, fresh-profile preconditions), then the 9-step journey (discovery → setup → first success → core controls → realistic integration → edges → compatibility → quality → operations), then a friction table with stable IDs, expected-vs-actual, evidence paths/timestamps, reproduction steps + rate, environments, severity, category, workaround + cost, likely owner, question/hypothesis, proposed fix/test, status. **Report exact tested/total/fixed/remaining/blocked.**
+
+### 5.3 Critique matrix (Cluster C) — full template
+
+Per `stakeholder-critique.md`: for each material concern — Constituency · Evidence class (recorded position / analogy / principle-grounded inference / open question) · Source + date · Strongest concern (steelmanned) · Severity (separate from likelihood, with uncertainty) · Current response (with evidence) · Gap · Next action · Owner + timing · Status (open/investigating/mitigated-not-validated/validated/disputed/accepted-risk/blocked). Plus: strongest case for, strongest case against, conditions to change a skeptic's mind, redesign/narrow/another-trial/delay/rollback/abandon triggers, public questions to answer before announcement.
+
+### 5.4 Documentation gap analysis (Cluster B) — full template
+
+| Doc type | Required | Status | Owner | Gap | Last verified | Stale? |
+|---|---|---|---|---|---|---|
+| Reference | yes | _ | _ | _ | _ | _ |
+| Quickstart | yes | _ | _ | _ | _ | _ |
+| Sample (realistic, not toy) | yes | _ | _ | _ | _ | _ |
+| FAQ (from real questions) | yes | _ | _ | _ | _ | _ |
+| Known limitations | yes | _ | _ | _ | _ | _ |
+| Migration/fallback | if applicable | _ | _ | _ | _ | _ |
+
+Plus a "known-inaccurate docs" list (docs that exist but mislead). **Publishing target:** internal + public tracking issue.
+
+### 5.5 Demo & sample plan (Cluster A) — full template
+
+Demo (what it shows, audience, platform, limitations) · Samples (repos, documented setup, **tested environments**) · What the demo does **not** prove · Metadata block (owner, status, sources, unresolved assumptions, review requirements). **Publishing target:** public (GitHub, web.dev, Chrome for Developers).
+
+### 5.6 Launch brief + launch-resilience plan — for Cluster C/D features approaching ship
+Used only when a feature is in prepare-ship/release. Launch brief: summary, 3–5 evidence-cited key messages, known limitations to disclose, rollout plan with fallback/rollback, measurement plan link. Launch-resilience: moderation, escalation, aftercare, and **team-safety** provisions (aggregate-only metrics; protect individuals from absorbing organizational abuse while preserving legitimate criticism).
+
+---
+
+## 6. Measurement (no universal score)
+
+Per `measurement-framework.md`, every metric states denominator, baseline, target, instrumentation, privacy boundary, confidence, owner, cadence, threshold, limitations. **Separate correlation from attribution.** Baseline = iteration #1; targets set after baseline.
+
+| Metric | Denominator | Instrumentation | Cadence | Limitation |
+|---|---|---|---|---|
+| Portfolio friction-log coverage | 40 features | manifest `lastFrictionLog` | per milestone | coverage ≠ quality |
+| Demo/doc freshness within stage SLA | 40 features | freshness monitor | weekly | last-modified ≠ accuracy |
+| Open negative positions (recorded) | features in Cluster C | standards-position repos | event-driven | position ≠ implementation; silence ≠ support |
+| Framework conformance pass rate | tested frameworks × features | conformance suite + wpt | per milestone | pass ≠ production health |
+| Recurring issue recurrence rate | resolved friction items | issue tracker signatures | weekly | survivorship bias |
+| Adoption (scope-labeled) | measured page loads | UseCounter / web-features | quarterly | family counter ≠ feature-specific; no-counter = unknown, not zero |
+| Support volume + resolution time | issues per feature | tracker | weekly | volume reflects awareness, not just quality |
+| Evidence ladder progression | partner/partner-candidate pool | consent registry | quarterly | adoption ≠ commitment |
+| Asset reuse (staff/GDE/partner/event) | asset inventory | reuse log | quarterly | reuse ≠ developer outcome |
+| Team-safety incidents (aggregate) | incidents | incident log (aggregate only) | event-driven | never public; privacy-preserving |
+
+> **Anti-pattern guardrails baked in:** no-counter ≠ zero (A1); family counter ≠ feature-specific (A3); survey category interest ≠ API demand (A4); silence ≠ support (A5); shipment ≠ success (A6).
+
+---
+
+## 7. Escalation, residual risks, and required human decisions
+
+Per `continuous-loop.md` stopping/escalation rules, the loop **escalates** (does not self-decide) when:
+
+- **Blocker:** a product concern needs redesign, narrowing, delay, rollback, or abandonment (e.g., a Cluster-C position that no mitigation addresses).
+- **Blocker:** formal review or qualified advice is required (privacy/security/a11y/legal/API Owner) — DevRel routes, never concludes.
+- **Blocker:** evidence conflicts materially across sources and the denominator is too unstable to support the claim.
+- **Blocker:** a harassment/privacy/security/safety incident occurs → launch-resilience + HR path; aggregate-only reporting; never make an individual absorb abuse.
+- **Blocker:** monitoring would cross a privacy or organizational boundary.
+- **Unknown** that cannot be resolved from public sources and requires partner/internal input.
+
+### Residual risks to keep visible (not resolve by assumption)
+- **Contradiction risk:** "strong adoption" may be family-counter scope or self-selected partners — unverified until iteration #1.
+- **Contradiction risk:** some "negative positions" may be **inferences**, not recorded positions — must be relabeled or they become false evidence.
+- **Contradiction risk:** stale docs may match a *superseded* API — refreshing them against current implementation without checking the spec could entrench a bug.
+- **Hypothesis:** Cluster-D root causes may be partly **product/spec**, not just framework — the loop must be willing to reopen design decisions when friction evidence warrants (phase-09 rule).
+- **Hypothesis:** some no-demo features may be no-demo because the **problem itself is unvalidated** — the loop must be willing to return a feature to incubation rather than build a demo for an API in search of a problem.
+
+### What I need from you to move from infrastructure to live loop
+1. The **40 ChromeStatus IDs / names** (I will then populate public-evidence columns myself).
+2. The **owner map** (§4.6).
+3. Confirmation of the **evidence boundary** (public-only vs. approved-internal) and any **consent registry** for partner evidence.
+4. The **publication review process** and HR/people-support path for any feature that may attract controversy.
+
+Once I have (1), I'll run **iteration #1** end-to-end and return the populated dashboard, the four filled playbooks for the affected features, the prioritized work queue, and the armed monitor set — with every field sourced and every Unknown left honestly Unknown until evidence is found.
