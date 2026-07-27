@@ -32,7 +32,7 @@ const fail = (m) => errors.push(m);
 const args = process.argv.slice(2);
 const runArgIdx = args.indexOf("--run");
 const runId = runArgIdx >= 0 ? args[runArgIdx + 1] : null;
-const runDir = runId ? join(EVALS, "runs", runId) : null;
+let runDir = runId ? join(EVALS, "runs", runId) : null;
 
 if (!runDir) {
   // If no run specified, validate the most recent run dir, if any.
