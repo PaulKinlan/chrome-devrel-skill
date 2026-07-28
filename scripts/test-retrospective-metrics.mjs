@@ -1,9 +1,19 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
+import { resolveRetrospectiveRoot } from "./lib/retrospective-source.mjs";
 
-const root = resolve("retrospectives/runs/2026-07-19-v140-v150");
+const args = process.argv.slice(2);
+const value = (name) => {
+  const i = args.indexOf(name);
+  return i === -1 ? undefined : args[i + 1];
+};
+const resolved = resolveRetrospectiveRoot({
+  root: value("--root"),
+  ref: value("--ref"),
+});
+const root = resolved.root;
 const read = async (path) => JSON.parse(await readFile(join(root, path), "utf8"));
 const manifest = await read("evidence/metrics/manifest.json");
 assert.equal(manifest.denominator.features, 291);

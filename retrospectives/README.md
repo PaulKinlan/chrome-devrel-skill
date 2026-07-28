@@ -1,10 +1,20 @@
 # Chrome feature launch retrospectives
 
-This directory contains inventory-driven, evidence-backed retrospective runs. Reports remain public so skill changes can be traced to feature-level evidence rather than hidden summaries.
+This directory documents inventory-driven, evidence-backed retrospective runs. Raw runs remain public in immutable archive tags so skill changes can be traced to feature-level evidence without copying large passive web corpora into every agent-skill installation.
 
-## Current run
+## Archived run
 
-`runs/2026-07-19-v140-v150/` covers Chrome milestones 140 through 150 inclusive.
+The Chrome 140–150 tracked evidence/report corpus is archived at [`retrospective-evidence-v140-v150-2026-07-28`](archives/2026-07-19-v140-v150.md). It covers Chrome milestones 140 through 150 inclusive: 291 unique feature reports and 355 non-additive launch-event memberships. The archive record pins its commit, Git tree, tracked file/byte counts, validation state, retrieval commands, excluded scratch-data scope, and security rationale.
+
+The retrospective validators remain runnable from `main`. When the local run directory is absent, they materialize the pinned commit into a temporary directory and clean it up on exit:
+
+```sh
+node scripts/test-retrospective-metrics.mjs
+node scripts/validate-retrospective-metrics.mjs
+node scripts/validate-retrospective-run.mjs
+```
+
+Use `--root <directory>` for a new/local run or `--ref <commit>` to test another archived revision. Archive verification defaults to the pinned commit hash, not the movable tag name.
 
 The authoritative target set comes from:
 

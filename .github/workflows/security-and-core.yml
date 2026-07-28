@@ -1,0 +1,42 @@
+name: Security and core validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Audit prospective commit security surface
+        run: node scripts/audit-security-surface.mjs --mode index
+      - name: Test security audit mutations
+        run: node scripts/security-surface.test.mjs
+      - name: Validate archived retrospective metrics fixture
+        run: node scripts/test-retrospective-metrics.mjs
+      - name: Validate archived retrospective metrics corpus
+        run: node scripts/validate-retrospective-metrics.mjs
+      - name: Validate archived retrospective run
+        run: node scripts/validate-retrospective-run.mjs
+      - name: Validate request routing
+        run: node scripts/request-routing.test.mjs
+      - name: Validate behavioral contracts and mutations
+        run: node scripts/behavior-contracts.test.mjs
+      - name: Validate public core
+        run: node scripts/validate-public-core.mjs
+      - name: Validate eval fixture structure
+        run: node evals/validate.mjs
+      - name: Validate MDN mutation guards
+        run: node scripts/mdn-mutation-tests.mjs

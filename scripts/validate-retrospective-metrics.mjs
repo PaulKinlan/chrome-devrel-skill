@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { access, readFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
+import { resolveRetrospectiveRoot } from "./lib/retrospective-source.mjs";
 
 const args = process.argv.slice(2);
-const value = (name, fallback) => {
+const value = (name) => {
   const i = args.indexOf(name);
-  return i === -1 ? fallback : args[i + 1];
+  return i === -1 ? undefined : args[i + 1];
 };
-const root = resolve(value("--root", "retrospectives/runs/2026-07-19-v140-v150"));
+const resolved = resolveRetrospectiveRoot({
+  root: value("--root"),
+  ref: value("--ref"),
+});
+const root = resolved.root;
 const sha = (text) => createHash("sha256").update(text).digest("hex");
 const parseJsonl = (text) => text.trim().split("\n").filter(Boolean).map((line) => JSON.parse(line));
 const features = parseJsonl(await readFile(join(root, "manifest.features.jsonl"), "utf8"));
