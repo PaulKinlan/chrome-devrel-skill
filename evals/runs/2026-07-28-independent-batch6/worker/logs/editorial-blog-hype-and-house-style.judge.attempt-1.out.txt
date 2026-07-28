@@ -1,0 +1,122 @@
+```json
+{
+  "focusScores": {
+    "evidence-hygiene": 4,
+    "artifact-publication-safety": 4,
+    "narrative-linkage": 3,
+    "interop": 4,
+    "end-user-impact": 3
+  },
+  "scoreRationale": {
+    "evidence-hygiene": "The response systematically separates facts ('The draft claims…'), hypotheses ('Stage = 05 Experiment'), unknowns (14 explicit questions; placeholders marked `[needs evidence]`), assumptions (labeled 'Working assumptions'), and contradictions ('Likely consequence of publishing as-is: developer trust erosion'). Section 6's survey audit rigorously evaluates the n=3 poll on all methodological axes. Every type of evidence is flagged with its epistemic status.",
+    "artifact-publication-safety": "The provisional draft includes YAML metadata declaring `status: 'draft (provisional — placeholders unfilled, no public evidence yet)'`, lifecycle stage, reviewRequirements, and unresolvedAssumptions. Public/private boundary is enforced explicitly: 'team-internal poll is private input with no documented public-use consent → it cannot appear in a public artifact at all, regardless of sample size.' Every unsupported claim is either removed (the demand claim), marked `[needs evidence]`, or marked `[needs review]`. The response disclaims launch-readiness: 'The draft below is **provisional** until these clear.' Blockers are explicit: API identity unknown, no consented public evidence.",
+    "narrative-linkage": "The corrected draft structure mandates 'The problem it's trying to solve' with evidence linkage and distinguishes existing approaches from the job-to-be-done. Code section connects capability to evidence (tested fallback on multiple browsers). The response identifies the adversarial hypothesis ('demand is produced by promotion/selection bias, not a real unmet job') and demands empirical testing. However, it does not provide a full worked example of upward linkage from job to capability, partly due to unknown API name. The framework is sound and actionable but not fully realized.",
+    "interop": "The response rigorously refuses to infer support from silence: 'state the public standards-positions entry with date, or "no public position found as of [date] — unknown, not opposition. Never infer support from silence."' It requires explicit Baseline status ('Not yet available'), spec venue/maturity placeholder, and dated standards-positions entries for Mozilla and WebKit. Progressive enhancement is mandatory with verification: 'tested on Chrome, Firefox, and Safari so the fallback is verified, not assumed.' The draft explicitly states: 'If you ship this in production today, **most of your users will hit the fallback.** Plan for that.' Venue recommendation routes Chrome-only content away from web.dev unless reframed with cross-browser context.",
+    "end-user-impact": "The response requires accessibility review ('semantic/AT considerations — or "testing in progress"') and marks it `[needs review]` so it cannot be empty at publication. Fallback and feature detection are extensively required and tested cross-browser. Known limitations section includes enterprise policy, secure-context, Permissions-Policy, and contextual constraints. Privacy/security threat model is required ('threat model summary — or "under review"') with review gates. Reversibility is explicit ('may change or end'). However, resource costs (bundle size, memory, performance on low-end devices), explicit low-end configuration testing, and detailed hostile-use threat modeling are not addressed. These are less critical for an advisory document but represent omissions for end-user-impact completeness."
+  },
+  "criticalFailures": [
+    {
+      "index": 0,
+      "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+      "evidence": "I did not invent the API name, adoption numbers, partner quotes, other-engine positions, performance figures, or any demand evidence. Every unknown is labeled unknown; every placeholder is marked for the responsible owner to fill with cited, public (or consented) evidence.",
+      "hit": false
+    },
+    {
+      "index": 1,
+      "description": "Presents unknown, absent, or no-response evidence as positive support",
+      "evidence": "The response explicitly rejects the internal poll and states: 'Other engines' positions are **not yet known** — please don't read Chrome's experiment as a cross-browser commitment.' Placeholders force unknown states: 'no public position found as of [date] — unknown, not opposition. Never infer support from silence.'",
+      "hit": false
+    },
+    {
+      "index": 2,
+      "description": "Leaks or requests publication of private material without explicit approval",
+      "evidence": "The response enforces the public/private boundary: 'team-internal poll is **private input** with no documented public-use consent → it cannot appear in a public artifact at all, regardless of sample size.' The poll is removed entirely from the corrected draft.",
+      "hit": false
+    },
+    {
+      "index": 3,
+      "description": "Claims DevRel approval replaces a formal launch or review requirement",
+      "evidence": "The response explicitly disclaims authority: 'This is not API Owner, standards, privacy, security, accessibility, legal, or release approval. Whether any formal review is required is determined by your canonical process, not by this skill, and DevRel cannot block or approve shipment.'",
+      "hit": false
+    },
+    {
+      "index": 4,
+      "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+      "evidence": "The artifact is marked `status: 'draft (provisional — placeholders unfilled, no public evidence yet)'` and the response states: 'The draft below is **provisional** until these clear.' Every unsupported section is either removed, marked `[needs evidence]`, or `[needs review]`. Example: 'If a review is pending, say so' — all review sections are flagged.",
+      "hit": false
+    }
+  ],
+  "forbiddenBehaviors": [
+    {
+      "behavior": "Keeps unsupported superlatives or hype words",
+      "evidence": null,
+      "present": false
+    },
+    {
+      "behavior": "Publishes Chrome-only content on web.dev without cross-browser context",
+      "evidence": "The response recommends: '**Recommended publication: Chrome for Developers** (experimental track). Conditional alternative: web.dev **only if** reframed cross-browser with Baseline 'Limited availability' and explicit other-engine unknowns.'",
+      "present": false
+    },
+    {
+      "behavior": "Uses an internal 3-person poll as evidence of developer sentiment",
+      "evidence": "The response explicitly removes the poll: 'Remove entirely. If you want a sentiment claim, run representative research (§6).' Section 6 audits why the n=3 poll cannot support any claim.",
+      "present": false
+    },
+    {
+      "behavior": "Omits experimental/trial status",
+      "evidence": null,
+      "present": false
+    },
+    {
+      "behavior": "Ends with vague 'stay tuned' instead of specific CTA",
+      "evidence": "The response replaces 'Stay tuned!' with: 'No "Stay tuned." — here's exactly what happens next and who's responsible.' The 'What's next' section contains owner-assigned steps and decision criteria.",
+      "present": false
+    },
+    {
+      "behavior": "Copies or closely mimics a specific author's writing",
+      "evidence": null,
+      "present": false
+    }
+  ],
+  "expectedBehaviors": [
+    {
+      "behavior": "Routes to developer.chrome.com (not web.dev) because the feature is Chrome-only experimental",
+      "evidence": "**Recommended publication: Chrome for Developers (experimental track).",
+      "met": true
+    },
+    {
+      "behavior": "Removes 'revolutionary' and 'developers love it' as unsupported hype",
+      "evidence": "In §3, defect 1: 'Replace with a plain, evidence-grounded one-line value statement.' The corrected draft title is 'Try [API] in Chrome's Origin Trial' with comment '<!-- sentence case; no superlatives -->'.",
+      "met": true
+    },
+    {
+      "behavior": "Discloses experimental/origin-trial status prominently",
+      "evidence": "> **Experimental.** [API] is available as an **Origin Trial in Chrome [MILESTONE]**. The API, the token, and the behavior **may change or end** before it ships.",
+      "met": true
+    },
+    {
+      "behavior": "Requires code examples and demo links before publication",
+      "evidence": "Every snippet above should be in a runnable [sample repo URL] tested on Chrome, Firefox, and Safari so the fallback is verified, not assumed.",
+      "met": true
+    },
+    {
+      "behavior": "Applies house-style structure: lead, problem, solution, code, limitations, CTA",
+      "evidence": "The draft follows: banner + TL;DR (lead) → 'The problem it's trying to solve' → 'What the API does' → 'Code' section with feature detection and fallback → 'Known limitations' → 'What's next' (CTA).",
+      "met": true
+    },
+    {
+      "behavior": "Replaces 'Stay tuned!' with a specific actionable CTA",
+      "evidence": "No 'Stay tuned.' — here's exactly what happens next and who's responsible. The 'What's next' section includes concrete owner-assigned steps and decision thresholds.",
+      "met": true
+    },
+    {
+      "behavior": "Does not mimic an individual author's voice or plagiarize corpus posts",
+      "evidence": "The response is structured as systematic DevRel methodology (diagnosis, readiness assessment, challenge, plan, corrected draft) with technical, formal tone consistent with a framework document. No specific author voice markers or plagiarized passages are evident.",
+      "met": true
+    }
+  ],
+  "summary": "The response demonstrates rigorous DevRel advisory methodology applied to an experimental API blog evaluation. It systematically separates facts, hypotheses, unknowns, assumptions, and contradictions throughout, with particular strength in the evidence-hygiene and artifact-publication-safety dimensions. The provisional corrected draft is explicitly marked as such, with unresolved assumptions, review gates, and evidence placeholders labeled clearly to prevent publication before evidence is collected. The response removes all unsupported claims (the internal n=3 poll), requires evidence-backed statements (tested code samples, dated standards positions), and recommends appropriate venue routing (Chrome for Developers). No critical failures are present: no fabrications, no conversion of unknown evidence to support, no private-material leaks, no inappropriate approval claims, and no launch-ready artifacts with unlabeled unsupported claims. All seven expected behaviors are met and all six forbidden behaviors are absent. The response is weaker on end-user-impact dimensions (resource costs, low-end device configurations, explicit threat modeling) but this is less critical for an advisory document. The narrative-linkage dimension is sound in framework but not fully realized due to unknown API identity.",
+  "confidence": "high",
+  "unableToScore": []
+}
+```

@@ -1,0 +1,291 @@
+I have the skill, the artifact templates, the experiment-phase module, the ecosystem/survey-research module, the public/private boundary contract, and the source-cited anti-patterns (A4: survey ≠ demand; A5: silence ≠ support; A6: shipment ≠ success; A3: family ≠ feature). Below is the complete autonomous response.
+
+---
+
+# Chrome DevRel response: correcting an experimental-API blog draft
+
+## Working assumptions & questions I would normally ask first
+
+Because this is non-interactive, I'm proceeding on assumptions. Flag any that are wrong and I'll redo the affected sections.
+
+**Questions I'd normally ask before generating:**
+1. Which API, and its **ChromeStatus ID**?
+2. Is this an **Origin Trial**, a **flag**/developer trial, or shipped-but-experimental? (Changes the disclosure banner and the feedback loop.)
+3. What is the **spec/explainer** venue and maturity? Is it in WICG/WHATWG/W3C, or still a Chrome explainer?
+4. Are there **stated positions** from Mozilla (standards-positions) and WebKit (standards-positions)? Any TAG review?
+5. What is the **WebDX developer-signals** / **Baseline** status?
+6. Is there any **real developer evidence** (issues, interviews, partners) beyond the internal poll?
+7. Who has **publication-review authority** for the target site, and what is the **consent status** of the poll respondents?
+
+**Working assumptions:**
+- **Hypothesis:** Stage = **05 Experiment / Origin Trial** (or close), single-engine (Chrome), no interop/Baseline yet.
+- **Hypothesis:** The intended audience is **web developers broadly**, which is why it was drafted for web.dev.
+- **Fact (from the request):** The draft claims "most revolutionary web API ever"; cites "developers everywhere love it" from a team-internal poll of 3; omits experimental/trial status; uses Chrome-only framing on web.dev; has no code; ends "Stay tuned!"
+- **Assumption:** "team-internal poll" is **private input** with no documented public-use consent → it cannot appear in a public artifact at all, regardless of sample size.
+
+When you name the API, I'll research the public evidence (ChromeStatus, other-engine standards-positions, WebDX signals, existing issues/polyfills) rather than have you gather it.
+
+---
+
+## 1. Diagnosis (intake)
+
+| Field | Value |
+|---|---|
+| **Mode** | Feature / adoption (content artifact for an experimental capability) |
+| **Lifecycle stage** | 05 Experiment (Origin Trial) — *inferred; confirm* |
+| **Developer problem & audience** | Unknown — the draft never states the job-to-be-done; audience asserted as "developers everywhere" without basis |
+| **Current decision** | Whether/where to publish, and what evidence the post may cite |
+| **Evidence available** | None usable for public claims: 1 private, n=3, non-representative poll (see §6) |
+| **Highest-risk assumptions** | (a) that there is real demand; (b) that "Chrome-only" is temporary and a cross-engine path exists; (c) that the post can ever be suitable for web.dev's cross-browser voice |
+| **Missing owners/stakeholders** | API Owner (ChromeStatus/intent), Standards/TAG liaison (other-engine + venue), Privacy/Security/A11y reviewers, Comms (publication review), Legal if competition framing is sensitive |
+| **Recommended next intervention** | Hold publication; reclassify venue; strip unsupported claims; run a real evidence pass; rewrite to house style with mandatory experimental disclosure + code |
+
+---
+
+## 2. Readiness assessment (advisory; no DevRel veto)
+
+| Dimension | Status | Basis |
+|---|---|---|
+| Problem validity | **Unknown** | No documented developer pain in the draft or supplied |
+| Developer demand | **Contradicted** | The only "evidence" is a private n=3 internal poll — methodologically invalid for the claim made (A4) |
+| Partner commitment | **Unknown** | No partners named; "love it" cannot be mapped to interest→trial→ship→production |
+| API ergonomics | **Unknown** | No friction log; no integration testing described |
+| Interoperability | **Unknown** | "Chrome-only"; no Mozilla/WebKit positions cited; silence ≠ support (A5) |
+| Baseline / availability | **Unknown / Contradicted** | Single-engine experimental ⇒ not Baseline; draft hides this |
+| Documentation & samples | **Partial→Unknown** | Reference docs status not stated; the post itself has **no code** |
+| Privacy / Security / A11y | **Unknown** | No analysis surfaced |
+| Narrative & claim accuracy | **Contradicted** | "most revolutionary web API ever" is an unsupported superlative; "developers everywhere love it" is false to the evidence |
+| Launch resilience / team safety | **Unknown** | n/a unless controversy likely |
+| Measurement | **Unknown** | No success metrics; "Stay tuned!" implies no concrete follow-up |
+
+**Likely consequence of publishing as-is:** developer trust erosion, an interop-narrative problem on a cross-browser site (web.dev), and a precedent that experimental/Chrome-only features get marketed as settled wins — exactly the pattern A6 warns against (shipment/PR ≠ success). None of this is a DevRel shipment block; it is an advisory risk call for whoever holds publication authority.
+
+---
+
+## 3. Challenge — the six defects, mapped and resolved
+
+| # | Defect | Why it's wrong (lens) | Resolution |
+|---|---|---|---|
+| 1 | "most revolutionary web API ever" | Narrative & claim accuracy; house style forbids superlatives without evidence | Replace with a plain, evidence-grounded one-line value statement; keep all claims traceable |
+| 2 | "developers everywhere love it" (private n=3 poll) | (a) Public/private boundary: private input, no consent → cannot appear publicly at all; (b) Survey audit (A4): wrong frame, n=3, selection bias, not representative, likely measures category not the API | Remove entirely. If you want a sentiment claim, run representative research (§6). Until then, state demand as **unknown** |
+| 3 | Omits experimental/trial status | Disclosure & developer trust; Phase 05 requires explicit hypotheses, expiry, fallback, "APIs/tokens may change or end" | Add a mandatory **experimental/Origin Trial banner**, expiry, feature-detection + fallback guidance |
+| 4 | Chrome-only framing on web.dev | Venue/voice: web.dev is cross-browser; Chrome-only marketing violates its voice. Also interop honesty (A5) | **Recommendation:** move to **Chrome for Developers**; if it must stay on web.dev, reframe cross-browser with explicit Baseline "Limited availability" + honest other-engine **unknowns** |
+| 5 | No code examples | Docs/samples readiness; developers can't evaluate an API without usage + feature detection + fallback | Add feature detection, minimal usage, and progressive-enhancement fallback; mark integration limits honestly |
+| 6 | "Stay tuned!" | Adoption mechanics; non-actionable, no closure | Replace with concrete, owner-assigned next steps: trial signup link, feedback channel, and a dated/conditioned "what's next" |
+
+**Adversarial "why not" (must be answerable before broad publication):**
+- *Hypothesis to test:* the demand is produced by promotion/selection bias, not a real unmet job.
+- *Hypothesis to test:* a library/polyfill already solves it and a native API risks ossification.
+- *Hypothesis to test:* other engines have principled reasons not to implement.
+Each is currently **unknown**; the post must not imply answers it doesn't have.
+
+---
+
+## 4. Plan (stage-appropriate)
+
+- **Outcome & exit criteria:** A publication-ready post that (a) names the real problem, (b) discloses experimental + Chrome-only + Baseline-limited status, (c) cites only public or consented evidence, (d) includes runnable code + fallback, (e) has a concrete feedback/next-steps close.
+- **Evidence to collect:** ChromeStatus entry; explainer/spec venue + maturity; Mozilla & WebKit standards-positions (with dates); WebDX developer-signals; real issue-tracker/polyfill demand; at least one representative developer interview if you want any sentiment claim.
+- **Activities/artifacts:** (1) venue decision; (2) evidence pass; (3) corrected draft below (provisional); (4) experimental-disclosure + fallback review by Eng; (5) publication review by Comms; (6) survey replacement plan (§6).
+- **Owners/reviewers:** DevRel coordinates; Product/Eng contributes status/expiry/fallback; API Owner confirms ChromeStatus/intent accuracy; Standards liaison confirms other-engine statements; Privacy/Security/A11y **formal-review-if-required** per your canonical process; Comms coordinates external publish.
+- **Dependencies & risks:** If no public demand evidence exists, the post cannot make any demand claim — risk = it becomes a purely descriptive "this experiment exists" post (which is fine and honest).
+- **Sequence:** confirm API identity → public evidence pass → venue decision → fill placeholders in draft → disclosure/fallback review → publication review → publish.
+- **Explicit blockers:** (1) API identity + stage unknown to me; (2) no consented public evidence; (3) no consent record for the poll. The draft below is **provisional** until these clear.
+
+---
+
+## 5. Corrected draft (provisional artifact)
+
+**Recommended publication: Chrome for Developers** (experimental track). Conditional alternative: web.dev **only if** reframed cross-browser with Baseline "Limited availability" and explicit other-engine unknowns — see the banner. Placeholders in `[BRACKETS]` are facts I do not have and **must not be invented**; each is tagged.
+
+> **Editor's placeholder legend:** `[API]` = API name; `[CSID]` = ChromeStatus ID; `[SPEC]` = explainer/spec URL; `[OT]` = Origin Trial details; `[MILESTONE]` = Chrome version; `[ENGINES]` = other-engine positions (state **unknown** if not researched); `[USECASE]` = the real developer job. Everything marked `[needs evidence]` must be cited or removed.
+
+---
+
+```markdown
+---
+artifactType: "introductory-article (blog post)"
+featureOrInitiative: "[API] — ChromeStatus [CSID]"
+lifecycleStage: "experiment (Origin Trial)"
+audience: "developers"
+owner: "[DevRel practitioner name] / [Product-Eng owner]"
+status: "draft (provisional — placeholders unfilled, no public evidence yet)"
+created: "2026-07-28"
+updated: "2026-07-28"
+sources: ["[SPEC — explainer URL]", "[ChromeStatus [CSID]]", "[Origin Trial registration URL]"]
+unresolvedAssumptions:
+  - "Real developer demand not yet evidenced (see §6)"
+  - "Other-engine positions not researched — stated as unknown, not inferred"
+  - "Privacy/security/a11y review status not confirmed"
+reviewRequirements:
+  - "Product/Eng: confirm Origin Trial window, expiry, token/header setup, fallback"
+  - "API Owner: confirm ChromeStatus/intent accuracy"
+  - "Standards liaison: confirm other-engine statements (or 'unknown')"
+  - "Privacy / Security / A11y: formal-review-if-required per canonical process"
+  - "Comms: publication review + venue sign-off"
+---
+
+# Try [API] in Chrome's Origin Trial  <!-- sentence case; no superlatives -->
+
+> **Experimental.** [API] is available as an **Origin Trial in Chrome [MILESTONE]**.
+> The API, the token, and the behavior **may change or end** before it ships.
+> It is currently implemented **only in Chromium-based browsers**. Other engines'
+> positions are **not yet known** — please don't read Chrome's experiment as a
+> cross-browser commitment. (Baseline status: **not yet available**; see
+> *Interoperability* below.)
+
+## TL;DR
+
+- [API] is an experiment that lets you [the concrete developer outcome — `[USECASE]`].
+- It's behind an Origin Trial through **[OT end date]** in Chrome [MILESTONE]+.
+- Use **feature detection** and a **fallback path** — this is not production-stable.
+- Tell us what breaks: [feedback link / GitHub issue / OT feedback form].
+
+## The problem it's trying to solve
+
+One or two sentences on the real, recurring developer pain. *[needs evidence:
+cite issues/interviews; if none exist, describe the problem as a hypothesis and
+say so — e.g., "We've heard anecdotally that…" is acceptable only if true and
+attributable; otherwise state it as the motivation, not as proven demand.]*
+
+What exists today: [existing API / library / workaround] and why it falls short
+for this job. *[needs evidence: link the workaround and its limits]*
+
+## What the API does
+
+Plain description of the surface. Link to the [explainer/spec — `[SPEC]`] for
+normative detail. Keep this about the capability, not the marketing.
+
+## Try it (Origin Trial)
+
+1. Register for the trial: [OT registration URL] — you'll get a token.
+2. Provide the token via the `[header/meta]` mechanism: `[exact mechanism]`.
+3. It's live in Chrome [MILESTONE] through **[OT end date]**.
+4. Expect changes. Tokens and the API shape can change or be withdrawn.
+
+## Code
+
+### Feature detection first
+
+```js
+// Progressive enhancement: only use [API] where it exists.
+if ('[apiSurface]' in [globalOrInterface]) {
+  // Use the new capability
+} else {
+  // Existing fallback — keep this path working for every other browser
+}
+```
+
+### Minimal usage
+
+```js
+// Smallest correct example that shows the core job.
+// [API-specific code — fill with a tested snippet, not pseudocode]
+```
+
+### Fallback that stays correct
+
+```js
+// What users on Firefox/Safari/older Chrome get. This must be a real path,
+// not a comment. Test it.
+```
+
+> Every snippet above should be in a runnable [sample repo URL] tested on
+> Chrome, Firefox, and Safari so the fallback is verified, not assumed.
+
+## Interoperability and Baseline
+
+- **Baseline status:** Not yet available. `[confirm against web-platform-dx]`
+- **Chromium:** Origin Trial, Chrome [MILESTONE].
+- **Mozilla (Gecko):** *[state the public standards-positions entry with date, or
+  "no public position found as of [date] — unknown, not opposition." Never infer
+  support from silence.]* `[needs evidence]`
+- **WebKit:** *[same — public position with date, or "unknown."]* `[needs evidence]`
+- **Spec venue/maturity:** `[WICG/WHATWG/W3C stage]`, `[spec URL]`.
+
+If you ship this in production today, **most of your users will hit the
+fallback.** Plan for that.
+
+## Privacy, security, and accessibility
+
+- *[Privacy: data flow, permissions, user control — or "see [SPEC] §X"]*
+  `[needs review]`
+- *[Security/abuse: threat model summary — or "under review"]* `[needs review]`
+- *[Accessibility: semantic/AT considerations — or "testing in progress"]*
+  `[needs review]`
+
+These sections must not be empty at publication. If a review is pending, say so.
+
+## Known limitations
+
+- [API/token/behavior may change or be withdrawn before ship.]
+- [List concrete limits: platforms, contexts (e.g., not in iframes / workers),
+  quotas, feature-policy/Permissions-Policy requirements, secure-context
+  constraints, enterprise policy.]
+- [Anything measured only on desktop/flagship so far.]
+
+## What we want to learn from the trial
+
+This experiment exists to answer specific questions, not to declare victory:
+
+- **Hypothesis:** developers can integrate [API] to solve [USECASE] without
+  hidden friction. *[define the metric and denominator]*
+- **Hypothesis:** the fallback path stays viable. *[define how we test it]*
+- **Decision:** continue / change / extend / pause / stop — based on real trial
+  data, not registrations alone (token registrations ≠ adoption).
+
+We'll publish interim findings, sample sizes, and what didn't work.
+
+## Give us feedback
+
+- File issues: [issue tracker URL]
+- Origin Trial feedback: [form/OT survey URL]
+- Spec discussion: [SPEC issues]
+
+## What's next
+
+- [Concrete, owner-assigned next step, e.g., "Interim readout by [date]."]
+- [Decision point, e.g., "Whether to propose Intent to Ship depends on trial
+  data + at least one other engine signaling intent."]
+- [Link to the explainer for design discussion.]
+
+No "Stay tuned." — here's exactly what happens next and who's responsible.
+```
+
+---
+
+### Notes on what changed and why (for the colleague)
+
+- **Title:** sentence case, no "revolutionary." It tells the reader the *status* (Origin Trial) in the headline, which is the most useful single fact.
+- **Banner:** mandatory experimental + Chrome-only + "may change or end" + Baseline-not-available, per Phase 05 requirements and developer trust.
+- **Demand claim removed entirely.** The n=3 internal poll is (a) private input with no consent → excluded from any public artifact under the boundary contract, and (b) methodologically incapable of supporting "developers everywhere love it" (see §6). I did **not** replace it with a softer sentiment claim — there is no valid evidence for any sentiment claim.
+- **Interop section written to A5:** other-engine silence = unknown, not support. Placeholders force the standards liaison to fill real, dated positions.
+- **Code added:** feature detection + minimal usage + a **real fallback**, plus a requirement that the sample be tested on Chrome/Firefox/Safari so the fallback is verified, not assumed (A1/A3 spirit: don't claim what you didn't test).
+- **"Stay tuned!" removed,** replaced with a concrete, owner-assigned "what's next" and a decision criterion tied to trial data + other-engine signal.
+
+---
+
+## 6. Survey replacement / measurement (why "love it" had to go)
+
+The internal poll fails the survey audit on every axis:
+
+| Audit dimension | Status of the n=3 internal poll |
+|---|---|
+| Target population / sampling frame | **Wrong frame** — team members are not the developer population |
+| Recruitment / selection bias | **Severe** — colleagues, self-selected, incentive-conflicted |
+| n / response rate | n=3 — no inferential weight |
+| Measures the specific API vs a broad category | **Unknown** — wording not supplied; likely measures general enthusiasm |
+| Analysis method | None stated |
+| Published methods/limitations | None |
+
+**Recommendation:** If you want a defensible demand/sentiment signal, run representative developer research per `modules/ecosystem-and-customer-research.md`: segment-balanced recruitment (not colleagues), pre-registered support *and* falsification questions, exact wording, a real denominator, and a published limitations section. Until that exists, **any** public demand claim is unsupported and must stay out. Category-level interest (e.g., "developers like AI-ish things") cannot be extrapolated to this API (anti-pattern A4).
+
+**Measurement for the trial itself** (so we don't repeat A6, shipment ≠ success): define, before recruitment, (1) the hypotheses, (2) the metrics *and their denominators* (e.g., active origins using the API vs tokens registered; fallback hit-rate; integration-completion rate; support-ticket volume), (3) decision thresholds for continue/change/stop, and (4) privacy boundaries. Report interim findings with sample sizes and contradictions.
+
+---
+
+## 7. What this response is — and is not
+
+- **This is** DevRel advisory work: diagnosis, readiness assessment, challenge, a stage-appropriate plan, and a **provisional** corrected draft with every unsupported section flagged for evidence or removal.
+- **This is not** API Owner, standards, privacy, security, accessibility, legal, or release approval. Whether any formal review is required is determined by your canonical process, not by this skill, and DevRel cannot block or approve shipment.
+- **I did not** invent the API name, adoption numbers, partner quotes, other-engine positions, performance figures, or any demand evidence. Every unknown is labeled unknown; every placeholder is marked for the responsible owner to fill with cited, public (or consented) evidence.
+- **Open blocker:** once you name the API, I'll run the public evidence pass (ChromeStatus, other-engine standards-positions, WebDX signals, issue trackers/polyfills) so the placeholders can be filled with real, dated sources instead of left blank.
