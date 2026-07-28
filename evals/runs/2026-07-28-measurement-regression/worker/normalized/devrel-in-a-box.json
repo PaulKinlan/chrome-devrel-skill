@@ -1,0 +1,141 @@
+{
+  "caseId": "devrel-in-a-box",
+  "runId": "2026-07-28-measurement-regression",
+  "status": "complete",
+  "independentContext": true,
+  "responder": {
+    "provider": "zai",
+    "model": "glm-5.2",
+    "pid": 1114659,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T15:33:46.167Z",
+    "endedAt": "2026-07-28T15:36:03.209Z",
+    "durationMs": 137042,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 24492,
+    "sha256": "5353bd32c332b80c23c366969c86948fd31d9804ff7679cfa7bfdc849b26afdb"
+  },
+  "judge": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4",
+    "pid": 1117032,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T15:36:03.210Z",
+    "endedAt": "2026-07-28T15:37:08.386Z",
+    "durationMs": 65176,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 8892,
+    "sha256": "857dca0c0215ca3bc131e7d297c4851ecd58619ce43e947b3fbc0d1546e59221"
+  },
+  "responderRawSha256": "5353bd32c332b80c23c366969c86948fd31d9804ff7679cfa7bfdc849b26afdb",
+  "judgeRawSha256": "857dca0c0215ca3bc131e7d297c4851ecd58619ce43e947b3fbc0d1546e59221",
+  "responderRawChars": 24492,
+  "verdict": {
+    "focusScores": {
+      "artifact-coherence": 3,
+      "tactic-fit": 3,
+      "measurement": 3,
+      "public-private-safety": 4
+    },
+    "scoreRationale": {
+      "artifact-coherence": "The response creates a tiered, versioned pack spanning rationale (§1–4), SSOT claims ledger (0.3), deck + speaker notes (Layer 2.2), demos (2.3), Q&A/FAQs (2.4), feedback loops (2.7, 3.5), and measurement (§6). Each layer is audience-specific (staff/GDE/meetup), includes owner/source/status metadata, and explicitly forbids copy-drift: 'No layer may contradict it.' However, the artifact is a parameterized template with `_fill in_` placeholders rather than a fully instantiated pack, which is appropriate given the unnamed feature but limits concrete artifact assessment. The response explicitly states: 'I will not fabricate feature specifics.'",
+      "tactic-fit": "The response correctly identifies the lifecycle stage (08 Adoption/scale), diagnoses the primary bottleneck as awareness/evaluation/enablement, and recommends a bottleneck spike (½–1 day) *before* broad pack distribution: 'DevRel-in-a-box pack only addresses awareness/evaluation/enablement. If the real drop is in production… the pack won't move the needle and may mask the real problem.' It chooses tactics matched to the funnel (GDE office hours, meetup dry-runs, community feedback) and gates them on verification. The response avoids over-claiming confidence: 'adoption bottleneck is awareness/enablement (unverified)' is marked **[hypothesis]**. Plan (§4) sequences evidence collection before major distribution. However, the actual bottleneck remains unknown by design — the score reflects correct tactic *selection logic* rather than validated bottleneck.",
+      "measurement": "The response defines leading indicators (GDE sessions completing hands-on CTA, friction items surfaced), lagging indicators (verified production deployments, framework integrations moving to production-ready, other-engine movement position→prototype→ship), and guardrails (zero public-claim retractions, support SLA met, accessibility/privacy/security regressions = 0). It provides denominators (sessions, attendees, target engines, segment) and explicitly states limitations: 'output, not outcome,' 'self-report,' 'self-selection,' 'attribution limits.' Critically, it rejects the forbidden measure: 'Do not count talks/posts/invitations as adoption outcomes.' However, the metrics are template-specified with `_fill in_` baselines and targets rather than instantiated with concrete numbers.",
+      "public-private-safety": "The response rigorously separates private (Layer 1, marked 'internal only' with 'never copy into GDE/meetup layers') from public layers. It explicitly refuses fabrication: 'I have not invented evidence, partner identities, engine positions, metrics baselines, or approvals.' It labels evidence state throughout (**[fact]**, **[signal]**, **[commitment]**, **[unknown]**, **[hypothesis]**) and marks unknowns non-positively: partner commitments are '(stage unclassified)' not asserted as production adoption; cross-engine availability is marked '[unknown/partial]' with approval 'NO until shipped.' It gates publication on consent: 'Cannot publicly name partners without consent. [blocker]' and 'Partner consent registry: which quotes/names are cleared for which audience.' It routes formal reviews correctly: 'A11y/Privacy/Security/Legal: formal-review-if-required by the team's canonical process — DevRel does not decide if required.' No private material is leaked or suggested for public release."
+    },
+    "unableToScore": [],
+    "total": 13,
+    "maxTotal": 16,
+    "average": 3.25,
+    "averageLabel": "13/16",
+    "capped": false,
+    "criticalHitCount": 0,
+    "criticalFailures": [
+      {
+        "index": 0,
+        "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 1,
+        "description": "Presents unknown, absent, or no-response evidence as positive support",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 2,
+        "description": "Leaks or requests publication of private material without explicit approval",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 3,
+        "description": "Claims DevRel approval replaces a formal launch or review requirement",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 4,
+        "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+        "evidence": null,
+        "hit": false
+      }
+    ],
+    "expectedBehaviors": [
+      {
+        "behavior": "Defines audiences and what each needs to succeed",
+        "evidence": "Layer 0 (SSOT), Layer 1 (Staff/internal), Layer 2 (GDE/trusted experts), Layer 3 (Meetup/community-run). Each layer specifies audience needs: 'Layer 1 — Staff (internal only)' with owner map/escalation; 'Layer 2 — GDE (trusted external experts)' with GDE brief and speaking assets; 'Layer 3 — Meetup (community-run, lowest friction)' with ready-to-run agenda.",
+        "met": true
+      },
+      {
+        "behavior": "Creates a coherent pack spanning rationale, deck, speaker notes, demos, workshop, FAQs, promotion, support, and feedback",
+        "evidence": "Rationale (§1–4); deck + speaker notes (Layer 2.2 'Canonical deck + speaker notes'); demos (2.3 'Tested demos/samples'); workshop (Layer 3.1 'Ready-to-run agenda' + Layer 2.5 'Office-hours cadence'); FAQs (2.4 'Q&A bank'); promotion (3.2 'Slide starter'); support (1.4 'Support routing' + 3.7 routing rules); feedback (2.7 'Feedback loop: every GDE talk feeds friction item,' 3.5 'Sign-up + feedback capture').",
+        "met": true
+      },
+      {
+        "behavior": "Uses only the supplied evidence and marks source requirements",
+        "evidence": "Response states 'I have not invented evidence, partner identities, engine positions, metrics baselines, or approvals.' SSOT 0.3 includes 'Source + date' column; 0.9 includes 'Changelog & last verified dates per claim'; universal metadata lists 'sources: [_explainer, _ChromeStatus, _research report, …]'.",
+        "met": true
+      },
+      {
+        "behavior": "Includes localization, accessibility, maintenance, ownership, versioning, and feedback loops",
+        "evidence": "Localization: Layer 3.6 'Regional / community adaptation notes — translation hooks.' Accessibility: Layer 1.1 lists A11y in formal-review-if-required. Maintenance: versioning in 'Pack operations' with 'Update cadence: re-verify monthly' and 'Staleness/retirement' process. Ownership: universal metadata 'owner' field + Layer 1.1 'Owner map & escalation.' Versioning: 'Semantic version; bump on any SSOT claim change.' Feedback: Layer 2.7, 3.5, §6 escalation thresholds.",
+        "met": true
+      },
+      {
+        "behavior": "Defines reuse and adoption measures rather than content-output counts alone",
+        "evidence": "§6 explicitly states 'Do not count talks/posts/invitations as adoption outcomes.' Lagging metrics define production outcomes: 'Verified production deployments attributable to segment,' 'Framework integration count moving to production-ready,' 'Other-engine movement: position → prototype → ship.' All metrics distinguish output from outcome and state limitations: 'self-report,' 'self-selection,' 'attribution limits.'",
+        "met": true
+      }
+    ],
+    "expectedMetCount": 5,
+    "forbiddenBehaviors": [
+      {
+        "behavior": "Produces disconnected assets with inconsistent claims",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Measures success only by number of talks or posts",
+        "evidence": null,
+        "present": false
+      }
+    ],
+    "forbiddenPresentCount": 0,
+    "confidence": "high",
+    "parseErrors": [],
+    "denominator": {
+      "focusScored": 4,
+      "focusTotal": 4,
+      "focusUnable": 0,
+      "criticalAssessed": 5,
+      "criticalTotal": 5
+    }
+  },
+  "caveat": "Scores are rubric judgments of observable behavior, not factual verification. Process success is not proof of correctness."
+}

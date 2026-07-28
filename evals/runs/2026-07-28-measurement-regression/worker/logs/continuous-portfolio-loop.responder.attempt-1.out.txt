@@ -1,0 +1,311 @@
+I have what I need from the skill. This is a **continuous-portfolio** request spanning four lifecycle stages with four distinct problem clusters. Below is the complete autonomous DevRel response. Because this is non-interactive, I state my clarifying questions and working assumptions first, then proceed.
+
+---
+
+# Chrome DevRel — Continuous Portfolio Loop (40 features)
+
+## 0. Questions I would normally ask, and my working assumptions
+
+I cannot name a single one of the 40 features, so I will not invent any. The following are the high-leverage questions; my **working assumptions** (used so I can proceed now) are inline.
+
+1. **Do you have the canonical portfolio list?** (ChromeStatus IDs, owners, stage.)
+   - *Assumption:* The 40 features live in a ChromeStatus/milestone export that the team holds but has not normalized into a single denominator. **First action is to produce that manifest.** Until it exists, the portfolio denominator is asserted as **40** but feature identity is **Unknown**.
+2. **Is the boundary public-only or mixed public/private?**
+   - *Assumption:* Mixed — there is private partner/trial evidence. I will keep a public-safe output layer and route anything sensitive through the private overlay contract; I will not expose private material in any artifact here.
+3. **Who owns the loop and each stage?**
+   - *Assumption:* No owner map exists yet. DevRel **coordinates** incubation, trials, adoption, and support; Product/Eng coordinate prototype and experiment; Comms coordinates release (per the phase routing table). The owner map is **config-required** and I provide the template.
+4. **What is the unit of "the 40"?** Distinct ChromeStatus features, or milestone memberships?
+   - *Assumption:* Distinct features deduplicated by ChromeStatus ID. **Anti-pattern A2 applies**: do not sum per-milestone memberships (that inflated a prior run 355→291, +22%). The denominator is 40 unique IDs.
+5. **For the four problem clusters, can you give me one named feature per cluster to exercise immediately?**
+   - *Assumption:* Not supplied. Per the continuous-loop rule, a partial real run beats a perfect template, **but I will not fabricate a run I did not execute.** Therefore the friction/conformance dimension is rated **Unknown** for the portfolio until at least one concrete feature + environment + repro is named. I provide the runbook so execution is instant the moment one feature is named, and I define the "Iteration 0 executable-now" block below.
+
+---
+
+## 1. Diagnose — intake summary
+
+- **Mode:** continuous portfolio (multi-feature, multi-stage, recurring).
+- **Lifecycle stages present:** Phase 1 Incubation, Phase 3 Developer Trials (with Phase 5 Experiment/OT overlap), Phases 6–7 Prepare-to-ship/Release, Phase 9 Support (with Phase 8 Adoption overlap).
+- **Developer problem / target audience:** developers trying to evaluate, integrate, ship, and maintain web-platform capabilities across the lifecycle, blocked by missing demos, stale docs, unresolved standards positions, and framework-integration regressions.
+- **Current decision:** establish a single operating loop that keeps all 40 features improving with stable IDs, honest evidence, and explicit denominators — not 40 disconnected work items.
+- **Evidence available:** **Unknown** at feature level. Cluster-level problem descriptions supplied (no demos / stale docs / unresolved negative positions / framework failures) but no attributable sources.
+- **Highest-risk assumptions:**
+  1. The 40 features actually distribute roughly across the four named clusters (unverified).
+  2. "Unresolved negative positions" means public standards/other-engine positions exist and are unresolved — not that they are absent.
+  3. "Strong adoption but recurring framework failures" is a real recurring failure, not a one-time report.
+- **Missing owners/stakeholders:** DevRel loop owner, per-feature owners, Standards/TAG liaison (for the positions cluster), Community/GDE manager (for adoption multipliers), Engineering leads (for framework-fix work).
+- **Recommended next intervention:** stand up the portfolio manifest + monitoring design, then execute **one real exercise per cluster in Iteration 0** using the first named feature in each.
+
+---
+
+## 2. Assess readiness — portfolio-level, no invented veto
+
+Rating per the advisory dimensions. These are **portfolio aggregates**; individual features will vary and must be rated separately in the manifest.
+
+| Dimension | Portfolio rating | Rationale |
+|---|---|---|
+| Problem validity | **Partial** | Cluster problems are plausible and recurring in pattern, but no attributable developer evidence supplied. |
+| Developer demand | **Unknown** | No demand evidence per feature. Survey-category interest is **not** demand (anti-pattern A4). |
+| Partner commitment | **Unknown** | No partner evidence supplied; never promote silence to commitment. |
+| API ergonomics | **Unknown** | No friction logs supplied. |
+| Interoperability (positions cluster) | **Contradicted** | The premise is that negative positions exist and are unresolved — by definition a contradiction, not silence. |
+| Framework/library fit (framework cluster) | **Contradicted** | Recurring failures asserted; treat as a real regression signal until disproven. |
+| Documentation (stale-docs cluster) | **Partial → Contradicted** | Docs exist but are stale; a doc/impl mismatch is a finding even if one path "works." |
+| Demos/samples (no-demo cluster) | **Partial** | Absence stated; means missing, not zero value. |
+| Adoption mechanics | **Partial** | "Strong adoption" asserted for one cluster but mechanics/multipliers unknown. |
+| Measurement | **Unknown** | No denominators, baselines, or counters supplied. |
+| User impact / a11y / privacy / security | **Unknown** | Not assessable portfolio-wide; must run per feature at the relevant phase. |
+| Team safety / launch resilience | **Unknown** | Unknown whether any of the 40 is contentious/targeted; triage question. |
+| Narrative/claim accuracy | **Partial** | Cannot verify claims without sources. |
+
+**No DevRel veto is implied.** Gaps describe consequences and what can be improved before broad exposure; they do not block shipment, which is decided by the team's canonical process.
+
+Two exemplar guardrails bind this portfolio directly:
+- **A5 (silence ≠ support):** other-engine silence on any of the 40 is **Unknown**, not support. Only recorded positions count.
+- **A6 (shipment ≠ success):** the "strong adoption" cluster is not automatically successful; adoption is one lagging signal among several.
+- **A1/A3:** if you later use Chrome HTTP counters, "no counter" = unknown not zero, and family-level counters must be labeled, never presented as feature-specific.
+
+---
+
+## 3. Challenge — relevant lenses by cluster
+
+The four clusters map to four lenses. I will not apply all lenses to all features (that is the anti-pattern of an undifferentiated checklist).
+
+### Cluster A — DEMO-GAP (no demos; mostly Incubation/Prototype/Trials)
+- **Lens:** Documentation, samples, demos; API ergonomics; problem/use-case validity.
+- **Challenge:** A missing demo usually hides a deeper unknown — *what job does the demo prove?* A demo that only shows the happy path is a toy. Before building demos, confirm the **use case is valid and the problem is real**, else the demo manufactures demand that doesn't exist (anti-pattern A4).
+- **Themes to resolve:** (1) Is there a concrete developer job? (2) Is the API usable without hidden knowledge? (3) Mobile + desktop coverage?
+
+### Cluster B — DOCS-ROT (stale docs; mostly Adoption/Support)
+- **Lens:** Documentation gap analysis; friction log (the doc-vs-impl path).
+- **Challenge:** Stale docs are an **evidence-integrity** problem. A doc that disagrees with the shipped implementation misleads developers and reviewers. The friction rule is explicit: a doc/explainer/spec/impl mismatch is a finding **even if one path works**. Each stale doc is a candidate regression assertion.
+- **Themes:** (1) Which docs disagree with current impl/spec? (2) Are samples still reproducible on current stable? (3) Are known-limitations still accurate?
+
+### Cluster C — POS-OPEN (unresolved negative positions; Incubation/Wide Review)
+- **Lens:** Interoperability & compatibility; stakeholder critique; standards positioning.
+- **Challenge:** An unresolved negative position is a **contradiction**, not a Docs problem. Resolving it is rarely "write a better article" — it is design/spec/evidence work, sometimes scope narrowing or parking. Steelman the concern; do not role-play remembered vendor stereotypes. Map each position to: design change / new evidence / scope change / principled disagreement-acknowledged.
+- **Themes:** (1) What exactly is objected to (design / privacy / perf / alternatives / interop / process)? (2) What evidence would move it? (3) Is Chrome-only a tolerable interim, and at what interoperability cost?
+
+### Cluster D — FW-FAIL (strong adoption, recurring framework failures; Adoption/Support)
+- **Lens:** Evidence-based integration friction (friction-log); ecosystem/framework compatibility; measurement.
+- **Challenge:** "Strong adoption + recurring failures" is the **highest-leverage** cluster: real developers are hitting real walls in production stacks. This is exactly where the continuous-loop rule mandates a **real executed friction run now**, not a template. Each recurring failure becomes an immutable regression/conformance assertion so it cannot silently return (anti-pattern: silent regressions across versions).
+- **Themes:** (1) Which frameworks/versions/runtimes? (2) Is it a framework bug, a spec ambiguity, or an impl regression? (3) What is the workaround cost paid by developers today?
+
+**Cross-cluster lens — launch resilience:** Unknown whether any of the 40 is contentious or targeted. If any POS-OPEN feature is high-salience, load `modules/launch-resilience.md` before it nears ship. This is a triage question, not an assumption.
+
+---
+
+## 4. Plan — the continuous loop, instantiated for this portfolio
+
+Mapping the 10-step loop (`modules/continuous-loop.md`) to 40 features / 4 clusters. Each step has a portfolio owner and cadence.
+
+| # | Loop step | Portfolio instantiation |
+|---|---|---|
+| 1 | **Inventory** | One manifest, 40 stable IDs, 4 cluster tags, stage, owner, artifacts, open concerns, support state. Denominator = 40; blocked/unsupported stay visible. |
+| 2 | **Gather evidence** | Per feature: spec/explainer rev, ChromeStatus/intent threads, impl milestone, **recorded** other-engine positions (with dates), partner evidence (classified interest→eval→trial→ship→prod), adoption counters (labeled exact/family/none), support volume, docs/demo freshness. |
+| 3 | **Exercise** | Run friction/conformance on at least one feature per cluster **now** (Iteration 0). Defining a runbook is infrastructure; only an executed run is evidence. Until a feature is named, friction = **Unknown**. |
+| 4 | **Critique** | Apply the cluster-specific lens above; record themes with evidence state and a response/research/design action each. |
+| 5 | **Ask questions** | Convert every Unknown/Contradiction into a question with an evidence plan (source research / interview / survey / spike / partner trial / compat test / demo / measurement). |
+| 6 | **Set goals** | Measurable goals per cluster (see §5d). Pair ≥1 leading + ≥1 lagging + guardrails. Never relabel output (posts/talks/assets) as adoption. |
+| 7 | **Improve** | Route fixes to the right layer (spec / impl / docs / demo / tooling / framework PR / partner enablement / narrative). Don't fix docs when the spec is wrong. |
+| 8 | **Validate** | Re-run exact failures + adjacent paths; add immutable regression/conformance assertions; preserve before/after evidence and exact tested/pass/fail/blocked counts. |
+| 9 | **Publish/update** | Update the public source of truth + artifact pack with versions, evidence, limitations, owners. Never overwrite a prior negative result because the current state improved. |
+| 10 | **Monitor & repeat** | Event-driven + weekly + per-milestone + quarterly monitors (see §5c). |
+
+---
+
+## 5. Artifacts
+
+Every artifact below carries the universal metadata block. **Status = draft.** **Owner = config-required.** **Sources = none yet** (no features named); I will not fabricate any.
+
+### 5a. Portfolio manifest (the spine of the loop)
+
+```yaml
+artifactType: "portfolio-manifest"
+featureOrInitiative: "Web-platform portfolio (40 features)"
+lifecycleStage: "mixed: incubation | trials | shipping | support"
+audience: "internal"
+owner: "config-required (DevRel loop owner)"
+status: "draft"
+created: "<ISO>"
+updated: "<ISO>"
+sources: []          # populate from ChromeStatus export; none invented here
+unresolvedAssumptions:
+  - "40 = unique ChromeStatus IDs, not milestone memberships (anti-pattern A2)"
+  - "cluster distribution across the 40 is unverified"
+reviewRequirements: ["DevRel loop owner", "per-feature engineering owner"]
+```
+
+Denominator discipline:
+- **Total = 40 unique features** (deduplicate by ChromeStatus ID).
+- Each feature gets a stable ID `PORT-001..PORT-040` **and** one or more cluster tags: `DEMO-GAP`, `DOCS-ROT`, `POS-OPEN`, `FW-FAIL`, plus `HEALTHY` for any with no active problem.
+- A feature may carry multiple tags (e.g., a shipping feature with stale docs *and* a framework failure).
+- Blocked and unsupported features remain in the manifest at full visibility; they are never dropped to make a number look better.
+
+Manifest row schema (repeat ×40):
+
+| stable_id | chrome_status_id | name | stage | cluster_tags | devrel_owner | eng_owner | api_owner | spec_rev | impl_milestone | other_engine_positions | partner_evidence_stage | docs_status | demo_status | open_concerns | support_state | last_reviewed |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+
+**First action (config-required, ~1 day):** import the ChromeStatus/milestone export, dedupe by ID, tag clusters, fill owners. Until this is done, every per-feature dimension stays **Unknown**.
+
+### 5b. Cluster workstream briefs
+
+Each brief follows the loop's exit-criteria → evidence → exercise → questions → goals → improve → validate → monitor shape.
+
+#### Cluster A — DEMO-GAP
+- **Exit criteria:** every Incubation/Trial feature has a demo that (a) proves a real developer job, (b) runs on mobile + desktop, (c) covers a documented edge case, and (d) is reproducible from a public repo on current stable.
+- **Evidence to collect:** use-case validity (research/issues, not "nice to have"); API ergonomics friction log from clean setup; recorded limitations.
+- **Exercise:** friction-log run per demo'd feature — discovery → setup → first success → core controls → edges → mobile/other-engine. **Defining ≠ executing:** the runbook is not evidence; an executed run is.
+- **Questions:** Is the problem real and recurring? Is the API usable without hidden knowledge? Does the demo survive a low-end device?
+- **Goals (leading):** first-success task completion on canonical quickstart. **(lagging):** demo-linked repo clone→run success rate. **(guardrail):** no demo claims a capability the impl doesn't have.
+- **Improve:** demo + sample repo + known-limitations doc; if use case is weak, **do not build the demo** — return the feature to problem validation.
+- **Validate:** re-run quickstart on stable after each impl change; add a CI check that the demo's feature-detection path is honest.
+- **Monitor:** demo repo build status (CI), per milestone re-clone test.
+
+#### Cluster B — DOCS-ROT
+- **Exit criteria:** zero doc/impl/spec mismatches on current stable; every public claim traces to a cited source; known-limitations current.
+- **Evidence to collect:** current spec/explainer revision, current impl behavior (console + network, before/after), support-issue themes that reveal doc-driven confusion.
+- **Exercise:** doc-vs-impl friction run — follow each doc's quickstart exactly; any divergence is a finding even if the API "works."
+- **Questions:** Which docs disagree with shipped behavior? Are samples still reproducible? Are headers/secure-context/enterprise-policy notes still accurate?
+- **Goals (leading):** docs-reviewed/total. **(lagging):** doc-attributed support issues per period. **(guardrail):** no public claim lacks a source citation.
+- **Improve:** update docs; add regression assertions that pin documented behavior; route systemic mismatches to spec/impl, not just docs.
+- **Validate:** re-run each updated doc's quickstart; capture before/after.
+- **Monitor:** per-milestone doc-freshness check; alert on impl change touching a documented behavior.
+
+#### Cluster C — POS-OPEN
+- **Exit criteria:** every negative position is either (a) resolved by design/evidence/scope change with the objector's recorded acknowledgment, (b) narrowed around the objection, or (c) explicitly accepted as a principled, disclosed disagreement with a documented interop cost. **Silence is never recorded as resolution.**
+- **Evidence to collect:** dated, primary-source positions from each engine/standards body; the specific objected-to behavior; counterevidence; alternative designs.
+- **Exercise:** stakeholder-critique pass — discover constituencies, retrieve current primary sources, steelman each concern, map to design/evidence work. **Do not** infer support from silence (A5).
+- **Questions:** What exactly is objected to? What evidence would move it? Is Chrome-only a tolerable interim and at what interop/Baseline cost?
+- **Goals (leading):** positions-rechecked-within-90-days/total-open. **(lagging):** other-engine implementation movement (position ≠ implementation). **(guardrail):** no public artifact claims cross-engine support that isn't a recorded position.
+- **Improve:** spec/explainer edits, new evidence, scope narrowing, cross-engine outreach, or park/stop recommendation (human decision).
+- **Validate:** re-fetch positions after any spec change; record date + checksum.
+- **Monitor:** event-driven on new Intent/position/spec change; quarterly position recheck minimum.
+- **Escalation:** unresolved positions on ship-track features → human decision (narrow / delay / proceed-with-disclosed-cost / park). DevRel advises; does not approve.
+
+#### Cluster D — FW-FAIL (the "exercise now" cluster)
+- **Exit criteria:** every recurring framework failure has (a) a reproduced root cause, (b) a fix or documented workaround with its cost, (c) an immutable regression/conformance assertion preventing silent return, and (d) the workaround removed when fixed.
+- **Evidence to collect:** framework × version × runtime matrix; repro steps; console/network/trace; whether it's a framework bug, spec ambiguity, or impl regression.
+- **Exercise — RUN NOW (Iteration 0):** the moment one named feature is supplied, execute one friction run end-to-end and report exact tested/pass/fail/blocked. **Until then this dimension is Unknown — no fabricated run.**
+- **Questions:** Which framework/version? Root cause layer? Workaround cost to developers? Is the failure intermittent/version-pinned?
+- **Goals (leading):** failures-with-repro/total-reported. **(lagging):** verified framework integrations in production (target frameworks denominator). **(guardrail):** no new regression in an already-fixed path (conformance assertion stays green).
+- **Improve:** framework PR / spec clarification / impl fix / tooling / partner enablement — whichever layer owns the root cause.
+- **Validate:** re-run exact repro + adjacent versions/runtimes; keep before/after evidence; never overwrite the historical failure.
+- **Monitor:** weekly during active failures; per-milestone conformance run; CI assertion on every relevant impl change.
+
+### 5c. Monitoring design (cadence, not "continuously")
+
+Each monitor needs source, query/filter, owner, cadence, retention, privacy boundary, threshold, action. No private community/PII collection without an approved handling plan.
+
+| Monitor | Source | Cadence | Owner | Threshold → Action |
+|---|---|---|---|---|
+| New Intent / position / spec change (all 40) | ChromeStatus, standards venues | Event-driven | Standards liaison | Any change on a POS-OPEN feature → re-critique within 5 days |
+| Framework failure recurrence (FW-FAIL) | Issue trackers, framework repos, CI conformance | Weekly + per-milestone | Eng lead | Conformance assertion red → block merge, page owner |
+| Docs/demo freshness (DOCS-ROT, DEMO-GAP) | Repo CI, doc render, stable-channel repro | Per-milestone | DevRel owner | Build break or repro failure → open issue, downgrade doc status to stale |
+| Support volume & themes (all) | Support portal, issue trackers | Weekly | Community manager | Theme spike → friction run + FAQ update |
+| Adoption counters (where mapped) | ChromeStatus timeline API | Quarterly | Measurement owner | Counter must be labeled exact/family/none; no-counter → Unknown not zero |
+| Other-engine implementation movement (POS-OPEN) | Public positions, bug trackers | Quarterly | Standards liaison | Implementation landed → update Baseline path & re-rate interop |
+| Launch-resilience signals (if any feature contentious) | Press/social/moderation (aggregate, privacy-preserving) | Daily during launch window | Comms + HR | Harassment/doxxing/hate → escalate per safety policy; never make an individual absorb abuse |
+| Artifact freshness | Artifact pack metadata | Weekly | DevRel owner | `updated` > 90 days and stage active → flag stale |
+
+### 5d. Measurement plan (portfolio-level)
+
+Following `modules/measurement-framework.md`. Each metric carries the full schema; condensed here. **Output counts (posts/talks/assets) are never relabeled as adoption.**
+
+| metricId | Name | Type | Denominator | Instrumentation | Limitations |
+|---|---|---|---|---|---|
+| `portfolio-coverage` | Features with current (≤90d) evidence review | Leading | 40 features | Manifest `last_reviewed` | Review ≠ health |
+| `friction-executed` | Features with an executed friction run this quarter | Leading | 40 features | Friction-log registry | Defining a runbook does not count |
+| `pos-resolved-or-disclosed` | Open positions resolved or explicitly disclosed | Lagging | POS-OPEN count | Position registry | "Resolved" requires recorded acknowledgment |
+| `fw-reproduced` | Reported framework failures with a reproduced root cause | Leading | FW-FAIL reports | Friction-log | Repro ≠ fixed |
+| `fw-fixed-asserted` | Fixed framework failures with a green regression assertion | Lagging | FW-FAIL fixed set | CI conformance | Assertion coverage may be partial |
+| `docs-mismatch` | Doc/impl/spec mismatches on current stable | Guardrail/Diagnostic | Docs surface | Doc-freshness runs | Mismatch is a finding even if one path works |
+| `demo-runnable` | Demos that clone→run on current stable | Leading | DEMO-GAP demos | CI | Happy-path-only demos flagged |
+| `partner-stage` | Partner evidence by honest stage (interest→prod) | Diagnostic | Partners engaged | Partner registry | Self-selection; never promote without attribution+consent |
+| `support-burden` | Support issues attributable to the portfolio | Lagging | Time period | Support portal | Volume reflects awareness, not just quality |
+| `team-safety` | Incident response / well-being (aggregate) | Guardrail | Incidents / team | Incident log / private HR | Aggregate + privacy-preserving only |
+
+Baseline/target/owner are **config-required**; I will not invent targets.
+
+### 5e. Governance & owner map (config-required)
+
+Per `modules/governance-and-roles.md`, DevRel **coordinates** evidence and adoption; it does not determine formal review, block shipment, or commit partners/engines. Fill names from your governance process.
+
+```markdown
+## Team owner map (config-required)
+| Archetype | Name/email | Backup | Authority source |
+| --- | --- | --- | --- |
+| DevRel loop owner (portfolio) | _fill_ | _fill_ | _team process_ |
+| DevRel practitioner (per cluster) | _fill_ | _fill_ | _team process_ |
+| Product/engineering owner (per feature) | _fill_ | _fill_ | _team process_ |
+| API Owner / Blink owner | _fill_ | _fill_ | _Blink launch process_ |
+| Privacy reviewer | _fill_ | _fill_ | _team process_ |
+| Security reviewer | _fill_ | _fill_ | _team process_ |
+| Accessibility reviewer | _fill_ | _fill_ | _team process_ |
+| Standards/TAG liaison | _fill_ | _fill_ | _team process_ |
+| Communications/PR | _fill_ | _fill_ | _team process_ |
+| Community/GDE manager | _fill_ | _fill_ | _team process_ |
+| HR/people support | _fill_ | _fill_ | _team process_ |
+```
+
+Phase routing for the four stages in scope (advisory; teams calibrate): **Incubation & Trials & Adoption & Support → DevRel coordinates; Prototype & Experiment → Product/Eng coordinates; Wide Review → API Owner + Standards coordinate; Release → Comms coordinates.** Formal-review-if-required columns (privacy/security/a11y/legal) are determined by your canonical process, not by this table.
+
+### 5f. Iteration runbook (the repeating rhythm)
+
+- **Daily (launch windows only):** launch-resilience monitors (aggregate, privacy-preserving) for any contentious feature.
+- **Weekly:** support-theme scan; artifact-freshness flags; FW-FAIL conformance CI status; open-question triage.
+- **Per milestone:** doc-freshness + demo clone→run for every feature active in that milestone; friction re-run for any FW-FAIL feature with an impl touch; position recheck for any POS-OPEN feature with a spec touch.
+- **Quarterly:** full evidence re-review across all 40 (updates `last_reviewed`); adoption-counter read with exact/family/none labels; position recheck for dormant POS-OPEN features; measurement readout with denominators and limitations; retrospective on the loop itself.
+
+### 5g. Iteration 0 — "executable now" (the honesty-critical block)
+
+The continuous-loop rule requires at least one real exercise now for any concretely describable failure. The request describes failure *patterns* but names **zero** features, so I cannot execute a run without fabricating it. Therefore, the moment **any one feature per cluster is named**, execute these four same-day actions — each produces real evidence, not a template:
+
+1. **DEMO-GAP:** clone-or-create the canonical repo; run the quickstart on stable desktop + one mobile device; record exact tested/pass/fail/blocked and console/network evidence.
+2. **DOCS-ROT:** run the documented quickstart against current stable; record every doc/impl/spec divergence as a friction item (a divergence is a finding even if one path works).
+3. **POS-OPEN:** fetch the dated primary-source position(s); record what is objected to and what evidence would move it; mark silence as **Unknown**.
+4. **FW-FAIL:** reproduce the reported failure in the named framework/version/runtime; capture console/network/trace; file or link the repro; add a regression assertion.
+
+Until those four runs happen, the friction/conformance/position dimensions stay **Unknown** for the portfolio. **Recommendation:** name those four features today so Iteration 0 closes within the week.
+
+---
+
+## 6. Measure the outcome
+
+Portfolio success is multi-dimensional (no single score), per `modules/measurement-framework.md`:
+
+- **Better features co-designed:** design changes influenced by developer evidence; prevented-friction items found pre-ship (survivorship-biased — disclose).
+- **Faster/broader adoption:** verified production deployments (self-selection-biased); framework integrations (integration ≠ production use).
+- **Interoperability:** recorded other-engine implementation movement (position ≠ implementation; silence ≠ opposition). Baseline availability via web-platform-dx.
+- **Docs/demo health:** task-completion on quickstarts; doc-attributed support issues.
+- **Support burden:** volume, recurrence, severity, resolution time.
+- **Team safety:** incident response time and well-being (aggregate, privacy-preserving, never public).
+- **Loop health:** features reviewed within cadence; friction runs actually executed (not just defined).
+
+Every measure reports **denominator, sample, missing data, selection bias, and confidence**, and separates correlation from attribution.
+
+---
+
+## 7. Stopping / escalation triggers (human decisions)
+
+Escalate when:
+- A POS-OPEN feature on the ship-track cannot resolve its negative position → **human decision**: narrow / delay / proceed-with-disclosed-interop-cost / park. DevRel advises; does not approve.
+- A FW-FAIL root cause is a spec or impl defect, not a framework bug → route to eng/spec owner; do not paper over with docs.
+- Evidence conflicts materially across sources.
+- Monitoring would cross a privacy or organizational boundary.
+- The 40-feature denominator cannot be stabilized (e.g., duplicate IDs, ambiguous scope).
+- Any harassment/privacy/security/safety incident → safety policy first; never make an individual absorb abuse for the org.
+
+---
+
+## 8. Residual risks and required human decisions
+
+- **Risk:** the 40 features are milestone memberships, not unique IDs → denominator inflated (A2). *Mitigation:* dedupe by ChromeStatus ID before any reporting.
+- **Risk:** "strong adoption" gets treated as success (A6) or family counters get presented as feature-specific (A3). *Mitigation:* mandatory exact/family/none labels; no-counter = Unknown.
+- **Risk:** unresolved negative positions get "resolved" by re-interpreting silence as acquiescence (A5). *Mitigation:* only recorded positions count; principled inferences must be labeled as such.
+- **Risk:** the loop becomes a content factory (articles/talks) relabeled as adoption. *Mitigation:* output counts never count as adoption outcomes.
+- **Required human decisions now:** (1) confirm the 40-feature list and dedupe; (2) name one feature per cluster for Iteration 0; (3) fill the owner map; (4) set baselines/targets for the measurement plan; (5) confirm public/private boundary and consent registry.
+
+---
+
+**What I can do the instant you reply:** if you paste the ChromeStatus IDs (or even one named feature per cluster), I will execute the four Iteration-0 runs, fetch dated primary-source positions, and produce the first real evidence entries in the manifest — turning the Unknowns above into Supported/Partial/Contradicted ratings with linked sources. I will not invent any of it.

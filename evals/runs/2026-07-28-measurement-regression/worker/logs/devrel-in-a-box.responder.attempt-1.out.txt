@@ -1,0 +1,325 @@
+I have what I need from the skill. Below is the complete DevRel response: diagnosis, readiness assessment, challenge, plan, the full DevRel-in-a-box artifact, and measurement. Throughout, I've kept the labels the skill defines — **[fact]**, **[signal]**, **[commitment]**, **[hypothesis]**, **[recommendation]**, **[unknown]**, **[contradiction]** — distinct, and I have not invented evidence, partner identities, engine positions, metrics baselines, or approvals.
+
+---
+
+# Chrome DevRel response — DevRel-in-a-box for a high-evidence feature
+
+## 0. Questions I would normally ask first, and my working assumptions
+
+The skill's first rule is *interrogate before generating*. Since this is non-interactive, here are the questions I'd lead with, and the assumptions I'm proceeding on so the response is still complete and usable.
+
+**Questions I'd ask a human collaborator:**
+1. Which feature, and what's the ChromeStatus ID / explainer link? (Needed so every claim in the pack is traceable.)
+2. **What is the actual adoption bottleneck by segment?** The skill is explicit that "an article is not an adoption strategy" and that a broadcast plan is the #1 adoption-phase failure mode. A DevRel-in-a-box pack only pays off if the bottleneck sits in the awareness → evaluation → enablement part of the funnel, not in product gaps, interop, or cost.
+3. **What is the honest evidence stage of the "two public partner commitments"?** On the ladder (interest → active evaluation → trial commitment → ship commitment → verified production), "commitment" is a loaded word and must not be promoted without an attributable, consented source.
+4. **What exactly is the "positive movement from another engine"?** A standards position, a prototype, or shipping in a stable release? And what is the *third* engine's position? Position ≠ implementation, and silence ≠ opposition.
+5. Which frameworks were tested, and which meetups / GDEs have real domain fit for this capability and these regions?
+6. Is there an owner map, a publication-review process, and a measurement baseline already?
+
+**Working assumptions I'm proceeding on (flag any that are wrong):**
+- **[hypothesis]** The feature is at the **prepare-to-ship → release → adoption** boundary. The five evidence items you named (research, partners, engine movement, docs, framework integrations) are the classic profile of something *ready to scale*, which is why you're asking for an enablement pack. I'll treat the primary phase as **08 Adoption/scale**, with DevRel as **coordinator**, while noting ship-state items that still need confirming.
+- **[hypothesis]** "DevRel-in-a-box" means a **versioned, tiered enablement pack** (one source of truth, then layers for staff / GDE / meetup) — matching the phase-08 artifact "reusable enablement pack."
+- I'll build the pack as a **parameterized template** because the feature is unnamed; every content slot is marked where real evidence must be inserted. Per the skill, templates are public-core and the team fills in content; I will not fabricate feature specifics.
+
+---
+
+## 1. Diagnose (intake summary)
+
+- **Mode:** Feature adoption (with a release-comms overlap).
+- **Lifecycle stage:** 08 Adoption/scale, entering from 06 Prepare-to-ship / 07 Release. DevRel **coordinates**.
+- **Developer problem & audience:** **[unknown]** — not stated. The pack must be anchored to a named developer job before it ships, or it becomes the "broadcast plan" failure mode.
+- **Current decision:** "Should we arm staff, GDEs, and meetups to scale adoption, and with what?" → **Yes, but only after bottoken diagnosis + honest evidence classification.** **[recommendation]**
+- **Evidence already available (the five items you named):**
+  1. Credible developer research — **[fact]** (quality unverified; see §2).
+  2. Two public partner commitments — **[commitment]** (stage unclassified; see §2/§3).
+  3. Positive movement from another engine — **[signal]** (not yet "shipped"; see §3).
+  4. Complete reference docs — **[fact]** (reference ≠ full doc set; see §2).
+  5. Tested framework integrations — **[fact]** (scope unverified; see §2).
+- **Highest-risk assumptions:**
+  - **[hypothesis]** Awareness/enablement is the bottleneck (untested).
+  - **[hypothesis]** The two partners are at "ship commitment" or above (unverified — could be interest/trial).
+  - **[hypothesis]** "Complete docs" = full doc set (reference + quickstart + samples + FAQ + known limitations). Possibly only reference exists.
+  - **[hypothesis]** Chrome-only period is acceptable to developers (untested; interop cost not yet assessed).
+- **Missing owners/stakeholders:** owner map is config-required (DevRel practitioner, Product/Eng owner, API Owner, Comms, Community/GDE manager at minimum). **[unknown]**
+- **Recommended next intervention:** A 1-page **adoption-bottleneck + evidence-classification spike** (½–1 day) *before* distributing the pack, then assemble the pack from the single source of truth. **[recommendation]**
+
+---
+
+## 2. Assess readiness (no invented veto)
+
+Using the five-state advisory scale. I only mark **Supported** where you've supplied the evidence; everything else is honestly marked. DevRel does not determine whether formal review is required — that's the team's canonical process.
+
+| Dimension | State | Rationale / what would move it |
+|---|---|---|
+| Problem validity | **Supported** (provisional) | "Credible developer research" **[fact]** — verify it measures *this API shape* and a recurring pain, not a broad category. |
+| Developer demand | **Partial** | Research exists, but demand ladder stage (observed need → … → production) is unclassified for this specific capability. |
+| Partner commitment | **Partial** | "Two public partner commitments" **[commitment]** — must be placed on the ladder and *consented/attributable*. Two is a thin base for broad claims; do not generalize. |
+| API ergonomics | **Supported** (provisional) | "Tested framework integrations" **[fact]** implies real friction testing; confirm mobile + failure/cleanup paths, not just happy path. |
+| Interoperability | **Partial** | "Positive movement from another engine" **[signal]** ≠ implementation. Third engine = **[unknown]**. Baseline path not stated. |
+| Framework/library fit | **Supported** (provisional) | Tested integrations **[fact]** — confirm *which* frameworks (React/Vue/Angular/Svelte/…) and build-tool/server requirements documented. |
+| Documentation | **Partial** | "Complete reference docs" **[fact]**, but reference ≠ quickstart + samples + FAQ + known-limitations + troubleshooting. |
+| Adoption mechanics | **Unknown** | This is literally what we're being asked to build. |
+| Measurement | **Unknown** | No metrics/denominators/baselines supplied. |
+| User impact (end-user benefit/cost) | **Unknown** | Device matrix, privacy/a11y/abuse, battery/bandwidth not assessed here. |
+| Accessibility | **Unknown** | AT testing not mentioned. Formal-review-if-required per routing. |
+| Privacy / data protection | **Unknown** | Data-flow analysis not mentioned. Formal-review-if-required. |
+| Security / abuse | **Unknown** | Threat model not mentioned. Formal-review-if-required. |
+| Legal/regulatory/competition | **Unknown** | DevRel routes questions to counsel; provides no legal conclusions. |
+| Server/deployment integration | **Unknown** | Headers, secure-context, enterprise policy, deployment paths not stated. |
+| Performance/resource cost | **Unknown** | Low-end device behavior not stated. |
+| Supportability | **Unknown** | Support route, FAQ-from-real-questions, triage owner not stated. |
+| Narrative / claim accuracy | **Partial** | Evidence exists; not yet reconciled into a single claims ledger. |
+| Team safety / launch resilience | **Unknown** | Only relevant if the feature is contentious or targeted — flag if so. |
+
+**Consequences of unresolved gaps (not a veto):** the pack can go out, but any public claim that leans on an **Unknown** dimension becomes a liability — e.g., calling interop "broad" when only one other engine has "moved," or implying partners "ship" when they're at trial. The plan below closes these before public distribution. **[recommendation]**
+
+---
+
+## 3. Challenge (relevant lenses)
+
+**Adoption-bottleneck lens (primary).** **[recommendation]** Before producing *any* deck, run a 1-day bottleneck spike: for each target segment, where do developers fall out — awareness, evaluation, first-integration, production, or retention? A DevRel-in-a-box pack only addresses awareness/evaluation/enablement. If the real drop is in production (e.g., server headers, enterprise policy, low-end perf) or interop, the pack won't move the needle and may mask the real problem. **[hypothesis]** Based on the evidence profile, enablement is *likely* a real lever — but verify.
+
+**Evidence-ladder lens.** **[fact]** The skill forbids promoting partner evidence without an attributable, consented source. **[recommendation]** Classify the two partners explicitly and refuse to call them "ship partners" unless they are. If both are at *trial*, the honest public line is "in trial with named partners," not "partners are adopting."
+
+**Interoperability / Baseline lens.** **[signal]** "Positive movement from another engine" must be decomposed: standards position vs. prototype vs. stable-channel ship. **[unknown]** Third-engine position. **[recommendation]** State a Baseline path and a *Chrome-only period* cost honestly in every pack layer; never imply cross-engine availability that isn't shipped. Optimize for the interoperable web, not Chrome usage.
+
+**Ecosystem / community / GDE-fit lens.** **[recommendation]** Map which communities, regions, and GDEs have genuine domain fit *before* assigning speakers; a GDE with no prior work in this area is a weaker multiplier than one who has shipped it. Use the ecosystem-research module's segment map.
+
+**Distribution-vs-content lens.** **[fact]** Phase 08 lists "broadcast plan mistaken for adoption strategy" and "registrations/downloads mistaken for production use" as top failures. **[recommendation]** The pack must carry explicit CTAs into the *next funnel stage* (try → integrate → production), not just "watch the talk."
+
+**Claim-accuracy lens.** **[recommendation]** Every slide, sample, and FAQ answer cites the claims ledger; nothing is asserted that isn't traceable. Build the "Do-not-claim" list (§4 Layer 0) early — it protects GDEs and staff from overclaiming.
+
+**Measurement lens.** **[recommendation]** Pair at least one leading + one lagging + guardrails (§6). Do not count talks/posts/invitations as adoption outcomes.
+
+**Team-safety lens.** **[unknown]** If the feature is contentious or targeted, a launch-resilience/moderation layer is needed *before* arming community speakers, who can become lightning rods. Flag if applicable.
+
+---
+
+## 4. Plan (stage-appropriate)
+
+**Outcome & exit criteria**
+- A single source of truth (SSOT) claims ledger exists; every public claim is traceable; partners are correctly ladder-classified; interop/Baseline is honestly stated; the pack is versioned with "last-verified" dates; ≥1 leading + ≥1 lagging + guardrails are instrumented; at least one meetup dry-run and one GDE office-hour have run with feedback captured. **[recommendation]**
+
+**Evidence to collect (before broad distribution)**
+- Bottleneck spike per segment (awareness/evaluation/integration/production/retention). **[recommendation]**
+- Partner evidence ladder classification + consent/attribution status for the two partners. **[unknown→fact]**
+- Engine-position decomposition (position/prototype/ship) + third-engine position + Baseline path. **[unknown→fact]**
+- Doc-gap check: reference + quickstart + samples + FAQ + known-limitations + troubleshooting. **[partial→supported]**
+- Framework matrix with per-framework setup/blockers/fallback. **[partial→supported]**
+- (If contentious) launch-resilience plan. **[unknown]**
+
+**Activities & artifacts** (sequence)
+1. Bottleneck spike + evidence classification (½–1 day).
+2. Build SSOT claims ledger + "Do-not-claim" list.
+3. Assemble tiered pack (Layer 0 SSOT → 1 Staff → 2 GDE → 3 Meetup) — the full artifact is in §5.
+4. Dry-run with 1–2 GDEs and 1 meetup; capture friction in the pack itself.
+5. Wire measurement + feedback loop.
+6. Versioned release; changelog + staleness process.
+
+**Owners / reviewers (config-required — names go in the owner map)**
+- DevRel practitioner: **coordinates** pack + SSOT.
+- Product/Eng owner: **contributes** claims, known limitations, demo correctness.
+- Community/GDE manager: **contributes** GDE selection, office hours, attribution rules.
+- Comms/PR: **contributes** public-messaging alignment (phase 07/08).
+- API Owner / Standards liaison: **consult** on spec/Baseline wording.
+- A11y / Privacy / Security / Legal: **formal-review-if-required** by the team's canonical process — DevRel does not decide if required.
+
+**Dependencies & risks**
+- Partner consent gates any named case study. **[risk]**
+- Engine movement could reverse or stall → interop claims must be date-stamped. **[risk]**
+- Pack goes stale fast → versioning + cadence is non-optional. **[risk]**
+- Bottleneck may be product/interop, not enablement → pack under-delivers. **[risk]**
+
+**Blockers (explicit)**
+- Cannot publicly name partners without consent. **[blocker]**
+- Cannot claim cross-engine availability beyond what's shipped. **[blocker]**
+- Cannot ship the pack if any **Unknown** dimension is going to be asserted as fact in public materials. **[blocker]**
+
+---
+
+## 5. Artifact — DevRel-in-a-box enablement pack (full)
+
+This is the requested deliverable. It is a **tiered, versioned pack**: one source of truth, then progressively more public layers. Every content slot is marked `_fill in with linked evidence_`; I have not invented feature specifics.
+
+### Universal metadata (every layer carries this)
+
+```yaml
+artifactType: "GDE/meetup enablement pack"
+featureOrInitiative: "_ChromeStatus ID / explainer link_"
+lifecycleStage: "adoption (entering from prepare-to-ship/release)"
+audience: "layered: internal staff | GDEs | meetup organizers"
+owner: "_DevRel practitioner name/email_"
+status: "draft"
+created: "_ISO date_"
+updated: "_ISO date_"
+sources: ["_explainer", "_ChromeStatus", "_research report", "_partner consented quotes_", "_engine position links_", "_docs URL_", "_framework repos_"]
+unresolvedAssumptions:
+  - "adoption bottleneck is awareness/enablement (unverified)"
+  - "two partners are at >= trial commitment (unclassified)"
+  - "third-engine position unknown"
+reviewRequirements:
+  - "Product/Eng: claims + demo correctness"
+  - "Comms/PR: public messaging"
+  - "API Owner/Standards: Baseline + spec wording"
+  - "A11y/Privacy/Security/Legal: formal-review-if-required per team process"
+version: "1.0.0"
+lastVerified: "_ISO date per claim_"
+```
+
+### Layer 0 — Single Source of Truth (SSOT)
+*Everyone draws from this. No layer may contradict it.*
+
+**0.1 One-paragraph feature summary** — `_fill in; public-safe; cite explainer._`
+
+**0.2 Developer problem & job** (3–5 concrete scenarios, not API descriptions) — `_fill in from research; cite research report with retrieval date._`
+
+**0.3 Claims ledger** (the spine of the whole pack)
+
+| Claim (public wording) | Evidence | Source + date | State | Approved for public? |
+|---|---|---|---|---|
+| "Addresses a recurring developer pain" | research report | _link, retrieved_ | **[fact]** | yes |
+| "In trial/ship with [Partner A]" | _consented quote_ | _link, consent on file_ | **[commitment]** _stage_ | yes/no per consent |
+| "In trial/ship with [Partner B]" | _consented quote_ | _link, consent on file_ | **[commitment]** _stage_ | yes/no per consent |
+| "Positive movement from [Engine X]" | _position/bug/ship link_ | _link, date_ | **[signal]** | yes, with exact wording |
+| "Available cross-engine / Baseline" | _web-features/Baseline_ | _link, date_ | **[unknown/partial]** | **NO until shipped** |
+| "Works with [Framework list]" | _integration repos/tests_ | _links_ | **[fact]** | yes |
+
+**0.4 Do-not-claim list** (protects speakers)
+- Do **not** say "broad browser support" / "works everywhere" unless shipped in all target engines. **[unknown]**
+- Do **not** call partners "production users" unless at verified-production stage. **[unknown]**
+- Do **not** claim end-user benefit (battery/perf/privacy/a11y) that hasn't been measured. **[unknown]**
+- Do **not** imply the API is final if spec is still evolving. **[check]**
+
+**0.5 Compatibility / Baseline / fallback**
+- Engine status table: Chrome _stage_ / Engine X _position vs. prototype vs. ship_ / Engine Y **[unknown]**.
+- Baseline target + expected date: `_fill in_`.
+- Progressive-enhancement / fallback guidance: `_fill in_`.
+
+**0.6 Framework compatibility matrix**
+
+| Framework/library | Status | Evidence | Blockers | Fallback |
+|---|---|---|---|---|
+| React | _tested?_ | _repo/test link_ | _ | _ |
+| Vue | _ | _ | _ | _ |
+| Angular | _ | _ | _ | _ |
+| Svelte/Others | _ | _ | _ | _ |
+| Build tools (Vite/webpack/…) | _ | _ | _ | _ |
+| Server/headers/secure-context | _ | _ | _ | _ |
+
+**0.7 Known limitations & non-goals** — `_fill in honestly; required in every layer._`
+
+**0.8 Glossary** — consistent terminology across all layers.
+
+**0.9 Changelog & "last verified" dates** per claim — prevents stale talks.
+
+---
+
+### Layer 1 — Staff (internal only)
+*For the DevRel team, PM/Eng leads, support, comms.*
+
+**1.1 Owner map & escalation** (config-required): DevRel coordinator, PM/Eng owner, API Owner, Comms, Community/GDE manager, Support triage, plus formal-review owners (a11y/privacy/security/legal) **as required by team process**.
+
+**1.2 Internal context not for public release**: `_private overlay; never copy into GDE/meetup layers._`
+
+**1.3 Partner consent registry**: which quotes/names are cleared for which audience. **[blocker if missing]**
+
+**1.4 Support routing**: where developer issues go, who triages, SLA, known-issue doc link.
+
+**1.5 Measurement dashboard**: links to leading/lagging/guardrail metrics (§6).
+
+**1.6 Launch-resilience / moderation** (only if contentious): escalation, aftercare, who absorbs public pressure (never an individual alone).
+
+**1.7 Internal talk track** for exec/PM/Q&A — deeper than public, includes caveats.
+
+---
+
+### Layer 2 — GDE (trusted external experts)
+*Deeper technical brief + speaking assets, with guardrails.*
+
+**2.1 GDE brief** (drawn from Layer 0): problem, API, evidence (cited), compatibility, known limitations, what *not* to claim.
+
+**2.2 Canonical deck + speaker notes**
+- Narrative arc: Problem → Solution → Evidence (cited) → Integration (framework matrix) → Interop/Baseline (honest) → Adoption CTA.
+- Speaker notes include caveats and Q&A prep; every claim back-references the SSOT row.
+
+**2.3 Tested demos / samples**
+- Per the demo-and-sample template: what each shows, audience, tested environments (mobile + desktop), and *what the demo does NOT prove*.
+- Live-code script with copy-paste setup; include a **no-Internet/prerecorded fallback**.
+
+**2.4 Q&A bank** — from *real* developer questions (support issues, trials), not invented. Each answer cites SSOT.
+
+**2.5 Office-hours cadence** with the PM/Eng owner on call for hard questions; record decisions back into the SSOT.
+
+**2.6 Attribution & consent rules**: how GDEs may reference partners, engines, and Chrome; what requires re-clearance.
+
+**2.7 Feedback loop**: every GDE talk feeds a friction item into the pack (→ continuous loop: inventory → evidence → exercise → critique → improve → republish).
+
+**2.8 GDE selection criteria** (community manager): prior shipped work in this domain > general availability; region/community fit for target segments.
+
+---
+
+### Layer 3 — Meetup (community-run, lowest friction)
+*Anyone in the community can run a 30–60 min session with no Chrome people present.*
+
+**3.1 Ready-to-run agenda** (suggested 45 min)
+- 5 min — problem (from SSOT 0.2)
+- 10 min — solution + evidence (cited, honest interop)
+- 15 min — live demo (tested script + fallback)
+- 10 min — "integrate it now" hands-on (framework-specific quickstart)
+- 5 min — known limitations + where to get help
+
+**3.2 Slide starter** — a forkable deck (Google Slides/markdown) pre-filled from Layer 0; organizers swap in their name only.
+
+**3.3 Live-code script** — copy-paste, tested, with the exact framework versions and a troubleshooting box.
+
+**3.4 Call-to-action into the next funnel stage** — *not* "follow us." E.g., "open this starter repo," "run this detector," "file this integration in your framework." Each CTA is measurable (§6).
+
+**3.5 Sign-up + feedback capture** — one form: who came, stack, did they integrate, what blocked them. Feeds the bottleneck spike continuously.
+
+**3.6 Regional / community adaptation notes** — translation hooks, local framework popularity, connectivity constraints (offline fallback), cultural/community norms.
+
+**3.7 "If asked something not in the SSOT"** — point to the support route; do not speculate. Protects volunteer organizers.
+
+---
+
+### Pack operations (cross-cutting)
+- **Versioning**: semantic version; bump on any SSOT claim change. Each layer shows `vX.Y.Z / last-verified _date_`.
+- **Update cadence**: re-verify engine positions and partner stage monthly; claims expire after `_N_` weeks without re-verification.
+- **Staleness/retirement**: mark stale, archive, and stop distribution if evidence is contradicted or the feature changes scope.
+- **Single home**: one canonical location; layers are views, not copies, so they can't drift.
+
+---
+
+## 6. Measure the outcome
+
+No universal score. Pair leading + lagging + guardrails; state denominators, data quality, and limits. **[recommendation]** Candidate metrics for *this* enablement work (define each via the measurement schema: id, denominator, baseline, target, instrumentation, privacy boundary, owner, cadence, threshold, limitations):
+
+**Leading (early signals — hypothesized link, not proof):**
+- GDE/meetup sessions delivered that used the *current* pack version / sessions delivered. (denominator: sessions; limitation: output, not outcome)
+- Attendees who completed the hands-on "integrate now" CTA / attendees. (denominator: attendees; limitation: self-report)
+- Friction items surfaced from community sessions / sessions. (diagnostic; feeds product)
+
+**Lagging (outcomes, with attribution limits):**
+- Verified production deployments attributable to the segment / target partner segment. (denominator: segment; limitation: self-selection)
+- Framework integration count moving to "production-ready" / target frameworks.
+- Other-engine movement: position → prototype → ship over time (denominator: target engines; silence ≠ opposition).
+
+**Guardrails (catch harm):**
+- Public claims retracted/corrected = 0 target; any correction triggers a pack re-verify.
+- Support issue volume / time period with triage SLA met (don't let enablement outrun support).
+- Accessibility/privacy/security regressions = 0 (formal-review-if-required dimensions stay clean).
+- Team-safety incidents = 0 (aggregate, privacy-preserving) if the feature is contentious.
+
+**Escalate to a human when** (per the framework): a product concern needs redesign/delay/rollback; evidence conflicts materially; monitoring would cross a privacy boundary; the denominator is too unstable; or a safety incident occurs.
+
+---
+
+## 7. What I deliberately did not do
+
+- I did **not** name the feature, partners, engines, frameworks, or metrics baselines — those are **[unknown]** and must be filled from real evidence. Inventing them would violate the skill's core rule.
+- I did **not** treat the two partner statements as "production adoption" — they are **[commitment]** at an *unclassified* stage.
+- I did **not** equate "positive engine movement" with cross-engine availability.
+- I did **not** assert that a11y/privacy/security/legal review is or isn't required — that's the team's canonical process, not DevRel's call.
+- I did **not** promise the pack will drive adoption — that depends on the bottleneck, which is the first thing to verify.
+
+**One-line summary of the recommendation:** Yes, build the tiered DevRel-in-a-box pack above — but spend the first half-day classifying the two partners on the evidence ladder, decomposing the engine signal, confirming the real adoption bottleneck, and standing up the SSOT claims ledger + "Do-not-claim" list, so that every staff/GDE/meetup asset is traceable, honestly interop-labeled, versioned, and measured with a leading+lagging+guardrail set.

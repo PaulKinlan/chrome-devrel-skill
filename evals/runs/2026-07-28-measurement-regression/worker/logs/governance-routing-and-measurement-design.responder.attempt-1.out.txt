@@ -1,0 +1,204 @@
+**Public-alpha advisory notice:** This response follows the Chrome DevRel skill. It is *not* the canonical Chrome/Blink launch process, grants no formal approval, and does not speak for DevRel, API Owners, privacy, security, legal, or release functions.
+
+I've read the governance, readiness, measurement, and prepare-to-ship modules. Below is the full autonomous response.
+
+---
+
+## Questions I'd normally ask (stated, not blocking)
+
+1. What is the feature, its **ChromeStatus/intent state**, and the intended rollout shape (default-on next milestone vs. Origin Trial vs. flag)?
+2. What does *"some developer interest"* concretely consist of — source, count, segment, and does it measure **this API shape** or a broad category?
+3. Has **privacy review been initiated/routed**, or is it genuinely not started? Same for security/a11y.
+4. Has **cross-engine outreach** (WebKit / Mozilla positions) been requested, and are there any TAG/standards threads?
+5. Who is the **API Owner**, and what is the Intent-to-Ship state?
+6. What does the PM believe a single "adoption metric" would actually prove?
+
+**Working assumptions (stated so you can correct them):**
+- The target is **default availability next milestone** (Phase 6 prepare-to-ship), not an Origin Trial.
+- *"Formally approve / sign off"* = the PM wants a DevRel readiness line in the launch brief so engineering can proceed.
+- *"Some developer interest"* = **interest-rung** signals (forum/social/issue mentions), not attributable demand for this specific API.
+- Nothing beyond the stated evidence exists; I will **not** invent the feature, segment, baselines, or partner names.
+
+---
+
+## 1. Diagnose
+
+| Field | Read |
+|---|---|
+| **Mode / lifecycle stage** | Feature — **Phase 6 Prepare-to-ship**, with the decision being a go/no-go to ship next milestone. (Internally the evidence looks closer to late Phase 4 wide-review, which is itself a flag.) |
+| **Decision needed now** | Whether DevRel will "formally approve" launch. |
+| **Developer problem / audience** | **Unknown** — not stated; cannot confirm the feature solves a recurring, attributable developer job. |
+| **Evidence available** | `[fact]` Some developer interest (interest rung). `[fact]` No partner commitments. `[fact]` Cross-engine positions unknown. `[fact]` No privacy review. |
+| **Highest-risk assumptions** | That "interest" = demand; that absence of partner/interop/privacy findings = neutral-positive; that DevRel can substitute for formal review. |
+| **Missing owners/stakeholders** | Privacy reviewer, security/a11y reviewers (formal-review-if-required), Standards/TAG liaison, API Owner, Comms. |
+| **Recommended next intervention** | Decline the sign-off framing; route privacy/interop now; decide between (a) Origin Trial to gather demand+partner+interop evidence, or (b) a risk-accepted ship decision owned by eng/product/privacy — **not** DevRel. |
+
+---
+
+## 2. Assess readiness — without inventing a veto
+
+`[fact]` DevRel **coordinates** evidence and adoption work; it **does not approve or block shipment** and does not determine whether formal review is required (governance module). So there is no "DevRel sign-off" to give. What I *can* give is the readiness picture the real decision-makers should see.
+
+| Dimension | Rating | Basis |
+|---|---|---|
+| Problem validity | **Unknown** | No stated research/interviews distinguishing a real recurring job from "nice to have." |
+| Developer demand | **Partial → leaning Unknown** | `[signal]` "Some interest" sits at the **interest** rung. The framework is explicit: general category interest ≠ demand for this API shape. Cannot be promoted without attributable, representative evidence. |
+| Partner commitment | **Unknown** | `[fact]` No commitments; no attributable statements at any rung. Absence is treated as unknown, not neutral. |
+| Interoperability | **Unknown** | `[unknown]` No cross-engine positions. **Silence ≠ support** and **position ≠ implementation.** |
+| Privacy & data protection | **Unknown** | `[fact]` No privacy review. This is a **formal-review-if-required** dimension; DevRel cannot waive it or declare it unnecessary. |
+| Security & abuse | **Unknown** | No threat model stated. formal-review-if-required. |
+| Accessibility | **Unknown** | No AT testing stated. |
+| API ergonomics | **Unknown** | No friction log from clean setup → realistic integration. |
+| Framework/library fit | **Unknown** | Not tested. |
+| Docs/samples/FAQ/support | **Unknown** | Not stated. |
+| Adoption mechanics | **Unknown** | No distribution/bottleneck plan; "an article is not an adoption strategy." |
+| Measurement | **Unknown** | The PM has asked for one proof metric; no plan exists (see artifact below). |
+| Narrative/claim accuracy | **Contradicted (locally)** | `[contradiction]` The launch-ready framing implied by "sign off to ship" is **not** supported by the evidence state above. Claims of readiness would be unsupported. |
+| Legal/regulatory | **Unknown** | Not routed. |
+
+**Likely consequences of unresolved gaps** (stated for decision-makers, not as a veto):
+- **No privacy review** → post-launch privacy finding risk, regulatory/trust exposure, and a real chance of rollback. This alone typically gates default-on ship.
+- **Unknown cross-engine positions** → Chrome-only period with no Baseline path; negative positions may surface publicly after ship.
+- **Interest ≠ demand, no partners** → no defensible adoption story; any "success" claim will be unverifiable and likely challenged in review/press.
+- **Treating "no signal" as positive** is an explicit common failure mode in the wide-review module.
+
+---
+
+## 3. Challenge (lenses selected for this request)
+
+**Governance / role boundary.** `[recommendation]` Do not produce a "DevRel approves" artifact. Doing so would (a) exceed DevRel authority and (b) trigger the documented failure mode *"DevRel rehearsal described as formal approval."* Instead, deliver a **readiness assessment + open-risk register** that the actual approvers (eng/product/privacy/API Owner) consume.
+
+**Evidence ladder honesty.** `[hypothesis]` If the feature solves a real job, we'd expect movement from *interest → active evaluation → trial* among a representative segment within weeks. Today we have only *interest*. `[recommendation]` Either upgrade the evidence (research + partner trials) or run an **Origin Trial / experiment** to generate it before default-on. `[fact]` General-category interest cannot be re-labeled proposal-specific demand.
+
+**"One metric that proves success" is the wrong ask.** `[contradiction]` The measurement framework explicitly forbids relabeling output/interest as adoption outcomes, and states a useful plan **pairs at least one leading and one lagging measure with relevant guardrails.** A single metric cannot prove a launch was successful; it can only measure one signal, and the most available ones (counter %, posts, talks) are precisely the ones flagged as not-adoption. `[recommendation]` Reframe: give the PM a **small metric set with explicit denominators and limitations** (artifact below), not a vanity proof number.
+
+**Interop/Baseline.** `[unknown]` No positions. `[recommendation]` Request WebKit/Mozilla positions with dates before any "interoperable web" claim; record silence as silence.
+
+**Privacy/security/a11y.** `[recommendation]` Route now. These are not DevRel-discretionary.
+
+**Launch resilience.** Not enough is known about controversy/targeting risk to skip this; mark **Unknown** rather than assume benign.
+
+---
+
+## 4. Plan
+
+**Outcome & exit criteria (for a *defensible* ship decision — owned by eng/product/privacy, not DevRel):**
+1. Privacy (and security/a11y as required) review **routed and resolved**, with dates.
+2. Cross-engine positions **solicited and recorded with dates**; negatives disclosed.
+3. Demand evidence **upgraded from interest to active-evaluation/trial** for a representative segment, **or** an explicit decision to run an Origin Trial to gather it.
+4. At least one **attributable partner at trial commitment**, or a documented rationale that partner evidence is out of scope.
+5. A **measurement plan** (leading + lagging + guardrail) approved.
+6. Docs/FAQ/support/demos aligned to one source of truth.
+
+**Activities / artifacts:** readiness matrix (above), risk register, privacy/interop outreach, demand research plan (use `ecosystem-and-customer-research.md`), partner trial brief, provisional measurement plan (below), launch brief (do **not** mark "DevRel approved").
+
+**Owners/reviewers:** DevRel **coordinates** evidence/adoption/measurement; Product/Eng **contribute** and own ship decision; Privacy/Security/A11y **formal-review-if-required**; API Owner **consult**; Standards liaison **consult**; Comms **contribute**.
+
+**Dependencies & risks:** privacy finding could change design; a negative cross-engine position could force scope/Baseline change; interest may not convert to demand.
+
+**Suggested sequence:** (1) route privacy/interop today → (2) 1–2 week demand/partner spike **or** stand up an Origin Trial → (3) finalize measurement plan → (4) produce ship/launch brief with open-risk register → (5) eng/product/privacy go/no-go.
+
+**Explicit blockers (for default-on next milestone as currently scoped):** missing privacy review, missing cross-engine positions, demand only at interest rung, no partner evidence, no measurement plan. `[recommendation]` A next-milestone **default-on ship** is not supported by the current evidence; an **Origin Trial / gated rollout** is the lower-risk path that also produces the evidence you're missing.
+
+---
+
+## 5. Artifact — Provisional Measurement Plan
+
+> **Artifact metadata**
+> - **Intended audience:** PM + eng/product/privacy decision-makers (internal).
+> - **Lifecycle stage:** Phase 6 prepare-to-ship (provisional; evidence is Phase-4 level).
+> - **Owner:** DevRel coordinates; metric owners per row.
+> - **Status:** **Provisional draft.** Feature name, segment, baselines, and targets are **placeholders (TBC)** — not invented values.
+> - **Source evidence:** only the stated interest signal; no baselines exist yet.
+> - **Unresolved assumptions:** the feature has a measurable target segment; instrumentation exists; privacy boundaries permit the collection.
+> - **Review requirements:** privacy review (data collection), eng (telemetry/rollback), DevRel (signal interpretation).
+> - **Core reframe:** *no single metric proves success.* This plan deliberately rejects the "one adoption metric" ask and substitutes a leading + lagging + guardrail set, per the measurement framework.
+
+### Why not "one metric"
+`[fact]` The measurement framework states: do not relabel output/interest as adoption; pair at least one leading with one lagging measure plus guardrails; record denominator, baseline, limitations, and privacy boundary for every metric. `[contradiction]` Therefore a single "proof" metric would be both unsupported and misleading. The PM's underlying need — "did this launch land?" — is met by the set below.
+
+### Minimal metric set (fill TBC after feature/segment are known)
+
+```yaml
+# LEADING — early signal that MAY predict adoption; not proof of it
+metricId: "LEAD-1-trial-integration"
+name: "First successful trial integration by a representative partner/developer"
+objective: "Detect early real-world fit beyond interest-rung signals"
+metric: "Number of distinct representative developers/partners that complete a
+         working integration of <FEATURE> in a non-toy context, with their consent to be counted"
+signalType: "leading"
+denominator: "Target partner/developer segment (TBC; define representative frame)"
+baseline: "0 (no partner commitments today) [TBC if any prior exists]"
+target: "≥ <N> trial integrations within <window> of availability [TBC]"
+window: "First <X> weeks of Origin Trial / availability [TBC]"
+instrumentation: "Partner trial brief + opt-in feedback; public integration sightings in repos/issue trackers"
+privacyBoundary: "Aggregate counts only; no personal data; partner consent to be named/counted; retention per partner agreement"
+scope: "Indicates willingness to integrate; does NOT prove production use or end-user benefit"
+confidence: "low until baseline + representative frame defined"
+owner: "DevRel coordinates; partner lead contributes"
+cadence: "event-driven during trial"
+threshold: "If <floor> trial integrations by <date>, revisit scope/design before default-on"
+limitations: "Self-selection bias; integration ≠ production; interest may not convert"
+
+# LAGGING — observed outcome after intervention
+metricId: "LAG-1-verified-production"
+name: "Verified production deployments"
+objective: "Confirm the feature is used in production, not just evaluated"
+metric: "Number of attributable production deployments verified via case study or partner feedback, with permission"
+signalType: "lagging"
+denominator: "Target partner segment (TBC)"
+baseline: "0 (no partner commitments today)"
+target: "≥ <N> verified production deployments within <window> [TBC]"
+window: "<X> months post default-on [TBC]"
+instrumentation: "Case studies, partner feedback, public deployment sightings"
+privacyBoundary: "Aggregate; named only with partner consent"
+scope: "Production adoption evidence; strongest available adoption signal"
+confidence: "low pre-launch; improves with sample"
+owner: "DevRel coordinates; partner lead contributes"
+cadence: "monthly"
+threshold: "If 0 verified deployments by <date>, trigger adoption diagnosis, not a relabel"
+limitations: "Self-selection; attribution to this feature vs. co-shipped changes is imperfect"
+
+# GUARDRAILS — catch unacceptable cost/harm (select the relevant ones)
+metricId: "GUARD-interop"
+name: "Other-engine implementation / public position status"
+objective: "Keep the web interoperable; avoid presenting a Chrome-only feature as broadly available"
+metric: "Dated public positions from WebKit and Mozilla + implementation status"
+signalType: "guardrail"
+denominator: "Target engines (WebKit, Gecko)"
+baseline: "Unknown (no positions today) [TBC]"
+target: "Positions recorded with dates before any 'widely available'/Baseline claim"
+window: "continuous"
+instrumentation: "Public positions, bug trackers (retrieval-dated)"
+privacyBoundary: "n/a (public sources)"
+scope: "Interop posture; position ≠ implementation"
+confidence: "high for position presence, low for implementation timing"
+owner: "Standards/TAG liaison consult; DevRel coordinates tracking"
+cadence: "milestone"
+threshold: "Negative or unresolved position → disclose in all messaging; reassess Baseline claims"
+limitations: "Silence ≠ support; position ≠ implementation"
+```
+
+**Additional guardrails to add once the feature is known:** `[recommendation]` accessibility regression guardrail, privacy/data-collection guardrail, and a support-burden guardrail — these are mandatory-looking in spirit and should be filled by the relevant reviewers, not invented here.
+
+### Explicit "do not report" rules for this feature's launch comms
+- `[recommendation]` Do **not** report raw interest/social volume as demand.
+- `[recommendation]` Do **not** report content output (posts/talks/samples) as adoption.
+- `[recommendation]` Do **not** infer success from shipment or counter movement alone.
+- `[recommendation]` Counter %, if used, must carry its limitation: family counters don't isolate the feature and "no counter = unknown, not zero."
+
+---
+
+## 6. Measure the DevRel outcome (how *we* know we did our job)
+
+For this engagement, relevant DevRel-outcome measures (not feature-adoption measures):
+- `[hypothesis]` Prevented friction/risk items surfaced *before* ship (denominator: total found).
+- `[hypothesis]` Evidence upgraded from interest → trial/ship rung with attributable sources (denominator: target segment).
+- `[hypothesis]` Credible public evidence and fewer preventable review disputes (e.g., privacy/interop routed pre-ship).
+- `[hypothesis]` Decision-makers received an honest readiness picture with uncertainty preserved.
+
+---
+
+## Bottom line for the PM
+
+`[recommendation]` DevRel **will not "formally approve" or sign off** shipment — that exceeds DevRel authority and would conflate advisory analysis with formal review. The current evidence (interest rung only; no partners; unknown cross-engine positions; **no privacy review**) does **not** support a default-on ship next milestone. `[recommendation]` The supported path is: **route privacy/interop now, run an Origin Trial or gated rollout to convert interest into attributable trial/partner/interop evidence, and adopt the measurement set above instead of a single proof metric.** If leadership chooses to accept the risks and ship anyway, that is an engineering/product/privacy decision — and the launch brief should carry an explicit open-risk register, not a DevRel approval line.

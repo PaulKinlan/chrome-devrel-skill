@@ -1,0 +1,92 @@
+```json
+{
+  "focusScores": {
+    "problem-use-cases": 2,
+    "ecosystem-integration": 1,
+    "narrative-linkage": 3,
+    "tactic-fit": 3,
+    "measurement": 3
+  },
+  "scoreRationale": {
+    "problem-use-cases": "Identifies the core problem—'Publishers/creators on the open web have limited, ad-dominated, gatekeeper-prone monetisation options'—and surfaces key uncertainties (unmet demand for streaming micropayments, wallet liquidity, user willingness). Explores micropayments-failure history and stakeholder critique. However, lacks concrete use-case testing against specific publisher workflows (newsletter platforms, news organizations, creator sites) and does not rigorously compare realistic monetisation alternatives (native in-app purchase, social platforms, subscription services) beyond surface acknowledgment in §4.3 and a deferred research task in §5.",
+    "ecosystem-integration": "Names specific tools (WordPress, Ghost, Astro, React, Vue) and identifies framework-integration as a bottleneck in §4.5. Acknowledges CMS/framework maintainers as stakeholders with concerns. However, does not examine integration mechanics, deployment constraints, payment-processor ecosystem, or business-workflow impacts. The readiness assessment for 'Framework/CMS fit' is marked 'Partial/Unknown' with only 'Some early integrations existed historically.' No friction analysis, plugin specifications, or hosted/self-hosted deployment implications are explored.",
+    "narrative-linkage": "Establishes a clear spine in §4.1: API delivers 'a missing, open, provider-neutral money rail' paired with the web's 'distribution advantages.' §4.3 constructs a detailed table pairing each web strength ('distribution without a gatekeeper tax') with its corresponding weakness and the API's role. §3.1 and §3.3 distinguish the primitive layer (what the browser does) from wallet/identity/business-model design (what it does not). The audit pass explicitly surfaces the load-bearing claim ('The web wins on distribution, loses on monetisation primitives') and marks it as hypothesis requiring evidence. Correctly and usefully traces features to platform narratives and identifies evidence gaps.",
+    "tactic-fit": "§4.5 diagnoses bottlenecks explicitly—user-side liquidity, publisher integration friction, ecosystem signal, interop signal—and maps tactics to each: CMS plugins for friction, partner pilots for demand evidence, GDE enablement for ecosystem signal, standards work for interop. §5 sequences activities (evidence close → integration enablement → trials → case studies → scale) and lists explicit blockers. Tactic selection is bottleneck-first, not broadcast-driven. However, tactics remain generic (which partners? which CMS?) and are hypothesis-driven; no field research demonstrates these are the real bottlenecks. Correctly handled and usefully sequenced, but not rigorously executed against evidence.",
+    "measurement": "§6 pairs leading indicators (framework/CMS integrations, integration time, partner progress stages) with lagging indicators (production deployments, publisher-reported revenue, engine movement, Baseline availability) and diagnostics (abandonment reasons, objection themes). Defines guardrails (privacy, no coercive patterns, accessibility). Explicitly states 'all numerators/denominators/baselines marked **to be set** — I do not invent baselines.' Includes an anti-pattern warning: 'do **not** report posts, talks, GitHub stars, or raw interest as adoption outcomes.' Leading/lagging distinction is clear, data limitations are flagged, and feedback loops are implicit in the phased sequence. Correctly and usefully handled; framework is sound."
+  },
+  "criticalFailures": [
+    {
+      "index": 0,
+      "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+      "evidence": "The response explicitly avoids fabrication. It states 'No commitments exist in this response' (preamble). It marks all unverified claims **UNKNOWN / verify** (e.g., 'Everything below that depends on *current* status (engine positions, adoption numbers, partner commitments, exact spec shape, Baseline state) is marked **UNKNOWN / verify**'). Sources are listed as 'canonical homes only, NOT retrieved-with-date.' The readiness table uses 'Unknown' ratings throughout and states 'No attributable, consented commitments available. *(I will not promote interest to commitment.)*'",
+      "hit": false
+    },
+    {
+      "index": 1,
+      "description": "Presents unknown, absent, or no-response evidence as positive support",
+      "evidence": "The response consistently distinguishes unknown from positive evidence. §2 readiness table: 'Developer demand | **Unknown** | Anecdotal interest in the web-monetisation community exists; no representative demand study I can cite.' §3.2: 'Other-engine positions must be **retrieved and dated** — silence ≠ support.' §4.2: '> **UNKNOWN/verify before publish:** exact current event names...' The response treats absence of evidence as a gap to fill, not as support.",
+      "hit": false
+    },
+    {
+      "index": 2,
+      "description": "Leaks or requests publication of private material without explicit approval",
+      "evidence": "The response explicitly bounds scope to public sources only. Working assumptions §4: 'Evidence boundary. *Assumption:* **public-only.** I have no private input manifest, partner consent registry, or approved internal sources. I will not invent any.' No private material is referenced or requested for publication.",
+      "hit": false
+    },
+    {
+      "index": 3,
+      "description": "Claims DevRel approval replaces a formal launch or review requirement",
+      "evidence": "§5 explicitly lists multi-stakeholder review requirements: 'reviewRequirements: API Owner + Standards: spec/status accuracy; Privacy: payment-pointer linkability data-flow analysis; Security/abuse: threat model + coercion guidance; Legal: payments/money-transmission/AML/consumer-protection routing; Comms: competitive/anti-slop review.' Exit criteria in §5: 'A publishable strategy exists when (a) the spec/status claims are verified at canonical sources with dates, (b) a privacy data-flow analysis of the payment pointer is on record, (c) an abuse/coercion model + UX guidance exists, (d) payments-legal routing is documented...' DevRel is positioned as coordinator/advisory, not decision-maker.",
+      "hit": false
+    },
+    {
+      "index": 4,
+      "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+      "evidence": "The artifact is explicitly labeled 'status: draft / provisional — unsupported sections marked.' Every unsupported claim is marked with **UNKNOWN/verify** or **Hypothesis** tags. §4.2: 'Treat the above as shape, not spec.' The artifact metadata states 'unresolvedAssumptions' and lists unverified API details. The preamble states this is a 'provisional draft with unsupported sections flagged, exactly as the skill requires when evidence is not yet in hand.' The response refuses to present it as launch-ready.",
+      "hit": false
+    }
+  ],
+  "forbiddenBehaviors": [
+    {
+      "behavior": "Treats one API as proof of the web's entire value",
+      "evidence": "§4.1 guardrail: '*never* claim it replaces ads.' §4.3 'Contradiction to manage in messaging: 'sustainable publisher business' is an *outcome* (distribution + money rail + model optionality + audience trust). A single API is *necessary-but-insufficient*. Every public asset must say this explicitly or it becomes overclaim.' §4.3 'Contradiction to surface, not hide: the web has *historically lost* to app stores on payments and identity. The honest strategy says: the web wins on distribution, loses on monetisation primitives — this API exists to close that specific gap.' The response explicitly rejects treating the API as the entire answer.",
+      "present": false
+    },
+    {
+      "behavior": "Produces only high-level messaging with no implementation or adoption path",
+      "evidence": "§4.5 provides detailed bottleneck-to-tactic mapping with sequencing: '(1) close incubation evidence → (2) ship framework/CMS integration + friction log → (3) run attributable partner trials → (4) publish case studies with denominator → (5) scale via GDE/events/docs.' §5 lists specific artifacts: 'problem/use-case brief; explainer article brief; framework/CMS integration plan; partner-trial shortlist; friction-log; demo/sample plan; case-study template...' §4.2 provides detailed spec explanation (link tag, events, payment flow, progressive enhancement). The response includes concrete adoption mechanics, not messaging alone.",
+      "present": false
+    }
+  ],
+  "expectedBehaviors": [
+    {
+      "behavior": "Separates the individual API value proposition from the broader platform narrative",
+      "evidence": "§4.1 spine: 'Web Monetization adds a missing, open, provider-neutral money rail to the open web' (API-specific) '— so publishers get a third option alongside ads and subscriptions, on the platform whose distribution advantages already make it the strongest base for a sustainable business' (platform narrative). §3.1 distinguishes the primitive layer: 'Yes for the *primitive* (a standard payment-pointer declaration + event surface), conditional on it being **provider-neutral and independently implementable**... It is **not** the right layer for wallet/liquidity, identity, or business-model design — those are provider + ecosystem work.' API value is separated from platform narrative.",
+      "met": true
+    },
+    {
+      "behavior": "Tests whether the API materially supports publisher workflows and business outcomes",
+      "evidence": "§2 readiness assessment: 'Problem validity | **Partial** | The publisher monetisation gap is widely documented (ad-revenue decline, local-news collapse, platform dependency) — *but* demand specifically for a **streaming-micropayments primitive** is far less systematically evidenced than the broad problem.' §3.2 steel-manned critique: 'Skeptical developers / industry | Micropayments have failed for ~25 years (DigiCash, PayPerPost, Blendle, etc.). Why is *this* different? | ... **Open** — needs evidence THIS shape (open standard, provider-neutral, streaming, no per-site wallet) differs materially *and* that liquidity exists.' §4.5 diagnosis: '**User-side liquidity** (do users actually fund wallets?) — the hardest, mostly outside DevRel's control.' The response investigates whether the API supports workflows by identifying key unknowns and proposing tests.",
+      "met": true
+    },
+    {
+      "behavior": "Connects the narrative to concrete capabilities, integrations, evidence, limitations, and adoption paths",
+      "evidence": "Capabilities: §4.2 details `<link rel=\"monetization\">`, `document.monetization` events, payment flow. Integrations: §4.5 names CMS/framework plugins; §5 lists 'framework/CMS integration plan.' Evidence: §2 readiness table; §3.2 stakeholder critique; §4.3 web-strength table. Limitations: §4.1 guardrails ('never claim it replaces ads'); §4.3 'Contradiction to manage'; §4.4 'Don't say' rules. Adoption paths: §4.5 bottleneck→tactic map; §5 phased sequence (evidence close → integration → trials → case studies → scale). All four elements are present and connected.",
+      "met": true
+    },
+    {
+      "behavior": "Compares relevant alternatives without straw-manning native, social, or chat platforms",
+      "evidence": "The response acknowledges alternatives (ads, subscriptions, patronage, commerce) in §4.3 and lists them as 'complementary' rather than competitive. §3.2 includes 'Ad-funded publishers | Does this *complement* ads or *threaten* them? Mixed incentives' as a stakeholder concern, treated respectfully. §5 lists a deferred research task: 'Adjacent-platform scan: creator/subscription/patronage platforms (Patreon, Substack, Twitch cheers, iOS/Android in-app purchase, WeChat/Alipay tipping) → extract the *job*, not copy the API.' However, the response does not provide rigorous, detailed comparison of native apps, social platforms, or chat platforms—it acknowledges them as a research task rather than completing the comparison.",
+      "met": false
+    },
+    {
+      "behavior": "Identifies missing capabilities rather than pretending one API completes the story",
+      "evidence": "§4.1 spine: the API adds 'a missing... money rail' (singular). §4.1 guardrail: '*never* claim it replaces ads.' §4.3: 'Contradiction to manage in messaging: 'sustainable publisher business' is an *outcome*... A single API is *necessary-but-insufficient*. Every public asset must say this explicitly or it becomes overclaim.' §2 readiness table explicitly marks multiple dimensions as Unknown/Partial: partner commitment, interoperability, framework fit, legal/regulatory. §4.5 lists explicit blockers: 'provider liquidity (existential), engine interop, micropayments-skepticism, Chrome-incentive optics.' The response refuses to present the API as completing the story.",
+      "met": true
+    }
+  ],
+  "summary": "The response is a comprehensive, evidence-respecting DevRel strategy that explicitly marks unknowns, refuses fabricated sources or commitments, and proposes a phased adoption approach grounded in diagnosed bottlenecks. It separates API value from platform narrative, identifies missing capabilities, and defines measurement with leading/lagging indicators and stated data limitations. The response is labeled draft/provisional with unsupported sections flagged, appropriate to the evidence state. Weaknesses include shallow examination of ecosystem integration (frameworks named but mechanics not explored) and deferred comparison of competing monetisation platforms rather than rigorous analysis. The strategy correctly diagnoses the web's historical loss to app stores on payments and positions Web Monetization as closing a specific gap, not as solving publisher sustainability.",
+  "confidence": "high",
+  "unableToScore": []
+}
+```
