@@ -4,6 +4,22 @@ This guide turns the skill into an ongoing companion for engineers and product m
 
 The skill remains advisory. It can expose missing evidence, rehearse reviews, run public research, and prepare artifacts; it cannot grant API Owner, standards, engineering, privacy, security, accessibility, legal, or release approval.
 
+## Start in one line
+
+A feature link and one sentence are enough. The skill should infer the packet structure, likely lifecycle stage, evidence categories, risks, and assets rather than making the user specify them.
+
+> Help me progress [feature/link]. I’m the [PM / engineer / DevRel / stakeholder]. The decision is [decision, or “work out the next decision”]. Start from [links, or “public evidence only”]. Give me the three biggest gaps, three next actions, and ask only what you cannot responsibly find.
+
+Use an even shorter role prompt when the decision is obvious:
+
+- **PM:** `Assess [feature] for [next phase/release]. What is the next decision, and what is the smallest evidence needed?`
+- **Engineer:** `Review [feature/API change] for readiness. What can break, what must be tested, and what should I change next?`
+- **DevRel:** `Assess [feature] at its current stage for developer enablement. What is the next decision, and what evidence, integration work, docs, demos, or support are missing?`
+- **Stakeholder or reviewer:** `Challenge [feature] from a [user/privacy/security/standards/partner/enterprise] perspective. What is unsupported, risky, or unanswered?`
+- **Continue:** `Continue [feature] from [packet/link] using these changes: [changes]. Show the delta, the next decision, and the three smallest actions.`
+
+These are the default front door. Use the longer prompts below only when the user needs tighter scope, a particular deliverable, or a reproducible audit contract.
+
 ## Keep one feature packet
 
 Ask the agent to maintain one packet rather than starting a new assessment in every conversation. The packet should contain:

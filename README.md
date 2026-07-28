@@ -46,9 +46,11 @@ remain separate and never leak internal evidence into public outputs (see
 | Measurement            | `modules/measurement-framework.md` + `templates/metric-definition.template.json`       | Baselines, targets, owners                      | What to measure                 |
 | Exemplars              | `research/exemplars-and-antipatterns.md`                                               | Team-specific cases                             | Pattern applicability           |
 
-**New user:** start with `SKILL.md`, then the module matching your current task.
-Fill in `templates/owner-map.template.json` before using role routing. Items
-marked "Team configures" need organization-local input before they are useful.
+**New user:** copy a [one-line role prompt](#start-in-one-line); no process
+terminology or template setup is required to begin. Use `SKILL.md` and the
+module matching your task when you need more precision. Fill in
+`templates/owner-map.template.json` before relying on role routing. Items marked
+"Team configures" need organization-local input before they are useful.
 
 The skill supports both directions:
 
@@ -104,7 +106,27 @@ contains copy-paste prompts for API-shape review, implementation changes,
 developer/partner feedback, trials, phase transitions, prepare-to-ship, release
 monitoring and a complete asset/data audit.
 
-### Engineer: start
+### Start in one line
+
+You do not need to describe the packet or process. Give the skill a role, a
+feature and a decision; it should infer the rest.
+
+> Help me progress [feature/link]. I’m the [PM / engineer / DevRel / stakeholder].
+> The decision is [decision, or “work out the next decision”]. Start from [links,
+> or “public evidence only”]. Give me the three biggest gaps, three next actions,
+> and ask only what you cannot responsibly find.
+
+Shortest role prompts:
+
+- **PM:** `Assess [feature] for [next phase/release]. What is the next decision, and what is the smallest evidence needed?`
+- **Engineer:** `Review [feature/API change] for readiness. What can break, what must be tested, and what should I change next?`
+- **DevRel:** `Assess [feature] at its current stage for developer enablement. What is the next decision, and what evidence, integration work, docs, demos, or support are missing?`
+- **Stakeholder:** `Challenge [feature] from a [user/privacy/security/standards/partner/enterprise] perspective. What is unsupported, risky, or unanswered?`
+- **Continue:** `Continue [feature] from [packet/link] using these changes: [changes]. Show the delta, the next decision, and the three smallest actions.`
+
+The longer prompts below are optional precision prompts, not the front door.
+
+### Engineer: detailed start
 
 > I am the engineer or feature owner for [feature]. Here are the materials I
 > have: [issue, explainer, spec, prototype, ChromeStatus entry, implementation,
@@ -118,7 +140,7 @@ monitoring and a complete asset/data audit.
 > could retire them, initial asset/data inventory and next three actions. Do not
 > invent demand, browser positions or approval.
 
-### PM: start
+### PM: detailed start
 
 > I am the PM for [feature/problem]. The proposed outcome is [outcome], the
 > current proposal is [link/description], and the decision is [fund research /
@@ -134,7 +156,7 @@ monitoring and a complete asset/data audit.
 > option; an intent email, prototype, partner meeting or shipment is not proof of
 > success.
 
-### Continue without restarting
+### Detailed continuation without restarting
 
 > Continue the feature-development packet for [feature]. Do not restart the
 > analysis or replace history with a cleaner summary. Previous packet:
