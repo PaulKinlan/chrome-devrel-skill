@@ -67,6 +67,10 @@ node evals/validate-eval-results.mjs --run 2026-07-28-independent-batch5
 node evals/validate-eval-results.mjs --run 2026-07-28-independent-batch6
 ```
 
+## Post-baseline skill regression
+
+The baseline runs bind the skill state they evaluated. A subsequent skill change added explicit leading, lagging, diagnostic, and guardrail measurement classification. Supplemental run `2026-07-28-measurement-regression` binds that changed skill and completed 4/4 affected cases independently with zero validator warnings/errors. Their measurement dimensions scored 3/4, 3/4, 3/4, and 4/4. Overall case totals moved both up and down, so this is evidence that the new classification is used—not evidence of universal score improvement. It does not change the 21-case denominator.
+
 ## Residual risks
 
 - One fixed judge model does not establish inter-judge agreement.

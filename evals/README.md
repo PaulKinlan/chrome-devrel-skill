@@ -155,6 +155,14 @@ The v1 runs cover 8 cases and retain documented runner-reproducibility caveats;
 the v2 runs cover 13 cases with runner and staged-skill-tree binding. The details
 below preserve the first 8 independent results and older provisional history.
 
+After the baseline, the measurement module gained explicit leading, lagging,
+diagnostic, and guardrail classifications. Supplemental run
+`2026-07-28-measurement-regression` tested the changed skill on four affected
+cases: 4/4 complete, independent, and validator-clean. Measurement scored 3/4,
+3/4, 3/4, and 4/4 respectively. Overall totals varied in both directions, so the
+run supports the classification behavior but is not claimed as universal score
+improvement and does not alter the fixed 21-case disposition.
+
 - [`partner-interest-is-not-shipping`](runs/2026-07-27-independent-pilot/results/partner-interest-is-not-shipping.md):
   **INDEPENDENT** — 12/12 across three focus dimensions (zai/glm-5.2 responder,
   anthropic/claude-haiku-4 judge), no critical failures, all expected met.
