@@ -1,0 +1,235 @@
+# DevRel Response — Documentation Integrity Before Edit
+
+I've loaded the skill workflow. This request is, on its face, an artifact request ("prepare the documentation update"), but it actually arrives with three unresolved, high-risk contradictions bundled inside it. Per the skill's operating rule — *interrogate before generating; treat missing evidence as unknown; never silently fill gaps with plausible claims* — I will not produce the update as literally requested, because doing so would require fabricating cross-browser support evidence and documenting a spec-deviating implementation as the canonical contract. I'll state assumptions, diagnose, then produce the **correctly-scoped** artifact.
+
+---
+
+## Questions I would normally ask first (and my working assumptions)
+
+Because this is non-interactive, I'm proceeding on these assumptions. Each is reversible.
+
+1. **Is the void-vs-Promise divergence a Chrome bug or an intended spec change?**
+   - *Assumption:* Unknown. I treat the spec text ("returns a Promise") as the current normative contract and the Chrome 149 return of `void` as an unexplained implementation deviation until an API Owner / spec editor confirms intent.
+2. **What is the actual cross-browser shipping status?**
+   - *Assumption:* Only the team's claim "shipped in Chrome 149" exists. I have no evidence for Firefox, Safari, or any other engine. BCD showing `false` everywhere is treated as *evidence of absence of recorded support*, not as approval to overwrite with `true`.
+3. **Is there a conformance/WPT test, and what does it assert (Promise or void)?**
+   - *Assumption:* Unknown. This is load-bearing for the doc decision.
+4. **Who owns the spec (W3C/WHATWG/TC39/other), and is a spec amendment in flight?**
+   - *Assumption:* Unknown. If the implementation is intended, the spec must move first; MDN follows the spec, not the reverse.
+5. **"The team" = which team, and do they have doc-edit authority vs. advisory authority?**
+   - *Assumption:* The requester is product/eng with launch context, not the MDN/BCD maintainers, and not a standards editor. DevRel's role here is advisory + execution of a *correct* edit, not blind compliance.
+
+---
+
+## 1. Diagnose (intake summary)
+
+- **Mode:** Support/iteration (Phase 09) with a documentation artifact as the deliverable. It is *not* a clean release-docs task; it surfaces a latent spec/impl/interop defect.
+- **Developer problem (the real one):** Developers who read the spec will write `await method()`; on Chrome 149 they'll get `undefined` and broken async chains. Developers who read MDN will see *whichever* behavior we publish. The pain is **predictability and interoperability**, not "MDN is stale."
+- **Target audience:** Library/framework authors, polyfill authors, and app developers writing to the contract — the population most harmed by a doc that lies about either the contract or the support matrix.
+- **Current decision being asked of DevRel:** "Update MDN to match implementation (void) and mark all browsers supported."
+- **Highest-risk assumptions in that ask:** (a) that void is the intended contract; (b) that "all browsers" is true; (c) that documenting a single engine's divergence as the standard is harmless.
+- **Missing owners:** spec editor, API Owner for the deviation decision, BCD maintainer (mdn/browser-compat-data), WPT/conformance owner, and Mozilla/WebKit standards reps for interop.
+- **Recommended next intervention:** Stop the doc edit; resolve the spec↔implementation contradiction at the source first; land a BCD PR for the *one* engine we can evidence (Chrome 149) with a WPT test; leave the rest unknown.
+
+---
+
+## 2. Assess readiness (no invented veto)
+
+| Dimension | Status | Rationale |
+|---|---|---|
+| Problem validity | **Contradicted** | The "problem" framed as "MDN is stale" hides a real spec/impl divergence. The actual developer problem (broken `await`) is valid and serious. |
+| Implementation correctness | **Contradicted** | Chrome 149 returns `void`; spec says `Promise`. One of them is wrong. This must be resolved before docs declare a winner. |
+| Interoperability | **Unknown** | No evidence any non-Chrome engine ships this. BCD = `false` everywhere. |
+| Browser support evidence (BCD) | **Unknown** | No BCD PR landed for Chrome 149 either; "shipped" is a team claim, not a landed, tested record. |
+| Conformance/regression coverage | **Unknown** | No WPT test cited. A test would *settle* the Promise-vs-void question authoritatively. |
+| Standards maturity / Baseline | **Partial→Contradicted** | Spec says Promise; if Chrome ships void, Chrome is not conformant. Baseline "newly available" cannot be claimed on a non-conformant, single-engine basis. |
+| Documentation accuracy | **Contradicted** | Current MDN (old sync behavior) is wrong *and* the proposed "void" rewrite would also be wrong relative to the current spec. |
+| Privacy / Security / A11y | **Not relevant** | Not in scope of a return-type/support-matrix fix; flagged only for completeness. |
+| Launch resilience | **Partial** | Publishing a wrong contract or a wrong support matrix is a reputational/support liability, not just a typo. |
+
+**Likely consequences if the request is executed literally:**
+- Developers write `await method()`, get `undefined`, file bugs against *their own code* and against Chrome. Support burden spikes; trust in MDN/BCD erodes.
+- Marking Firefox/Safari/etc. as supported without evidence is a fabrication that BCD maintainers will revert and that misleads polyfill/detection logic (`if (method in x)` patterns, `caniuse`-style checks).
+- Entrenching `void` as "the docs" makes a future spec-conformant fix *look like a breaking change* — the doc becomes a brake on correctness.
+
+---
+
+## 3. Challenge (selected lenses)
+
+**Interoperability & compatibility (primary).**
+- *Fact:* Spec = `Promise`. *Fact:* Chrome 149 = `void`. *Contradiction:* these cannot both be the documented contract.
+- *Recommendation:* Treat this as an interop defect, not a doc task. The resolution path is: (a) confirm intent with the API Owner/spec editor; (b) either fix Chrome to return `Promise`, or amend the spec to `void` with editor + cross-engine agreement; (c) add/align a WPT test to the agreed contract; (d) *then* update MDN to match the agreed, tested contract.
+- *Unknown:* Mozilla/WebKit positions on the return type. Do not assume.
+
+**Documentation, samples, and support.**
+- *Recommendation:* MDN documents the **standard contract**, with implementation deviations noted as such — it does not retroactively rewrite the contract to match one engine. If the team is *certain* void is intended, the spec must move first (a normative PR), and MDN then reflects the amended spec with a clear "Changed in spec version X / shipped in Chrome 149" note.
+
+**Adoption mechanics / Baseline.**
+- *Hypothesis:* If we publish "supported everywhere," Baseline/tooling (`@mdn/browser-compat-data`, RUM-based Baseline) will be poisoned. Baseline requires multi-engine convergence; a single conformant-or-not engine is not "newly available."
+
+**Launch resilience & integrity.**
+- *Recommendation:* Decline the literal ask in writing (this response serves that function), with a one-paragraph rationale the requester can forward. This protects the doc maintainers and the developers, and gives the team a clean record of *why* the edit is deferred.
+
+**What I will *not* do.**
+- I will not mark any browser "supported" without a BCD PR + version evidence.
+- I will not silently document `void` as the contract while the spec says `Promise`.
+- I will not invent Mozilla/WebKit/other-engine support.
+
+**Concrete ways to close each gap:**
+- Spec/impl: file a spec issue + an intent-to-(fix|amend) thread; get API Owner call.
+- Cross-browser support: open BCD PR for Chrome 149 only; ping Mozilla/WebKit standards contacts for their positions/versions (don't infer).
+- Conformance: add/align a WPT test asserting the agreed return type; add an entry to the regression/conformance plan.
+- MDN: produce the provisional, correctly-scoped draft below (artifact).
+
+---
+
+## 4. Plan
+
+**Outcome & exit criteria**
+- MDN/BCD reflect a contract that matches **the spec as amended (if amended) and a passing WPT test**, and a support matrix where every `true` has a BCD PR with version + test evidence. Exit = no `unknown`/`contradicted` items remain on the contract or support dimensions.
+
+**Sequence**
+1. **Block the literal edit.** Send the requester the one-paragraph rationale (below).
+2. **Resolve the contract.** API Owner + spec editor decide: fix Chrome to `Promise`, or amend spec to `void`. Land the decision in the spec and a WPT test. *(Owner: spec editor + Chrome eng lead. Blocker: this is the gating step.)*
+3. **Evidence Chrome 149.** Open a BCD PR: Chrome `"149"` with the test link; leave all other engines at `false`/`null` until evidenced. *(Owner: DevRel + BCD maintainer.)*
+4. **Gather cross-engine evidence.** Request Mozilla/WebKit positions/versions; record each as a *commitment* only with an attributable source. *(Owner: Standards lead.)*
+5. **Rewrite MDN to the agreed contract** with a version note and a spec-implementation deviation note only if a deviation still exists post-fix. *(Owner: DevRel. Reviewers: spec editor, BCD maintainer, eng lead.)*
+6. **Publish support/troubleshooting note** for the transition (see artifact).
+7. **Measure** (below).
+
+**Dependencies & risks**
+- *Blocker:* spec/impl reconciliation. Without it, every downstream artifact is provisional.
+- *Risk:* long-lived divergence entrenches `void` de facto; mitigate by time-boxing the decision and shipping a console/devtools hint if the deviation persists.
+- *Risk:* a premature "supported everywhere" leaks into caniuse-style tooling; mitigate by keeping non-Chrome entries `false`/`null`.
+
+---
+
+## 5. Artifact — Documentation gap analysis + provisional MDN/BCD update (PROVISIONAL)
+
+> This artifact is deliberately scoped to what the evidence supports. Sections marked **[GAP — not supported by evidence]** are left incomplete rather than filled with plausible claims.
+
+```yaml
+artifactType: "Documentation gap analysis + provisional MDN/BCD edit"
+featureOrInitiative: "[UNNAMED FEATURE — requester did not specify]"
+lifecycleStage: "support"
+audience: "internal (requester, spec editor, eng lead, BCD maintainer)"
+owner: "DevRel"
+status: "draft / provisional — DO NOT PUBLISH AS-IS"
+created: "2026-07-28"
+updated: "2026-07-28"
+sources:
+  - "Requester statement: 'shipped in Chrome 149' (team assertion, not yet in BCD)"
+  - "Spec text: method returns a Promise (requester-quoted)"
+  - "BCD current state: false for all browsers (requester-quoted)"
+unresolvedAssumptions:
+  - "Whether void is intended (spec amendment) or a Chrome bug."
+  - "Existence/content of a WPT test for the return type."
+  - "Actual shipping status in Firefox, Safari, and other engines."
+  - "Spec editor and owning standards body."
+reviewRequirements:
+  - "Spec editor / API Owner: confirm intended return type."
+  - "Chrome eng lead: confirm 149 behavior and fix/amend plan."
+  - "BCD maintainer: review the Chrome-only PR before merge."
+  - "Standards lead: obtain Mozilla/WebKit positions before any non-Chrome entry is set."
+```
+
+### Gap analysis
+
+| Doc element | Current state | Required state | Gap | Action |
+|---|---|---|---|---|
+| Return type (contract) | MDN says old sync (void); spec says Promise; Chrome 149 = void | Matches spec-as-amended **and** a passing WPT test | Spec/impl contradict; no authoritative test cited | **Resolve at source** (fix Chrome or amend spec + WPT), then rewrite MDN |
+| Browser support (BCD) | `false` everywhere | Chrome `"149"` (evidenced); others `false`/`null` until evidenced | No BCD PR landed; no cross-engine evidence | Land Chrome-only BCD PR; leave others unknown |
+| Spec link / normative ref | [unknown] | Points to current spec section | [GAP] | Add once spec section confirmed |
+| Examples | [unknown — old sync examples] | Match agreed contract; show both sync→async migration if amended | [GAP] | Rewrite after contract decision |
+| Notes/spec deviation | none | If a deviation persists, an explicit note + bug link | [GAP] | Add only if deviation remains post-fix |
+
+### Provisional MDN page edit (template — fill after the contract decision)
+
+> **Status: PROVISIONAL. The `[return type]` and `[version]` placeholders are unresolved pending the spec/impl decision. Do not merge until the gating decision in the Plan is complete.**
+
+```markdown
+## {{Method}}()
+
+{{Short description tied to the developer job, not the API.}}
+
+### Syntax
+
+```js
+{{method}}()              // {{[return type: Promise<void> per spec]}}
+```
+
+### Return value
+
+A {{`Promise`}} that {{resolves when…}}.
+
+> **Note (implementation status).** As of Chrome {{[version: 149]}},
+> {{Chrome returns `undefined` synchronously rather than a `Promise`}}.
+> {{This is tracked as [bug/issue link] and is expected to be resolved in
+> a future release / the spec is being amended in [spec PR] — do not rely
+> on the synchronous shape.}} {{[GAP — fill only after API Owner decision]}}
+
+### Specifications
+
+- {{Spec title}} — {{section}}: {{returns `Promise`}}.
+
+### Browser compatibility
+
+| | Chrome | Edge | Firefox | Safari | Node.js / Deno |
+|---|---|---|---|---|---|
+| {{method}} | {{149}} [1] | {{[unknown — GAP]}} | {{[unknown — GAP]}} | {{[unknown — GAP]}} | {{[unknown — GAP]}} |
+
+[1] Shipped in Chrome {{149}}. {{[Return type deviates from spec — see note.]}}
+```
+
+### Provisional BCD entry (Chrome-only; all others stay as-is)
+
+```json
+"api": {
+  "{{Method}}": {
+    "__compat": {
+      "support": {
+        "chrome": { "version_added": "149", "notes": "Returns undefined synchronously; spec defines a Promise (see implementation_notes)." },
+        "chrome_android": { "version_added": "149" },
+        "edge": { "version_added": false },
+        "firefox": { "version_added": false },
+        "safari": { "version_added": false },
+        "safari_ios": { "version_added": false }
+      },
+      "status": { "experimental": true, "standard_track": true, "deprecated": false }
+    }
+  }
+}
+```
+
+> Every non-Chrome entry is left `false`/`null` **on purpose**. Setting them `true` here would be fabrication. They become `true` only with an attributable source (engine release notes / BCD PR / standards rep confirmation).
+
+### Support/troubleshooting note (publishable once contract is decided)
+
+```markdown
+## Known issue: {{method}}() return type
+
+**Symptom:** `await {{method}}()` resolves to `undefined` in Chrome 149.
+**Cause:** {{[spec deviation — bug OR pending spec amendment]}}.
+**Workaround:** {{do not await; OR feature-detect and polyfill}}.
+**Fix status:** {{tracked in [link]}}.
+```
+
+---
+
+## 6. Measure the outcome
+
+Pick measures that fit a doc-integrity/support task (not adoption vanity metrics):
+
+- **Contract correctness:** WPT assertion matches the spec (as amended) and MDN. Target: 0 contradictions between spec ↔ WPT ↔ MDN ↔ BCD.
+- **Support-matrix integrity:** every BCD `version_added: true` has a linked source. Target: 100%; 0 unsupported `true` values.
+- **Developer-reported confusion:** count of "method returns undefined / can't await" issues before vs. after the fix+doc. Denominator: issues tagged to this API per month.
+- **Cross-engine convergence:** number of engines shipping the agreed contract with a passing test (Baseline input). Target: ≥2 independent engines before claiming Baseline "newly available."
+- **Doc revert/churn rate:** number of MDN/BCD reversions on this entry. Target: 0 (a high churn rate signals the contract was published prematurely).
+
+Data-quality note: single-engine shipping is *not* a valid denominator for "web platform support." Report Chrome-only adoption separately from cross-engine/Baseline status.
+
+---
+
+## Bottom line for the requester
+
+I can't prepare the update *as asked*, because (1) documenting `void` as the contract would codify an unresolved spec deviation, and (2) marking all browsers supported would fabricate evidence BCD doesn't have. Both would harm developers and would be reverted by maintainers. What I've prepared instead: a **correctly-scoped, provisional** MDN/BCD draft that (a) defers the return-type wording to the spec/impl decision, (b) records Chrome 149 only, and (c) leaves every other engine at `unknown`/`false` until evidenced. The gating item is the API Owner/spec-editor decision on the return type plus a WPT test — once that lands, the doc edit is a same-day follow-up.

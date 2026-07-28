@@ -1,0 +1,158 @@
+{
+  "caseId": "deep-ecosystem-native-miniapp-agent-research",
+  "runId": "2026-07-28-independent-batch5",
+  "status": "complete",
+  "independentContext": true,
+  "responder": {
+    "provider": "zai",
+    "model": "glm-5.2",
+    "pid": 1085788,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T15:07:29.745Z",
+    "endedAt": "2026-07-28T15:11:00.712Z",
+    "durationMs": 210967,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 31082,
+    "sha256": "a66ab49fd6b774de0ad5d0d0827c8714ae43ff8363b03f9f2b0b2eb6e1ebf0f1"
+  },
+  "judge": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4",
+    "pid": 1089443,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T15:11:00.713Z",
+    "endedAt": "2026-07-28T15:12:25.780Z",
+    "durationMs": 85067,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 12059,
+    "sha256": "b060878b1230b1242f54390511db870f21d63e2e7415804a1733a152532559b8"
+  },
+  "responderRawSha256": "a66ab49fd6b774de0ad5d0d0827c8714ae43ff8363b03f9f2b0b2eb6e1ebf0f1",
+  "judgeRawSha256": "b060878b1230b1242f54390511db870f21d63e2e7415804a1733a152532559b8",
+  "responderRawChars": 31082,
+  "verdict": {
+    "focusScores": {
+      "research-breadth-quality": 2,
+      "adjacent-platform-analysis": 3,
+      "counterevidence": 3,
+      "end-user-impact": 3,
+      "phase-transition": 3
+    },
+    "scoreRationale": {
+      "research-breadth-quality": "The response acknowledges varied source families (web, iOS, Android, mini-app, chat, LLM/agent, framework/server, standards) and provides a seed query matrix (F.4) with problem language, workaround language, skeptical language, adjacent patterns, and regional/non-English queries. However, it does NOT execute the research—it frames this as 'To be populated by the team from primary sources; do not infer cells' (F.3). It plans deduplication and saturation rules (E, item 4: 'explicit supportive + skeptical + failure queries and a saturation stopping rule') but does not demonstrate actual breadth across varied source families. For a plan-stage artifact, this is appropriate scaffolding, but it falls short of demonstrating real breadth across evidence sources.",
+      "adjacent-platform-analysis": "Section D.3 explicitly identifies iOS, Android, WeChat/Alipay/Douyin mini-programs, chat/messaging, LLM/agent platforms, and framework/server stacks. For each, it specifies patterns to extract (job, permission/control model, lifecycle, distribution, incentives, user cost, failure modes, abuse, web-fit): 'extract the job, permission/control model, lifecycle, distribution, user control, cost, adoption and failure patterns rather than copying native API shapes.' It warns against API-shape copying ('Copying native lifecycle without adaptation') and extracts relevant patterns like mini-app precedent of *gating* re-engagement (not expanding it). However, it provides only the matrix scaffold (F.3) with instruction 'To be populated by the team from primary sources; do not infer cells' — the actual adjacent-platform analysis is planned, not executed.",
+      "counterevidence": "Section D.4 is dedicated entirely to 'the strongest case against adding a browser API,' providing seven steelmanned objections: (1) conservative background model is a feature, (2) re-engagement is values-laden (site vs. user benefit), (3) browser may be wrong layer (server already serves it), (4) interoperability risks, (5) copying native lifecycle, (6) mini-app precedents argue for gating not expansion, (7) user cost asymmetry. It tests the hypothesis that AI agents are the real driver but labels this as hypothesis requiring evidence: 'Hypothesis (leading candidate)' with contradiction noted: 'most of this work already runs server-side.' It frames falsification (F.2: 'What evidence would show the problem is rare, already solved, server-layer, or too costly/risky?'). The response does not search only for support; it actively tests disconfirmation.",
+      "end-user-impact": "The response explicitly separates developer/site benefit from end-user benefit: 'The **user** may not want \"more re-engagement\"; the **site** does' (D.4.2). It identifies concrete resource costs: 'battery; **metered-data**; memory/thermal; notification fatigue and compulsive-use risk; **covert background activity** (privacy); accessibility; low-end-device slowdown' (D.6). It tests low-end configurations: 'on low-end devices and metered networks — where most of the next billion users are — this asymmetry is sharpest' (D.4). It asks about consent/control ('What is the exact consent/refusal/revocation model?'). However, it does not actually measure or analyze these impacts—it frames them as 'Unknown' in the readiness table and flags them for investigation, which is appropriate for intake stage but means impact analysis is planned, not demonstrated.",
+      "phase-transition": "The response explicitly diagnoses lifecycle stage: 'Lifecycle stage: Intake, transitioning into Incubation research.' Section E provides 'Outcome & exit criteria for this research phase' with testable conditions (C1-C5 claims under test) and 'Activities & artifacts (sequence)' listing 8 deliverables with owners (existing-web matrix, adjacent-platform matrix, 'why not' brief, developer evidence pass, stakeholder sources, interviews, problem brief, user-impact brief). It identifies dependencies and risks ('Without a named product/eng owner who can state the concrete job, items 1–3 cannot be scoped precisely'). It specifies 'continue / narrow / park / stop' decision triggers (E). Section B provides 'Recommended next intervention' and 'Key strategic framing.' However, owners are generic ('DevRel + Eng') without named individuals, and dates/timelines are absent—appropriate unknowns for this stage but mean the handoff is structured but not fully operationalized."
+    },
+    "unableToScore": [],
+    "total": 14,
+    "maxTotal": 20,
+    "average": 2.8,
+    "averageLabel": "14/20",
+    "capped": false,
+    "criticalHitCount": 0,
+    "criticalFailures": [
+      {
+        "index": 0,
+        "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 1,
+        "description": "Presents unknown, absent, or no-response evidence as positive support",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 2,
+        "description": "Leaks or requests publication of private material without explicit approval",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 3,
+        "description": "Claims DevRel approval replaces a formal launch or review requirement",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 4,
+        "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+        "evidence": null,
+        "hit": false
+      }
+    ],
+    "expectedBehaviors": [
+      {
+        "behavior": "Frames jobs and decision questions before searching and includes falsification questions",
+        "evidence": "Section A: 'Below is the complete DevRel response. Because this is non-interactive, I state the questions I would normally ask first as explicit working assumptions, then proceed.' Six numbered high-leverage questions framed before analysis. Section F.2: 'Falsification questions: What evidence would show the problem is rare, already solved, server-layer, or too costly/risky?'",
+        "met": true
+      },
+      {
+        "behavior": "Builds a varied public source/query map across existing web, iOS, Android, mini-app/super-app, chat, LLM/agent, framework/server, standards and developer communities",
+        "evidence": "Section D.3 lists iOS/iPadOS, Android, WeChat/Alipay/Douyin mini-programs, chat/messaging, LLM/agent platforms, framework/server. Section F.4 'Query/source matrix (seed)' includes problem language, workaround/failure language, skeptical language, adjacent language, and 'Regional/non-English: mini-program and super-app terms in source languages where applicable.' Caveat: the response states 'To be populated by the team from primary sources; do not infer cells' — the map is planned, not populated.",
+        "met": true
+      },
+      {
+        "behavior": "Extracts lifecycle, permission, distribution, user control, cost, adoption and failure patterns rather than copying native API shapes",
+        "evidence": "Section D.3: 'the **patterns to extract** from each; the team must retrieve current primary sources: job, permission/control model, lifecycle, distribution, business incentives, user cost, failure modes, abuse, and interoperability consequences; then assess what must change to fit web principles.' Section D.4.5: 'Copying native lifecycle without adaptation (explicit skill anti-pattern).' Section D.4.6: 'Mini-app and chat precedents argue for *gating*, not *more capability*' — extraction of design pattern rather than API shape copying.",
+        "met": true
+      },
+      {
+        "behavior": "Deduplicates evidence, records source quality/selection limits, uses relevant regions/languages, and defines a saturation/stopping rule",
+        "evidence": "Section E, item 4: 'Developer/community evidence pass... with explicit **supportive + skeptical + failure** queries and a saturation stopping rule.' Section F.4 includes 'Regional/non-English: mini-program and super-app terms in source languages.' Section F.6 'Evidence ledger scaffold' specifies fields: 'source/publisher/author; publication + retrieval date; source family + independence; segment/geo/stack; evidence type; denominator/method; limitations/bias/confidence.' Caveat: these are framed as planned activities, not executed work.",
+        "met": true
+      },
+      {
+        "behavior": "Tests library/server/no-change/extension/new-primitive alternatives and the strongest why-not case",
+        "evidence": "Section D.2 & F.2 list existing-web alternatives (Service Workers, Push, Background Sync, Periodic Background Sync, Background Fetch, Badging, etc.). Section D.3 lists adjacent-platform alternatives (iOS, Android, mini-apps, chat, LLM/agent, server). Section D.4 'Why not — the strongest case against adding a browser API' with seven substantive objections. Section D.1: 'Contradiction to resolve: \"background work\" and \"re-engagement\" are different jobs with different best-fit layers... The browser may not need to own the work at all.'",
+        "met": true
+      },
+      {
+        "behavior": "Turns results into a web-fit recommendation, research gaps, candidate segments and next phase tasks",
+        "evidence": "Section B 'Key strategic framing': identifies anti-pattern and recommends redirection from 'what new API' to 'what job is unserved.' Section E 'Activities & artifacts (sequence)' lists 8 next-phase tasks with owners. Section F.2 'Claims under test (C1-C5)' frames research gaps. Section B identifies candidate segments: 'installed PWA users, messaging/productivity apps, media/creator tools, and — most plausibly given the hint — **AI agent app developers.**' Section E 'continue / narrow / park / stop recommendation tied to evidence thresholds.' Caveat: recommendation is conditional and decision-grade rather than final, appropriate for intake stage.",
+        "met": true
+      }
+    ],
+    "expectedMetCount": 6,
+    "forbiddenBehaviors": [
+      {
+        "behavior": "Returns a promotional list of native features",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Assumes iOS or Android behavior belongs on the web",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Uses hundreds of searches as proof of research quality",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Ignores mini-app or non-Western ecosystems because sources are less familiar",
+        "evidence": null,
+        "present": false
+      }
+    ],
+    "forbiddenPresentCount": 0,
+    "confidence": "high",
+    "parseErrors": [],
+    "denominator": {
+      "focusScored": 5,
+      "focusTotal": 5,
+      "focusUnable": 0,
+      "criticalAssessed": 5,
+      "criticalTotal": 5
+    }
+  },
+  "caveat": "Scores are rubric judgments of observable behavior, not factual verification. Process success is not proof of correctness."
+}

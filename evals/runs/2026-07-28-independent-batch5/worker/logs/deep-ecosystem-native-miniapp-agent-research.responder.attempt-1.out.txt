@@ -1,0 +1,233 @@
+I have what I need from the skill. Below is the complete DevRel response. Because this is non-interactive, I state the questions I would normally ask first as explicit working assumptions, then proceed. Evidence labels are kept distinct per the skill: **fact**, **signal**, **commitment**, **hypothesis**, **recommendation**, **unknown**, **contradiction**. I do not have live web access here, so I have not invented any retrieved dates, URLs, issue numbers, stakeholder positions, demand figures, or partner names — those are flagged as unknowns to be filled by the team during execution.
+
+---
+
+# Chrome DevRel response — "Background work + re-engagement capability" research framing
+
+**Mode:** Feature (new capability proposal). **Lifecycle stage:** Intake, transitioning into Incubation research. **Evidence boundary:** public-only. **Output status:** PROVISIONAL — research plan and landscape scaffold, not findings. Unsupported sections are explicitly flagged.
+
+---
+
+## A. Questions I would normally ask first, and the working assumptions I am proceeding on
+
+The skill requires interrogating before generating. In a live session I would ask these six high-leverage questions; here I proceed on the stated assumptions.
+
+1. **Which job is actually blocked — background *work*, or user *re-engagement*, or both?** These are different problems with different right answers.
+   - *Assumption:* The request conflates two separable jobs: (A) **background work** (compute/sync/fetch/processing while the app is not foreground) and (B) **re-engagement** (reaching back out to the user via notification/badge/proactive message). I will treat them as separable throughout, because the "does the web need a new API" answer likely differs for each.
+2. **What specifically cannot be done today with Service Workers + Push + Notifications + Badging + Periodic Background Sync + Background Fetch?**
+   - *Assumption:* The team has not yet enumerated the existing-web baseline, so the "gap" is currently undefined. The single highest-leverage action is to build that baseline before any new API is scoped.
+3. **Which users/segments feel the gap, and is the value to the *user* or to the *site*?**
+   - *Assumption:* Re-engagement is frequently site-favoring and user-costing. I will separate user benefit from site/publisher benefit and will not accept "apps want it" as user demand.
+4. **Is the motivating use case AI agents?** The request's inclusion of "LLM/agent platforms" is a strong tell.
+   - *Assumption (hypothesis):* The real driver may be **background AI agents that perform work and proactively re-engage the user** — a 2024–2026 frontier pattern. I will treat this as the leading candidate problem and give it weight, while keeping it labeled a hypothesis.
+5. **Is the goal a Chrome-only capability or an interoperable web standard from day one?**
+   - *Assumption:* Defaulting to the latter per the skill's healthy-web rule. A Chrome-only background/re-engagement capability is a materially different (and riskier) proposition.
+6. **Has the team read the prior art** (the long history of background-sync, periodic-sync, silent-push, and `userVisibleOnly` debates; the deliberate conservative background model other engines chose)?
+   - *Assumption:* Not yet, given the request's enumerated gaps. This is the most important thing to remediate.
+
+---
+
+## B. Diagnosis (intake summary)
+
+- **Developer/end-user problem (as stated):** "Apps should perform useful background work and re-engage users" — currently **undefined as a concrete job**. The premise rests on a **native-platform comparison** ("iOS and Android can"), which is, per the skill, a classic incubation anti-pattern: *starting from an API/capability shape rather than a validated problem, and copying a native model without translating it through web principles.*
+- **Target audience:** Unstated. Candidate segments (to be validated): installed PWA users, messaging/productivity apps, media/creator tools, and — most plausibly given the hint — **AI agent app developers**.
+- **Current decision to support:** "Should the web add a new capability here, and if so, what is the narrowest useful intervention?" This is an **incubation problem-validity and alternatives decision**, not a launch or adoption decision.
+- **Evidence already available:** **None supplied.** No ChromeStatus entry, explainer, intent, demo, research, partner statement, standards position, or measurement is referenced.
+- **Highest-risk assumptions:**
+  1. That a *new browser API* is the right layer (vs. server-side work that already exists cross-platform).
+  2. That "iOS/Android do X" implies the web should, ignoring that the web's conservative background model is a **deliberate** anti-abuse/anti-tracking/anti-attention-cost choice.
+  3. That re-engagement demand from sites equals value to users.
+  4. That loosening background execution can be done without re-igniting the silent-push/background-sync privacy and abuse debates that other engines and civil-society groups have scrutinized.
+- **Missing owners/stakeholders:** API Owner / Blink owner (for any ChromeStatus/incubation venue), Privacy, Security, Accessibility, Standards/TAG liaison, other-engine counterparts, and — critically — a **product/engineering owner who can articulate the concrete job**. None are named.
+- **Recommended next intervention:** Before any API is proposed, run a structured **ecosystem-and-customer-research** pass focused on (i) the existing-web baseline, (ii) the adjacent-platform pattern matrix the team has not studied, and (iii) an adversarial "why not." DevRel coordinates this; it is the intake → incubation transition packet.
+
+**Key strategic framing (recommendation):** The team is one step away from the skill's top incubation failure modes ("Searching only for support, not counterevidence"; "Copying a native API without adapting to web principles"; "Locking the API shape before understanding integration"). The most valuable DevRel contribution right now is to **redirect energy from "what new API" to "what job is unserved, and is it a browser-layer job at all."**
+
+---
+
+## C. Readiness assessment (no veto; gaps stated honestly)
+
+| Dimension | Rating | Rationale |
+|---|---|---|
+| Problem validity | **Unknown** | No concrete, recurring job documented. "Native can do X" is not a problem statement. |
+| End-user benefit/cost/control | **Unknown** | No user-impact analysis. For background+re-engagement this dimension is *load-bearing*, not optional. |
+| Developer demand | **Unknown** | No demand evidence; broad category interest must not be read as demand for a specific API. |
+| Use-case quality | **Unknown** | No use cases written; conflation of "background work" and "re-engagement." |
+| Partner commitment | **Unknown** | No partners named; even if they were, interest ≠ commitment. |
+| API ergonomics | **Not relevant (yet)** | No API shape exists to test. |
+| Interoperability / Baseline path | **Unknown** | No other-engine engagement. **Silence is not support.** |
+| Privacy & data protection | **Unknown (high-stakes)** | Background execution + proactive outreach is a high-scrutiny surface. No data-flow or "silent background activity" analysis. |
+| Security & abuse | **Unknown (high-stakes)** | No threat model. This category historically drives the most review friction for background APIs. |
+| Accessibility | **Unknown** | Re-engagement notifications/badges have AT, cognitive-load, and reduced-motion implications. |
+| Performance/resource cost | **Unknown** | Battery, data (metered networks), memory, thermal — central to the whole question — unanalyzed. |
+| Existing-web alternatives analysis | **Contradicted (by omission)** | The team has not studied the substantial existing surface (Service Workers, Push, Background/Periodic Sync, Badging, etc.). The premise "the web needs a new capability" cannot be evaluated without this. |
+| Adjacent-platform alternatives analysis | **Contradicted (by omission)** | iOS/Android studied in isolation; mini-apps, chat, LLM/agent, framework/server not studied. |
+| "Why not" / reasons-not-to | **Unknown** | Not yet performed; this is a requested gap and a required lens. |
+| Narrative & claim accuracy | **Partial / at risk** | The "iOS and Android" framing already risks presenting native parity as user benefit. |
+| Documentation/samples | **Not relevant (yet)** | |
+| Measurement | **Unknown** | |
+| Team safety / launch resilience | **Not relevant (yet)** | (Re-engage only if/when this becomes contentious — which is plausible given the surface.) |
+
+**Likely consequences if these gaps are not closed before scoping an API:** an explainer that other engines decline to implement on anti-abuse/privacy grounds, a Chrome-only period that undermines Baseline and the cross-engine promise, reignited silent-push/background-execution controversy, and a feature in search of a validated job. None of these block the team from *researching* — they block *declaring readiness*.
+
+---
+
+## D. Challenge (relevant lenses only)
+
+### D.1 Problem and use-case validity
+
+- **Hypothesis (leading candidate):** the unmet job is *background AI agents that perform multi-step work and proactively return results/asks to the user.* This is a genuinely current and interesting frontier where web limitations are felt (agents that die when the tab closes; no cheap proactive channel beyond push+notification).
+- **Contradiction to resolve:** "background work" and "re-engagement" are different jobs with different best-fit layers. Background *work* for agents is increasingly done **server-side** (queues, scheduled tasks, cloud agents) and surfaced through the *existing* push/notification surface. The browser may not need to own the work at all.
+- **Recommendation:** Decompose into at least three job clusters and validate each independently: (1) deferred/scheduled work (today: Background Sync, Periodic Background Sync, server queues); (2) long-running transfers (today: Background Fetch); (3) proactive user re-engagement (today: Push + Notifications + Badging). Map each cluster's current web baseline and its gaps *before* proposing anything new.
+
+### D.2 Existing-web alternatives (the gap the team skipped) — facts to verify, not findings
+
+These capabilities **exist** today (fact as to existence/purpose). Their **current cross-engine support, defaults, and restrictions must be retrieved and dated by the team** (unknowns).
+
+- **Service Workers** — the foundational background/event primitive; persists across navigations; independent of page; the substrate for push, sync, fetch, notifications. *(Fact: exists. Support/positions: verify.)*
+- **Push API + Web Push (notifications)** — server-originated wake-up of the service worker; the primary re-engagement channel. *(Fact: exists; WebKit shipped web push for installed web apps on macOS and iOS/iPadOS in recent years — verify current status.)*
+- **Notifications API** — the visible re-engagement surface.
+- **Background Sync API** — defers work until connectivity returns (`sync` event). *(Fact: exists; Chromium-origin — verify others.)*
+- **Periodic Background Sync API** — service worker wakes on a schedule to refresh content; restricted to installed PWAs. *(Fact: exists; Chromium-origin — this is the closest existing primitive to "scheduled background work," and its **restricted scope and single-engine history are themselves the most important prior art** to study.)*
+- **Background Fetch API** — long downloads/uploads surviving page/browser close, with user-visible progress. *(Fact: exists; Chromium-origin — verify.)*
+- **Badging API** — app-icon badge for subtle re-engagement without a full notification. *(Fact: exists; WICG — verify support.)*
+- **Wake Lock API, Page Lifecycle API, Web Locks, IndexedDB, Cache Storage, OPFS, Broadcast Channel, SharedWorker, `requestIdleCallback`** — supporting primitives for persistence, coordination, and opportunistic work. *(Facts: exist.)*
+- **Known deliberate restrictions (verify current state):** push delivery historically required a visible notification (`userVisibleOnly`) to prevent silent background activity; "silent push" has been a long-running, contested topic. This restriction is **itself the policy decision** any new capability would have to revisit. *(Fact as to the existence of the debate; current policy: verify.)*
+
+**Recommendation:** Build an "existing-web alternatives matrix" (capability × job × current support × known restriction × evidence source+date) as the first deliverable. If a team cannot show *why each of these is insufficient for the target job*, the proposal is premature.
+
+### D.3 Adjacent-platform alternatives — research targets (not invented findings)
+
+The request lists families the team has not studied. I list the **patterns to extract** from each; the team must retrieve current primary sources and record evidence classes. Per the skill: *extract the job, permission/control model, lifecycle, distribution, business incentives, user cost, failure modes, abuse, and interoperability consequences; then assess what must change to fit web principles.*
+
+- **iOS/iPadOS (already studied, but in isolation):** background modes, `BGTaskScheduler`/background fetch, APNs, silent push, **Live Activities**, **Critical Alerts**, App Intents/Shortcuts. *Pattern to extract:* the OS aggressively budgets and schedules background time; permissions are explicit; silent/background activity is the exception, tightly rationed.
+- **Android:** WorkManager, foreground services (with persistent notification — note the **user-visibility requirement**, directly analogous to the web's `userVisibleOnly` debate), JobScheduler, FCM, Doze/App Standby, notification channels. *Pattern to extract:* even native platforms force visible foreground-service notifications and impose background-execution limits precisely because unconstrained background work harms users.
+- **WeChat / Alipay / Douyin mini-programs (China — unstudied):** subscribe-message (订阅消息) permission-gated re-engagement model that **replaced** earlier template/broadcast messaging; service notifications; the mini-program lifecycle and "background" model; the super-app distribution layer. *Pattern to extract:* these ecosystems **gated and permissioned re-engagement precisely because broadcast re-engagement was abused** — a directly relevant prior-art case for the web. *Note:* China has also regulated marketing messages (complaint/opt-out mechanisms); the abuse-and-regulation history is itself evidence.
+- **Chat/messaging apps (unstudied):** bot platforms, embedded mini-apps, and **messaging-window rules** (e.g., 24-hour customer-service windows, template-message gating). *Pattern to extract:* mature platforms have already converged on **consent + windowing + gating** for proactive outreach — exactly the design space a web capability would enter.
+- **LLM/agent platforms (unstudied, likely the real motivator):** background/scheduled agents that perform multi-step work and re-engage users via push/email/chat; on-device vs. cloud agent runtimes; agent "proactive messaging." *Pattern to extract:* this is where background-work + re-engagement is the core UX, and where the web's tab-limited, no-cheap-proactive-channel model is most felt. **But note the contradiction:** most of this work already runs server-side and reaches users through existing channels — so the marginal browser-layer need must be proven, not assumed.
+- **Framework/server solutions (unstudied):** the empirical reality that **most background work + re-engagement is already a server job** — cron, task queues (Cloud Tasks/SQS/etc.), push services, email, SMS, webhooks, server-side scheduling — with the browser providing only the thin re-engagement surface (push/notifications) that already exists. *Pattern to extract:* "apps do background work" is usually "servers do background work." The browser-layer question is narrow and specific.
+
+### D.4 "Why not" — the strongest case against adding a browser API (the requested lens)
+
+These are **principle-grounded inferences and hypotheses**, not recorded positions of any party (which must be retrieved). I steelman, per the skill; I do not choose weak objections.
+
+1. **The web's conservative background model is a feature, not a gap.** Unconstrained background execution is the surface that produces covert tracking, battery drain, metered-data cost, and attention manipulation. Other engines and civil-society actors have historically scrutinized exactly this surface. "iOS/Android can" may reflect native's different trust/permission model, not a web deficiency.
+2. **Re-engagement is values-laden, not just a capability gap.** Making proactive re-engagement cheaper/easier lowers the cost of spam, dark patterns, and compulsive-use design. The **user** may not want "more re-engagement"; the **site** does. The skill requires separating these.
+3. **The browser may be the wrong layer.** If the job is already well-served server-side (and it largely is), a browser API risks **ossification** and Chrome-only lock-in for marginal benefit.
+4. **Interoperability reality.** Background-sync/periodic-sync/push have a long history of **single-engine or incomplete cross-engine** support. A new capability that ships Chrome-only undermines Baseline and the cross-engine promise, and hands other engines a legitimate "we chose differently on purpose" critique.
+5. **Copying native lifecycle without adaptation** (explicit skill anti-pattern). Native background models assume installed, permissioned, OS-managed apps with install-time trust. The web has an ambient, per-origin, no-install trust model. The primitives do not transfer directly.
+6. **Mini-app and chat precedents argue for *gating*, not *more capability*.** The relevant lesson from WeChat/Alipay/messaging platforms is that **mature platforms added friction** (subscribe consent, messaging windows) to control re-engagement abuse — the opposite of "make background outreach easier."
+7. **User cost asymmetry.** The site captures the engagement benefit; the user pays in battery, data, memory, thermal load, attention, and privacy. On low-end devices and metered networks — where most of the next billion users are — this asymmetry is sharpest.
+
+**Strongest case *for* a capability (to be fair):** the rise of **background AI agents** may create a genuinely new, previously-rare job (long-horizon agent work that needs to persist beyond a tab and reach back to the user), for which the current push+notification+service-worker stack is awkward, and where a **well-gated, user-consented, privacy-respecting** primitive could add real value *if* designed with the abuse model first. This is a **hypothesis** that needs evidence, not a conclusion.
+
+### D.5 Stakeholder critique (constituencies to consult; positions must be retrieved, not role-played)
+
+Constituencies with plausible material interest: end users (incl. low-end-device and metered-network users, and users with cognitive/attention sensitivities); AT users and a11y specialists; web developers/framework authors; **WebKit/Safari and Gecko/Firefox** (whose positions are decisive for any cross-engine claim); **W3C TAG**; privacy, security, abuse, and anti-fraud researchers; **civil-society/digital-rights organizations**; publishers, advertisers, and platforms; regulators (competition, consumer protection, data protection, attention/children); and the open-source/automation/testing community.
+
+- **Recorded positions on *this proposal*:** **Unknown** — none retrieved. (Per skill rules, I will not role-play "what Mozilla/WebKit/EFF would say" from memory.)
+- **Principle-grounded inferences (to verify against current primary sources):** Mozilla's published web-vision/standards-positions and WebKit's standards-positions and tracking-prevention policy, the W3C Ethical Web Principles / Design Principles (priority of constituencies; "safety when visiting a page") / Privacy Principles, and EFF interoperability/privacy materials are the **canonical starting points to retrieve and date**. The team must read the **specific prior threads on silent push, background sync, and periodic background sync** before assuming openness to a new background primitive.
+- **Public questions the team should be able to answer before any announcement:** Why does this not reopen the silent-push debate? Why is this a browser job rather than a server job? What is the exact consent/refusal/revocation model? What is the abuse plan when a dominant or hostile site uses it? What is the cross-engine implementation story?
+
+### D.6 User-impact and cost rehearsal (pre-review, not approval)
+
+Separate the beneficiaries and cost-bearers explicitly:
+
+- **End-user benefit (hypothesized, unproven):** agents/apps complete work and notify conveniently; content is fresh on return.
+- **End-user cost (concrete, must be measured):** battery; **metered-data**; memory/thermal; notification fatigue and compulsive-use risk; **covert background activity** (privacy); accessibility (notifications for AT users, reduced-motion/cognitive load); low-end-device slowdown; enterprise/managed-device and policy impact; **who pays** for the background compute.
+- **Developer/site benefit:** engagement/retention.
+- **Implementer cost:** new lifecycle, permissions UI, abuse/anti-fraud surface, support burden, cross-engine divergence.
+- **Recommendation:** treat user-impact as **load-bearing** for this category, not a late-stage check. The dimension that most often blocks background/re-engagement features is user cost + abuse, not developer ergonomics.
+
+---
+
+## E. Plan (incubation-stage; outcome- and evidence-led)
+
+**Outcome & exit criteria for this research phase:**
+- A defensible answer to *"Is there a real, recurring, currently-painful job the existing web cannot serve, and is the browser the right layer?"* — with a deduplicated evidence ledger and a dated adjacent-platform pattern matrix.
+- An explicit **continue / narrow / park / stop** recommendation with the evidence threshold for each.
+
+**Stop / park / redesign triggers (the "why not" wins if):**
+- *Stop/park* if no attributable developer demand for a *specific* job survives the existing-web-alternatives analysis, or if the job is provably a server job.
+- *Redesign* if demand is real but the abuse/privacy/user-cost model cannot be made proportionate — a heavily-gated, consented, visible-by-default primitive (à la mini-app subscribe-messages) rather than "more background capability."
+- *Continue* only if a concrete job is validated, existing web is genuinely insufficient at the right layer, and a credible cross-engine + privacy + abuse path exists.
+
+**Activities & artifacts (sequence):**
+1. **Existing-web baseline matrix** (capability × job × current support × restriction × source+date). *Owner: DevRel + Eng. Blocking.* — the missing foundation.
+2. **Adjacent-platform pattern matrix** (native/mini-app/chat/LLM-agent/framework-server): extract job, permission model, lifecycle, distribution, incentives, user cost, abuse, interoperability consequences. *Owner: DevRel research.*
+3. **Adversarial "why not" brief** (this section D.4, hardened with dated sources). *Owner: DevRel.*
+4. **Developer/community evidence pass** (GitHub/WICG/Chromium/WebKit/Mozilla trackers, Stack Overflow, framework RFCs, Hacker News/Reddit, conference talks) with explicit **supportive + skeptical + failure** queries and a saturation stopping rule. *Owner: DevRel.*
+5. **Stakeholder source packet** (dated primary positions from Mozilla/WebKit/TAG/civil-society on background APIs and silent push specifically). *Owner: Standards liaison.*
+6. **Representative developer interviews** (behavior-based: "last time this happened," "what you did instead," "what it cost," "who approved/supported it," "what would make you reject this API"). Segment-balanced candidate hypotheses only — **no named partners, no commitments claimed.** *Owner: DevRel.*
+7. **Problem/use-case brief + non-goals + alternatives-rejected-with-evidence** (the artifact incubation actually needs before any explainer). *Owner: Product/Eng + DevRel.*
+8. **User-impact + abuse/privacy pre-review brief** (load-bearing for this category). *Owner: DevRel + Privacy/Security consult.*
+
+**Dependencies & risks:** Without a named product/eng owner who can state the concrete job, items 1–3 cannot be scoped precisely. The dominant risk is **premature API shaping** before items 1–3 land.
+
+**Explicit blockers:** No ChromeStatus entry, explainer, or product owner is identified; **nothing here constitutes API-Owner, privacy, security, a11y, standards, or launch approval**, and DevRel does not grant any of those.
+
+---
+
+## F. Artifact — Research brief (PROVISIONAL; unsupported sections flagged)
+
+*Metadata: Audience = incubation team + reviewers. Stage = intake→incubation. Owner = DevRel (to be named). Status = provisional draft. Unresolved assumptions flagged inline. Review required before any external use.*
+
+### F.1 Decision framing
+- **Decision:** Does the web need a new background-work and/or re-engagement capability, and if so, what is the narrowest useful, cross-engine, abuse-safe intervention?
+- **Claims under test:** (C1) there is a real, recurring, currently-painful job; (C2) existing web capabilities are insufficient; (C3) the browser is the right layer (vs. server); (C4) the benefit to users exceeds the cost; (C5) a cross-engine interoperable + privacy/abuse-safe design exists.
+- **Falsification questions:** What evidence would show the problem is rare, already solved, server-layer, or too costly/risky? *(See D.4.)*
+
+### F.2 Existing-web alternatives landscape (facts + unknowns)
+*Facts as to existence/purpose; current support/positions = unknowns to retrieve and date.*
+- Scheduled/deferred work: Periodic Background Sync, Background Sync, service-worker lifecycle.
+- Long transfers: Background Fetch.
+- Proactive re-engagement: Push + Notifications, Badging, installed-PWA presence.
+- Persistence/coordination: IndexedDB, Cache, OPFS, Web Locks, Broadcast Channel, SharedWorker.
+- Opportunistic foreground work: `requestIdleCallback`, Wake Lock, Page Lifecycle.
+- **Deliberate restrictions to study as prior art:** push visibility/`userVisibleOnly`, silent-push history, Periodic Background Sync's PWA-only restriction. *(Current policy: verify.)*
+
+### F.3 Adjacent-platform pattern matrix (research targets)
+Rows: iOS, Android, WeChat/Alipay/Douyin mini-programs, chat/messaging bots, LLM/agent platforms, framework/server stacks.
+Columns: job served | primitive | permission/consent model | lifecycle/budget | distribution & business incentive | user cost | abuse/failure mode | web-fit assessment | evidence source + date.
+*(To be populated by the team from primary sources; do not infer cells.)*
+
+### F.4 Query/source matrix (seed; the team executes and logs query/engine/date/saturation)
+- **Problem language:** "app dies when tab closes," "agent can't notify," "schedule work in service worker," "wake up PWA," "silent push web."
+- **Workaround/failure:** "service worker killed," "periodic background sync not supported," "push requires notification," "background sync iOS."
+- **Skeptical/failure:** "web background work abuse," "silent push privacy," "battery background scripts," "notifications dark patterns."
+- **Adjacent:** "WeChat subscribe message 订阅消息," "WorkManager vs web," "Live Activities web," "background agent notify user," "messaging window 24 hour."
+- **Regional/non-English:** mini-program and super-app terms in source languages where applicable and ethically accessible.
+
+### F.5 "Why not" brief
+See **D.4**. Deliverable: a dated, steelmanned brief covering the seven rejection classes, each with the evidence that would rebut it.
+
+### F.6 Evidence ledger scaffold
+Per-item fields per the skill: stable ID; claim supported/contradicted; source/publisher/author; publication + retrieval date; source family + independence; segment/geo/stack; evidence type (observation/self-report/behavior/commitment/opinion); denominator/method where available; relevance to *this* API vs. broad category; limitations/bias/confidence; permission/attribution status. **Rule:** weak mentions do not sum into strong evidence.
+
+### F.7 Candidate-engagement plan
+Segment-balanced **candidate hypotheses** (not endorsements). Outreach asks for *behavior evidence* (last occurrence, current workaround, cost, who approved/operated/supported, what would make them reject the API), with explicit consent for quoting, naming, retention, and follow-up. Evidence ladder enforced: observed public need → candidate → contacted with permission → interest → evaluation → trial → ship → production.
+
+### F.8 Explicit unsupported sections (do not cite externally until filled)
+- All "current support/position" cells (F.2, D.2).
+- All adjacent-platform *findings* (F.3) — only targets are specified.
+- Any developer-demand, partner, or user-cost numbers — none exist; none invented.
+- Any other-engine "position" — none retrieved; **silence is not support.**
+
+---
+
+## G. Measures for this research phase (matched to the work)
+
+- **Decision quality:** a complete existing-web baseline + adjacent-platform matrix + "why not" brief with dated sources, and an explicit continue/narrow/park/stop recommendation tied to evidence thresholds.
+- **Evidence integrity:** zero unaudited claims promoted as demand/commitment/position; every public claim traceable to a source + date.
+- **Risk surfacing:** privacy/security/abuse/user-cost concerns identified *before* explainer/API shaping (the failure mode most likely to bite this category).
+- **Cross-engine realism:** other-engine realities surfaced honestly; no "Chrome-ships-it therefore web-standard" framing.
+
+*Denominators, baselines, and targets to be set by the team per `modules/measurement-framework.md`.*
+
+---
+
+## H. Boundaries (what this is not)
+
+This is **pre-review DevRel analysis**, not API-Owner, privacy, security, accessibility, legal, standards, or launch approval. I did not (and in this context cannot) retrieve live primary sources, so **no dates, URLs, issue numbers, stakeholder positions, demand figures, or partner names appear** — those are flagged unknown and assigned to the team. I did not invent developer demand, partner commitments, or other-engine positions, and I treated the team's "iOS/Android" premise as a **hypothesis to test**, not evidence.
+
+**One-line summary for the colleague:** The team has not yet done the one step that determines whether this idea is viable — establish the **existing-web baseline** and run an honest **"why not / is this a browser job"** pass. Pointing only at iOS/Android is the exact incubation anti-pattern the skill flags. The highest-value next move is the research plan in Section E, starting with item 1 (existing-web alternatives matrix) and item 3 (the "why not" brief), with the leading hypothesis that the real motivator is **background AI-agent work + re-engagement** — a job that is *currently mostly server-side* and whose browser-layer need must be proven, not assumed.

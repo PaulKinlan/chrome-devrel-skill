@@ -1,0 +1,202 @@
+# DevRel response — Chrome 140–150 launch outcomes summary
+
+Mode: **launch retrospective / portfolio outcomes**. Lifecycle stage: **post-release retrospective (release → adoption/support)**. I've loaded the retrospective module and its evidence rules (R1–R5), the exemplars/anti-patterns research, and the measurement framework. This request maps almost exactly onto the cohort the skill's research basis was validated against, so I can cite established counts rather than estimate.
+
+---
+
+## 1. Diagnose
+
+- **Decision the team needs now:** a defensible summary of Chrome 140–150 launch outcomes, currently scoped as "one number = features shipped successfully."
+- **Evidence already available (facts, from the validated 140–150 retrospective run):**
+  - 291 unique ChromeStatus features in the cohort (deduplicated by feature ID).
+  - 355 milestone *memberships* — i.e., 41 features appear in 2+ milestones (non-additive).
+  - 152 features have a mapped public ChromeStatus counter; 139 do not.
+  - Of the 152 mapped: 10 exact-counter mappings, 74 family/property-level counters, the remainder trial/multiple/ambiguous.
+  - 204 reports were producible from ChromeStatus evidence alone; 87 needed deeper analysis.
+- **The two proposals the team made, pre-challenge:**
+  1. Produce a single "features shipped successfully" number.
+  2. Mark the 139 unmapped features as "zero adoption" to simplify the summary.
+- **Highest-risk assumptions in those proposals:** that shipment equals success; that absence of a public counter equals absence of usage; that milestone rows are additive.
+- **Questions I would normally ask first (non-interactive, so stating working assumptions):**
+  - *Audience/decision for this summary?* → **Assumption:** internal outcomes dashboard / leadership review, not a public marketing number. If it's external, the constraints tighten further (public-evidence-only, no private telemetry).
+  - *Exact milestone window and feature scope?* → **Assumption:** the same 140–150 cohort the skill validated (291 features). If your inventory differs, the methodology below holds; only the absolute counts change.
+  - *Definition of "shipped successfully"?* → **Assumption:** you actually want two separable things — a shipment count (process) and an outcomes view (multi-dimensional). I will not collapse them.
+  - *Evidence boundary?* → **Assumption:** public-only (ChromeStatus, counters, public review threads, web-features/Baseline). Private UMA/UKM would change what's measurable but cannot appear in a public artifact.
+
+---
+
+## 2. Assess (without inventing a veto)
+
+DevRel cannot and does not block or approve a summary's publication; the assessment below is about what the evidence can honestly support.
+
+| Dimension | Status | Finding |
+|---|---|---|
+| Authoritative inventory | **Supported** | Fixed feature list exists: 291 unique IDs. (Fact.) |
+| Denominator integrity | **Contradicted** by the team's implied approach | Summing 355 milestone rows inflates the count by ~22% (41 features in 2+ milestones). |
+| Adoption measurability | **Partial** | 152/291 features have a public counter; only 10 of those are exact-feature counters, 74 are family-level. |
+| "Zero adoption" claim for 139 unmapped | **Contradicted** | No mapped counter ⇒ *unknown*, not zero. 139/139 reports in the validated run were verified not to claim zero. |
+| Outcome definition (success) | **Unknown / Contradicted** | "Shipped successfully" is undefined andshipment ≠ success (multi-dimensional). |
+| Interoperability outcome | **Unknown (concentrated)** | 69 features have cross-engine status unknown. |
+| Docs / prototype evidence | **Unknown (concentrated)** | 212 docs-unknown, 207 prototype-unknown, mostly in the 204 ChromeStatus-only reports — acceptable for low-risk catchup features, not for high-risk ones. |
+| Risk-tier coverage | **Partial** | Risk-triggered deeper analysis (R4) was applied to 87 features; the rest rely on ChromeStatus-only depth. |
+
+---
+
+## 3. Challenge
+
+### C1 — "Single number of features shipped successfully"
+
+- **Contradiction (anti-pattern A6):** the skill's operating rule is *"never infer success from shipment, usage alone, press sentiment, or missing criticism."* Shipment is a process event; success is a multi-dimensional outcome. A single scalar forces a false collapse.
+- **Contradiction (R1):** if the single number is built by summing milestone rows, it overcounts. 355 memberships → 291 features.
+- **Hypothesis:** a single success number would mislead downstream decision-makers because it hides that 139 features have no measurable adoption and that outcomes are mixed by dimension.
+- **Recommendation:** ship *one shipment count* (clean, honest) plus a *multi-dimensional outcomes view*. Do not label the shipment count as "success."
+
+### C2 — "Mark the 139 unmapped features as zero adoption"
+
+- **Contradiction (R2 / anti-pattern A1):** absence of a public counter means adoption *cannot be measured from public telemetry*, not that adoption is zero. Marking zero fabricates evidence. The validated run explicitly forbids this ("States or implies unmapped features have zero usage").
+- **Signal:** the proposal itself suggests the team is under pressure to produce a tidy number. That pressure is the actual problem to address, not the missing counters.
+- **Recommendation:** use the canonical phrasing for every unmapped feature: *"No public ChromeStatus counter is mapped; adoption cannot be measured from public telemetry."* Reserve a separate, honestly-labeled bucket for any private/internal adoption signal (and keep it out of public artifacts).
+
+### C3 — Family counters presented as feature adoption
+
+- **Risk (R3 / A3):** 74 of 152 mapped counters are family/property-level. Presenting family usage as feature-specific adoption overclaims.
+- **Recommendation:** every counter citation must carry scope labels: exact / family-property / trial-only / multiple / ambiguous, plus "what it measures and what it does not."
+
+### C4 — The OT→GA example (M144 Origin Trial, M148 Enabled by default)
+
+- **Fact:** this is one feature with two milestone memberships. It is counted **once** in any unique-feature denominator.
+- **Recommendation:** if you want a "reached GA" view, count by the *Enabled-by-default* membership, still deduplicated by feature ID. Report OT-only features as a distinct category ("in trial, not yet GA") rather than folding them into either "shipped" or "not shipped."
+
+### C5 — What the counter percentage actually means
+
+- **Fact:** ChromeStatus metrics report the share of measured Chrome HTTP/HTTPS page loads on which the counter fired.
+- **Recommendation:** never translate that percentage into unique developers, sites, users, successful tasks, satisfaction, or end-user benefit. A missing mapping is "no mapped public counter found," never "no adoption data exists" (internal telemetry may exist).
+
+---
+
+## 4. Plan
+
+**Outcome and exit criteria.** A published outcomes dashboard where (a) every count states its denominator and unit, (b) every adoption figure carries a scope/confidence label, (c) no unmapped feature is labeled zero, and (d) "success" is reported per-dimension, not as one scalar.
+
+**Evidence to collect / fix.**
+- Re-run the inventory dedupe by ChromeStatus ID; publish the 291 / 355 / 41 reconciliation.
+- Confirm counter-mapping scope (exact/family/trial/multiple/ambiguous) for all 152; canonicalize "no counter mapped" wording for the 139.
+- Verify the 27 reports flagged as using non-standard phrasing (the R2 known limit).
+- Risk-tier the 291 (R4 checklist); confirm the 87 deep-analysis targets cover every high-risk trigger.
+
+**Activities / artifacts.**
+- Launch-outcomes denominator + metrics + framing brief (produced below).
+- A one-page dashboard mock with the five tiles in the artifact.
+- Optional: a per-feature outcome matrix (success/mixed/failure/unscored by dimension) for the high-risk subset.
+
+**Owners / reviewers.** DevRel owns framing and evidence honesty; the team owning the retrospective run owns the inventory and counter mappings; API owners / eng own any private-telemetry overlay (kept out of public artifacts).
+
+**Dependencies / risks.** Risk misclassification (a "simple CSS fix" with a11y/perf implications) — default to deeper analysis when uncertain (R4). Stale ChromeStatus snapshots — cache the timeline + counter mapping with retrieval dates.
+
+**Sequence.** (1) Lock the inventory and denominator → (2) canonicalize counter-scope and no-counter wording → (3) risk-tier → (4) publish dashboard → (5) per-milestone refresh going forward.
+
+**Blockers.** None for the honest summary. The only thing "blocked" is the single success number — that's a scope decision, not an evidence gap.
+
+---
+
+## 5. Artifact — Chrome 140–150 launch outcomes: denominator, metrics & framing
+
+```
+Artifact:    Launch-outcomes denominator, metrics & framing brief
+Audience:    Internal — engineering leadership / portfolio review
+Stage:       Launch retrospective (release → adoption/support)
+Owner:       DevRel (framing & evidence honesty) × Retrospective run owner (inventory)
+Status:      Provisional methodology; counts are the validated 140–150 cohort
+Sources:     launch-retrospective.md (R1–R5); exemplars-and-antipatterns.md (E1–E3, A1–A6);
+             measurement-framework.md; validated run (291 features, retrieved 2026-07-20)
+Assumptions: Same 140–150 cohort; public-evidence-only; "summary" = outcomes dashboard, not marketing
+Unresolved:  Team's exact definition of "shipped successfully"; whether private telemetry may be cited;
+             whether cohort scope matches the validated 291 exactly
+Review:      Requires run-owner sign-off on inventory/counter mapping before any external use
+```
+
+### 5.1 The denominator (do this, not the single number)
+
+**Unit of analysis = the unique ChromeStatus feature ID.** Always deduplicate by ID before any count.
+
+| Count | Value | What it is | What it is not |
+|---|---|---|---|
+| Unique features shipped (any form) | **291** | Features with ≥1 launch event in 140–150 (Enabled by default, Origin Trial, etc.) | Not a "success" count; not 355 |
+| Milestone memberships | 355 | Feature×milestone rows (non-additive) | **Never** sum these for a feature count |
+| Features in 2+ milestones | 41 | e.g., OT@144 + Enabled@148 = 1 feature | Counted once in 291 |
+| Reached GA (Enabled by default) | *Report as a subset of 291, dedup'd by ID* | Features whose membership includes "Enabled by default" | OT-only features are a *separate* category, not "not shipped" |
+| In Origin Trial only | *Report as a subset of 291* | OT membership, no Enabled-by-default in window | Still "shipped" (in trial); do not fold into GA |
+
+**The only honest single number to give leadership for "how many shipped" is 291** — and it must be labeled *shipped*, not *successfully shipped*.
+
+### 5.2 Metrics approach (adoption is a distribution, not a number)
+
+Reject one adoption score. Report adoption as a **coverage distribution with mandatory scope labels (R3)**:
+
+| Bucket | Count | What you can say |
+|---|---|---|
+| Exact-feature counter mapped | 10 | "Adoption measured directly." Cite % of measured Chrome page loads. |
+| Family/property counter mapped | 74 | "Family-level signal; does not isolate this feature." Cite % with that caveat. |
+| Other mapped (trial / multiple / ambiguous) | 152 − 10 − 74 = 68 | Cite with the specific scope label. |
+| **No public counter mapped** | **139** | **"No public ChromeStatus counter is mapped; adoption cannot be measured from public telemetry."** Not zero. |
+
+Rules every adoption figure must follow:
+- State mapping status (exact / family / trial / multiple / ambiguous / none).
+- State what the counter measures and what it does **not** measure.
+- State whether the counter isolates the feature or measures a broader family.
+- A counter percentage = share of measured Chrome HTTP/HTTPS page loads where it fired. **Never** convert to developers / sites / users / success / satisfaction.
+- "No counter" ⇒ unknown. (R2; verified 139/139 in the run.)
+
+### 5.3 Outcome framing (success is multi-dimensional)
+
+Per feature, score each relevant dimension **success / mixed / failure / unscored**, with cited evidence and limitations. The overall status must **not** hide mixed dimensions (no averaging into one grade).
+
+Dimensions (from the retrospective module):
+1. Developer problem/value
+2. End-user impact and control
+3. Adoption and durable production use
+4. Interoperability / other-engine / Baseline progress
+5. Implementation quality and compatibility
+6. Evidence quality and communication accuracy
+7. Documentation / demo / integration quality
+8. Support burden and issue resolution
+9. Team / launch resilience (where public evidence exists)
+
+### 5.4 Dashboard mock (five tiles, no single score)
+
+1. **Shipment** — 291 unique features (355 memberships; 41 multi-milestone). Sub-rows: Reached GA / OT-only.
+2. **Adoption evidence coverage** — 10 exact · 74 family · 68 other-mapped · 139 unmapped (= unknown, not zero).
+3. **Outcome rollup** — per dimension, the success/mixed/failure/unscored distribution across 291.
+4. **Interoperability** — other-engine status distribution (flag the 69 unknown).
+5. **Evidence quality** — depth tier (204 ChromeStatus-only · 87 deeper) and risk-trigger coverage (R4).
+
+### 5.5 Forbidden moves (print on the back of the dashboard)
+
+- ❌ Summing milestone memberships as features (A2).
+- ❌ Labeling unmapped features "zero adoption" (A1 / R2).
+- ❌ Presenting family-counter usage as feature-specific adoption (A3 / R3).
+- ❌ A single "successfully shipped" scalar that hides mixed dimensions (A6).
+- ❌ Inferring other-engine support from silence (A5).
+- ❌ Turning shipment into success without outcome evidence (A6).
+
+---
+
+## 6. Measurement of this DevRel work
+
+- **Outcome we're optimizing:** leadership decisions made on honest evidence, not a false-precision scalar.
+- **Candidate measures (with denominators):**
+  - Adoption-figure error rate → denominator = adoption figures published; target = 0% claiming zero for unmapped / 0% family-as-feature.
+  - Denominator-reconciliation completeness → 291/291 features with a locked ID and dedupe rule.
+  - Scope-label coverage → 152/152 mapped counters labeled; 139/139 unmapped using canonical "cannot be measured" wording.
+  - Outcome dimensions scored → 291 × (relevant dimensions), with unscored explicitly justified.
+- **Limitations:** adoption metrics are constrained by counter availability (only 10 exact); interop has 69 unknown; private telemetry, if any, stays out of public artifacts.
+
+---
+
+## Bottom line for the team
+
+- **Denominator:** **291 unique features** (deduplicate by ChromeStatus ID; never sum the 355 milestone rows).
+- **Metrics:** adoption is a **coverage distribution** (10 exact / 74 family / 68 other-mapped / 139 unmapped), every figure scope-labeled; the 139 unmapped are **"adoption cannot be measured from public telemetry," not zero**.
+- **Outcome framing:** **no single "successfully shipped" number.** Ship *291 shipped* (process fact) plus a **per-dimension success/mixed/failure/unscored** view. Shipment ≠ success.
+
+I have **not** invented any adoption values, partner evidence, or outcome verdicts; the per-feature scores still need to be produced from the locked inventory before this becomes a final report rather than a methodology.
