@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "standards-incubation-link-closure",
+  "status": "contract-fixture-not-model-scored",
+  "input": "/chrome-devrel Review [feature] for launch readiness. Fully analyze Mozilla and WebKit standards positions, the TAG review, incubation, and all substantive cross-links. Treat no signal as no recorded position, not neutral.",
+  "intent": "A launch-readiness review must reconstruct the full primary-source standards and incubation evidence graph rather than copy dashboard labels or summarize only issue opening comments.",
+  "requiredBehaviors": [
+    "treat no signal, no position, open request, no response, and silence as absence of an attributable final recorded position rather than neutral, support, opposition, or low risk",
+    "separate formal browser-project positions from attributable individual comments and model inference",
+    "read complete Mozilla and WebKit position threads including labels, state, chronology, replies, and linked implementation or standards evidence",
+    "read the complete TAG review and distinguish reviewer questions, author responses, landed changes, reviewer confirmation, and actual closure resolution",
+    "inventory current incubation explainers, specifications, IDL, questionnaires, examples, issues, pull requests, discussions, releases, and design-significant commits",
+    "freeze a retrieval cutoff and canonical seed universe including current and migrated repositories before traversal",
+    "retrieve and reconcile paginated open and closed repository totals, screening every closed item into design-significant, screened-out, or blocked",
+    "extract substantive links deterministically from authored content, canonicalize node identities, deduplicate cycles with visited node and edge sets, and preserve source comment provenance",
+    "follow every substantive cross-link that supports or challenges problem, design, review, interoperability, implementation, testing, developer evidence, or launch claims",
+    "give every discovered link an analyzed, duplicate, out-of-scope, or blocked disposition with a reason and preserve any unprocessed relevant frontier as blocked",
+    "report separate link-edge and unique-evidence-node denominators and identify what each relevant blocked edge, node, or frontier item could change",
+    "reconstruct a dated chronology instead of flattening historical discussion into one current label",
+    "map each material question or objection to the response, claimed resolution, landed spec implementation test or docs change, reviewer confirmation or silence, and current resolved open disputed or superseded state",
+    "inventory all open and design-significant closed incubation issues and pull requests and separate current draft behavior from proposed-but-unmerged behavior",
+    "reconcile contradictions among ChromeStatus, intent, explainer, spec, implementation, WPT, docs, demos, and release claims",
+    "produce public-safe wording that preserves uncertainty and directly links primary sources"
+  ],
+  "forbiddenBehaviors": [
+    "describe no signal, no response, silence, or an open position request as neutral",
+    "treat an individual employee or contributor comment as a formal browser-project position without process evidence",
+    "treat a closed TAG issue as approval without reading and reporting the actual resolution",
+    "stop after reading dashboard fields, issue titles, labels, opening comments, or search-result snippets",
+    "omit relevant cross-links without an explicit disposition and denominator",
+    "treat an author response or merged change as reviewer-accepted resolution without confirmation",
+    "claim no anticipated specification or interoperability changes while material design issues or pull requests remain open without reconciling the contradiction",
+    "infer likely implementation or support from silence or absence of a second implementation"
+  ],
+  "evidenceBoundary": "Public primary sources and attributable public cross-links only unless an approved private overlay is supplied. Inaccessible relevant sources remain blocked and completeness claims fail closed.",
+  "denominatorRules": {
+    "link_total": "analyzed + duplicate + out_of_scope + blocked",
+    "relevant_link_total": "analyzed + duplicate + blocked",
+    "relevant_link_complete": "analyzed + duplicate",
+    "unique_relevant_node_total": "analyzed_unique + blocked_unique",
+    "unique_relevant_node_complete": "analyzed_unique",
+    "question_total": "resolved + open + disputed + superseded",
+    "repo_item_total": "analyzed_open + design_significant_closed + screened_out_closed + blocked_items",
+    "repo_item_reconciled": "analyzed_open + design_significant_closed + screened_out_closed"
+  }
+}

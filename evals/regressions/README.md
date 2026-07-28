@@ -7,3 +7,4 @@ A fixture records the triggering prompt, required behavior, forbidden behavior, 
 ## Current fixtures
 
 - `launch-management-execution.json` — a DevRel request to manage a named feature launch must build and run samples/demos, derive friction from execution, and create patch-ready docs instead of returning only a plan.
+- `standards-incubation-link-closure.json` — standards-position and launch reviews must treat no signal as no recorded position, read complete Mozilla/WebKit/TAG/incubation records, and disposition every substantive cross-link instead of copying dashboard labels.

@@ -38,13 +38,18 @@ Treat verbs such as **manage the launch**, **prepare to ship**, **validate for
 release**, and **deliver developer enablement for a named launch/release** as
 requests to execute public, reversible work—not merely to describe a plan. A
 general early-stage developer-enablement assessment remains diagnostic unless
-the user asks to build or test assets. Load
-`modules/launch-execution.md`. Unless the user explicitly asks for planning
-only, inventory the feature contract, create missing standalone samples and a
+the user asks to build or test assets. Load `modules/launch-execution.md` and
+`modules/standards-and-incubation-analysis.md`. Unless the user explicitly asks
+for planning only, inventory the feature contract, create missing standalone samples and a
 realistic integrated demo, run them against the real implementation, build the
 friction log from observed evidence, audit MDN/BCD and Chrome-owned docs, create
 patch-ready documentation where missing or stale, and report exact
 built/tested/pass/fail/blocked denominators.
+
+The machine-readable routing contract is `config/request-routing.json`; the exact
+user-reported prompts are exercised by `scripts/request-routing.test.mjs`. Apply
+the same routing semantics even when the host invokes this skill without running
+the helper.
 
 Do not stop at hypotheses, a demo plan, a docs gap analysis, or a test runbook
 when the current environment can build and exercise the artifacts. Use browser
@@ -107,7 +112,12 @@ review feedback.
   success; implementation and positive developer outcomes across engines matter.
   Assess other-engine positions, standards maturity, Web Platform Baseline
   expectations/timeline, compatibility commitments, progressive enhancement, and
-  the cost of a Chrome-only period separately.
+  the cost of a Chrome-only period separately. A dashboard's `no signal`, open
+  request, no response, or silence means no attributable final position was
+  found—not neutral or support. Load
+  `modules/standards-and-incubation-analysis.md`; read the full Mozilla/WebKit/TAG
+  threads, incubation issues/PRs, and every substantive cross-link to an explicit
+  analyzed/duplicate/out-of-scope/blocked disposition.
 - Preserve the distinction between DevRel advice and formal API Owner,
   standards, engineering, privacy, security, accessibility, legal, or release
   approval. Rehearse every relevant perspective and user impact before formal
@@ -179,6 +189,7 @@ Select only the relevant lenses:
   (`modules/ecosystem-and-customer-research.md`)
 - Native, mini-app, chat, LLM/agent and existing-web alternatives translated
   through web-platform principles
+- Full standards-position and incubation evidence graph (`modules/standards-and-incubation-analysis.md`)
 - Interoperability and compatibility
 - Real-world integration and deployment
 - Trial/partner design
@@ -278,7 +289,9 @@ Use `modules/user-impact-and-review-rehearsal.md` before formal review and when
 rollout/resource behavior changes. Use `modules/launch-execution.md` when a user
 asks to manage or enable a launch; it requires runnable samples, real browser
 execution, observed friction, and patch-ready documentation rather than a plan
-alone. Use `modules/friction-log.md` for reproducible browser/integration
+alone. Use `modules/standards-and-incubation-analysis.md` for full Mozilla,
+WebKit, TAG, intent, incubation, issue/PR, test, and substantive cross-link
+analysis; status labels alone are never the result. Use `modules/friction-log.md` for reproducible browser/integration
 evidence. Use `modules/launch-resilience.md` to
 prepare channels and protect people without suppressing criticism. Use
 `modules/launch-retrospective.md` for inventory-driven historical review and

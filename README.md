@@ -132,10 +132,13 @@ default is execution rather than a plan. A general early-stage enablement
 assessment remains diagnostic unless the user asks to build or test assets. For
 launch execution, the skill inventories the feature contract, creates missing standalone
 samples and a realistic demo, runs them against the browser, records friction
-from observed evidence, audits MDN/BCD and Chrome-owned documentation, creates
-patch-ready documentation where absent or stale, and reports exact
-pass/fail/blocked totals. External publication and formal approval remain human
-controlled. See [launch execution](modules/launch-execution.md).
+from observed evidence, fully analyzes Mozilla/WebKit/TAG/incubation threads and
+their substantive cross-links, audits MDN/BCD and Chrome-owned documentation,
+creates patch-ready documentation where absent or stale, and reports exact
+pass/fail/blocked totals. `No signal`, an open position request, no response, or
+silence is never rewritten as neutral or support. External publication and formal
+approval remain human controlled. See [launch execution](modules/launch-execution.md)
+and [standards/incubation analysis](modules/standards-and-incubation-analysis.md).
 
 ### Engineer: detailed start
 

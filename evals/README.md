@@ -68,6 +68,8 @@ Run structural validation:
 ```sh
 node evals/validate.mjs
 node scripts/validate-public-core.mjs
+node scripts/request-routing.test.mjs
+node scripts/behavior-contracts.test.mjs
 ```
 
 A model runner and judge are implemented as `evals/run.mjs`. See

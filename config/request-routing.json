@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "named-launch-execution",
+      "priority": 100,
+      "patterns": [
+        "\\bmanage (?:the )?launch\\b",
+        "\\bprepare(?: [a-z-]+)? to ship\\b",
+        "\\bvalidate (?:this |the )?feature for release\\b",
+        "\\bdeliver developer enablement for (?:this |the |a )?(?:named )?(?:launch|release)\\b"
+      ],
+      "mode": "execute",
+      "modules": [
+        "modules/launch-execution.md",
+        "modules/standards-and-incubation-analysis.md"
+      ]
+    },
+    {
+      "id": "standards-incubation-analysis",
+      "priority": 90,
+      "patterns": [
+        "\\bstandards?[- ]positions?\\b",
+        "\\b(?:feature|launch|release)[ -]readiness\\b",
+        "\\binteroperability\\b",
+        "\\btag review\\b",
+        "\\bincubation\\b",
+        "\\bmozilla (?:position|standards)\\b",
+        "\\bwebkit (?:position|standards)\\b"
+      ],
+      "mode": "analyze",
+      "modules": [
+        "modules/standards-and-incubation-analysis.md"
+      ]
+    }
+  ],
+  "fallback": {
+    "id": "stage-diagnosis",
+    "mode": "diagnose",
+    "modules": []
+  }
+}

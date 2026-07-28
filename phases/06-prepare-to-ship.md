@@ -13,9 +13,10 @@ Implementation and specification are intended to stabilize for default availabil
 
 ## Work and evidence
 
-Load `modules/launch-execution.md`. “Manage the launch” means execute the public, reversible readiness and enablement work unless the user explicitly asks for planning only.
+Load `modules/launch-execution.md` and `modules/standards-and-incubation-analysis.md`. “Manage the launch” means execute the public, reversible readiness and enablement work unless the user explicitly asks for planning only.
 
 - Reconcile every ChromeStatus/intent claim with linked evidence, methods, dates, denominators, and contradictory findings.
+- Fully analyze Mozilla, WebKit, TAG, intent, and incubation records: read complete threads; follow every substantive cross-link to analyzed/duplicate/out-of-scope/blocked; inventory design-significant issues/PRs; reconstruct chronology; and map each question/objection to responses, landed changes, reviewer confirmation, and current state. `No signal`, an open request, no response, and silence are not neutral or support.
 - Confirm current formal review/gate states without having DevRel claim approval.
 - Derive an explicit feature-contract coverage manifest from the spec/IDL, implementation, policies/permissions, failure/fallback behavior, and developer jobs.
 - Build independently runnable minimal samples for the important primitives and branches, plus at least one realistic integrated use case. A demo plan is not a demo.
@@ -29,7 +30,7 @@ Load `modules/launch-execution.md`. “Manage the launch” means execute the pu
 ## Artifacts
 
 - Evidence-backed ship/launch brief
-- Formal-review state matrix
+- Formal-review state matrix plus standards/incubation source graph, chronology, cross-link manifest, engine-position matrix, TAG ledger, and objection-resolution ledger
 - Coverage manifest, runnable standalone sample suite, integrated demo, and exact browser execution matrix
 - Final observed-friction/conformance/user-impact report with reported issues and hypotheses separated
 - MDN/BCD and Chrome-doc inventory plus tested patch-ready additions or corrections

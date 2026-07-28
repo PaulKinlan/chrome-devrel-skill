@@ -9,7 +9,7 @@ This module does not grant release, API Owner, engineering, standards, privacy, 
 Unless the user explicitly asks for planning only:
 
 1. Recover or create the durable feature packet and canonical asset inventory.
-2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, and existing documentation/demos.
+2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, and existing documentation/demos. Load `modules/standards-and-incubation-analysis.md`; read full Mozilla/WebKit/TAG/incubation threads and disposition every substantive cross-link rather than copying dashboard labels.
 3. Build a coverage manifest from the actual API surface, normative behavior, important options, policies/permissions, failure modes, fallback, and realistic developer jobs.
 4. Create the missing standalone samples and integrated demos in a reviewable workspace.
 5. Run them against the real implementation where it is available.
@@ -143,9 +143,10 @@ Return:
 3. created/updated standalone samples and integrated demos with paths;
 4. browser execution matrix with `inventory_total`, `inventory_tested`, pass/fail/blocked counts, evidence paths, and physical/remote/emulated/viewport-only mobile labels;
 5. observed/reproduced friction, external-report reproduction outcomes with `report_total`/`report_attempted`, and hypotheses in separate sections;
-6. MDN/BCD and Chrome-doc inventories with absent/current/stale status and patch paths;
-7. code/docs changes made, validations run, and re-run results;
-8. residual product/review/support risks with owners or `owner required`;
-9. the smallest remaining actions that require private evidence, formal decisions, publication authority, or unavailable environments.
+6. standards/incubation source graph, chronology, engine-position matrix, TAG and objection-resolution ledgers, exact cross-link denominator, and contradictions against launch claims;
+7. MDN/BCD and Chrome-doc inventories with absent/current/stale status and patch paths;
+8. code/docs changes made, validations run, and re-run results;
+9. residual product/review/support risks with owners or `owner required`;
+10. the smallest remaining actions that require private evidence, formal decisions, publication authority, or unavailable environments.
 
 Never report “demo planned,” “docs needed,” or “test recommended” as completion when the files could have been built and executed in the current environment.

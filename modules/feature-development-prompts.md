@@ -157,13 +157,13 @@ This inventory should prevent a launch deck or status page from becoming the acc
 
 ## Prepare to ship
 
-> Manage prepare-to-ship execution for [feature] using the current packet and asset/data inventory. Do not equate implementation complete, intent approved, or Chrome shipment with broad readiness. Load `modules/launch-execution.md`; this is execution work, not planning only.
+> Manage prepare-to-ship execution for [feature] using the current packet and asset/data inventory. Do not equate implementation complete, intent approved, or Chrome shipment with broad readiness. Load `modules/launch-execution.md` and `modules/standards-and-incubation-analysis.md`; this is execution work, not planning only.
 >
 > Derive a coverage manifest from the spec/IDL and implementation. Create independently runnable feature-detection/fallback and minimal behavior samples, focused option/failure/integration samples, and at least one realistic use-case demo. Run them against the real implementation on desktop and mobile, exercise visible controls, inspect console/network/runtime state, and report exact pass/fail/blocked counts. Build friction only from observed or reproduced evidence; keep reported-unverified issues and hypotheses separate.
 >
 > Audit live MDN, `mdn/content`, BCD, Chrome-owned docs, release notes, compatibility/fallback, FAQ and support material. Where content is absent or stale, create and validate a patch-ready local addition or exact correction rather than stopping at a gap analysis. Do not publish or claim reviewer approval without authority.
 >
-> Also check claim-to-source traceability; relevant formal-review state; standards and other-engine position; framework/server/deployment evidence; accessibility; security/privacy/resource/user costs; trial and partner evidence stages; support ownership and known issues; launch-resilience, correction, hold and rollback plans; and outcome/guardrail measurement.
+> Fully analyze standards and incubation rather than copying status labels: `no signal`, open request, no response, and silence are not neutral. Read complete Mozilla/WebKit/TAG/intent threads, inventory design-significant issues/PRs, follow every substantive cross-link to an explicit disposition, reconstruct chronology, and map objections to responses, landed changes, reviewer confirmation, and current state. Also check claim-to-source traceability; framework/server/deployment evidence; accessibility; security/privacy/resource/user costs; trial and partner evidence stages; support ownership and known issues; launch-resilience, correction, hold and rollback plans; and outcome/guardrail measurement.
 >
 > Produce artifact paths, coverage and browser-execution matrices, observed friction evidence, docs/BCD patch inventory, launch decision brief, public-safe claims sheet, remaining-risk register, owner/on-call/support map, exact open/blocked denominator, and post-launch monitoring plan. Keep unsupported sections provisional or remove them. Never report a planned demo, recommended test, or identified docs gap as completed execution.
 

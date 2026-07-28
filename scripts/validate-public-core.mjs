@@ -4,6 +4,11 @@
 
 import { access, readdir, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import {
+  validateLaunchContract,
+  validateStandardsContract,
+} from "./lib/behavior-contracts.mjs";
+import { loadRouting, routeRequest } from "./route-request.mjs";
 
 const root = resolve(new URL("..", import.meta.url).pathname);
 const errors = [];
@@ -831,7 +836,7 @@ try {
   fail("MDN validation", e.message);
 }
 
-// 8. Launch-management behavioral regression contract
+// 8. Feature-development behavioral regression contracts
 try {
   const launchText = await readFile(
     join(root, "modules/launch-execution.md"),
@@ -846,78 +851,51 @@ try {
     join(root, "modules/feature-development-prompts.md"),
     "utf8",
   );
+  const standardsText = await readFile(
+    join(root, "modules/standards-and-incubation-analysis.md"),
+    "utf8",
+  );
   const fixture = await readJson(
     "evals/regressions/launch-management-execution.json",
   );
+  const standardsFixture = await readJson(
+    "evals/regressions/standards-incubation-link-closure.json",
+  );
+  const routing = await loadRouting();
 
-  if (
-    fixture.schemaVersion === 1 &&
-    fixture.status === "contract-fixture-not-model-scored" &&
-    fixture.input.startsWith("/chrome-devrel I need to manage the launch") &&
-    fixture.input.includes("5175745573945344") &&
-    fixture.input.endsWith("I'm in DevRel")
-  ) {
-    ok("launch regression: exact user trigger and unscored contract status retained");
+  const launchContractErrors = validateLaunchContract(fixture);
+  if (launchContractErrors.length === 0) {
+    ok("launch regression: shape, execution rules, authority, and denominators valid");
   } else {
-    fail("launch regression", "trigger, schema, or honest scoring status changed");
+    fail("launch regression", launchContractErrors.join("; "));
   }
 
-  const required = fixture.requiredBehaviors || [];
-  const forbidden = fixture.forbiddenBehaviors || [];
-  const requiredConcepts = [
-    "coverage manifest",
-    "independently runnable",
-    "realistic integrated",
-    "real implementation",
-    "chrome-devtools-mcp",
-    "physical-device",
-    "inventory_total",
-    "observed friction",
-    "report_attempted",
-    "mdn/content",
-    "patch-ready",
-    "artifact and evidence paths",
-  ];
-  const forbiddenConcepts = [
-    "stop after producing a plan",
-    "hypotheses",
-    "mocked",
-    "viewport emulation",
-    "claim MDN",
-    "without a separate explicit action request",
-    "generic prose patch-ready",
-  ];
-  const hasConcept = (items, concept) =>
-    items.some((item) => item.includes(concept));
-  const missingRequired = requiredConcepts.filter((concept) =>
-    !hasConcept(required, concept)
+  const standardsContractErrors = validateStandardsContract(
+    standardsFixture,
+    standardsText,
   );
-  const missingForbidden = forbiddenConcepts.filter((concept) =>
-    !hasConcept(forbidden, concept)
-  );
-  if (missingRequired.length === 0 && missingForbidden.length === 0) {
-    ok("launch regression: execution requirements and forbidden plan-only shortcuts retained");
+  if (standardsContractErrors.length === 0) {
+    ok("standards regression: bounded graph closure, status semantics, and denominators valid");
   } else {
-    fail(
-      "launch regression",
-      `missing required=[${missingRequired.join(", ")}], forbidden=[${missingForbidden.join(", ")}] concepts`,
-    );
+    fail("standards regression", standardsContractErrors.join("; "));
   }
 
-  const expectedDenominators = {
-    inventory_total: "pass + fail + blocked",
-    inventory_tested: "pass + fail",
-    report_attempted: "reproduced + not_reproduced",
-    report_total: "reproduced + not_reproduced + blocked + not_attempted",
-    hypotheses: "outside all execution denominators until converted to test IDs",
-  };
-  if (
-    JSON.stringify(fixture.denominatorRules) ===
-      JSON.stringify(expectedDenominators)
-  ) {
-    ok("launch regression: inventory and report denominator invariants exact");
+  const standardsHeadings = [
+    "## Non-negotiable status semantics",
+    "## Build the source graph",
+    "## Freeze and reconcile the research universe",
+    "## Follow substantive cross-links to closure",
+    "## Reconstruct chronology and current state",
+    "## Analyze the entire incubation surface",
+    "## Engine-position analysis",
+  ];
+  const missingStandardsHeadings = standardsHeadings.filter((heading) =>
+    !standardsText.includes(heading)
+  );
+  if (missingStandardsHeadings.length === 0) {
+    ok("standards module: evidence-graph stages remain structurally discoverable");
   } else {
-    fail("launch regression", "denominator invariants changed");
+    fail("standards module", `missing headings: ${missingStandardsHeadings.join(", ")}`);
   }
 
   const headings = [
@@ -938,14 +916,46 @@ try {
     fail("launch module", `missing headings: ${missingHeadings.join(", ")}`);
   }
 
+  const launchRoute = routeRequest(fixture.input, routing);
+  const standardsRoute = routeRequest(standardsFixture.input, routing);
+  const declaredStandardsRoutes = [
+    "Review Feature X for feature readiness",
+    "Review Feature X for feature-readiness",
+    "Review Feature X for launch readiness",
+    "Review Feature X for launch-readiness",
+    "Review Feature X for release readiness",
+    "Review Feature X for release-readiness",
+    "Analyze interoperability for Feature X",
+    "Check the standard position for Feature X",
+    "Check the standard positions for Feature X",
+    "Check the standards position for Feature X",
+    "Check the standards positions for Feature X",
+    "Check the standard-position for Feature X",
+    "Check the standard-positions for Feature X",
+    "Check the standards-position for Feature X",
+    "Check the standards-positions for Feature X",
+  ].map((input) => routeRequest(input, routing));
   if (
+    launchRoute.mode === "execute" &&
+    launchRoute.modules.includes("modules/launch-execution.md") &&
+    launchRoute.modules.includes("modules/standards-and-incubation-analysis.md") &&
+    standardsRoute.mode === "analyze" &&
+    standardsRoute.modules.includes("modules/standards-and-incubation-analysis.md") &&
+    declaredStandardsRoutes.every((route) =>
+      route.mode === "analyze" &&
+      route.modules.includes("modules/standards-and-incubation-analysis.md")
+    ) &&
     skillText.includes("modules/launch-execution.md") &&
     phaseText.includes("modules/launch-execution.md") &&
-    promptText.includes("modules/launch-execution.md")
+    promptText.includes("modules/launch-execution.md") &&
+    skillText.includes("modules/standards-and-incubation-analysis.md") &&
+    phaseText.includes("modules/standards-and-incubation-analysis.md") &&
+    promptText.includes("modules/standards-and-incubation-analysis.md") &&
+    launchText.includes("modules/standards-and-incubation-analysis.md")
   ) {
-    ok("launch routing: SKILL, phase, and detailed prompt link the execution contract");
+    ok("feature routing: exact regression prompts execute/analyze through linked contracts");
   } else {
-    fail("launch routing", "one or more launch entry points lost the execution module link");
+    fail("feature routing", "executable route or linked entry point is incomplete");
   }
 } catch (e) {
   fail("launch execution validation", e.message);
