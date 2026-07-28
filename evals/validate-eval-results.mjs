@@ -217,11 +217,21 @@ for (const caseId of eligible) {
 
   // Denominator recorded exactly.
   const vd = n.verdict?.denominator;
-  if (!vd || vd.focusTotal !== (n.verdict?.focusScores ? Object.keys(n.verdict.focusScores).length + (vd.focusUnable || 0) : 0)) {
-    // focusTotal should equal scored + unable
-  }
-  if (vd && vd.focusScored + (vd.focusUnable || 0) !== vd.focusTotal) {
-    fail(`${caseId}: focus denominator not exact (scored ${vd.focusScored} + unable ${vd.focusUnable || 0} ≠ total ${vd.focusTotal})`);
+  const scoredKeys = n.verdict?.focusScores && typeof n.verdict.focusScores === "object"
+    ? Object.keys(n.verdict.focusScores).length
+    : 0;
+  if (!vd) {
+    fail(`${caseId}: missing verdict denominator`);
+  } else {
+    if (vd.focusScored !== scoredKeys) {
+      fail(`${caseId}: focusScored ${vd.focusScored} ≠ focusScores keys ${scoredKeys}`);
+    }
+    if (vd.focusTotal !== scoredKeys + (vd.focusUnable || 0)) {
+      fail(`${caseId}: focusTotal ${vd.focusTotal} ≠ scored keys ${scoredKeys} + unable ${vd.focusUnable || 0}`);
+    }
+    if (vd.focusScored + (vd.focusUnable || 0) !== vd.focusTotal) {
+      fail(`${caseId}: focus denominator not exact (scored ${vd.focusScored} + unable ${vd.focusUnable || 0} ≠ total ${vd.focusTotal})`);
+    }
   }
   // Caveat present (score is not proof).
   if (!n.caveat || !/not.*(fact|proof|verification)/i.test(n.caveat)) {

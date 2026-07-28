@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:paulkinlan:chrome-devrel-skill:launch-acceptance:v1",
+  "title": "Chrome DevRel launch acceptance run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "attestation",
+    "runId",
+    "feature",
+    "interval",
+    "declaredOutcome",
+    "contract",
+    "artifacts",
+    "receipts",
+    "browserSessions",
+    "tests",
+    "documentationExamples",
+    "documentationGuide",
+    "semanticClaims",
+    "friction",
+    "externalReports",
+    "developerSignals",
+    "goals"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "keyId", "signedDigest", "signature"],
+      "properties": {
+        "algorithm": { "const": "hmac-sha256" },
+        "keyId": { "type": "string", "minLength": 1 },
+        "signedDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "signature": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "runId": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{2,127}$" },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "stage", "targetMilestone"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "stage": { "type": "string", "minLength": 1 },
+        "targetMilestone": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startedAt", "endedAt"],
+      "properties": {
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "declaredOutcome": {
+      "enum": ["succeeded", "partial", "blocked", "decision_required"]
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ids", "blockedIds", "frozenManifestArtifactId", "sourceArtifactIds", "supersessions"],
+      "properties": {
+        "ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "blockedIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "frozenManifestArtifactId": { "type": "string", "minLength": 1 },
+        "sourceArtifactIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "supersessions": { "type": "array", "items": { "$ref": "#/$defs/supersession" } }
+      }
+    },
+    "artifacts": { "type": "array", "items": { "$ref": "#/$defs/artifact" } },
+    "receipts": { "type": "array", "items": { "$ref": "#/$defs/receipt" } },
+    "browserSessions": { "type": "array", "items": { "$ref": "#/$defs/browserSession" } },
+    "tests": { "type": "array", "items": { "$ref": "#/$defs/test" } },
+    "documentationExamples": { "type": "array", "items": { "$ref": "#/$defs/documentationExample" } },
+    "documentationGuide": { "$ref": "#/$defs/documentationGuide" },
+    "semanticClaims": { "type": "array", "items": { "$ref": "#/$defs/semanticClaim" } },
+    "friction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["items", "counts"],
+      "properties": {
+        "items": { "type": "array", "items": { "$ref": "#/$defs/frictionItem" } },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["verified", "open", "fixedUnverified", "disputed", "blocked", "decisionRequired", "acceptedRisk"],
+          "properties": {
+            "verified": { "type": "integer", "minimum": 0 },
+            "open": { "type": "integer", "minimum": 0 },
+            "fixedUnverified": { "type": "integer", "minimum": 0 },
+            "disputed": { "type": "integer", "minimum": 0 },
+            "blocked": { "type": "integer", "minimum": 0 },
+            "decisionRequired": { "type": "integer", "minimum": 0 },
+            "acceptedRisk": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "externalReports": { "$ref": "#/$defs/externalReports" },
+    "developerSignals": { "$ref": "#/$defs/developerSignals" },
+    "goals": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/goal" } }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "type", "mime", "bytes", "sha256", "createdAt", "producer"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "mime": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "producer": { "enum": ["worker", "parent-verifier", "command-wrapper", "chrome-devtools-mcp"] },
+        "sessionId": { "type": "string" },
+        "testId": { "type": "string" }
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "producer", "argv", "cwd", "startedAt", "endedAt", "exitCode", "stdoutArtifactId", "stderrArtifactId", "subjectArtifactIds", "subjects"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "producer": { "const": "command-wrapper" },
+        "argv": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "cwd": { "type": "string", "minLength": 1 },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" },
+        "exitCode": { "type": "integer" },
+        "stdoutArtifactId": { "type": "string" },
+        "stderrArtifactId": { "type": "string" },
+        "subjectArtifactIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "subjects": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/receiptSubject" } }
+      }
+    },
+    "receiptSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "sha256Before", "sha256After"],
+      "properties": {
+        "id": { "type": "string" },
+        "path": { "type": "string" },
+        "sha256Before": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "sha256After": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "browserSession": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "producer", "tool", "browserVersion", "browserMajor", "channel", "os", "flags", "policies", "profileId", "startedAt", "endedAt", "eventLogArtifactId"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "producer": { "const": "parent-verifier" },
+        "tool": { "const": "chrome-devtools-mcp" },
+        "browserVersion": { "type": "string", "minLength": 1 },
+        "browserMajor": { "type": "integer", "minimum": 1 },
+        "channel": { "type": "string", "minLength": 1 },
+        "os": { "type": "string", "minLength": 1 },
+        "flags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "policies": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "profileId": { "type": "string", "minLength": 1 },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" },
+        "eventLogArtifactId": { "type": "string" }
+      }
+    },
+    "test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "attemptRole", "contractIds", "sessionId", "route", "result", "startedAt", "endedAt", "interactions", "consoleBeforeArtifactId", "consoleAfterArtifactId", "networkBeforeArtifactId", "networkAfterArtifactId", "assertionArtifactId", "screenshotArtifactIds", "adjacentRegressionIds"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "attemptRole": { "enum": ["baseline", "reproduction", "verification", "regression", "final"] },
+        "contractIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "sessionId": { "type": "string" },
+        "route": { "type": "string", "minLength": 1 },
+        "result": { "enum": ["pass", "fail", "blocked"] },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" },
+        "interactions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "consoleBeforeArtifactId": { "type": "string" },
+        "consoleAfterArtifactId": { "type": "string" },
+        "networkBeforeArtifactId": { "type": "string" },
+        "networkAfterArtifactId": { "type": "string" },
+        "assertionArtifactId": { "type": "string" },
+        "screenshotArtifactIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "adjacentRegressionIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "reproductionOf": { "type": "string" },
+        "platformEvidence": { "enum": ["physical", "remote-device", "emulator", "viewport-only"] }
+      }
+    },
+    "documentationExample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "path", "contractIds", "standalone", "copyPasteReady", "receiptId"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["feature-detection", "minimal", "branch-failure-integration", "realistic"] },
+        "path": { "type": "string", "minLength": 1 },
+        "contractIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "standalone": { "const": true },
+        "copyPasteReady": { "const": true },
+        "receiptId": { "type": "string" }
+      }
+    },
+    "documentationGuide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactId", "receiptId", "sections"],
+      "properties": {
+        "artifactId": { "type": "string" },
+        "receiptId": { "type": "string" },
+        "sections": { "type": "array", "minItems": 10, "uniqueItems": true, "items": { "type": "string" } }
+      }
+    },
+    "supersession": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fromId", "toIds", "evidenceArtifactId"],
+      "properties": {
+        "fromId": { "type": "string" },
+        "toIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "evidenceArtifactId": { "type": "string" }
+      }
+    },
+    "semanticClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "value", "assetPath", "assetJsonPointer", "source"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["bcd-version-added", "implementation-first-version", "target-milestone", "current-stable-milestone", "scheduled-stable-date", "actual-stable-release-date"] },
+        "value": {},
+        "assetPath": { "type": "string", "minLength": 1 },
+        "assetJsonPointer": { "type": "string" },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["adapter", "snapshotArtifactId", "jsonPointer", "liveUrl", "retrievedAt", "revision"],
+          "properties": {
+            "adapter": { "type": "string", "minLength": 1 },
+            "snapshotArtifactId": { "type": "string" },
+            "jsonPointer": { "type": "string" },
+            "liveUrl": { "type": "string", "pattern": "^https://" },
+            "retrievedAt": { "type": "string", "format": "date-time" },
+            "revision": { "type": "string", "pattern": "^(git:[a-f0-9]{40}|sha256:[a-f0-9]{64})$" }
+          }
+        }
+      }
+    },
+    "frictionItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sourceClass", "severity", "category", "status", "originalTestId", "beforeArtifactIds", "fixArtifactIds", "afterArtifactIds", "changedSubjects", "regressionTestIds"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "sourceClass": { "enum": ["discovered-during-run", "external-report"] },
+        "severity": { "enum": ["low", "medium", "high", "critical"] },
+        "category": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["verified", "open", "fixed-unverified", "disputed", "blocked", "decision-required", "accepted-risk"] },
+        "originalTestId": { "type": "string" },
+        "beforeArtifactIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "fixArtifactIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "afterArtifactIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "changedSubjects": { "type": "array", "items": { "$ref": "#/$defs/changedSubject" } },
+        "verificationTestId": { "type": "string" },
+        "regressionTestIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "acceptedBy": { "type": "string" },
+        "acceptanceEvidenceArtifactId": { "type": "string" }
+      }
+    },
+    "changedSubject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "beforeArtifactId", "afterArtifactId"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "beforeArtifactId": { "type": "string" },
+        "afterArtifactId": { "type": "string" }
+      }
+    },
+    "externalReports": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["items", "counts"],
+      "properties": {
+        "items": { "type": "array", "items": { "$ref": "#/$defs/externalReport" } },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reproduced", "notReproduced", "blocked", "notAttempted"],
+          "properties": {
+            "reproduced": { "type": "integer", "minimum": 0 },
+            "notReproduced": { "type": "integer", "minimum": 0 },
+            "blocked": { "type": "integer", "minimum": 0 },
+            "notAttempted": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "externalReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sourceArtifactId", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "sourceArtifactId": { "type": "string" },
+        "status": { "enum": ["reproduced", "not-reproduced", "blocked", "not-attempted"] },
+        "reproductionTestId": { "type": "string" },
+        "frictionId": { "type": "string" }
+      }
+    },
+    "developerSignals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cutoff", "stoppingRule", "sourceFamilies", "queries", "signals", "counts", "saturation", "counterevidence"],
+      "properties": {
+        "cutoff": { "type": "string", "format": "date-time" },
+        "stoppingRule": { "type": "string", "minLength": 1 },
+        "sourceFamilies": { "type": "array", "minItems": 4, "items": { "$ref": "#/$defs/sourceFamily" } },
+        "queries": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/signalQuery" } },
+        "signals": { "type": "array", "items": { "$ref": "#/$defs/signal" } },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["supporting", "contradicting", "ambiguous", "completeQueries", "blockedQueries", "independenceGroups"],
+          "properties": {
+            "supporting": { "type": "integer", "minimum": 0 },
+            "contradicting": { "type": "integer", "minimum": 0 },
+            "ambiguous": { "type": "integer", "minimum": 0 },
+            "completeQueries": { "type": "integer", "minimum": 0 },
+            "blockedQueries": { "type": "integer", "minimum": 0 },
+            "independenceGroups": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "saturation": { "type": "string", "minLength": 1 },
+        "counterevidence": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sourceFamily": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "applicability", "status", "rationale"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "applicability": { "enum": ["applicable", "not-applicable"] },
+        "status": { "enum": ["complete", "blocked", "not-applicable"] },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "signalQuery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sourceFamilyId", "url", "terms", "intent", "status", "retrieved", "relevant", "duplicate", "screenedOut", "blocked", "resultArtifactId"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "sourceFamilyId": { "type": "string" },
+        "url": { "type": "string", "pattern": "^https://" },
+        "terms": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "intent": { "enum": ["support", "falsify", "neutral"] },
+        "status": { "enum": ["complete", "blocked"] },
+        "retrieved": { "type": "integer", "minimum": 0 },
+        "relevant": { "type": "integer", "minimum": 0 },
+        "duplicate": { "type": "integer", "minimum": 0 },
+        "screenedOut": { "type": "integer", "minimum": 0 },
+        "blocked": { "type": "integer", "minimum": 0 },
+        "resultArtifactId": { "type": "string" }
+      }
+    },
+    "signal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "queryId", "canonicalUrl", "independenceGroup", "direction", "directness", "developerJob", "need", "workaround", "limitations", "publicability", "evidenceArtifactId"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "queryId": { "type": "string" },
+        "canonicalUrl": { "type": "string", "pattern": "^https://" },
+        "independenceGroup": { "type": "string", "minLength": 1 },
+        "direction": { "enum": ["supporting", "contradicting", "ambiguous"] },
+        "directness": { "enum": ["direct-observation", "self-report", "behavior-usage", "workaround", "commitment", "opinion"] },
+        "developerJob": { "type": "string", "minLength": 1 },
+        "need": { "type": "string", "minLength": 1 },
+        "workaround": { "type": "string" },
+        "limitations": { "type": "string", "minLength": 1 },
+        "publicability": { "enum": ["public", "approved-internal", "private-not-for-output"] },
+        "evidenceArtifactId": { "type": "string" }
+      }
+    },
+    "goal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "evidenceArtifactIds"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["pending", "in_progress", "succeeded", "failed_retryable", "blocked", "decision_required", "not_applicable"] },
+        "evidenceArtifactIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+      }
+    }
+  }
+}

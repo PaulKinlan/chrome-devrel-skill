@@ -13,7 +13,7 @@ Implementation and specification are intended to stabilize for default availabil
 
 ## Work and evidence
 
-Load `modules/launch-execution.md`, `modules/standards-and-incubation-analysis.md`, `modules/implementation-and-issue-tracker-research.md`, and `modules/completion-loop.md`. “Manage the launch” means execute the public, reversible readiness and enablement work until success or a confirmed terminal blocker unless the user explicitly asks for planning only.
+Load `modules/launch-execution.md`, `modules/standards-and-incubation-analysis.md`, `modules/implementation-and-issue-tracker-research.md`, `modules/developer-signals.md`, `modules/launch-acceptance.md`, and `modules/completion-loop.md`. “Manage the launch” means execute the public, reversible readiness and enablement work until the online acceptance validator succeeds or a confirmed terminal blocker remains unless the user explicitly asks for planning only.
 
 - Reconcile every ChromeStatus/intent claim with linked evidence, methods, dates, denominators, and contradictory findings.
 - Fully analyze Mozilla, WebKit, TAG, intent, and incubation records: read complete threads; follow every substantive cross-link to analyzed/duplicate/out-of-scope/blocked; inventory design-significant issues/PRs; reconstruct chronology; and map each question/objection to responses, landed changes, reviewer confirmation, and current state. `No signal`, an open request, no response, and silence are not neutral or support.

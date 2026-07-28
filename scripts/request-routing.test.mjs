@@ -26,6 +26,8 @@ const launchRoute = {
     "modules/launch-execution.md",
     "modules/standards-and-incubation-analysis.md",
     "modules/implementation-and-issue-tracker-research.md",
+    "modules/developer-signals.md",
+    "modules/launch-acceptance.md",
     "modules/completion-loop.md",
   ],
 };
@@ -76,6 +78,7 @@ const implementationResearchRoute = {
   modules: [
     "modules/implementation-and-issue-tracker-research.md",
     "modules/standards-and-incubation-analysis.md",
+    "modules/developer-signals.md",
     "modules/completion-loop.md",
   ],
 };

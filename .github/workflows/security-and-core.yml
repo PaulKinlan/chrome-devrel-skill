@@ -30,6 +30,14 @@ jobs:
         run: node scripts/validate-retrospective-metrics.mjs
       - name: Validate archived retrospective run
         run: node scripts/validate-retrospective-run.mjs
+      - name: Validate launch acceptance and negative mutations
+        run: node scripts/launch-acceptance.test.mjs
+      - name: Validate trusted command receipts
+        run: node scripts/run-with-receipt.test.mjs
+      - name: Reject untrusted receipt commands and environment leakage
+        run: node scripts/trusted-receipt-command.test.mjs
+      - name: Validate parent-key isolation during receipt replay
+        run: node scripts/receipt-key-isolation.test.mjs
       - name: Validate request routing
         run: node scripts/request-routing.test.mjs
       - name: Validate behavioral contracts and mutations

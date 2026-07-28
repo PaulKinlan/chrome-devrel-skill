@@ -130,21 +130,19 @@ If the request says **manage the launch**, **prepare to ship**, **validate for
 release**, or **deliver developer enablement for a named launch/release**, the
 default is execution rather than a plan. A general early-stage enablement
 assessment remains diagnostic unless the user asks to build or test assets. For
-launch execution, the skill inventories the feature contract, creates missing standalone
-samples and a realistic demo, launches Chrome and validates them with
-`chrome-devtools-mcp`, records friction from observed evidence, fully analyzes
+launch execution, the skill inventories the feature contract, creates a comprehensive set of independently runnable copy-paste-ready feature-detection, primitive, branch/failure/integration, and realistic examples, launches Chrome and validates every unblocked contract ID with `chrome-devtools-mcp`, saves session-bound screenshots plus console/network/assertion evidence, and turns every observed friction item into a corrected and regression-tested closure goal. It fully analyzes
 Mozilla/WebKit/TAG/incubation threads and their substantive cross-links, searches
 Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla
-Bugzilla/source/tests, and shared WPT/status history, audits MDN/BCD and
-Chrome-owned documentation, creates patch-ready documentation where absent or
-stale, and reports exact pass/fail/blocked totals. `No signal`, an open position request, no response, or
+Bugzilla/source/tests, and shared WPT/status history. Separately, it searches a bounded multi-source frontier for direct and contradictory developer need, jobs, workarounds, integration feedback, alternatives, and production constraints. It audits MDN/BCD and Chrome-owned documentation, verifies every BCD version/release-date claim against fresh field-level primary evidence, creates comprehensive patch-ready documentation where absent or stale, and reports exact pass/fail/blocked totals. `No signal`, an open position request, no response, or
 silence is never rewritten as neutral or support. External publication and formal
 approval remain human controlled. The agent continues reversible research,
 building, testing, correction, and re-validation until success or a confirmed
-terminal blocker rather than asking whether to perform the implied next step.
+terminal blocker rather than asking whether to perform the implied next step. A model-written report cannot self-attest completion: the online launch-acceptance validator checks current semantic facts, artifact hashes and saved PNGs, Chrome/MCP sessions, comprehensive contract coverage, developer-signal denominators, and verified friction closure.
 See [launch execution](modules/launch-execution.md),
 [standards/incubation analysis](modules/standards-and-incubation-analysis.md),
 [implementation/issue research](modules/implementation-and-issue-tracker-research.md),
+[developer signals](modules/developer-signals.md),
+[executable launch acceptance](modules/launch-acceptance.md),
 and the [completion loop](modules/completion-loop.md).
 
 ### Engineer: detailed start

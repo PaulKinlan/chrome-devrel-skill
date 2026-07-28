@@ -2,7 +2,7 @@
 
 Use this module for feature development, readiness, launch, interoperability, debugging, and documentation work. Standards documents describe intended behavior; issue trackers, code reviews, source, and tests reveal implementation history, platform differences, known failures, and unfinished work.
 
-A dashboard link or one umbrella bug is a seed, not a complete implementation analysis.
+A dashboard link or one umbrella bug is a seed, not a complete implementation analysis. Load `modules/developer-signals.md` in parallel: implementation evidence answers what engines built or are changing; developer signals answer who experiences the job, what they do today, what it costs, what they reject, and whether this intervention addresses the need. Never collapse those evidence classes.
 
 ## Required source families
 
@@ -39,6 +39,8 @@ Search aliases, Web IDL names, preferences/flags, component names, test names, s
 - specification and incubator issue/PR references;
 - framework/library/polyfill issues when the feature's integration depends on them;
 - platform/OS issue trackers when browser behavior delegates to the operating system.
+
+Issue/change searches must also extract attributable developer-need signals, requested use cases, integration failures, workarounds, rejection reasons, and production constraints into a separate developer-signal ledger. Then broaden beyond implementation trackers across the six public source families in `modules/developer-signals.md`: problem/workaround communities, frameworks/libraries/tooling, surveys/research/usage, browser/standards discussions, adjacent alternatives, and public product/support evidence. Search job/workaround language and counterevidence, not only feature names. Internal feedback may supplement this only when supplied under an approved evidence boundary.
 
 ## Build a query manifest
 
@@ -128,7 +130,8 @@ Use `modules/launch-execution.md` to run the resulting cases in Chrome and `modu
 4. cross-browser implementation matrix;
 5. known-issue and regression ledger mapped to feature-contract test IDs;
 6. contradictions among tracker state, source, runtime, tests, standards positions, docs, and launch claims;
-7. additional browser tests/demos/docs/support changes generated from the evidence;
-8. blocked queries/sources and the conclusions each could change.
+7. separate developer-signal query/source ledger with exact supporting/contradicting/ambiguous and independence counts, saturation/limitations, and changes it caused to feature scope/tests/docs/examples/trials;
+8. additional browser tests/demos/docs/support changes generated from implementation and developer evidence;
+9. blocked queries/sources and the conclusions each could change.
 
 Do not report “no known issues,” “not implemented,” or “unsupported” until the declared query/source inventory is reconciled or the claim is explicitly narrowed to the searched evidence.

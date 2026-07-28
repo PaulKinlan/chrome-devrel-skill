@@ -40,13 +40,12 @@ requests to execute public, reversible work—not merely to describe a plan. A
 general early-stage developer-enablement assessment remains diagnostic unless
 the user asks to build or test assets. Load `modules/launch-execution.md`,
 `modules/standards-and-incubation-analysis.md`,
-`modules/implementation-and-issue-tracker-research.md`, and
-`modules/completion-loop.md`. Unless the user explicitly asks for planning only,
+`modules/implementation-and-issue-tracker-research.md`,
+`modules/developer-signals.md`, `modules/completion-loop.md`, and
+`modules/launch-acceptance.md`. Unless the user explicitly asks for planning only,
 inventory the feature contract, create missing standalone samples and a
 realistic integrated demo, run them against the real implementation, build the
-friction log from observed evidence, audit MDN/BCD and Chrome-owned docs, create
-patch-ready documentation where missing or stale, and report exact
-built/tested/pass/fail/blocked denominators.
+friction log from observed evidence, audit MDN/BCD and Chrome-owned docs, create comprehensive standalone copy-paste-ready documentation and examples where missing or stale, reconcile the bounded public developer-signal frontier, close observed friction through verified fixes and regressions, and report exact built/tested/pass/fail/blocked denominators. Write the machine-readable launch bundle and run the online launch-acceptance validator; prose claims cannot compute success.
 
 The machine-readable routing contract is `config/request-routing.json`; the exact
 user-reported prompts are exercised by `scripts/request-routing.test.mjs`. Apply
@@ -57,9 +56,7 @@ Do not stop at hypotheses, a demo plan, a docs gap analysis, or a test runbook
 when the current environment can build and exercise the artifacts. A Chrome
 launch/readiness goal must launch Chrome and use `chrome-devtools-mcp` to exercise
 the samples/demos and visible controls while inspecting console/network state.
-If the tool or required Chrome build/platform is unavailable, runtime validation
-is blocked—not passed and not replaced by content, source inspection, lint, or
-unit tests. External publication, PR creation, production changes, and formal
+Every executed route must save session-bound screenshot, console, network, and assertion artifacts; a screenshot claim or attachment without a verified file is not evidence. If the tool or required Chrome build/platform is unavailable, runtime validation is blocked—not passed and not replaced by content, source inspection, lint, or unit tests. External publication, PR creation, production changes, and formal
 approvals still require attributable authority.
 
 Treat write/build/test/audit/fix/validate requests as goals. Continue the
@@ -132,7 +129,12 @@ review feedback.
   Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla
   Bugzilla/source/tests, and shared WPT/status history using a reconciled query
   manifest. A single umbrella bug or zero-result query is never the whole
-  implementation analysis.
+  implementation analysis. In parallel, build the separate developer-signal
+  ledger across problem/workaround communities, frameworks/libraries/tooling,
+  surveys/research/usage, browser/standards issues, adjacent alternatives, and
+  public product/support evidence; search supportive and contradictory job/
+  workaround language to a declared cutoff and saturation rule. Code activity,
+  usage, issue counts, and standards positions are not automatically developer demand.
 - Preserve the distinction between DevRel advice and formal API Owner,
   standards, engineering, privacy, security, accessibility, legal, or release
   approval. Rehearse every relevant perspective and user impact before formal
@@ -241,7 +243,7 @@ Candidate outputs include:
 - Developer research or survey plan
 - Ecosystem/framework compatibility matrix
 - Partner shortlist and trial brief
-- Runnable standalone sample suite plus a realistic integrated demo
+- Comprehensive runnable standalone sample suite—feature detection, copy-paste primitives, branches/failures/integration—and a realistic integrated demo, with exact feature-contract coverage
 - Executed friction log and conformance/regression evidence
 - End-user impact and pre-review perspective brief
 - Documentation and FAQ gap analysis
@@ -301,7 +303,12 @@ research jobs, communities, customers, partners, alternatives and
 counterevidence across web/native/mini-app/chat/LLM-agent ecosystems.
 
 Use `modules/user-impact-and-review-rehearsal.md` before formal review and when
-rollout/resource behavior changes. Use `modules/launch-execution.md` when a user
+rollout/resource behavior changes. Use `modules/launch-acceptance.md` to create
+and validate the machine-readable evidence bundle; only its online computed
+result can establish launch-run success. Use `modules/developer-signals.md` to
+reconcile broad, deduplicated public developer need, counterevidence, workarounds,
+and alternatives separately from implementation status. Use
+`modules/launch-execution.md` when a user
 asks to manage or enable a launch; it requires runnable samples, real browser
 execution, observed friction, and patch-ready documentation rather than a plan
 alone. Use `modules/standards-and-incubation-analysis.md` for full Mozilla,

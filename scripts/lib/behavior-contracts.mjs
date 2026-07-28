@@ -3,6 +3,10 @@ export const launchDenominators = {
   inventory_tested: "pass + fail",
   report_attempted: "reproduced + not_reproduced",
   report_total: "reproduced + not_reproduced + blocked + not_attempted",
+  friction_total: "verified + open + fixed_unverified + disputed + blocked + decision_required + accepted_risk",
+  friction_resolved: "verified",
+  signal_query_total: "complete_queries + blocked_queries",
+  signal_retrieved: "relevant + duplicate + screened_out + blocked",
   hypotheses: "outside all execution denominators until converted to test IDs",
 };
 
@@ -15,6 +19,8 @@ export const implementationDenominators = {
     "relevant_analyzed + duplicate + screened_out + detail_blocked + unretrieved_result_refs",
   change_total:
     "open + merged_active + merged_reverted + abandoned + blocked_changes",
+  signal_query_total: "complete_signal_queries + blocked_signal_queries",
+  signal_retrieved: "relevant_signals + duplicate_signals + screened_out_signals + blocked_signal_details",
   goal_total:
     "pending + in_progress + succeeded + failed_retryable + blocked + decision_required + not_applicable",
   goal_terminal: "succeeded + blocked + decision_required + not_applicable",
@@ -92,6 +98,7 @@ export function validateLaunchContract(fixture) {
       [
         "coverage manifest",
         "independently runnable",
+        "comprehensive copy-paste-ready",
         "realistic integrated",
         "real implementation",
         "chrome-devtools-mcp",
@@ -106,6 +113,11 @@ export function validateLaunchContract(fixture) {
         "continue public research and reversible local",
         "completion goal ledger",
         "artifact and evidence paths",
+        "session-bound screenshots",
+        "fresh field-level primary evidence",
+        "developer-signal frontier",
+        "verified friction closure",
+        "online launch-acceptance validator",
       ],
       "launch required",
     ),
@@ -121,6 +133,9 @@ export function validateLaunchContract(fixture) {
         "generic prose patch-ready",
         "ask whether to write build test fix or validate",
         "failed retryable goals",
+        "model-authored claims as launch acceptance",
+        "open or fixed-unverified friction as resolved",
+        "issue counts implementation activity or usage as developer demand",
       ],
       "launch forbidden",
     ),
@@ -155,6 +170,8 @@ export function validateImplementationContract(
         "exact query URLs",
         "implementation lineage",
         "separate browser standards position",
+        "developer-signal source families",
+        "supporting contradicting and ambiguous",
         "chrome-devtools-mcp",
         "runtime validation blocked",
         "reversible goals",
@@ -177,6 +194,7 @@ export function validateImplementationContract(
         "failed retryable pending or in progress goals",
         "retry exhaustion into blocked",
         "marking exact goals blocked",
+        "infer developer demand from implementation activity",
       ],
       "implementation forbidden",
     ),
@@ -201,6 +219,9 @@ export function validateImplementationContract(
     "result_ref_total = relevant_analyzed + duplicate + screened_out + detail_blocked + unretrieved_result_refs",
     "change_total = open + merged_active + merged_reverted + abandoned + blocked_changes",
     "A zero-result query",
+    "modules/developer-signals.md",
+    "problem/workaround communities",
+    "supporting/contradicting/ambiguous",
   ];
   const completionRules = [
     "Do not end with “Would you like me to write/test/build…?”",

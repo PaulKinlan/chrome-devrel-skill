@@ -64,11 +64,16 @@ Every BCD entry for a Web API member requires:
 
 - `version_added`: MUST be a version string (e.g., `"120"`) or `false`. Schema
   permits ONLY string|false — `null` and `true` are both forbidden.
+- `version_added` means the first browser release represented by BCD's support statement. It is not the browser used for this run, the current stable milestone, the target milestone, an implementation commit position, a flag/trial version, or today's date.
+- Keep scheduled stable date, actual stable release date, implementation-first version, target milestone, current stable milestone, and tested browser version as separate typed claims.
+- Register every generated non-mirror `version_added` in `launch-acceptance.json` with the BCD asset path/JSON Pointer, fresh primary-source snapshot/JSON Pointer, live source URL, retrieval timestamp, and revision. The online validator must compare all three values.
+- A valid JSON shape and passing `npm test` do not establish factual correctness. Missing, stale, contradictory, or unreachable evidence is blocked—not a guessed value.
 
 ## Evidence checklist (before submitting BCD PR)
 
-- [ ] Every non-mirror `version_added` has a source: release notes,
-      ChromeStatus, bug tracker, or test
+- [ ] Every non-mirror `version_added` has a fresh primary source and exact selector; broad links without the field/value evidence are insufficient
+- [ ] BCD asset value, retained source snapshot value, and freshly fetched live value match exactly
+- [ ] Target/current/tested/implementation/scheduled-release/actual-release meanings are not conflated
 - [ ] `spec_url` points to actual spec section, or omitted if
       `standard_track: false`
 - [ ] `status` booleans match the feature's real standards position

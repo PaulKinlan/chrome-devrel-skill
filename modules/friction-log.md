@@ -61,20 +61,27 @@ A failure discovered in the run is observed friction. An external report is repr
 - Source class: discovered-during-run, external-report, or hypothesis/question
 - Inventory-test result: pass, fail, or blocked, when this item has a test ID
 - Reproduction outcome: reproduced, not-reproduced, blocked, or not-attempted, for an external report
-- Resolution status: open, disputed, fixed-unverified, verified, or accepted
+- Resolution status: open, disputed, fixed-unverified, verified, blocked, decision-required, or accepted-risk
+- Original failed test ID, before-artifact IDs, fix-artifact IDs, verification test ID, adjacent regression test IDs, and after-artifact IDs
 
 A mismatch between docs/explainer/spec/implementation is a finding even if one path “works.” Do not silently rewrite the expectation to match implementation.
 
-## Iterate
+## Iterate and close the frontier
 
-1. Turn high-value findings into questions and measurable goals.
-2. Improve the appropriate layer: product, implementation, spec/explainer, docs, sample, tooling, demo, fallback, or support.
+Every failed browser test enters the friction frontier; a report cannot omit a failed test merely because it was later corrected.
+
+1. Turn each finding into a measurable goal owned by the appropriate layer: product, implementation, spec/explainer, docs, sample, tooling, demo, fallback, or support.
+2. Make a real content/code/configuration change and retain its path plus before/after content hashes.
 3. Add immutable regression/conformance assertions where behavior can be tested.
-4. Re-run the exact reproduction plus adjacent paths.
-5. Preserve before/after evidence and denominator counts.
-6. Monitor for recurrence across versions and environments. Define each monitor's source/query, cadence (for example every milestone or after relevant implementation/docs changes), owner, alert threshold (such as a reappearing console signature or failed conformance assertion), action, and stop condition.
+4. Parent-verify the exact original reproduction after the change.
+5. Re-run every declared adjacent regression, full semantic-fact and artifact-integrity gates, and the complete friction frontier.
+6. Save before/after screenshots for visual findings and retain all console/network/assertion evidence.
+7. Add newly discovered failures to the denominator rather than hiding them.
+8. Monitor for recurrence across versions and environments. Define each monitor's source/query, cadence (for example every milestone or after relevant implementation/docs changes), owner, alert threshold (such as a reappearing console signature or failed conformance assertion), action, and stop condition.
 
-Report `inventory_total`, `inventory_tested`, pass/fail/blocked, fixed/remaining, `report_total`, `report_attempted`, reproduced/not-reproduced/report-blocked/not-attempted counts against explicit ID inventories. Report hypotheses separately and outside all execution totals. Do not claim complete coverage without an inventory.
+`verified` is computed only when the original failure, changed artifact, later exact-reproduction pass, adjacent-regression passes, and after evidence all exist. `fixed-unverified`, `open`, `disputed`, `blocked`, `decision-required`, and `accepted-risk` are not resolved and prevent technical success. Accepted risk requires attributable human authority evidence; it never becomes a verifier-generated technical pass.
+
+Report `inventory_total`, `inventory_tested`, pass/fail/blocked, verified/open/fixed-unverified/disputed/blocked/decision-required/accepted-risk, `report_total`, `report_attempted`, and reproduced/not-reproduced/report-blocked/not-attempted counts against explicit ID inventories. `resolved = verified`; no other status may enter that numerator. Report hypotheses separately and outside all execution totals. Do not claim complete coverage without an inventory or machine-valid closure bundle.
 
 ## Output
 

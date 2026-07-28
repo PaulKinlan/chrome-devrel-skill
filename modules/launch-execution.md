@@ -1,6 +1,6 @@
 # Launch execution: demos, samples, docs, and observed friction
 
-Use this module when the user says they need to **manage**, **prepare**, **validate**, or **enable** a feature launch. A launch plan is not the default final deliverable. Load `modules/completion-loop.md` and execute the public, reversible work until it succeeds or reaches a confirmed terminal blocker.
+Use this module when the user says they need to **manage**, **prepare**, **validate**, or **enable** a feature launch. A launch plan is not the default final deliverable. Load `modules/completion-loop.md`, `modules/launch-acceptance.md`, and `modules/developer-signals.md`; execute the public, reversible work until the trusted launch validator succeeds or the run reaches a confirmed terminal blocker. Policy prose and model-authored claims are not acceptance evidence.
 
 This module does not grant release, API Owner, engineering, standards, privacy, security, accessibility, legal, MDN, or editorial approval. A generic request to manage a launch authorizes public research and reversible local drafts/tests only. Opening an external issue or PR, publishing, changing production systems, or representing another team requires a separate explicit instruction for that action plus confirmed target, scope, account, and authority. User approval without verified scope/authority is sufficient only for local drafts, never external representation.
 
@@ -9,15 +9,16 @@ This module does not grant release, API Owner, engineering, standards, privacy, 
 Unless the user explicitly asks for planning only:
 
 1. Recover or create the durable feature packet and canonical asset inventory.
-2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, and existing documentation/demos. Load `modules/standards-and-incubation-analysis.md` and `modules/implementation-and-issue-tracker-research.md`; read full Mozilla/WebKit/TAG/incubation threads, disposition every substantive cross-link, and search/reconcile Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla Bugzilla/source/tests, and WPT/status history.
+2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, existing documentation/demos, and developer-need evidence. Load `modules/standards-and-incubation-analysis.md`, `modules/implementation-and-issue-tracker-research.md`, and `modules/developer-signals.md`; read full Mozilla/WebKit/TAG/incubation threads, disposition every substantive cross-link, search/reconcile Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla Bugzilla/source/tests, and WPT/status history, and exhaust the bounded public developer-signal frontier across problem/workaround communities, frameworks/tooling, surveys/research/usage, browser/standards issues, adjacent alternatives, and public product/support evidence.
 3. Build a coverage manifest from the actual API surface, normative behavior, important options, policies/permissions, failure modes, fallback, and realistic developer jobs.
 4. Create the missing standalone samples and integrated demos in a reviewable workspace.
 5. Launch the intended Chrome build and run every applicable sample/demo against the real implementation. If the required build/platform cannot run, mark those runtime goals blocked; never substitute prose, mocks, or source inspection.
 6. Exercise visible behavior and inspect console/network/runtime state before and after interactions.
 7. Create the friction log from observed or externally reproduced evidence, not from speculation.
-8. Audit MDN content and BCD plus Chrome-owned developer documentation; create patch-ready additions or corrections when missing or stale.
-9. Re-run after fixes and report exact built/tested/pass/fail/blocked denominators.
-10. Return the launch/readiness decision packet and concrete artifact paths, not merely a future worklist.
+8. Audit MDN content and BCD plus Chrome-owned developer documentation; create comprehensive, independently runnable, copy-paste-ready additions or corrections when missing or stale. A happy-path fragment or prose guide with hidden setup is insufficient.
+9. Re-run after every fix, close the complete friction frontier, and report exact built/tested/pass/fail/blocked denominators.
+10. Write the machine-readable launch bundle and run `scripts/validate-launch-acceptance.mjs --online`; the validator's computed result, not the worker's narrative, determines completion.
+11. Return the launch/readiness decision packet, `launch-acceptance.json`, generated `acceptance-run.json`, and concrete artifact paths—not merely a future worklist.
 
 Do not stop after identifying that demos, tests, or docs are missing. Missing public information should trigger research; missing reversible local assets should trigger creation. Ask only for access, authority, private evidence, product decisions, or environment capabilities that cannot be obtained responsibly.
 
@@ -80,7 +81,8 @@ For browser-facing work:
 - exercise every visible control with realistic input on desktop and mobile configurations;
 - label mobile evidence as physical device, remotely controlled device, emulator, or desktop viewport emulation; viewport emulation proves responsive layout only and must not be reported as Android/mobile-platform API validation;
 - inspect console and network before interaction and after each important state transition;
-- retain screenshots, DOM/state evidence, request details, errors, and performance traces where relevant;
+- save at least one screenshot for every executed test/route/environment, plus before/after screenshots for visual friction; bind each PNG to the run/session/test, retain byte length and SHA-256, and verify that the file exists and decodes—an attachment or claimed path is not saved evidence;
+- retain DOM/state assertions, request details, errors, and performance traces where relevant;
 - validate feature-detection and fallback in an unsupported configuration or engine when feasible;
 - run static/unit/WPT/conformance checks too, but never substitute them for visible browser behavior.
 
@@ -121,7 +123,9 @@ Use `modules/friction-log.md` for the complete record.
 
 ### Chrome-owned enablement
 
-Audit and, when missing, create patch-ready material for the relevant Chrome release notes, developer.chrome.com/web.dev reference or guide, compatibility/fallback guidance, enterprise notice, FAQ/troubleshooting, and demo index. Before calling a change patch-ready:
+Audit and, when missing, create patch-ready material for the relevant Chrome release notes, developer.chrome.com/web.dev reference or guide, compatibility/fallback guidance, enterprise notice, FAQ/troubleshooting, and demo index. “Comprehensive” requires exact mapping from every unblocked developer-facing contract ID to feature detection/setup/fallback, minimal primitives, options and normative branches, errors/denial/malformed input, policy/permission, lifecycle/cleanup, server/build/framework/deployment integration, accessibility, privacy/security, performance/resource considerations, troubleshooting/diagnostics, and a realistic product flow. Every example must be standalone, complete, copy-paste-ready, dependency/setup explicit, visibly report success/error/recovery, and have its own successful execution receipt. Do not use ellipses, hidden harness code, or “fill in the rest” placeholders.
+
+Before calling a change patch-ready:
 
 1. identify the canonical source repository and exact target path;
 2. pin the base revision and record the retrieval date;
@@ -148,8 +152,8 @@ Return:
 6. standards/incubation source graph, chronology, engine-position matrix, TAG and objection-resolution ledgers, exact cross-link denominator, and contradictions against launch claims;
 7. implementation query manifest and lineage across Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla Bugzilla/source/tests, and WPT/status records;
 8. MDN/BCD and Chrome-doc inventories with absent/current/stale status and patch paths;
-9. completion-goal ledger, code/docs changes made, validations run, failures corrected, and re-run results;
+9. completion-goal ledger, code/docs changes made, validations run, failures corrected, and re-run results, plus generated `launch-acceptance.json` and `acceptance-run.json` paths;
 10. residual product/review/support risks with owners or `owner required`;
 11. the smallest remaining actions that require private evidence, formal decisions, publication authority, or unavailable environments.
 
-Never report “demo planned,” “docs needed,” or “test recommended” as completion when the files could have been built and executed in the current environment.
+Never report “demo planned,” “docs needed,” or “test recommended” as completion when the files could have been built and executed in the current environment. Never report success when the online launch-acceptance validator has not computed `succeeded`; structural repository tests and prose judges do not substitute for run acceptance.

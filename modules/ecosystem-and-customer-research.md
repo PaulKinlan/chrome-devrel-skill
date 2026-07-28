@@ -2,7 +2,7 @@
 
 Use this module when the developer problem, demand, customer/partner set, alternatives, adjacent-platform behavior, adoption path, or “why not?” case is incomplete.
 
-The goal is not to collect a large pile of favorable links. The goal is a reproducible, deduplicated evidence base that improves product and launch decisions.
+The goal is not to collect a large pile of favorable links. The goal is a reproducible, deduplicated evidence base that improves product and launch decisions. For a concrete feature/launch run, also load `modules/developer-signals.md` and encode the exact source-family/query/signal denominators in the launch acceptance bundle; prose synthesis alone is not a reconciled signal frontier.
 
 ## 1. Frame the decision
 

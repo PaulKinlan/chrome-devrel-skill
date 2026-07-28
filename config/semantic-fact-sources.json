@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "adapters": {
+    "mdn-bcd-current": {
+      "claimTypes": ["bcd-version-added"],
+      "hostname": "raw.githubusercontent.com",
+      "pathPattern": "^/mdn/browser-compat-data/main/",
+      "sourcePointerPattern": "/support/chrome/version_added$",
+      "transform": "identity",
+      "binding": "bcd-pointer-equality"
+    },
+    "chromestatus-feature": {
+      "claimTypes": ["target-milestone"],
+      "hostname": "chromestatus.com",
+      "pathPattern": "^/api/v0/features/[0-9]+/?$",
+      "sourcePointerPattern": "^/browsers/chrome/(?:desktop|android|webview)$",
+      "transform": "identity",
+      "binding": "chromestatus-feature-id",
+      "stripXssi": true
+    },
+    "chrome-version-history-current-stable": {
+      "claimTypes": ["current-stable-milestone"],
+      "hostname": "versionhistory.googleapis.com",
+      "pathPattern": "^/v1/chrome/platforms/[^/]+/channels/stable/versions$",
+      "sourcePointerPattern": "^/versions/0/version$",
+      "requiredQuery": { "pageSize": "1" },
+      "transform": "chrome-major"
+    },
+    "chromium-milestone-schedule": {
+      "claimTypes": ["scheduled-stable-date"],
+      "hostname": "chromiumdash.appspot.com",
+      "pathPattern": "^/fetch_milestone_schedule$",
+      "sourcePointerPattern": "^/mstones/0/stable_date$",
+      "requiredQuery": { "mstone": "$targetMilestone" },
+      "transform": "date-only",
+      "binding": "schedule-target-milestone"
+    }
+  }
+}

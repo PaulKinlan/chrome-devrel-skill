@@ -69,6 +69,20 @@ try {
   fail("schema", e.message);
 }
 
+try {
+  const schema = await readJson("schemas/launch-acceptance.schema.json");
+  const required = new Set(schema.required || []);
+  const expected = ["artifacts", "browserSessions", "tests", "documentationExamples", "documentationGuide", "semanticClaims", "friction", "externalReports", "developerSignals", "goals"];
+  const missing = expected.filter((field) => !required.has(field));
+  if (schema.$defs?.artifact && schema.$defs?.frictionItem && schema.$defs?.developerSignals && missing.length === 0) {
+    ok("schema: launch-acceptance evidence, friction, and developer-signal fields present");
+  } else {
+    fail("schema", `launch-acceptance missing: ${missing.join(", ")}`);
+  }
+} catch (e) {
+  fail("schema", e.message);
+}
+
 // 3. Validate safe overlay example
 try {
   const example = await readJson(
@@ -864,6 +878,14 @@ try {
     join(root, "modules/completion-loop.md"),
     "utf8",
   );
+  const acceptanceText = await readFile(
+    join(root, "modules/launch-acceptance.md"),
+    "utf8",
+  );
+  const developerSignalsText = await readFile(
+    join(root, "modules/developer-signals.md"),
+    "utf8",
+  );
   const fixture = await readJson(
     "evals/regressions/launch-management-execution.json",
   );
@@ -940,6 +962,31 @@ try {
     fail("launch module", `missing headings: ${missingHeadings.join(", ")}`);
   }
 
+  const acceptanceRules = [
+    "The worker's `declaredOutcome` is not trusted",
+    "asset, retained snapshot, and freshly fetched primary source",
+    "Every unblocked contract ID",
+    "`open`, `fixed-unverified`, `disputed`, `blocked`, `decision-required`, and `accepted-risk`",
+    "online launch-acceptance validator",
+  ];
+  const signalRules = [
+    "Problem/workaround communities",
+    "Framework/library/tooling",
+    "Surveys/research/usage",
+    "Browser/standards/issues",
+    "Adjacent platforms/alternatives",
+    "Public product/support evidence",
+    "supporting, contradicting, or ambiguous",
+    "retrieved = relevant + duplicate + screened_out + blocked",
+  ];
+  const missingAcceptanceRules = acceptanceRules.filter((rule) => !acceptanceText.includes(rule));
+  const missingSignalRules = signalRules.filter((rule) => !developerSignalsText.includes(rule));
+  if (missingAcceptanceRules.length === 0 && missingSignalRules.length === 0) {
+    ok("launch acceptance: semantic, artifact, friction, comprehensive-example, and developer-signal rules present");
+  } else {
+    fail("launch acceptance", `missing: ${[...missingAcceptanceRules, ...missingSignalRules].join(", ")}`);
+  }
+
   const launchRoute = routeRequest(fixture.input, routing);
   const standardsRoute = routeRequest(standardsFixture.input, routing);
   const implementationRoute = routeRequest(implementationFixture.input, routing);
@@ -977,10 +1024,14 @@ try {
     launchRoute.modules.includes("modules/launch-execution.md") &&
     launchRoute.modules.includes("modules/standards-and-incubation-analysis.md") &&
     launchRoute.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+    launchRoute.modules.includes("modules/developer-signals.md") &&
+    launchRoute.modules.includes("modules/launch-acceptance.md") &&
     launchRoute.modules.includes("modules/completion-loop.md") &&
     implementationRoute.mode === "execute" &&
     implementationRoute.modules.includes("modules/launch-execution.md") &&
     implementationRoute.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+    implementationRoute.modules.includes("modules/developer-signals.md") &&
+    implementationRoute.modules.includes("modules/launch-acceptance.md") &&
     implementationRoute.modules.includes("modules/completion-loop.md") &&
     standardsRoute.mode === "analyze" &&
     standardsRoute.modules.includes("modules/standards-and-incubation-analysis.md") &&
@@ -996,6 +1047,7 @@ try {
       route.mode === "research" &&
       route.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
       route.modules.includes("modules/standards-and-incubation-analysis.md") &&
+      route.modules.includes("modules/developer-signals.md") &&
       route.modules.includes("modules/completion-loop.md")
     ) &&
     skillText.includes("modules/launch-execution.md") &&
@@ -1009,6 +1061,14 @@ try {
     phaseText.includes("modules/implementation-and-issue-tracker-research.md") &&
     promptText.includes("modules/implementation-and-issue-tracker-research.md") &&
     launchText.includes("modules/implementation-and-issue-tracker-research.md") &&
+    skillText.includes("modules/developer-signals.md") &&
+    phaseText.includes("modules/developer-signals.md") &&
+    promptText.includes("modules/developer-signals.md") &&
+    launchText.includes("modules/developer-signals.md") &&
+    skillText.includes("modules/launch-acceptance.md") &&
+    phaseText.includes("modules/launch-acceptance.md") &&
+    promptText.includes("modules/launch-acceptance.md") &&
+    launchText.includes("modules/launch-acceptance.md") &&
     skillText.includes("modules/completion-loop.md") &&
     phaseText.includes("modules/completion-loop.md") &&
     promptText.includes("modules/completion-loop.md") &&

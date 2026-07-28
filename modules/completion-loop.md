@@ -1,6 +1,6 @@
 # Completion-driven execution loop
 
-Use this module whenever the user asks the skill to manage, build, write, test, audit, validate, fix, prepare, or launch something. Treat those verbs as goals to achieve, not menu options to return to the user.
+Use this module whenever the user asks the skill to manage, build, write, test, audit, validate, fix, prepare, or launch something. Treat those verbs as goals to achieve, not menu options to return to the user. For a concrete launch/readiness run, also load `modules/launch-acceptance.md`: only its validator may compute success; worker-authored statuses and prose are candidate input.
 
 ## Default autonomy
 
@@ -48,8 +48,10 @@ Repeat:
 5. inspect actual output, browser state, console/network, tests, build, and artifact integrity as applicable;
 6. record pass/failure evidence;
 7. on failure, diagnose and apply a bounded correction;
-8. re-run the failed case plus adjacent regression cases;
-9. continue until every goal succeeds, is not applicable with evidence, or is terminally blocked.
+8. re-run the exact failed case plus adjacent regression cases;
+9. re-run full semantic-fact and artifact-integrity gates, then add any newly discovered friction to the frontier;
+10. run the online launch-acceptance validator and feed its exact structured failures into the next correction;
+11. continue until the validator succeeds, or every remaining goal is not applicable with evidence or terminally blocked.
 
 Do not loop indefinitely. Default to at most three correction attempts for the same goal in the same environment. Every retry must record a materially changed hypothesis, artifact/code change, input, configuration, browser/runtime environment, or evidence source plus the expected discriminating result; an identical retry is forbidden. New external evidence or a materially different environment may open a new bounded attempt series.
 
@@ -71,15 +73,15 @@ A missing public link, absent local file, failing test, incomplete demo, stale d
 
 ## Chrome launch gate
 
-For a Chrome feature launch/readiness goal, content creation is not successful until the relevant samples and demos have been launched in Chrome and their expected behavior exercised. Source review, lint, unit tests, screenshots of static markup, mocks, or prose are insufficient runtime evidence.
+For a Chrome feature launch/readiness goal, content creation is not successful until the comprehensive standalone samples and demos have been launched in Chrome and their expected behavior exercised. Source review, lint, unit tests, screenshots of static markup, mocks, prose, or a model-authored transcript are insufficient runtime evidence.
 
-Use `chrome-devtools-mcp` for Chrome browser validation when the host provides it. If the tool cannot be connected or the required Chrome build/platform cannot be launched, record the runtime goal as blocked; do not call the demo, documentation example, friction run, or launch enablement successful.
+Use `chrome-devtools-mcp` for Chrome browser validation when the host provides it. The parent/integrator—not the artifact-writing leaf—records the exact browser version, MCP event log, interactions, console/network captures, assertions, and saved screenshot files in the run bundle. If the tool cannot be connected or the required Chrome build/platform cannot be launched, record the runtime goal as blocked; do not call the demo, documentation example, friction run, or launch enablement successful.
 
 ## Completion report
 
 Return only after the loop reaches one of these:
 
-- **Succeeded:** all applicable goals have current execution evidence.
+- **Succeeded:** all applicable goals have current execution evidence and the online launch-acceptance validator computed `succeeded`.
 - **Partial — terminally blocked:** all currently executable work is complete and every remaining blocked goal has an exact external dependency, attempts, impact, and owner/next action.
 - **Stopped for decision/authority:** all currently executable work is complete and every `decision_required` goal records the three materially distinct attempts, remaining hypotheses, and authorized owner question.
 
@@ -92,4 +94,4 @@ Report:
 5. terminal blockers and what each prevents claiming;
 6. remaining human decisions or external actions.
 
-A plan, recommendation list, content draft without runtime validation, or question about whether to perform an already implied task is not completion.
+A plan, recommendation list, content draft without runtime validation, claimed-but-unsaved screenshot, unverified BCD/release value, open or fixed-unverified friction item, or question about whether to perform an already implied task is not completion.

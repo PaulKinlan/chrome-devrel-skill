@@ -136,7 +136,9 @@ Source:
 - `version_added` must be a version string (from evidence) or `false` (confirmed
   never-supported). Until evidence exists, do not populate the field — neither
   `null` nor `true` is valid
-- Never invent version numbers
+- Never invent version numbers. Keep BCD-recorded `version_added`, target milestone, current stable milestone, tested Chrome build, implementation/flag/trial version, scheduled stable date, and actual release date as distinct typed claims
+- Register every generated non-mirror BCD version and release/milestone date in the launch acceptance bundle with the asset JSON Pointer, fresh primary-source snapshot selector, live URL, retrieval time, and revision; successful launch validation requires the asset, snapshot, and freshly fetched value to match
+- A retrieval date is not a release date. A passing BCD schema test proves shape, not support-history correctness
 - `spec_url` in BCD carries spec linkage (not in MDN frontmatter). Optional
   generally; required when `status.standard_track: true`
 - `status.experimental`, `status.standard_track`, `status.deprecated` drive the
@@ -176,8 +178,8 @@ A page is review-ready when:
 - [ ] Parameters, return value, exceptions documented (methods/constructors)
 - [ ] Interface pages list constructor, properties, methods, events
 - [ ] At least one working example with {{EmbedLiveSample}} under descriptive H3
-- [ ] BCD entry exists; `version_added` uses evidence (version string or
-      `false`). Neither `null` nor `true` is valid
+- [ ] BCD entry exists; every `version_added` is registered and independently matched against fresh field-level evidence (version string or `false`). Neither `null` nor `true` is valid
+- [ ] Current stable, target milestone, tested build, implementation-first version, scheduled release date, and actual release date remain separately sourced and semantically consistent
 - [ ] Status derived from BCD (not manually authored)
 - [ ] {{SecureContext_Header}} / {{AvailableInWorkers}} used where applicable
 - [ ] No invented compat data, spec claims, or reviewer sign-off
