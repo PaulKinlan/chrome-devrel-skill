@@ -1,0 +1,259 @@
+I have enough to operate. Here is my complete autonomous DevRel response.
+
+---
+
+# Chrome 140–150 Retrospective — Autonomous Response
+
+## 0. Environment and evidence boundary (read this first)
+
+This response is governed by the skill's hardest rules: *interrogate before generating*, *treat missing evidence as unknown*, and *never infer success from shipment*. Before any assessment, I must state what I can and cannot actually do in **this** session, because it materially shapes every label below.
+
+- **[FACT — tooling]** In this session I have **only a `read` tool**. I have no file-write capability, no shell, and no web-search/reader tool. The request's own warning ("General web search is unreliable and may crash after a few calls") is moot here because I have no search tool to call at all.
+- **[FACT — data]** The per-feature artifacts the skill references (`reports/{id}.json`, `evidence/metrics/features/{id}.json`, and a top-level `manifest.json`) are **not present** at the worker path, the repo root, or any path I can reach. I confirmed this by direct probe of the example IDs the skill itself cites (`6323071520735232`, `4547107962486784`) at multiple candidate roots; all returned ENOENT. I cannot enumerate directories with `read`.
+- **[FACT — what IS available]** The **validated aggregate findings of the prior 140–150 run are encoded in the skill itself**: `modules/launch-retrospective.md` (rules R1–R5 with stated evidence counts) and `research/exemplars-and-antipatterns.md` (patterns E1–E3, anti-patterns A1–A6, eval scores). These carry their own provenance and are legitimately citable as facts *about that run*.
+- **[CONTRADICTION / blocker]** The request asks me to "store all feature reports" and "improve the skill" (i.e., write files). **I cannot write files in this session.** Per the skill, I do not silently work around a hard boundary; I surface it. The per-feature storage and the skill-file edits are delivered below as **exact, ready-to-execute specifications** (schema, runner, rule diffs, eval fixtures) so a worker with write access applies them verbatim.
+
+**Working assumption:** Because I cannot reach a fresh per-feature data source or write reports, I treat this as a **portfolio-level evidence audit and skill-improvement cycle** built on the prior run's own validated aggregates, plus an executable plan to (re)generate and store the per-feature reports. I do **not** fabricate 291 individual feature verdicts. Inventing per-feature success/failure would violate R2/A1/A6 and is the single outcome I am explicitly forbidden to produce.
+
+---
+
+## 1. Questions I would normally ask (stated, then answered by assumption)
+
+| # | Question | Working assumption used |
+|---|----------|------------------------|
+| Q1 | Is the goal a *fresh* per-feature rebuild, or *verification + improvement* of the existing 291-feature run? | **Verify + improve + make executable.** The prior run exists (documented in-skill); rebuilding 291 records without a readable inventory or reliable search would only manufacture noise. |
+| Q2 | What is the acceptable evidence boundary? | **Public-only** (ChromeStatus, chromestatuslite, web-features/HTTP Archive, public intent/TAG/vendor threads, public repos). No private sources assumed. |
+| Q3 | What counts as "the inventory" (denominator)? | The prior run's fixed inventory: **291 unique ChromeStatus features, 355 milestone memberships**, milestones 140–150 inclusive, all categories (ship, trial, deprecate, remove). Non-additive per R1. |
+| Q4 | How should an "unknown" outcome be reported vs. "failure"? | **Unknown stays Unknown.** No averaging, no inflation. Overall status may not read "success" while a material dimension is Unknown (proposed R9). |
+| Q5 | Who owns running the storage runner and editing skill files? | A worker with write access + the team's DevRel practitioner (coordinates per `modules/governance-and-roles.md`). Names are org-local config, not derivable publicly. |
+
+---
+
+## 2. Diagnose (intake summary)
+
+- **Mode:** launch retrospective + continuous-portfolio loop (`modules/launch-retrospective.md`, `modules/continuous-loop.md`).
+- **Lifecycle stage of the work itself:** the *retrospective* phase of a portfolio that has already passed release; we are replaying phases 0–10 per feature and feeding lessons back into the skill.
+- **Developer problem being served:** the team cannot tell, at portfolio scale, which 140–150 launches created durable developer/user value vs. which merely shipped, because outcome evidence is sparse and inconsistently instrumented.
+- **Current decision:** (a) confirm the inventory and re-score every phase/dimension honestly; (b) store one versioned report per feature; (c) convert findings into skill rules, evals, and a runnable loop.
+- **Evidence available now:** the prior run's validated aggregates (R1–R5, E1–E3, A1–A6) — see §3.
+- **Highest-risk assumption:** that the prior run's documented aggregates are faithful to the underlying 291 reports. I treat them as facts *about the run* but cannot re-verify the 291 underlying rows without the data store.
+- **Missing owners/stakeholders:** the team owner map (`modules/governance-and-roles.md`) is a config-required template — names/emails are not present; assign before executing §7.
+- **Recommended next intervention:** stand up the resumable storage runner (§7) against the cached ChromeStatus inventory, then run the report-completeness validator (§8) before drawing any new portfolio conclusion.
+
+---
+
+## 3. Authoritative inventory — what the prior run established (**[FACT]**, source: `modules/launch-retrospective.md` R1–R5; `research/exemplars-and-antipatterns.md`)
+
+All figures below are **as documented in the skill from the prior validated run** (291 features), not re-derived this session:
+
+- **Denominator (R1):** 355 milestone memberships → **291 unique features**; **41 features appear in 2+ milestones** (e.g., OT in 144 then Enabled-by-default in 148 = one feature, two memberships). Per-milestone rows are **non-additive**.
+- **Counter mapping (R2/R3):** **152 counter-mapped**, **139 unmapped**. Of the 152: **74 family/property-level** (cannot isolate the feature), **10 exact** (directly measures the feature), remainder are trial/multiple/other. 139/139 unmapped reports verified **not** to claim zero usage; 27 use non-standard phrasing requiring manual check.
+- **Report depth (R4):** **204 ChromeStatus-evidence-only** reports; **87 with deeper analysis**.
+- **Evidence-gap distribution (drives §4):** **69 cross-engine unknown**, **212 docs unknown**, **207 prototype unknown**.
+- **Post-fix completeness (R3/R5):** 152/152 mapped reports carry scope/limit labels (0 scope-missing after fix); 291/291 reports carry explicit status labels across all 11 phases.
+- **Named examples (E1):** "Support `rect()` and `xywh()` in `shape-outside`" (`6323071520735232`) — family counter `shape-outside` (bucket_id 347) = **0.00642198%** of Chrome page loads on 2026-07-20, **family-level, not feature-specific**. "flex-wrap: balance" (`4547107962486784`) — **exact** counter mapped.
+- **Eval signal (exemplars):** `survey-selection-and-pushback` 17/20; `stakeholder-critique-attestation` 19/20; `strong-capability-retains-risk` interop = Unknown. These are **[SIGNAL]** that the skill already enforces the honesty rules in adversarial cases, not proof of universal compliance.
+
+**[RECOMMENDATION]** Treat the above as the *only* portfolio facts currently in evidence. Everything in §4–§5 is derived from them under explicit limitations.
+
+---
+
+## 4. Assessment A — Evidence adequacy per lifecycle phase (portfolio-level)
+
+Method: map the documented gap counts onto the 11-phase lifecycle (`research/blink-lifecycle-map.md`, `phases/README.md`). Ratings use the skill's five-value scale (Supported / Partial / Unknown / Contradicted / Not relevant). "Not relevant" is justified, never used to mean untested.
+
+| Phase | What "adequate evidence" means | Portfolio rating | Grounding + limitation |
+|---|---|---|---|
+| 0 Intake | Problem, audience, owner, boundary recorded | **Unknown** | Not measured in documented gaps; cannot infer. |
+| 1 Incubation | Validated problem + use cases in explainer | **Unknown** | Problem-validity not measured post-hoc; do not infer from shipment. |
+| 2 Prototype | Runnable integration evidence, not toy-only | **Unknown-dominant** | **[FACT]** 207/291 prototype-unknown (~71%). 84 had some evidence → at best Partial for that subset. |
+| 3 Developer trials | Trial guide, feedback rubric, representative cohort | **Unknown** | Not directly measured; only 87/291 had deeper analysis, so trial-design evidence is likely sparse portfolio-wide. |
+| 4 Wide review | Cited cross-engine positions (dated), Baseline path | **Partial** | **[FACT]** 69/291 cross-engine-unknown (~24%). The ~222 "non-unknown" includes legitimate "Not relevant" for catchup features — so this is Partial, not Supported. **[HYPOTHESIS]** a material slice of the 222 are "not relevant" rather than "supported positions"; verify before upgrading. |
+| 5 Experiment (OT) | Learning goals, committed participants, fallback, exit criteria | **Unknown (conditional)** | R4 requires deeper analysis for OTs, but presence of trial-design *artifacts* is not confirmed. **[RECOMMENDATION]** any OT feature lacking these must be Unknown here (proposed R6). |
+| 6 Prepare to ship | Reference + quickstart + samples + known-limitations | **Unknown-dominant** | **[FACT]** 212/291 docs-unknown (~73%). The strongest negative in the portfolio. |
+| 7 Release | Accurate, evidence-traceable comms | **Partial** | Evidence-quality audit ran and forced scope-label fixes; 27 variant-wording reports remain → Partial, not Supported. |
+| 8 Adoption | Counter-mapped, framework integration, production evidence | **Partial** | **[FACT]** 152/291 mapped; but 74 family-level + 139 unmapped ⇒ only ~10 exact. Precision is low; coverage ~52%. |
+| 9 Support | Known issues, FAQ from real questions, triage owner | **Unknown** | Support burden not measured at portfolio level. |
+| 10 Deprecation/removal | Impact study, migration guide, detection tooling | **Unknown (subset only)** | Applies only to deprecation/removal features. Not measured. |
+
+**Headline (Assessment A):** Evidence adequacy is **bimodal** — process/launch-phase artifacts (4, 7, 8) are *Partial*, while upstream-value and downstream-outcome phases (0, 1, 3, 6, 9) are predominantly **Unknown**. The portfolio can prove *that things shipped and how*, far better than it can prove *whether they should have* or *whether they helped*.
+
+---
+
+## 5. Assessment B — Outcome per dimension (success / mixed / failure / unknown)
+
+Ratings follow `launch-retrospective.md` ("Use success/mixed/failure/unscored with cited evidence and limitations per dimension. Overall status must not hide mixed dimensions."). I refuse to assign success/failure to features I cannot see; this is the portfolio rollup that *is* supportable.
+
+| Outcome dimension | Portfolio verdict | Evidence + limitation |
+|---|---|---|
+| Developer problem / durable value | **Unknown** | No post-hoc value measurement documented. Shipment ≠ value (A6). |
+| End-user impact & control | **Unknown** | Not measured; device/privacy/a11y impact not aggregated. |
+| Adoption & durable production use | **Mixed→Unknown** | 139/291 unmapped (Unknown); 74 family-level (imprecise); 10 exact (measurable). A majority of the portfolio has **no defensible adoption signal**. |
+| Interoperability / other-engine / Baseline | **Partial / Unknown** | 69 cross-engine-unknown; remainder mostly "some signal," not formal positions (A5: silence ≠ support). |
+| Implementation quality & compatibility | **Unknown** | Not measured at portfolio scale. |
+| Evidence quality & communication accuracy | **Partial** | Audit forced scope labels (152/152) and phase labels (291/291); 27 variant-wording reports + unverifiable rows keep it below Supported. |
+| Documentation / demo / integration quality | **Unknown** | 212/291 docs-unknown. |
+| Support burden & issue resolution | **Unknown** | Not measured. |
+| Team / launch resilience | **Unknown** | Only assessable where public evidence exists; none aggregated. |
+
+**[CONTRADICTION surfaced]** The most important finding is a *portfolio contradiction*: the run is **process-rich but outcome-poor**. We can certify that 291 features were inventoried, counter-labeled, and phase-labeled to a high standard (R3/R5 post-fix), yet for the majority we **cannot certify developer value, user impact, or durable adoption**. Any statement that 140–150 "succeeded" overall would be **inferred from shipment** — exactly what A6 forbids.
+
+**Overall portfolio outcome (forced):** **Unscored / predominantly Unknown**, with a narrow Partial band on adoption-where-mapped, interop-signal, and evidence-quality. No dimension reaches Supported success; none is demonstrable failure. That gap *is* the finding.
+
+---
+
+## 6. Challenge (selected lenses)
+
+- **Problem/use-case validity lens:** The retrospective cannot answer "did this solve a real problem?" for ~71% of features (prototype-unknown) and ~73% (docs-unknown). **[HYPOTHESIS]** many of these were CSS/spec catchup where the problem is genuinely low-risk (R4 permits ChromeStatus-only depth) — but R4's own limit warns a "simple CSS fix" can hide a11y/perf implications. **[RECOMMENDATION]** classify the 204 ChromeStatus-only reports into (catchup vs. capability vs. power-changing) and re-trigger R4 depth for any misclassified.
+- **Interoperability lens (A5):** 69 explicit cross-engine unknowns + an unverifiable "non-unknown" remainder means **interop is the dimension most likely to be silently over-credited.** Steelman the concern: even where WebKit/Gecko shipped parity, *position ≠ identical implementation*; conformance/friction evidence (Phase 9) is Unknown portfolio-wide.
+- **Measurement lens (A1/A3):** Family-level counters (74/152) are the dominant overclaim risk. Presenting `shape-outside` family usage (0.006%) as "`rect()`/`xywh()` adoption" would be an A3 violation. The 10 exact-counter features are the only ones with defensible feature-specific adoption.
+- **Survey/demand lens (A4):** Eval signal (17/20) shows the skill rejects category-interest-as-API-demand, but the *portfolio* doesn't record how many 140–150 features rested on category-survey demand. **[RECOMMENDATION]** add a "demand-evidence type" field per feature and audit.
+- **Launch-resilience lens:** No public aggregation exists; do not infer calm launches from absence of controversy.
+- **Counterfactual lens (the meta-challenge):** The honest counterfactual is not "would better comms have fixed X" — it's **"would instrumenting outcome metrics at launch have let us answer this retrospective at all?"** For most features the answer is no, because no counter was pre-mapped and no adoption metric was precommitted. **This is the single highest-leverage skill change** (§8, R10).
+
+---
+
+## 7. Plan — store all feature reports (executable; blocked only on write access)
+
+**Outcome & exit criteria:** one validated, versioned report per unique ChromeStatus feature (291), plus an append-only manifest, such that (a) every phase carries an R5 status, (b) every mapped counter carries R3 scope labels + R8 provenance, (c) no report claims zero usage (R2), and (d) denominators are overlap-aware (R1).
+
+**Blockers (explicit):** no write tool and no readable inventory in this session. The spec below is ready to execute by a worker that has both.
+
+**Runner specification (concrete; from `launch-retrospective.md` "Robust execution"):**
+
+1. **Build the fixed inventory first** from cached primary sources, not search:
+   - Per milestone 140–150: `https://chromestatuslite.com/feature/{featureId}` (stable server-rendered HTML) and the ChromeStatus timeline API for counter snapshots. Cache every response with URL + retrieval date + content hash.
+   - Deduplicate by ChromeStatus ID → expect 291 unique / 355 memberships (R1). Do **not** sum memberships.
+2. **Per-feature job model** (deterministic, resumable):
+   - Status enum: `pending | active | complete | partial | blocked | failed-retryable`.
+   - Bounded concurrency (e.g., 4–8), exponential backoff, atomic writes (temp file + rename).
+   - **One provider/search failure must affect only one job, not the run** (per the GLM-worker note in the module). No global abort.
+3. **Report schema (per feature, versioned, append-only):**
+   ```yaml
+   featureId: "<ChromeStatus ID>"
+   name: "<feature name>"
+   milestones: [{milestone: 144, category: "Origin Trial"}, ...]   # non-additive per R1
+   counter:
+     mappingStatus: "exact | family | property | trial | multiple | none"
+     counterName: "<e.g., shape-outside>"
+     bucketId: 347
+     latestSnapshot: {day_percentage: 0.00642198, date: "2026-07-20", source: "<URL>"}
+     scope: "<what it measures / does not>"
+     isolatesFeature: false   # mandatory for family/property
+   phases:                       # all 11, each with R5 status + finding
+     intake:           {status: "unknown", finding: "..."}
+     incubation:       {status: "...", finding: "..."}
+     ...
+     deprecation:      {status: "not relevant", finding: "new feature; N/A"}
+   outcomes:                      # success/mixed/failure/unscored per dimension
+     developerValue:    {verdict: "unscored", evidence: [], limitation: "..."}
+     endUserImpact:     {...}
+     adoption:          {...}
+     interoperability:  {...}
+     implementation:    {...}
+     evidenceQuality:   {...}
+     documentation:     {...}
+     support:           {...}
+     teamResilience:    {...}
+   overall: "unscored"            # R9: may not be success if any material dim is Unknown
+   riskClass: "catchup | capability | power-changing | ot | deprecation"
+   depthApplied: "chromestatus-only | deeper"   # R4 trigger record
+   sources: [{url, publisher, retrieved, hash}]
+   revisions: [{date, change, reason}]          # append-only; never overwrite
+   ```
+4. **Canonical no-counter string (R2/R7):** when `mappingStatus: none`, the report **must** emit exactly: `"No public counter is mapped; adoption cannot be measured from public telemetry."` Linter rejects any other phrasing (kills the 27 variant-wording cases).
+5. **Validate before counting complete:** a report is `complete` only if (a) all 11 phases have a status with a finding, (b) `overall` is `unscored` whenever any of {adoption, endUserImpact, interoperability, support} is Unknown (R9), (c) any family/property counter sets `isolatesFeature: false`. Else `partial`.
+6. **Publish exact totals:** unique features, memberships, mapped/unmapped, exact/family counts, completion-state histogram. (These are the §3 numbers; the runner must reproduce or revise them with dated revisions.)
+
+**Owners/reviewers (config-required):** DevRel practitioner coordinates; Product/Eng contributes implementation context; API Owner consults on ChromeStatus accuracy. Names from the team owner map.
+
+**Sequence:** inventory+cache → counter-mapping pass → per-feature report generation → validator → portfolio rollup → skill-update PR → eval run. **Dependencies:** readable ChromeStatus cache; write access. **Risks:** search/reader instability (mitigated by cache + per-job isolation); misclassification of risk class (mitigated by R4 default-to-deeper).
+
+---
+
+## 8. Use findings to improve the skill (concrete, evidence-grounded)
+
+Each proposal is tied to a specific documented finding so it is not invented.
+
+**New retrospective rules (append to `modules/launch-retrospective.md`):**
+
+- **R6 — Trial-design evidence gate.** Any feature with an Origin Trial must, for the Experiment phase, cite explicit learning goals, committed participants, fallback, and exit criteria; absence ⇒ status **Unknown** (not Supported). *Grounding:* R4 already triggers depth for OTs but does not require the artifact to exist; Phase 5 is Unknown portfolio-wide.
+- **R7 — Canonical no-counter phrasing + linter.** Generated reports use the exact R2 string; a linter rejects variants. *Grounding:* R2's own limit — 27/139 reports use non-standard wording needing manual check.
+- **R8 — Counter provenance as required machine-readable fields.** `mappingStatus, counterName, bucketId, latestSnapshot{day_percentage,date,source}, isolatesFeature`. *Grounding:* R3 requires scope labels but not provenance; E1 shows bucket_id/snapshot are the audit trail.
+- **R9 — Outcome-unknown propagation.** `overall` may not be `success`/`mixed` if any material outcome dimension (adoption, end-user impact, interop, support) is Unknown; the report must surface the Unknown dimensions. *Grounding:* A6 + §5 contradiction (process-rich / outcome-poor).
+- **R10 — Launch-time measurement precommitment.** Every launch brief (artifact template) must link ≥1 `measurement-framework` entry with a counter mapping, **or** explicitly state "no counter mapped; adoption will be Unknown." *Grounding:* §6 meta-challenge — most 140–150 outcomes are unanswerable because no metric was precommitted. This is the highest-leverage change because it makes *future* retrospectives answerable.
+
+**Process / runner upgrades (fold into "Robust execution"):** promote the runner spec in §7 into the module as the canonical execution model (resumable manifest, per-job status enum, atomic writes, bounded concurrency, chromestatuslite preference, per-job failure isolation).
+
+**New regression evals (add to the eval set; include strong + weak cases per the recurrence guidance):**
+- `retrospective-ot-trial-design-required` — OT feature lacking learning goals → Phase 5 must be Unknown (R6).
+- `retrospective-family-counter-overclaim` — family counter must set `isolatesFeature:false` and must not be stated as feature adoption (A3/R3).
+- `retrospective-outcome-unknown-propagation` — adoption Unknown ⇒ overall not "success" (R9).
+- `retrospective-resumable-failure` — one failed feature job must not abort the run (Robust execution).
+- `retrospective-no-counter-canonical-string` — non-canonical phrasing rejected (R7).
+- `retrospective-riskclass-misclassification` — a power-changing feature mislabeled catchup to dodge R4 depth must be caught.
+
+**Loop adoption (§`continuous-loop.md`):** run **per-milestone incrementally** (140→150 in 11 passes), **quarterly outcome refresh** (adoption counters, interop movement, support volume), **append-only revisions** (new evidence = dated revision, never overwrite a prior conclusion). Add monitor triggers: new cross-engine position, counter crossing a threshold, regression, support spike.
+
+**Exemplar additions (`research/exemplars-and-antipatterns.md`):** add **A7 — Outcome vacuum** (a clean process retrospective that still cannot certify outcomes) and **E4 — Exact-counter precision** (the 10 exact-counter features as the gold-standard adoption-measurable subset), each cited to the §3 figures.
+
+---
+
+## 9. Artifact — Portfolio Retrospective Summary (the one artifact deliverable for this session)
+
+```yaml
+artifactType: "launch retrospective — portfolio summary"
+featureOrInitiative: "Chrome 140–150 (291 unique features / 355 milestone memberships)"
+lifecycleStage: "retrospective / continuous-portfolio loop"
+audience: "internal (DevRel + Product/Eng + API Owner)"
+owner: "DevRel practitioner (name: config-required)"
+status: "draft — provisional; per-feature store not regenerated this session"
+created: "2026-07-28"
+updated: "2026-07-28"
+sources:
+  - "responder-skill/modules/launch-retrospective.md (R1–R5 + evidence counts)"
+  - "responder-skill/research/exemplars-and-antipatterns.md (E1–E3, A1–A6, eval scores)"
+  - "responder-skill/research/blink-lifecycle-map.md (11-phase map)"
+  - "responder-skill/modules/{continuous-loop,measurement-framework,readiness-expectations,governance-and-roles}.md"
+unresolvedAssumptions:
+  - "Prior-run aggregates (291/355/152/139/204/87/69/212/207) are faithful to underlying reports; not re-verified this session (no data store reachable)."
+  - "Risk-class split of the 204 ChromeStatus-only reports is unknown; some may be misclassified."
+reviewRequirements:
+  - "DevRel practitioner confirms portfolio rollup wording."
+  - "API Owner confirms ChromeStatus counter-mapping figures."
+  - "Product/Eng confirms any feature-specific claims before external use."
+```
+
+**Findings (provisional, public-safe):**
+1. **Inventory integrity: Supported.** Denominator is overlap-aware (R1); 291 unique / 355 memberships; 41 multi-milestone features. No inflation.
+2. **Metric honesty: Partial.** 152/152 mapped reports scope-labeled; but 74 family-level + 139 unmapped mean most features lack feature-specific adoption signal. No zero-usage claims (R2 verified).
+3. **Phase evidence adequacy: bimodal.** Launch-era phases Partial; upstream-value and downstream-outcome phases predominantly Unknown (212 docs-unknown, 207 prototype-unknown).
+4. **Outcome verdict: Unscored / predominantly Unknown.** Cannot certify success or failure for the majority; the portfolio is process-rich but outcome-poor.
+5. **Skill deltas proposed:** R6–R10, runner spec, 6 new evals, A7/E4 exemplars, per-milestone + quarterly loop.
+
+---
+
+## 10. Measuring this retrospective's own quality
+
+Per `modules/measurement-framework.md` (denominator + limitation, no universal score):
+
+| Measure | Denominator | This run | Limitation |
+|---|---|---|---|
+| Report completion rate | 291 unique features | Not reproducible this session (no write/data) | Runner-dependent |
+| Phase-label coverage (R5) | 11 phases × 291 | 100% (prior run) | Does not imply evidence quality |
+| Scope-label compliance (R3) | 152 mapped | 100% post-fix | Family counters still imprecise |
+| No-counter honesty (R2) | 139 unmapped | 100% non-zero; 27 variant-wording | Variants need linter (R7) |
+| Outcome-knowable share | 291 | ~10 exact-counter features defensibly measurable | Proxy; not a value verdict |
+| Skill-improvement uptake | proposed deltas (R6–R10, 6 evals) | 0 applied (no write) | Requires worker with write access |
+
+---
+
+## 11. Explicit blockers / what I did **not** do (honesty ledger)
+
+- **[BLOCKER]** No write tool ⇒ I could not store per-feature reports or edit skill files. Delivered as executable specs (§7, §8).
+- **[BLOCKER]** No readable inventory/data store reachable ⇒ I could not regenerate or re-verify the 291 underlying rows. Portfolio conclusions rest on the in-skill aggregates, explicitly flagged.
+- **[BLOCKER]** No web/search tool ⇒ no live ChromeStatus/web-features retrieval; the request's search-instability warning was irrelevant to my toolset.
+- **[UNKNOWN, not inferred]** I did **not** assign success/failure to any individual feature, did **not** infer support from silence (A5), did **not** treat shipment as success (A6), and did **not** equate no-counter with zero usage (R2). Per-feature outcomes remain Unknown pending the runner.
+- **[RECOMMENDATION]** Next session with write access: execute §7 runner → run §8 validator → open skill-update PR for R6–R10 + evals → start the per-milestone incremental loop.
+
+**One-line summary for the colleague:** The 140–150 portfolio is **inventoried and metric-honestly labeled, but its outcomes are mostly Unknown** — the retrospective's real output is not a pass/fail grade but a set of skill changes (R6–R10, runner, evals) and a launch-time measurement precommitment (R10) that would make *future* retrospectives actually able to certify value.

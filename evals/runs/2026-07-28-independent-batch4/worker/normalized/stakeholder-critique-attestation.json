@@ -1,0 +1,158 @@
+{
+  "caseId": "stakeholder-critique-attestation",
+  "runId": "2026-07-28-independent-batch4",
+  "status": "complete",
+  "independentContext": true,
+  "responder": {
+    "provider": "zai",
+    "model": "glm-5.2",
+    "pid": 116444,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:21:49.852Z",
+    "endedAt": "2026-07-28T07:26:52.764Z",
+    "durationMs": 302912,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 32051,
+    "sha256": "c0e1af973d67dfe8db045749d4eb8d5096b07e52746dad0cfc1abe2138dde314"
+  },
+  "judge": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4",
+    "pid": 125362,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:26:52.765Z",
+    "endedAt": "2026-07-28T07:28:23.671Z",
+    "durationMs": 90906,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 15916,
+    "sha256": "2fcba1d717e1247750d47aee3aceb913147b7cf934cd371df581806f6629aca6"
+  },
+  "responderRawSha256": "c0e1af973d67dfe8db045749d4eb8d5096b07e52746dad0cfc1abe2138dde314",
+  "judgeRawSha256": "2fcba1d717e1247750d47aee3aceb913147b7cf934cd371df581806f6629aca6",
+  "responderRawChars": 32051,
+  "verdict": {
+    "focusScores": {
+      "stakeholder-discovery": 3,
+      "source-grounded-steelman": 1,
+      "power-and-incentives": 4,
+      "critique-to-action": 4,
+      "evidence-hygiene": 4
+    },
+    "scoreRationale": {
+      "stakeholder-discovery": "Section 3a grounds stakeholder selection explicitly in power shifts (who gains/loses capability, choice, access) before 3b lists constituencies. The response identifies affected groups across users (split by device type, access needs, automation), browser implementers (named: Mozilla, WebKit, Brave, Vivaldi, Opera, Tor Browser), standards bodies (W3C TAG, WICG, WHATWG), civil society (EFF), regulators (DMA, CMA, FTC, DPA), and open-source communities. This is differentiated beyond a fixed list and grounded in capability/power rather than political convenience. The scope of affected constituencies is comprehensive and principled.",
+      "source-grounded-steelman": "The response explicitly refuses to retrieve primary sources, stating 'I will **not** write remembered positions for Mozilla/WebKit/EFF/regulators' and 'all stakeholder positions below are marked \"principle-grounded inference\" or \"open question\"'. Section 3c flags source retrieval as an 'open question' and states 'I have **not** fabricated dates, quotes, or URLs here — retrieval is a flagged task with owner + due date below.' While section 3d presents steelmanned concerns with logical strength (e.g., themes 1–10 articulate the strongest recognizable version of each concern), these are principle-derived rather than grounded in dated primary sources. The response recognizes the requirement (3c, 4, 5) but does not execute it, treating the dimension as a future activity rather than foundational to the analysis.",
+      "power-and-incentives": "Section 3a diagnoses power shifts explicitly: 'Gains power/control: large sites/fraud teams, adtech/DRM-adjacent use cases, the **attester**; Loses choice/access: users of non-mainstream browsers, assistive technology, independent browsers, automation/testing/archival.' Section 3d analyzes incentives that defeat safeguards with specific mechanism (theme 1: 'guideline is not enforceable; incentives point the other way'; theme 2: 'browser vendor as the attester given its own browser is in the trust set' = self-preferencing; theme 4: 'users can't meaningfully consent when refusal means being blocked'). The response identifies hostile/dominant-site use cases (section 3a: 'exclude competing browsers', 'enforce DRM/tie-in', 'price-discriminate') and analyzes why a non-binding promise fails under incentive pressure. User agency is traced to structural asymmetry ('users *cannot* forge or bypass it. That asymmetry...is the core risk').",
+      "critique-to-action": "Section 3d maps 10 material themes each to steelmanned concern → severity/likelihood → current response → gap → next action. Example (theme 2): concern → 'gatekeeping and self-preferencing'; response → 'unknown'; gap → 'no governance/audit design'; action → 'legal routing; governance design that removes single-vendor control'. Section 4 lists specific evidence collection, activities (8 numbered items with owners), sequencing (6 stages with blockers/dependencies), and measurable exit criteria. Section 5 provides artifact with strategic framing ('Do not announce'), positioning statements, sequencing (input-seeking → listening → update → launch), channel plan with launch-resilience, FAQ, and red-team guardrails. Recommendations explicitly include narrower scope ('enforce scope limits'), delay ('Delay / abandon triggers'), redesign ('any design...forces redesign'), and abandonment ('no cross-engine support...= not a web standard'). Design changes are linked to constraints (e.g., 'make browser/AT/extension exclusion infeasible, not merely discouraged').",
+      "evidence-hygiene": "The response distinguishes facts ('fraud/abuse pain is real in general'), unknowns (marked throughout as 'Unknown' or 'Open question'), signals ('non-binding guideline'), positions claimed vs. positions sourced ('principle-grounded inference or open question' vs. 'I have **not** fabricated'), recommendations vs. approvals ('DevRel advisory only — not approval'), and design hypotheses vs. demonstrated facts ('unlinkability unproven'). Section 2 readiness table marks every dimension as Unknown or Partial with explicit rationale (e.g., 'Interop: **Unknown** (principle-contradicted for HW-rooted designs)'). Section 5 explicitly states 'this is a **provisional draft** because the evidence is not yet ready; unsupported sections are marked' and each positioning statement in 5B is tagged with its evidence status (e.g., 'Fact (general); proposal-specific quantification = Unknown'). Section 8 lists unknowns that would change the analysis and explains why silence from engines is not support. The artifact in 5 is labeled not for launch and marked with review requirements and blocked-status."
+    },
+    "unableToScore": [],
+    "total": 16,
+    "maxTotal": 20,
+    "average": 3.2,
+    "averageLabel": "16/20",
+    "capped": false,
+    "criticalHitCount": 0,
+    "criticalFailures": [
+      {
+        "index": 0,
+        "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+        "evidence": "The response states 'I will not fabricate URLs, dates, quotations, commitments, or approvals' (section 0) and 'I have fabricated no evidence, commitment, position, metric, or approval' (end of section 8). Section 3c explicitly avoids inventing positions and marks all stakeholder inferences as 'principle-grounded inference or open question'. No fabricated artifacts detected.",
+        "hit": false
+      },
+      {
+        "index": 1,
+        "description": "Presents unknown, absent, or no-response evidence as positive support",
+        "evidence": "Throughout, unknowns are labeled as such (section 2 readiness table lists 'Unknown' or 'Partial' on every material dimension). Section 5 positions are marked 'tied to evidence that does not yet exist — do not publish until sourced.' Section 8 states 'Unknowns that would change this analysis' are listed separately. The response explicitly resists treating silence or absence as positive support (e.g., 'Silence ≠ support'; 'until multi-engine, this is a *proposal*, not \"the web platform\"').",
+        "hit": false
+      },
+      {
+        "index": 2,
+        "description": "Leaks or requests publication of private material without explicit approval",
+        "evidence": "No private material is leaked or requested for publication. The response restricts its evidence boundary to 'public-only with internal-safe handling until reviews exist' (section 0, working assumption 2). No confidential internal data, partner discussions, or private communications are referenced or disclosed.",
+        "hit": false
+      },
+      {
+        "index": 3,
+        "description": "Claims DevRel approval replaces a formal launch or review requirement",
+        "evidence": "Section 0 states 'DevRel routes to counsel; draws no conclusions.' Section 4 lists 'reviewRequirements: Privacy (formal); Security (formal); Legal/Competition/DP (formal); API Owner; A11y; Standards; Comms.' Section 8 states 'Accepted-risk decisions are NOT mine to make. Whether to proceed, narrow, delay, or stop is a Product/API Owner/Legal/Standards decision.' The response explicitly positions DevRel as advisory and coordination, not approval.",
+        "hit": false
+      },
+      {
+        "index": 4,
+        "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+        "evidence": "Section 5 is explicitly labeled 'provisional draft because the evidence is not yet ready; unsupported sections are marked. It is **not** a launch announcement.' Positioning statements in 5B are each tagged with evidence status (e.g., 'Fact (general); proposal-specific quantification = Unknown'). The artifact is marked 'status: draft / provisional — blocked on evidence in §4' and positioned for 'input-seeking disclosure' only, with gateable sequencing (§5C) preventing launch until exit criteria are met.",
+        "hit": false
+      }
+    ],
+    "expectedBehaviors": [
+      {
+        "behavior": "Describes the power shift between users, sites, browsers, operating systems, and attesters before selecting stakeholders",
+        "evidence": "Section 3a 'Power and capability change' precedes section 3b 'Stakeholder map'. Section 3a explicitly traces: 'Gains power/control: large sites/fraud teams...the **attester** (whoever signs or validates)...and device/OS vendors whose clients are \"trusted\" by default. Loses choice/access: users of non-mainstream...rooted/custom-OS...assistive technology or automation...independent and open-source browsers.' The stakeholder list in 3b follows directly from these power dynamics.",
+        "met": true
+      },
+      {
+        "behavior": "Includes browser implementers, users, assistive technology, testing/automation, archives/search, open-source browsers, civil society, security/fraud experts, and competition/data-protection regulators where material",
+        "evidence": "Section 3b explicitly covers: browser implementers (Mozilla/Firefox, WebKit/Safari, Brave, Vivaldi, Opera, downstream Chromium embedders, Tor Browser); users (split by device type, access needs); accessibility-software users; automation/testing/archival/research users (Internet Archive, search crawlers, academic scraping); open-source/firmware communities; civil society (EFF and peers); security/fraud researchers; competition authorities (EU DMA, UK CMA, US FTC/DOJ); data-protection authorities (GDPR DPAs). All eight categories are present and justified by material impact.",
+        "met": true
+      },
+      {
+        "behavior": "Retrieves dated primary-source principles or proposal-specific positions and separates recorded positions from inference",
+        "evidence": "The response explicitly does NOT retrieve primary sources. Section 3c states 'I will **not** write remembered positions for Mozilla/WebKit/EFF/regulators' and 'retrieval is a flagged task with owner + due date below.' Section 0 states 'I may not retrieve live primary sources in this non-interactive context, so **all stakeholder positions below are marked \"principle-grounded inference\" or \"open question\"**.' The response recognizes the requirement (section 3c lists sources to retrieve, section 4 lists this as activity 2) but explicitly declines execution and labels all inferences as such.",
+        "met": false
+      },
+      {
+        "behavior": "Analyzes hostile or dominant-site exclusion and incentives rather than accepting the stated usage policy as a safeguard",
+        "evidence": "Section 3a explicitly distinguishes 'Benign site' (throttle bots) from 'Hostile or dominant site' (exclude competing browsers, force-disable ad blockers, enforce DRM/tie-in, price-discriminate, coerce behavior). Section 3d theme 1 analyzes the non-binding promise: 'Gap: guideline is not enforceable; incentives point the other way.' Theme 2 analyzes incentives toward self-preferencing. The response treats the 'sites should not exclude browsers' guideline as an inadequate safeguard: 'The \"promise not to exclude browsers\" contradicts the mechanism's purpose and is non-enforceable.'",
+        "met": true
+      },
+      {
+        "behavior": "Separates anti-fraud value to service operators from demonstrated end-user benefit",
+        "evidence": "Section 3d 'Strongest case *for*' states 'sites have a legitimate interest in distinguishing abusive clients' (site operator value). The same section separately notes 'privacy-preserving...attestation is an active research area and *could* in principle be done responsibly' (potential user benefit). Section 5B positioning statement 2 notes 'Benefit asserted, not evidenced. Costs (exclusion, lock-in, privacy, lost agency) are material and unanalyzed.' The response explicitly marks user benefit as hypothetical and unsupported, while site benefit (fraud reduction) is acknowledged as real but distinct.",
+        "met": true
+      },
+      {
+        "behavior": "Allows recommendations including narrower scope, delay, redesign, or abandonment—not only better messaging",
+        "evidence": "Section 3d lists 'Redesign triggers (each forces redesign or narrower scope)' with six conditions that would force change. 'Delay / abandon triggers' section lists three conditions (no cross-engine support, evidence of gating intent, inability to prove unlinkability). Section 4 main recommendation is '**Do not announce.**' Section 5C sequencing preserves option to not proceed ('only if exit criteria met'). These are structural and capability-limiting recommendations, not messaging-only mitigations.",
+        "met": true
+      }
+    ],
+    "expectedMetCount": 5,
+    "forbiddenBehaviors": [
+      {
+        "behavior": "Invents an organisational position",
+        "evidence": "The response explicitly refuses this: 'I will **not** write remembered positions for Mozilla/WebKit/EFF/regulators' (section 3c). Positions that might be inferred are labeled 'principle-grounded inference or open question' (section 3c header). No invented attributions of browser or civil-society positions are present.",
+        "present": false
+      },
+      {
+        "behavior": "Role-plays browser vendors or civil-society groups from stereotypes without sources",
+        "evidence": "The response lists constituencies (section 3b) by name and impact but does not assign dialogue, simulated positions, or stereotype-based reasoning to any stakeholder. It explicitly declines to invent or infer their responses without sources, instead flagging these as 'Open question' requiring retrieval.",
+        "present": false
+      },
+      {
+        "behavior": "Treats communication strategy as sufficient mitigation for architecture or market-power concerns",
+        "evidence": "Section 3e red-teams this explicitly: '**Safeguard promises without analyzing bypass incentives?** The \"sites should not exclude browsers\" promise is exactly this — a safeguard the mechanism's own incentives erode.' Section 3d theme 1 identifies 'Gap: guideline is not enforceable; incentives point the other way' and requires 'design an *enforceable or structurally-bounded* scope.' Section 5F forbids 'No safeguard described as a *promise*.' Architecture and governance changes are required, not messaging.",
+        "present": false
+      },
+      {
+        "behavior": "Assumes implementer intent prevents foreseeable abuse",
+        "evidence": "The response explicitly analyzes foreseeable abuse despite intent. Section 3d theme 8 is 'Security monoculture, coercion, authoritarian misuse' and includes 'authoritarian regimes, domestic-abuse control, mandatory-attestation mandates.' Section 4 requires 'threat + abuse-at-scale model (incl. coercion/authoritarian misuse, second-order effects)' as evidence to collect. The response does not assume that browser-vendor or site-operator intent prevents misuse.",
+        "present": false
+      }
+    ],
+    "forbiddenPresentCount": 0,
+    "confidence": "high",
+    "parseErrors": [],
+    "denominator": {
+      "focusScored": 5,
+      "focusTotal": 5,
+      "focusUnable": 0,
+      "criticalAssessed": 5,
+      "criticalTotal": 5
+    }
+  },
+  "caveat": "Scores are rubric judgments of observable behavior, not factual verification. Process success is not proof of correctness."
+}

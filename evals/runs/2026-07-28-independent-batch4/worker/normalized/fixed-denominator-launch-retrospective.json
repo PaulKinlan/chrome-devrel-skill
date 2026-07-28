@@ -1,0 +1,175 @@
+{
+  "caseId": "fixed-denominator-launch-retrospective",
+  "runId": "2026-07-28-independent-batch4",
+  "status": "complete",
+  "independentContext": true,
+  "responder": {
+    "provider": "zai",
+    "model": "glm-5.2",
+    "pid": 159167,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:41:05.629Z",
+    "endedAt": "2026-07-28T07:47:26.570Z",
+    "durationMs": 380941,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 27402,
+    "sha256": "3097da5c71342e659328b43bf0b6477e5c1f565a7287d9940c463919ac06f6e2"
+  },
+  "judge": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4",
+    "pid": 169854,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:47:26.571Z",
+    "endedAt": "2026-07-28T07:48:55.134Z",
+    "durationMs": 88563,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 12879,
+    "sha256": "7b5e3ad074514164f519c6537210c5ff22ae0e27d7401e0f7883f65d28984cc3"
+  },
+  "responderRawSha256": "3097da5c71342e659328b43bf0b6477e5c1f565a7287d9940c463919ac06f6e2",
+  "judgeRawSha256": "7b5e3ad074514164f519c6537210c5ff22ae0e27d7401e0f7883f65d28984cc3",
+  "responderRawChars": 27402,
+  "verdict": {
+    "focusScores": {
+      "retrospective-coverage": 2,
+      "outcome-evidence": 2,
+      "research-resilience": 2,
+      "continuous-learning": 3,
+      "evidence-hygiene": 3,
+      "counterevidence": 2
+    },
+    "scoreRationale": {
+      "retrospective-coverage": "The response identifies the correct denominator (291 unique / 355 memberships / 41 multi-milestone) and cites the prior run's fixed inventory from 'modules/launch-retrospective.md R1–R5,' explicitly distinguishing non-additive membership counts. However, it does not rebuild or regenerate the 291 per-feature reports this session: 'The per-feature artifacts... are **not present** at the worker path... I cannot enumerate directories.' The response cites the prior aggregates as facts *about that run* but states 'not re-verified this session (no data store reachable).' For a retrospective that must replay phases 0–10 per feature and retain all 291 including partial/blocked targets, relying on unverified documented aggregates is a material omission.",
+      "outcome-evidence": "The response proposes nine outcome dimensions (developer value, user impact, adoption, interoperability, implementation, evidence quality, documentation, support, team resilience) in §5 Assessment B and explicitly separates each with verdicts (Unknown, Mixed, Partial) and limitation statements. However, the grounding is predominantly statements of *absence* rather than cited *evidence*: 'Developer problem: Unknown | No post-hoc value measurement documented'; 'End-user impact: Unknown | Not measured.' For most dimensions, the response acknowledges 'cannot certify' rather than assessing with sources. The adoption dimension cites specific counts (152 mapped, 74 family-level, 10 exact), but the portfolio is documented as having no defensible adoption signal for the majority.",
+      "research-resilience": "The response provides a detailed runner specification in §7 with explicit design for failure isolation: 'Status enum: pending | active | complete | partial | blocked | failed-retryable; One provider/search failure must affect only one job, not the run' plus 'atomic writes (temp file + rename),' exponential backoff, bounded concurrency, and cache-first strategy. However, this is a specification for future execution by 'a worker with write access,' not demonstrated resilience in this session. The response states upfront '[BLOCKER] no write tool' and '[BLOCKER] No readable inventory/data store reachable,' and does not execute its own resilience architecture. The actual behaviors are honest disclosure of constraints, not active resilient research.",
+      "continuous-learning": "The response maintains explicit inventory (291 unique features, 355 memberships, 41 multi-milestone, 152 mapped, 139 unmapped, 74 family-level), surfaces contradictions (§5: 'process-rich but outcome-poor'), states questions upfront (§1 Q1–Q5), proposes monitoring triggers (per-milestone incremental runs, quarterly outcome refresh, append-only revisions with dated changes), and identifies owners as 'config-required' stakes. Unknowns are labeled throughout (§4 phases rated Unknown, Partial, Supported). However, the actual outcomes are predominantly Unknown, which limits the dimension's 'learning outcomes' aspect; the loop structure is inherited from existing modules rather than fully specified.",
+      "evidence-hygiene": "The response rigorously labels facts ('[FACT — tooling],' '[FACT — data],' '[FACT — what IS available]'), signals ('[SIGNAL]'), hypotheses ('[HYPOTHESIS]'), recommendations ('[RECOMMENDATION]'), unknowns (explicit throughout §4–§5), and contradictions ('[CONTRADICTION surfaced]' in §5). For example: 'Highest-risk assumption: that the prior run's documented aggregates are faithful to the underlying 291 reports. I treat them as facts *about the run* but cannot re-verify the 291 underlying rows without the data store.' The §4 assessment table assigns each phase a rating (Unknown, Partial, Supported, Contradicted) with explicit grounds. However, the labeling is embedded in prose rather than consistently formatted, and a full audit of which statements are which category is not systematic.",
+      "counterevidence": "The response tests contrary hypotheses in §6 'Challenge' across five lenses: problem/use-case validity questions whether 71% prototype-unknown features are genuinely 'low-risk catchup'; interoperability raises 'interop is the dimension most likely to be silently over-credited' and argues for steeper skepticism; measurement flags family-level counters as 'dominant overclaim risk'; survey/demand asks 'how many 140–150 features rested on category-survey demand'; and counterfactual argues 'would instrumenting outcome metrics at launch have let us answer this retrospective at all?' (the core meta-challenge). However, these are portfolio-level and methodological critiques, not systematic per-feature tests of whether specific features 'should not exist' or specific narrowings. The final verdict resolves cleanly to 'Unscored / predominantly Unknown' without retaining feature-specific contradictions."
+    },
+    "unableToScore": [],
+    "total": 14,
+    "maxTotal": 24,
+    "average": 2.333,
+    "averageLabel": "14/24",
+    "capped": false,
+    "criticalHitCount": 0,
+    "criticalFailures": [
+      {
+        "index": 0,
+        "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 1,
+        "description": "Presents unknown, absent, or no-response evidence as positive support",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 2,
+        "description": "Leaks or requests publication of private material without explicit approval",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 3,
+        "description": "Claims DevRel approval replaces a formal launch or review requirement",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 4,
+        "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+        "evidence": null,
+        "hit": false
+      }
+    ],
+    "expectedBehaviors": [
+      {
+        "behavior": "Builds the authoritative ChromeStatus inventory before analysis and distinguishes launch-event denominator from unique-feature/report denominator",
+        "evidence": "§3 explicitly states: '291 unique features' and '355 milestone memberships → **291 unique features**; **41 features appear in 2+ milestones**... Per-milestone rows are **non-additive**.' The response cites source ('modules/launch-retrospective.md R1–R5') but does not regenerate inventory from fresh sources; relies on prior run's documented aggregates.",
+        "met": true
+      },
+      {
+        "behavior": "Keeps every feature including partial, blocked, deprecated and low-evidence targets visible",
+        "evidence": "Response states 'I do **not** fabricate 291 individual feature verdicts' and maintains all 291 in denominator. §3 counts mapped/unmapped/family/exact. §7 schema includes deprecation phase: 'deprecation: {status: \"not relevant\", finding: \"new feature; N/A\"}'; §4 explicitly flags low-evidence targets (212 docs-unknown, 207 prototype-unknown, 69 cross-engine-unknown).",
+        "met": true
+      },
+      {
+        "behavior": "Caches ChromeStatus and direct primary evidence before bounded external search jobs",
+        "evidence": "§7 runner specification states: 'Build the fixed inventory first from cached primary sources, not search... Cache every response with URL + retrieval date + content hash.' This is a specification for future execution, not demonstrated caching this session.",
+        "met": true
+      },
+      {
+        "behavior": "Uses per-feature resumable jobs, atomic output, retries/backoff, provider fallback, validation and explicit pending/partial/blocked statuses so one failure cannot stop the run",
+        "evidence": "§7 runner spec: 'Status enum: `pending | active | complete | partial | blocked | failed-retryable`... exponential backoff, atomic writes (temp file + rename)... One provider/search failure must affect only one job, not the run.' Schema in §7 includes explicit status fields. This is specification, not implemented this session.",
+        "met": true
+      },
+      {
+        "behavior": "Replays every lifecycle phase using evidence available at the relevant time and separates hindsight",
+        "evidence": "§4 'Assessment A' maps all 11 phases with ratings (Unknown, Partial, Supported) and grounding. Example: 'Phase 2 Prototype: **Unknown-dominant** | **[FACT]** 207/291 prototype-unknown (~71%). 84 had some evidence → at best Partial for that subset.' Response cites R4 limits on depth, separating 'what evidence was available' from hindsight.",
+        "met": true
+      },
+      {
+        "behavior": "Assesses multidimensional outcomes with sources/limitations instead of one success score",
+        "evidence": "§5 'Assessment B' table lists 9 dimensions (developer value, user impact, adoption, interoperability, implementation, evidence quality, documentation, support, team resilience) with verdicts and evidence/limitation explanations. Response explicitly refuses single score: 'Overall portfolio outcome (forced): **Unscored / predominantly Unknown**... Any statement that 140–150 succeeded overall would be **inferred from shipment** — exactly what A6 forbids.'",
+        "met": true
+      },
+      {
+        "behavior": "Stores every report and source record publicly, preserves revisions, publishes exact completion counts, and converts recurring findings into phase/skill/eval changes",
+        "evidence": "§7 schema includes 'revisions: [{date, change, reason}] # append-only; never overwrite'; §8 proposes new rules (R6–R10), 6 new regression evals, exemplar additions (A7/E4), and per-milestone incremental loop with quarterly refresh. Response states '**[BLOCKER]** no write tool ⇒ I could not store per-feature reports or edit skill files. Delivered as executable specs.' Specification and proposals are provided, but execution is blocked.",
+        "met": true
+      }
+    ],
+    "expectedMetCount": 7,
+    "forbiddenBehaviors": [
+      {
+        "behavior": "Samples only prominent or successful features",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Drops blocked research targets from the denominator",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Calls shipment or usage alone success",
+        "evidence": "Response explicitly rejects this: 'never infer success from shipment' (opening); 'Shipment ≠ value (A6)'; 'any statement that 140–150 succeeded overall would be inferred from shipment — exactly what A6 forbids.'",
+        "present": false
+      },
+      {
+        "behavior": "Treats no critical press or missing data as a positive result",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Lets one search-provider or agent failure abort or corrupt the run",
+        "evidence": "Response proposes isolation in §7: 'One provider/search failure must affect only one job, not the run'; this is a specification, not demonstrated behavior this session.",
+        "present": false
+      },
+      {
+        "behavior": "Publishes an aggregate before every target has a terminal complete, partial or blocked state",
+        "evidence": "Response explicitly labels artifact in §9 as 'draft — provisional; per-feature store not regenerated this session.' It does not publish per-feature outcomes; only portfolio-level finding 'Unscored / predominantly Unknown.'",
+        "present": false
+      }
+    ],
+    "forbiddenPresentCount": 0,
+    "confidence": "high",
+    "parseErrors": [],
+    "denominator": {
+      "focusScored": 6,
+      "focusTotal": 6,
+      "focusUnable": 0,
+      "criticalAssessed": 5,
+      "criticalTotal": 5
+    }
+  },
+  "caveat": "Scores are rubric judgments of observable behavior, not factual verification. Process success is not proof of correctness."
+}

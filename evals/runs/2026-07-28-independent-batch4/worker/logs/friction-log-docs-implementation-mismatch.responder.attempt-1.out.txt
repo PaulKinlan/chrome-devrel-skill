@@ -1,0 +1,374 @@
+I've loaded the skill, the friction-log module, the stage router, the two candidate stage modules (developer trials, experiment/origin trial), and the artifact-templates module. Below is the complete autonomous response. Because this is non-interactive, I lead with the questions I would normally interrogate on and the working assumptions I'm proceeding under, then deliver diagnosis → assessment → challenge → artifact (the friction log) → plan → measures.
+
+---
+
+# Legend (used throughout)
+
+- **FACT** — established by the run's evidence of record (here: the colleague's reported observations, which I treat as reportable but not yet re-verified by me; evidence artifacts are to-be-attached, not invented).
+- **SIGNAL** — a stance, sentiment, or position reported by a person/party; not verified behavior.
+- **HYPOTHESIS** — my inference, clearly marked, to be tested.
+- **UNKNOWN** — evidence not yet gathered. Treated as unknown, never as approval/NA.
+- **RECOMMENDATION** — my advisory next action (advisory only; not API Owner/engineering approval).
+- **BLOCKER** — must be resolved before the named decision can be made honestly.
+- **CONTRADICTION** — available evidence conflicts with a claim or plan.
+
+---
+
+# 0. Questions I would normally ask, and my working assumptions
+
+I would normally interrogate before generating. Since I cannot, here are the high-leverage questions and the assumptions I'm proceeding under.
+
+**Questions I'd ask the requester:**
+1. Which API, ChromeStatus ID, explainer/spec revision, and intended milestone/support path? Is this a **flag-gated developer trial** or an **Origin Trial / experiment** (the "flag + server header" activation pattern fits both)?
+2. What is the exact flag name and the exact server header? Are they in the public docs, the explainer, or neither?
+3. What **mobile** device/OS/Chrome channel/version, and how does it "fail" (no activation, JS error, render error, silent no-op, crash)?
+4. What are the **exact console error strings/signatures** and the network responses at failure?
+5. What does the **explainer** say the visual result should be, and how does the actual render differ?
+6. Which **framework**, which integration path (component mount/unmount? repeated imperative call?), and what is the leak signature (heap growth, retained listeners, unclosed handles, GPU/context, file descriptors)?
+7. Who is **"the team"** making the "basically works" claim — the feature team, an external partner, a demo author — and on what environment did they observe success? Is their claim public or internal?
+8. Evidence boundary: may the friction log cite internal logs/console output, or must the published version stay public-safe?
+
+**Working assumptions I'm adopting (all reversible):**
+- **A1 (stage):** Experiment / Origin Trial (Phase 5), because activation needs a client flag *and* a server header — the classic OT-style activation signature. The friction-log work applies identically if this is actually a developer trial; only the transition packet changes. **RECOMMENDATION:** confirm stage before drafting the transition packet.
+- **A2 (evidence boundary):** Public-safe output; internal console logs/screenshots referenced by path, not inlined. If private material exists, the private-overlay contract must be honored (I flag, do not publish).
+- **A3 (scope):** Mobile is an *intended* target (friction-log module requires mobile + desktop unless evidence excludes a class). So "mobile fails" is a finding, not out-of-scope.
+- **A4 (explainer authority):** The explainer is the expectation of record. A visual mismatch is a finding even if some path renders *something*.
+- **A5 (framework leak):** The leak is real and reproducible on repeated use; severity and root cause are to be confirmed.
+- **A6 ("basically works"):** This is a **SIGNAL/position**, not evidence of working. I do not let it reclassify open failures as passes.
+
+---
+
+# 1. Diagnose (intake summary)
+
+- **Mode:** Support / evidence-based integration friction on an experimental API.
+- **Lifecycle stage:** **Experiment / Origin Trial (Phase 5)** under working assumption A1; possibly developer trial (Phase 3). DevRel **coordinates** friction/evidence work in Phase 5; Product/Eng coordinate implementation.
+- **Developer problem & audience:** A developer following the canonical quickstart cannot reach first success on mobile, cannot reach it on desktop without hidden (undocumented) setup, sees console errors, gets a result that contradicts the spec, and hits a resource leak when integrating into a framework — i.e., the API is not yet demonstrably usable for its intended real-world task.
+- **Current decision:** Is this experiment ready to (a) continue/extend, (b) widen review, or (c) ship? The friction evidence as reported says **not yet**; the team's "basically works" claim conflicts with that.
+- **Evidence available:** Colleague's run observations (FACT-of-record, to be re-verified): undocumented flag, undocumented header, single-desktop-only success, mobile failure, console errors, visual/explainer mismatch, framework resource leak. No actual captured artifacts (screenshots/traces/logs) have been supplied to me — **UNKNOWN** until attached.
+- **Highest-risk assumptions:** (1) that mobile is in-scope (A3); (2) that the explainer is the source of truth for the visual result (A4); (3) that the leak is a property of the API/integration rather than the demo's misuse.
+- **Missing owners/stakeholders:** Feature team (impl/spec), the demo/sample author, framework-integration owner, docs owner, and the party making the "basically works" claim. **UNKNOWN** who owns each.
+- **Recommended next intervention:** Convert the colleague's observations into a **reproducible friction log** with captured evidence, then run the adjacent paths (other desktops, other engines, repeated-use/leak quantification, and the explainer-vs-implementation delta) before any continue/extend/ship decision. **Do not** let "basically works" close the findings.
+
+---
+
+# 2. Readiness assessment (no invented veto)
+
+DevRel cannot block shipment. This reports the *likely consequences* of unresolved gaps. Ratings: Supported / Partial / Unknown / Contradicted / Not relevant.
+
+| Dimension | Rating | Rationale |
+|---|---|---|
+| Problem validity | Unknown | Not in scope of this friction request; no problem/use-case evidence supplied. |
+| End-user benefit/cost/control | Unknown | The leak implies a cost (memory/battery/CPU) to end users on repeated use; not quantified. |
+| Developer demand / use-case quality | Unknown | Not assessed here. |
+| Partner commitment | Unknown | No partner evidence supplied; do not infer from "the team says." |
+| API ergonomics | **Partial / Contradicted** | A leak on repeated use is an ergonomics red flag (missing cleanup/teardown surface?). **CONTRADICTION** vs. "basically works." |
+| Accessibility | Unknown | Not exercised. Required before wide review. |
+| Privacy | Unknown | Not assessed; the server-header dependency may have privacy implications (UNKNOWN). |
+| Security | Unknown | Not assessed; undocumented server header + flag is at least a **supportability** risk. |
+| Interoperability / other engines | **Unknown** | Not tested. Chrome-only success is not broad success. |
+| Framework/library fit | **Contradicted** | Leak on repeated framework use = real-world integration failure. |
+| Server/deployment integration | **Partial / Contradicted** | Requires an *undocumented* header → blocks production deployment. |
+| Performance/resource cost | **Partial** | Leak confirmed qualitatively; not quantified (rate, ceiling, recovery). |
+| Docs/samples | **Contradicted** | Canonical quickstart is incomplete (hidden flag + header); sample only "works" on one desktop. |
+| Supportability | **Contradicted** | Undocumented setup + console errors + visual mismatch = high predictable support load. |
+| Narrative / positioning | Partial | "Basically works" narrative is contradicted by the evidence. |
+| Adoption mechanics | Unknown | Cannot adopt what doesn't run on mobile and leaks in frameworks. |
+| Launch resilience | Unknown | Not assessed; the internal contradiction (team vs. evidence) is itself a resilience risk. |
+| Measurement | Unknown | No denominators yet. |
+
+**Headline:** Multiple **Contradicted** dimensions on exactly the things an experiment exists to prove (real-origin usability, deployment, framework fit, docs). This is not a green light.
+
+---
+
+# 3. Challenge (lenses applied)
+
+Primary lens: **evidence-based integration friction** (`modules/friction-log.md`). Secondary: interoperability/compatibility, real-world integration & deployment, API ergonomics & alternatives, docs/samples/demos, evidence honesty, and launch-resilience (the team-vs-evidence dynamic).
+
+## 3.1 The central contradiction
+
+**CONTRADICTION — "the demo basically works" vs. the run evidence.**
+- FACT-of-record: desktop success requires an undocumented flag *and* an undocumented server header; mobile fails; console errors present; rendered output ≠ explainer; framework integration leaks resources on repeated use.
+- SIGNAL: the team asserts the demo "basically works."
+- Per the operating rules, "no visible error" on one path is **not** a pass; and a docs/explainer/spec/implementation mismatch is a finding *even if one path works*. "Basically works" cannot reclassify open findings as resolved.
+- **RECOMMENDATION:** Treat the claim as a **SIGNAL/position** requiring reconciliation, not as evidence of success. Ask the team to specify the environment on which they observed success and to reproduce under the same manifest the friction log uses. If their environment differs, the disagreement is likely a coverage gap, not a dispute — resolve by running both manifests.
+
+## 3.2 Criticism themes (with evidence state + mapping)
+
+| Theme | Evidence state | Mapped response/work |
+|---|---|---|
+| Setup is undocumented (flag + header) | FACT-of-record | Docs/sample fix; add to run manifest; regression assert that the *documented* path alone reaches first success. |
+| Mobile is broken | FACT-of-record (manifest TBD) | Reproduce across device matrix; root-cause; either fix or declare scope explicitly (and update docs + feature detection). |
+| Console errors | FACT-of-record (strings TBD) | Capture signatures; classify warning vs. fatal; add console-clean assertion. |
+| Visual ≠ explainer | FACT-of-record (delta TBD) | Decide: impl wrong → fix; explainer wrong → update explainer/spec. **Never** silently rewrite the expectation to match impl. |
+| Framework resource leak | FACT-of-record (signature TBD) | Quantify (heap/listeners/handles over N iterations); determine if API lacks a teardown surface (ergonomics/design) or sample misuses it; fix at the right layer. |
+| Single-environment success | UNKNOWN breadth | Widen the matrix (≥2 desktop OSes, ≥2 mobile, ≥1 other engine) before claiming "works." |
+| Evidence/process honesty | SIGNAL vs. FACT | Reconcile "basically works"; publish findings with denominators and contradictions. |
+
+## 3.3 "Why the web / why Chrome / why browser intervention" check
+
+Not in scope of this request, but the friction log should feed a later problem-validity pass. **HYPOTHESIS:** the leak and the header dependency suggest the current shape may not yet be the right abstraction layer — flag for the API-ergonomics and alternatives lens once a use-case brief exists.
+
+---
+
+# 4. Artifact — Reproducible Friction Log (PROVISIONAL DRAFT)
+
+> **Status: DRAFT / PROVISIONAL.** Per the operating rules, I do not invent evidence. Every `[PLACEHOLDER]` must be filled from the actual run before this log is cited in any decision. Items are labeled with their evidence state. This artifact is advisory DevRel output, not API Owner/engineering approval.
+
+```yaml
+artifactType: "Reproducible friction log"
+featureOrInitiative: "[PLACEHOLDER: API name + ChromeStatus ID]"
+lifecycleStage: "experiment"            # assumption A1; confirm
+audience: "internal (public-safe redaction before any external use)"
+owner: "[PLACEHOLDER: DevRel friction-log owner]"
+status: "draft"
+created: "[PLACEHOLDER ISO date]"
+updated: "[PLACEHOLDER ISO date]"
+sources:
+  - "[PLACEHOLDER: explainer/spec revision URL]"
+  - "[PLACEHOLDER: canonical quickstart URL]"
+  - "[PLACEHOLDER: sample/demo repo + commit]"
+  - "[PLACEHOLDER: run evidence folder (screenshots/traces/logs)]"
+unresolvedAssumptions:
+  - "Stage is Experiment/OT, not developer trial (A1)."
+  - "Mobile is an intended target (A3)."
+  - "Explainer is the visual source of truth (A4)."
+  - "Leak is a property of API/integration, not demo misuse (A5)."
+reviewRequirements:
+  - "Feature team (impl/spec reconciliation)"
+  - "Demo/sample author"
+  - "Framework-integration owner"
+  - "Docs owner"
+  - "The party asserting 'basically works'"
+```
+
+## 4.1 Run manifest (define the run — record before testing)
+
+| Field | Value |
+|---|---|
+| Feature & version/milestone | [PLACEHOLDER: API + milestone/build] |
+| User/job & realistic task | A developer follows the canonical quickstart to integrate the API into a framework app and reach the documented visual/functional result on desktop **and** mobile. |
+| Lifecycle stage & expected support | Experiment/OT (A1); APIs/tokens may change or end; fallback expected. |
+| OS | Desktop: [PLACEHOLDER OS/version]; Mobile: [PLACEHOLDER OS/version] |
+| Browser/channel/build | [PLACEHOLDER Chrome channel + version] |
+| Flags/tokens/policies | **Undocumented flag:** [PLACEHOLDER]; **Undocumented server header:** [PLACEHOLDER]; OT token? [UNKNOWN] |
+| Hardware | [PLACEHOLDER] |
+| Viewport & input | Desktop pointer+keyboard; mobile touch [PLACEHOLDER] |
+| Network | [PLACEHOLDER: e.g., fast 4G throttle repeated for leak?] |
+| Locale / AT | Locale [PLACEHOLDER]; AT [UNKNOWN — not exercised] |
+| Framework & toolchain | [PLACEHOLDER framework + version]; build [PLACEHOLDER] |
+| Server | Requires the undocumented header → [PLACEHOLDER server config] |
+| Source docs / explainer / samples | See `sources` above |
+| Fresh profile/cache/storage | [PLACEHOLDER: yes/no; preconditions] |
+| Mobile/desktop coverage | Both required per A3 (not excluded) |
+| Evidence boundary | Public-safe; internal logs referenced by path |
+
+## 4.2 Step-by-step journey (exercise the complete path)
+
+Mapping the 9-step friction path; status as of this provisional run:
+
+| # | Step | Status | Note |
+|---|---|---|---|
+| 1 | Discovery | UNKNOWN | Not assessed. |
+| 2 | Setup | **FAIL (partial)** | Requires undocumented flag (FL-01) + undocumented header (FL-02). |
+| 3 | First success (canonical quickstart, no hidden knowledge) | **FAIL** | Works only on one desktop after hidden setup (FL-03). |
+| 4 | Core controls | UNKNOWN | Not exercised across all controls. |
+| 5 | Realistic integration (framework) | **FAIL** | Resource leak on repeated use (FL-07). |
+| 6 | Edges | UNKNOWN | Not exercised. |
+| 7 | Compatibility | **FAIL** | Mobile fails (FL-04); other engines UNKNOWN (FL-09). |
+| 8 | Quality | **FAIL** | Console errors (FL-05); visual ≠ explainer (FL-06). |
+| 9 | Operations (logging/diagnostics/rollback/cleanup) | PARTIAL | Cleanup path is implicated by the leak (FL-07); diagnostics UNKNOWN. |
+
+## 4.3 Friction table (findings)
+
+Counts (provisional inventory): **9 friction steps assessed-as-evidenced or not; 8 findings identified; 0 verified-fixed; 8 open; 1 of these is an evidence/process contradiction (FL-08).** I do not claim complete coverage — steps 1, 4, 6, 9 (parts) are **UNKNOWN/untested**.
+
+| ID | Step / intent | Expected (source) | Actual | Category | Severity* | Evidence state | Status |
+|---|---|---|---|---|---|---|---|
+| FL-01 | Setup — reach first success via documented steps | Docs/quickstart list all activation requirements | An **undocumented flag** is required | docs / sample / implementation | High | FACT-of-record; capture cmd+version | open |
+| FL-02 | Setup — server config | Docs list server requirements | An **undocumented server header** is required | server/deployment / docs | High | FACT-of-record; capture header+value | open |
+| FL-03 | First success — canonical quickstart, any environment | Quickstart works as written across supported environments | Works on **one desktop only** | docs / sample / compatibility | High | FACT-of-record; breadth UNKNOWN | open |
+| FL-04 | Compatibility — mobile | Mobile is supported (A3) | **Mobile fails** | compatibility / implementation / UX | High | FACT-of-record; failure mode [PLACEHOLDER] | open |
+| FL-05 | Quality — clean runtime | No console errors on supported path | **Console errors** present | implementation / quality | Med-High | FACT-of-record; strings [PLACEHOLDER] | open |
+| FL-06 | Quality / spec — visual result | Rendered result matches **explainer** | **Visual differs from explainer** | explainer/spec / implementation | High (spec/impl mismatch) | FACT-of-record; side-by-side [PLACEHOLDER] | open |
+| FL-07 | Realistic integration — repeated framework use | No resource growth on repeated use | **Resource leak** after repeated use | framework/library / implementation / performance / ergonomics | High-Critical | FACT-of-record; signature [PLACEHOLDER] | open |
+| FL-08 | Evidence/process — "basically works" claim | Findings reconciled before any decision | **CONTRADICTION** with FL-01..07 | process / evidence-honesty | High (decision risk) | SIGNAL vs. FACT | open |
+| FL-09 | Compatibility — other engines | Broad interop evidence (Baseline path) | **Not tested** | interoperability | Unknown | UNKNOWN | open |
+
+*Severity is a HYPOTHESIS pending impact/affected-user sizing; do not quote as a metric.
+
+### Per-item detail (required fields)
+
+**FL-01 — Undocumented flag required**
+- Reproduction: `[PLACEHOLDER exact flag + CLI/flag UI steps]`. Rate: [PLACEHOLDER /10].
+- Environments: [PLACEHOLDER].
+- Affected users: every developer not privy to the flag.
+- Workaround & cost: set the flag manually; cost = silent setup failure for anyone using only docs.
+- Likely owner: docs/sample/feature team (not blame).
+- Hypothesis: the flag is real activation machinery that never made it into the quickstart.
+- Proposed fix/test: update quickstart to include the flag; add a regression assert that the **documented-only** path reaches first success.
+- Status: open.
+
+**FL-02 — Undocumented server header required**
+- Reproduction: `[PLACEHOLDER header name/value + server config]`. Rate: [PLACEHOLDER].
+- Workaround & cost: hand-configure the header; cost = blocks production deployment and any developer without server control.
+- Likely owner: docs/server-deployment/feature team.
+- Hypothesis: header is a required opt-in (OT-style or CORS/COEP-like) omitted from docs.
+- Proposed fix/test: document header + provide server snippets (Node, static host, framework middleware); regression assert that documented server config yields activation.
+- Note: an undocumented header is also a **supportability** and potential **security/privacy** surface — route to the right reviewers (UNKNOWN which).
+- Status: open.
+
+**FL-03 — Single-desktop-only success**
+- Reproduction: run quickstart on the one passing desktop vs. a second desktop/OS. Rate for the second env: [UNKNOWN — likely fails or untested].
+- Workaround: none known.
+- Likely owner: feature team + sample author.
+- Hypothesis: success depends on an environment-specific precondition (build, GPU, flag default, origin allowlist) that is not captured.
+- Proposed fix/test: enumerate preconditions; add a 2nd-desktop and 2nd-OS run to the matrix.
+- Status: open.
+
+**FL-04 — Mobile fails**
+- Reproduction: `[PLACEHOLDER device/OS/Chrome channel/version]; failure mode: [no activation | JS error | render error | silent no-op | crash]`. Rate: [PLACEHOLDER].
+- Workaround: none (mobile is intended per A3).
+- Likely owner: feature team (impl) or sample (mobile path).
+- Hypothesis: mobile activation path (flag/header/feature detection) differs, or a mobile-specific capability is missing.
+- Proposed fix/test: capture trace + console on mobile; verify feature-detection guidance; fix or explicitly scope out mobile (and update docs + detection).
+- Status: open.
+
+**FL-05 — Console errors**
+- Reproduction: open DevTools on the supported desktop path. Strings: `[PLACEHOLDER]`. Rate: [PLACEHOLDER].
+- Workaround: ignore (risky) — may mask real failures.
+- Likely owner: implementation.
+- Hypothesis: warnings mask a real failure; or noisy telemetry from the experimental build.
+- Proposed fix/test: triage each signature to warning-vs-fatal; add a **console-clean** assertion on the supported path.
+- Status: open.
+
+**FL-06 — Visual result differs from explainer**
+- Reproduction: side-by-side of actual render vs. explainer figure. Delta: `[PLACEHOLDER]`.
+- Expected source: explainer/spec revision `[PLACEHOLDER]`.
+- Likely owner: feature team (impl) **or** spec author (explainer) — to be determined; **do not** silently rewrite the expectation.
+- Workaround: none acceptable; this is a spec/impl mismatch by definition.
+- Hypothesis: either impl is wrong, or the explainer is stale/ambiguous.
+- Proposed fix/test: file a spec-vs-impl delta; decide owner; add a visual conformance assertion (screenshot hash / DOM check) keyed to the explainer.
+- Status: open.
+
+**FL-07 — Framework integration resource leak on repeated use**
+- Reproduction: `[PLACEHOLDER framework]; integrate; perform N repeated uses (mount/unmount or repeated imperative calls); measure [heap | listeners | handles | GPU/context | file descriptors] over time`. Signature: `[PLACEHOLDER]`. Rate: [PLACEHOLDER — does it grow without bound? recover after GC? only on unmount?].
+- Workaround & cost: periodic full reload; cost = not production-viable.
+- Likely owner: feature team (API surface/teardown) **or** sample (misuse) — to be determined.
+- Hypotheses: (a) the API lacks a teardown/dispose surface (ergonomics/design gap); (b) the sample doesn't call an existing teardown; (c) the implementation retains references (impl bug).
+- Proposed fix/test: quantify growth (MB/iteration, ceiling, recovery); if no teardown exists, that's an **API ergonomics finding** → feed back to design before wider review; add a leak regression test (run N iterations, assert bounded retention + clean teardown).
+- This is potentially the highest-impact finding for end users (memory/battery/CPU). Treat as candidate **Critical** pending measurement.
+- Status: open.
+
+**FL-08 — CONTRADICTION: "basically works" vs. evidence**
+- Reproduction: ask the asserting party to reproduce success under this run manifest.
+- Affected users: decision-makers (risk of a false "works" readout).
+- Likely owner: whoever owns the experiment readout.
+- Recommendation: classify the claim as a SIGNAL; require environment + manifest reconciliation; publish findings with contradictions visible.
+- Proposed fix/test: a shared manifest run; record both outcomes with denominators.
+- Status: open (blocker for any continue/extend/ship readout).
+
+**FL-09 — Other engines untested**
+- Reproduction: run on [PLACEHOLDER Gecko/WebKit] stable. Outcome: UNKNOWN.
+- Recommendation: do not claim interop; add to the matrix before any "broad success" language.
+- Status: open (unknown).
+
+## 4.4 Evidence index (to be populated — not invented)
+
+| Ref | Type | Path/URL | Captured |
+|---|---|---|---|
+| E-01 | screenshot — desktop success state | [PLACEHOLDER] | [PLACEHOLDER] |
+| E-02 | trace — mobile failure | [PLACEHOLDER] | [PLACEHOLDER] |
+| E-03 | console log — error signatures | [PLACEHOLDER] | [PLACEHOLDER] |
+| E-04 | screenshot — actual vs. explainer | [PLACEHOLDER] | [PLACEHOLDER] |
+| E-05 | perf trace — heap/listeners over N iterations | [PLACEHOLDER] | [PLACEHOLDER] |
+| E-06 | network log — header presence/absence | [PLACEHOLDER] | [PLACEHOLDER] |
+
+## 4.5 Summary panels (all TBD until captured)
+
+- **Console:** signature list + fatal/warning classification → [PLACEHOLDER].
+- **Network:** header sent? token? status codes at failure → [PLACEHOLDER].
+- **Performance/resource:** leak rate, ceiling, recovery → [PLACEHOLDER].
+- **Accessibility:** not exercised → UNKNOWN (required before wide review).
+- **Visual:** actual-vs-explainer delta → [PLACEHOLDER].
+
+## 4.6 Cross-device / cross-engine matrix
+
+| Class | Outcome | Evidence state |
+|---|---|---|
+| Desktop OS #1 (the "works" one) | Works **only** with undocumented flag+header | FACT-of-record (single env) |
+| Desktop OS #2 | UNKNOWN | Not tested |
+| Mobile (intended, A3) | **Fails** | FACT-of-record (device TBD) |
+| Mobile #2 | UNKNOWN | Not tested |
+| Other engine (Gecko/WebKit) | UNKNOWN | Not tested |
+
+## 4.7 Questions & measurable goals (from findings)
+
+- Q1: Does the **documented-only** quickstart reach first success on ≥2 desktop OSes and ≥2 mobile devices? (Closes FL-01/02/03/04.)
+- Q2: Is each console signature fatal or benign? (FL-05.)
+- Q3: Does actual render match the **current explainer** revision? If not, is the fix in impl or spec? (FL-06.)
+- Q4: After N repeated uses, is resource retention bounded, and is there a documented teardown path? (FL-07.) **BLOCKER** for "production-viable" language.
+- Q5: Does the asserting party reproduce success under this manifest? (FL-08.)
+- Q6: Does it work in ≥1 other engine? (FL-09.)
+
+## 4.8 Fix / owner plan (advisory; owners are "likely," not blame)
+
+| ID | Layer to fix | Likely owner | Proposed action | Regression added? |
+|---|---|---|---|---|
+| FL-01 | docs/sample | docs owner | Document flag in quickstart | assert documented-only path succeeds |
+| FL-02 | docs/server-deployment | server/docs owner | Document header + server snippets | assert documented server config activates |
+| FL-03 | sample/impl | feature team | Enumerate env preconditions; 2nd-OS run | matrix regression |
+| FL-04 | impl/sample | feature team | Mobile trace; fix or scope explicitly | mobile matrix regression |
+| FL-05 | impl | feature team | Triage signatures; console-clean assert | console-clean test |
+| FL-06 | impl **or** explainer | TBD (delta first) | Spec-vs-impl reconciliation | visual conformance assertion |
+| FL-07 | API design **or** impl **or** sample | TBD (root-cause first) | Quantify; add/require teardown; leak test | leak regression (N iterations, bounded) |
+| FL-08 | process | readout owner | Shared-manifest reconciliation; honest readout | n/a (process) |
+| FL-09 | interop | feature team/standards | Run on other engines | interop matrix |
+
+## 4.9 Regression / conformance additions (immutable, testable)
+
+1. **Setup regression:** running *only* the documented quickstart (documented flag + documented server config) reaches first success on the supported desktop. (FL-01/02/03)
+2. **Mobile matrix regression:** supported mobile device(s) reach first success. (FL-04)
+3. **Console-clean regression:** no error-level console output on the supported path. (FL-05)
+4. **Visual conformance:** rendered output matches the explainer reference (screenshot/DOM check keyed to spec revision). (FL-06)
+5. **Leak regression:** after N repeated uses, retained resources are bounded; teardown returns to baseline. (FL-07)
+
+## 4.10 Re-run, monitoring, residual risks
+
+- **Re-run:** after each fix, re-run the exact reproduction **plus** adjacent paths; preserve before/after evidence and denominators.
+- **Monitoring cadence/triggers:** re-run the regression suite **every milestone** and after any impl/docs/spec/sample change. Define per-monitor: source/query, owner, alert threshold (e.g., reappearing console signature, failed conformance assertion, leak rate > [PLACEHOLDER]), action, stop condition. [Owners/thresholds: PLACEHOLDER.]
+- **Residual risks:** (1) the leak may be a design gap requiring an API change, not just a bug; (2) the explainer may be the wrong source of truth (resolves only via spec reconciliation); (3) "basically works" may persist as a narrative ahead of evidence — guard against inferring success.
+- **Coverage disclaimer:** this provisional log covers 8 findings across the 9-step path; steps 1, 4, 6, and parts of 9 are **UNKNOWN/untested**. Do not claim complete coverage.
+
+---
+
+# 5. Plan (stage-appropriate; Experiment/OT under A1)
+
+- **Outcome & exit criteria:** The experiment cannot honestly be reported as "working" until FL-01..FL-08 are reproduced with evidence and either fixed or explicitly accepted with disclosed scope. **Exit =** documented-only quickstart succeeds on ≥2 desktop OSes + supported mobile; console-clean; visual matches reconciled explainer; leak bounded with a teardown path; "basically works" reconciled under a shared manifest; ≥1 other engine tested (result, whatever it is).
+- **Decision this serves:** continue / extend / widen-review / rework / ship. **BLOCKER:** FL-07 (leak) and FL-08 (evidence contradiction) must be resolved before any continue/extend/ship readout.
+- **Evidence to collect:** E-01..E-06 above; leak quantification; mobile trace; 2nd-desktop run; other-engine run; reconciled manifest run with the asserting party.
+- **Activities/artifacts:** (1) this friction log, finalized with evidence; (2) spec-vs-impl delta issue (FL-06); (3) leak root-cause spike + possible API-ergonomics finding (FL-07); (4) docs/server-snippet update (FL-01/02); (5) cross-device/other-engine matrix (FL-03/04/09); (6) honest experiment readout with contradictions visible (FL-08).
+- **Owners/reviewers:** DevRel (coordinate friction/evidence); feature team (impl/spec reconciliation); sample author; framework-integration owner; docs owner; the "basically works" party. **UNKNOWN — assign.**
+- **Dependencies/risks:** leak may require a design change; explainer may be stale; undocumented header may need privacy/security review (UNKNOWN).
+- **Sequence:** (1) capture evidence for all open items in one shared manifest → (2) reconcile FL-08 → (3) root-cause FL-06 and FL-07 → (4) fix docs/server (FL-01/02) → (5) widen matrix (FL-03/04/09) → (6) add regressions → (7) re-run + publish readout.
+- **Explicit blockers:** FL-07, FL-08. Stage confirmation (A1) blocks the transition packet.
+
+---
+
+# 6. Measures (match the work, with denominators)
+
+- **Friction closure rate:** fixed-and-verified / total-open findings (denominator = 8 now). Target: 0 high-severity open before ship readout.
+- **Coverage breadth:** environments tested / intended environments (desktop OSes, mobile, engines). Today: 1 desktop evidenced; others UNKNOWN. Target: ≥2 desktop + supported mobile + ≥1 other engine.
+- **Leak boundedness:** retained resource delta after N iterations; teardown returns to baseline. Target: bounded + baseline-recovery (threshold [PLACEHOLDER]).
+- **Setup honesty:** does documented-only quickstart reach first success unaided? Target: yes, reproducibly.
+- **Evidence/decision quality:** is "basically works" reconciled under a shared manifest with contradictions published? Target: yes.
+- **Data-quality note:** all denominators today are provisional; do not report as final metrics. Limitations: single observer; no captured artifacts yet; no other-engine data.
+
+---
+
+# 7. Continuous loop hook
+
+This is ongoing experiment evidence work → hand off to `modules/continuous-loop.md`: keep stable IDs (FL-01..FL-09) and history; fix denominators; assign owners, cadence (per milestone + on impl/docs/spec/sample change), alert thresholds, and human escalation; re-exercise, critique, and re-publish. On any stage change (experiment → wide review / rework / repeat / stop), produce the Phase-5 transition packet: original hypotheses, participant exposure, measured results, methodology/limitations, partner-evidence stage, design/docs/impl changes, user/incident findings, unresolved interop/review risks, and a continue/rework/extension/stop recommendation with conditions that would change it.
+
+---
+
+**One-line summary for the requester:** The "basically works" claim is a **SIGNAL that contradicts** the run evidence; treat it as an open finding (FL-08), not a pass. The real blockers for any continue/extend/ship readout are the **resource leak (FL-07)** and the **evidence contradiction (FL-08)**, with **undocumented setup (FL-01/02)**, **mobile failure (FL-04)**, and the **spec-vs-impl visual mismatch (FL-06)** as must-resolve-before-broad-launch findings. This friction log is a **provisional draft**; every placeholder must be filled with captured evidence before it supports a decision.

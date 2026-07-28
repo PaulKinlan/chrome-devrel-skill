@@ -1,0 +1,278 @@
+## 0. Mode, working assumptions, and questions I'd normally ask first
+
+This is the **most high-risk archetype** in the DevRel catalog — a browser-supplied capability whose entire function is to discriminate between clients, offered with a non-binding promise that the discrimination won't be used in the obvious way. The exemplar research in this skill explicitly contains an attestation stakeholder-critique case (`stakeholder-critique-attestation`, `strong-capability-retains-risk`), which tells me the nearest real-world precedent to treat as the reference point.
+
+**Working assumptions** (flag if any is wrong):
+1. The proposal is at **intake / early incubation**, pre-trial, pre-standards, pre-other-engine discussion. "Announcement strategy" is the *requested* artifact, not proof of lifecycle stage.
+2. Evidence boundary is **public-only** with internal-safe handling until reviews exist.
+3. The "promise not to exclude browsers" is a *stated guideline*, not a *technical or contractual enforcement mechanism*. (If there *is* an enforcement design, that changes the analysis materially — unknown.)
+4. I may not retrieve live primary sources in this non-interactive context, so **all stakeholder positions below are marked "principle-grounded inference" or "open question"** with source retrieval listed as the required next action. I will not fabricate URLs, dates, quotations, commitments, or approvals.
+
+**Questions I would normally ask before producing tactics** (stated, then proceeded past):
+- Is this hardware-rooted (TPM/secure enclave), browser-attested, or a delegated attestation service? Who is the *attester* and who governs the trust list?
+- Is the token short-lived and unlinkable across origins/time, or durable/correlatable?
+- What is the user-visible failure/fallback when attestation is declined or unavailable?
+- Is there a cross-engine standards home (W3C/WICG/TAG/WHATWG/IETF) and any prior contact with Mozilla/WebKit?
+- What does the threat model say about the browser vendor as the attester given its own browser is in the trust set (self-preferencing)?
+- Who is the formal Privacy / Security / Legal/Competition / API Owner reviewer, and have they been engaged?
+
+---
+
+## 1. Diagnose (intake summary)
+
+| Field | Assessment |
+|---|---|
+| **Mode** | Feature — contentious, high-power, widely consequential |
+| **Lifecycle stage** | **Intake → Incubation.** Diagnosis overrides the requested "announcement." An announcement presupposes readiness that the evidence does not support. |
+| **Developer problem (claimed)** | Sites cannot reliably distinguish automated/abusive clients from genuine ones; fraud, ATO, scalping, ad fraud, payment fraud, abuse. |
+| **Target audience (claimed)** | Large consumer sites, fraud/abuse/identity teams, payments, streaming, ticketing, social, adtech. |
+| **Current decision needed** | Whether/when/how to make *any* public disclosure, and what evidence/design work must precede it. |
+| **Evidence available** | None supplied. *Fact:* the general fraud/abuse problem space is real and documented in public security research. *Unknown:* proposal-specific developer demand, partner willingness, use-case quality, privacy/security/competition analysis. |
+| **Highest-risk assumptions** | (a) That a non-enforceable "sites should not exclude browsers" promise constrains behavior; (b) that end-user benefit is real and net-positive; (c) that an open-source browser can independently implement a hardware-rooted attester; (d) that this is announce-able at all in current form. |
+| **Missing owners/stakeholders** | Other engines, W3C TAG, civil-society groups, accessibility & automation communities, competition/DP regulators, formal Privacy/Security/Legal reviewers. |
+| **Recommended next intervention** | **Do not announce.** Convene a pre-announcement stakeholder-engagement + evidence sprint; treat any public word as an *input-seeking explainer*, not a capability reveal. |
+
+---
+
+## 2. Readiness assessment (advisory — not a veto, not approval)
+
+| Dimension | Status | Note |
+|---|---|---|
+| Problem validity | **Partial** | Fraud/abuse pain is real in general; not yet differentiated from "this API would be nice." No attributable proposal-specific research. |
+| Developer demand | **Unknown** | No attributable evidence for this specific capability shape. |
+| Use-case quality | **Partial** | Plausible use cases exist; scope-creep risk (DRM → identity → gating) is severe and unbounded. |
+| Partner commitment | **Unknown** | No named, consented, stage-classified partners. |
+| End-user benefit/cost/control | **Unknown** | Benefit asserted, not evidenced. Costs (exclusion, lock-in, privacy, lost agency) are material and unanalyzed. |
+| Accessibility | **Unknown** | High-risk: assistive tech that automates/intercepts the browser may register as "untrusted modification." |
+| Privacy / fingerprinting | **Unknown** | Attestation tokens are a correlation surface even when short-lived. Unlinkability is a *claim to be proven*, not a fact. |
+| Security / abuse | **Unknown** | Threat model required. The feature *is itself* an abuse vector (coercion, exclusion). |
+| Legal / regulatory / competition | **Unknown** | High-risk: gatekeeping, self-preferencing (DMA/CMA/FTC), data-protection. DevRel routes to counsel; draws no conclusions. |
+| Interoperability | **Unknown** (principle-contradicted for HW-rooted designs) | No cross-engine positions retrieved. Independent open-source implementation of hardware-rooted attestation is doubtful. Silence ≠ support. |
+| Framework/library fit | **Not the bottleneck** at this stage. |
+| Server / deployment / enterprise | **Unknown** | |
+| Performance / resource cost | **Unknown** (likely small per-call; not the core risk) | |
+| Docs / samples | **Unknown** | |
+| Supportability | **Unknown** | |
+| Narrative / claim accuracy | **Contradicted** | The "promise not to exclude" contradicts the mechanism's purpose and is non-enforceable. This is the single largest messaging landmine. |
+| Adoption mechanics | **Not relevant** pre-announcement | |
+| Launch resilience | **Unknown** | Must be built *before* any public word; contention is certain. |
+
+---
+
+## 3. Challenge
+
+### 3a. Power and capability change
+
+- **New capability:** a site can obtain a signal — likely cryptographic — attesting that the client (browser/OS/device) is in a set the site or a delegated attester considers "trusted."
+- **Gains power/control:** large sites/fraud teams, adtech/DRM-adjacent use cases, the **attester** (whoever signs or validates the trust list — typically the browser vendor, OS vendor, or a delegated cloud service), and device/OS vendors whose clients are "trusted" by default.
+- **Loses choice/access:** users of non-mainstream, modified, privacy-hardened, rooted/custom-OS, older, low-end, or region-restricted devices; users who depend on **assistive technology or automation**; **independent and open-source browsers**; automation/testing/archival/research (web archives, crawlers, search); people who don't control their device (shared, enterprise, locked-down).
+- **Benign site:** throttle bots, cut fraud, gate premium/paid flows, raise friction for abuse.
+- **Hostile or dominant site:** exclude competing browsers and privacy-respecting clients, force-disable ad/tracking blockers, enforce DRM/tie-in, price-discriminate, coerce behavior, entrench incumbent distribution, exclude users whose devices can't pass.
+- **One browser alone:** creates a de-facto trust signal controlled by one vendor; rival browsers' users begin failing checks; sites integrate around it; fait accompli before interop.
+- **Every browser ships:** still concentrates "trust" at device/OS/browser layer; hardware-backed attestation still excludes open-source/custom implementations; a two-tier "trusted vs. untrusted" web crystallizes.
+- **User detect/deny/revoke/audit/workaround:** *largely no* — the entire value proposition is that users *cannot* forge or bypass it. That asymmetry between site capability and user agency is the core risk.
+- **Irreversible effects before interop:** sites integrate a single-vendor signal; users get conditioned to degraded access; other browsers face a take-it-or-lose-access choice.
+
+### 3b. Stakeholder map (retention rationale)
+
+**Affected end users (split, because "users" is not one group):**
+- Mainstream users on default devices — *may* gain fraud reduction.
+- Privacy-conscious, open-source-OS, rooted/custom-ROM, and Tor/anonymity users — *likely lose access or are fingerprinted*.
+- Low-end / old-device / metered-network / region-restricted users — *risk exclusion by attestation failure*.
+- **Accessibility-software users** — high-risk: AT that injects events, reads/modifies the accessibility tree, or drives the browser may be classified as a modification.
+- Users without device control (shared, enterprise, abusive household) — coercion concern.
+- Automation/testing/archival/research users (incl. Internet Archive, search crawlers, academic scraping) — breakage/exclusion.
+
+**Implementers:** Mozilla/Firefox, WebKit/Safari, Brave, Vivaldi, Opera, downstream Chromium embedders, Tor Browser. Their *independent implementability* and market survival are directly at stake.
+
+**Standards/governance:** W3C TAG, WICG, WHATWG; possibly IETF if attestation/crypto is involved. *Open question:* is there a standards home at all?
+
+**Civil society & researchers:** digital-rights organizations (EFF and peers), privacy/security/fraud researchers, accessibility organizations, competition/DP-focused NGOs.
+
+**Regulators:** competition authorities (EU DMA, UK CMA, US FTC/DOJ and peers), data-protection authorities (GDPR DPAs and peers), consumer-protection and accessibility regulators. *Routed to qualified counsel; no conclusions drawn.*
+
+**Industry:** payments, streaming/DRM, ticketing, gaming, social platforms, adtech/publishers, identity providers, device/secure-enclave vendors, potential attesters.
+
+**Open-source/firmware communities:** custom ROM, Linux mobile, independent engine contributors.
+
+### 3c. Dated source packet — **status: to be retrieved (open questions)**
+
+Per the skill, I will **not** write remembered positions for Mozilla/WebKit/EFF/regulators. The required next action is a dated retrieval pass. The skill's recommended starting points (these URLs are from the skill module, not freshly retrieved by me here):
+
+- Mozilla — Vision of the Web; Mozilla Standards Positions
+- WebKit — Tracking Prevention Policy; WebKit Standards Positions
+- W3C — Ethical Web Principles; Web Platform Design Principles (incl. **priority of constituencies** and "safety when visiting a page"); Privacy Principles
+- EFF — interoperability/privacy principles
+
+Plus, **mandatory**: a source-cited review of the **nearest precedent** (the Web Environment Integrity / device-attestation episode(s) in browser history), capturing every engine and civil-society position, the criticisms that recurred, and how the prior attempt was narrowed or withdrawn. I am treating that precedent as the reference case but have **not** fabricated dates, quotes, or URLs here — retrieval is a flagged task with owner + due date below.
+
+**Evidence class for every stakeholder position below: *principle-grounded inference or open question*** until retrieved.
+
+### 3d. Critique matrix — material themes
+
+Each theme: steelmanned concern → severity (S) / likelihood (L) → current response → gap → next action.
+
+1. **Two-tier web / exclusion.** *"A capability whose purpose is to discriminate will, at scale and under incentive, be used to exclude clients the site prefers not to serve — non-mainstream browsers, privacy tools, AT, low-end devices. The web's open-access guarantee erodes."* S: high · L: high. Response: non-binding guideline "sites should not exclude browsers." **Gap: guideline is not enforceable; incentives point the other way.** Action: design an *enforceable or structurally-bounded* scope; demonstrate fallback parity.
+2. **Self-preferencing / competition.** *"The attester (often the browser vendor) decides what is 'trusted' while its own browser is in the trust set. That is gatekeeping and, in several jurisdictions, the kind of self-preferencing competition law targets."* S: high · L: medium-high. Response: unknown. **Gap: no governance/audit design; no separation of attester from browser vendor interest.** Action: legal routing; governance design that removes single-vendor control; multi-attester model.
+3. **Privacy / fingerprinting.** *"Attestation tokens, even short-lived, add a correlation vector across origins and time; the attestation handshake is itself a tracking surface."* S: medium-high · L: medium-high. Response: presumed "unlinkable token." **Gap: unlinkability unproven; no differential-privacy/fingerprinting analysis.** Action: formal privacy analysis; short-lived, origin-bound, blinded-token design with public proofs.
+4. **End-user agency, consent, refusal.** *"Users can't meaningfully consent when refusal means being blocked, and they can't forge/audit the signal — agency is one-directional."* S: high · L: high. Response: unknown. **Gap: no user-facing disclosure, choice, appeal, or fallback design.** Action: UX + policy for refusal that preserves access to a meaningful fallback.
+5. **Open-source / independent implementability.** *"Hardware-rooted attestation cannot be independently implemented by an open-source browser or a custom OS; the API structurally excludes them."* S: high · L: high (if HW-rooted). Response: unknown. **Gap: no independent-implementability proof.** Action: design that is royalty-free and implementable without proprietary hardware or vendor keys.
+6. **Accessibility.** *"AT and input methods that read/modify the accessibility tree or drive the browser may register as 'untrusted modification,' degrading or denying access to disabled users."* S: high · L: medium. Response: unknown. **Gap: no AT-compatibility testing; W3C priority-of-constituencies not addressed.** Action: AT compatibility plan; guarantee AT never reduces trust.
+7. **Automation / testing / archival / research / search.** *"Crawlers, archives, test infrastructure, and search indexers cannot attest and get degraded or blocked — damaging the recordable, searchable web."* S: medium-high · L: high. Response: unknown. **Gap: no machine/non-human-access path.** Action: documented, non-abusable path for archivists and search.
+8. **Security monoculture, coercion, authoritarian misuse.** *"'Trusted client' becomes a coercion instrument — authoritarian regimes, domestic-abuse control, mandatory-attestation mandates. A monoculture of 'genuine' clients also reduces defensive diversity."* S: high · L: medium. Response: unknown. **Gap: no abuse-at-scale / second-order analysis.** Action: misuse-at-scale threat model; sunset/reversibility design.
+9. **Scope creep (DRM → identity → gating).** *"'Fraud' is the entry use case; the same primitive enables DRM, identity binding, and content/behavior gating — each step expanding who is excluded."* S: high · L: high. Response: unknown. **Gap: no enforced scope limits or sunset.** Action: explicit, narrow, sunset-bound scope with compliance signals.
+10. **The non-enforceable promise (central contradiction).** *"Offering a discrimination capability while promising it won't be used to discriminate is internally contradictory; a reviewer, journalist, or regulator will say so immediately."* S: high · L: certain. Response: stated guideline. **Gap: promise is unenforceable.** Action: replace promise with *structure* (bounded scope, enforceable signals, fallback parity) or narrow the capability.
+
+**Strongest case *for* the proposal:** fraud, ATO, scalping, ad fraud, payment fraud, and severe abuse (including child-safety) are real and cause real user harm; sites have a legitimate interest in distinguishing abusive clients; native platforms already have integrity signals the web lacks; privacy-preserving (short-lived, unlinkable) attestation is an active research area and *could* in principle be done responsibly.
+
+**Strongest case *against*:** it inserts a centralized, hard-to-audit, hard-to-independently-implement discrimination primitive into the open web, whose incentives predictably push toward browser exclusion and a two-tier web — and it does so while asking us to trust a non-enforceable promise. The harm is structural and asymmetric (sites gain a capability; users lose agency they cannot recover).
+
+**Conditions under which a skeptical stakeholder might shift:** multi-implementer governance with **no single vendor** controlling the trust list; hardware-agnostic, royalty-free, independently implementable by open-source browsers; cryptographically demonstrated unlinkability; a **real, parity-preserving user fallback**; an auditable, appeal-able misuse regime with enforcement teeth; narrow, sunset-bound scope; published threat + abuse-at-scale model; multi-engine shipping commitment; no dependence on one vendor's cloud/identity/keys.
+
+**Redesign triggers (each forces redesign or narrower scope):** any design returning a durable/identifiable/vendor-bound signal; any design with no user fallback; any design open-source browsers cannot independently implement; any signal sites could use to exclude browsers/AT/extensions; evidence that launch partners intend to gate access.
+
+**Delay / abandon triggers:** no cross-engine support; evidence of intended access-gating; inability to prove unlinkability; regulator objection; no appeal path.
+
+### 3e. Announcement red-team (apply *before* anything public)
+
+- **Overstates demand/commitment?** Risk: yes, if "fraud is a big problem" is presented as "developers demand *this API*." (A4 pattern — survey/category interest ≠ API demand.)
+- **Hides known negative positions?** Near-certain to exist post-WEI-precedent; must be surfaced, not buried.
+- **Site/Chrome benefit dressed as user benefit?** "Lower fraud" is a *site* benefit; the *user* benefit ("you'll see less fraud") is asserted and unproven — and users may experience it as *less access and more lock-in*.
+- **Ignores who pays?** Users pay in agency/privacy/access; open-source browsers pay in survival; archivists/search pay in breakage. Must be disclosed.
+- **Chrome-only framed as a web standard?** Forbidden framing. Until multi-engine, this is a *proposal*, not "the web platform."
+- **Safeguard promises without analyzing bypass incentives?** The "sites should not exclude browsers" promise is exactly this — a safeguard the mechanism's own incentives erode.
+- **Delight demos hiding constraints?** A fraud-block demo hides exclusion, AT breakage, privacy cost, fallback gaps.
+- **Scope/naming/launch intent not actually committed?** Must not announce shipping intent the eng/review team hasn't committed to.
+
+---
+
+## 4. Plan (incubation-stage; supersedes "announcement")
+
+**Outcome & exit criteria for *any* public disclosure:** (a) enforceable or structurally-bounded scope that makes browser/AT/extension exclusion infeasible, not merely discouraged; (b) privacy/unlinkability demonstrated, not claimed; (c) at least one other engine engaged on the record (recorded position, not silence); (d) user-fallback and AT-compatibility tested; (e) formal Privacy/Security/Legal(API Owner/competition) reviews routed; (f) launch-resilience plan live. Until these hold, the public posture is *input-seeking*, not announcing.
+
+**Evidence to collect (all currently Unknown):**
+- Attributable developer demand for *this* capability (not category interest).
+- Named, consented partner trial intent, stage-classified (interest → eval → trial → ship → production). No promotion without source + permission.
+- Formal privacy/fingerprinting analysis + unlinkability proofs.
+- Threat + abuse-at-scale model (incl. coercion/authoritarian misuse, second-order effects).
+- AT-compatibility test plan & results.
+- Independent-implementability proof (open-source browser, custom OS).
+- Automation/archival/search non-human-access design.
+- Dated cross-engine and civil-society position retrieval (source packet).
+- Regulatory landscape scan (competition/DP/consumer/a11y) — routed to counsel.
+
+**Activities/artifacts & owners (RACI to be assigned; DevRel coordinates intake/incubation):**
+1. Reframe problem/use-case brief — separate genuine *user* benefit from *site* benefit; non-goals list with hard scope limits + sunset. *(Owner: PM + DevRel)*
+2. Stakeholder source-packet retrieval (dated) + outreach to W3C TAG, Mozilla, WebKit, Brave, EFF, a11y orgs. *(Owner: DevRel/Standards)*
+3. Privacy + security + abuse-at-scale reviews (formal-review-if-required). *(Owners: Privacy, Security)*
+4. Legal/competition/DP routing questions. *(Owner: Legal — DevRel provides no conclusions)*
+5. AT-compatibility + fallback-parity spike. *(Owners: A11y, Eng)*
+6. Launch-resilience plan (see §3 — contention is certain). *(Owner: DevRel + Comms + Security)*
+7. Input-seeking explainer draft (the *only* public artifact for now). *(Owner: DevRel)*
+8. FAQ with strongest objections included. *(Owner: DevRel)*
+
+**Dependencies & risks:** nearest precedent (WEI) makes any framing land as fait accompli; single-vendor attester = self-preferencing exposure; no cross-engine path = not a web standard. **Blockers:** unresolved contradiction between capability and non-enforceable promise; no enforceable scope design; no privacy proof.
+
+**Sequence:** (1) internal contradiction-resolution + scope design → (2) source-packet retrieval + cross-engine outreach → (3) formal privacy/security/legal reviews → (4) AT + fallback spike → (5) input-seeking explainer → (6) only then, *if* exit criteria met, a staged transparency plan (still not a "launch"). Suggested cadence: weekly until exit-criteria checkpoint; explicit go/no-go gate.
+
+---
+
+## 5. Artifact — Announcement & transparency strategy (full)
+
+> Per the skill, an artifact must carry source evidence, intended audience, lifecycle stage, owner, status, unresolved assumptions, and review requirements. This is a **provisional draft** because the evidence is not yet ready; unsupported sections are marked. It is **not** a launch announcement — it is a strategy for *staged, input-seeking disclosure*.
+
+```yaml
+artifactType: "Announcement & transparency strategy (input-seeking, not launch)"
+featureOrInitiative: "Environment-attestation API (working name) — no ChromeStatus/ID supplied"
+lifecycleStage: "intake → incubation"
+audience: "internal (draft); public posture = input-seeking explainer only"
+owner: "DevRel (coordinate) with PM/Eng, Standards, Privacy, Security, Legal, Comms"
+status: "draft / provisional — blocked on evidence in §4"
+created: "<today>"
+updated: "<today>"
+sources:
+  - "Skill-provided starting points: Mozilla Vision/Standards-Positions; WebKit Tracking-Prevention-Policy/Standards-Positions; W3C Ethical-Web-Principles, Web-Platform-Design-Principles (priority of constituencies), Privacy-Principles; EFF interoperability principles"
+  - "TO RETRIEVE: dated positions from the above + nearest precedent (Web Environment Integrity / device-attestation episode) + competition/DP regulator materials"
+unresolvedAssumptions:
+  - "No ChromeStatus/explainer/spec/intent exists or was supplied (treat as unknown)"
+  - "Attester identity, token lifetime/unlinkability, fallback design, HW-rooting all unknown"
+  - "'Sites should not exclude browsers' is a non-enforceable guideline (central contradiction)"
+reviewRequirements:
+  - "Privacy (formal); Security (formal); Legal/Competition/DP (formal); API Owner; A11y; Standards; Comms"
+  - "DevRel advisory only — not approval"
+```
+
+### A. Strategic framing (provisional)
+- **Do not announce a capability.** Public posture = *"we are exploring a hard problem and asking for input; here is what we're worried about getting wrong."* This is the only framing consistent with the evidence state and the nearest precedent.
+- **Lead with the contradiction, don't hide it.** State plainly: this primitive's value is discrimination; we know that is exactly what makes it dangerous; here is the *structural* (not merely promised) scope that makes browser/AT/extension exclusion infeasible — or we have no announcement.
+- **Separate user benefit from site benefit.** Never say "users benefit from lower fraud" without the qualifier and the evidence; disclose who bears the cost.
+- **No "the web now has X" framing** until multi-engine. It is a *proposal under incubation*.
+
+### B. Positioning statements (each tied to evidence that does not yet exist — do not publish until sourced)
+1. *Problem:* "Abuse, fraud, and automation cause real harm to users and sites." — *Fact (general); proposal-specific quantification = Unknown.*
+2. *Non-goal (state explicitly):* "We will not ship a mechanism that sites can use to exclude browsers, assistive technology, privacy tools, or low-end devices." — *Hypothesis that must be made true by design, not asserted.*
+3. *Scope bound:* "Any token is short-lived, origin-bound, unlinkable, and does not encode identity or device fingerprint." — *Claim requiring cryptographic proof (Unknown).*
+4. *Governance:* "Trust decisions are not controlled by a single vendor." — *Design requirement, currently unmet (Unknown).*
+5. *Fallback:* "Declining attestation always preserves meaningful access." — *Design requirement, currently unmet (Unknown).*
+
+### C. Sequencing (input-seeking, not launch)
+1. **Internal contradiction-resolution + enforceable-scope design** (blocker; no public word before this).
+2. **Quiet, attributed cross-engine + civil-society engagement** (TAG, Mozilla, WebKit, Brave, EFF, a11y orgs) — record positions with dates.
+3. **Input-seeking explainer** published to a standards/explainer venue (e.g., WICG/TAG), explicitly marked exploratory, with an open issues list and the *strongest objections already written in*.
+4. **Listening window** with structured-issue intake (not a comments free-for-all).
+5. **Only if exit criteria met:** a narrow "research update" post — still not a "now available" launch.
+6. **Launch brief + launch-resilience activation only at genuine ship readiness**, with rollback/hold language prepared.
+
+### D. Channel plan (launch-resilience-aware — contention is certain)
+- **Single source of truth:** one maintained public page (status, evidence, known concerns, decisions, FAQ) updated on a published cadence.
+- **Structured feedback:** dedicated issue templates for privacy / security / a11y / interop / abuse concerns; route to issues, not personal accounts.
+- **No individual as sole spokesperson**; rotate; name launch lead, backup, moderator(s), and escalation routes to Comms/Security/HR/Legal *before* any post.
+- **Prepared language:** hold, correction, scope-narrowing, delay, and rollback statements drafted in advance.
+- **Moderation rules published first**; reporting enabled; consistent enforcement; never label substantive criticism as "abuse," and never make one person absorb harassment.
+- **Digital safety:** minimize personal details in public materials; offer voluntary digital-safety review for public-facing staff; no doxxing republished.
+
+### E. FAQ (must include the strongest objections) — *provisional, evidence to be added*
+- "Is this Web Environment Integrity again?" → Honest comparison to the precedent + what is structurally different (or acknowledge it isn't).
+- "Can a site use this to block Firefox / Brave / my screen reader?" → Answer must be backed by *enforceable* design, not a guideline.
+- "Does this fingerprint me?" → Cite unlinkability proof (currently Unknown).
+- "What happens if I decline?" → Fallback-parity evidence (currently Unknown).
+- "Who controls the trust list?" → Governance design (currently Unknown).
+- "How is this not gatekeeping / self-preferencing?" → Governance + legal routing answer (currently Unknown).
+
+### F. What we will *not* say (red-team guardrails)
+- No "users benefit" without the cost disclosure. No "web standard" without multi-engine. No safeguard described as a *promise*. No partner named without consent and stage classification. No demand implied from category-level survey interest. No silence-from-other-engines presented as support.
+
+---
+
+## 6. Measurement (choose measures that match the work; avoid a single score)
+
+Relevant candidate outcomes *for this stage* (denominators/limits to be specified):
+- **Evidence quality:** # of material gaps moved Unknown→Supported (esp. privacy/unlinkability, AT-compatibility, independent-implementability); integrity of the dated source packet (positions per constituency with retrieval dates).
+- **Engagement legitimacy:** # cross-engine/civil-society constituencies with *recorded* (not silent) positions; attribution quality of any partner signal (interest vs. trial vs. ship).
+- **Risk reduction:** whether enforceable-scope design exists before any public word; whether fallback parity is tested; whether launch-resilience plan is live pre-disclosure.
+- **Avoidable negative outcomes:** # preventable review disputes; incidence of unsupported public claims (target: 0); staff-safety incidents (target: 0, with aftercare regardless).
+- **Not success measures here:** shipment, usage, press sentiment, absence of criticism (explicitly forbidden as success proxies per the skill and exemplar A6).
+
+Data-quality notes: demand evidence must be attributable to *this* capability (not category surveys — A4); stakeholder positions must be dated primary sources, not inferred from silence (A5); any "trusted" denominator must not be conflated with feature-specific adoption.
+
+---
+
+## 7. Continuous loop (this is an ongoing, high-stakes initiative)
+
+Use inventory → evidence → exercise → critique → questions → goals → improve → validate → publish/update → monitor, on a fixed cadence with stable IDs: source-packet row IDs per constituency; critique-theme IDs (T1–T10 above); partner-evidence stage IDs; review-status IDs per discipline. Re-retrieve positions on a schedule (they change with personnel and precedent). Set alert thresholds: new cross-engine negative position, regulator inquiry, AT-breakage report, partner indicating gating intent, or any safety incident → immediate review and possible pause/narrow.
+
+---
+
+## 8. Residual risks, accepted-risk decisions, and unknowns that could change the conclusion
+
+- **Contradiction (explicit):** The proposal simultaneously offers a discrimination primitive and promises it won't be used for the discrimination it enables. **Recommendation:** this must be resolved structurally before any disclosure; it cannot be communicated away.
+- **Accepted-risk decisions are NOT mine to make.** Whether to proceed, narrow, delay, or stop is a Product/API Owner/Legal/Standards decision. DevRel's job is to keep the costs and unknowns visible.
+- **Unknowns that would change this analysis (and must be retrieved/answered):**
+  1. Is the attestation hardware-rooted, browser-attested, or delegated? (Determines open-source implementability — theme 5.)
+  2. Is the token provably unlinkable? (Determines theme 3 severity.)
+  3. Is there a *real*, parity-preserving user fallback? (Determines theme 4.)
+  4. Do launch partners intend to gate access? (Could trigger redesign/abandon.)
+  5. Is there any cross-engine *recorded* position at all? (Silence is not support.)
+  6. Is the "non-exclusion promise" backed by *any* enforcement? (If yes, the central contradiction eases materially.)
+
+**Bottom line:** This is not an announcement problem; it is an incubation-stage evidence and design problem with a near-certain controversy profile and an internal contradiction at its center. The DevRel recommendation is to **not announce**, run the contradiction-resolution + evidence + cross-engagement sprint in §4, and—if anything public is said—use only the input-seeking explainer posture in §5, with launch-resilience (§3e/§5D) active from day one. Every stakeholder position above is principle-grounded inference or open question until the dated source packet in §3c is retrieved; I have fabricated no evidence, commitment, position, metric, or approval.

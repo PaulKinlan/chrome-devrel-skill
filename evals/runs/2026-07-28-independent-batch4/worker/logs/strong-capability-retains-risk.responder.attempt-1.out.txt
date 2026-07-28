@@ -1,0 +1,326 @@
+# Chrome DevRel response — experimental "live accessible HTML as 3D canvas texture" API
+
+> **Skill mode:** advisory DevRel analysis, public-only boundary. This is pre-review analysis, **not** API Owner, privacy, security, a11y, legal, standards, or release approval. DevRel coordinates evidence and adoption; it does not determine whether formal review is required and cannot block or approve shipment.
+
+---
+
+## 0. Questions I would normally ask first (and my working assumptions)
+
+The request is short and unnamed. Before generating tactics I'd interrogate. Since this is non-interactive, I state the questions and the assumptions I'm proceeding on so you can override them.
+
+**Open questions for the requester**
+1. **Identity & provenance:** Which exact API/spec/ChromeStatus entry is this? (The description matches the experimental **live HTML/DOM-as-texture for WebGL/WebGPU** space, but I will not assume the name.) Is there an explainer, intent thread, runtime flag, or Origin Trial already?
+2. **The "two major graphics frameworks":** which ones, and at what evidence stage — *interest → evaluation → trial → ship*? (Hypothesis: likely Three.js and Babylon.js, but unverified **[hypothesis]**.)
+3. **"Compelling demos" + "developers sharing use cases":** attributable and representative, or self-selected enthusiasts? Any production-intent, or only showcase videos?
+4. **Who owns privacy, security, a11y, and standards positioning** for this feature today? Is wide review underway or not yet started?
+5. **What decision do you need now** — go/no-go on broad promotion? An Origin Trial design? A wide-review evidence packet? Both?
+
+**Working assumptions I'm adopting (override if wrong)**
+- **A1 [assumption]:** The capability is a native browser primitive that renders *live, interactive, accessible* HTML into a texture usable inside WebGL/WebGPU, distinct from snapshot workarounds.
+- **A2 [assumption]:** It is currently behind an experimental flag/build; **no** Origin Trial has shipped yet.
+- **A3 [assumption]:** The requester's statements (two framework integrations exist, demos compelling, use cases emerging, security/fingerprinting/perf/cross-browser questions open) are *reported* and **not yet independently verified** by me. I treat them as signals to validate, not facts.
+- **A4 [assumption]:** Evidence boundary is **public-only** with a public-safe output; I will not invent partner names, metrics, standards positions, or commitments.
+- **A5 [assumption]:** You want the **opportunity assessment + next-step DevRel plan** as the primary artifact, with the supporting artifacts the plan depends on drafted in full and provisionally.
+
+---
+
+## 1. Diagnose (intake)
+
+| Field | Finding |
+|---|---|
+| **Mode** | Feature (with initiative potential: "accessible 3D UI on the web"). |
+| **Lifecycle stage** | **Late developer-trial (3), entering wide-review (4), with a field experiment (5) warranted but not yet designed.** Two framework integrations + demos = stage-3 artifacts; open security/fingerprinting/perf/cross-browser questions = stage-4 work is the current bottleneck; an OT would be justified *only* to resolve field-only uncertainties. |
+| **Developer problem** | The web has **no native, live, interactive, accessibility-preserving way to render HTML onto a 3D canvas surface**. Developers snapshot DOM (`html2canvas`, `dom-to-image`), repaint to a `<canvas>` texture, or fake 3D with CSS 3D transforms — all are static, lose semantics/AT, are expensive, and don't integrate into a real WebGL/WebGPU scene graph. **[fact — widely documented workaround ecosystem; systematic demand research not yet supplied]** |
+| **Target audience** | (a) 3D/configurator/AR/spatial-UI developers; (b) data-viz and dashboard authors needing HTML-in-3D; (c) a11y specialists who today cannot make 3D content AT-accessible; (d) framework maintainers (graphics frameworks); (e) end users on low-end devices, battery/metered networks, and AT users. |
+| **Current decision needed** | Whether to (a) broaden promotion now, (b) consolidate evidence + drive wide review, and/or (c) design a learning-focused Origin Trial. **Recommendation below: not (a) yet; do (b) and (c) in parallel, sequenced by risk.** |
+| **Evidence available (reported)** | 2 framework integrations, compelling demos, developer use-case sharing **[signal — reported, verification pending]**. |
+| **Highest-risk assumptions** | That the **"accessible"** headline is technically real (AT can actually reach textured HTML); that demand is representative, not enthusiast self-selection; that a cross-browser path exists; that low-end-device cost is acceptable. |
+| **Missing owners/stakeholders** | Privacy reviewer, security reviewer, a11y reviewer, API Owner, standards/TAG liaison, and other-engine contacts — none confirmed in the request **[unknown]**. |
+| **Recommended next intervention** | A **staged evidence + review sprint** that (1) freezes claims, (2) validates the a11y/security/fingerprinting/perf dimensions with the right reviewers, (3) converts enthusiasm into attributable evidence, and (4) designs an OT whose explicit purpose is resolving field-only uncertainty — *before* broad promotion. |
+
+---
+
+## 2. Assess readiness (no invented veto)
+
+Rated against `modules/readiness-expectations.md`. I am **not** claiming DevRel can block anything; I'm showing likely consequences of unresolved gaps.
+
+| Dimension | Rating | Rationale |
+|---|---|---|
+| Problem validity | **Partial** | Well-documented workaround ecosystem (`html2canvas`/`dom-to-image`/CSS-3D/canvas-repaint) is strong evidence of a real, recurring job **[fact]**, but no systematic, API-shape-specific demand research supplied. |
+| Developer demand | **Partial** | Reported enthusiasm + framework integrations **[signal]**, but attributable production-intent evidence and representativeness are unverified; high self-selection risk. |
+| Partner commitment | **Unknown → must classify** | "Working experimental integrations" must be staged: *interest / evaluation / trial / ship / verified production*. Requester did not stage them. **[unknown]** |
+| API ergonomics | **Partial** | Two integrations imply some usability, but no friction log through realistic integration; mobile/low-end unknown. |
+| Interoperability | **Unknown** | Cross-browser questions explicitly open; no dated WebKit/Gecko/TAG positions cited. **Silence ≠ support.** |
+| Framework/library fit | **Partial** | Two frameworks reported; which two, build/server/SSR constraints, and library-level behavior all unverified. |
+| Documentation | **Partial / Unknown** | Demos exist; reference/quickstart/known-limitations/support status unknown. |
+| Adoption mechanics | **Unknown** | No distribution/adopter-multiplier plan yet. |
+| Measurement | **Unknown** | No metrics, denominators, or baselines defined. |
+| User impact | **Partial / Unknown** | Strong *potential* end-user benefit (accessible 3D UI) but resource/security/privacy costs unmeasured; device matrix absent. |
+| Team safety | **Unknown** | Fingerprinting + privacy + Chrome-only = plausible contention → launch-resilience prep likely needed. |
+| **Accessibility** | **Partial, at risk of Contradicted** | The **value proposition is "accessible HTML,"** yet AT exposure of HTML rendered as a 3D/canvas texture is **unverified [unknown]**. If AT cannot reach the content, the headline claim is contradicted. **Validate first.** |
+| Privacy / fingerprinting | **Unknown** | Explicitly flagged open. Compositing live DOM → GPU texture + interactive surfaces plausibly add timing/content/GPU fingerprint surface. Data-flow analysis not supplied. Likely a **gating dimension.** |
+| Security / abuse | **Unknown** | Explicitly flagged open. Cross-origin rendering into a texture (pixel/data leakage) and *interactive* textures (new UI-redress/clickjacking, focus/spoofing) plus resource exhaustion all need a threat model. Likely **gating.** |
+| Performance / resource | **Unknown** | Explicitly flagged. Per-frame DOM→texture compositing cost on flagship vs. low-end, battery/thermal/bandwidth — unmeasured. |
+| Legal / regulatory / competition | **Not-relevant-to-DevRel-conclusions** | Self-preferencing / Chrome-only lock-in questions are real; route to counsel, no legal conclusions from DevRel. |
+| Server / deployment | **Unknown** | Secure-context, headers, enterprise policy, SSR/hydration behavior unknown. |
+| Supportability | **Unknown** | No support route, FAQ, or triage owner confirmed. |
+| Narrative / claim accuracy | **Partial / risk** | "Accessible" and "interactive" are being used as headlines before validation; terminology consistency across artifacts unconfirmed. |
+
+**Most consequential gaps (likely to gate forward motion):** Accessibility-claim validation, privacy/fingerprinting analysis, security/abuse threat model, performance on low-end devices, and the cross-browser/standards path. None of these is resolved by an article or a launch — they need evidence and review.
+
+---
+
+## 3. Challenge (relevant lenses applied)
+
+### 3.1 Critique themes → evidence state → action
+
+| # | Theme (steelmanned) | Evidence state | Strongest version of the concern | Next action |
+|---|---|---|---|---|
+| C1 | **Security & abuse** | **Unknown** | Interactive textured HTML is a new UI-redress/clickjacking surface; cross-origin content in a texture could leak pixels/data; resource exhaustion via many live surfaces. | Commission a threat model with the security reviewer **[formal-review-if-required]**; define origin isolation, permission/consent, quota, revocation. |
+| C2 | **Privacy / fingerprinting** | **Unknown** | Live-DOM→GPU compositing + interaction timing adds fingerprint surface; GPU-specific behavior is already a known vector; content-based leakage across origins. | Data-flow + fingerprint analysis with the privacy reviewer; quantify delta vs. existing WebGL/GPU surface; define what's local vs. observable. |
+| C3 | **Accessibility claim** | **Partial, at-risk** | "Accessible" is the headline, yet AT exposure of HTML inside a 3D/canvas texture is unverified; focus traversal into/out of a textured surface may be broken. | AT testing (screen readers, keyboard/switch, zoom/reflow, forced colors, reduced motion) **before** repeating the "accessible" claim. Mark current claim `provisional`. |
+| C4 | **Performance / resources on low-end** | **Unknown** | Per-frame compositing may be fine on a desktop GPU but ruinous on low-end Android / metered networks / battery. | Device-tier matrix measurement (flagship, mid, low-end), with methodology and denominators. |
+| C5 | **Interoperability / Chrome-only ossification** | **Unknown** | Shipping broad promotion before WebKit/Gecko/TAG positions risks another "Chrome-only API"; if only Chrome implements, the *accessible-3D* promise can't be web-wide and developers must build fallbacks anyway. | Dated standards/other-engine outreach; define a Baseline path and feature-detection/fallback story. |
+| C6 | **API ergonomics & alternatives** | **Partial** | Workarounds (html2canvas, CSS 3D, canvas repaint, iframe transforms) may suffice for many cases; the API may be the wrong layer or too high/low-level; may not be independently implementable. | Alternatives analysis + friction log through realistic integration in ≥2 frameworks. |
+| C7 | **Demand evidence quality (vanity risk)** | **Partial** | "Demos are compelling" + "developers sharing use cases" can be enthusiasm, selection bias, or promotion-driven. | Convert to attributable, staged evidence; recruit a representative cohort; separate *interest* from *production intent*. |
+| C8 | **Narrative / claim accuracy** | **Partial / risk** | Headlines ("accessible," "interactive," "3D") may exceed evidence; demos may showcase delight while hiding security/a11y/fallback/deployment constraints. | Claims freeze; every public claim tagged to evidence; known-limitations disclosure. |
+
+### 3.2 Adversarial "why not?" (from `ecosystem-and-customer-research.md`)
+
+Steelmanned cases against, each with the evidence that would rebut it:
+
+- **"Need is rare / already solved."** Rebut only with workaround-pain evidence + API-shape-specific demand research (not category surveys).
+- **"Browser is the wrong layer / creates ossification."** Rebut with an independently-implementable, testable spec + a credible cross-browser path.
+- **"Other engines have good reasons not to implement (fingerprinting/security)."** Rebut by *resolving* C1/C2/C5 with evidence and design, not by asserting support.
+- **"Only works on flagship devices / one region."** Rebut with the C4 device matrix.
+- **"Partners want the outcome, not this API shape."** Rebut by asking partners directly (job-to-be-done interviewing, not validation requests).
+- **"Demand is promotion/selection bias."** Rebut with a representative, falsification-oriented cohort.
+- **"The 'accessible' promise is false."** Rebut with AT test results (C3). This is the single most reputation-exposed assumption.
+
+### 3.3 Strongest case *for* the opportunity (why this is worth serious DevRel investment)
+**[hypothesis, grounded]** The web's 3D content is largely **inaccessible to AT today**; a live, semantics-preserving HTML texture is one of very few credible paths to accessible 3D/spatial UI on the open web. If validated, that is a *user*-centric, interoperable-web story (not a Chrome feature story), which is exactly the kind of opportunity DevRel should amplify — *after* the gating dimensions are evidenced.
+
+### 3.4 Strongest case *against* broad promotion now
+The gating dimensions (C1–C5) are unresolved; promoting now risks (a) over-claiming accessibility, (b) ossifying a Chrome-only API, (c) triggering a preventable fingerprinting/privacy backlash, and (d) stranding early adopters if the API shape must change after wide review.
+
+---
+
+## 4. Plan — the requested artifact, in full
+
+```yaml
+artifactType: "Adoption and measurement plan (stage 3→4→5)"
+featureOrInitiative: "Experimental live/accessible HTML-as-3D-texture API (ChromeStatus ID TBD)"
+lifecycleStage: "developer-trial → wide-review → experiment"
+audience: "internal (DevRel/product/eng/reviewers); public-safe derivative later"
+owner: "DevRel practitioner (name TBD) — coordinates; see governance note"
+status: "draft (provisional — see unresolvedAssumptions)"
+created: "2026-07-28"
+updated: "2026-07-28"
+sources: ["requester description only; public-source verification pending"]
+unresolvedAssumptions:
+  - "Exact API/spec/ChromeStatus identity not confirmed"
+  - "The two frameworks' names and evidence stage unverified (hypothesis: Three.js + Babylon.js)"
+  - "Whether an Origin Trial already exists unknown"
+  - "Reviewer/owner map not supplied"
+reviewRequirements:
+  - "Privacy reviewer, security reviewer, a11y reviewer, API Owner, standards/TAG liaison — per team canonical process"
+  - "DevRel does not determine whether formal review is required"
+```
+
+### 4.1 Outcome and exit criteria
+- **Outcome:** A decision-ready evidence and review posture that lets the team choose, with honest data, between (a) broader promotion, (b) an Origin Trial, (c) redesign/narrowing, or (d) pause.
+- **Exit criteria for moving from "hold broad promotion" to "active enablement":**
+  1. A11y claim **validated or re-scoped** with AT test results (C3).
+  2. Privacy/fingerprint and security/abuse analyses **completed and routed** to the relevant reviewers with responses to the top concerns (C1/C2).
+  3. Device-tier performance matrix **measured** with methodology + denominators (C4).
+  4. At least **two dated other-engine/TAG outreach** attempts logged with real responses (not silence) (C5).
+  5. Demand evidence **staged and attributable** (≥N representative developers with production-intent, not just interest) (C7).
+  6. Every public claim **tagged to evidence**; known limitations disclosed (C8).
+
+### 4.2 Evidence to collect (and how)
+- **A11y validation:** AT test plan (screen readers, keyboard/switch, zoom/reflow, forced colors, reduced motion, focus traversal into/out of textured surface). **Owner: a11y reviewer + DevRel friction lead.**
+- **Privacy/fingerprint analysis:** data-flow diagram (what's local vs. observable cross-origin), delta vs. existing WebGL/GPU fingerprint surface. **Owner: privacy reviewer.**
+- **Security threat model:** cross-origin rendering, UI-redress/clickjacking via interactive textures, focus spoofing, resource exhaustion; isolation/permission/quota/revocation design. **Owner: security reviewer.**
+- **Performance matrix:** flagship/mid/low-end CPU+GPU, battery, thermal, memory; per-frame compositing cost vs. number of textured surfaces. **Owner: eng lead + DevRel.**
+- **Demand research:** representative cohort recruitment across segments (configurators, data-viz, AR/spatial, a11y specialists), falsification-oriented interview guide, survey with proposal-specific questions and documented limitations. **Owner: DevRel research lead.**
+- **Alternatives analysis:** html2canvas/dom-to-image/CSS-3D/canvas-repaint/iframe-transforms/native (Unity/Unreal) and adjacent platforms; what each solves and where each fails. **Owner: DevRel.**
+- **Framework compatibility matrix:** integration setup, build/SSR/server constraints, fallback paths per framework. **Owner: DevRel + framework maintainers.**
+
+### 4.3 Activities and artifacts (sequenced)
+**Wave 0 — Freeze & protect (week 0–1)**
+- Claims freeze: tag every existing public claim (demos, talks, docs) to evidence; mark "accessible"/"interactive" `provisional` until C3 validated. **[recommendation]**
+- Stand up launch-resilience basics (§4.6): name lead/backup/moderator, one source-of-truth issue, structured feedback templates, FAQ seed with strongest objections.
+- Owner map (config-required per `governance-and-roles.md`): fill privacy/security/a11y/API Owner/standards/eng/comms/legal/HR names + authority source.
+
+**Wave 1 — Validate the gating dimensions (week 1–4)**
+- A11y validation run + result (C3).
+- Privacy/fingerprint analysis routed (C2).
+- Security threat model routed (C1).
+- Performance device matrix first pass (C4).
+- Output: **Pre-review perspective brief** (`user-impact-and-review-rehearsal.md` output set) + **friction log v1** (`friction-log.md`) through realistic integration in the two frameworks.
+
+**Wave 2 — Convert enthusiasm to evidence (week 2–6, overlaps)**
+- Recruit representative developer cohort; run job-to-be-done interviews; stage the two framework integrations on the evidence ladder (interest→…→production).
+- Output: **developer research/survey plan** + **findings**; **partner trial brief** per named, consented partner; **ecosystem/framework compatibility matrix**.
+
+**Wave 3 — Wide review & interoperability path (week 4–8)**
+- Dated TAG/WebKit/Gecko outreach; record positions with timestamps; never convert silence to support.
+- Define Baseline path, feature-detection, and progressive-enhancement/fallback story.
+- Output: **wide-review matrix + response log**; **spec/test/WPT state** note.
+
+**Wave 4 — Field experiment design (week 6–10, only if Wave 1–3 warrant)**
+- Design an **Origin Trial with explicit learning goals** (not a popularity exercise): hypotheses, metrics, denominators, decision thresholds, privacy handling, fallback, expiry, exit criteria. Pre-register analysis before recruitment.
+- Output: **experiment protocol + analysis plan**; **participant ledger**; **support/FAQ**; **interim/final readout template**.
+
+**Wave 5 — Honest enablement (only after exit criteria met)**
+- Reference docs + quickstart + complete samples + known-limitations guide; intro article brief; canonical deck with speaker notes; GDE/framework enablement pack. All carry metadata + unresolved assumptions.
+
+### 4.4 Owners / reviewers (advisory; team must confirm authority)
+- **Coordinates (DevRel):** evidence quality, cohort/research, friction logs, artifacts, measurement, enablement, launch-resilience.
+- **Contributes (Product/Eng, Eng lead, Community/GDE manager):** design/implementation context, performance measurement, integration spikes.
+- **Consult (API Owner, Standards/TAG liaison):** ChromeStatus process, cross-engine positioning.
+- **Formal-review-if-required (per canonical process):** Privacy, Security, A11y, Legal. **DevRel does not decide whether these are required or sufficient.**
+- **Coordinates external (Comms):** only when promotion is unblocked.
+
+### 4.5 Dependencies and risks
+- **Risk — a11y claim fails (C3):** would force re-scoping the headline; high reputation exposure. *Mitigation:* validate before any further "accessible" claims.
+- **Risk — fingerprinting/security findings force redesign (C1/C2):** may delay or change API shape; better discovered now than in OT or post-ship.
+- **Risk — Chrome-only ossification (C5):** promotion ahead of cross-browser path triggers backlash and lock-in. *Mitigation:* hold broad promotion until exit criterion #4.
+- **Risk — vanity demand (C7):** enthusiast signal mistaken for representative demand. *Mitigation:* staged evidence ladder + representative cohort.
+- **Dependency:** reviewer availability (privacy/security/a11y) and other-engine responsiveness are outside DevRel control; flagged as **[unknown/blocker]** until owner map confirms.
+
+### 4.6 Launch-resilience note (contention is plausible)
+Fingerprinting + privacy + a possible Chrome-only period are classic flashpoints. Per `launch-resilience.md`: name lead/backup/moderator now; route technical feedback to structured issues (not personal accounts); seed an FAQ with the strongest objections (C1–C5); prepare truthful hold/narrowing/delay/rollback language; ask public-facing team members their preferred exposure level; rotate spokespeople; and never make one individual absorb abuse. **Recommendation:** treat this as a contention-prone feature regardless of current mood.
+
+### 4.7 Suggested sequence & timing
+Waves 0–3 in parallel where staffed; Wave 4 (OT) only if Wave 1–3 evidence supports it; Wave 5 (enablement) only after exit criteria. Treat all dates as **provisional** pending owner confirmation.
+
+### 4.8 Explicit blockers
+- **[blocker]** No confirmed owner map (privacy/security/a11y/API Owner/standards). Cannot route the gating analyses without it.
+- **[blocker]** Unverified API identity/ChromeStatus/explainer — needed to ground every artifact.
+- **[blocker]** Unstaged partner evidence — cannot plan an OT or claim adoption until the two framework integrations are classified on the evidence ladder.
+
+---
+
+## 5. Supporting artifacts (in full, provisional)
+
+### Artifact A — Problem / use-case brief (draft, provisional)
+
+```yaml
+artifactType: "Problem/use-case brief"
+featureOrInitiative: "HTML-as-3D-texture API (ID TBD)"
+lifecycleStage: "developer-trial → wide-review"
+audience: "internal first; public explainer venue when ready"
+owner: "DevRel (name TBD)"
+status: "draft — see unresolvedAssumptions"
+sources: ["workaround ecosystem widely documented; systematic demand research pending"]
+unresolvedAssumptions:
+  - "Use cases below are hypotheses grounded in known workaround pain, not yet validated by representative demand research"
+  - "Exact capability surface (live? interactive? cross-origin?) unconfirmed"
+reviewRequirements: ["a11y, privacy, security reviewers before any public use"]
+```
+
+**Problem.** Developers building 3D/configurator/AR/spatial/data-viz experiences on the web cannot render **live, interactive, accessibility-preserving HTML** onto a WebGL/WebGPU surface. **[fact]** Today's options are all deficient: `html2canvas`/`dom-to-image` rasterize to a static image (non-live, AT-invisible, expensive, drifts from real state); repainting to a 2D `<canvas>` texture is manual, static, and a11y-invisible; CSS 3D transforms can't join a real scene graph (z-fighting, perf, no true 3D); rebuilding UI in-canvas discards DOM semantics and is costly. **[fact — workaround ecosystem]** Who experiences it: 3D/configurator devs, data-viz/dashboard authors, AR/spatial-UI builders, and — critically — **AT users for whom 3D web content is largely inaccessible today.** **[hypothesis, grounded]**
+
+**Use cases (hypotheses, to validate).**
+1. 3D product configurator rendering live pricing/UI on the product surface.
+2. Spatial/AR UI where real DOM controls float in 3D and remain AT-accessible.
+3. Data-viz with rich HTML chart/label overlays embedded in a 3D scene.
+4. Games/interactive experiences with HTML HUDs that stay accessible and live.
+5. Accessible 3D educational/exploration tools for AT users.
+
+**Alternatives considered.** Snapshot libraries (static, a11y-lost); canvas repaint (manual, static); CSS 3D (no scene integration); in-canvas rebuild (no semantics); native stacks (Unity/Unreal solve it off-web but aren't the open web). Each fails live, interactive, **or** accessible — frequently all three.
+
+**Non-goals (proposed).** Not a replacement for 2D DOM layout; not a license to render arbitrary cross-origin content without an isolation/permission model; not a substitute for fixing 3D a11y at the scene level where textured HTML isn't the answer.
+
+**Evidence.** Workaround-pain = **[fact, widely documented]**. Demand for *this API shape* = **[unknown]** until cohort research completes. Accessibility benefit = **[hypothesis]** until AT tests (C3) complete.
+
+### Artifact B — Ecosystem / framework compatibility matrix (skeleton)
+
+```yaml
+artifactType: "Ecosystem/framework compatibility matrix"
+lifecycleStage: "developer-trial"
+audience: "internal → public docs/ChromeStatus when verified"
+owner: "DevRel + framework maintainers"
+status: "draft — placeholders only; do NOT publish until verified"
+unresolvedAssumptions: ["framework identities unverified; integration depth unverified"]
+```
+
+| Framework / library | Status | Evidence (stage) | Integration notes | Blockers |
+|---|---|---|---|---|
+| `[Framework 1 — name TBD; hypothesis: Three.js]` | Reported working experimental integration | **[unknown — stage it: interest / evaluation / trial / ship / production]** | Setup TBD; build/SSR/server constraints TBD; fallback TBD | A11y exposure; perf on low-end; cross-origin policy |
+| `[Framework 2 — name TBD; hypothesis: Babylon.js]` | Reported working experimental integration | **[unknown — stage it]** | TBD | Same |
+| React / Vue / Angular integration | Untested | **[unknown]** | Component lifecycle, hydration, SSR behavior unknown | — |
+| Build tools (Vite/webpack/esbuild) | Untested | **[unknown]** | TBD | — |
+| Server / secure-context / enterprise policy | Untested | **[unknown]** | TBD | — |
+
+> The reported "two integrations" must be moved from **interest** toward **trial/ship** on the evidence ladder with attributable, consented statements before any adoption claim is made.
+
+### Artifact C — Experiment (Origin Trial) learning plan (design, pre-recruitment)
+
+```yaml
+artifactType: "Experiment protocol and analysis plan"
+lifecycleStage: "experiment (stage 5) — only if Wave 1–3 warrant"
+audience: "internal"
+owner: "DevRel + Eng"
+status: "draft — hypotheses pre-registered before recruitment"
+unresolvedAssumptions: ["whether an OT is warranted depends on Wave 1–3 results"]
+reviewRequirements: ["privacy, security, a11y, API Owner per canonical process"]
+```
+
+**Hypotheses (each must be field-only — i.e., not answerable behind a flag).**
+- H1: The a11y exposure works for real AT users in real 3D apps at acceptable integration cost.
+- H2: Per-frame compositing cost on low-end devices is acceptable for representative workloads.
+- H3: The fingerprint/privacy delta vs. existing WebGL/GPU surface is bounded and acceptable.
+- H4: The security model (origin isolation, interactive-surface UI-redress controls) holds under real integrations.
+- H5: Demand is representative (not enthusiast-only), with production-intent from ≥N named partners across segments.
+
+**Metrics & denominators (pre-registered).** Task-completion rate (denominator: representative tasks); a11y AT-reachability pass rate (denominator: AT × scenario); low-end fps/thermal/battery delta vs. baseline (denominator: device tier × workload); fingerprint delta (denominator: existing surface); partner production-intent count (denominator: target segment); support-issue taxonomy (denominator: time).
+
+**Decision thresholds (illustrative, to calibrate).** Define continue / redesign / narrow / pause thresholds *before* results. **Extensions require answering the original goals** — no indefinite OTs.
+
+**Privacy, fallback, exit.** Token/header validation; feature detection; unsupported/expiry behavior; mobile + desktop; third-party embedding where relevant; fallback that preserves the task (not merely avoids a crash); explicit expiry and user-cost handling.
+
+**Anti-failure.** Registrations ≠ use; metrics chosen before results; no OT "because it's customary."
+
+### Artifact D — Measurement plan (selection)
+
+```yaml
+artifactType: "Adoption and measurement plan (metrics)"
+lifecycleStage: "developer-trial → experiment"
+audience: "internal"
+owner: "DevRel measurement lead"
+status: "draft — baselines/targets TBD"
+```
+
+- **`html-tex-a11y-passthrough`:** AT-reachability of textured HTML by AT × scenario. Baseline: 0 (today inaccessible). Target: parity with flat DOM. Instrumentation: AT test harness. Limitation: lab, not field.
+- **`html-tex-lowend-fps`:** fps/thermal/battery delta on low-end tiers vs. baseline. Denominator: device tier × workload. Limitation: workload-dependent.
+- **`html-tex-fp-delta`:** fingerprint surface delta vs. existing WebGL/GPU. Limitation: hard to fully bound.
+- **`html-tex-staged-demand`:** partners on each evidence-ladder rung (interest→production). Denominator: target segment. Limitation: self-selection.
+- **`html-tex-friction-remain`:** open friction items / total found. Denominator: friction-log inventory. Limitation: survivorship bias on prevented items.
+- **`html-tex-interop-positions`:** dated WebKit/Gecko/TAG positions. Denominator: target engines. Limitation: position ≠ implementation; silence ≠ opposition.
+
+All metrics state denominator, instrumentation, privacy boundary, limitations, owner, cadence, and action threshold per `measurement-framework.md`. Team must configure baselines/targets (organization-local).
+
+---
+
+## 6. Measure the outcome (of the DevRel work itself)
+
+Match measures to the work, not one universal score:
+- **Co-design quality:** number of design changes influenced by a11y/security/privacy/friction evidence (denominator: design decisions).
+- **Evidence credibility:** share of public claims tagged to evidence; known-limitations disclosure present.
+- **Prevented friction:** items found and fixed before promotion/OT (denominator: total found).
+- **Review readiness:** gating dimensions (C1–C5) moved from Unknown → Partial/Supported with linked evidence.
+- **Interop movement:** dated other-engine responses (not silence).
+- **Avoided preventable backlash:** presence/absence of unaddressed steelmanned objections in public materials.
+- **Team safety:** incident response time and well-being check-ins (aggregate, privacy-preserving, never public).
+
+---
+
+## 7. Bottom line / recommendation
+
+**[recommendation]** Treat this as a **genuine, high-value opportunity with unresolved gating risks** — not as a ready-to-promote feature. The right DevRel move now is **not broad promotion**; it is a **staged evidence + review sprint** that (1) validates the accessibility claim that is the whole selling point, (2) drives the privacy/fingerprinting and security analyses to evidence with the right reviewers, (3) measures low-end performance, (4) builds a real cross-browser/standards path, and (5) converts current enthusiasm into attributable, staged demand evidence — then, only if the exit criteria are met, design a learning-focused Origin Trial and unblock honest enablement.
+
+**[commitment — none.** No partner, engine, reviewer, ship date, or adoption number is asserted. Every such item above is explicitly marked `[unknown]` or `[hypothesis]` until an attributable, consented source exists. **]**
+
+**Most important single next step:** confirm the owner map and the exact API identity, then run the **accessibility validation (C3)** first — because the entire value proposition rests on it, and it is the assumption most likely to embarrass the launch if untested.

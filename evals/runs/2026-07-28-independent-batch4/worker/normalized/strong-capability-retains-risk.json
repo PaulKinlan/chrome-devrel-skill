@@ -1,0 +1,150 @@
+{
+  "caseId": "strong-capability-retains-risk",
+  "runId": "2026-07-28-independent-batch4",
+  "status": "complete",
+  "independentContext": true,
+  "responder": {
+    "provider": "zai",
+    "model": "glm-5.2",
+    "pid": 127713,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:28:23.674Z",
+    "endedAt": "2026-07-28T07:33:56.821Z",
+    "durationMs": 333147,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 32242,
+    "sha256": "2a49ee5dcd45248218ea00833726235769145bcaaf6ea4ce734e52fac3878c59"
+  },
+  "judge": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4",
+    "pid": 138477,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:33:56.821Z",
+    "endedAt": "2026-07-28T07:35:29.448Z",
+    "durationMs": 92627,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 12403,
+    "sha256": "5248b2fa2de203f4286a079aa474d80781f9dff5e6631f17b8c28fc45dbcef73"
+  },
+  "responderRawSha256": "2a49ee5dcd45248218ea00833726235769145bcaaf6ea4ce734e52fac3878c59",
+  "judgeRawSha256": "5248b2fa2de203f4286a079aa474d80781f9dff5e6631f17b8c28fc45dbcef73",
+  "responderRawChars": 32242,
+  "verdict": {
+    "focusScores": {
+      "problem-use-cases": 3,
+      "partners": 3,
+      "stakeholder-discovery": 3,
+      "source-grounded-steelman": 4,
+      "critique-to-action": 4,
+      "tactic-fit": 4
+    },
+    "scoreRationale": {
+      "problem-use-cases": "The response maps the developer problem clearly ('no native, live, interactive, accessibility-preserving way to render HTML onto a 3D canvas surface'), identifies five target audiences with reasoning rooted in capability change (3D/configurator/AR/spatial-UI developers, data-viz authors, a11y specialists, framework maintainers, low-end-device and AT users), documents the workaround ecosystem (html2canvas, dom-to-image, CSS 3D, canvas repaint) as '[fact — widely documented],' and explicitly flags the need to validate demand representativeness: 'reported enthusiasm + framework integrations [signal], but attributable production-intent evidence and representativeness are unverified; high self-selection risk.' Use cases are framed as 'hypotheses to validate' rather than assumed facts. The response does not show primary demand research evidence, relying on 'widely documented' and 'reported' signals, which limits rigor to 3 rather than 4.",
+      "partners": "The response explicitly stages framework integrations on the evidence ladder ('interest / evaluation / trial / ship / verified production') and marks reported integrations as '[unknown — stage it]' rather than adopting them as facts. It states: 'Requester did not stage them. [unknown]' and later 'the two framework integrations **must be classified on the evidence ladder** ... before any adoption claim is made.' The framework compatibility matrix (Artifact B) marks all partner evidence as 'TBD,' 'Status: Reported working experimental integration,' and 'Evidence (stage): [unknown — stage it].' This demonstrates correct distinction between interest-stage signals and commitment stages, but the response does not yet have staged evidence — only a plan to collect it — placing it at 3 rather than 4.",
+      "stakeholder-discovery": "The response identifies material constituencies based on the capability change (live HTML rendering into 3D surfaces) rather than a fixed or politically convenient list: '(a) 3D/configurator/AR/spatial-UI developers; (b) data-viz and dashboard authors; (c) a11y specialists who today cannot make 3D content AT-accessible; (d) framework maintainers; (e) end users on low-end devices, battery/metered networks, and AT users.' It also flags missing formal stakeholders: 'Missing owners/stakeholders: Privacy reviewer, security reviewer, a11y reviewer, API Owner, standards/TAG liaison.' The constituency discovery is capability-grounded and includes affected AT and low-end-device users who might be politically convenient to overlook. However, the response lacks direct evidence from those constituencies (their own statements), which would justify a 4.",
+      "source-grounded-steelman": "The response consistently marks claim provenance: workaround ecosystem as '[fact],' framework integrations as '[signal — reported, verification pending],' accessibility claims as '[Partial, at-risk of Contradicted].' It separates recorded positions from inference: 'no dated WebKit/Gecko/TAG positions cited. **Silence ≠ support.**' Section 3.1 provides a table with eight critique themes (C1–C8) showing evidence-state (Unknown, Partial, etc.) and strongest-version-of-concern framing for each. Assumptions A1–A5 are explicit with 'override if wrong.' The response cites dated primary sources (documented html2canvas/dom-to-image ecosystem). This is rigorous source grounding with clear provenance tagging throughout, warranting 4.",
+      "critique-to-action": "Section 3.1 maps eight concerns to specific actions: C1 (security) to 'Commission a threat model with the security reviewer [formal-review-if-required]'; C2 (privacy/fingerprinting) to 'Data-flow + fingerprint analysis with the privacy reviewer'; C3 (a11y claim) to 'AT testing (screen readers, keyboard/switch, zoom/reflow, forced colors, reduced motion)...Mark current claim provisional'; C4 (low-end perf) to 'Device-tier matrix measurement'; C5 (interop) to 'Dated standards/other-engine outreach; define Baseline path'; C6 to 'Alternatives analysis + friction log'; C7 to 'Convert to attributable, staged evidence'; C8 to 'Claims freeze; every public claim tagged to evidence.' Section 4.1 exit criteria tie promotion unblocking directly to resolving these concerns (e.g., 'A11y claim validated or re-scoped with AT test results'). Risks in 4.5 map to mitigations ('validate before any further accessible claims'). This demonstrates systematic concern-to-action mapping, earning 4.",
+      "tactic-fit": "The response diagnoses the actual bottleneck: 'Most consequential gaps (likely to gate forward motion): Accessibility-claim validation, privacy/fingerprinting analysis, security/abuse threat model, performance on low-end devices, and the cross-browser/standards path.' Tactics are explicitly chosen to resolve these: research (Wave 2, cohort recruitment, job-to-be-done interviews) for demand staging and representativeness; formal review routing (privacy, security, a11y) for gating dimensions; measurement (device-tier matrix, AT testing, fingerprint analysis) for C3/C4/C2; standards/other-engine outreach (Wave 3) for C5. Waves 0–5 are sequenced by risk (gating dimensions first). The response avoids generic tactics ('write an article,' 'give a talk'), instead matching research/review/measurement/support tactics to evidence gaps. This earns 4."
+    },
+    "unableToScore": [],
+    "total": 21,
+    "maxTotal": 24,
+    "average": 3.5,
+    "averageLabel": "21/24",
+    "capped": false,
+    "criticalHitCount": 0,
+    "criticalFailures": [
+      {
+        "index": 0,
+        "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 1,
+        "description": "Presents unknown, absent, or no-response evidence as positive support",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 2,
+        "description": "Leaks or requests publication of private material without explicit approval",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 3,
+        "description": "Claims DevRel approval replaces a formal launch or review requirement",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 4,
+        "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+        "evidence": null,
+        "hit": false
+      }
+    ],
+    "expectedBehaviors": [
+      {
+        "behavior": "Recognizes framework implementations and demonstrated workflows as stronger evidence than generic interest while not calling them production commitments",
+        "evidence": "Section 2, partners row: 'the two frameworks' names and evidence stage unverified (hypothesis: Three.js + Babylon.js).' Artifact B framework matrix marks reported integrations as '[unknown — stage it: interest / evaluation / trial / ship / production]' and explicitly states 'must be moved from interest toward trial/ship...before any adoption claim is made.'",
+        "met": true
+      },
+      {
+        "behavior": "Explains why a legible long-standing need and compelling demos support further experimentation",
+        "evidence": "Section 3.3, 'Strongest case *for* the opportunity': 'The web's 3D content is largely inaccessible to AT today; a live, semantics-preserving HTML texture is one of very few credible paths to accessible 3D/spatial UI on the open web. If validated, that is a user-centric, interoperable-web story...which is exactly the kind of opportunity DevRel should amplify — after the gating dimensions are evidenced.' Workaround ecosystem marked '[fact — widely documented].' Origin Trial design (Artifact C) proposes field-only hypothesis testing.",
+        "met": true
+      },
+      {
+        "behavior": "Preserves security, privacy, performance, accessibility, and interoperability concerns visibly",
+        "evidence": "Section 3.1 table rows C1 (security threat model), C2 (privacy/fingerprint analysis), C4 (performance device-tier matrix), C3 (a11y AT testing marked 'Partial, at-risk of Contradicted'), C5 (interoperability other-engine outreach). Section 2 readiness table rates 'Accessibility' as 'Partial, at risk of Contradicted' and explicitly flags: 'The **value proposition is accessible HTML**, yet AT exposure of HTML rendered as a 3D/canvas texture is **unverified [unknown]**. If AT cannot reach the content, the headline claim is contradicted. **Validate first.**' Exit criteria (4.1) require resolving C1–C5 before promotion unblocking.",
+        "met": true
+      },
+      {
+        "behavior": "Plans feedback around realistic use cases, fallbacks, integration quality, and unresolved risks",
+        "evidence": "Artifact A Problem brief lists five realistic use cases (product configurator, spatial/AR UI, data-viz, games/HUDs, educational 3D/AT tools), marked 'hypotheses, to validate.' Artifact C experiment design specifies 'unsupported/expiry behavior; feature detection; fallback that preserves the task.' Wave 1 deliverable: 'friction log v1...through realistic integration in the two frameworks.' Section 3.1–3.2 and 4.5–4.6 detail eight unresolved risks (C1–C8) with mitigations and launch-resilience planning (4.6: 'name lead/backup/moderator now; route technical feedback to structured issues; seed FAQ with strongest objections').",
+        "met": true
+      },
+      {
+        "behavior": "Does not reject a promising proposal merely because critique lenses reveal open issues",
+        "evidence": "Section 7, bottom line: 'Treat this as a **genuine, high-value opportunity with unresolved gating risks** — not as a ready-to-promote feature.' The response proposes staged validation (Waves 0–5) and an Origin Trial (Wave 4) post-evidence, not rejection. Section 3.3, 'Strongest case *for*': acknowledges user-centric interoperability value 'if validated.' Unresolved risks (C1–C8) are mapped to validation work and review, not used as blanket rejection.",
+        "met": true
+      }
+    ],
+    "expectedMetCount": 5,
+    "forbiddenBehaviors": [
+      {
+        "behavior": "Treats excitement or beautiful demos as proof of safety or readiness to ship",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Treats experimental framework integration as production adoption",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Uses unresolved risk as a generic reason to stop all experimentation",
+        "evidence": null,
+        "present": false
+      }
+    ],
+    "forbiddenPresentCount": 0,
+    "confidence": "high",
+    "parseErrors": [],
+    "denominator": {
+      "focusScored": 6,
+      "focusTotal": 6,
+      "focusUnable": 0,
+      "criticalAssessed": 5,
+      "criticalTotal": 5
+    }
+  },
+  "caveat": "Scores are rubric judgments of observable behavior, not factual verification. Process success is not proof of correctness."
+}
