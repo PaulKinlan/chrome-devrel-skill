@@ -138,6 +138,23 @@ relabel them.
 
 ### Independent (fresh-context responder + separate fresh-context judge)
 
+The current baseline is **21/21 complete and independently judged**, with zero
+unscored, blocked, pending, duplicate, or missing authoritative case IDs. See the
+[fixed-denominator disposition and provenance audit](results/2026-07-28-independent-21-case-disposition.md).
+
+| Authoritative run | Complete | Runner | Validator |
+| --- | ---: | ---: | --- |
+| `2026-07-27-independent-pilot` | 3/3 | v1 | 0 errors, 2 legacy warnings |
+| `2026-07-27-independent-batch2` | 5/5 | v1 | 0 errors, 1 legacy warning |
+| `2026-07-28-independent-batch3` | 4/4 | v2 | 0 errors, 0 warnings |
+| `2026-07-28-independent-batch4` | 4/4 | v2 | 0 errors, 0 warnings |
+| `2026-07-28-independent-batch5` | 3/3 | v2 | 0 errors, 0 warnings |
+| `2026-07-28-independent-batch6` | 2/2 | v2 | 0 errors, 0 warnings |
+
+The v1 runs cover 8 cases and retain documented runner-reproducibility caveats;
+the v2 runs cover 13 cases with runner and staged-skill-tree binding. The details
+below preserve the first 8 independent results and older provisional history.
+
 - [`partner-interest-is-not-shipping`](runs/2026-07-27-independent-pilot/results/partner-interest-is-not-shipping.md):
   **INDEPENDENT** — 12/12 across three focus dimensions (zai/glm-5.2 responder,
   anthropic/claude-haiku-4 judge), no critical failures, all expected met.
@@ -169,19 +186,14 @@ relabel them.
 
 > Caveat: these are independent rubric judgments of observable behavior. They
 > are **not** factual verification of the responses and do not prove the skill
-> is correct. The 8 verified cases are discipline-focused and do not yet cover
-> research-retrieval or interop-heavy cases. The judge's calibration and
-> coverage are still maturing; an independent reviewer should not treat a high
-> score as a pass.
+> is correct. All 21 fixtures now have independent dispositions, but one judge
+> model does not establish inter-judge agreement and high scores are not passes.
 
-### Provisional (same-session self-scored — not independently verified)
+### Historical provisional results (same-session self-scored)
 
-> Four of these were independently rerun on 2026-07-27 (see Independent above):
-> `survey-selection-and-pushback`, `user-cost-large-model-download`,
-> `contentious-launch-team-safety`, and `incubation-to-prototype-transition`.
-> Their provisional numbers are retained here as history; cite the independent
-> results as baselines. The remaining provisional results still share
-> authorship context and are not defensible baselines.
+> Every case below now has a fresh-context independent rerun in one of the six
+> authoritative runs above. These same-session numbers remain unchanged as
+> historical evidence only; cite the independent results as baselines.
 
 - [`survey-selection-and-pushback` at `0cae33b`](results/2026-07-19-survey-selection-and-pushback.md):
   17/20 across five focus dimensions, no critical failures. The result produced
@@ -222,38 +234,23 @@ relabel them.
   (not zero), and rejected a single success count. Requires fresh-context runner
   for defensible baseline.
 
-- `governance-routing-and-measurement-design`: **UNSCORED** — no eval result
-  exists. Tests governance boundary, measurement design, readiness assessment,
-  and authority routing. Requires independent fresh-context execution before any
-  baseline is claimed.
-
-- `mdn-docs-bcd-spec-disagreement`: **UNSCORED** — no eval result exists. Tests
-  evidence separation (spec vs BCD vs docs), authority boundary, and publication
-  safety. Requires independent fresh-context execution.
-
-- `youtube-unsupported-hype-rejection`: **UNSCORED** — no eval result exists.
-  Tests evidence-backed claims, hype rejection, interoperability disclosure, and
-  limitation preservation in video scripts. Requires independent execution.
-
-- `editorial-blog-hype-and-house-style`: **UNSCORED** — no eval result exists.
-  Tests publication routing, hype rejection, house-style application, and
-  anti-plagiarism. Requires independent execution.
+Historical note: `governance-routing-and-measurement-design`,
+`mdn-docs-bcd-spec-disagreement`, `youtube-unsupported-hype-rejection`, and
+`editorial-blog-hype-and-house-style` previously had no retained independent
+result. All four now have complete independent results in the authoritative runs.
 
 ## Scoring status summary
 
-| Status                                 | Count  | Definition                                                      |
-| -------------------------------------- | ------ | --------------------------------------------------------------- |
-| Independently verified                 | 8      | Fresh-context responder + separate fresh-context judge (2026-07-27 runs) |
-| Provisional (same-session self-scored) | 5      | Same session produced response and scoring; shares context bias |
-| Unscored (case exists, no result)      | 3      | Eval case defined but no response/judgment retained             |
-| No retained result                     | 5      | Case exists in cases.json but no result file was produced       |
-| **Total cases**                        | **21** |                                                                 |
+| Status | Count | Definition |
+| --- | ---: | --- |
+| Complete and independently judged | 21 | Fresh responder plus separate blind judge; exact case-ID reconciliation |
+| Unscored | 0 | No parseable complete judgment |
+| Blocked | 0 | Responder produced no usable output after bounded attempts |
+| Pending | 0 | No terminal disposition |
+| Duplicate or missing authoritative IDs | 0 | Exact match to `cases.json` |
+| **Fixed denominator** | **21** | Calibration and aborted attempts excluded |
 
-Counts: 8 independent + 5 provisional + 3 unscored + 5 no-retained = 21.
-
-The 8 independent results live under `evals/runs/2026-07-27-independent-pilot`
-and `evals/runs/2026-07-27-independent-batch2`; the 5 remaining provisional
-results still share authorship context and require fresh-context verification
-before citing as defensible baselines. The 3 unscored and 5 no-retained cases
-are the next expansion targets (research-heavy cases need `--responder-tools`
-widened to include search).
+One editorial case required a second judge attempt; both attempt logs are retained.
+There were no critical-failure hits, forbidden-behavior findings, capped results,
+or unable-to-score dimensions. Non-max scores and the two v1 provenance caveats
+remain visible in the disposition audit.

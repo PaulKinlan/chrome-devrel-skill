@@ -13,6 +13,7 @@ metricId: "_stable ID_"
 name: "_human-readable name_"
 objective: "_what DevRel outcome this measures_"
 metric: "_what is counted/measured_"
+signalType: "_leading / lagging / diagnostic / guardrail_"
 denominator: "_what the count is divided by_"
 baseline: "_pre-measurement or historical value_"
 target: "_goal value or direction_"
@@ -26,6 +27,15 @@ cadence: "_how often measured: event-driven/weekly/monthly/milestone/quarterly_"
 threshold: "_value that triggers action or alert_"
 limitations: "_what this metric cannot tell you_"
 ```
+
+Classify each metric instead of presenting an undifferentiated list:
+
+- **Leading:** an early signal that may predict progress, such as successful first-task completion or trial advancement. State the hypothesized link to the outcome; it is not proof of that outcome.
+- **Lagging:** an outcome observed after the intervention, such as verified production use or support burden. Define the observation window and attribution limits.
+- **Diagnostic:** explains where friction or uncertainty sits but is not itself success, such as failure categories or time spent at an evidence-ladder stage.
+- **Guardrail:** catches unacceptable cost or harm, such as regressions in accessibility, privacy, reliability, user control, memory, battery, bandwidth, or team safety.
+
+A useful plan normally pairs at least one leading and one lagging measure with relevant guardrails. Do not relabel output counts—posts, talks, assets, invitations, or raw interest—as adoption outcomes. If the causal link between a leading signal and a lagging outcome is untested, label that limitation explicitly.
 
 ## Candidate metrics by objective
 
