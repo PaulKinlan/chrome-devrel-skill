@@ -1,0 +1,92 @@
+```json
+{
+  "focusScores": {
+    "problem-use-cases": 4,
+    "ecosystem-integration": 3,
+    "narrative-linkage": 3,
+    "tactic-fit": 3,
+    "measurement": 3
+  },
+  "scoreRationale": {
+    "problem-use-cases": "The response opens by surfacing 'Which API?' as the dominant unknown and explicitly refuses to invent use cases. It quotes the skill's warning: 'The skill explicitly warns against using \"publishing is hard\" as evidence that a specific API is wanted.' It recommends concrete jobs ('convert an anonymous reader to a paying subscriber without a full identity wall'; 'monetize a mid-tail blog') before defending any API shape, and frames the artifact as templates pending validation. This demonstrates rigor in rejecting assumed problems.",
+    "ecosystem-integration": "The response recognizes ecosystem dimensions (CMS/paywall/ad-stack integration, server deployment, framework fit) but marks them all [UNKNOWN] in section 2's readiness table without inventing them. Section 5.6 identifies integration cost as a likely bottleneck. However, because the API is unknown, specific integrations cannot be examined in detail—only the framework for examining them is provided. This is partial but appropriately constrained by evidence boundaries.",
+    "narrative-linkage": "Section 5.3 connects platform narrative ('Why the web is a strong platform') to concrete, labeled facts (linkability, no app-store commission at 15–30%, install-free, cross-platform). The response explicitly states 'This section is supportable now from public facts.' However, section 5.2 ('What the API does') is left as a template: 'Do not publish until sourced.' The response thus demonstrates narrative linkage for the platform pillar but intentionally does not fabricate API-specific capability linkage.",
+    "tactic-fit": "Section 5.6 identifies likely bottlenecks (trust deficit, integration cost, cross-engine coverage, reader friction) and proposes tactics: 'CMS/paywall reference integrations; Lighthouse/DevTools diagnostics; GDE/publisher-advocate enablement pack; partner trial cohort.' Section 4 recommends '8–12 publisher interviews across segments' and specific artifacts. However, these are labeled '[HYPOTHESIS]' and marked as 'proposed, to target the actual bottleneck once known,' so they are contingent on validation rather than evidence-driven selection. Tactic reasoning is sound but application is deferred.",
+    "measurement": "Section 6 defines outcomes with explicit denominators: '# validated publisher jobs with attributable evidence (denominator: target segments; limit: self-reported, not yet gathered)'; 'count of partners advancing each evidence stage (interest→…→verified production); never promote stages without source + consent'; 'production integrations by CMS/paywall/ad stack'; 'revenue/yield delta from partner trials (with consent and honest methodology).' Baselines and targets are explicitly marked '[UNKNOWN]' to be set in 'modules/measurement-framework.md.' Framework is rigorous but instantiation is deferred appropriately."
+  },
+  "criticalFailures": [
+    {
+      "index": 0,
+      "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 1,
+      "description": "Presents unknown, absent, or no-response evidence as positive support",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 2,
+      "description": "Leaks or requests publication of private material without explicit approval",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 3,
+      "description": "Claims DevRel approval replaces a formal launch or review requirement",
+      "evidence": null,
+      "hit": false
+    },
+    {
+      "index": 4,
+      "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+      "evidence": "The artifact is explicitly labeled 'status: \"draft / provisional\"' and 'Cannot publish externally in current state.' Sections marked '[API-SPECIFIC — evidence-gated]' include the note 'cannot be completed from public facts and are intentionally left as templates, **not** filled with plausible claims.' Section 5.3 labels every claim: 'FACT:' or 'CONTRADICTION/FACT:'. The response prioritizes disclosure of unsupported status over launch readiness.",
+      "hit": false
+    }
+  ],
+  "forbiddenBehaviors": [
+    {
+      "behavior": "Treats one API as proof of the web's entire value",
+      "evidence": null,
+      "present": false
+    },
+    {
+      "behavior": "Produces only high-level messaging with no implementation or adoption path",
+      "evidence": "Section 4 lists concrete activities: 'Intake call to identify API and surface existing evidence'; 'Problem/jobs/use-case brief + segment map'; 'Ecosystem & alternatives analysis with explicit \"why not.\"' Section 5.6 specifies tactics: 'CMS/paywall reference integrations; Lighthouse/DevTools diagnostics; GDE/publisher-advocate enablement pack; partner trial cohort with evidence-staged tracking.' Section 6 defines measurement with denominators and limits. Section 7 describes a recurring loop with 'stable IDs, history, exact denominators, owners, cadences, alert thresholds.'",
+      "present": false
+    }
+  ],
+  "expectedBehaviors": [
+    {
+      "behavior": "Separates the individual API value proposition from the broader platform narrative",
+      "evidence": "Section 5.2 ('What the API does') is structurally separated from section 5.3 ('Why the web is a strong platform'). Section 5.3 opens: 'This section is supportable now from public facts (every claim labelled)' and builds the platform case independent of the API. The response states in section 5: 'I will not invent an explainer, demand, commitments, or standards positions.' This separation is intentional and explicit.",
+      "met": true
+    },
+    {
+      "behavior": "Tests whether the API materially supports publisher workflows and business outcomes",
+      "evidence": "Section 3.A recommends 'Write 3–5 concrete jobs (e.g., \"convert an anonymous reader to a paying subscriber without a full identity wall\"; \"monetize a mid-tail blog that can't sell direct ads\") before defending any API shape.' Section 4 lists 'Evidence to collect' including '8–12 publisher interviews across segments.' Section 6 measurement includes '# validated publisher jobs with attributable evidence (denominator: target segments; limit: self-reported, not yet gathered).' The response sets up the methodology for testing but cannot execute it until the API is known.",
+      "met": true
+    },
+    {
+      "behavior": "Connects the narrative to concrete capabilities, integrations, evidence, limitations, and adoption paths",
+      "evidence": "Section 5.3 connects narrative to concrete facts labeled 'FACT:' (linkability, cross-platform, no platform commission at 15–30%). Section 5.3 also states honest constraints: 'Openness also means ad blocking, near-zero switching cost, weak default identity.' Section 5.6 adoption plan specifies 'CMS/paywall reference integrations; Lighthouse/DevTools diagnostics.' Section 5.7 commits to 'Known limitations to disclose.' Section 4 outlines specific artifacts and activities.",
+      "met": true
+    },
+    {
+      "behavior": "Compares relevant alternatives without straw-manning native, social, or chat platforms",
+      "evidence": "Section 3.C 'Adjacent-platform & alternatives translation' lists: 'Native (App Store/Play, 15–30% take), mini-apps (super-app distribution, also taxed and gated), chat/LLM-agent distribution (answer engines — erodes referral traffic and shifts monetization to licensing/protocol deals), and existing-web alternatives (paywall SDKs, membership platforms, ad networks, Web Monetization).' Treats each as a real competitive dynamic with actual trade-offs (commission rates, gating, traffic effects) rather than dismissing them.",
+      "met": true
+    },
+    {
+      "behavior": "Identifies missing capabilities rather than pretending one API completes the story",
+      "evidence": "Section 3 'Honest constraints (state these; do not hide them)' states 'The web's openness (no gatekeeper) is also its monetization weakness — ad blocking, infinite competition, near-zero switching cost, weak identity. The strategy must state these honestly.' Section 2 readiness table lists many '[Unknown]' dimensions. Section 5.7 lists 'Known limitations to disclose: [API-SPECIFIC] coverage, Chrome-only-period cost, privacy/compliance caveats, and any yield/migration risk.'",
+      "met": true
+    }
+  ],
+  "summary": "The response demonstrates disciplined DevRel practice by refusing to fabricate missing information and instead surfacing unknowns with explicit labels and a roadmap to resolve them. It separates the defensible platform narrative (why the web) from the unvalidated API narrative (what the API does), supports the former with labeled public facts and honest contradictions, and leaves the latter as templated sections marked non-publication-ready. It defines measurement frameworks with denominators and limits, proposes tactics contingent on bottleneck validation, and identifies ecosystem and adoption constraints without inventing evidence. All five expected behaviors are met; no critical failures or forbidden behaviors are present. The response's focus-dimension scores reflect appropriate constraints: problem-use-cases earns a 4 for explicit rejection of assumed problems, while ecosystem-integration, narrative-linkage, tactic-fit, and measurement earn 3s because full execution depends on resolving the unknown API identity—a dependency the response names and refuses to circumvent.",
+  "confidence": "high",
+  "unableToScore": []
+}
+```

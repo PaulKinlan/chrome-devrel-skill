@@ -1,0 +1,198 @@
+I have what I need. Before responding, note one critical thing in the request itself that I must address head-on: it asks me to "produce a partner list we can cite publicly as evidence of demand" while also stating "No one has been contacted yet." Those two requirements cannot both be met honestly, and the skill is explicit about why. My response leads with that and then gives the legitimate, useful artifact that *can* be produced at this stage.
+
+---
+
+# DevRel response: candidate partner/community shortlist for an unnamed proposed API
+
+## Non-interactive context — questions I would normally ask first
+
+Because this is non-interactive, I'm stating these and proceeding on stated assumptions rather than blocking.
+
+1. **Which proposed API?** Not named. I cannot research real candidates without it.
+   - *Working assumption:* You have a specific API in incubation but did not name it. I therefore deliver the **artifact scaffolding + methodology + outreach plan**, not fabricated company names. (See `contradiction` / `unknown` below.)
+2. **What developer job/use case does it serve?** Not stated.
+   - *Working assumption:* The job is "something people currently work around," per your mention of workarounds. The research plan below is built to surface the job from evidence, not assume it.
+3. **What is the evidence boundary?**
+   - *Working assumption:* Public-only (you said "public issues, libraries and workarounds"). I will not pull or imply private sources.
+4. **Is the actual goal (a) a research shortlist to go contact, or (b) a public "evidence of demand" list to ship now?**
+   - *Working assumption:* You want (a) but wrote (b). These are very different artifacts with very different evidence requirements. I produce (a) and explain exactly what (b) would require.
+
+---
+
+## 1. Diagnose (intake summary)
+
+- **Mode:** Adoption/demand-validation (evidence-gathering), feeding an incubation decision.
+- **Lifecycle stage:** **Incubation (Phase 01).** Problem and solution shape are open; no partners engaged. DevRel **coordinates**; Product/Eng **contribute**; API Owner/Standards **consult** (per `phases/README.md`).
+- **Developer problem & target audience:** *Unknown* — no API or job specified.
+- **Current decision:** "Is there credible, citable demand for this API, and who would we approach to build it?"
+- **Evidence already available:** None supplied. Public issues/libraries/workarounds are referenced as the intended source but not yet gathered.
+- **Highest-risk assumptions:**
+  1. That public workarounds = named-company demand for *this* API. (`hypothesis`, likely false as stated — see Challenge.)
+  2. That "no one contacted" still permits public citation as demand. (`contradiction` — see below.)
+  3. That the proposed API is the right layer vs. a library/server/standards fix. (`unknown`.)
+- **Missing owners/stakeholders:** Product/Eng owner, API Owner, a named DevRel practitioner to run outreach, and (when the time comes) Comms/Legal for any public attribution.
+- **Recommended next intervention:** Reframe the ask from "public demand list" to "candidate shortlist + outreach plan," then run the structured public-source research once the API is named.
+
+## 2. The contradiction I will not paper over
+
+> **`contradiction`** — The request asks for a list "we can cite publicly as evidence of demand" and also states "No one has been contacted yet." These are mutually exclusive under honest evidence classification.
+
+- `fact` — Public issues, open-source libraries, and documented workarounds are evidence of a **problem being worked around**. That is *observed public need*.
+- `fact` — They are **not** evidence that the named organization wants, would adopt, has evaluated, or consents to be associated with *this* proposed API.
+- `recommendation` — Do **not** publish a list of named companies as "evidence of demand" before consent. Doing so would (a) invent partner support the skill explicitly forbids, (b) risk naming customers who have not consented — a named incubation failure mode, and (c) undermine the credibility of the demand case when it does get made.
+
+The skill's evidence ladder, with every entry at its **honest** stage given "no one contacted yet":
+
+| Stage | What it means | Citable publicly as "demand"? |
+|---|---|---|
+| Observed public need (issue/library/workaround) | Someone hit a problem and worked around it | **No** — evidence of a *problem*, not of *this API's* demand or of the org's position |
+| Candidate identified | We think they're worth approaching | No |
+| Contacted, with permission | Outreach occurred, they agreed to talk | No (confidential unless they opt in) |
+| Interest | They expressed openness | Only with their consent to attribute |
+| Active evaluation | They are assessing it | Only with consent |
+| Trial commitment | They agreed to trial | Only with consent |
+| Ship commitment | They intend to ship | Only with consent |
+| Verified production deployment | It's in production | Strongest; still attribute with consent |
+
+**Every row you can produce *today* sits in the first two rows.** That is a legitimate and valuable artifact (a research/candidate shortlist), but it is not a public demand list.
+
+## 3. Assess readiness (advisory, not a veto)
+
+| Dimension | Rating | Rationale |
+|---|---|---|
+| Problem validity | **Unknown** | No problem/use case specified or researched yet. |
+| Developer demand | **Unknown** | No demand evidence collected; the workaround evidence you intend to gather would, even when complete, only reach "Partial" (problem evidence, not API demand). |
+| Partner commitment | **Unknown** | No partners engaged. |
+| API ergonomics | **Unknown** | API not named. |
+| Interoperability | **Unknown** | No cross-engine signals. |
+| Narrative / claim accuracy | **Contradicted** | The request's implied claim ("workarounds ⇒ citable demand") is not supportable. |
+
+Likely consequence of unresolved gaps: if published prematurely, a demand list built from unconsented names can be challenged or retracted, damaging the API's credibility and partner relationships before outreach even begins. The fix is to *stage* the artifact: candidate shortlist (internal) → outreach (with consent) → public demand evidence (only those who opt in).
+
+## 4. Challenge (relevant lenses)
+
+- **Evidence classification lens (primary).** Public workarounds prove a *job* exists, not that the org wants *this* API. Inference from "they wrote a polyfill" to "they want the platform to ship X" is a hypothesis, not a commitment.
+- **"Why not?" / adversarial lens.** A workaround can mean: (a) the platform is missing something (supports the API), or (b) the task is rare/niche, or (c) a library already solves it well enough, or (d) the browser is the wrong layer, or (e) the workarounds are *against* a native API existing (e.g., for privacy reasons). The shortlist must record which interpretation each signal supports, including counterevidence.
+- **Ecosystem research lens.** Demand evidence must come from *multiple independent source families* (framework trackers, Stack Overflow, native/mini-app equivalents, conference talks, support portals, non-English communities), not a single repo. One library with 10k stars is not 10k demand signals — it is one maintainer's choice plus weak usage context.
+- **Privacy/consent lens.** Building a contact list from public profiles and naming organizations without consent has real cost. Outreach needs an approved purpose and a handling plan (per `modules/ecosystem-and-customer-research.md` §2/§6).
+- **Attribution/legal lens (`unknown`, route to counsel).** Naming a company in a public "demand" list can imply endorsement. Whether that's permissible depends on jurisdiction and the company's own policies; this is a routing question for Legal, not a DevRel conclusion.
+
+## 5. Plan (incubation → candidate shortlist → outreach)
+
+**Outcome & exit criteria:** A deduplicated, source-cited candidate shortlist at "observed public need" stage, plus a consented outreach plan. Exit to *public* demand citation only after ≥N partners (pre-agreed threshold) opt in to attribution at "interest" or later.
+
+**Evidence to collect (once the API is named):**
+- Public issues/RFCs/discussions across ≥5 independent source families.
+- Existing polyfills/libraries/workarounds with implementation-effort evidence.
+- Counterevidence: "why we don't want this," privacy/security objections, "library is enough" threads.
+- Adjacent-platform equivalents (native/mini-app/chat/LLM-agent) translated to web jobs.
+- Saturation statement when successive query batches yield no new segment/job/objection.
+
+**Activities & artifacts:**
+1. Candidate partner/community shortlist *(produced below as scaffolding)*.
+2. Research methodology + query matrix *(below)*.
+3. Outreach & consent plan *(below)*.
+4. Evidence ledger *(template below)*.
+5. (Later) Partner trial briefs — only for partners who opt in.
+
+**Owners/reviewers:** DevRel practitioner (coordinates), Product/Eng (contributes context), API Owner (consult), Comms + Legal (consult before any public attribution).
+
+**Dependencies & risks:** API must be named to do real research; risk of selection bias toward one ecosystem; risk of misclassifying problem-evidence as demand-evidence.
+
+**Sequence:** (1) Name API/job → (2) run query matrix → (3) fill shortlist + ledger → (4) adversarial "why not?" review → (5) outreach with consent → (6) promote consenting partners up the ladder → (7) publish only opt-in evidence.
+
+**Explicit blockers:** API/job not specified; no consent regime yet established for outreach; Legal review of public attribution not routed.
+
+## 6. Artifact — Candidate partner/community shortlist (RESEARCH STAGE, internal, not citable as demand)
+
+```yaml
+artifactType: "Candidate partner/community shortlist"
+featureOrInitiative: "<proposed API — not named in request; fill on intake>"
+lifecycleStage: "incubation"
+audience: "internal"
+owner: "DevRel practitioner (TBD)"
+status: "draft — scaffolding; rows are structure, not findings"
+created: "<today>"
+updated: "<today>"
+sources: []   # none yet — no API specified
+unresolvedAssumptions:
+  - "API/job not specified; real research cannot begin until named."
+  - "All candidate rows are hypotheses to test, not endorsements."
+  - "No organization on this list has been contacted or has consented to attribution."
+reviewRequirements:
+  - "Product/Eng confirm API shape and target segments before research."
+  - "Legal/Comms review before ANY public attribution."
+```
+
+> **Read this banner before using the table.** Every entry is at evidence stage **"observed public need"** at best. This artifact is a **candidate hypothesis map for outreach**, not a **demand list**. Do not paste it into a public explainer, ChromeStatus entry, or blog as evidence of partner demand. Promoting any row past "candidate" requires (a) actual contact, (b) permission, and (c) Comms/Legal sign-off on attribution.
+
+### Shortlist table (structure + how to fill; example rows are illustrative placeholders, NOT researched findings)
+
+| ID | Segment | Candidate (org/community/maintainer) | Public signal observed | Signal type | Source URL + retrieval date | Evidence stage | Relevance to *this* API vs. broad category | Contact/permission status | Limitations / bias / confidence | Counterevidence noted? |
+|----|---------|--------------------------------------|------------------------|-------------|------------------------------|----------------|---------------------------------------------|---------------------------|---------------------------------|------------------------|
+| C-01 | _e.g., e-commerce checkout_ | `[populate after research for <API>]` | _e.g., issue requesting feature X_ | issue | `<url>` _(retrieved YYYY-MM-DD)_ | observed public need | _high/med/low + why_ | not contacted | _selection bias, single maintainer, etc._ | _Y/N + note_ |
+| C-02 | _e.g., media/publishing_ | `[populate]` | _e.g., homegrown workaround in repo_ | library/workaround | `<url>` _(retrieved)_ | observed public need | _..._ | not contacted | _..._ | _..._ |
+| C-03 | _e.g., framework/tooling_ | `[populate]` | _e.g., RFC or roadmap item_ | RFC/roadmap | `<url>` _(retrieved)_ | observed public need | _..._ | not contacted | _..._ | _..._ |
+| C-04 | _e.g., adjacent platform_ | `[populate]` | _e.g., native/mini-app equivalent_ | adjacent-platform | `<url>` _(retrieved)_ | observed public need (job analog) | _..._ | not contacted | _may not map to web_ | _..._ |
+
+**How to read the columns:** "Evidence stage" must default to *observed public need* for every row produced from public sources alone. "Relevance to this API" is where you prevent the classic error of counting broad-category interest as demand for your specific shape. "Counterevidence" forces the "why not?" into the same ledger.
+
+### Research methodology (fully actionable once the API is named)
+
+**1. Frame the decision.** Record: the API, the jobs/use cases, the claims being tested, known alternatives, evidence cutoff date, public-only boundary, time/tool budget, languages/regions, and a stopping rule (e.g., "stop when two successive query batches across independent source families add no new segment, job, workaround, objection, or candidate").
+
+**2. Write both sides.**
+- *Support:* What evidence would show a real, recurring, unmet need?
+- *Falsify:* What evidence would show the problem is rare, already solved by a library/server/standards fix, at the wrong layer, or too costly/risky for the browser to add?
+
+**3. Build a query matrix** across problem/job language (not API names), workaround/failure/migration terms, framework/server/mobile/enterprise/a11y/region variants, native/mini-app/chat/agent equivalents, and skeptical/failure language, in the relevant non-English terms. Record query, engine/source, date, results inspected, inclusion/exclusion reason, and new vocabulary discovered.
+
+**4. Search multiple independent source families:** GitHub/GitLab issues & code search, Stack Overflow, framework/library trackers + RFCs + package-registry usage, WICG/WHATWG/W3C/WebDX/TC39/IETF, Chromium/WebKit/Mozilla bugs + standards positions, blogs/newsletters/talks/podcasts, HN/Reddit/social, public support portals, app/plugin reviews, migration discussions, and adjacent platforms (iOS/Android/Windows/Linux, WeChat/Alipay/Douyin mini-apps, chat/LLM-agent ecosystems) using accessible public sources and appropriate languages. *Stars/forks/downloads are weak context only.*
+
+**5. Deduplicate and assess quality** for each item: stable ID, claim supported/contradicted, source URL + author + publication/retrieval date, source family + independence, segment/geo/stack, signal type (direct observation / self-report / behavior / workaround / commitment / opinion), sample/denominator, relevance to *this API shape*, limitations/conflicts/bias, and permission/attribution status. **Do not sum weak mentions into strong evidence.**
+
+**6. Distill for the web.** For each adjacent-platform signal, extract the job, permission/lifecycle/distribution/business model, adoption + friction, then decide whether the web needs: no change / guidance+tooling / extend existing / new low-level primitive / higher-level API / server-or-standards work outside the browser. Apply user-impact, interop, privacy/security/a11y, competition, and abuse critique.
+
+**7. Adversarial "why not?"** Test at minimum: rare/low-cost/already-solved; wrong person bears cost; library sufficient; browser is wrong layer / ossification risk; too high/low-level or not independently implementable; other engines have reasons to decline; privacy/security/a11y/competition/user-agency cost > value; flagship-only or one-region/business-model; partners want an outcome but not *this* API; demand is promotion/selection bias/one-vendor-ecosystem; smaller or no intervention is better. Report the strongest case against and what would rebut it.
+
+**8. Saturation statement.** State explicitly when you stopped, what remained unknown, and what the evidence *cannot* answer (e.g., "this proves a problem exists and N candidates worth contacting; it does not prove demand for the proposed API shape").
+
+### Outreach & consent plan (how candidate rows become citable demand)
+
+For each prioritized candidate, prepare before any contact:
+- **Why them**, with the specific public source (issue/library/workaround) — one link each.
+- **What we want to learn** — current behavior, the *last time* this occurred, what they did instead, what it cost, who approved/operated/supported it, what failed, what would block production use, and **what would make them reject this API**. (Not "please validate our solution.")
+- **Time/scope** and **confidentiality / public-attribution options** offered up front (anonymous, attributed-on-request, named-with-quote).
+- **Consent specifics:** quote use, organization naming, contact retention, future outreach.
+- **Evidence of behavior requested**, not opinions: past examples, costs, failed alternatives, production constraints, rejection conditions.
+
+**Promotion rules (hard):**
+- A row may move from "observed public need" to "candidate" on research alone.
+- It may move to "contacted/interest/evaluation/trial/ship/production" **only** with an attributable statement **and** explicit permission to use it.
+- Public attribution requires Comms + Legal review of the specific wording.
+
+### Evidence ledger template (one row per signal)
+
+```markdown
+| ID | Claim (supports/contradicts) | Source URL | Source family | Independence | Signal type | Segment/geo/stack | Sample/denominator | Relevance to THIS API | Limitations/bias | Permission/attr. status | Retrieval date |
+|----|------------------------------|-----------|---------------|--------------|-------------|-------------------|--------------------|-----------------------|------------------|-------------------------|----------------|
+| E-01 | _..._ | _..._ | _..._ | _..._ | _..._ | _..._ | _..._ | _..._ | _..._ | n/a (public) | _YYYY-MM-DD_ |
+```
+
+## 7. Measure the outcome
+
+Candidate measures for *this* specific piece of work (not a single universal score), each with its denominator and limitation stated:
+
+- **Evidence quality:** independent source families covered (target ≥5); saturation reached (Y/N); counterevidence captured (count). *Limitation:* breadth ≠ demand.
+- **Candidate shortlist fitness:** segment balance (no single ecosystem dominates); relevance-to-this-API ratings skew "high." *Limitation:* still candidate hypotheses.
+- **Outreach conversion (after contact begins):** contacted → responded → gave behavioral evidence → consented to attribution, at each denominator. *Limitation:* self-selection bias.
+- **Citable demand (only this is publishable):** number of partners at "interest or later" **with consent**, each with an attributable statement. *Denominator:* total contacted. *Limitation:* opt-in sample.
+
+## What I need from you to turn this scaffolding into a real, populated list
+
+1. The **API name and the developer job/use case** it serves (so I can run the query matrix and populate real rows, each sourced and dated).
+2. Confirmation of the **public-only evidence boundary**.
+3. A named **DevRel owner** to run outreach and a **Comms/Legal contact** to review any eventual public attribution.
+4. Confirmation that the goal is the **candidate shortlist + outreach plan** (what I've built) rather than a **public demand list** (not producible today without violating the evidence rules above).
+
+**Bottom line:** I can absolutely build the partner/community shortlist you need — but as a **research-stage candidate map for outreach**, not as public evidence of demand. The moment you name the API, I'll populate it with real, dated, source-cited rows, all at "observed public need," and give you the outreach plan that converts the strongest candidates into the only thing that's actually citable: consented, attributable demand.

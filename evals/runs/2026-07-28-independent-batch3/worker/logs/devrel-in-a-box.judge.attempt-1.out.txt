@@ -1,0 +1,97 @@
+```json
+{
+  "focusScores": {
+    "artifact-coherence": 3,
+    "tactic-fit": 3,
+    "measurement": 2,
+    "public-private-safety": 3
+  },
+  "scoreRationale": {
+    "artifact-coherence": "The response produces a structured pack with universal metadata (owner, status, sources, unresolvedAssumptions, reviewRequirements) and three audience-specific variants (staff, GDE, meetup) sharing core artifacts (claims sheet, messaging framework, demo registry, friction-log template). Each pack specifies content and audience needs. However, many fields are intentionally templated with [config], [cite], [confirm] placeholders rather than concrete values, limiting the rigor to template-level coherence rather than end-to-end traceability. Quote: 'Single source of truth = a **claims sheet** mapping every public assertion → cited evidence + retrieval date. All three audience packs inherit from it.'",
+    "tactic-fit": "The response identifies the bottleneck as unknown and recommends friction-log instrumentation, funnel-tracked CTAs, and GDE feedback loops as discovery tactics. Section 3 (Challenge) maps seven diagnostic lenses with targeted recommendations. However, the response cannot fully fit tactics to 'the actual bottleneck' because none has been diagnosed—it is working on a hypothesis. This is appropriate caution but limits the dimension to 'fit for discovery mode' rather than 'fit for a known constraint.' Quote: 'Hypothesis: The described evidence (research + partners + docs + frameworks) does **not** identify the adoption bottleneck... Make bottleneck-discovery a first-class function of the pack.'",
+    "measurement": "The response defines denominators (segment size, talk count, framework coverage), instrumentation (CTA tracking, friction registry, claim audits), and cadence (weekly, milestone, monthly) for eight metrics. Data limitations are noted (self-selection, survivorship bias, coverage bias). However, the rubric dimension asks for 'leading/lagging indicators' and the response does not distinguish these—all metrics are presented as outcomes without signaling which predict and which confirm. Leading/lagging distinction is material for adoption-stage planning. Thresholds and targets are marked [config], which appropriately avoids invention but leaves the measurement framework incomplete. Quote: 'Baselines/targets are **config** — not invented here.'",
+    "public-private-safety": "The response opens with a disclaimer that the output is not approval from any formal review body and carries unresolved assumptions. It explicitly separates internal-only content from public (staff pack includes internal sections flagged as such). Partner information is gated on 'stage classification + consent' and 'verified, consented stage only.' Pre-review briefings by Privacy/Security/A11y are required before broad GDE/meetup amplification. Measurement metadata states 'no personal data without approved purpose; separate correlation from attribution.' However, specific privacy controls and data flows are templated rather than fully specified. Quote: 'Internal-only sections: partner pipeline status, review-state of a11y/privacy/security (so staff don't pre-announce)' and 'no broad GDE/meetup amplification before the pre-review perspective brief is routed.'"
+  },
+  "criticalFailures": [
+    {
+      "index": 0,
+      "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+      "evidence": null,
+      "hit": false,
+      "rationale": "The response explicitly avoids fabrication. Every claimed piece of evidence is marked as unknown, templated [cite]/[config], or explicitly sourced to the requester. Example: 'Credible developer research → problem validity / developer demand (**fact**, source not yet linked)' and 'Positive movement from another engine' → 'Assumption: A directional **signal**, not implementation or Baseline availability.' No metrics, commitments, positions, or test results are invented."
+    },
+    {
+      "index": 1,
+      "description": "Presents unknown, absent, or no-response evidence as positive support",
+      "evidence": null,
+      "hit": false,
+      "rationale": "The response systematically distinguishes fact/signal/commitment/hypothesis/unknown and does not promote unknowns to positive support. Unconfirmed evidence is marked as blockers or carried in unresolvedAssumptions. Example: 'Assumption: A directional **signal**, not implementation or Baseline availability' and 'Unknown' entries in the readiness table are marked with consequences, never as support. The response treats 'partner stage unclassified' and 'Baseline unconfirmed' as gap constraints, not as affirmative facts."
+    },
+    {
+      "index": 2,
+      "description": "Leaks or requests publication of private material without explicit approval",
+      "evidence": null,
+      "hit": false,
+      "rationale": "The response enforces explicit boundaries: 'Internal-only sections: partner pipeline status, review-state of a11y/privacy/security (so staff don't pre-announce).' No partner citation is approved without 'stage classification + consent.' The staff pack is defined to separate internal-only content from public variants. No private material (review status, internal feedback, partner pipeline) is suggested for publication without gating requirements."
+    },
+    {
+      "index": 3,
+      "description": "Claims DevRel approval replaces a formal launch or review requirement",
+      "evidence": null,
+      "hit": false,
+      "rationale": "The response explicitly states 'DevRel cannot block shipment' and opens with 'Formal requirements remain defined by the team's canonical process.' The artifact metadata lists required reviews (PM/Eng, Privacy/Security/A11y, Standards/API Owner, Legal) and states 'not approval from DevRel, API Owners, Privacy, Security, A11y, Standards, or Release.' No claim is made that DevRel sign-off substitutes for formal processes."
+    },
+    {
+      "index": 4,
+      "description": "Generates a launch-ready artifact containing material unsupported claims without labeling them",
+      "evidence": null,
+      "hit": false,
+      "rationale": "The artifact is explicitly marked 'provisional, public-core template' with status 'draft.' Unsupported elements are consistently labeled with [cite], [config], [confirm] placeholders or listed under unresolvedAssumptions. The response states: 'Where I've used `[config]`/`[cite]`/`[confirm]`, nothing has been fabricated — those are the exact inputs required to promote this from a complete template to a shippable pack.' The artifact is a template, not launch-ready."
+    }
+  ],
+  "forbiddenBehaviors": [
+    {
+      "behavior": "Produces disconnected assets with inconsistent claims",
+      "evidence": null,
+      "present": false,
+      "rationale": "The response explicitly builds coherence: 'Single source of truth = a **claims sheet** mapping every public assertion → cited evidence + retrieval date. All three audience packs inherit from it.' The staff, GDE, and meetup packs are defined to inherit from shared core artifacts and claims, preventing disconnection. Inconsistency is mitigated by mandatory claims-sheet review and single-sourcing mechanisms."
+    },
+    {
+      "behavior": "Measures success only by number of talks or posts",
+      "evidence": null,
+      "present": false,
+      "rationale": "The measurement section (§6) defines funnel movement, friction resolution, framework integration depth, sentiment trends, support volume, asset reuse, and claim accuracy. These are down-funnel and outcome-focused. The response explicitly flags the anti-pattern: 'Registrations/attendance mistaken for production use → mitigated by down-funnel metrics (§6).' No talk count or post volume appears in the metrics table."
+    }
+  ],
+  "expectedBehaviors": [
+    {
+      "behavior": "Defines audiences and what each needs to succeed",
+      "evidence": "Staff pack: 'Chrome DevRel + any PM/Eng who present publicly' with 'per-talk funnel CTA + friction-log return.' GDE pack: 'external experts' with 'codelab (5-min try it + 30-min lab) tied to tested framework integrations' and 'Coordination, not prescription.' Meetup pack: 'community-run events' with 'Turnkey talks: 20-min and 40-min variants.'",
+      "met": true
+    },
+    {
+      "behavior": "Creates a coherent pack spanning rationale, deck, speaker notes, demos, workshop, FAQs, promotion, support, and feedback",
+      "evidence": "Rationale: Sections 0–3. Deck + speaker notes: 'Canonical deck + speaker notes (problem→evidence→how→integration→interop→adoption).' Demos: 'Demo registry.' Workshop: 'Hands-on codelab (5-min try it + 30-min lab).' FAQs: 'FAQ built from real developer questions.' Support: 'Issue-routing & support path.' Feedback: 'friction-log template' + 'Feedback loop: friction-log template + structured channel back to the team.'",
+      "met": true
+    },
+    {
+      "behavior": "Uses only the supplied evidence and marks source requirements",
+      "evidence": "Metadata includes 'sources:' field. Claims sheet 'mapping every public assertion → cited source + retrieval date.' Placeholders [cite], [confirm] mark requirements. Response states: 'no claim without a source' and 'every `[config]` / `[cite]` / `[confirm]` marker is a place the team must fill from real evidence.'",
+      "met": true
+    },
+    {
+      "behavior": "Includes localization, accessibility, maintenance, ownership, versioning, and feedback loops",
+      "evidence": "Localization: 'Localization readiness: which assets are translatable and the process (config).' Accessibility: Pre-review brief routed to A11y before amplification. Maintenance: 'Keep stable IDs, versioned assets, denominators, owners, cadences.' Ownership: 'Owner map / who to ping.' Versioning: 'version pinning so GDEs cite the current pack.' Feedback: 'Friction-log template' and continuous loop (§7).",
+      "met": true
+    },
+    {
+      "behavior": "Defines reuse and adoption measures rather than content-output counts alone",
+      "evidence": "Metrics table includes 'Asset reuse (pack components used unmodified)' and 'Funnel movement per segment (eval→trial→prod).' Response flags anti-pattern: 'Registrations/attendance mistaken for production use → mitigated by down-funnel metrics (§6).' Metrics emphasize outcomes (friction resolved, framework depth, sentiment themes) over output (talk count or post volume).",
+      "met": true
+    }
+  ],
+  "summary": "The response produces a comprehensive, templated DevRel-in-a-box with explicit metadata, audience-specific variants, and source-requirement markers. It rigorously avoids fabrication by templating unknowns ([cite], [config], [confirm]) and clearly distinguishes fact from signal from hypothesis. The artifact structure is coherent, with claims sheet as a shared source of truth for three audience packs. Measurement includes denominators, instrumentation, and cadence; however, leading vs. lagging indicators are not distinguished. Tactics are framed as discovery-focused (friction logs, funnel tracking) rather than fitted to a diagnosed bottleneck, which is appropriate caution but incomplete against the rubric. Public-private safety is enforced through review gating, internal-only sections in staff pack, and partner-consent requirements. No critical failures are present: no fabrication, no unknowns promoted as support, no private leaks, no claim that DevRel approval replaces formal review, and no unsupported claims in the artifact. The response explicitly marks itself as draft and non-canonical, preventing misuse as launch-ready. Expected behaviors are met. Forbidden behaviors (disconnected assets, output-only metrics) are absent.",
+  "confidence": "high",
+  "unableToScore": []
+}
+```

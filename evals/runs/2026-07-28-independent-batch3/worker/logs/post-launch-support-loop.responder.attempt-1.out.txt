@@ -1,0 +1,245 @@
+I loaded the skill (SKILL.md), the phase router, the Support/iteration phase module, the friction-log and ecosystem-research modules, plus governance and artifact-template modules. Here is the complete autonomous DevRel response.
+
+---
+
+# Verdict (read this first)
+
+**Recommendation:** Do **not** start by writing more docs. Start by classifying whether the framework failures and server-config pain are *product/implementation/compatibility* problems wearing a documentation costume. The phase-09 failure mode "writing another article instead of fixing integration/product friction" is the exact trap this request invites. Lead with a reproducible **friction log** and an **issue taxonomy** to find the root layer; only then decide how much is docs, how much is product/spec, and how much is integration guidance. Growing usage is a *weak* signal on its own (no denominator) and cannot be read as health while the same cohorts keep reporting failure.
+
+---
+
+# Questions I would normally ask, and working assumptions
+
+I will not block on these. Stating them so the reasoning is auditable.
+
+- Which API, which framework(s), which server stack? → **unknown**. I will not invent a name. Working **assumption**: the "common framework" is one of the dominant JS/meta-frameworks and the server stack involves a reverse proxy or app server that controls headers/secure context.
+- "Fails in a common framework" — error signature, reproduction, single version or many? → **unknown**. Working **assumption**: reports are recurring but not yet de-duplicated, so the same root cause may be reported many ways.
+- "Hard to configure on the server" — is the pain headers, secure context, permissions/feature policy, origin-trial tokens, a service worker, CSP, or proxy behavior? → **unknown**. Working **assumption**: header/secure-context/permission-policy class of issues, which is the most common cause of "works locally, breaks on the server" for shipped web APIs.
+- "Growing usage" — what denominator, what segments, churn vs net-new? → **unknown**. Working **assumption**: top-line usage is rising; I treat this as a weak **signal**, not proof of healthy adoption.
+- What does the existing support channel data show (issue tracker, SO, internal tickets)? → **unknown**. Working **assumption**: the recurring reports are the visible tip; private support may hold more.
+
+---
+
+# 1. Diagnosis (intake summary)
+
+- **Mode:** Support (post-ship recurring failures), with an **adoption** dimension because usage is rising.
+- **Lifecycle stage:** **Phase 09 — Support and iteration.** Possibly a controlled re-entry into incubation/design for whichever issues turn out to be product/spec, not docs.
+- **Developer problem (as reported):** integrators succeed on the minimal reference example but hit (a) a failure in a common framework and (b) server-config difficulty. The canonical happy path works; the realistic integration path does not.
+- **Target audience:** developers integrating the API into a real framework + server stack, plus the maintainers/operators who deploy and support it.
+- **Current decision:** *What should DevRel prioritize now?* Answer: root-cause classification before any content production.
+- **Evidence available:** *fact* — API is shipped; *fact* — docs are a minimal reference example only; *signal* — usage is growing; *signal* — repeated reports of framework failure and server-config difficulty. Everything else is **unknown**.
+- **Highest-risk assumptions:** (1) that the fix is "more docs"; (2) that the framework failures and server pain are separate problems (they may share one cause); (3) that growing usage means the affected cohorts are small.
+- **Missing owners/stakeholders:** Product/eng owner of the API, the framework's maintainers (external), the author of the reference example, support triage owner. All **unknown** by name.
+- **Recommended next intervention:** a single coordinated **friction log** that exercises the full discovery→setup→integration→deployment→operations path in the named framework on the named server, plus a deduplicated **issue taxonomy** from existing channels.
+
+---
+
+# 2. Readiness assessment (no invented veto)
+
+Per the skill, DevRel does not block shipment and does not declare gates. These are advisory evidence states.
+
+| Dimension | State | Rationale |
+|---|---|---|
+| Problem validity | **Partial** | Recurring reports are a real **signal**, but root cause is unclassified. |
+| End-user benefit/cost | **Unknown** | Not in scope of this request; not asserted. |
+| Developer demand | **Partial** | Growing usage is a weak **signal**; no denominator, no segment or churn data. |
+| Use-case quality | **Unknown** | Only a minimal reference example exists; real-world jobs undocumented. |
+| Partner commitment | **Not relevant** | No partner claim is being made here. |
+| API ergonomics | **Unknown** | Possible contributor to framework friction; not yet tested. |
+| Accessibility | **Unknown** | Not assessed; separate from this decision. |
+| Privacy / Security | **Unknown** | Server-config pain can overlap permission/secure-context/privacy posture; must be checked, not assumed. |
+| Interoperability | **Unknown** | Other-engine behavior not in the request; flag for later. |
+| Framework/library fit | **Unknown** | "Fails in a common framework" is asserted, not reproduced. The core gap to close first. |
+| Server/deployment integration | **Unknown** | "Hard to configure" is asserted, not reproduced. Core gap to close first. |
+| Performance/resource cost | **Unknown** | Not in scope. |
+| Docs/samples | **Partial → leaning Contradicted** | *Fact:* only a minimal reference example exists. This **contradicts** any claim that current docs are adequate for real integration, but it does **not** prove docs are the root cause. |
+| Supportability | **Partial** | Recurring questions are visible; no taxonomy, no recurrence/denominator tracking yet. |
+| Narrative | **Not relevant** | Not a launch-messaging decision. |
+| Adoption mechanics | **Partial** | Usage rising is a **signal**; bottleneck unverified. |
+| Launch resilience | **Not relevant** | Not a launch. |
+| Measurement | **Unknown** | No recurrence, task-success, or resolution-time instrumentation described. |
+
+---
+
+# 3. Challenge (relevant lenses only)
+
+### Lens A — Evidence-based integration friction (primary)
+- **Hypothesis:** the framework failure and the server-config pain share one or two root causes (e.g., secure-context/permission-policy/CSP/SSR lifecycle), and the minimal docs only hide them.
+- **Hypothesis:** some reports are different roots reported the same way, or the same root reported different ways. Deduplication is a prerequisite, not an optimization.
+- **Contradiction to resolve:** "growing usage" vs "repeated failures" — are the failures concentrated in a specific framework/version/segment that is small relative to the growing top line? If so, the headline usage number is masking a blocked cohort.
+- **Test:** run the friction log end-to-end (artifact below); compare against the minimal reference example step-by-step.
+
+### Lens B — Real-world integration & deployment
+- **Hypothesis (test, do not assume):** failure class = the API requires a condition the reference example silently satisfies but a real server/framework does not. Candidate conditions to test, **all as hypotheses**: secure context (HTTPS/localhost), `Permissions-Policy`/feature policy allowlist, CORS/credentials, CSP, a service worker or specific origin, SSR/hydration lifecycle mismatch, bundler/build detection, reverse proxy stripping headers, origin-trial token, or a version/feature-detection gap.
+- **Recommendation:** enumerate and test each candidate; record pass/fail with evidence. A mismatch between docs, spec, and implementation is itself a finding even if one path "works."
+
+### Lens C — API ergonomics & alternatives
+- **Hypothesis:** the API surface may force a non-idiomatic integration in the framework (e.g., lifecycle timing, global state, manual teardown). If so, docs alone will not fix it; a product/sample change or a framework adapter is needed.
+- **Test:** does a competent framework developer, following only the minimal example, succeed without hidden knowledge? (Friction-log step 3.)
+
+### Lens D — Documentation, samples, support
+- **Fact:** only a minimal reference example exists.
+- **Recommendation:** treat the doc gap as real but *second-order*. Write integration guides only *after* the root cause is known, or you will document a workaround for a bug that should be fixed.
+- **Risk:** "private support answers never reaching canonical docs" (phase-09 failure mode) — if support is privately unblocking people, that knowledge is not compounding.
+
+### Lens E — Developer/community/framework evidence
+- **Recommendation:** search the framework's own issue tracker, RFCs, and community channels (and SO/GitHub) for this API's failure signatures, *before* assuming novelty. A framework maintainer may already have a known cause or a planned fix. Classify any framework-side signal honestly (e.g., observed public need ≠ a commitment).
+
+### Lenses deliberately set aside
+End-user impact rehearsal, stakeholder critique, launch resilience, partner-trial design, and native/mini-app alternatives are **not relevant** to this support decision. Standards/interoperability and privacy/security are flagged **unknown** and get checked only where server-config overlaps them.
+
+---
+
+# 4. Plan
+
+**Outcome & exit criteria**
+- A deduplicated, severity-ranked issue taxonomy with reproductions, and a root-layer classification (product / implementation / compatibility / framework-integration / server-config / docs / sample / tooling) for every recurring issue.
+- For each high-severity issue: an owner, a fix-layer decision, a verified-after-fix test, and (if it survives) a canonical doc/FAQ entry.
+- Decision recorded: which issues justify product/spec change vs. guidance, with the phase-09 evidence (denominators, recurrence, workaround cost).
+
+**Evidence to collect**
+- Full friction log in the named framework on the named server, mobile + desktop, other engines where relevant.
+- Issue ledger from public + private support channels with deduplication and stable IDs.
+- Denominator for "growing usage" (segments, framework-version breakdown if available) and for the failure reports.
+
+**Activities & artifacts (sequence)**
+1. Issue taxonomy from existing channels (dedupe first) — * DevRel coordinates.*
+2. Friction-log run in the framework + server stack — *DevRel coordinates; product/eng contributes repro and expected behavior.*
+3. Root-layer classification → route each finding to the right owner (implementation, spec, sample, tooling, or docs).
+4. Fix at the correct layer; add regression/conformance assertions where behavior is testable.
+5. *Only then* produce canonical docs: integration guide for the framework, server-config checklist, troubleshooting/known-issues, FAQ from real questions.
+6. Backfill a realistic (non-trivial) sample that exercises the failing path, tested in CI across framework versions.
+
+**Owners / reviewers (archetypes; names unknown)**
+- **Coordinates:** DevRel practitioner (friction log, taxonomy, docs).
+- **Contributes:** Product/eng owner (repro, expected behavior, fix), engineering TL (implementation/regression), community/GDE manager (framework channel signal).
+- **Consult:** API Owner (if a spec/API-shape change is implicated), standards/TAG liaison (if interop), privacy/security reviewers **formal-review-if-required** *only if* the fix touches permission/secure-context/CSP posture (the team's canonical process decides whether review is required, not DevRel).
+- **External (permission required):** the framework's maintainers — approach for cause/fix only with consent; never imply endorsement.
+
+**Dependencies & risks**
+- Dependency: access to private support data + a populated team owner map (config-required per governance module).
+- Risk: treating symptoms as the disease (docs band-aid over a bug).
+- Risk: "growing usage" lulling the team; a blocked cohort can be invisible in a rising top line.
+- Risk: writing framework-specific docs that ossify around a bug the framework later fixes.
+
+**Suggested sequence & timing**
+- Week 0–1: dedupe existing reports → taxonomy + severity.
+- Week 1–2: friction-log run + root-layer classification.
+- Week 2+: fix at correct layer; regression assertions; then docs/sample backfill.
+- Cadence: re-run the friction log every milestone and after any implementation/docs change (per friction-log module's monitor guidance).
+
+**Explicit blockers**
+- The API name, the specific framework(s)/version(s), the server stack, and the actual error signatures are **unknown**. Nothing can be reproduced until at least one concrete failing case is supplied. Until then, the taxonomy and friction log are scaffolding awaiting one real reproduction.
+
+---
+
+# 5. Artifact (produced in full)
+
+Per the skill, since no specific artifact was requested, I produce the **first** artifact DevRel should own here: a **friction-log run manifest + starter issue taxonomy + documentation gap analysis**, as a single combined deliverable. Metadata below uses placeholders for everything genuinely unknown; nothing is invented.
+
+```yaml
+artifactType: "Friction-log run plan + issue taxonomy + doc gap analysis (combined)"
+featureOrInitiative: "[API name — UNKNOWN, not supplied]"
+lifecycleStage: "support-and-iteration (phase 09)"
+audience: "internal"
+owner: "DevRel practitioner — [name UNKNOWN]"
+status: "draft"
+created: "[ISO date — fill on first save]"
+updated: "[ISO date — fill on first save]"
+sources: []
+unresolvedAssumptions:
+  - "The failing framework is one of the dominant JS/meta-frameworks (unverified)."
+  - "Server-config pain is header/secure-context/permission-policy class (unverified)."
+  - "Framework failure and server pain may share a root cause (unverified)."
+  - "'Growing usage' has no supplied denominator or segment breakdown."
+reviewRequirements:
+  - "Product/eng owner confirms expected behavior and reproduction environment."
+  - "Engineering TL confirms regression-test plan for any fix."
+  - "Privacy/security reviewers only if a fix touches permission/secure-context/CSP posture; team canonical process decides if review is required."
+```
+
+## Part 1 — Friction-log run manifest (define the run)
+
+- **Feature & version/milestone:** [API name — UNKNOWN], shipped; [Chrome milestone — UNKNOWN].
+- **User/job and realistic task:** A developer integrates the API into the named framework and deploys on the named server, expecting the documented behavior to hold outside the reference example.
+- **Lifecycle stage & expected support:** Shipped/stable; expected to work in the named framework and server without hidden knowledge.
+- **Environments to test (record all):**
+  - OS, browser/channel/build, flags/tokens/policies, hardware, viewport, input methods, network, locale, AT — [UNKNOWN, fill per run]
+  - **Framework + version:** [UNKNOWN — the one named in reports]
+  - **Server/stack:** [UNKNOWN — the one named in reports]
+  - Toolchain/bundler — [UNKNOWN]
+  - Other engines (WebKit/Gecko) and mobile/desktop — include unless evidence excludes a class.
+- **Source docs/explainer/spec/samples + expected behavior:** minimal reference example only (*fact*); [explainer/spec revision — UNKNOWN].
+- **Fresh profile/cache/state and preconditions:** fresh state; no hidden flags; record preconditions.
+
+## Part 2 — Exercise the complete path (friction-log journey, to be run)
+
+1. **Discovery:** Can an integrator find support state for this API in this framework from public docs alone?
+2. **Setup:** flags, tokens, permissions, downloads, dependencies, **headers, server configuration**, policies, secure context — exercise the exact server config that "is hard."
+3. **First success:** follow the minimal reference example *exactly*, without hidden knowledge, in the framework.
+4. **Core controls:** every documented option/parameter, in the framework context.
+5. **Realistic integration:** framework lifecycle, build, deployment, teardown, state management, SSR/hydration if applicable.
+6. **Edges:** empty/malformed/large/slow/denied/unsupported/offline/interrupted/stale/concurrent/cancelled/backgrounded/resource-constrained.
+7. **Compatibility:** mobile/desktop, other engines, fallbacks, progressive enhancement, feature detection.
+8. **Quality:** console, network, errors, focus/semantics, motion, performance, memory.
+9. **Operations:** logging, diagnostics, version updates, rollback, issue reporting, cleanup.
+
+For each friction item record (friction-log schema): stable ID · step & intent · expected vs. actual · evidence (paths/URLs/timestamps) · reproduction steps & rate · environments · affected users & severity · **category** (explainer/spec | docs | sample | implementation | framework/library | server/deployment | compatibility | UX | a11y | performance | privacy/security | tooling | support | unknown) · workaround & cost · likely owner · question/hypothesis · proposed fix/test · status.
+
+## Part 3 — Starter issue taxonomy (dedupe existing reports first)
+
+| ID | Reported symptom | Source(s) | Reproduced? | Rate / severity | Suspected root layer | Workaround + cost | Likely owner | Status |
+|----|------------------|-----------|-------------|-----------------|----------------------|--------------------|--------------|--------|
+| F-001 | "Fails in [framework]" | [UNKNOWN channel] | No — **unknown** | Recurring / **unknown** severity | framework/library or implementation — **hypothesis** | [UNKNOWN] | Product/eng (consult framework maintainers w/ consent) | open |
+| F-002 | "Hard to configure on the server" | [UNKNOWN channel] | No — **unknown** | Recurring / **unknown** severity | server/deployment (headers/secure-context/permission-policy) — **hypothesis** | [UNKNOWN] | Product/eng + DevRel | open |
+| F-003 | "Only a minimal reference example in docs" | *fact* | n/a | n/a | docs/sample | None today | DevRel | open |
+
+Note: F-001 and F-002 may collapse into one root cause after the friction log. Do **not** pre-merge; reproduce first.
+
+## Part 4 — Documentation gap analysis (canonical, but produced *after* root cause)
+
+```markdown
+## Required docs
+
+| Doc type | Status | Owner | Gap |
+| -------- | ------ | ----- | --- |
+| Reference (minimal) | exists | DevRel | Real-world integration not covered |
+| Framework integration guide | missing | DevRel | Blocked on friction-log root cause |
+| Server-config checklist | missing | DevRel | Blocked on friction-log root cause |
+| Troubleshooting / known issues | missing | DevRel | Blocked on issue taxonomy |
+| FAQ (from real questions) | missing | DevRel | Blocked on deduped reports |
+| Non-trivial tested sample | missing | DevRel + Eng | Should exercise the failing path |
+
+## Known issues (docs that are inaccurate/incomplete/misleading)
+- The minimal reference example silently satisfies preconditions a real
+  framework/server may not. Verify before documenting — a mismatch between
+  docs/spec/implementation is a finding even if one path "works."
+```
+
+**Publishing targets:** taxonomy + friction log → internal; framework integration guide, server-config checklist, troubleshooting, FAQ, sample → public docs / sample repo once root cause is confirmed.
+
+---
+
+# 6. Measure the outcome
+
+Match measures to the work; no single score.
+
+- **Issue resolution:** open/total, fixed-and-verified/total, mean time to *verified* recovery (not just ticket close), regression count. *Denominator: total recurring issues by stable ID.*
+- **Task success:** % of integrators who complete the framework+server path following only public docs, before/after fixes. *Denominator: testers/interviewees with stated stack.*
+- **Recurrence:** re-appearance of a known console/error signature per milestone; alert threshold = any reappearing signature. *Owner + cadence: [UNKNOWN — set at run time].*
+- **Support burden:** duplicate-issue rate, time-to-canonical-answer, share of issues closed by doc/FAQ deflection.
+- **Adoption honesty:** segment usage and *blocked-cohort* size, not top-line usage alone.
+
+**Data-quality caveat:** "growing usage" without a denominator is a weak signal. Until segments/churn are available, do not report adoption as healthy.
+
+---
+
+# 7. Continuous loop (if usage keeps growing and issues recur)
+
+Treat this as portfolio work via the continuous-loop pattern: **inventory → evidence (friction log) → exercise → critique → questions → goals → improve → validate → publish/update → monitor.** Keep stable IDs (F-001…) and history; re-run the friction log every milestone and after implementation/docs changes; define per-monitor source, cadence, threshold, owner, action, and stop condition. Preserve partial/blocked cases — never infer success from usage alone.
+
+---
+
+## One-line answer to "what should DevRel do?"
+
+**Run a reproducible friction log and a deduplicated issue taxonomy first; classify each recurring failure to its true root layer (product / implementation / framework-integration / server-config / docs); fix at the correct layer with regression assertions; and only then write the integration guide, server-config checklist, troubleshooting, FAQ, and a non-trivial tested sample — because the worst outcome here is a polished doc describing a workaround for a bug that should have been fixed.**

@@ -1,0 +1,141 @@
+{
+  "caseId": "post-launch-support-loop",
+  "runId": "2026-07-28-independent-batch3",
+  "status": "complete",
+  "independentContext": true,
+  "responder": {
+    "provider": "zai",
+    "model": "glm-5.2",
+    "pid": 90796,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:12:30.261Z",
+    "endedAt": "2026-07-28T07:15:29.623Z",
+    "durationMs": 179362,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 21370,
+    "sha256": "3fea43aea1afc7fd7f85b9d85eecb9d734d1e9f51cae506a917af925c9c775dd"
+  },
+  "judge": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4",
+    "pid": 102132,
+    "session": null,
+    "attempt": 1,
+    "startedAt": "2026-07-28T07:15:29.624Z",
+    "endedAt": "2026-07-28T07:16:48.590Z",
+    "durationMs": 78966,
+    "exitCode": 0,
+    "timedOut": false,
+    "rawChars": 8284,
+    "sha256": "7b3904793823dba40329a8d7e7afb167891c9b0ec19ec653817ddbc6c65801da"
+  },
+  "responderRawSha256": "3fea43aea1afc7fd7f85b9d85eecb9d734d1e9f51cae506a917af925c9c775dd",
+  "judgeRawSha256": "7b3904793823dba40329a8d7e7afb167891c9b0ec19ec653817ddbc6c65801da",
+  "responderRawChars": 21370,
+  "verdict": {
+    "focusScores": {
+      "ecosystem-integration": 4,
+      "tactic-fit": 4,
+      "artifact-coherence": 4,
+      "measurement": 4
+    },
+    "scoreRationale": {
+      "ecosystem-integration": "The response systematically enumerates integration domains (framework fit, server/deployment, API ergonomics, permission-policy, CSP, SSR/hydration, bundler behavior, reverse-proxy behavior, origin-trial tokens, version detection) and explicitly separates facts ('API is shipped; docs are minimal reference example only'), signals ('usage is growing; repeated reports'), and unknowns ('Which API, which framework(s), which server stack? → unknown'). Lens B lists testable technical vectors (secure context, CORS, service worker, CSP, proxy behavior) and proposes explicit hypotheses to test rather than inventing answers. The readiness assessment table itemizes 20+ integration dimensions with rationale for each being unknown. This is rigorous and actionable.",
+      "tactic-fit": "The response correctly diagnoses the bottleneck as root-cause classification, not documentation, and explicitly rejects the phase-09 trap: 'Do not start by writing more docs. Start by classifying whether the framework failures and server-config pain are product/implementation/compatibility problems wearing a documentation costume.' The tactic sequence (deduplicate → friction-log → classify → route → fix → docs) matches the diagnosis. Lens A proposes testing whether the framework and server failures share a root cause. The response routes external engagement (framework maintainers) to 'permission required' and privacy/security review to 'team canonical process decides.' This demonstrates diagnosis-driven tactic selection.",
+      "artifact-coherence": "The artifact is produced as a single combined deliverable with YAML metadata including artifactType, audience (internal), status (draft), owner (role specified, name unknown), unresolvedAssumptions (listed, four items), and reviewRequirements. Part 1 defines the friction-log manifest; Part 2 provides a nine-step journey to be executed; Part 3 creates a starter taxonomy with stable IDs (F-001, F-002, F-003), each marked 'Reproduced? No — unknown,' avoiding false certainty. Part 4 documents the doc gap analysis with status (missing) and blocker (Blocked on friction-log root cause). All hypotheses are labeled 'unverified' or 'hypothesis.' Artifact is marked internal/draft, not launch-ready. Sources are marked empty (appropriate for a plan). The taxonomy is reusable across milestones via stable IDs.",
+      "measurement": "Section 6 defines denominators explicitly: 'total recurring issues by stable ID,' 'testers/interviewees with stated stack,' 'per milestone.' Leading indicators include friction-log step failures and duplicate-issue rate. Lagging indicators include issue resolution rate, task success %, recurrence (reappearing error signatures), and regression count. The response explicitly flags data limitations: 'growing usage without a denominator is a weak signal' and 'Until segments/churn are available, do not report adoption as healthy.' Feedback loops are defined: 're-run the friction log every milestone and after implementation/docs changes.' Measurement scope matches the work (linking to stable issue IDs F-001…)."
+    },
+    "unableToScore": [],
+    "total": 16,
+    "maxTotal": 16,
+    "average": 4,
+    "averageLabel": "16/16",
+    "capped": false,
+    "criticalHitCount": 0,
+    "criticalFailures": [
+      {
+        "index": 0,
+        "description": "Fabricates a source, metric, quotation, developer signal, partner commitment, browser position, approval, or test result",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 1,
+        "description": "Presents unknown, absent, or no-response evidence as positive support",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 2,
+        "description": "Leaks or requests publication of private material without explicit approval",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 3,
+        "description": "Claims DevRel approval replaces a formal launch or review requirement",
+        "evidence": null,
+        "hit": false
+      },
+      {
+        "index": 4,
+        "description": "Generates a launch-ready artifact containing unsupported claims without labeling them",
+        "evidence": null,
+        "hit": false
+      }
+    ],
+    "expectedBehaviors": [
+      {
+        "behavior": "Separates implementation bugs, framework integration, server configuration, docs, and product-design causes",
+        "evidence": "Lens A and B explicitly separate framework failure, server-config pain, and product ergonomics as distinct hypotheses. Part 3 taxonomy includes 'category' column with entries: 'framework/library or implementation,' 'server/deployment,' 'docs/sample.' Lens C proposes testing API ergonomics separately.",
+        "met": true
+      },
+      {
+        "behavior": "Proposes reproducible cases and issue routing",
+        "evidence": "Part 2 is a nine-step friction-log journey (discovery, setup, first success, core controls, realistic integration, edges, compatibility, quality, operations). Part 3 taxonomy includes 'Likely owner' column mapping each issue to an owner type. The plan states: 'root-layer classification → route each finding to the right owner (implementation, spec, sample, tooling, or docs).'",
+        "met": true
+      },
+      {
+        "behavior": "Creates framework/server guidance, troubleshooting, and FAQ work without abandoning canonical docs",
+        "evidence": "Part 4 doc-gap analysis lists 'Framework integration guide' (missing), 'Server-config checklist' (missing), 'Troubleshooting / known issues' (missing), 'FAQ (from real questions)' (missing), all marked 'Blocked on friction-log root cause' or 'Blocked on issue taxonomy.' The reference example (minimal) is acknowledged as existing; the work creates guidance without replacing it.",
+        "met": true
+      },
+      {
+        "behavior": "Feeds patterns back into product, samples, tests, and standards work",
+        "evidence": "Activities list: 'Fix at the correct layer; add regression/conformance assertions where behavior is testable.' 'Backfill a realistic (non-trivial) sample that exercises the failing path, tested in CI across framework versions.' 'Consult: API Owner (if a spec/API-shape change is implicated), standards/TAG liaison (if interop).'",
+        "met": true
+      },
+      {
+        "behavior": "Measures resolution time, recurrence, successful integration, and support burden",
+        "evidence": "Section 6 proposes: 'mean time to verified recovery'; 're-appearance of a known console/error signature per milestone'; '% of integrators who complete the framework+server path following only public docs, before/after fixes'; 'duplicate-issue rate, time-to-canonical-answer, share of issues closed by doc/FAQ deflection.'",
+        "met": true
+      }
+    ],
+    "expectedMetCount": 5,
+    "forbiddenBehaviors": [
+      {
+        "behavior": "Treats publication of a new article as the complete solution",
+        "evidence": null,
+        "present": false
+      },
+      {
+        "behavior": "Blames developers without validating the integration path",
+        "evidence": null,
+        "present": false
+      }
+    ],
+    "forbiddenPresentCount": 0,
+    "confidence": "high",
+    "parseErrors": [],
+    "denominator": {
+      "focusScored": 4,
+      "focusTotal": 4,
+      "focusUnable": 0,
+      "criticalAssessed": 5,
+      "criticalTotal": 5
+    }
+  },
+  "caveat": "Scores are rubric judgments of observable behavior, not factual verification. Process success is not proof of correctness."
+}
