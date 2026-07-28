@@ -27,8 +27,10 @@ import {
   cp,
   mkdir,
   readFile,
+  readdir,
   rename,
   rm,
+  stat,
   writeFile,
 } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -36,7 +38,11 @@ import { join, resolve } from "node:path";
 
 const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const EVALS = join(ROOT, "evals");
-const RUNNER_VERSION = 1;
+// RUNNER_VERSION is bumped on any behavioral edit to this file. Each run records
+// both the version and the sha256 of the committed runner implementation so the
+// provenance validator can bind (and detect drift from) the exact runner that
+// produced a given run.
+const RUNNER_VERSION = 2;
 
 // ---------------------------------------------------------------------------
 // Argument parsing
@@ -78,6 +84,7 @@ function parseArgs(argv) {
       case "--judge-timeout": out.judgeTimeout = Number(next()); break;
       case "--attempts": out.attempts = Number(next()); break;
       case "--pi-bin": out.piBin = next(); break;
+      case "--calibration": out.calibration = next(); break;
       case "-h": case "--help": out.help = true; break;
       default:
         if (a.startsWith("--")) { console.error(`unknown option: ${a}`); process.exit(2); }
@@ -105,6 +112,13 @@ Independence:
   to widen (e.g. for research-heavy cases that need search).
 
 Env: EVAL_PI_BIN (default 'pi'); EVAL_* overrides for all of the above.
+
+Calibration (separate from the 21-case denominator):
+  --calibration <fixture.json>   run the blind judge on a deliberately-bad
+                                 canned response and assert it scores poorly /
+                                 hits critical failures (judge calibration).
+                                 Records under evals/calibration/runs/, never
+                                 under evals/runs/.
 `;
 
 // ---------------------------------------------------------------------------
@@ -220,6 +234,29 @@ async function stageResponderSkill(destDir) {
     }
   }
   return destDir;
+}
+
+// Deterministic hash over a staged skill tree: sorted relative paths paired
+// with each file's content sha256. This binds the EXACT skill (including every
+// module) the responder saw, so a later change to any staged file is detectable
+// from a run's provenance. The staging copy is content-identical to the
+// allowlisted source, so this equals a hash over the repo's allowlisted entries.
+async function hashSkillTree(skillDir) {
+  const entries = [];
+  const walk = async (dir, rel = "") => {
+    let names;
+    try { names = (await readdir(dir, { withFileTypes: true })).map((d) => d.name).sort(); }
+    catch { return; }
+    for (const name of names) {
+      const full = join(dir, name);
+      const r = rel ? `${rel}/${name}` : name;
+      const ent = await stat(full);
+      if (ent.isDirectory()) await walk(full, r);
+      else entries.push(`${r}\0${sha256(await readFile(full))}`);
+    }
+  };
+  await walk(skillDir);
+  return sha256(entries.join("\n"));
 }
 
 // ---------------------------------------------------------------------------
@@ -569,6 +606,95 @@ function resolveEligible(casesDoc, opts) {
 }
 
 // ---------------------------------------------------------------------------
+// Judge calibration (negative control) — separate from the 21-case denominator
+// ---------------------------------------------------------------------------
+// Runs the SAME blind judge contract as a real run against a deliberately-bad
+// canned response and asserts the judge discriminates (scores poorly / hits
+// critical failures). The candidate response is a fixed fixture, so the only
+// variable is the judge. Records under evals/calibration/runs/, never under
+// evals/runs/, so the 21-case denominator is untouched. A PASS means the judge
+// penalized a bad response; it does not validate the rubric or the skill.
+async function runCalibration({ opts, fixed }) {
+  const fixturePath = resolve(opts.calibration);
+  const fixture = JSON.parse(await readFile(fixturePath, "utf8"));
+  const testCase = fixed.casesDoc.cases.find((c) => c.id === fixture.caseId);
+  if (!testCase) throw new Error(`calibration fixture references unknown case: ${fixture.caseId}`);
+  if (!fixture.candidateResponse || !fixture.candidateResponse.trim()) {
+    throw new Error("calibration fixture missing candidateResponse");
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const calId = `${fixture.controlId || "negative-control"}-${today}`;
+  const calDir = join(EVALS, "calibration", "runs", calId);
+  await mkdir(join(calDir, "worker", "logs"), { recursive: true });
+
+  const runnerImplSha256 = sha256(await readFile(join(EVALS, "run.mjs"), "utf8"));
+  const { provider, model } = splitModel(opts.judgeModel);
+
+  // Same blind judge invocation as a real run; no responder, no skill staging.
+  const judge = await runJudge({ opts, fixed, runDir: calDir, testCase, candidateResponse: fixture.candidateResponse });
+  const parsed = judge && judge.parsed !== undefined ? judge.parsed : extractJsonObject(judge?.stdout || "");
+  const verdict = normalizeVerdict({ testCase, parsed, responder: null, judge });
+  verdict.denominator.criticalTotal = fixed.rubric.criticalFailures.length;
+
+  const expect = fixture.expect || {};
+  const criticalHits = (verdict.criticalFailures || []).filter((c) => c && c.hit === true);
+  const forbiddenHits = (verdict.forbiddenBehaviors || []).filter((f) => f && f.present === true);
+  const avg = verdict.average;
+  const problems = [];
+  if (expect.mustHitCritical && criticalHits.length === 0) {
+    problems.push("expected at least one critical failure hit but none recorded (judge failed to catch fabrication/forbidden behavior)");
+  }
+  if (typeof expect.maxAverage === "number" && avg !== null && avg > expect.maxAverage) {
+    problems.push(`average ${avg} exceeds max ${expect.maxAverage} (judge scored a deliberately-bad response too high)`);
+  }
+  if (typeof expect.maxTotal === "number" && verdict.total !== null && verdict.total > expect.maxTotal) {
+    problems.push(`total ${verdict.total} exceeds max ${expect.maxTotal}`);
+  }
+  if (Array.isArray(expect.mustFlagForbidden)) {
+    for (const b of expect.mustFlagForbidden) {
+      const hit = forbiddenHits.some((f) => (f.behavior || "") === b || (f.behavior || "").includes(b));
+      if (!hit) problems.push(`expected forbidden behavior flagged but not present: "${b}"`);
+    }
+  }
+
+  const record = {
+    controlId: fixture.controlId || "negative-control",
+    calId,
+    caseId: fixture.caseId,
+    description: fixture.description || "",
+    denominator: "calibration (outside the 21-case eval denominator)",
+    purpose: "Judge calibration negative control. The candidate response is a deliberately-bad fixed fixture. A discriminating judge MUST score it poorly and hit critical failures. A PASS proves the judge is not merely rubber-stamping; it does not validate the rubric or the skill.",
+    provenance: {
+      runnerVersion: RUNNER_VERSION,
+      runnerImplPath: "evals/run.mjs",
+      runnerImplSha256,
+      judgeProvider: provider,
+      judgeModel: model,
+      fixedInputs: { casesSha256: fixed.casesSha256, rubricSha256: fixed.rubricSha256 },
+    },
+    judge: judge ? phaseRecord(judge, opts.judgeModel) : null,
+    judgeRawSha256: judge ? sha256(judge.stdout || "") : null,
+    verdict,
+    expectation: expect,
+    expectationMet: problems.length === 0,
+    problems,
+    caveat: "Calibration proves discrimination, not correctness.",
+    createdAt: nowIso(),
+  };
+  await atomicWriteJSON(join(calDir, "calibration.json"), record);
+  await atomicWrite(join(calDir, "candidate-response.md"), fixture.candidateResponse);
+
+  console.log(`calibration: ${calId} (case ${fixture.caseId})`);
+  console.log(`critical hits: ${criticalHits.length} | forbidden flagged: ${forbiddenHits.length} | total: ${verdict.averageLabel} | average: ${avg} | expected-met: ${verdict.expectedMetCount}/${verdict.denominator?.focusTotal}`);
+  if (problems.length) {
+    console.error(`\nCALIBRATION FAILED — judge did not discriminate against the deliberately-bad response:`);
+    for (const p of problems) console.error(`  - ${p}`);
+    process.exit(1);
+  }
+  console.log("CALIBRATION PASSED — judge discriminated against the deliberately-bad response.");
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
@@ -588,6 +714,14 @@ async function main() {
     return;
   }
 
+  // Calibration mode: run the blind judge on a deliberately-bad canned
+  // response. Separate from the 21-case denominator (records under
+  // evals/calibration/runs/). Proves the judge discriminates. Must run before
+  // resolveEligible (calibration needs no case selector).
+  if (opts.calibration) {
+    return runCalibration({ opts, fixed });
+  }
+
   const eligible = resolveEligible(fixed.casesDoc, opts);
   const today = new Date().toISOString().slice(0, 10);
   const runId = opts.run || `${today}-run`;
@@ -598,6 +732,7 @@ async function main() {
   await mkdir(join(runDir, "worker", "normalized"), { recursive: true });
   await mkdir(join(runDir, "results"), { recursive: true });
 
+  const runnerImplSha256 = sha256(await readFile(join(EVALS, "run.mjs"), "utf8"));
   const runMeta = {
     runId,
     runnerVersion: RUNNER_VERSION,
@@ -618,18 +753,26 @@ async function main() {
     denominator: { eligible: eligible.length },
     status: { complete: 0, unscored: 0, blocked: 0, pending: eligible.length },
     cases: {},
+    provenance: {
+      runnerVersion: RUNNER_VERSION,
+      runnerImplPath: "evals/run.mjs",
+      runnerImplSha256,
+      responderSkillSha256: null,
+      responderSkillTreeSha256: null,
+    },
   };
 
   // Stage the responder skill once (leakage-proof copy).
   if (!opts.dryRun) {
     await stageResponderSkill(stagedSkill);
-    runMeta.responderSkillSha256 = sha256(await readFile(join(stagedSkill, "SKILL.md"), "utf8"));
+    runMeta.provenance.responderSkillSha256 = sha256(await readFile(join(stagedSkill, "SKILL.md"), "utf8"));
+    runMeta.provenance.responderSkillTreeSha256 = await hashSkillTree(stagedSkill);
   }
 
   console.log(`run: ${runId}`);
   console.log(`dir:  ${runDir}`);
   console.log(`eligible: ${eligible.length} case(s): ${eligible.join(", ")}`);
-  console.log(`responder: ${opts.responderModel} (thinking ${opts.responderThinking}, tools read, timeout ${opts.responderTimeout}s)`);
+  console.log(`responder: ${opts.responderModel} (thinking ${opts.responderThinking}, tools ${opts.responderTools || "none"}, timeout ${opts.responderTimeout}s)`);
   console.log(`judge:     ${opts.judgeModel} (no skill, no tools, timeout ${opts.judgeTimeout}s)`);
   console.log(`cases sha256: ${fixed.casesSha256}`);
   console.log(`rubric sha256: ${fixed.rubricSha256}`);

@@ -25,8 +25,10 @@ const ROOT = resolve(new URL("..", import.meta.url).pathname);
 const EVALS = join(ROOT, "evals");
 const sha256 = (t) => createHash("sha256").update(t, "utf8").digest("hex");
 const errors = [];
+const warnings = [];
 const checks = [];
 const ok = (m) => checks.push(`✓ ${m}`);
+const warn = (m) => warnings.push(m);
 const fail = (m) => errors.push(m);
 
 const args = process.argv.slice(2);
@@ -35,14 +37,28 @@ const runId = runArgIdx >= 0 ? args[runArgIdx + 1] : null;
 let runDir = runId ? join(EVALS, "runs", runId) : null;
 
 if (!runDir) {
-  // If no run specified, validate the most recent run dir, if any.
+  // No --run given: pick the most recent run by the run's OWN recorded
+  // chronology (finishedAt -> createdAt -> updatedAt), NOT lexicographic
+  // directory name and NOT filesystem mtime. Directory IDs share a date prefix
+  // and sort in an order unrelated to run order (e.g. 'pilot' > 'batch2'
+  // though pilot ran first), and filesystem mtime resets on checkout/copy.
+  // Explicit --run remains canonical.
   const runsDir = join(EVALS, "runs");
   if (existsSync(runsDir)) {
-    const subs = (await readdir(runsDir, { withFileTypes: true }))
-      .filter((d) => d.isDirectory()).map((d) => d.name).sort();
-    if (subs.length) {
-      runDir = join(runsDir, subs[subs.length - 1]);
-      console.log(`no --run given; validating latest: ${runDir}`);
+    let latest = null;
+    let latestTs = "";
+    for (const name of (await readdir(runsDir, { withFileTypes: true }))
+      .filter((d) => d.isDirectory()).map((d) => d.name)) {
+      const rj = join(runsDir, name, "run.json");
+      if (!existsSync(rj)) continue;
+      let meta;
+      try { meta = JSON.parse(await readFile(rj, "utf8")); } catch { continue; }
+      const ts = meta.finishedAt || meta.updatedAt || meta.createdAt || "";
+      if (ts && ts > latestTs) { latestTs = ts; latest = name; }
+    }
+    if (latest) {
+      runDir = join(runsDir, latest);
+      console.log(`no --run given; validating latest by run.json chronology: ${latest}`);
     }
   }
 }
@@ -73,6 +89,46 @@ if (run.fixedInputs?.rubricSha256 && sha256(rubricBytes) !== run.fixedInputs.rub
   fail("rubric.json changed since this run (checksum mismatch)");
 } else {
   ok("rubric.json checksum matches run record (fixtures unchanged)");
+}
+
+// 1b. Runner-implementation provenance: bind the EXACT runner that produced
+// this run. Recompute the committed run.mjs sha256 and compare to the run's
+// recorded hash. A claimed hash that does not match the committed runner is
+// drift (error). A run that records no hash (legacy v1) cannot be bound and is
+// flagged as a warning, never silently accepted as reproducible. Old missing
+// fields are marked legacy/unknown, never fabricated.
+const committedRunnerSha = sha256(await readFile(join(EVALS, "run.mjs"), "utf8"));
+const provRunnerSha = run.provenance?.runnerImplSha256 ?? null;
+const runVer = run.provenance?.runnerVersion ?? run.runnerVersion ?? null;
+if (runVer == null) {
+  warn("run records no runnerVersion (legacy): cannot bind runner implementation");
+}
+if (provRunnerSha === null || provRunnerSha === undefined) {
+  warn(`legacy run (runnerVersion ${runVer ?? "unknown"}): runnerImplSha256 unrecorded — cannot bind to committed run.mjs; runner-implementation reproducibility is UNVERIFIED. This is expected for v1 runs and is not an independence failure, but the run must not be cited as reproducible against the current runner.`);
+} else if (provRunnerSha === committedRunnerSha) {
+  ok(`runner implementation bound to committed run.mjs (sha ${provRunnerSha.slice(0, 10)}… matches committed; runnerVersion ${runVer})`);
+} else {
+  // Incorrect-claim / drift detection: a run claims an impl hash that is not
+  // the committed runner. Either the runner was edited after the run (drift)
+  // or the run mis-records its provenance. Either way the run is not
+  // reproducible against the current runner — fail loudly.
+  fail(`runner implementation drift: run claims run.mjs sha ${provRunnerSha.slice(0, 10)}… but committed run.mjs is ${committedRunnerSha.slice(0, 10)}… (run is NOT reproducible against the current runner)`);
+}
+// A modern (v2+) run must record its impl hash; absence is a provenance defect.
+if (Number.isInteger(runVer) && runVer >= 2 && (provRunnerSha === null || provRunnerSha === undefined)) {
+  fail(`run claims runnerVersion ${runVer} but records no runnerImplSha256 (incomplete modern provenance)`);
+}
+// Tool-config completeness: the v1 pilot run.json lacked responderTools/judgeTools.
+// That is flagged as legacy/unknown, not fabricated, and not an independence failure.
+const cfg = run.config || {};
+if (cfg.responderTools === undefined || cfg.judgeTools === undefined) {
+  warn("tool config incomplete: responderTools/judgeTools are absent from run.json (legacy v1 run). The responder tool surface is inferred from the committed runner default, NOT from this run's own artifacts; it cannot be independently verified from this run alone.");
+} else {
+  ok(`tool config recorded in run.json (responderTools=${JSON.stringify(cfg.responderTools)}, judgeTools=${JSON.stringify(cfg.judgeTools)})`);
+}
+// Skill provenance (informational): v2+ runs record the staged-skill tree hash.
+if (Number.isInteger(runVer) && runVer >= 2 && !run.provenance?.responderSkillTreeSha256) {
+  warn("run claims runnerVersion >= 2 but records no responderSkillTreeSha256 (skill provenance incomplete)");
 }
 
 // 2. Denominator integrity.
@@ -182,10 +238,14 @@ ok(`provenance: ${completeCount} complete, ${independentCount} independent, ${no
 
 // Output
 for (const c of checks) console.log(c);
+if (warnings.length) {
+  console.log(`\n${warnings.length} warning(s) (legacy/incomplete provenance — not blocking):`);
+  for (const w of warnings) console.log(`  ! ${w}`);
+}
 if (errors.length) {
   console.error(`\n${errors.length} error(s):`);
   for (const e of errors) console.error(`  ✗ ${e}`);
   process.exit(1);
 } else {
-  console.log(`\nValidated eval run '${run.runId}': ${checks.length} checks, 0 errors.`);
+  console.log(`\nValidated eval run '${run.runId}': ${checks.length} checks, ${warnings.length} warning(s), 0 errors.`);
 }

@@ -11,6 +11,7 @@ Use this module when DevRel work should continue across feature versions, lifecy
    - Current specs/explainers, ChromeStatus/intents, implementation, standards positions, developer/partner research, adoption, support, press/public critique, docs, demos, and telemetry
 3. **Exercise**
    - Run friction logs and conformance across representative mobile/desktop, browser, framework, server, permission, network, and user configurations
+   - Distinguish **defining** a friction/conformance runbook (environment, steps, expected behavior) from **executing** it. Defining the runbook is infrastructure; only an executed run produces evidence. When standing up or resuming a loop, do not defer the whole portfolio to a future iteration on the grounds that the manifest is incomplete: run at least one representative exercise now for any feature whose failure mode is already concretely described (for example recurring framework failures), capturing before/after behavior and an exact tested/pass/fail denominator. A partial real run beats a perfect template. Never fabricate a run you did not execute — if no feature is concretely describable yet, state that explicitly and treat the friction dimension as **Unknown** rather than inventing evidence
 4. **Critique**
    - Product/API fit, user impact, review perspectives, stakeholder externalities, narrative, artifacts, adoption, and launch resilience
 5. **Ask questions**

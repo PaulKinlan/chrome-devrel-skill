@@ -105,6 +105,9 @@ timestamps/raw SHA-256) is recorded for both phases.
 # list cases and the fixed-input checksums
 node evals/run.mjs --list
 
+# calibrate the blind judge with a deliberately bad response (outside the 21-case denominator)
+node evals/run.mjs --calibration evals/calibration/negative-control-1.json
+
 # small representative pilot (discipline-focused cases, read-only responder)
 node evals/run.mjs --run 2026-07-27-independent-pilot --pilot
 
@@ -124,7 +127,10 @@ runner reads no credentials: the `pi` CLI handles auth from its own config. No
 personal paths are hard-coded — the root is derived from the script location.
 
 Results, raw responder/judge outputs, normalized verdicts, and per-case status
-live under `evals/runs/<RUN_ID>/`. The provisional same-session results in
+live under `evals/runs/<RUN_ID>/`. Judge-calibration records live separately under
+`evals/calibration/runs/` and never change the 21-case denominator. Attempts that stop before
+producing a run manifest/result are recorded under `evals/aborted/`; they are evidence, not a
+scored disposition. The provisional same-session results in
 `evals/results/` are preserved unchanged as history; independent reruns never
 relabel them.
 
