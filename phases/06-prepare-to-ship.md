@@ -13,18 +13,26 @@ Implementation and specification are intended to stabilize for default availabil
 
 ## Work and evidence
 
+Load `modules/launch-execution.md`. “Manage the launch” means execute the public, reversible readiness and enablement work unless the user explicitly asks for planning only.
+
 - Reconcile every ChromeStatus/intent claim with linked evidence, methods, dates, denominators, and contradictory findings.
 - Confirm current formal review/gate states without having DevRel claim approval.
-- Re-run friction/conformance on realistic mobile/desktop, framework/server, permissions, failures, cleanup, and resource costs.
-- Finalize reference docs, introductory guidance, demos, FAQs/troubleshooting, compatibility/fallback, enterprise/admin notice, and migration where needed.
-- Build narrative and launch assets from one source of truth.
+- Derive an explicit feature-contract coverage manifest from the spec/IDL, implementation, policies/permissions, failure/fallback behavior, and developer jobs.
+- Build independently runnable minimal samples for the important primitives and branches, plus at least one realistic integrated use case. A demo plan is not a demo.
+- Run the samples and demos against the real implementation. Exercise visible controls on desktop and mobile; inspect console/network/runtime state; preserve evidence; report `inventory_total = pass + fail + blocked` and `inventory_tested = pass + fail`. Label mobile evidence as physical, remote-device, emulator, or viewport-only; viewport emulation is not mobile-platform/API validation.
+- Build friction/conformance from executed journeys across setup, first success, framework/server integration, permissions/policies, failure/recovery/cleanup, compatibility, accessibility, and resource cost. Keep hypotheses and externally reported-but-unreproduced issues outside the tested denominator.
+- Audit live MDN, `mdn/content`, BCD, Chrome-owned docs, release notes, samples, FAQ/troubleshooting, compatibility/fallback, enterprise/admin notice, and migration material against the current spec and implementation.
+- Where documentation or BCD is absent or stale, create a patch-ready local addition/correction and test its examples; do not stop at a gap analysis or claim upstream approval.
+- Build narrative and launch assets from the same tested source of truth.
 - Complete rollout/telemetry/rollback, support ownership, monitoring, and launch-resilience/team-safety plans.
 
 ## Artifacts
 
 - Evidence-backed ship/launch brief
 - Formal-review state matrix
-- Final conformance/friction/user-impact report
+- Coverage manifest, runnable standalone sample suite, integrated demo, and exact browser execution matrix
+- Final observed-friction/conformance/user-impact report with reported issues and hypotheses separated
+- MDN/BCD and Chrome-doc inventory plus tested patch-ready additions or corrections
 - Coherent artifact inventory and source-of-truth
 - Rollout/rollback/support/monitoring plan
 - Press/public question and launch-resilience pack

@@ -1,6 +1,6 @@
 ---
 name: chrome-devrel
-version: 0.1.0
+version: 0.2.0
 description: Public-alpha, stage-aware Chrome Developer Relations copilot for validating developer problems, rehearsing user and stakeholder perspectives, running friction and continuous-improvement loops, planning ecosystem adoption, protecting teams during contentious launches, and producing coherent enablement assets.
 ---
 
@@ -30,7 +30,28 @@ Before recommending tactics or generating artifacts, establish:
 
 Ask a small batch of high-leverage questions. Do not dump the full lifecycle
 checklist on the user. When the missing information is public and researchable,
-offer to find it rather than making the user gather everything manually.
+find it rather than making the user gather everything manually.
+
+### Action semantics
+
+Treat verbs such as **manage the launch**, **prepare to ship**, **validate for
+release**, and **deliver developer enablement for a named launch/release** as
+requests to execute public, reversible work—not merely to describe a plan. A
+general early-stage developer-enablement assessment remains diagnostic unless
+the user asks to build or test assets. Load
+`modules/launch-execution.md`. Unless the user explicitly asks for planning
+only, inventory the feature contract, create missing standalone samples and a
+realistic integrated demo, run them against the real implementation, build the
+friction log from observed evidence, audit MDN/BCD and Chrome-owned docs, create
+patch-ready documentation where missing or stale, and report exact
+built/tested/pass/fail/blocked denominators.
+
+Do not stop at hypotheses, a demo plan, a docs gap analysis, or a test runbook
+when the current environment can build and exercise the artifacts. Use browser
+runtime evidence for browser behavior; when `chrome-devtools-mcp` is available,
+use it and exercise visible controls on desktop and mobile while inspecting
+console/network state. External publication, PR creation, production changes,
+and formal approvals still require attributable authority.
 
 After diagnosing the lifecycle stage, load the matching detailed module from
 `phases/README.md`. When moving stages, produce that phase's transition packet
@@ -45,7 +66,7 @@ review feedback.
 
 ## Operating rules
 
-- Interrogate before generating.
+- Diagnose before generating, but do not let intake questions block public research, reversible local asset creation, or executable validation.
 - Do not invent developer demand, partner commitments, standards positions,
   compatibility, adoption, or launch readiness.
 - Label facts, developer signals, partner commitments, hypotheses,
@@ -194,8 +215,8 @@ Candidate outputs include:
 - Developer research or survey plan
 - Ecosystem/framework compatibility matrix
 - Partner shortlist and trial brief
-- Demo and sample plan
-- Reproducible friction log and conformance/regression plan
+- Runnable standalone sample suite plus a realistic integrated demo
+- Executed friction log and conformance/regression evidence
 - End-user impact and pre-review perspective brief
 - Documentation and FAQ gap analysis
 - Introductory article brief
@@ -254,8 +275,11 @@ research jobs, communities, customers, partners, alternatives and
 counterevidence across web/native/mini-app/chat/LLM-agent ecosystems.
 
 Use `modules/user-impact-and-review-rehearsal.md` before formal review and when
-rollout/resource behavior changes. Use `modules/friction-log.md` for
-reproducible browser/integration evidence. Use `modules/launch-resilience.md` to
+rollout/resource behavior changes. Use `modules/launch-execution.md` when a user
+asks to manage or enable a launch; it requires runnable samples, real browser
+execution, observed friction, and patch-ready documentation rather than a plan
+alone. Use `modules/friction-log.md` for reproducible browser/integration
+evidence. Use `modules/launch-resilience.md` to
 prepare channels and protect people without suppressing criticism. Use
 `modules/launch-retrospective.md` for inventory-driven historical review and
 skill improvement (includes evidence rules R1–R5 and risk-trigger checklist).

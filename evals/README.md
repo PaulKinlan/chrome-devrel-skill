@@ -58,6 +58,11 @@ knowledge leakage. The suite deliberately includes both promising and
 problematic proposals so a system that reflexively approves or rejects
 everything cannot score well.
 
+User-reported regressions that must be preserved before a new independent model
+run live under `evals/regressions/`. They are machine-validated behavioral
+contracts, explicitly not model-scored and not part of the immutable 21-case
+independent baseline denominator. See `evals/regressions/README.md`.
+
 Run structural validation:
 
 ```sh

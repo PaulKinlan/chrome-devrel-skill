@@ -28,6 +28,21 @@ Record before testing:
 
 Use real browser/runtime evidence. Inspect console and network before and after state changes. Capture screenshots/video/traces where they reveal behavior. Never convert “no visible error” into a pass without exercising the expected behavior.
 
+A proposed concern is not observed friction. Keep source and outcome separate:
+
+- **Source class:** discovered during this run, attributable external report, or hypothesis/question.
+- **Inventory-test result:** pass, fail, or blocked.
+- **External-report reproduction outcome:** reproduced, not reproduced, blocked, or not attempted.
+
+Use exact arithmetic:
+
+- `inventory_total = pass + fail + blocked`;
+- `inventory_tested = pass + fail`;
+- `report_attempted = reproduced + not_reproduced`;
+- `report_total = reproduced + not_reproduced + blocked + not_attempted`.
+
+A failure discovered in the run is observed friction. An external report is reproduced friction only when the reproduction outcome is `reproduced`. `not_reproduced` records a completed attempt but is not evidence that the issue is impossible in other environments. Hypotheses remain outside all execution denominators until converted into stable test IDs.
+
 ## Record each friction item
 
 - Stable ID
@@ -43,7 +58,10 @@ Use real browser/runtime evidence. Inspect console and network before and after 
 - Likely owner (not blame)
 - Question or hypothesis
 - Proposed fix/test
-- Status: open, reproduced, disputed, fixed-unverified, verified, blocked, or accepted
+- Source class: discovered-during-run, external-report, or hypothesis/question
+- Inventory-test result: pass, fail, or blocked, when this item has a test ID
+- Reproduction outcome: reproduced, not-reproduced, blocked, or not-attempted, for an external report
+- Resolution status: open, disputed, fixed-unverified, verified, or accepted
 
 A mismatch between docs/explainer/spec/implementation is a finding even if one path “works.” Do not silently rewrite the expectation to match implementation.
 
@@ -56,7 +74,7 @@ A mismatch between docs/explainer/spec/implementation is a finding even if one p
 5. Preserve before/after evidence and denominator counts.
 6. Monitor for recurrence across versions and environments. Define each monitor's source/query, cadence (for example every milestone or after relevant implementation/docs changes), owner, alert threshold (such as a reappearing console signature or failed conformance assertion), action, and stop condition.
 
-Report exact tested/total/fixed/remaining/blocked counts. Do not claim complete coverage without an inventory.
+Report `inventory_total`, `inventory_tested`, pass/fail/blocked, fixed/remaining, `report_total`, `report_attempted`, reproduced/not-reproduced/report-blocked/not-attempted counts against explicit ID inventories. Report hypotheses separately and outside all execution totals. Do not claim complete coverage without an inventory.
 
 ## Output
 

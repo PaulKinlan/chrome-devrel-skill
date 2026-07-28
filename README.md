@@ -126,6 +126,17 @@ Shortest role prompts:
 
 The longer prompts below are optional precision prompts, not the front door.
 
+If the request says **manage the launch**, **prepare to ship**, **validate for
+release**, or **deliver developer enablement for a named launch/release**, the
+default is execution rather than a plan. A general early-stage enablement
+assessment remains diagnostic unless the user asks to build or test assets. For
+launch execution, the skill inventories the feature contract, creates missing standalone
+samples and a realistic demo, runs them against the browser, records friction
+from observed evidence, audits MDN/BCD and Chrome-owned documentation, creates
+patch-ready documentation where absent or stale, and reports exact
+pass/fail/blocked totals. External publication and formal approval remain human
+controlled. See [launch execution](modules/launch-execution.md).
+
 ### Engineer: detailed start
 
 > I am the engineer or feature owner for [feature]. Here are the materials I

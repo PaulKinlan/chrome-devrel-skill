@@ -831,6 +831,126 @@ try {
   fail("MDN validation", e.message);
 }
 
+// 8. Launch-management behavioral regression contract
+try {
+  const launchText = await readFile(
+    join(root, "modules/launch-execution.md"),
+    "utf8",
+  );
+  const skillText = await readFile(join(root, "SKILL.md"), "utf8");
+  const phaseText = await readFile(
+    join(root, "phases/06-prepare-to-ship.md"),
+    "utf8",
+  );
+  const promptText = await readFile(
+    join(root, "modules/feature-development-prompts.md"),
+    "utf8",
+  );
+  const fixture = await readJson(
+    "evals/regressions/launch-management-execution.json",
+  );
+
+  if (
+    fixture.schemaVersion === 1 &&
+    fixture.status === "contract-fixture-not-model-scored" &&
+    fixture.input.startsWith("/chrome-devrel I need to manage the launch") &&
+    fixture.input.includes("5175745573945344") &&
+    fixture.input.endsWith("I'm in DevRel")
+  ) {
+    ok("launch regression: exact user trigger and unscored contract status retained");
+  } else {
+    fail("launch regression", "trigger, schema, or honest scoring status changed");
+  }
+
+  const required = fixture.requiredBehaviors || [];
+  const forbidden = fixture.forbiddenBehaviors || [];
+  const requiredConcepts = [
+    "coverage manifest",
+    "independently runnable",
+    "realistic integrated",
+    "real implementation",
+    "chrome-devtools-mcp",
+    "physical-device",
+    "inventory_total",
+    "observed friction",
+    "report_attempted",
+    "mdn/content",
+    "patch-ready",
+    "artifact and evidence paths",
+  ];
+  const forbiddenConcepts = [
+    "stop after producing a plan",
+    "hypotheses",
+    "mocked",
+    "viewport emulation",
+    "claim MDN",
+    "without a separate explicit action request",
+    "generic prose patch-ready",
+  ];
+  const hasConcept = (items, concept) =>
+    items.some((item) => item.includes(concept));
+  const missingRequired = requiredConcepts.filter((concept) =>
+    !hasConcept(required, concept)
+  );
+  const missingForbidden = forbiddenConcepts.filter((concept) =>
+    !hasConcept(forbidden, concept)
+  );
+  if (missingRequired.length === 0 && missingForbidden.length === 0) {
+    ok("launch regression: execution requirements and forbidden plan-only shortcuts retained");
+  } else {
+    fail(
+      "launch regression",
+      `missing required=[${missingRequired.join(", ")}], forbidden=[${missingForbidden.join(", ")}] concepts`,
+    );
+  }
+
+  const expectedDenominators = {
+    inventory_total: "pass + fail + blocked",
+    inventory_tested: "pass + fail",
+    report_attempted: "reproduced + not_reproduced",
+    report_total: "reproduced + not_reproduced + blocked + not_attempted",
+    hypotheses: "outside all execution denominators until converted to test IDs",
+  };
+  if (
+    JSON.stringify(fixture.denominatorRules) ===
+      JSON.stringify(expectedDenominators)
+  ) {
+    ok("launch regression: inventory and report denominator invariants exact");
+  } else {
+    fail("launch regression", "denominator invariants changed");
+  }
+
+  const headings = [
+    "## Default execution contract",
+    "### Layer 0",
+    "### Layer 1",
+    "### Layer 2",
+    "### Layer 3",
+    "## Run the implementation, not just the source",
+    "## Audit and prepare documentation",
+  ];
+  const missingHeadings = headings.filter((heading) =>
+    !launchText.includes(heading)
+  );
+  if (missingHeadings.length === 0) {
+    ok("launch module: execution stages remain structurally discoverable");
+  } else {
+    fail("launch module", `missing headings: ${missingHeadings.join(", ")}`);
+  }
+
+  if (
+    skillText.includes("modules/launch-execution.md") &&
+    phaseText.includes("modules/launch-execution.md") &&
+    promptText.includes("modules/launch-execution.md")
+  ) {
+    ok("launch routing: SKILL, phase, and detailed prompt link the execution contract");
+  } else {
+    fail("launch routing", "one or more launch entry points lost the execution module link");
+  }
+} catch (e) {
+  fail("launch execution validation", e.message);
+}
+
 // Output
 for (const c of checks) console.log(c);
 if (errors.length > 0) {

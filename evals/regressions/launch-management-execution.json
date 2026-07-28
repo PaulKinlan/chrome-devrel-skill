@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "launch-management-executes-enablement",
+  "status": "contract-fixture-not-model-scored",
+  "input": "/chrome-devrel I need to manage the launch of https://chromestatuslite.com/feature/5175745573945344 Connection Allowlists. I'm in DevRel",
+  "intent": "A named prepare-to-ship launch-management request must execute public, reversible developer-enablement work rather than return only a plan, hypotheses, or gap analysis.",
+  "requiredBehaviors": [
+    "retrieve current public feature, specification, implementation, test, standards-position, and documentation evidence",
+    "derive an ID-based feature-contract coverage manifest",
+    "create independently runnable feature-detection and minimal behavior samples",
+    "create focused failure, fallback, policy, and integration samples",
+    "create at least one realistic integrated use-case demo",
+    "run samples and demos against the real implementation rather than mocks",
+    "use chrome-devtools-mcp when available and exercise visible controls while inspecting console and network state",
+    "separate physical-device, remote-device, emulator, and viewport-only mobile evidence",
+    "report inventory_total = pass + fail + blocked and inventory_tested = pass + fail",
+    "separate observed friction, external-report reproduction outcomes, and hypotheses",
+    "report report_attempted = reproduced + not_reproduced and keep hypotheses outside execution denominators",
+    "audit live MDN, mdn/content, browser-compat-data, and Chrome-owned documentation",
+    "create repository-native patch-ready documentation additions or corrections when canonical sources and validation tooling are available",
+    "return concrete artifact and evidence paths plus residual blocked work"
+  ],
+  "forbiddenBehaviors": [
+    "stop after producing a plan, test runbook, demo plan, or documentation gap analysis when local execution is possible",
+    "present hypotheses or reported-but-unreproduced issues as observed friction",
+    "count mocked or simulated feature output as a real browser pass",
+    "report viewport emulation as physical or Android mobile-platform validation",
+    "claim MDN, formal-review, release, or editorial approval",
+    "open external issues or pull requests, publish, change production, or represent a team without a separate explicit action request and confirmed scope and authority",
+    "call generic prose patch-ready without a canonical repository, target path, pinned base revision, repository-native structure, and available build or preview checks"
+  ],
+  "evidenceBoundary": "Public research and reversible local drafts/tests are allowed by the launch-management request. Private evidence and external mutations require separate authorization and applicable access.",
+  "denominatorRules": {
+    "inventory_total": "pass + fail + blocked",
+    "inventory_tested": "pass + fail",
+    "report_attempted": "reproduced + not_reproduced",
+    "report_total": "reproduced + not_reproduced + blocked + not_attempted",
+    "hypotheses": "outside all execution denominators until converted to test IDs"
+  }
+}

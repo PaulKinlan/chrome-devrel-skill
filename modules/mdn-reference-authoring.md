@@ -190,9 +190,10 @@ This is review preparation, not Mozilla approval.
 
 - **Prototype phase:** draft API overview and interface stubs.
 - **Developer trials:** add examples, test against real implementation.
-- **Prepare to ship:** complete all page types, BCD entries with version
-  evidence.
-- **Release:** ensure BCD matches shipped versions.
+- **Prepare to ship:** first search the live MDN site, `mdn/content`, and BCD and compare the exact page/data inventory with the current spec, IDL, implementation, and tested samples. If content is absent, create the complete patch-ready page and BCD set locally. If it is stale, create an exact correction patch. Run MDN format/build/preview and BCD schema/tests when tooling is available, and run every code example against the real browser implementation. A docs gap analysis alone is incomplete when a local patch can be produced.
+- **Release:** ensure BCD matches shipped versions and rerun the examples in the released browser.
+
+Local or review-ready content is not upstream publication or Mozilla approval. Do not open issues/PRs or publish without authority, but do not use that boundary as a reason to omit patch-ready work.
 
 ## Publishing target
 
