@@ -5,6 +5,7 @@
 import { access, readdir, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import {
+  validateImplementationContract,
   validateLaunchContract,
   validateStandardsContract,
 } from "./lib/behavior-contracts.mjs";
@@ -855,11 +856,22 @@ try {
     join(root, "modules/standards-and-incubation-analysis.md"),
     "utf8",
   );
+  const trackerText = await readFile(
+    join(root, "modules/implementation-and-issue-tracker-research.md"),
+    "utf8",
+  );
+  const completionText = await readFile(
+    join(root, "modules/completion-loop.md"),
+    "utf8",
+  );
   const fixture = await readJson(
     "evals/regressions/launch-management-execution.json",
   );
   const standardsFixture = await readJson(
     "evals/regressions/standards-incubation-link-closure.json",
+  );
+  const implementationFixture = await readJson(
+    "evals/regressions/implementation-browser-completion.json",
   );
   const routing = await loadRouting();
 
@@ -878,6 +890,18 @@ try {
     ok("standards regression: bounded graph closure, status semantics, and denominators valid");
   } else {
     fail("standards regression", standardsContractErrors.join("; "));
+  }
+
+  const implementationContractErrors = validateImplementationContract(
+    implementationFixture,
+    trackerText,
+    completionText,
+    launchText,
+  );
+  if (implementationContractErrors.length === 0) {
+    ok("implementation regression: cross-browser trackers, Chrome runtime, and completion loop valid");
+  } else {
+    fail("implementation regression", implementationContractErrors.join("; "));
   }
 
   const standardsHeadings = [
@@ -918,6 +942,7 @@ try {
 
   const launchRoute = routeRequest(fixture.input, routing);
   const standardsRoute = routeRequest(standardsFixture.input, routing);
+  const implementationRoute = routeRequest(implementationFixture.input, routing);
   const declaredStandardsRoutes = [
     "Review Feature X for feature readiness",
     "Review Feature X for feature-readiness",
@@ -935,15 +960,43 @@ try {
     "Check the standards-position for Feature X",
     "Check the standards-positions for Feature X",
   ].map((input) => routeRequest(input, routing));
+  const declaredImplementationRoutes = [
+    "Research Feature X implementation research",
+    "Review Feature X implementation status",
+    "Run Feature X implementation analysis",
+    "Trace Feature X implementation history",
+    "Build Feature X implementation lineage",
+    "Research Feature X in Chromium Issues",
+    "Research Feature X in Gerrit",
+    "Research Feature X in WebKit Bugzilla",
+    "Research Feature X in Mozilla Bugzilla",
+    "Research Feature X across issue trackers",
+  ].map((input) => routeRequest(input, routing));
   if (
     launchRoute.mode === "execute" &&
     launchRoute.modules.includes("modules/launch-execution.md") &&
     launchRoute.modules.includes("modules/standards-and-incubation-analysis.md") &&
+    launchRoute.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+    launchRoute.modules.includes("modules/completion-loop.md") &&
+    implementationRoute.mode === "execute" &&
+    implementationRoute.modules.includes("modules/launch-execution.md") &&
+    implementationRoute.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+    implementationRoute.modules.includes("modules/completion-loop.md") &&
     standardsRoute.mode === "analyze" &&
     standardsRoute.modules.includes("modules/standards-and-incubation-analysis.md") &&
+    standardsRoute.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+    standardsRoute.modules.includes("modules/completion-loop.md") &&
     declaredStandardsRoutes.every((route) =>
       route.mode === "analyze" &&
-      route.modules.includes("modules/standards-and-incubation-analysis.md")
+      route.modules.includes("modules/standards-and-incubation-analysis.md") &&
+      route.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+      route.modules.includes("modules/completion-loop.md")
+    ) &&
+    declaredImplementationRoutes.every((route) =>
+      route.mode === "research" &&
+      route.modules.includes("modules/implementation-and-issue-tracker-research.md") &&
+      route.modules.includes("modules/standards-and-incubation-analysis.md") &&
+      route.modules.includes("modules/completion-loop.md")
     ) &&
     skillText.includes("modules/launch-execution.md") &&
     phaseText.includes("modules/launch-execution.md") &&
@@ -951,7 +1004,15 @@ try {
     skillText.includes("modules/standards-and-incubation-analysis.md") &&
     phaseText.includes("modules/standards-and-incubation-analysis.md") &&
     promptText.includes("modules/standards-and-incubation-analysis.md") &&
-    launchText.includes("modules/standards-and-incubation-analysis.md")
+    launchText.includes("modules/standards-and-incubation-analysis.md") &&
+    skillText.includes("modules/implementation-and-issue-tracker-research.md") &&
+    phaseText.includes("modules/implementation-and-issue-tracker-research.md") &&
+    promptText.includes("modules/implementation-and-issue-tracker-research.md") &&
+    launchText.includes("modules/implementation-and-issue-tracker-research.md") &&
+    skillText.includes("modules/completion-loop.md") &&
+    phaseText.includes("modules/completion-loop.md") &&
+    promptText.includes("modules/completion-loop.md") &&
+    launchText.includes("modules/completion-loop.md")
   ) {
     ok("feature routing: exact regression prompts execute/analyze through linked contracts");
   } else {

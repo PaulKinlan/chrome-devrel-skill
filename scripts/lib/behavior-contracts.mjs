@@ -6,6 +6,22 @@ export const launchDenominators = {
   hypotheses: "outside all execution denominators until converted to test IDs",
 };
 
+export const implementationDenominators = {
+  query_total: "complete_queries + blocked_queries",
+  reported_result_total: "retrieved_result_refs + unretrieved_result_refs",
+  retrieved_result_refs:
+    "relevant_analyzed + duplicate + screened_out + detail_blocked",
+  result_ref_total:
+    "relevant_analyzed + duplicate + screened_out + detail_blocked + unretrieved_result_refs",
+  change_total:
+    "open + merged_active + merged_reverted + abandoned + blocked_changes",
+  goal_total:
+    "pending + in_progress + succeeded + failed_retryable + blocked + decision_required + not_applicable",
+  goal_terminal: "succeeded + blocked + decision_required + not_applicable",
+  goal_completion:
+    "pending = 0; in_progress = 0; failed_retryable = 0; goal_total = goal_terminal",
+};
+
 export const standardsDenominators = {
   link_total: "analyzed + duplicate + out_of_scope + blocked",
   relevant_link_total: "analyzed + duplicate + blocked",
@@ -85,6 +101,10 @@ export function validateLaunchContract(fixture) {
         "report_attempted",
         "mdn/content",
         "patch-ready",
+        "Chromium Issues Gerrit and source",
+        "hard Chrome runtime gate",
+        "continue public research and reversible local",
+        "completion goal ledger",
         "artifact and evidence paths",
       ],
       "launch required",
@@ -99,6 +119,8 @@ export function validateLaunchContract(fixture) {
         "claim MDN",
         "without a separate explicit action request",
         "generic prose patch-ready",
+        "ask whether to write build test fix or validate",
+        "failed retryable goals",
       ],
       "launch forbidden",
     ),
@@ -108,6 +130,106 @@ export function validateLaunchContract(fixture) {
       "launch denominators",
     ),
   );
+  return errors;
+}
+
+export function validateImplementationContract(
+  fixture,
+  trackerText,
+  completionText,
+  launchText,
+) {
+  const errors = validateShape(fixture, "implementation");
+  if (!fixture?.input?.includes("Actually launch and test the feature in Chrome")) {
+    errors.push("implementation: exact Chrome trigger");
+  }
+  errors.push(
+    ...missingConcepts(
+      fixture?.requiredBehaviors || [],
+      [
+        "query vocabulary",
+        "Chromium Issues",
+        "WebKit Bugzilla",
+        "Mozilla Bugzilla",
+        "shared WPT",
+        "exact query URLs",
+        "implementation lineage",
+        "separate browser standards position",
+        "chrome-devtools-mcp",
+        "runtime validation blocked",
+        "reversible goals",
+        "until goals succeed",
+        "three correction attempts",
+        "materially change a hypothesis",
+        "exact goal query result change browser test",
+      ],
+      "implementation required",
+    ),
+    ...missingConcepts(
+      fixture?.forbiddenBehaviors || [],
+      [
+        "one umbrella bug",
+        "only open Chromium changes",
+        "proof of working runtime behavior",
+        "without launching and testing",
+        "replace Chrome runtime execution",
+        "ask the user whether to write build test",
+        "failed retryable pending or in progress goals",
+        "retry exhaustion into blocked",
+        "marking exact goals blocked",
+      ],
+      "implementation forbidden",
+    ),
+    ...validateExactObject(
+      fixture?.denominatorRules,
+      implementationDenominators,
+      "implementation denominators",
+    ),
+  );
+
+  const trackerRules = [
+    "https://issues.chromium.org/issues?q=",
+    "https://chromium-review.googlesource.com/q/status:open+-is:wip",
+    "https://bugs.webkit.org/buglist.cgi?quicksearch=",
+    "https://bugzilla.mozilla.org/buglist.cgi?quicksearch=",
+    "open, merged, abandoned, and reverted states",
+    "web-platform-tests history",
+    "Do not infer a browser's position from implementation activity",
+    "query_total = complete_queries + blocked_queries",
+    "reported_result_total = retrieved_result_refs + unretrieved_result_refs",
+    "retrieved_result_refs = relevant_analyzed + duplicate + screened_out + detail_blocked",
+    "result_ref_total = relevant_analyzed + duplicate + screened_out + detail_blocked + unretrieved_result_refs",
+    "change_total = open + merged_active + merged_reverted + abandoned + blocked_changes",
+    "A zero-result query",
+  ];
+  const completionRules = [
+    "Do not end with “Would you like me to write/test/build…?”",
+    "goal_total = pending + in_progress + succeeded + failed_retryable + blocked + decision_required + not_applicable",
+    "goal_terminal = succeeded + blocked + decision_required + not_applicable",
+    "pending = 0",
+    "in_progress = 0",
+    "failed_retryable = 0",
+    "goal_total = goal_terminal",
+    "**Succeeded** requires `blocked = 0` and `decision_required = 0`",
+    "at most three correction attempts",
+    "Every retry must record a materially changed hypothesis",
+    "Retry-budget exhaustion alone is not a blocker",
+    "Execute until success or terminal blockage",
+    "Use `chrome-devtools-mcp`",
+  ];
+  const launchRules = [
+    "browser execution is a hard evidence gate",
+    "Launch Chrome and use `chrome-devtools-mcp`",
+  ];
+  for (const rule of trackerRules) {
+    if (!trackerText?.includes(rule)) errors.push(`tracker module: ${rule}`);
+  }
+  for (const rule of completionRules) {
+    if (!completionText?.includes(rule)) errors.push(`completion module: ${rule}`);
+  }
+  for (const rule of launchRules) {
+    if (!launchText?.includes(rule)) errors.push(`launch module: ${rule}`);
+  }
   return errors;
 }
 
@@ -125,6 +247,7 @@ export function validateStandardsContract(fixture, standardsText) {
         "complete Mozilla and WebKit",
         "complete TAG review",
         "incubation explainers",
+        "Chromium Issues Gerrit source and tests",
         "freeze a retrieval cutoff",
         "paginated open and closed",
         "canonicalize node identities",

@@ -6,6 +6,8 @@
       "priority": 100,
       "patterns": [
         "\\bmanage (?:the )?launch\\b",
+        "\\bbuild (?:the )?launch\\b",
+        "\\b(?:launch|release) (?:details|assets|enablement)\\b",
         "\\bprepare(?: [a-z-]+)? to ship\\b",
         "\\bvalidate (?:this |the )?feature for release\\b",
         "\\bdeliver developer enablement for (?:this |the |a )?(?:named )?(?:launch|release)\\b"
@@ -13,7 +15,9 @@
       "mode": "execute",
       "modules": [
         "modules/launch-execution.md",
-        "modules/standards-and-incubation-analysis.md"
+        "modules/standards-and-incubation-analysis.md",
+        "modules/implementation-and-issue-tracker-research.md",
+        "modules/completion-loop.md"
       ]
     },
     {
@@ -30,7 +34,27 @@
       ],
       "mode": "analyze",
       "modules": [
-        "modules/standards-and-incubation-analysis.md"
+        "modules/standards-and-incubation-analysis.md",
+        "modules/implementation-and-issue-tracker-research.md",
+        "modules/completion-loop.md"
+      ]
+    },
+    {
+      "id": "implementation-tracker-research",
+      "priority": 80,
+      "patterns": [
+        "\\bimplementation (?:research|status|analysis|history|lineage)\\b",
+        "\\bchromium issues\\b",
+        "\\bgerrit\\b",
+        "\\bwebkit bugzilla\\b",
+        "\\bmozilla bugzilla\\b",
+        "\\bissue trackers?\\b"
+      ],
+      "mode": "research",
+      "modules": [
+        "modules/implementation-and-issue-tracker-research.md",
+        "modules/standards-and-incubation-analysis.md",
+        "modules/completion-loop.md"
       ]
     }
   ],

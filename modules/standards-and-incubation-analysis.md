@@ -1,6 +1,6 @@
 # Standards positions and incubation evidence graph
 
-Use this module for any feature readiness, launch, interoperability, standards-position, or incubation assessment. A status field or issue label is an index, not the analysis. Read the full primary-source record and the substantive evidence it links.
+Use this module for any feature readiness, launch, interoperability, standards-position, or incubation assessment. A status field or issue label is an index, not the analysis. Read the full primary-source record and the substantive evidence it links. Load `modules/implementation-and-issue-tracker-research.md` so browser positions are analyzed alongside actual issues, changes, source, runtime exposure, and tests.
 
 This is evidence reconstruction, not standards authority. Only the relevant standards body, browser project, reviewer, or issue owner can state or change its formal position.
 
@@ -35,6 +35,9 @@ Start from the feature's ChromeStatus/ChromestatusLite record and discover the c
 - W3C TAG design review, all comments, linked follow-ups, review outcome, and review changes;
 - Mozilla standards-position request, full thread, labels/state, linked standards issues, Bugzilla/Gecko work, prototypes, tests, and follow-ups;
 - WebKit standards-position request, full thread, labels/state, linked WebKit bugs, standards discussions, prototypes, tests, and follow-ups;
+- Chromium Issues, Gerrit open/merged/abandoned/reverted changes, source, feature flags, and tests;
+- WebKit Bugzilla, source/PR/commit history, feature flags, and tests;
+- Mozilla Bugzilla, Gecko source/review/commit history, preferences, and tests;
 - other implementer positions or implementation records when relevant;
 - Blink intent threads, every substantive reply, linked evidence, API-owner questions, trial results, and later corrections;
 - standards-body issues, pull requests, minutes, resolutions, and registry entries;

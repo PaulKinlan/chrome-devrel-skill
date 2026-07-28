@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "implementation-browser-completion",
+  "status": "contract-fixture-not-model-scored",
+  "input": "/chrome-devrel Build the launch details for [feature]. Search Chromium Issues and Gerrit, WebKit Bugzilla, Mozilla Bugzilla, source and tests across browsers. Actually launch and test the feature in Chrome, and keep working until success or a real blocker.",
+  "intent": "Feature readiness must use implementation trackers and source across browsers, validate authored content and demos in Chrome, and continue implied reversible work rather than returning choices about what to do next.",
+  "requiredBehaviors": [
+    "derive query vocabulary from feature names historical aliases IDs interfaces members flags preferences policies spec URLs bugs components files and tests",
+    "search Chromium Issues across relevant states and Chromium Gerrit across open merged abandoned and reverted changes",
+    "search WebKit Bugzilla source pull requests commits tests release notes and feature status",
+    "search Mozilla Bugzilla Gecko source review commit tests release notes and platform status",
+    "search shared WPT history expectations failures BCD Web Features and Baseline records",
+    "record exact query URLs terms cutoff pagination reported totals retrieved relevant duplicate screened out and blocked counts",
+    "follow bug dependency duplicate change commit test spec standards position and documentation links into an implementation lineage",
+    "separate browser standards position implementation activity runtime exposure tests known issues and documentation state",
+    "launch the intended Chrome build and use chrome-devtools-mcp to exercise every applicable sample demo and visible control while inspecting console and network state",
+    "mark Chrome runtime validation blocked when chrome-devtools-mcp or the required build platform flag policy token or hardware cannot be used",
+    "treat missing docs demos tests fixes and public evidence as reversible goals to execute rather than choices to return to the user",
+    "continue research creation execution bounded correction and re-validation until goals succeed or only confirmed terminal blockers or authorized decisions remain",
+    "limit one goal in one environment to three correction attempts and require every retry to materially change a hypothesis artifact input configuration runtime environment or evidence source",
+    "return exact goal query result change browser test pass fail blocked and residual blocker denominators with artifact evidence paths"
+  ],
+  "forbiddenBehaviors": [
+    "infer no implementation no issues or no support from one umbrella bug one query or a zero-result search",
+    "search only open Chromium changes when implementation history is relevant",
+    "treat a merged change closed bug source symbol or standards position as proof of working runtime behavior",
+    "write launch content demos or documentation and call them successful without launching and testing the relevant behavior in Chrome through chrome-devtools-mcp",
+    "replace Chrome runtime execution with source review lint unit tests mocks simulations or static screenshots",
+    "ask the user whether to write build test fix validate or continue when that reversible local work is already implied and executable",
+    "stop with failed retryable pending or in progress goals while a bounded correction or adjacent validation remains possible",
+    "convert retry exhaustion into blocked without an exact external dependency instead of decision required",
+    "hide inaccessible trackers environments hardware or browser builds instead of marking exact goals blocked"
+  ],
+  "evidenceBoundary": "Public tracker source test and documentation research plus reversible local artifacts and Chrome execution are allowed. Private evidence, credentials, external publication, production mutation, and team representation require separate scoped authority.",
+  "denominatorRules": {
+    "query_total": "complete_queries + blocked_queries",
+    "reported_result_total": "retrieved_result_refs + unretrieved_result_refs",
+    "retrieved_result_refs": "relevant_analyzed + duplicate + screened_out + detail_blocked",
+    "result_ref_total": "relevant_analyzed + duplicate + screened_out + detail_blocked + unretrieved_result_refs",
+    "change_total": "open + merged_active + merged_reverted + abandoned + blocked_changes",
+    "goal_total": "pending + in_progress + succeeded + failed_retryable + blocked + decision_required + not_applicable",
+    "goal_terminal": "succeeded + blocked + decision_required + not_applicable",
+    "goal_completion": "pending = 0; in_progress = 0; failed_retryable = 0; goal_total = goal_terminal"
+  }
+}

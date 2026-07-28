@@ -38,9 +38,11 @@ Treat verbs such as **manage the launch**, **prepare to ship**, **validate for
 release**, and **deliver developer enablement for a named launch/release** as
 requests to execute public, reversible work—not merely to describe a plan. A
 general early-stage developer-enablement assessment remains diagnostic unless
-the user asks to build or test assets. Load `modules/launch-execution.md` and
-`modules/standards-and-incubation-analysis.md`. Unless the user explicitly asks
-for planning only, inventory the feature contract, create missing standalone samples and a
+the user asks to build or test assets. Load `modules/launch-execution.md`,
+`modules/standards-and-incubation-analysis.md`,
+`modules/implementation-and-issue-tracker-research.md`, and
+`modules/completion-loop.md`. Unless the user explicitly asks for planning only,
+inventory the feature contract, create missing standalone samples and a
 realistic integrated demo, run them against the real implementation, build the
 friction log from observed evidence, audit MDN/BCD and Chrome-owned docs, create
 patch-ready documentation where missing or stale, and report exact
@@ -52,11 +54,19 @@ the same routing semantics even when the host invokes this skill without running
 the helper.
 
 Do not stop at hypotheses, a demo plan, a docs gap analysis, or a test runbook
-when the current environment can build and exercise the artifacts. Use browser
-runtime evidence for browser behavior; when `chrome-devtools-mcp` is available,
-use it and exercise visible controls on desktop and mobile while inspecting
-console/network state. External publication, PR creation, production changes,
-and formal approvals still require attributable authority.
+when the current environment can build and exercise the artifacts. A Chrome
+launch/readiness goal must launch Chrome and use `chrome-devtools-mcp` to exercise
+the samples/demos and visible controls while inspecting console/network state.
+If the tool or required Chrome build/platform is unavailable, runtime validation
+is blocked—not passed and not replaced by content, source inspection, lint, or
+unit tests. External publication, PR creation, production changes, and formal
+approvals still require attributable authority.
+
+Treat write/build/test/audit/fix/validate requests as goals. Continue the
+`modules/completion-loop.md` loop through research, creation, execution,
+correction, and re-validation until the goals succeed or only confirmed terminal
+blockers/authorized decisions remain. Do not ask whether to perform an already
+implied reversible local step.
 
 After diagnosing the lifecycle stage, load the matching detailed module from
 `phases/README.md`. When moving stages, produce that phase's transition packet
@@ -117,7 +127,12 @@ review feedback.
   found—not neutral or support. Load
   `modules/standards-and-incubation-analysis.md`; read the full Mozilla/WebKit/TAG
   threads, incubation issues/PRs, and every substantive cross-link to an explicit
-  analyzed/duplicate/out-of-scope/blocked disposition.
+  analyzed/duplicate/out-of-scope/blocked disposition. Also load
+  `modules/implementation-and-issue-tracker-research.md` and search Chromium
+  Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla
+  Bugzilla/source/tests, and shared WPT/status history using a reconciled query
+  manifest. A single umbrella bug or zero-result query is never the whole
+  implementation analysis.
 - Preserve the distinction between DevRel advice and formal API Owner,
   standards, engineering, privacy, security, accessibility, legal, or release
   approval. Rehearse every relevant perspective and user impact before formal
@@ -291,7 +306,11 @@ asks to manage or enable a launch; it requires runnable samples, real browser
 execution, observed friction, and patch-ready documentation rather than a plan
 alone. Use `modules/standards-and-incubation-analysis.md` for full Mozilla,
 WebKit, TAG, intent, incubation, issue/PR, test, and substantive cross-link
-analysis; status labels alone are never the result. Use `modules/friction-log.md` for reproducible browser/integration
+analysis; status labels alone are never the result. Use
+`modules/implementation-and-issue-tracker-research.md` for reconciled Chromium
+Issues/Gerrit/source, WebKit Bugzilla/source, Mozilla Bugzilla/source, and WPT
+implementation lineage. Use `modules/completion-loop.md` to keep working until
+success or a confirmed terminal blocker/decision. Use `modules/friction-log.md` for reproducible browser/integration
 evidence. Use `modules/launch-resilience.md` to
 prepare channels and protect people without suppressing criticism. Use
 `modules/launch-retrospective.md` for inventory-driven historical review and

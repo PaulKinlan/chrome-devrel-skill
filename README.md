@@ -131,14 +131,21 @@ release**, or **deliver developer enablement for a named launch/release**, the
 default is execution rather than a plan. A general early-stage enablement
 assessment remains diagnostic unless the user asks to build or test assets. For
 launch execution, the skill inventories the feature contract, creates missing standalone
-samples and a realistic demo, runs them against the browser, records friction
-from observed evidence, fully analyzes Mozilla/WebKit/TAG/incubation threads and
-their substantive cross-links, audits MDN/BCD and Chrome-owned documentation,
-creates patch-ready documentation where absent or stale, and reports exact
-pass/fail/blocked totals. `No signal`, an open position request, no response, or
+samples and a realistic demo, launches Chrome and validates them with
+`chrome-devtools-mcp`, records friction from observed evidence, fully analyzes
+Mozilla/WebKit/TAG/incubation threads and their substantive cross-links, searches
+Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla
+Bugzilla/source/tests, and shared WPT/status history, audits MDN/BCD and
+Chrome-owned documentation, creates patch-ready documentation where absent or
+stale, and reports exact pass/fail/blocked totals. `No signal`, an open position request, no response, or
 silence is never rewritten as neutral or support. External publication and formal
-approval remain human controlled. See [launch execution](modules/launch-execution.md)
-and [standards/incubation analysis](modules/standards-and-incubation-analysis.md).
+approval remain human controlled. The agent continues reversible research,
+building, testing, correction, and re-validation until success or a confirmed
+terminal blocker rather than asking whether to perform the implied next step.
+See [launch execution](modules/launch-execution.md),
+[standards/incubation analysis](modules/standards-and-incubation-analysis.md),
+[implementation/issue research](modules/implementation-and-issue-tracker-research.md),
+and the [completion loop](modules/completion-loop.md).
 
 ### Engineer: detailed start
 

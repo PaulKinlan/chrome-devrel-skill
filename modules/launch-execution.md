@@ -1,6 +1,6 @@
 # Launch execution: demos, samples, docs, and observed friction
 
-Use this module when the user says they need to **manage**, **prepare**, **validate**, or **enable** a feature launch. A launch plan is not the default final deliverable. Execute the public, reversible work that can be completed with the available tools, then distinguish completed evidence from blocked work.
+Use this module when the user says they need to **manage**, **prepare**, **validate**, or **enable** a feature launch. A launch plan is not the default final deliverable. Load `modules/completion-loop.md` and execute the public, reversible work until it succeeds or reaches a confirmed terminal blocker.
 
 This module does not grant release, API Owner, engineering, standards, privacy, security, accessibility, legal, MDN, or editorial approval. A generic request to manage a launch authorizes public research and reversible local drafts/tests only. Opening an external issue or PR, publishing, changing production systems, or representing another team requires a separate explicit instruction for that action plus confirmed target, scope, account, and authority. User approval without verified scope/authority is sufficient only for local drafts, never external representation.
 
@@ -9,10 +9,10 @@ This module does not grant release, API Owner, engineering, standards, privacy, 
 Unless the user explicitly asks for planning only:
 
 1. Recover or create the durable feature packet and canonical asset inventory.
-2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, and existing documentation/demos. Load `modules/standards-and-incubation-analysis.md`; read full Mozilla/WebKit/TAG/incubation threads and disposition every substantive cross-link rather than copying dashboard labels.
+2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, and existing documentation/demos. Load `modules/standards-and-incubation-analysis.md` and `modules/implementation-and-issue-tracker-research.md`; read full Mozilla/WebKit/TAG/incubation threads, disposition every substantive cross-link, and search/reconcile Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla Bugzilla/source/tests, and WPT/status history.
 3. Build a coverage manifest from the actual API surface, normative behavior, important options, policies/permissions, failure modes, fallback, and realistic developer jobs.
 4. Create the missing standalone samples and integrated demos in a reviewable workspace.
-5. Run them against the real implementation where it is available.
+5. Launch the intended Chrome build and run every applicable sample/demo against the real implementation. If the required build/platform cannot run, mark those runtime goals blocked; never substitute prose, mocks, or source inspection.
 6. Exercise visible behavior and inspect console/network/runtime state before and after interactions.
 7. Create the friction log from observed or externally reproduced evidence, not from speculation.
 8. Audit MDN content and BCD plus Chrome-owned developer documentation; create patch-ready additions or corrections when missing or stale.
@@ -70,11 +70,13 @@ Build at least one cohesive use case that demonstrates why the primitive matters
 
 Before frontend authoring, consult current web-platform guidance available in the environment rather than relying only on model memory.
 
+For Chrome launch/readiness work, browser execution is a hard evidence gate. Launch Chrome and use `chrome-devtools-mcp`; if it cannot be connected, the runtime/demo/docs-example/friction goals are blocked and launch enablement cannot be called successful. Static content creation, screenshots of unexecuted markup, lint, unit tests, or source review do not satisfy this gate.
+
 For browser-facing work:
 
 - use the intended Chrome channel/build and record its exact version, OS, flags, policies, tokens, profile state, server headers, viewport, and hardware constraints;
 - use a local secure server or the required deployable environment rather than weakening security requirements;
-- when `chrome-devtools-mcp` is available, use it for browser validation;
+- use `chrome-devtools-mcp` for Chrome browser validation and retain the page/session evidence;
 - exercise every visible control with realistic input on desktop and mobile configurations;
 - label mobile evidence as physical device, remotely controlled device, emulator, or desktop viewport emulation; viewport emulation proves responsive layout only and must not be reported as Android/mobile-platform API validation;
 - inspect console and network before interaction and after each important state transition;
@@ -144,9 +146,10 @@ Return:
 4. browser execution matrix with `inventory_total`, `inventory_tested`, pass/fail/blocked counts, evidence paths, and physical/remote/emulated/viewport-only mobile labels;
 5. observed/reproduced friction, external-report reproduction outcomes with `report_total`/`report_attempted`, and hypotheses in separate sections;
 6. standards/incubation source graph, chronology, engine-position matrix, TAG and objection-resolution ledgers, exact cross-link denominator, and contradictions against launch claims;
-7. MDN/BCD and Chrome-doc inventories with absent/current/stale status and patch paths;
-8. code/docs changes made, validations run, and re-run results;
-9. residual product/review/support risks with owners or `owner required`;
-10. the smallest remaining actions that require private evidence, formal decisions, publication authority, or unavailable environments.
+7. implementation query manifest and lineage across Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla Bugzilla/source/tests, and WPT/status records;
+8. MDN/BCD and Chrome-doc inventories with absent/current/stale status and patch paths;
+9. completion-goal ledger, code/docs changes made, validations run, failures corrected, and re-run results;
+10. residual product/review/support risks with owners or `owner required`;
+11. the smallest remaining actions that require private evidence, formal decisions, publication authority, or unavailable environments.
 
 Never report “demo planned,” “docs needed,” or “test recommended” as completion when the files could have been built and executed in the current environment.
