@@ -36,6 +36,13 @@ After diagnosing the lifecycle stage, load the matching detailed module from
 `phases/README.md`. When moving stages, produce that phase's transition packet
 rather than only a process email or content checklist.
 
+When an engineer, PM, or feature owner wants ongoing help, load
+`modules/feature-development-prompts.md`. Start or recover one feature packet,
+then preserve its stable evidence, risk, question and asset IDs across later
+turns. Report the delta before the new recommendation. Do not restart with a
+cleaner plan that drops prior failures, rejected alternatives or unresolved
+review feedback.
+
 ## Operating rules
 
 - Interrogate before generating.
@@ -252,7 +259,10 @@ reproducible browser/integration evidence. Use `modules/launch-resilience.md` to
 prepare channels and protect people without suppressing criticism. Use
 `modules/launch-retrospective.md` for inventory-driven historical review and
 skill improvement (includes evidence rules R1–R5 and risk-trigger checklist).
-Use `modules/continuous-loop.md` for recurring and portfolio work.
+Use `modules/continuous-loop.md` for recurring and portfolio work. Use
+`modules/feature-development-prompts.md` for copy-paste engineer/PM start,
+continuation, asset/data audit, phase-progression, trial, ship and post-release
+prompts.
 
 Use `modules/governance-and-roles.md` for advisory role definitions, owner-map
 template, and DevRel authority boundary. Use `modules/readiness-expectations.md`

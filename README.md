@@ -92,6 +92,79 @@ The skill should nevertheless **rehearse every relevant review perspective** and
 seek the real user impact before formal review. The boundary means “do not claim
 sign-off,” not “ignore these concerns until another team finds them.”
 
+## Use it while developing a feature
+
+Engineers and PMs can keep one feature packet alive from the first idea through
+support. The packet holds the evidence ledger, readiness matrix, stable risks and
+questions, asset/data inventory, owners, decisions and phase history. Later
+prompts update that packet instead of replacing prior failures with a fresh plan.
+
+The full [feature-development prompt guide](modules/feature-development-prompts.md)
+contains copy-paste prompts for API-shape review, implementation changes,
+developer/partner feedback, trials, phase transitions, prepare-to-ship, release
+monitoring and a complete asset/data audit.
+
+### Engineer: start
+
+> I am the engineer or feature owner for [feature]. Here are the materials I
+> have: [issue, explainer, spec, prototype, ChromeStatus entry, implementation,
+> demo, tests]. Start a feature-development packet. Test the developer and
+> end-user jobs, whether the browser is the right layer, smaller alternatives,
+> API/implementation risks, hostile use, interoperability,
+> framework/server/deployment fit, accessibility, privacy, security,
+> performance/resource cost, fallback and reversibility. Research public
+> evidence you can retrieve. Return the current stage and decision, five
+> highest-risk assumptions, readiness matrix, smallest tests or prototypes that
+> could retire them, initial asset/data inventory and next three actions. Do not
+> invent demand, browser positions or approval.
+
+### PM: start
+
+> I am the PM for [feature/problem]. The proposed outcome is [outcome], the
+> current proposal is [link/description], and the decision is [fund research /
+> prototype / start a trial / request wide review / prepare to ship / invest in
+> adoption / narrow or stop]. Build the feature-development packet from that
+> decision backward. Validate the problem, segments, alternatives, developer and
+> end-user evidence, counterevidence, affected constituencies, integration and
+> support cost, review questions and measures. Classify partner evidence as
+> candidate, interest, active evaluation, trial commitment, ship commitment or
+> verified production use. Return the strongest case for and against, readiness
+> matrix, decision options, missing evidence/owners, asset/data inventory and
+> sequenced plan with exit, failure and stop criteria. Preserve a real stop
+> option; an intent email, prototype, partner meeting or shipment is not proof of
+> success.
+
+### Continue without restarting
+
+> Continue the feature-development packet for [feature]. Do not restart the
+> analysis or replace history with a cleaner summary. Previous packet:
+> [link/file]. New evidence or changes: [CLs, issues, research, standards
+> positions, review feedback, trial data, metrics, docs, demos, support]. Decision
+> now required: [decision]. Verify the new material, preserve stable IDs and add
+> IDs only for genuinely new findings. Show the delta first: evidence added or
+> weakened, assumptions retired or reopened, contradictions, scope/API changes,
+> resolved and remaining risks, and asset/data changes. Then give the next
+> decision packet and smallest actions that can change the decision. Missing or
+> stale evidence stays unknown. Do not promote interest to commitment, count a
+> runbook as executed evidence or call a formal review complete without the
+> owner's attributable approval.
+
+### Check progression and everything it depends on
+
+> Assess whether [feature] should move from [current phase] to [proposed phase].
+> Load the matching guidance in `phases/README.md` and update the existing packet.
+> For every relevant dimension, report Supported, Partial, Unknown, Contradicted
+> or Not relevant, with a reason and source; distinguish advisory evidence from
+> formal approval. Audit the implementation, tests, interoperability, standards
+> positions, framework/server/deployment paths, user/review risks, developer and
+> partner evidence, docs/BCD, samples, demos, support, measurements and owners.
+> Give every asset/data item a canonical location, status, source, public/private
+> boundary, review requirement and next action. Return progress / progress with
+> accepted risk / remain / redesign / narrow / park / stop, with the full
+> transition packet and exact open/blocked/unknown denominator. State what
+> remains a human decision and the smallest missing work that could change it.
+> Do not reduce this to an Intent email or launch checklist.
+
 ## Example prompts
 
 You do not need to know the Chrome launch process or DevRel terminology. A rough
@@ -241,6 +314,7 @@ research public evidence, and ask the next useful questions.
 
 ## Current work
 
+- [Engineer/PM feature-development prompt guide](modules/feature-development-prompts.md)
 - [Detailed lifecycle phase modules and transition packets](phases/README.md)
 - [Lifecycle and DevRel intervention map](research/blink-lifecycle-map.md)
 - [Stakeholder critique module](modules/stakeholder-critique.md)
