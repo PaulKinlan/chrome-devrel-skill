@@ -1,376 +1,164 @@
 # Chrome DevRel Skill
 
-A stage-aware copilot for Chrome Developer Relations work across a feature or
-initiative's full lifecycle.
+A public-alpha agent skill for working on Chrome features from early problem discovery through release, adoption, support, and removal.
 
-This project is in public discovery and will be iterated in the open. It is not
-a canonical Chrome process document.
+This is not a canonical Chrome process document. It cannot grant approval from DevRel, API Owners, standards groups, privacy, security, accessibility, legal, or engineering reviewers.
 
-## Intended users
+## Install
 
-- Developer relations engineers / developer advocates
-- Technical writers
-- Product managers
-- Engineers and feature owners
-- Developer marketing, partnerships, standards, and ecosystem collaborators
+The repository exposes one agent skill, `chrome-devrel`. Install it with the Skills CLI:
 
-## Proposed outcomes
+```bash
+npx skills add PaulKinlan/chrome-devrel-skill --skill chrome-devrel
+```
 
-The skill should help a user:
+Add `--global` to make it available outside the current project. The command has been checked against this repository with `--list`; client-specific activation still depends on the agent you choose during installation.
 
-1. Identify the lifecycle stage and the decision they need to make.
-2. Test whether the underlying developer problem and demand are real.
-3. Find missing evidence, stakeholders, integration risks, and adoption
-   barriers.
-4. Choose appropriate DevRel tactics rather than defaulting to an article.
-5. Produce a coherent, reusable asset pack when the evidence is ready.
-6. Measure adoption, support burden, and learning after launch.
+## What it does
 
-## Architecture
+Give the skill a feature, a link, and the decision you need to make. It will:
 
-The project uses a **public core**: public process sources, reusable reasoning,
-evidence discipline, artifact templates, and public-safe evals. Private overlays
-remain separate and never leak internal evidence into public outputs (see
-`modules/private-overlay-contract.md`).
+- identify the feature's lifecycle stage;
+- separate sourced facts from hypotheses, recommendations, unknowns, and blockers;
+- research developer need, alternatives, implementation status, interoperability, and user cost;
+- find gaps in tests, documentation, demos, ownership, and launch materials;
+- build and test public, reversible artifacts when the request calls for execution;
+- preserve unresolved failures instead of replacing them with a cleaner plan;
+- for launch execution, report exact contract coverage plus runtime total, tested, pass, fail, and blocked counts.
 
-### What is shipped vs what teams must configure
+It can begin with evidence or with an artifact request. If you ask for a launch deck, for example, it checks the claims and missing evidence before drafting the deck.
 
-| Item                   | Shipped (public core)                                                                  | Team configures                                 | Human decision                  |
-| ---------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------- |
-| Governance/roles       | `modules/governance-and-roles.md` + `templates/owner-map.template.json`                | Owner names, authority source                   | Who holds each role             |
-| Readiness expectations | `modules/readiness-expectations.md`                                                    | Calibration to team context                     | Whether a dimension is relevant |
-| Private overlay        | `modules/private-overlay-contract.md` + `schemas/private-overlay-manifest.schema.json` | Manifest instance, consent registry, pub review | What is public-safe             |
-| Artifact templates     | `modules/artifact-templates.md` + `templates/*.json`                                   | Content per artifact                            | What to publish                 |
-| Publishing targets     | `templates/publishing-targets.manifest.json`                                           | Custom targets                                  | Review routing                  |
-| Role routing           | `phases/README.md` (table)                                                             | Governance calibration                          | Phase ownership                 |
-| Measurement            | `modules/measurement-framework.md` + `templates/metric-definition.template.json`       | Baselines, targets, owners                      | What to measure                 |
-| Exemplars              | `research/exemplars-and-antipatterns.md`                                               | Team-specific cases                             | Pattern applicability           |
+## Start with one sentence
 
-**New user:** copy a [one-line role prompt](#start-in-one-line); no process
-terminology or template setup is required to begin. Use `SKILL.md` and the
-module matching your task when you need more precision. Fill in
-`templates/owner-map.template.json` before relying on role routing. Items marked
-"Team configures" need organization-local input before they are useful.
+> Help me progress [feature or link]. I’m the [PM / engineer / DevRel / stakeholder]. The decision is [decision, or “work out the next decision”]. Start from [links, or “public evidence only”].
 
-The skill supports both directions:
+A few shorter versions:
 
-- **Evidence first:** investigate a feature or initiative, expose gaps, and
-  build a credible readiness plan.
-- **Artifact first:** accept a request such as “make the launch deck,” but
-  inspect and research the evidence needed to make that artifact accurate and
-  useful before drafting it.
+- **PM:** `Assess [feature] for [next phase or release]. What decision comes next, and what evidence is missing?`
+- **Engineer:** `Review [feature or API change]. What can break, what must be tested, and what should I change next?`
+- **DevRel:** `Assess [feature] for developer enablement. Find the missing evidence, integration work, docs, demos, and support paths.`
+- **Stakeholder:** `Challenge [feature] from a [user / privacy / security / standards / partner / enterprise] perspective.`
+- **Continue existing work:** `Continue [feature] from [packet or link]. Show what changed, what remains unresolved, and the next three actions.`
 
-It does not impose a fictional DevRel veto. It records readiness by dimension,
-explains consequences of missing evidence, and helps teams make better-informed
-decisions even when Chrome chooses to proceed.
+The skill asks only for information it cannot responsibly find. Public research and reversible local work continue without waiting for permission at every step.
 
-## Initial modes
+## What “manage the launch” means
 
-- `feature`: an individual API or developer-facing change
-- `initiative`: a group of capabilities with one developer outcome or platform
-  narrative
-- `deprecation`: removal, migration, or behavior change
-- `adoption`: scaling an already-shipped capability
-- `support`: diagnosing recurring developer problems and feeding them back into
-  product/docs
-- `event`: talk, meetup, workshop, conference, or GDE enablement
-- `continuous portfolio`: recurring improvement across multiple features,
-  stages, and releases
+Requests such as **manage the launch**, **build the launch assets**, **prepare to ship**, **validate this feature for release**, or **deliver developer enablement for a named launch** trigger execution unless you explicitly ask for a plan only.
 
-## Principles
+The skill freezes a feature contract, then works through it:
 
-- Interrogate before generating.
-- Treat absent evidence as unknown, never positive.
-- Separate facts, hypotheses, commitments, and recommendations.
-- Fit the work to its lifecycle stage.
-- Design for interoperability, framework adoption, server integration, and real
-  deployment—not only an isolated demo.
-- Prefer reusable systems and enablement packs over one-off assets.
-- Preserve a public/private evidence boundary.
-- Never imply that DevRel endorsement replaces API Owner, standards, privacy,
-  security, accessibility, legal, or engineering review.
+1. Check current ChromeStatus, BCD, release, specification, implementation, standards, and documentation facts against their primary sources.
+2. Search a bounded set of public source families for developer problems, workarounds, integration reports, alternatives, supportive evidence, and counterevidence.
+3. Build missing feature detection, primitive, failure, integration, and realistic examples as independently runnable files.
+4. Launch the intended Chrome build and exercise each unblocked contract with `chrome-devtools-mcp`.
+5. Save screenshots, console output, network records, interactions, assertions, browser version, launch arguments, and artifact hashes.
+6. Put every observed failure into the friction log. A failure closes only after the subject changes, the exact test passes on rerun, and adjacent regressions pass.
+7. Run the online launch-acceptance validator. The validator, rather than the report's prose, computes whether the run succeeded.
 
-The skill should nevertheless **rehearse every relevant review perspective** and
-seek the real user impact before formal review. The boundary means “do not claim
-sign-off,” not “ignore these concerns until another team finds them.”
+If Chrome, MCP, a required flag, policy, platform, device, account, or network is unavailable, the affected runtime work is blocked. Source inspection, lint, mocks, authored JSON, or a screenshot claim cannot replace it.
 
-## Use it while developing a feature
+See:
 
-Engineers and PMs can keep one feature packet alive from the first idea through
-support. The packet holds the evidence ledger, readiness matrix, stable risks and
-questions, asset/data inventory, owners, decisions and phase history. Later
-prompts update that packet instead of replacing prior failures with a fresh plan.
+- [Launch execution](modules/launch-execution.md)
+- [Executable launch acceptance](modules/launch-acceptance.md)
+- [Completion loop](modules/completion-loop.md)
+- [Developer-signal research](modules/developer-signals.md)
+- [Standards and incubation analysis](modules/standards-and-incubation-analysis.md)
+- [Implementation and issue research](modules/implementation-and-issue-tracker-research.md)
 
-The full [feature-development prompt guide](modules/feature-development-prompts.md)
-contains copy-paste prompts for API-shape review, implementation changes,
-developer/partner feedback, trials, phase transitions, prepare-to-ship, release
-monitoring and a complete asset/data audit.
+## Evidence rules
 
-### Start in one line
+The skill follows a few strict rules because launch work becomes misleading when evidence types blur together.
 
-You do not need to describe the packet or process. Give the skill a role, a
-feature and a decision; it should infer the rest.
+- Missing evidence is **unknown**, not support or approval.
+- `No signal`, an unanswered position request, and silence do not mean neutral.
+- Code activity, issue counts, usage, stars, and downloads do not automatically prove developer demand.
+- Partner interest is not a trial commitment; a trial commitment is not a ship commitment; shipment is not verified production use.
+- Chrome adoption alone does not establish interoperability or a healthy web-platform outcome.
+- Formal approval must be attributable to the person or group with that authority.
+- Private evidence stays outside public artifacts unless its use has been explicitly approved.
 
-> Help me progress [feature/link]. I’m the [PM / engineer / DevRel / stakeholder].
-> The decision is [decision, or “work out the next decision”]. Start from [links,
-> or “public evidence only”]. Give me the three biggest gaps, three next actions,
-> and ask only what you cannot responsibly find.
+The same distinctions apply across later updates. Feature packets retain stable evidence, risk, question, and asset IDs so that a new summary cannot silently drop old failures.
 
-Shortest role prompts:
+## Modes and lifecycle stages
 
-- **PM:** `Assess [feature] for [next phase/release]. What is the next decision, and what is the smallest evidence needed?`
-- **Engineer:** `Review [feature/API change] for readiness. What can break, what must be tested, and what should I change next?`
-- **DevRel:** `Assess [feature] at its current stage for developer enablement. What is the next decision, and what evidence, integration work, docs, demos, or support are missing?`
-- **Stakeholder:** `Challenge [feature] from a [user/privacy/security/standards/partner/enterprise] perspective. What is unsupported, risky, or unanswered?`
-- **Continue:** `Continue [feature] from [packet/link] using these changes: [changes]. Show the delta, the next decision, and the three smallest actions.`
+The skill handles individual features, multi-feature initiatives, deprecations, adoption work, recurring support problems, events, and continuous portfolio work.
 
-The longer prompts below are optional precision prompts, not the front door.
+It maps each request to the relevant lifecycle stage:
 
-If the request says **manage the launch**, **prepare to ship**, **validate for
-release**, or **deliver developer enablement for a named launch/release**, the
-default is execution rather than a plan. A general early-stage enablement
-assessment remains diagnostic unless the user asks to build or test assets. For
-launch execution, the skill inventories the feature contract, creates a comprehensive set of independently runnable copy-paste-ready feature-detection, primitive, branch/failure/integration, and realistic examples, launches Chrome and validates every unblocked contract ID with `chrome-devtools-mcp`, saves session-bound screenshots plus console/network/assertion evidence, and turns every observed friction item into a corrected and regression-tested closure goal. It fully analyzes
-Mozilla/WebKit/TAG/incubation threads and their substantive cross-links, searches
-Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla
-Bugzilla/source/tests, and shared WPT/status history. Separately, it searches a bounded multi-source frontier for direct and contradictory developer need, jobs, workarounds, integration feedback, alternatives, and production constraints. It audits MDN/BCD and Chrome-owned documentation, verifies every BCD version/release-date claim against fresh field-level primary evidence, creates comprehensive patch-ready documentation where absent or stale, and reports exact pass/fail/blocked totals. `No signal`, an open position request, no response, or
-silence is never rewritten as neutral or support. External publication and formal
-approval remain human controlled. The agent continues reversible research,
-building, testing, correction, and re-validation until success or a confirmed
-terminal blocker rather than asking whether to perform the implied next step. A model-written report cannot self-attest completion: the online launch-acceptance validator checks current semantic facts, artifact hashes and saved PNGs, Chrome/MCP sessions, comprehensive contract coverage, developer-signal denominators, and verified friction closure.
-See [launch execution](modules/launch-execution.md),
-[standards/incubation analysis](modules/standards-and-incubation-analysis.md),
-[implementation/issue research](modules/implementation-and-issue-tracker-research.md),
-[developer signals](modules/developer-signals.md),
-[executable launch acceptance](modules/launch-acceptance.md),
-and the [completion loop](modules/completion-loop.md).
+`intake → incubation → prototype → developer trial → wide review → experiment → prepare to ship → release → adoption → support → removal`
 
-### Engineer: detailed start
+Detailed phase guidance and transition packets live in [`phases/README.md`](phases/README.md). Ongoing feature work uses the [feature-development prompt guide](modules/feature-development-prompts.md).
 
-> I am the engineer or feature owner for [feature]. Here are the materials I
-> have: [issue, explainer, spec, prototype, ChromeStatus entry, implementation,
-> demo, tests]. Start a feature-development packet. Test the developer and
-> end-user jobs, whether the browser is the right layer, smaller alternatives,
-> API/implementation risks, hostile use, interoperability,
-> framework/server/deployment fit, accessibility, privacy, security,
-> performance/resource cost, fallback and reversibility. Research public
-> evidence you can retrieve. Return the current stage and decision, five
-> highest-risk assumptions, readiness matrix, smallest tests or prototypes that
-> could retire them, initial asset/data inventory and next three actions. Do not
-> invent demand, browser positions or approval.
+## Example requests
 
-### PM: detailed start
+### Test a feature before release
 
-> I am the PM for [feature/problem]. The proposed outcome is [outcome], the
-> current proposal is [link/description], and the decision is [fund research /
-> prototype / start a trial / request wide review / prepare to ship / invest in
-> adoption / narrow or stop]. Build the feature-development packet from that
-> decision backward. Validate the problem, segments, alternatives, developer and
-> end-user evidence, counterevidence, affected constituencies, integration and
-> support cost, review questions and measures. Classify partner evidence as
-> candidate, interest, active evaluation, trial commitment, ship commitment or
-> verified production use. Return the strongest case for and against, readiness
-> matrix, decision options, missing evidence/owners, asset/data inventory and
-> sequenced plan with exit, failure and stop criteria. Preserve a real stop
-> option; an intent email, prototype, partner meeting or shipment is not proof of
-> success.
+> Assess [feature] for release. Check current implementation, other-engine positions, developer need, docs and BCD, then build and run the missing samples. Return contract covered/total/blocked counts and runtime total/tested/pass/fail/blocked counts.
 
-### Detailed continuation without restarting
+### Continue an existing feature packet
 
-> Continue the feature-development packet for [feature]. Do not restart the
-> analysis or replace history with a cleaner summary. Previous packet:
-> [link/file]. New evidence or changes: [CLs, issues, research, standards
-> positions, review feedback, trial data, metrics, docs, demos, support]. Decision
-> now required: [decision]. Verify the new material, preserve stable IDs and add
-> IDs only for genuinely new findings. Show the delta first: evidence added or
-> weakened, assumptions retired or reopened, contradictions, scope/API changes,
-> resolved and remaining risks, and asset/data changes. Then give the next
-> decision packet and smallest actions that can change the decision. Missing or
-> stale evidence stays unknown. Do not promote interest to commitment, count a
-> runbook as executed evidence or call a formal review complete without the
-> owner's attributable approval.
+> Continue [feature] from [packet]. New evidence: [links or changes]. Preserve previous IDs and failures, show the delta first, then give the next decision and the smallest actions that could change it.
 
-### Check progression and everything it depends on
+### Start from an artifact
 
-> Assess whether [feature] should move from [current phase] to [proposed phase].
-> Load the matching guidance in `phases/README.md` and update the existing packet.
-> For every relevant dimension, report Supported, Partial, Unknown, Contradicted
-> or Not relevant, with a reason and source; distinguish advisory evidence from
-> formal approval. Audit the implementation, tests, interoperability, standards
-> positions, framework/server/deployment paths, user/review risks, developer and
-> partner evidence, docs/BCD, samples, demos, support, measurements and owners.
-> Give every asset/data item a canonical location, status, source, public/private
-> boundary, review requirement and next action. Return progress / progress with
-> accepted risk / remain / redesign / narrow / park / stop, with the full
-> transition packet and exact open/blocked/unknown denominator. State what
-> remains a human decision and the smallest missing work that could change it.
-> Do not reduce this to an Intent email or launch checklist.
-
-## Example prompts
-
-You do not need to know the Chrome launch process or DevRel terminology. A rough
-idea or one public link is enough to start; the skill should classify the work,
-research public evidence, and ask the next useful questions.
-
-### Assess a feature
-
-> Assess this feature from a Chrome DevRel perspective: [ChromeStatus,
-> explainer, spec, intent, or rough description]. Work out its lifecycle stage,
-> developer problem, evidence quality, affected users, interoperability path,
-> integration risks, likely stakeholder critiques, missing work, and the next
-> five highest-leverage actions. Research public evidence rather than making me
-> collect it all.
-
-### Prepare a phase transition
-
-> This feature is currently in [incubation / prototype / developer trial / wide
-> review / origin trial / prepare-to-ship]. Diagnose whether that is accurate,
-> load the detailed phase guidance, and build the full transition packet for the
-> next phase: evidence, research, users, partners, risks, integrations, review
-> state, artifacts, learning goals, unknowns, contradictions and human
-> decisions. Do not reduce the transition to an Intent email.
-
-### Run ecosystem and customer research
-
-> Run deep ecosystem/customer research for [problem or proposed capability].
-> Search multiple independent public source families and relevant
-> languages/regions; find developer jobs, workarounds, failures, communities,
-> candidate customers/partners, frameworks, existing web solutions,
-> iOS/Android/desktop equivalents, mini-app/super-app patterns, chat/LLM/agent
-> approaches, and evidence against the proposal. Deduplicate the evidence,
-> assess source quality and bias, state saturation and gaps, and turn it into
-> product/design, outreach and phase-transition recommendations—not a link dump.
-
-### Start with an artifact
-
-> I need a launch presentation for [feature]. Treat the deck as the entry point:
-> determine what evidence and decisions it needs, research what is public, ask
-> me only for information you cannot obtain, flag unsupported claims, and then
-> create a coherent outline, slide content, speaker notes, demo plan, sources,
-> and review checklist.
-
-### Build a connected narrative
-
-> Help me build a narrative for [theme, for example web monetisation or user
-> experience]. Connect “why the web” and “why Chrome” to concrete developer
-> jobs, APIs, integrations, evidence, limitations, partner/adoption paths, and
-> measurable outcomes. Identify missing pieces instead of pretending the
-> existing features tell a complete story.
-
-### Prepare a talk or workshop
-
-> I am new to DevRel and need a [20-minute talk / workshop] for [audience] about
-> [topic]. Help me define the audience outcome and narrative first, then create
-> the presentation, speaker notes, demos/exercises, timings, accessibility
-> requirements, fallback plan, source list, expected questions, and rehearsal
-> checklist.
-
-### Plan social and promotion
-
-> Create a developer-facing promotion plan for [feature/initiative]. First check
-> the claims, audience, support state, partner evidence, risks and likely
-> criticism. Then propose channel-specific posts, timing, calls to action,
-> replies/FAQ, owners, measurements, and a correction/hold plan. Do not turn
-> uncertain evidence into launch hype.
+> I need a launch presentation for [feature]. Verify its claims, identify missing evidence, and create the outline, slide content, speaker notes, demo plan, sources, and review checklist.
 
 ### Run a friction log
 
-> Run a friction log for [API/demo/docs URL] as a developer trying to accomplish
-> [real task]. Test discovery, setup, first success, realistic framework/server
-> integration, mobile and desktop, controls, edge/failure/recovery paths,
-> console/network behavior, accessibility, performance, visual output,
-> docs/explainer/implementation mismatches, and cleanup. Preserve evidence and
-> produce exact tested/fixed/remaining/blocked counts.
+> Test [API, demo, or documentation URL] while completing [developer task]. Cover discovery, setup, first success, integration, mobile and desktop, failure and recovery, accessibility, performance, console, network, and cleanup. Fix what can be fixed and report exact remaining and blocked counts.
 
-### Rehearse reviews and user impact
+### Rehearse stakeholder reviews
 
-> Before formal review, rehearse the accessibility, privacy, security,
-> standards/interoperability, legal/regulatory, competition,
-> engineering/performance, enterprise, and real end-user perspectives for
-> [feature]. Include downloads, storage, memory, battery, bandwidth, consent,
-> low-end devices, refusal/revocation, hostile use, fallback and rollback. Mark
-> everything as pre-review analysis, not approval.
+> Challenge [feature] from accessibility, privacy, security, standards, engineering, enterprise, competition, and end-user perspectives. Source recorded positions, label inference, and map each concern to evidence, a design change, narrower scope, outreach, rollback, accepted risk, or a stop decision.
 
-### Red-team a contentious proposal
+### Run a retrospective
 
-> Build a source-grounded stakeholder critique for [proposal]. Discover everyone
-> materially affected; retrieve their current published principles and
-> positions; separate recorded positions from inference; steelman the strongest
-> cases for and against; analyze power and incentives; and map each concern to
-> evidence, design changes, mitigation, outreach, narrower scope, delay,
-> rollback, abandonment, or accepted risk.
+> Build a fixed inventory for Chrome milestones [range]. Produce one sourced report per feature, retain partial and blocked cases, reconcile the denominator, and turn repeated failures into skill changes and regression tests.
 
-### Plan an origin trial or developer trial
+More task-specific prompts are in [the feature-development guide](modules/feature-development-prompts.md) and the modules linked below.
 
-> Design a developer/origin trial for [feature]. Define the uncertainties the
-> trial must resolve, representative participants and partners, recruitment,
-> realistic tasks, samples, support, survey/interview instruments, telemetry and
-> privacy, success/failure criteria, feedback publication, and the decision
-> paths after the trial.
+## Repository map
 
-### Create “DevRel in a box”
+| Path | Contents |
+| --- | --- |
+| [`SKILL.md`](SKILL.md) | Agent operating contract and routing rules |
+| [`phases/`](phases/) | Lifecycle-specific questions and transition packets |
+| [`modules/`](modules/) | Research, launch, friction, measurement, review, support, and retrospective methods |
+| [`templates/`](templates/) | Owner maps, evidence records, measurements, launch acceptance, and publishing targets |
+| [`schemas/`](schemas/) | Machine-readable contracts for launch and private-overlay artifacts |
+| [`config/`](config/) | Request routing and authoritative semantic-fact source policy |
+| [`evals/`](evals/) | Public evaluation cases, rubric, and recorded results |
+| [`scripts/`](scripts/) | Validators, security checks, mutation tests, routing tests, and retrospective tools |
+| [`research/`](research/) | Public lifecycle research, exemplars, case notes, and discovery questions |
+| [`retrospectives/`](retrospectives/) | Reproducible retrospective method and pinned archive records |
 
-> Create a reusable enablement pack for [feature/initiative] for Chrome staff,
-> GDEs, partners and meetups. Include rationale, audience variants, canonical
-> deck and notes, tested demos, workshop, reference links, FAQs/troubleshooting,
-> social copy, accessibility/localization, versioning, ownership, feedback
-> channels, and reuse/adoption measures.
+## Public core and private overlays
 
-### Improve support
+The repository ships public process sources, templates, validators, and evals. Teams record local owners and authority sources in [`templates/owner-map.template.json`](templates/owner-map.template.json), baselines and targets in [`templates/metric-definition.template.json`](templates/metric-definition.template.json), and approved private inputs through the [private-overlay contract](modules/private-overlay-contract.md).
 
-> Developers repeatedly struggle with [problem]. Separate product bugs,
-> implementation differences, framework/server integration, docs, samples and
-> messaging. Build reproductions, issue routing, troubleshooting/FAQ
-> improvements, regression tests, product feedback, owners and measures for
-> recurrence and resolution time.
+Private overlays are inputs, not a second public record. The output boundary must be explicit, and ambiguous material stops the run until a human decides whether it can be used.
 
-### Run continuously
+## Validation
 
-> Put [feature, initiative, or portfolio] into the continuous DevRel loop. Build
-> an explicit inventory and denominator; gather current evidence; run friction,
-> stakeholder and user-impact reviews; create questions and goals; improve the
-> right product/docs/demo/tooling/enablement layers; validate fixes; update the
-> public source of truth; and define event-driven, weekly, milestone and
-> post-launch monitoring.
+The main workflow runs the prospective-commit security audit before the other gates, followed by retrospective checks, launch-acceptance mutations, trusted-command and key-isolation tests, request routing, behavior contracts, public-core validation, eval structure, and MDN mutation guards.
 
-### Run launch retrospectives
+Run individual checks with Node 22, for example:
 
-> Build a fixed ChromeStatus inventory for milestones [range] and run one
-> evidence-backed retrospective per feature. Replay every lifecycle phase;
-> retain ChromeStatus, specs/explainers, intents/reviews, implementation/issues,
-> docs/demos, usage, interoperability, frameworks, case studies, support,
-> positive and critical ecosystem evidence, user impact and communication. Score
-> outcomes by dimension, preserve missing/blocked evidence, store every report
-> publicly, and turn recurring lessons into skill changes and regression evals.
-> Make the run resumable if any search provider or agent fails.
+```bash
+node scripts/audit-security-surface.mjs --mode worktree
+node scripts/launch-acceptance.test.mjs
+node scripts/request-routing.test.mjs
+node scripts/behavior-contracts.test.mjs
+node scripts/validate-public-core.mjs
+node evals/validate.mjs
+```
 
-### Prepare for a difficult launch
+The complete sequence is recorded in [`.github/workflows/security-and-core.yml`](.github/workflows/security-and-core.yml).
 
-> Create a launch-resilience plan for [feature]. Preserve legitimate criticism
-> while preparing for press scrutiny, issue-volume spikes, moderation,
-> harassment, doxxing and threats. Define roles, escalation, source of truth,
-> structured feedback, moderation, staff privacy, spokesperson coverage,
-> hold/correction/rollback language, team support and post-incident learning. Do
-> not make individual engineers absorb abuse.
+## Authority and publication
 
-## Current work
+The skill may research public sources and create reversible local drafts, tests, demos, documentation, and evidence bundles. External pull requests, issues, publication, production changes, formal approval, and speaking on behalf of a team require separate authority.
 
-- [Engineer/PM feature-development prompt guide](modules/feature-development-prompts.md)
-- [Detailed lifecycle phase modules and transition packets](phases/README.md)
-- [Lifecycle and DevRel intervention map](research/blink-lifecycle-map.md)
-- [Stakeholder critique module](modules/stakeholder-critique.md)
-- [Ecosystem, customer, adjacent-platform, and counterevidence research](modules/ecosystem-and-customer-research.md)
-- [User-impact and formal-review rehearsal](modules/user-impact-and-review-rehearsal.md)
-- [Evidence-based friction logs](modules/friction-log.md)
-- [Launch resilience and team safety](modules/launch-resilience.md)
-- [Continuous DevRel improvement loop](modules/continuous-loop.md)
-- [Evidence-based launch retrospective method](modules/launch-retrospective.md)
-- [Chrome 140–150 retrospective run](retrospectives/README.md)
-- [Public case notes: HTML-in-Canvas, Baseline, Prompt API, and WEI](research/public-case-notes.md)
-- [Discovery questions](research/discovery-questions.md)
-- [Early skill scaffold](SKILL.md)
-- [Evaluation design and fixtures](evals/README.md)
-
-Rigorous criticism is welcome. See the
-[community conduct policy](CODE_OF_CONDUCT.md), which explicitly protects
-substantive disagreement while prohibiting harassment, threats, and doxxing.
+Substantive criticism is welcome. The [community conduct policy](CODE_OF_CONDUCT.md) protects disagreement while prohibiting harassment, threats, and doxxing.
