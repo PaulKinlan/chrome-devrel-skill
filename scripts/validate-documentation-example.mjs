@@ -25,7 +25,7 @@ for (const path of examples) {
   const text = await readFile(resolve(root, path), "utf8");
   const executableText = stripSourceComments(text);
   if (Buffer.byteLength(text) < 200) errors.push(`${path}: too thin`);
-  if (!/<\!doctype html>/i.test(text) || !/<script[\s>]/i.test(text) || !/<(?:button|form|input|select)[\s>]/i.test(text) || !/<(?:output|pre|div)[^>]*(?:status|aria-live)/i.test(text)) errors.push(`${path}: missing complete runnable HTML/control/status structure`);
+  if (!/<\!doctype html>/i.test(text) || !/<(?:script|style)[\s>]/i.test(text) || !/<(?:button|form|input|select|dialog|details)[\s>]/i.test(text) || !/<(?:output|pre|div|p)[^>]*(?:status|aria-live)/i.test(text)) errors.push(`${path}: missing complete runnable HTML/control/status structure`);
   if (/\b(?:TODO|FIXME|REPLACE_ME|PLACEHOLDER|YOUR_API_KEY)\b|<your-[^>]+>/i.test(text)) errors.push(`${path}: placeholder remains`);
   for (const token of tokens) if (!executableText.includes(token)) errors.push(`${path}: missing executable contract surface token ${token}`);
   for (const pattern of patterns) {

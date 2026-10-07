@@ -42,7 +42,7 @@ const EVALS = join(ROOT, "evals");
 // both the version and the sha256 of the committed runner implementation so the
 // provenance validator can bind (and detect drift from) the exact runner that
 // produced a given run.
-const RUNNER_VERSION = 2;
+const RUNNER_VERSION = 3;
 
 // ---------------------------------------------------------------------------
 // Argument parsing
@@ -216,7 +216,7 @@ async function loadFixedInputs() {
 // the rubric, expected answers, prior scores, or run tooling.
 const SKILL_ALLOWLIST = [
   "SKILL.md", "README.md", "CODE_OF_CONDUCT.md", "LICENSE",
-  "modules", "phases", "research", "templates", "schemas",
+  "config", "modules", "phases", "research", "templates", "schemas",
 ];
 
 async function stageResponderSkill(destDir) {

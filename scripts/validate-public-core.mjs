@@ -4,14 +4,16 @@
 
 import { access, readdir, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   validateImplementationContract,
   validateLaunchContract,
   validateStandardsContract,
 } from "./lib/behavior-contracts.mjs";
+import { checkSkillFrontmatter } from "./lib/skill-frontmatter.mjs";
 import { loadRouting, routeRequest } from "./route-request.mjs";
 
-const root = resolve(new URL("..", import.meta.url).pathname);
+const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const errors = [];
 const checks = [];
 
@@ -78,6 +80,20 @@ try {
     ok("schema: launch-acceptance evidence, friction, and developer-signal fields present");
   } else {
     fail("schema", `launch-acceptance missing: ${missing.join(", ")}`);
+  }
+} catch (e) {
+  fail("schema", e.message);
+}
+
+try {
+  const schema = await readJson("schemas/feature-packet.schema.json");
+  const required = new Set(schema.required || []);
+  const expected = ["schemaVersion", "feature", "jobs", "readiness", "evidence", "risks", "friction", "questions", "assets", "history"];
+  const missing = expected.filter((field) => !required.has(field));
+  if (schema.$defs?.readinessDimension && schema.$defs?.evidenceItem && missing.length === 0) {
+    ok("schema: feature-packet append-only ledgers, readiness, and history fields present");
+  } else {
+    fail("schema", `feature-packet missing: ${missing.join(", ")}`);
   }
 } catch (e) {
   fail("schema", e.message);
@@ -478,11 +494,7 @@ try {
   }
 
   // Check interface DOMxRef uses slash-path with display labels
-  const interfaceText2 = await readFile(
-    join(root, "templates/mdn-interface.md"),
-    "utf8",
-  );
-  const dotDomxRef = interfaceText2.match(/DOMxRef\("InterfaceName\.[A-Z]/g);
+  const dotDomxRef = interfaceText.match(/DOMxRef\("InterfaceName\.[A-Z]/g);
   if (dotDomxRef && dotDomxRef.length > 0) {
     fail(
       "MDN interface",
@@ -492,7 +504,7 @@ try {
     ok("MDN interface: all DOMxRef use slash-path form");
   }
   // Check events have DOMxRef with display label (not bare text)
-  if (interfaceText2.match(/^- \`eventname\`/m)) {
+  if (interfaceText.match(/^- \`eventname\`/m)) {
     fail(
       "MDN interface",
       "events use bare text — must use {{DOMxRef with slash-path and display label}}",
@@ -502,12 +514,8 @@ try {
   }
 
   // Check constructor slug uses ConstructorName
-  const constructorText2 = await readFile(
-    join(root, "templates/mdn-constructor.md"),
-    "utf8",
-  );
   if (
-    constructorText2.includes("slug: Web/API/_InterfaceName_/_InterfaceName_")
+    constructorText.includes("slug: Web/API/_InterfaceName_/_InterfaceName_")
   ) {
     fail(
       "MDN constructor",
@@ -517,7 +525,7 @@ try {
     ok("MDN constructor: slug uses ConstructorName");
   }
   if (
-    constructorText2.includes(
+    constructorText.includes(
       "browser-compat: api._InterfaceName_._InterfaceName_",
     )
   ) {
@@ -559,14 +567,9 @@ try {
   if (floatingCount === 0) ok("MDN: no floating provenance URLs in any file");
 
   // Semantic BCD check: version_added true must not be presented as valid
-  const bcdGuide2 = await readFile(
-    join(root, "templates/mdn-bcd-generation-guide.md"),
-    "utf8",
-  );
-  // Check that the guide explicitly states true is forbidden
   if (
-    !bcdGuide2.includes("`true`") ||
-    !bcdGuide2.toLowerCase().includes("forbidden")
+    !bcdGuide.includes("`true`") ||
+    !bcdGuide.toLowerCase().includes("forbidden")
   ) {
     fail(
       "BCD guide",
@@ -585,7 +588,7 @@ try {
   for (const pattern of nullValidPatterns) {
     const re = new RegExp(pattern, "i");
     if (
-      re.test(bcdGuide2) && !bcdGuide2.toLowerCase().includes("null.*forbidden")
+      re.test(bcdGuide) && !bcdGuide.toLowerCase().includes("null.*forbidden")
     ) {
       fail(
         "BCD guide",
@@ -597,11 +600,7 @@ try {
   if (nullIssues === 0) ok("BCD guide: null not presented as valid");
 
   // Check constructor template doesn't use InterfaceName in syntax
-  const constructorText3 = await readFile(
-    join(root, "templates/mdn-constructor.md"),
-    "utf8",
-  );
-  if (constructorText3.includes("new InterfaceName(")) {
+  if (constructorText.includes("new InterfaceName(")) {
     fail(
       "MDN constructor",
       "syntax uses new InterfaceName() — must use new ConstructorName()",
@@ -645,25 +644,20 @@ try {
   if (liveUrlCount === 0) ok("MDN: no unpinned developer.mozilla.org URLs");
 
   // Check spec_url is conditional in BCD guide
-  const bcdGuide3 = await readFile(
-    join(root, "templates/mdn-bcd-generation-guide.md"),
-    "utf8",
-  );
-  // Check spec_url is conditional in BCD guide
   // Every spec_url mention with "REQUIRED" must also mention "standard_track"
-  const specUrlLines2 = bcdGuide3.split("\n").filter((l) =>
+  const specUrlLines = bcdGuide.split("\n").filter((l) =>
     l.toLowerCase().includes("spec_url") &&
     l.toLowerCase().includes("required") &&
     !l.toLowerCase().includes("standard_track")
   );
-  if (specUrlLines2.length > 0) {
+  if (specUrlLines.length > 0) {
     fail(
       "BCD guide",
       `spec_url REQUIRED without standard_track condition: ${
-        specUrlLines2[0].trim()
+        specUrlLines[0].trim()
       }`,
     );
-  } else if (bcdGuide3.includes("REQUIRED unconditionally")) {
+  } else if (bcdGuide.includes("REQUIRED unconditionally")) {
     fail(
       "BCD guide",
       "spec_url described as REQUIRED unconditionally — must be conditional on standard_track:true",
@@ -673,11 +667,7 @@ try {
   }
 
   // Check event DOMxRef display label is bare (not "eventName event")
-  const interfaceText3 = await readFile(
-    join(root, "templates/mdn-interface.md"),
-    "utf8",
-  );
-  const eventLabelMatch = interfaceText3.match(
+  const eventLabelMatch = interfaceText.match(
     /DOMxRef\("InterfaceName\/eventName_event",\s*"([^"]+)"\)/,
   );
   if (eventLabelMatch) {
@@ -696,7 +686,7 @@ try {
   }
 
   // Check static method target-label pair is exact
-  const staticMethodMatch = interfaceText3.match(
+  const staticMethodMatch = interfaceText.match(
     /DOMxRef\("InterfaceName\/staticMethodName_static",\s*"([^"]+)"\)/,
   );
   if (staticMethodMatch) {
@@ -713,7 +703,7 @@ try {
   }
 
   // Check static property target-label pair is exact
-  const staticPropMatch = interfaceText3.match(
+  const staticPropMatch = interfaceText.match(
     /DOMxRef\("InterfaceName\/staticPropertyName_static",\s*"([^"]+)"\)/,
   );
   if (staticPropMatch) {
@@ -729,33 +719,8 @@ try {
     }
   }
 
-  // Check spec_url is conditional in BCD guide (must mention standard_track)
-  const bcdGuide4 = await readFile(
-    join(root, "templates/mdn-bcd-generation-guide.md"),
-    "utf8",
-  );
-  const specUrlLines = bcdGuide4.split("\n").filter((l) =>
-    l.includes("spec_url")
-  );
-  let specUrlConditional = true;
-  for (const line of specUrlLines) {
-    if (
-      line.toLowerCase().includes("required") &&
-      !line.toLowerCase().includes("standard_track")
-    ) {
-      specUrlConditional = false;
-      fail(
-        "BCD guide",
-        `spec_url described as required without standard_track condition: ${line.trim()}`,
-      );
-    }
-  }
-  if (specUrlConditional) {
-    ok("BCD guide: spec_url conditional on standard_track");
-  }
-
   // Adversarial: parse ALL DOMxRef in interface, validate target-label pairs
-  const allDomxRef = interfaceText3.matchAll(
+  const allDomxRef = interfaceText.matchAll(
     /DOMxRef\("([^"]+)",\s*"([^"]+)"\)/g,
   );
   let pairErrors = 0;
@@ -822,11 +787,7 @@ try {
   }
 
   // Check no dead URL patterns (index.md/API_ in pinned paths)
-  const moduleText2 = await readFile(
-    join(root, "modules/mdn-reference-authoring.md"),
-    "utf8",
-  );
-  if (moduleText2.includes("index.md/API_")) {
+  if (moduleText.includes("index.md/API_")) {
     fail(
       "MDN module",
       "contains dead URL pattern index.md/API_ — use api_X_template/index.md",
@@ -1080,6 +1041,22 @@ try {
   }
 } catch (e) {
   fail("launch execution validation", e.message);
+}
+
+// 9. SKILL.md frontmatter: an agent silently skips a skill whose frontmatter does not
+// parse, and YAML parsers disagree on edge cases, so require the strict subset.
+try {
+  const frontmatter = checkSkillFrontmatter(await readFile(join(root, "SKILL.md"), "utf8"));
+  if (frontmatter.errors.length === 0) {
+    ok(
+      `SKILL.md frontmatter: strictly parseable, name "${frontmatter.data.name}", ` +
+        `${frontmatter.data.description.length}-character description`,
+    );
+  } else {
+    fail("SKILL.md frontmatter", frontmatter.errors.join("; "));
+  }
+} catch (e) {
+  fail("SKILL.md frontmatter", e.message);
 }
 
 // Output

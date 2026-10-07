@@ -12,25 +12,45 @@ export async function loadRouting() {
   );
 }
 
-export function routeRequest(text, config) {
+export function routeRequest(text, config, options = {}) {
   const rules = [...config.rules].sort((a, b) => b.priority - a.priority);
-  for (const rule of rules) {
-    if (rule.patterns.some((pattern) => new RegExp(pattern, "i").test(text))) {
+  const isPlanOnly = (config.planOnlyPatterns || []).some((pattern) =>
+    new RegExp(pattern, "i").test(text)
+  );
+  const matched = rules.filter((rule) =>
+    rule.patterns.some((pattern) => new RegExp(pattern, "i").test(text))
+  );
+  if (matched.length > 0) {
+    const primary = matched[0];
+    const mode = isPlanOnly && primary.mode === "execute" ? "plan" : primary.mode;
+    if (options.mergeMatches) {
+      const mergedModules = [...new Set(matched.flatMap((rule) => rule.modules))];
       return {
-        id: rule.id,
-        mode: rule.mode,
-        modules: [...rule.modules],
+        id: primary.id,
+        matchedIds: matched.map((rule) => rule.id),
+        mode,
+        modules: mergedModules,
       };
     }
+    return {
+      id: primary.id,
+      mode,
+      modules: [...primary.modules],
+    };
   }
   return { ...config.fallback, modules: [...config.fallback.modules] };
 }
 
 if (isMainModule(import.meta.url)) {
-  const text = process.argv.slice(2).join(" ");
+  const rawArgs = process.argv.slice(2);
+  const mergeMatches = rawArgs.includes("--merge");
+  const text = rawArgs.filter((arg) => arg !== "--merge").join(" ");
   if (!text) {
-    console.error("Usage: node scripts/route-request.mjs <request text>");
+    console.error("Usage: node scripts/route-request.mjs [--merge] <request text>");
     process.exit(2);
   }
-  console.log(JSON.stringify(routeRequest(text, await loadRouting()), null, 2));
+  console.log(
+    JSON.stringify(routeRequest(text, await loadRouting(), { mergeMatches }), null, 2),
+  );
 }
+

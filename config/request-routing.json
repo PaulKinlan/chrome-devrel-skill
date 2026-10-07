@@ -1,5 +1,11 @@
 {
   "schemaVersion": 1,
+  "planOnlyPatterns": [
+    "\\bplan(?:ning)? only\\b",
+    "\\bdo not execute\\b",
+    "\\bdon't execute\\b",
+    "\\bdiagnostic only\\b"
+  ],
   "rules": [
     {
       "id": "named-launch-execution",
@@ -8,7 +14,7 @@
         "\\bmanage (?:the )?launch\\b",
         "\\bbuild (?:the )?launch\\b",
         "\\b(?:launch|release) (?:details|assets|enablement)\\b",
-        "\\bprepare(?: [a-z-]+)? to ship\\b",
+        "\\bprepare(?: [a-z0-9-]+){0,3} to ship\\b",
         "\\bvalidate (?:this |the )?feature for release\\b",
         "\\bdeliver developer enablement for (?:this |the |a )?(?:named )?(?:launch|release)\\b"
       ],
@@ -59,6 +65,132 @@
         "modules/developer-signals.md",
         "modules/completion-loop.md"
       ]
+    },
+    {
+      "id": "friction-log-execution",
+      "priority": 75,
+      "patterns": [
+        "\\bfriction[- ]log(?:ging)?\\b",
+        "\\bdogfood(?:ing)?\\b",
+        "\\bdeveloper walk[- ]?through\\b",
+        "\\bux audit\\b"
+      ],
+      "mode": "execute",
+      "modules": [
+        "modules/friction-log.md",
+        "modules/completion-loop.md"
+      ]
+    },
+    {
+      "id": "stakeholder-and-review-rehearsal",
+      "priority": 70,
+      "patterns": [
+        "\\bstakeholder critique\\b",
+        "\\bmulti[- ]persona\\b",
+        "\\bintent to (?:prototype|experiment|ship) rehearsal\\b",
+        "\\bblink[- ]dev rehearsal\\b",
+        "\\breview rehearsal\\b",
+        "\\bprivacy (?:and|&) security review\\b"
+      ],
+      "mode": "analyze",
+      "modules": [
+        "modules/stakeholder-critique.md",
+        "modules/user-impact-and-review-rehearsal.md"
+      ]
+    },
+    {
+      "id": "launch-retrospective",
+      "priority": 65,
+      "patterns": [
+        "\\blaunch retrospective\\b",
+        "\\bpost[- ]launch retrospective\\b",
+        "\\bpost[- ]mortem\\b",
+        "\\b30[- ]day check\\b",
+        "\\b90[- ]day check\\b"
+      ],
+      "mode": "analyze",
+      "modules": [
+        "modules/launch-retrospective.md",
+        "modules/measurement-framework.md"
+      ]
+    },
+    {
+      "id": "mdn-bcd-authoring",
+      "priority": 60,
+      "patterns": [
+        "\\bmdn (?:reference|docs|documentation|pages?|pr)\\b",
+        "\\bbrowser[- ]compat[- ]data\\b",
+        "\\bbcd (?:entry|entries|patch|pr)\\b"
+      ],
+      "mode": "execute",
+      "modules": [
+        "modules/mdn-reference-authoring.md",
+        "modules/completion-loop.md"
+      ]
+    },
+    {
+      "id": "editorial-and-video-assets",
+      "priority": 55,
+      "patterns": [
+        "\\beditorial blog\\b",
+        "\\bblog post\\b",
+        "\\byoutube (?:launch|announcement|script|video)\\b",
+        "\\bvideo script\\b",
+        "\\blaunch brief\\b",
+        "\\bspeaker deck\\b"
+      ],
+      "mode": "analyze",
+      "modules": [
+        "modules/editorial-blog-authoring.md",
+        "modules/youtube-launch-assets.md",
+        "modules/artifact-templates.md"
+      ]
+    },
+    {
+      "id": "developer-and-ecosystem-research",
+      "priority": 50,
+      "patterns": [
+        "\\bdeveloper signals?\\b",
+        "\\becosystem research\\b",
+        "\\bcustomer research\\b",
+        "\\bworkaround landscape\\b",
+        "\\bpartner trial\\b"
+      ],
+      "mode": "research",
+      "modules": [
+        "modules/developer-signals.md",
+        "modules/ecosystem-and-customer-research.md"
+      ]
+    },
+    {
+      "id": "continuous-portfolio-loop",
+      "priority": 45,
+      "patterns": [
+        "\\bcontinuous loop\\b",
+        "\\bportfolio (?:review|cadence|health)\\b",
+        "\\bmeasurement framework\\b",
+        "\\badoption metrics\\b"
+      ],
+      "mode": "analyze",
+      "modules": [
+        "modules/continuous-loop.md",
+        "modules/measurement-framework.md"
+      ]
+    },
+    {
+      "id": "feature-packet-continuation",
+      "priority": 40,
+      "patterns": [
+        "\\bfeature packet\\b",
+        "\\bphase packet\\b",
+        "\\bcontinue from phase\\b",
+        "\\bnext phase gate\\b"
+      ],
+      "mode": "analyze",
+      "modules": [
+        "modules/feature-development-prompts.md",
+        "phases/README.md"
+      ]
     }
   ],
   "fallback": {
@@ -67,3 +199,4 @@
     "modules": []
   }
 }
+

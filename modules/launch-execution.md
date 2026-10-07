@@ -8,16 +8,16 @@ This module does not grant release, API Owner, engineering, standards, privacy, 
 
 Unless the user explicitly asks for planning only:
 
-1. Recover or create the durable feature packet and canonical asset inventory.
+1. Recover or create the durable feature packet (`scripts/packet.mjs`) and canonical asset inventory.
 2. Retrieve the current specification, explainer, IDL, implementation status, tests, ChromeStatus/intent records, standards positions, existing documentation/demos, and developer-need evidence. Load `modules/standards-and-incubation-analysis.md`, `modules/implementation-and-issue-tracker-research.md`, and `modules/developer-signals.md`; read full Mozilla/WebKit/TAG/incubation threads, disposition every substantive cross-link, search/reconcile Chromium Issues/Gerrit/source, WebKit Bugzilla/source/tests, Mozilla Bugzilla/source/tests, and WPT/status history, and exhaust the bounded public developer-signal frontier across problem/workaround communities, frameworks/tooling, surveys/research/usage, browser/standards issues, adjacent alternatives, and public product/support evidence.
 3. Build a coverage manifest from the actual API surface, normative behavior, important options, policies/permissions, failure modes, fallback, and realistic developer jobs.
-4. Create the missing standalone samples and integrated demos in a reviewable workspace.
+4. Create the missing standalone samples and integrated demos in a reviewable workspace (you can scaffold the initial bundle and receipt structure with `node scripts/prepare-launch-bundle.mjs init --root <run> --packet <packet.json>`).
 5. Launch the intended Chrome build and run every applicable sample/demo against the real implementation. If the required build/platform cannot run, mark those runtime goals blocked; never substitute prose, mocks, or source inspection.
 6. Exercise visible behavior and inspect console/network/runtime state before and after interactions.
 7. Create the friction log from observed or externally reproduced evidence, not from speculation.
 8. Audit MDN content and BCD plus Chrome-owned developer documentation; create comprehensive, independently runnable, copy-paste-ready additions or corrections when missing or stale. A happy-path fragment or prose guide with hidden setup is insufficient.
-9. Re-run after every fix, close the complete friction frontier, and report exact built/tested/pass/fail/blocked denominators.
-10. Write the machine-readable launch bundle and run `scripts/validate-launch-acceptance.mjs --online`; the validator's computed result, not the worker's narrative, determines completion.
+9. Re-run after every fix (`node scripts/prepare-launch-bundle.mjs refresh --root <run>`), close the complete friction frontier, and report exact built/tested/pass/fail/blocked denominators.
+10. Write the machine-readable launch bundle and run `scripts/validate-launch-acceptance.mjs --online` (or `node scripts/prepare-launch-bundle.mjs attest --root <run> --late-key`); the validator's computed result, not the worker's narrative, determines completion.
 11. Return the launch/readiness decision packet, `launch-acceptance.json`, generated `acceptance-run.json`, and concrete artifact paths—not merely a future worklist.
 
 Do not stop after identifying that demos, tests, or docs are missing. Missing public information should trigger research; missing reversible local assets should trigger creation. Ask only for access, authority, private evidence, product decisions, or environment capabilities that cannot be obtained responsibly.

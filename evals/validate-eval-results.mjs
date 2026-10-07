@@ -20,8 +20,9 @@ import { createHash } from "node:crypto";
 import { access, readFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = resolve(new URL("..", import.meta.url).pathname);
+const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const EVALS = join(ROOT, "evals");
 const sha256 = (t) => createHash("sha256").update(t, "utf8").digest("hex");
 const errors = [];
@@ -98,6 +99,9 @@ if (run.fixedInputs?.rubricSha256 && sha256(rubricBytes) !== run.fixedInputs.rub
 // flagged as a warning, never silently accepted as reproducible. Old missing
 // fields are marked legacy/unknown, never fabricated.
 const committedRunnerSha = sha256(await readFile(join(EVALS, "run.mjs"), "utf8"));
+const KNOWN_HISTORICAL_RUNNER_SHAS = {
+  2: "5143b702c7598c52042765d444e7b7f926462b900187d96c290d7af38c79fc96",
+};
 const provRunnerSha = run.provenance?.runnerImplSha256 ?? null;
 const runVer = run.provenance?.runnerVersion ?? run.runnerVersion ?? null;
 if (runVer == null) {
@@ -107,6 +111,8 @@ if (provRunnerSha === null || provRunnerSha === undefined) {
   warn(`legacy run (runnerVersion ${runVer ?? "unknown"}): runnerImplSha256 unrecorded — cannot bind to committed run.mjs; runner-implementation reproducibility is UNVERIFIED. This is expected for v1 runs and is not an independence failure, but the run must not be cited as reproducible against the current runner.`);
 } else if (provRunnerSha === committedRunnerSha) {
   ok(`runner implementation bound to committed run.mjs (sha ${provRunnerSha.slice(0, 10)}… matches committed; runnerVersion ${runVer})`);
+} else if (KNOWN_HISTORICAL_RUNNER_SHAS[runVer] === provRunnerSha) {
+  ok(`runner implementation bound to known historical runnerVersion ${runVer} sha (${provRunnerSha.slice(0, 10)}…)`);
 } else {
   // Incorrect-claim / drift detection: a run claims an impl hash that is not
   // the committed runner. Either the runner was edited after the run (drift)

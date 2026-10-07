@@ -462,9 +462,9 @@ export async function validateLaunchAcceptance(run, {
           catch { add("CONTRACT_EXAMPLE_PATTERN_INVALID", "/contract", `${contractId}:${pattern}`); }
         }
       }
-      if (example.kind === "feature-detection" && !/(?:in\s+globalThis|typeof\s+globalThis)/.test(executableText)) add("EXAMPLE_KIND_BEHAVIOR_MISSING", `/documentationExamples/${example.id}/path`, "feature detection must execute");
-      if (example.kind === "branch-failure-integration" && (!/catch\s*\(|error/i.test(executableText) || !/(?:fallback|unsupported|denied)/i.test(executableText))) add("EXAMPLE_KIND_BEHAVIOR_MISSING", `/documentationExamples/${example.id}/path`, "failure and fallback branches required");
-      if (example.kind === "realistic" && (!/<form[\s>]/i.test(executableText) || !/(?:recovery|retry|reset)/i.test(executableText) || !/await\s/.test(executableText))) add("EXAMPLE_KIND_BEHAVIOR_MISSING", `/documentationExamples/${example.id}/path`, "form/state, async behavior, and recovery required");
+      if (example.kind === "feature-detection" && !/(?:in\s+(?:globalThis|window|self|(?:HTML[A-Za-z]*Element|Element|Document|Navigator)\.prototype)|typeof\s+globalThis|CSS\.supports\s*\(|headers\.(?:get|has)\s*\()/.test(executableText)) add("EXAMPLE_KIND_BEHAVIOR_MISSING", `/documentationExamples/${example.id}/path`, "feature detection must execute");
+      if (example.kind === "branch-failure-integration" && (!/catch\s*\(|error|unsupported|denied/i.test(executableText) || !/(?:fallback|unsupported|denied)/i.test(executableText))) add("EXAMPLE_KIND_BEHAVIOR_MISSING", `/documentationExamples/${example.id}/path`, "failure and fallback branches required");
+      if (example.kind === "realistic" && (!/<(?:form|main|section|dialog)[\s>]/i.test(executableText) || !/(?:recovery|retry|reset|fallback)/i.test(executableText) || !/(?:await\s|addEventListener\s*\(|CSS\.supports\s*\(|fetch\s*\()/.test(executableText))) add("EXAMPLE_KIND_BEHAVIOR_MISSING", `/documentationExamples/${example.id}/path`, "form/state, async/interactive behavior, and recovery required");
       if (/\b(?:TODO|FIXME|REPLACE_ME|PLACEHOLDER|YOUR_API_KEY)\b|<your-[^>]+>/i.test(text)) {
         add("EXAMPLE_PLACEHOLDER", `/documentationExamples/${example.id}/path`, example.path);
       }
@@ -737,11 +737,44 @@ export async function validateLaunchAcceptance(run, {
   if (blockedIds.length) add("BLOCKED_CONTRACT_PREVENTS_SUCCESS", "/contract/blockedIds", blockedIds.join(", "));
 
   const computedOutcome = errors.length === 0 ? "succeeded" : "rejected";
+  const unresolvedItems = frictionItems.filter((item) => UNRESOLVED_FRICTION.has(item.status));
+  const errorCodes = new Set(errors.map((error) => error.code));
+  const blockerCodes = new Set([
+    "DECLARED_OUTCOME_NOT_SUCCESS",
+    "BLOCKED_CONTRACT_PREVENTS_SUCCESS",
+    "SIGNAL_RESEARCH_BLOCKED",
+    "SIGNAL_QUERY_BLOCKED",
+    "LIVE_SOURCE_BLOCKED",
+    "GOAL_PREVENTS_SUCCESS",
+    "EXTERNAL_REPORT_FRONTIER_OPEN",
+    "UNRESOLVED_FRICTION",
+  ]);
+  let diagnosticOutcome = computedOutcome;
+  if (errors.length > 0) {
+    if (
+      errorCodes.size === 1 &&
+      errorCodes.has("UNRESOLVED_FRICTION") &&
+      unresolvedItems.length > 0 &&
+      unresolvedItems.every((item) => item.status === "accepted-risk")
+    ) {
+      diagnosticOutcome = "accepted_risk";
+    } else if (
+      [...errorCodes].every((code) => blockerCodes.has(code)) &&
+      unresolvedItems.every((item) => ["blocked", "decision-required", "accepted-risk"].includes(item.status))
+    ) {
+      const needsDecision =
+        run?.declaredOutcome === "decision_required" ||
+        unresolvedItems.some((item) => item.status === "decision-required") ||
+        goals.some((goal) => goal.status === "decision_required");
+      diagnosticOutcome = needsDecision ? "decision_required" : "terminally_blocked";
+    }
+  }
   return {
     schemaVersion: 1,
     runId: run?.runId || null,
     declaredOutcome: run?.declaredOutcome || null,
     computedOutcome,
+    diagnosticOutcome,
     errors,
     counts: {
       errors: errors.length,
@@ -757,3 +790,4 @@ export async function validateLaunchAcceptance(run, {
     },
   };
 }
+

@@ -118,4 +118,124 @@ assert.notEqual(
   "mutation must break the exact launch route",
 );
 
-console.log("Request routing: 30 passed, 0 failed");
+// Plan-only mode downgrade on execute routes
+assert.deepEqual(
+  routeRequest(
+    "I need to manage the launch of Feature X — planning only, do not execute yet",
+    config,
+  ),
+  {
+    ...launchRoute,
+    mode: "plan",
+  },
+);
+
+// Additional module routes (priorities 75..40)
+const additionalRouteCases = [
+  [
+    "Run a friction log and developer walkthrough for Feature X",
+    {
+      id: "friction-log-execution",
+      mode: "execute",
+      modules: ["modules/friction-log.md", "modules/completion-loop.md"],
+    },
+  ],
+  [
+    "Run a stakeholder critique and blink-dev rehearsal for Feature X",
+    {
+      id: "stakeholder-and-review-rehearsal",
+      mode: "analyze",
+      modules: [
+        "modules/stakeholder-critique.md",
+        "modules/user-impact-and-review-rehearsal.md",
+      ],
+    },
+  ],
+  [
+    "Run a launch retrospective and 30-day check for Feature X",
+    {
+      id: "launch-retrospective",
+      mode: "analyze",
+      modules: [
+        "modules/launch-retrospective.md",
+        "modules/measurement-framework.md",
+      ],
+    },
+  ],
+  [
+    "Draft MDN reference pages and a browser-compat-data PR for Feature X",
+    {
+      id: "mdn-bcd-authoring",
+      mode: "execute",
+      modules: [
+        "modules/mdn-reference-authoring.md",
+        "modules/completion-loop.md",
+      ],
+    },
+  ],
+  [
+    "Draft an editorial blog post and YouTube launch script for Feature X",
+    {
+      id: "editorial-and-video-assets",
+      mode: "analyze",
+      modules: [
+        "modules/editorial-blog-authoring.md",
+        "modules/youtube-launch-assets.md",
+        "modules/artifact-templates.md",
+      ],
+    },
+  ],
+  [
+    "Gather developer signals and ecosystem research for Feature X",
+    {
+      id: "developer-and-ecosystem-research",
+      mode: "research",
+      modules: [
+        "modules/developer-signals.md",
+        "modules/ecosystem-and-customer-research.md",
+      ],
+    },
+  ],
+  [
+    "Review the continuous loop and adoption metrics for Feature X",
+    {
+      id: "continuous-portfolio-loop",
+      mode: "analyze",
+      modules: [
+        "modules/continuous-loop.md",
+        "modules/measurement-framework.md",
+      ],
+    },
+  ],
+  [
+    "Update the feature packet and check the next phase gate for Feature X",
+    {
+      id: "feature-packet-continuation",
+      mode: "analyze",
+      modules: ["modules/feature-development-prompts.md", "phases/README.md"],
+    },
+  ],
+];
+
+for (const [input, expected] of additionalRouteCases) {
+  assert.deepEqual(routeRequest(input, config), expected, input);
+}
+
+// Multi-intent mergeMatches option
+const merged = routeRequest(
+  "Prepare Feature X to ship and draft MDN reference pages and an editorial blog post",
+  config,
+  { mergeMatches: true },
+);
+assert.equal(merged.id, "named-launch-execution");
+assert.deepEqual(merged.matchedIds, [
+  "named-launch-execution",
+  "mdn-bcd-authoring",
+  "editorial-and-video-assets",
+]);
+assert.ok(merged.modules.includes("modules/launch-execution.md"));
+assert.ok(merged.modules.includes("modules/mdn-reference-authoring.md"));
+assert.ok(merged.modules.includes("modules/editorial-blog-authoring.md"));
+
+console.log("Request routing: 40 passed, 0 failed");
+

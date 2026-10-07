@@ -414,8 +414,61 @@ try {
   const currentMismatch = await validateLaunchAcceptance(run, { root, online: true, fetchImpl: liveMismatch, now, schema, semanticSourcePolicy, attestationKey, trustedDocumentationValidatorPath });
   assert.ok(currentMismatch.errors.some((error) => error.code === "LIVE_CLAIM_MISMATCH"));
 
-  console.log("Launch acceptance: 1 valid baseline + 44 rejected mutations passed");
+  // Verify diagnosticOutcome distinguishes accepted_risk, terminally_blocked, and decision_required while keeping computedOutcome === "rejected"
+  const acceptedRiskRun = clone(run);
+  acceptedRiskRun.friction.items[0].status = "accepted-risk";
+  acceptedRiskRun.friction.items[0].acceptedBy = "feature-owner@example.com";
+  acceptedRiskRun.friction.items[0].acceptanceEvidenceArtifactId = "risk-acceptance";
+  acceptedRiskRun.friction.counts.verified = 0;
+  acceptedRiskRun.friction.counts.acceptedRisk = 1;
+  Object.assign(acceptedRiskRun.attestation, computeLaunchAttestation(acceptedRiskRun, attestationKey));
+  const acceptedRiskResult = await validate(acceptedRiskRun);
+  assert.equal(acceptedRiskResult.computedOutcome, "rejected");
+  assert.equal(acceptedRiskResult.diagnosticOutcome, "accepted_risk");
+
+  const blockedRun = clone(run);
+  blockedRun.declaredOutcome = "blocked";
+  blockedRun.contract.blockedIds = ["C3"];
+  blockedRun.friction.items[0].status = "blocked";
+  blockedRun.friction.counts.verified = 0;
+  blockedRun.friction.counts.blocked = 1;
+  blockedRun.goals[0].status = "blocked";
+  Object.assign(blockedRun.attestation, computeLaunchAttestation(blockedRun, attestationKey));
+  const blockedResult = await validate(blockedRun);
+  assert.equal(blockedResult.computedOutcome, "rejected");
+  assert.equal(blockedResult.diagnosticOutcome, "terminally_blocked");
+
+  const decisionRun = clone(run);
+  decisionRun.declaredOutcome = "decision_required";
+  decisionRun.friction.items[0].status = "decision-required";
+  decisionRun.friction.counts.verified = 0;
+  decisionRun.friction.counts.decisionRequired = 1;
+  decisionRun.goals[0].status = "decision_required";
+  Object.assign(decisionRun.attestation, computeLaunchAttestation(decisionRun, attestationKey));
+  const decisionResult = await validate(decisionRun);
+  assert.equal(decisionResult.computedOutcome, "rejected");
+  assert.equal(decisionResult.diagnosticOutcome, "decision_required");
+
+  // Verify CSS.supports feature detection is accepted for non-globalThis features
+  const cssDetectPath = join(root, "examples/detect.html");
+  const originalCssDetect = readFileSync(cssDetectPath);
+  const cssDetectHtml = Buffer.from(`<!doctype html><meta charset="utf-8"><title>detect</title><main><h1>detect ExampleAPI example</h1><p id="requirements">Secure context and supported Chrome build required.</p><button id="run" type="button">Run example</button><output id="status" aria-live="polite">Ready with fallback</output></main><script>const status=document.querySelector('#status');const supported=CSS.supports('display: grid');const api=globalThis.ExampleAPI;document.querySelector('#run').addEventListener('click',async()=>{if(!supported){status.value='Unsupported; fallback active';return;}status.value='Completed successfully';});</script>`);
+  writeFileSync(cssDetectPath, cssDetectHtml);
+  const cssDetectRun = clone(run);
+  const cssDetectArtifact = cssDetectRun.artifacts.find((a) => a.id === "example-detect");
+  cssDetectArtifact.bytes = cssDetectHtml.length;
+  cssDetectArtifact.sha256 = sha256(cssDetectHtml);
+  const cssSubject = cssDetectRun.receipts[0].subjects.find((item) => item.id === "example-detect");
+  cssSubject.sha256Before = cssDetectArtifact.sha256;
+  cssSubject.sha256After = cssDetectArtifact.sha256;
+  Object.assign(cssDetectRun.attestation, computeLaunchAttestation(cssDetectRun, attestationKey));
+  const cssDetectResult = await validate(cssDetectRun);
+  assert.equal(cssDetectResult.computedOutcome, "succeeded", JSON.stringify(cssDetectResult.errors, null, 2));
+  writeFileSync(cssDetectPath, originalCssDetect);
+
+  console.log("Launch acceptance: 2 valid baselines + 47 rejected/diagnostic mutations passed");
 } finally {
   rmSync(root, { recursive: true, force: true });
   rmSync(outsideRoot, { recursive: true, force: true });
 }
+
