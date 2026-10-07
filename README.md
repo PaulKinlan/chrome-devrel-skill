@@ -253,7 +253,7 @@ Private overlays are inputs, not a second public record. The output boundary mus
 ## Validation
 
 ```bash
-node scripts/test-all.mjs
+node scripts/test-all.mjs   # or: npm test
 ```
 
 runs every validation gate in the order CI does: the security-surface audit first (if it fails, nothing else runs), then retrospective checks, launch-acceptance mutations, trusted-command and key-isolation tests, request routing, behavior contracts, public-core validation (including the `SKILL.md` frontmatter), eval structure, MDN mutation guards, and the installer, entry-point, feature-packet, and launch-bundle tests. It prints one line per gate and exits non-zero if any gate fails.
@@ -264,6 +264,8 @@ runs every validation gate in the order CI does: the security-surface audit firs
 | `--only <text>` | Run only gates whose name or script contains `<text>`, for example `--only packet` |
 | `--verbose` | Show the output of passing gates too |
 | `--list` | Print the gates and exit |
+
+With npm, put the flags after `--`, for example `npm test -- --only packet`. Nothing needs installing: the repository has no dependencies, and [`package.json`](package.json) exists only so `npm test` works.
 
 CI runs this same command ([`.github/workflows/security-and-core.yml`](.github/workflows/security-and-core.yml)), so [`scripts/test-all.mjs`](scripts/test-all.mjs) is the single list of gates; a `scripts/*.test.mjs` file that is not registered there fails the run. CI uses the Node version in [`.nvmrc`](.nvmrc). Locally the security audit reads your working tree, untracked files included; in CI it reads the Git index, which is what would be committed.
 
