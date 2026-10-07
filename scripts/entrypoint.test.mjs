@@ -4,8 +4,8 @@
 //   - through a symlinked skill mount (`install-skill --symlink`, the Skills CLI default)
 //   - from a checkout whose directory name contains a space / non-ASCII character
 //     (import.meta.url percent-encodes those, so a string comparison with argv[1] fails)
-// The maintainer validators are run from such a checkout too: they derive the repository
-// root from import.meta.url and used to crash on it.
+// The maintainer validators and the eval runner are run from such a checkout too: they
+// derive the repository root from import.meta.url and used to crash on it.
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import {
@@ -90,24 +90,28 @@ try {
     }
   }
 
-  // --- maintainer validators from a spaced checkout --------------------------------------
+  // --- maintainer scripts from a spaced checkout -----------------------------------------
   // They derive the repository root from import.meta.url as well; a percent-encoded
   // pathname (".../my%20checkout...") made them crash for a contributor whose clone path
   // contains a space. Run from a neutral cwd so nothing can lean on process.cwd() either.
   const checkout = join(tmp, "my checkout ü");
   cpSync(repoRoot, checkout, { recursive: true, filter: (source) => basename(source) !== ".git" });
-  const validators = [
-    "scripts/validate-public-core.mjs",
-    "scripts/mdn-mutation-tests.mjs",
-    "evals/validate.mjs",
+  const maintainerScripts = [
+    { script: "scripts/validate-public-core.mjs", args: [] },
+    { script: "scripts/mdn-mutation-tests.mjs", args: [] },
+    { script: "evals/validate.mjs", args: [] },
+    // The eval runner reads cases.json and rubric.json from the root it derives. --list
+    // calls no model and writes nothing, so it fails exactly when that root is wrong.
+    { script: "evals/run.mjs", args: ["--list"], stdout: /^cases \(\d+\):$/m },
   ];
-  for (const script of validators) {
-    const result = run(join(checkout, script), []);
+  for (const { script, args, stdout } of maintainerScripts) {
+    const result = run(join(checkout, script), args);
     assert.equal(
       result.status,
       0,
       `${script} from a spaced checkout: exit ${result.status}\n${result.stderr}${result.stdout}`,
     );
+    if (stdout) assert.match(result.stdout, stdout, `${script} from a spaced checkout`);
   }
 
   // --- a real offline workflow through the symlinked mount -----------------------------
@@ -140,7 +144,7 @@ try {
   assert.equal(refreshed.status, "refreshed");
 
   console.log(
-    `CLI entry points: ${clis.length} CLIs x ${ways.length} access paths, ${validators.length} validators from a spaced checkout, plus an offline packet+bundle workflow through a symlinked mount, passed`,
+    `CLI entry points: ${clis.length} CLIs x ${ways.length} access paths, ${maintainerScripts.length} maintainer scripts from a spaced checkout, plus an offline packet+bundle workflow through a symlinked mount, passed`,
   );
 } finally {
   // `mount` points at the real repository: remove the link itself first so the recursive

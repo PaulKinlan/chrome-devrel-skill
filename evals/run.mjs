@@ -35,8 +35,9 @@ import {
 } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = resolve(new URL("..", import.meta.url).pathname);
+const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const EVALS = join(ROOT, "evals");
 // RUNNER_VERSION is bumped on any behavioral edit to this file. Each run records
 // both the version and the sha256 of the committed runner implementation so the
