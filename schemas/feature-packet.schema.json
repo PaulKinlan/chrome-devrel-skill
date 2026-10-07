@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chrome DevRel Feature Packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "feature",
+    "jobs",
+    "readiness",
+    "evidence",
+    "risks",
+    "friction",
+    "questions",
+    "assets",
+    "history"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "stage",
+        "targetMilestone",
+        "owner",
+        "currentDecision",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "chromestatusUrl": { "type": "string" },
+        "stage": {
+          "enum": [
+            "00-intake",
+            "01-incubation",
+            "02-prototype",
+            "03-developer-trials",
+            "04-wide-review",
+            "05-experiment",
+            "06-prepare-to-ship",
+            "07-release",
+            "08-adoption",
+            "09-support",
+            "10-deprecation"
+          ]
+        },
+        "targetMilestone": { "type": "integer", "minimum": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "currentDecision": { "type": "string", "minLength": 1 },
+        "updatedAt": { "type": "string", "minLength": 10 }
+      }
+    },
+    "jobs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "developerJob",
+        "endUserBenefit",
+        "alternatives",
+        "highestRiskAssumptions"
+      ],
+      "properties": {
+        "developerJob": { "type": "string" },
+        "endUserBenefit": { "type": "string" },
+        "alternatives": { "type": "array", "items": { "type": "string" } },
+        "highestRiskAssumptions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "problemValidity",
+        "endUserImpact",
+        "developerDemand",
+        "apiErgonomics",
+        "interoperability",
+        "accessibilityPrivacySecurity",
+        "frameworkServerIntegration",
+        "docsAndSamples",
+        "supportability",
+        "measurement"
+      ],
+      "properties": {
+        "problemValidity": { "$ref": "#/$defs/readinessDimension" },
+        "endUserImpact": { "$ref": "#/$defs/readinessDimension" },
+        "developerDemand": { "$ref": "#/$defs/readinessDimension" },
+        "apiErgonomics": { "$ref": "#/$defs/readinessDimension" },
+        "interoperability": { "$ref": "#/$defs/readinessDimension" },
+        "accessibilityPrivacySecurity": { "$ref": "#/$defs/readinessDimension" },
+        "frameworkServerIntegration": { "$ref": "#/$defs/readinessDimension" },
+        "docsAndSamples": { "$ref": "#/$defs/readinessDimension" },
+        "supportability": { "$ref": "#/$defs/readinessDimension" },
+        "measurement": { "$ref": "#/$defs/readinessDimension" }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidenceItem" }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/riskItem" }
+    },
+    "friction": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/frictionItem" }
+    },
+    "questions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/questionItem" }
+    },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/assetItem" }
+    },
+    "history": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/historyEntry" }
+    }
+  },
+  "$defs": {
+    "readinessDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "rationale", "evidenceIds"],
+      "properties": {
+        "status": {
+          "enum": [
+            "supported",
+            "partial",
+            "unknown",
+            "contradicted",
+            "not_relevant"
+          ]
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidenceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "claim", "sourceUrl", "retrievedAt", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^E[0-9]+$" },
+        "kind": {
+          "enum": [
+            "fact",
+            "signal",
+            "commitment",
+            "hypothesis",
+            "unknown",
+            "contradiction",
+            "blocker"
+          ]
+        },
+        "claim": { "type": "string", "minLength": 1 },
+        "sourceUrl": { "type": "string", "minLength": 1 },
+        "retrievedAt": { "type": "string", "minLength": 10 },
+        "status": { "enum": ["active", "superseded", "retired"] },
+        "supersededBy": { "type": "string" }
+      }
+    },
+    "riskItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "severity", "status", "owner"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^R[0-9]+$" },
+        "summary": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["high", "medium", "low"] },
+        "status": {
+          "enum": ["open", "mitigated", "accepted-risk", "blocked", "retired"]
+        },
+        "owner": { "type": "string", "minLength": 1 },
+        "mitigation": { "type": "string" }
+      }
+    },
+    "frictionItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "category", "severity", "status", "owner"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^F[0-9]+$" },
+        "summary": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["high", "medium", "low"] },
+        "status": {
+          "enum": [
+            "open",
+            "fixed-unverified",
+            "verified",
+            "disputed",
+            "blocked",
+            "decision-required",
+            "accepted-risk"
+          ]
+        },
+        "owner": { "type": "string", "minLength": 1 }
+      }
+    },
+    "questionItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "status", "owner"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^Q[0-9]+$" },
+        "question": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["open", "answered", "deferred"] },
+        "answer": { "type": "string" },
+        "owner": { "type": "string", "minLength": 1 }
+      }
+    },
+    "assetItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "pathOrUrl", "status", "owner"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^A[0-9]+$" },
+        "type": { "type": "string", "minLength": 1 },
+        "pathOrUrl": { "type": "string", "minLength": 1 },
+        "status": {
+          "enum": [
+            "missing",
+            "draft",
+            "review-ready",
+            "verified",
+            "stale",
+            "blocked"
+          ]
+        },
+        "owner": { "type": "string", "minLength": 1 }
+      }
+    },
+    "historyEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["at", "fromStage", "toStage", "summary", "delta"],
+      "properties": {
+        "at": { "type": "string", "minLength": 10 },
+        "fromStage": { "type": "string", "minLength": 1 },
+        "toStage": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "delta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["addedIds", "statusChanges"],
+          "properties": {
+            "addedIds": { "type": "array", "items": { "type": "string" } },
+            "statusChanges": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    }
+  }
+}
