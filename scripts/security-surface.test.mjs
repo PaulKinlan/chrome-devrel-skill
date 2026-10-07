@@ -31,6 +31,39 @@ assert.ok(
   auditText("module.md", "-----BEGIN PRIVATE KEY-----", policy).errors.length,
 );
 
+// package.json: npm acts on this file by itself, so only the intended manifest passes.
+const manifest = (overrides = {}) =>
+  JSON.stringify({
+    name: "chrome-devrel-skill",
+    private: true,
+    license: "Apache-2.0",
+    engines: { node: ">=20" },
+    scripts: { test: "node scripts/test-all.mjs" },
+    ...overrides,
+  });
+const packageErrors = (text) => auditText("package.json", text, policy).errors;
+assert.deepEqual(packageErrors(manifest()), []);
+assert.ok(
+  packageErrors(
+    manifest({ scripts: { test: "node scripts/test-all.mjs", postinstall: "node payload.mjs" } }),
+  ).some((error) => error.includes('script "postinstall" is not allowed')),
+);
+assert.ok(
+  packageErrors(manifest({ scripts: { test: "node scripts/test-all.mjs && node payload.mjs" } }))
+    .some((error) => error.includes("scripts.test must be exactly")),
+);
+assert.ok(
+  packageErrors(manifest({ dependencies: { "left-pad": "1.3.0" } })).some((error) =>
+    error.includes('"dependencies" is not an allowed field')
+  ),
+);
+assert.ok(
+  packageErrors(manifest({ private: false })).some((error) =>
+    error.includes('"private" must be true')
+  ),
+);
+assert.ok(packageErrors("{ not json").some((error) => error.includes("not valid JSON")));
+
 const temporary = mkdtempSync(join(tmpdir(), "security-surface-test-"));
 try {
   execFileSync("git", ["init", "-q"], { cwd: temporary });
@@ -54,6 +87,16 @@ try {
   execFileSync("git", ["add", "payload.md"], { cwd: temporary });
   writeFileSync(payload, "https://safe.example/path\n");
 
+  // The same split for package.json: a staged install hook must fail the index audit even
+  // though the manifest in the worktree is the intended one.
+  const packagePath = join(temporary, "package.json");
+  writeFileSync(
+    packagePath,
+    manifest({ scripts: { test: "node scripts/test-all.mjs", postinstall: "node payload.mjs" } }),
+  );
+  execFileSync("git", ["add", "package.json"], { cwd: temporary });
+  writeFileSync(packagePath, manifest());
+
   const indexResult = spawnSync(
     process.execPath,
     [auditScript, "--root", temporary, "--mode", "index"],
@@ -61,6 +104,7 @@ try {
   );
   assert.equal(indexResult.status, 1);
   assert.match(indexResult.stderr, /staged-evil\.example/);
+  assert.match(indexResult.stderr, /package\.json: script "postinstall" is not allowed/);
 
   const worktreeResult = spawnSync(
     process.execPath,
@@ -72,4 +116,4 @@ try {
   rmSync(temporary, { recursive: true, force: true });
 }
 
-console.log("Security surface mutations: 7 passed, 0 failed");
+console.log("Security surface mutations: 14 passed, 0 failed");
