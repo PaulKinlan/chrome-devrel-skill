@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, renameSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -408,7 +408,7 @@ try {
   const outsideFile = join(outsideRoot, "outside.txt"); writeFileSync(outsideFile, "outside\n"); symlinkSync(outsideRoot, join(root, "escape"));
   const symlinkEscape = clone(run); const outsideBytes = readFileSync(outsideFile); symlinkEscape.artifacts.push({ id: "outside", path: "escape/outside.txt", type: "evidence", mime: "text/plain", bytes: outsideBytes.length, sha256: sha256(outsideBytes), createdAt, producer: "worker" });
   await expectCode(symlinkEscape, "ARTIFACT_PATH_ESCAPE");
-  rmSync(join(root, "escape"));
+  unlinkSync(join(root, "escape")); // rmSync(symlinkToDir) throws ERR_FS_EISDIR on Node 25
 
   const liveMismatch = async () => ({ ok: true, status: 200, async json() { return { ...facts, feature: { ...facts.feature, currentStableMilestone: 149 } }; } });
   const currentMismatch = await validateLaunchAcceptance(run, { root, online: true, fetchImpl: liveMismatch, now, schema, semanticSourcePolicy, attestationKey, trustedDocumentationValidatorPath });

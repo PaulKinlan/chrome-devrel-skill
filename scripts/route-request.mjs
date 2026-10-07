@@ -2,6 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isMainModule } from "./lib/is-main.mjs";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 
@@ -25,7 +26,7 @@ export function routeRequest(text, config) {
   return { ...config.fallback, modules: [...config.fallback.modules] };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule(import.meta.url)) {
   const text = process.argv.slice(2).join(" ");
   if (!text) {
     console.error("Usage: node scripts/route-request.mjs <request text>");
