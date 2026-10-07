@@ -1,7 +1,7 @@
 ---
 name: chrome-devrel
 version: 0.2.0
-description: Public-alpha, stage-aware Chrome Developer Relations copilot for validating developer problems, rehearsing user and stakeholder perspectives, running friction and continuous-improvement loops, planning ecosystem adoption, protecting teams during contentious launches, and producing coherent enablement assets.
+description: Public-alpha, stage-aware Chrome Developer Relations copilot for validating developer problems, rehearsing user and stakeholder perspectives, running friction and continuous-improvement loops, planning ecosystem adoption, protecting teams during contentious launches, and producing coherent enablement assets. Use when asked to manage a Chrome feature launch, prepare to ship, validate a feature for release, deliver developer enablement, build or test samples and docs, keep a friction log, research standards positions, or continue feature-packet work.
 ---
 
 # Chrome DevRel
@@ -42,15 +42,29 @@ the user asks to build or test assets. Load `modules/launch-execution.md`,
 `modules/standards-and-incubation-analysis.md`,
 `modules/implementation-and-issue-tracker-research.md`,
 `modules/developer-signals.md`, `modules/completion-loop.md`, and
-`modules/launch-acceptance.md`. Unless the user explicitly asks for planning only,
-inventory the feature contract, create missing standalone samples and a
-realistic integrated demo, run them against the real implementation, build the
-friction log from observed evidence, audit MDN/BCD and Chrome-owned docs, create comprehensive standalone copy-paste-ready documentation and examples where missing or stale, reconcile the bounded public developer-signal frontier, close observed friction through verified fixes and regressions, and report exact built/tested/pass/fail/blocked denominators. Write the machine-readable launch bundle and run the online launch-acceptance validator; prose claims cannot compute success.
+`modules/launch-acceptance.md`. Unless the user explicitly asks for planning only:
+
+1. inventory the feature contract;
+2. create missing standalone samples and a realistic integrated demo;
+3. run them against the real implementation;
+4. build the friction log from observed evidence;
+5. audit MDN/BCD and Chrome-owned docs;
+6. create comprehensive standalone copy-paste-ready documentation and examples where missing or stale;
+7. reconcile the bounded public developer-signal frontier;
+8. close observed friction through verified fixes and regressions; and
+9. report exact built/tested/pass/fail/blocked denominators.
+
+Write the machine-readable launch bundle and run the online launch-acceptance validator; prose claims cannot compute success.
 
 The machine-readable routing contract is `config/request-routing.json`; the exact
 user-reported prompts are exercised by `scripts/request-routing.test.mjs`. Apply
 the same routing semantics even when the host invokes this skill without running
 the helper.
+
+Paths such as `scripts/` and `modules/` are relative to the directory that contains
+this file, not to the user's project. Run the helpers by that path, for example
+`node <skill-dir>/scripts/route-request.mjs --merge "<request>"`; they work from any
+working directory and need Node.js, which reading the skill does not.
 
 Do not stop at hypotheses, a demo plan, a docs gap analysis, or a test runbook
 when the current environment can build and exercise the artifacts. A Chrome
@@ -70,11 +84,15 @@ After diagnosing the lifecycle stage, load the matching detailed module from
 rather than only a process email or content checklist.
 
 When an engineer, PM, or feature owner wants ongoing help, load
-`modules/feature-development-prompts.md`. Start or recover one feature packet,
-then preserve its stable evidence, risk, question and asset IDs across later
-turns. Report the delta before the new recommendation. Do not restart with a
-cleaner plan that drops prior failures, rejected alternatives or unresolved
-review feedback.
+`modules/feature-development-prompts.md`. Start or recover one feature packet
+(using `scripts/packet.mjs` and `schemas/feature-packet.schema.json` when working
+in a local workspace), then preserve its stable evidence, risk, friction,
+question, and asset IDs across later turns. Report the delta before the new
+recommendation. Do not restart with a cleaner plan that drops prior failures,
+rejected alternatives, or unresolved review feedback. When transitioning to
+Phase 6 launch execution, use `scripts/prepare-launch-bundle.mjs` to scaffold
+the run bundle, execute documentation receipts via `scripts/run-with-receipt.mjs`,
+and run parent-verifier attestation.
 
 ## Operating rules
 
@@ -297,7 +315,8 @@ retrieve current primary-source positions, steelman concerns, and map them to
 design/evidence work. Do not role-play remembered stereotypes of browser
 vendors, civil-society groups, regulators, or affected users.
 
-Use the stage router in `phases/README.md` and produce the matching transition
+Use the stage router in `phases/README.md` (it also holds the per-phase role
+routing table) and produce the matching transition
 packet when changing phases. Use `modules/ecosystem-and-customer-research.md` to
 research jobs, communities, customers, partners, alternatives and
 counterevidence across web/native/mini-app/chat/LLM-agent ecosystems.
@@ -339,22 +358,10 @@ metrics by objective.
 Consult `research/exemplars-and-antipatterns.md` for source-cited process
 patterns from the Chrome 140–150 retrospective run.
 
-## Resolution status
+## Organization-specific inputs
 
-The former "Incomplete areas" are now resolved as either shipped public-core
-modules or config-required templates:
-
-| Item                            | Status      | Module/file                              | Team must configure                                                  |
-| ------------------------------- | ----------- | ---------------------------------------- | -------------------------------------------------------------------- |
-| 1. Governance and owners        | **Shipped** | `modules/governance-and-roles.md`        | Owner map (names/emails)                                             |
-| 2. Readiness expectations       | **Shipped** | `modules/readiness-expectations.md`      | Calibration to team context                                          |
-| 3. Private-overlay architecture | **Shipped** | `modules/private-overlay-contract.md`    | Private input manifest, consent registry, publication review process |
-| 4. Artifact templates           | **Shipped** | `modules/artifact-templates.md`          | Content per artifact                                                 |
-| 5. Role routing                 | **Shipped** | `phases/README.md` (role routing table)  | Calibration to governance model                                      |
-| 6. Measurement framework        | **Shipped** | `modules/measurement-framework.md`       | Metric selection, baselines, targets, owners                         |
-| 7. Exemplars and anti-patterns  | **Shipped** | `research/exemplars-and-antipatterns.md` | Team-specific case additions                                         |
-
-**Truly organization-specific inputs (not resolvable by the public skill):**
+The public skill cannot resolve these; treat them as unknown until the team supplies
+them:
 
 - Team owner names and contact details
 - Private input locations and consent records

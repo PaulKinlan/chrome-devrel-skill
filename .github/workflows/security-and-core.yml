@@ -19,32 +19,8 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - name: Audit prospective commit security surface
-        run: node scripts/audit-security-surface.mjs --mode index
-      - name: Test security audit mutations
-        run: node scripts/security-surface.test.mjs
-      - name: Validate archived retrospective metrics fixture
-        run: node scripts/test-retrospective-metrics.mjs
-      - name: Validate archived retrospective metrics corpus
-        run: node scripts/validate-retrospective-metrics.mjs
-      - name: Validate archived retrospective run
-        run: node scripts/validate-retrospective-run.mjs
-      - name: Validate launch acceptance and negative mutations
-        run: node scripts/launch-acceptance.test.mjs
-      - name: Validate trusted command receipts
-        run: node scripts/run-with-receipt.test.mjs
-      - name: Reject untrusted receipt commands and environment leakage
-        run: node scripts/trusted-receipt-command.test.mjs
-      - name: Validate parent-key isolation during receipt replay
-        run: node scripts/receipt-key-isolation.test.mjs
-      - name: Validate request routing
-        run: node scripts/request-routing.test.mjs
-      - name: Validate behavioral contracts and mutations
-        run: node scripts/behavior-contracts.test.mjs
-      - name: Validate public core
-        run: node scripts/validate-public-core.mjs
-      - name: Validate eval fixture structure
-        run: node evals/validate.mjs
-      - name: Validate MDN mutation guards
-        run: node scripts/mdn-mutation-tests.mjs
+          node-version-file: .nvmrc
+      # Every gate lives in scripts/test-all.mjs, so local runs and CI cannot drift apart.
+      # The security surface audit runs first (against the Git index here) and gates the rest.
+      - name: Run every validation gate
+        run: node scripts/test-all.mjs

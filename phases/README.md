@@ -16,7 +16,11 @@ Each phase module defines:
 A transition packet is a decision-quality handoff, not proof of approval. Rate
 each material dimension as supported, partial, unknown, contradicted, or not
 relevant with rationale. Formal Chrome/Blink requirements remain defined by
-current canonical process documentation.
+current canonical process documentation. When working in a local repository, use
+`node scripts/packet.mjs` (`init`, `update`, `check`, `render`) backed by
+`schemas/feature-packet.schema.json` and `templates/feature-packet.template.json`
+to persist transition packets across sessions and enforce append-only ID
+continuity (`E*`, `R*`, `F*`, `Q*`, `A*`).
 
 ## Role routing by phase
 

@@ -36,6 +36,18 @@ Ask the agent to maintain one packet rather than starting a new assessment in ev
 
 On later runs, tell the agent to update this packet in place, preserve resolved and rejected items, and report the delta. A polished new plan that loses prior failures is not progress.
 
+When working in a local directory, persist and validate this packet with `scripts/packet.mjs` (validated against `schemas/feature-packet.schema.json`):
+
+```bash
+node scripts/packet.mjs init --dir <packet-dir> --id <chromestatus-id> --stage 01-incubation --online
+node scripts/packet.mjs update --dir <packet-dir> --patch <patch.json> --summary "Delta summary"
+node scripts/packet.mjs check --dir <packet-dir> --to-phase 06-prepare-to-ship
+```
+
+A patch is a JSON object using only `feature`, `jobs` and `readiness` (merged field by field) and `evidence`, `risks`, `friction`, `questions` and `assets` (items matched by `id`: new IDs are appended, existing IDs are merged, and no ID can be deleted, so change its `status`). Any other key is rejected with `PATCH_UNKNOWN_KEY`. `check` exits 1 when it recommends remaining in the phase.
+
+When advancing into Phase 6 (`06-prepare-to-ship`), pass `--packet <packet-dir>/packet.json` to `node scripts/prepare-launch-bundle.mjs init --root <run-dir>` to seed the executable launch-acceptance bundle from the feature packet.
+
 ## Keep partner evidence stages concrete
 
 Use the highest stage supported by an attributable record and permission to use it:
